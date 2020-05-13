@@ -1,7 +1,6 @@
 # GMA3Plugins
 Plugins for the grandMA3 Lighting Console.
 
-Download the latest release [here](https://github.com/ririfonfon/GMA3Plugins/releases) or browse the code below.
 
 ### Tested on 1.1.3.2
 * [COLOR_1_2 v1.0.1.1](https://github.com/ririfonfon/GMA3Plugins/tree/master/grandMA3/shared/resource/lib_plugins/COLOR_1_2)
