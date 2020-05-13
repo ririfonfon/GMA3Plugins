@@ -5,7 +5,7 @@ Usage
 * Call Plugin "COLOR_1_2" 
 * Choose Gel color ...
 * You have two Preset Color reference 
-* it remains only to make sequences, chases with these two preset. and you can change the colors on the fly.
+* It remains only to make sequences, chases with these two preset. and you can change the colors on the fly.
 
 Releases:
 * 1.0.0.1 - Inital release
