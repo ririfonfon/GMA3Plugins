@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<GMA3 DataVersion="1.1.3.2">
+    <Plugin Name="COLOR_1_2" Guid="00 00 00 00 29 00 00 00 06 FF 4A E7 B6 46 39 4C" Appearance="User#2" Version="0.0.0.0">
+        <DependencyExport Size="1">
+            <Dependency Address="ShowData.Appearances.User#2">
+                <Appearance Name="User#2" Guid="00 00 00 00 78 58 00 00 92 F3 4A E7 19 AD 5D 49" Color="0.000000,0.000000,1.000000,0.270588" MediaFileName="FIXTURE/object/user.png">
+                    <DependencyExport Size="1">
+                        <Dependency Address="ShowData.ImagePools.Fixtures.[user_png]">
+                            <FixtureImage Name="[user_png]" Guid="00 00 00 00 31 41 00 00 BC F4 4A E7 B2 1E 38 4C" FileName="user.png" FilePath="object" Installed="Yes" />
+                        </Dependency>
+                    </DependencyExport>
+                </Appearance>
+            </Dependency>
+        </DependencyExport>
+        <ComponentLua Name="COLOR_1_2" Guid="00 00 00 00 3E 0F 00 00 CB FD 4A E7 FF 5D 11 4C" FileName="color_1_2.lua" Installed="Yes" />
+    </Plugin>
+</GMA3>
