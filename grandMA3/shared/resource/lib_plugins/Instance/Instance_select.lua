@@ -1,5 +1,5 @@
 --[[
-Instance Select v1.0.0.2
+Instance Select v1.0.0.3
 Please note that this will likly break in future version of the console. and to use at your own risk.
 
 Usage:
@@ -8,8 +8,9 @@ Usage:
 * Your selection is now just Instance number.
 
 Releases:
-1.0.0.1 - Inital release
-1.0.0.2 - bugs
+* 1.0.0.1 - Inital release
+* 1.0.0.2 - bugs
+* 1.0.0.3 - add backColor & icon
 
 Created by Richard Fontaine "RIRI", April 2020.
 --]]
@@ -57,11 +58,11 @@ local function Main(display_handle,argument)
         local wfInt = "0123456789"
         local messageBoxOptions = {
             title="Instance Select",
-            backColor=nil,
+            backColor = "1.7",
+            icon="riri_plugin_O",
             timeout=nil,
             timeoutResultCancel=false,
             timeoutResultID=nil,
-            icon=nil,
             titleTextColor=nil,
             messageTextColor=nil,
             message="Please enter the number of Instance",
