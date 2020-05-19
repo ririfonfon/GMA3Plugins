@@ -13,7 +13,7 @@ Releases:
 * 1.1.1.0 - add label layout & number layout
 
 Created by Richard Fontaine "RIRI", April 2020.
---]] 
+--]] --
 local pluginName = select(1, ...);
 local componentName = select(2, ...);
 local signalTable = select(3, ...);
@@ -134,7 +134,8 @@ local function Main(display_handle)
     local SelColGel
     local SelectedGrp = {}
     local SelectedGel
-    local Message = "Add Fixture Group and ColorGel, set beginning Sequence Number\n\n Selected Group(s) are: \n"
+    local Message =
+        "Add Fixture Group and ColorGel, set beginning Sequence Number\n\n Selected Group(s) are: \n"
     local ColGelBtn = "Add ColorGel"
     local SeqNrText = "Seq_Start_Nr"
     local OkBtn = ""
@@ -243,7 +244,8 @@ local function Main(display_handle)
     end
 
     -- Setup the Messagebox
-    SelGrp = PopupInput("Select Fixture Group", display_handle, TGrpChoise, "", DisMiW, DisMiH)
+    SelGrp = PopupInput("Select Fixture Group", display_handle, TGrpChoise, "",
+                        DisMiW, DisMiH)
     table.insert(SelectedGrp, "'" .. FixtureGroups[SelGrp + 1].name .. "'")
     Message = Message .. FixtureGroups[SelGrp + 1].name .. "\n"
     E("Select Group " .. FixtureGroups[SelGrp + 1].name)
@@ -261,7 +263,8 @@ local function Main(display_handle)
     end
 
     -- Setup the Messagebox
-    SelColGel = PopupInput("Select ColorGel", display_handle, ChoGel, "", DisMiW, DisMiH)
+    SelColGel = PopupInput("Select ColorGel", display_handle, ChoGel, "",
+                           DisMiW, DisMiH)
     SelectedGel = ColGels[SelColGel + 1].name;
     SelectedGelNr = SelColGel + 1
     E("ColorGel " .. ColGels[SelColGel + 1].name .. " selected")
@@ -284,9 +287,13 @@ local function Main(display_handle)
     else
         ---- Import Images
         ImgNr = Maf(ImgNr + 1);
-        Cmd("Store Image 3." .. ImgNr .. " " .. ImgImp[1].Name .. " Filename=" .. ImgImp[1].FileName .. " filepath=" .. ImgImp[1].Filepath .. "")
+        Cmd(
+            "Store Image 3." .. ImgNr .. " " .. ImgImp[1].Name .. " Filename=" ..
+                ImgImp[1].FileName .. " filepath=" .. ImgImp[1].Filepath .. "")
         ImgNr = Maf(ImgNr + 1);
-        Cmd("Store Image 3." .. ImgNr .. " " .. ImgImp[2].Name .. " Filename=" .. ImgImp[2].FileName .. " filepath=" .. ImgImp[2].Filepath .. "")
+        Cmd(
+            "Store Image 3." .. ImgNr .. " " .. ImgImp[2].Name .. " Filename=" ..
+                ImgImp[2].FileName .. " filepath=" .. ImgImp[2].Filepath .. "")
     end
     ---- End check Images  
 
@@ -305,20 +312,25 @@ local function Main(display_handle)
 
         if (AppCrea == 0) then
             AppNr = Maf(AppNr + 1);
-            Cmd("Store App " .. AppNr .. " \"Label\" Appearance=" .. StAppOn .. " color=\"0,0,0,1\"")
+            Cmd("Store App " .. AppNr .. " \"Label\" Appearance=" .. StAppOn ..
+                    " color=\"0,0,0,1\"")
         end
 
         NrSeq = Maf(AppNr + 1)
         NrNeed = Maf(AppNr + 1)
 
         Cmd("Assign Group " .. SelectedGrp[g] .. " at Layout " .. TLayNr)
-        Cmd("Set Layout " .. TLayNr .. "." .. LayNr .. "Action=0 Appearance=" .. AppNr .. " PosX " .. LayX .. " PosY " .. LayY .. " PositionW " .. LayW .. " PositionH " .. LayH .. " Objectname=1 Bar=0 IndicatorBar=Background")
+        Cmd("Set Layout " .. TLayNr .. "." .. LayNr .. "Action=0 Appearance=" ..
+                AppNr .. " PosX " .. LayX .. " PosY " .. LayY .. " PositionW " ..
+                LayW .. " PositionH " .. LayH ..
+                " Objectname=1 Bar=0 IndicatorBar=Background")
 
         LayNr = Maf(LayNr + 1)
         LayX = Maf(LayX + LayW + 20)
 
         for col in ipairs(TCol) do
-            StColCode = "\"" .. TCol[col].r .. "," .. TCol[col].g .. "," .. TCol[col].b .. ",1\""
+            StColCode = "\"" .. TCol[col].r .. "," .. TCol[col].g .. "," ..
+                            TCol[col].b .. ",1\""
             StColName = TCol[col].name
             ColNr = SelectedGelNr .. "." .. TCol[col].no
 
@@ -326,23 +338,37 @@ local function Main(display_handle)
             if (AppCrea == 0) then
                 StAppNameOn = "\"" .. StColName .. " on\""
                 StAppNameOff = "\"" .. StColName .. " off\""
-                Cmd("Store App " .. NrSeq .. " " .. StAppNameOn .. " Appearance=" .. StAppOn .. " color=" .. StColCode .. "")
+                Cmd("Store App " .. NrSeq .. " " .. StAppNameOn ..
+                        " Appearance=" .. StAppOn .. " color=" .. StColCode ..
+                        "")
                 NrSeq = Maf(NrSeq + 1);
-                Cmd("Store App " .. NrSeq .. " " .. StAppNameOff .. " Appearance=" .. StAppOff .. " color=" .. StColCode .. "")
+                Cmd("Store App " .. NrSeq .. " " .. StAppNameOff ..
+                        " Appearance=" .. StAppOff .. " color=" .. StColCode ..
+                        "")
                 NrSeq = Maf(NrSeq + 1);
             end
             -- end Appearances
 
             -- Create Sequences
-            Cmd("clearall;Group " .. SelectedGrp[g] .. " at Gel " .. ColNr .. ";Store Sequence " .. SeqNrStart .. " \"" .. StColName .. " " .. SelectedGrp[g]:gsub('\'', '') .. "\"")
+            Cmd("clearall;Group " .. SelectedGrp[g] .. " at Gel " .. ColNr ..
+                    ";Store Sequence " .. SeqNrStart .. " \"" .. StColName ..
+                    " " .. SelectedGrp[g]:gsub('\'', '') .. "\"")
             -- Add Cmd to Squence
-            Cmd("set seq " .. SeqNrStart .. " cue \"CueZero\" cmd=\"Set Layout " .. TLayNr .. "." .. LayNr .. " Appearance=" .. NrNeed .. "\"")
-            Cmd("set seq " .. SeqNrStart .. " cue \"OffCue\" cmd=\"Set Layout " .. TLayNr .. "." .. LayNr .. " Appearance=" .. NrNeed + 1 .. "\"")
+            Cmd(
+                "set seq " .. SeqNrStart .. " cue \"CueZero\" cmd=\"Set Layout " ..
+                    TLayNr .. "." .. LayNr .. " Appearance=" .. NrNeed .. "\"")
+            Cmd(
+                "set seq " .. SeqNrStart .. " cue \"OffCue\" cmd=\"Set Layout " ..
+                    TLayNr .. "." .. LayNr .. " Appearance=" .. NrNeed + 1 ..
+                    "\"")
             -- end Sequences
 
             -- Add Squences to Layout
             Cmd("Assign Seq " .. SeqNrStart .. " at Layout " .. TLayNr)
-            Cmd("Set Layout " .. TLayNr .. "." .. LayNr .. " appearance=" .. NrNeed + 1 .. " PosX " .. LayX .. " PosY " .. LayY .. " PositionW " .. LayW .. " PositionH " .. LayH .. " Objectname=0 Bar=0")
+            Cmd("Set Layout " .. TLayNr .. "." .. LayNr .. " appearance=" ..
+                    NrNeed + 1 .. " PosX " .. LayX .. " PosY " .. LayY ..
+                    " PositionW " .. LayW .. " PositionH " .. LayH ..
+                    " Objectname=0 Bar=0")
 
             NrNeed = Maf(NrNeed + 2); -- Set App Nr to next color
             LayX = Maf(LayX + LayW + 20)
