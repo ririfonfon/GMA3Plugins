@@ -13,7 +13,7 @@ Releases:
 * 1.0.0.3 - add backColor & icon
 
 Created by Richard Fontaine "RIRI", April 2020.
---]] 
+--]] --
 local pluginName = select(1, ...);
 local componentName = select(2, ...);
 local signalTable = select(3, ...);
@@ -80,7 +80,9 @@ local function Main(display_handle, argument)
         local messageBoxResult = MessageBox(messageBoxOptions)
 
         -- get inputs
-        instance = clamp(math.floor(tonumber(messageBoxResult["inputs"][messageBoxQuestions[1]]) or 0), 0, 360)
+        instance = clamp(math.floor(tonumber(
+                                        messageBoxResult["inputs"][messageBoxQuestions[1]]) or
+                                        0), 0, 360)
         if instance == 0 then return end
         -- have to filter out the numbers because non text inputs dont respect the black/white Filters.
         local v = "[^0123456789.]"
@@ -129,12 +131,14 @@ local function Execute(Type, ...)
 end
 
 function signalTable:Key(Status, Source, Profile, Token)
-    local debug_text = F("Execute Key (%s) %s UserProfile %d : %s", Status, Source, Profile, Token)
+    local debug_text = F("Execute Key (%s) %s UserProfile %d : %s", Status,
+                         Source, Profile, Token)
     E(debug_text)
 end
 
 function signalTable:Fader(Status, Source, Profile, Token, Value)
-    local debug_text = F("Execute Fader (%s) %s UserProfile %d : %s %f", Status, Source, Profile, Token, Value)
+    local debug_text = F("Execute Fader (%s) %s UserProfile %d : %s %f", Status,
+                         Source, Profile, Token, Value)
     E(debug_text)
 end
 
