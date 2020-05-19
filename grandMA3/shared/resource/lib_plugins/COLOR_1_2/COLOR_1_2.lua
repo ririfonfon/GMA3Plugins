@@ -13,7 +13,7 @@ Releases:
 * 1.0.1.1 - Add choise of Preset Number
 
 Created by Richard Fontaine "RIRI", May 2020.
---]]
+--]] -- 
 local pluginName = select(1, ...);
 local componentName = select(2, ...);
 local signalTable = select(3, ...);
