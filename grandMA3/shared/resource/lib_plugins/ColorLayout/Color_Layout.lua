@@ -1,5 +1,5 @@
 --[[
-Color_Layout v1.1.1.0
+Color_Layout v1.1.1.1
 Please note that this will likly break in future version of the console. and to use at your own risk.
 
 Usage
@@ -11,6 +11,7 @@ Releases:
 * 1.1.0.2 - add last free number
 * 1.1.0.3 - bugg remove for multi layout
 * 1.1.1.0 - add label layout & number layout
+* 1.1.1.1 - add numerique input
 
 Created by Richard Fontaine "RIRI", April 2020.
 --]] --
@@ -159,8 +160,8 @@ local function Main(display_handle)
             {name = OkBtn, value = ValOkBtn}, {name = 'Cancel', value = 0}
         },
         inputs = {
-            {name = SeqNrText, value = SeqNrStart, maxTextLength = 4},
-            {name = 'Layout_Nr', value = TLayNr, maxTextLength = 4},
+            {name = SeqNrText, value = SeqNrStart, maxTextLength = 4, vkPlugin = "TextInputNumOnly"},
+            {name = 'Layout_Nr', value = TLayNr, maxTextLength = 4, vkPlugin = "TextInputNumOnly"},
             {name = 'Layout_Name', value = NaLay, maxTextLength = 16}
         }
 
