@@ -10,3 +10,4 @@ Releases:
 * 1.1.0.2 - add last free number
 * 1.1.0.3 - bugg remove for multi layout
 * 1.1.1.0 - add label layout & number layout
+* 1.1.1.1 - add numerique input
