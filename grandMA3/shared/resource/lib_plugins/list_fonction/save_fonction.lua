@@ -25,11 +25,13 @@ local formats = {"Json", "CSV"}
 local function myFunction(display_handle)
 
     -- data to store
+    local i = 0
     local data = {}
 
     for k, v in pairs(_G) do
+        i = i + 1
         Printf(string.format("%s\n", k))
-        data[k] = string.format("%s\n", k)
+        data[i] = (string.format("%s\n", k))
     end
 
     -- grab a list of connected drives
