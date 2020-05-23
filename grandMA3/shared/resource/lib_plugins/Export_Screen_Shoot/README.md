@@ -18,7 +18,7 @@ Please note that this will likly break in future version of the console. and to 
   files will be skipped. Store a show to the stick first.
 
 #### Releases:
-*1.0.0.1 - Inital release
-*1.0.0.2 - Fixed a path 
-*1.0.0.3 - Buggs
-*1.0.0.4 - Add Drive & select folder
+* 1.0.0.1 - Inital release
+* 1.0.0.2 - Fixed a path 
+* 1.0.0.3 - Buggs
+* 1.0.0.4 - Add Drive & select folder
