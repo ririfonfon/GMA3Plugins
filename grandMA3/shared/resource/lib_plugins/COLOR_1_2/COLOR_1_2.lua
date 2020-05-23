@@ -1,5 +1,5 @@
 --[[
-COLOR_1_2 v1.0.1.1
+COLOR_1_2 v1.0.1.2
 Please note that this will likly break in future version of the console. and to use at your own risk.
 
 Usage
@@ -11,6 +11,7 @@ Usage
 Releases:
 * 1.0.0.1 - Inital release
 * 1.0.1.1 - Add choise of Preset Number
+* 1.0.1.2 - scale dimension w & h in use 
 
 Created by Richard Fontaine "RIRI", May 2020.
 --]] -- 
@@ -84,10 +85,12 @@ local function Main(display_handle)
     -- Store all Use Layout in a Table to find the last free number
     local TLay = root.ShowData.DataPools.Default.Layouts:Children()
     local TLayNr
+    local TLayNrRef
 
     for k in pairs(TLay) do
         E(TLay[k].NO)
-        TLayNr = k
+        TLayNr = Maf(tonumber(TLay[k].NO))
+        TLayNrRef = k
     end
 
     -- Store all Used Sequence in a Table to find the last free number
@@ -113,8 +116,8 @@ local function Main(display_handle)
     if MacroNrStart == nil then MacroNrStart = 0 end
 
     -- variables
-    local RefX = Maf(0 - TLay[TLayNr].DimensionW / 2)
-    local LayY = TLay[TLayNr].DimensionH / 2
+    local RefX = Maf(0 - TLay[TLayNrRef].DimensionW / 2)
+    local LayY = TLay[TLayNrRef].DimensionH / 2
     local LayW = 100
     local LayH = 100
     local LayNr = 1
@@ -152,7 +155,10 @@ local function Main(display_handle)
     local Start_Seq_2
     local End_Seq_2
 
-    TLayNr = TLayNr + 1
+    local UsedW
+    local UsedH
+
+    TLayNr = Maf(TLayNr + 1)
     MacroNrStart = MacroNrStart + 1
     SeqNrStart = SeqNrStart + 1
 
@@ -391,6 +397,17 @@ local function Main(display_handle)
         PColor = Maf(PColor + 1)
     end
     ---- end Appearances/Sequences 
+
+    for k in pairs(root.ShowData.DataPools.Default.Layouts:Children()) do
+        if (Maf(TLayNr) ==
+            Maf(tonumber(root.ShowData.DataPools.Default.Layouts:Children()[k]
+                             .NO))) then TLayNrRef = k end
+    end
+
+    UsedW = root.ShowData.DataPools.Default.Layouts:Children()[TLayNrRef].UsedW
+    UsedH = root.ShowData.DataPools.Default.Layouts:Children()[TLayNrRef].UsedH
+    Cmd("Set Layout " .. TLayNr .. " DimensionW " .. UsedW .. " DimensionH " ..
+            UsedH)
 
     ::cancle::
 
