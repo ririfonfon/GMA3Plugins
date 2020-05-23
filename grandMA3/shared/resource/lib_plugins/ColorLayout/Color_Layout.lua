@@ -1,5 +1,5 @@
 --[[
-Color_Layout v1.1.1.2
+Color_Layout v1.1.1.3
 Please note that this will likly break in future version of the console. and to use at your own risk.
 
 Usage
@@ -13,6 +13,7 @@ Releases:
 * 1.1.1.0 - add label layout & number layout
 * 1.1.1.1 - add numerique input
 * 1.1.1.2 - Bugg Layouts Number
+* 1.1.1.3 - scale dimension w & h in use 
 
 Created by Richard Fontaine "RIRI", April 2020.
 --]] --
@@ -90,13 +91,12 @@ local function Main(display_handle)
     local TLay = root.ShowData.DataPools.Default.Layouts:Children()
     local TLayNr
     local TLayNrRef
-    
+
     for k in pairs(TLay) do
         E(TLay[k].NO)
         TLayNr = Maf(tonumber(TLay[k].NO))
         TLayNrRef = k
     end
-    E(TLayNr)
 
     -- Store all Used Sequence in a Table to find the last free number
     local SeqNr = root.ShowData.DataPools.Default.Sequences:Children()
@@ -110,9 +110,7 @@ local function Main(display_handle)
     local TIcon = root.GraphicsRoot.TextureCollect.Textures:Children()
     local TIconNr
 
-    for k in pairs(TIcon) do
-        TIconNr = Maf(TIcon[k].NO)
-    end
+    for k in pairs(TIcon) do TIconNr = Maf(TIcon[k].NO) end
 
     -- variables
     local RefX = Maf(0 - TLay[TLayNrRef].DimensionW / 2)
@@ -146,6 +144,9 @@ local function Main(display_handle)
     local count = 0
     local check = 0
     local NaLay = "Colors"
+
+    local UsedW
+    local UsedH
 
     TLayNr = Maf(TLayNr + 1)
     SeqNrStart = SeqNrStart + 1
@@ -399,6 +400,18 @@ local function Main(display_handle)
         LayY = Maf(LayY - 20) -- Add offset for Layout Element distance
     end
     ---- end Appearances/Sequences 
+    E(" the end ")
+
+    for k in pairs(root.ShowData.DataPools.Default.Layouts:Children()) do
+        if (Maf(TLayNr) ==
+            Maf(tonumber(root.ShowData.DataPools.Default.Layouts:Children()[k]
+                             .NO))) then TLayNrRef = k end
+    end
+
+    UsedW = root.ShowData.DataPools.Default.Layouts:Children()[TLayNrRef].UsedW
+    UsedH = root.ShowData.DataPools.Default.Layouts:Children()[TLayNrRef].UsedH
+    Cmd("Set Layout " .. TLayNr .. " DimensionW " .. UsedW .. " DimensionH " ..
+            UsedH)
 
     ::cancle::
 
