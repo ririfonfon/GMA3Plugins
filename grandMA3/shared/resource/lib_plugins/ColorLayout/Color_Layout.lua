@@ -400,7 +400,6 @@ local function Main(display_handle)
         LayY = Maf(LayY - 20) -- Add offset for Layout Element distance
     end
     ---- end Appearances/Sequences 
-    E(" the end ")
 
     for k in pairs(root.ShowData.DataPools.Default.Layouts:Children()) do
         if (Maf(TLayNr) ==
