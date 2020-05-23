@@ -1,6 +1,6 @@
-<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 <GMA3 DataVersion="1.1.4.2">
-    <Plugin Name="Export_Screen_Shots" Guid="00 00 00 00 25 43 00 00 28 F0 4A E7 25 6B 8C 5C" Version="0.0.0.0">
-        <ComponentLua Name="Export_Screen_Shots" Guid="00 00 00 00 61 7A 00 00 2E F0 4A E7 C5 72 8C 5C" FileName="export_screen_shots" />
+    <Plugin Name="Export_Screen_Shots" Guid="00 00 00 00 87 7E 00 00 1E FF 4A E7 AD 80 70 4C" Version="0.0.0.0">
+        <ComponentLua Name="Export_Screen_Shots" Guid="00 00 00 00 3E 0F 00 00 1C FF 4A E7 3D 9F 70 4C" FileName="export_screen_shots.lua" Installed="Yes" />
     </Plugin>
 </GMA3>
