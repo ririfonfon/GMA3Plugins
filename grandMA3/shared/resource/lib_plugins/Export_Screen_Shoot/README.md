@@ -3,7 +3,8 @@ Please note that this will likly break in future version of the console. and to 
 
 #### Usage:
 * Call Plugin "Export_Screen_Shots"
-* Will any screen shots (with the name *display*.png) to selected USB sticks
+* Selected a drive and a directory. The plugin will copy 
+  any screen shots (with the name *display*.png) to selected USB stick
   in the selcted folder
 
 #### Issues:
