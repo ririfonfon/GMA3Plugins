@@ -12,3 +12,4 @@ Releases:
 * 1.1.1.0 - add label layout & number layout
 * 1.1.1.1 - add numerique input
 * 1.1.1.2 - Bugg Layouts Number
+* 1.1.1.3 - scale dimension w & h in use 
