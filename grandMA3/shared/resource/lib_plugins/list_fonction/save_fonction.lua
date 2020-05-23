@@ -46,7 +46,7 @@ local function myFunction(display_handle)
     -- if the user cancled then exit the plugin
     if selectedDrive == nil then return end
 
-    -- grab the export path for the se;ected drive and append the file name
+    -- grab the export path for the selected drive and append the file name
     local exportPath = GetPathOverrideFor("export",
                                           drives[selectedDrive + 1].path) .. sep ..
                            filename
