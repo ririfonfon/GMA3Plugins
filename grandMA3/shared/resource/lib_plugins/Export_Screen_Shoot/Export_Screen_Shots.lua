@@ -1,11 +1,11 @@
 --[[
-Copy Screenshots v1.0.0.4
+Export_Screen_Shots v1.0.0.4
 Please note that this will likly break in future version of the console. and to use at your own risk.
 
 Usage:
-* Call Plugin "Copy Screenshots"
-* Will any screen shots (with the name *display*.png) to all connected USB sticks
-  in the folder grandMA3\shared\resource\lib_images
+* Call Plugin "Export_Screen_Shots"
+* Will any screen shots (with the name *display*.png) to selected USB sticks
+  in the selcted folder
 
 Issues:
 * The console currently enumerates all disk connected to the console including 
@@ -20,32 +20,12 @@ Issues:
 
 Releases:
 *1.0.0.1 - Inital release
-*1.0.0.2 - Fixed a path parsing bug causing the plugin to not work on the console.
-*1.0.0.3 - Makeing functions local
-*1.0.0.4 - Add select folder
+*1.0.0.2 - Fixed a path 
+*1.0.0.3 - Buggs
+*1.0.0.4 - Add Drive & select folder
 
-MIT License
-
-Copyright (c) 2020 Down Right Technical Inc.
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
---]] local pluginName = select(1, ...);
+--]] --
+local pluginName = select(1, ...);
 local componentName = select(2, ...);
 local signalTable = select(3, ...);
 local my_handle = select(4, ...);
@@ -61,33 +41,51 @@ local E = Echo;
 
 -- Local Functions
 local split, copyFileToUSB
-local options = {"lib_images", "export"} -- popup options
+local selectedDrive -- users selected drive
+local drives = Root().Temp.DriveCollect
 local select
+local foptions = {"lib_images", "export"} -- popup options
 
 -- ****************************************************************
 -- plugin main entry point 
 -- ****************************************************************
 
 local function Main(display_handle, argument)
-    local sep = package.config:sub(1, 1)
 
-    select = PopupInput("select a Folder", display_handle, options)
+    
+    local sep = GetPathSeparator()
+    local options = {} -- popup options
 
-    local bib_images = GetPathOverrideFor("lib_images", "") .. sep
-    local lib_images = GetPathOverrideFor(options[select + 1], "") .. sep
+    for i = 1, drives.count, 1 do
+        table.insert(options, string.format("%s (%s)", drives[i].name,
+                                            drives[i].DriveType))
+    end
+
+    -- present a popup for the user choose (Internal may not work)
+    selectedDrive = PopupInput("Select a disk", display_handle, options)
+
+    -- if the user cancled then exit the plugin
+    if selectedDrive == nil then return end
+
+    select = PopupInput("select a Folder", display_handle, foptions)
+
+    -- local bib_images = GetPathOverrideFor("lib_images", "") .. sep
+    local lib_images = GetPathOverrideFor(foptions[select + 1], "") .. sep
+
+    local source_images = GetPathOverrideFor("lib_images", "") .. sep -- MaLightingTechnology\gma3_1.0.0\shared\resource\lib_images\
 
     local destination_path = ""
     local files = {}
-    E("lib_images Path: " .. (lib_images or "<NONE>"))
+    E("source_images Path: " .. (source_images or "<NONE>"))
 
     local pfile
     if (sep == "\\") then
-        pfile = io.popen('dir /B "' .. bib_images .. '"*display*.png')
+        pfile = io.popen('dir /B "' .. source_images .. '"*display*.png')
         for filename in pfile:lines() do
-            files[filename] = bib_images .. filename
+            files[filename] = source_images .. filename
         end
     else
-        pfile = io.popen('ls "' .. bib_images .. '"*display*.png')
+        pfile = io.popen('ls "' .. source_images .. '"*display*.png')
         for filename in pfile:lines() do
             local file = split(filename, "/")
 
@@ -98,7 +96,7 @@ local function Main(display_handle, argument)
     -- files to copy
 
     -- get someone else to do it.
-    local result = copyFileToUSB(files, true)
+    local result = copyFileToUSB(files, false)
 end
 
 -- ****************************************************************
@@ -122,46 +120,37 @@ function copyFileToUSB(sourceFiles, overwrite)
     local skipCount = 0
 
     for k, v in pairs(sourceFiles) do
-        -- Echo("srcFileHandle: %s", v)
-        -- Echo("srcFileHandle: %s", k)
-        local srcFileHandle = assert(io.open(v, "r"))
+        local srcFileHandle = assert(io.open(v, "rb"))
         local fileContent = srcFileHandle:read("*all")
 
-        for i, d in ipairs(Root().Temp.DriveCollect) do
-            -- i == 1 --> Local
-            -- i >= 2 --> not local
-            -- not confidant how this works yet but it seems the first and last index are the desk itself.
-            -- Only skipping the first as MA does, this will cause a number of skips when the file already on the desk.
-            if i ~= 1 then
-                local path = d.path
-                local exportFilePath = GetPathOverrideFor(options[select + 1],
-                                                          path) .. sep
-                local importFilePath = GetPathOverrideFor("lib_images", path) ..
-                                           sep
-                local file = io.open(exportFilePath .. k, "r")
-                if overwrite and file ~= nil then
-                    E("Skipping Existing: %s", exportFilePath)
-                    skipCount = skipCount + 1
-                    io.close(file)
-                    goto continue
-                end
+        local path = drives[selectedDrive + 1].path
 
-                local file, err = io.open(exportFilePath .. k, "w+")
-                if file then
-                    assert(file:write(fileContent))
-                    io.close(file)
-                    copyCount = copyCount + 1
-                    E("Wrote: %s -> %s", k, exportFilePath .. k)
-                    -- files are kind of large, lets sync once at the end.
-                    -- SyncFS();
-                    usbFound = true
-                else
-                    E("Error opening file %s : %s", k, tostring(err))
-                end
-            end
-            ::continue::
+        local exportFilePath = GetPathOverrideFor(foptions[select + 1], path) ..
+                                   sep
+        local importFilePath = GetPathOverrideFor("lib_images", path) .. sep
+        local file = io.open(exportFilePath .. k, "r")
+        if overwrite == false and file ~= nil then
+            E("Skipping Existing: %s", exportFilePath)
+            skipCount = skipCount + 1
+            io.close(file)
+            goto continue
         end
+
+        local file, err = io.open(exportFilePath .. k, "wb")
+        if file then
+            assert(file:write(fileContent))
+            io.close(file)
+            copyCount = copyCount + 1
+            E("Wrote: %s -> %s", k, exportFilePath .. k)
+            -- files are kind of large, lets sync once at the end.
+            -- SyncFS();
+            usbFound = true
+        else
+            E("Error opening file %s : %s", k, tostring(err))
+        end
+        ::continue::
     end
+
     if copyCount == 0 and skipCount == 0 then
         Printf("Copy Screenshots: Nothing to copy.")
     elseif copyCount > 0 then
