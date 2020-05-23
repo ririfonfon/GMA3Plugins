@@ -10,3 +10,4 @@ Usage
 Releases:
 * 1.0.0.1 - Inital release
 * 1.0.1.1 - Add choise of Preset Number
+* 1.0.1.2 - scale dimension w & h in use 
