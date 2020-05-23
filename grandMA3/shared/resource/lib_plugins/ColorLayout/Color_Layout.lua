@@ -1,5 +1,5 @@
 --[[
-Color_Layout v1.1.1.1
+Color_Layout v1.1.1.2
 Please note that this will likly break in future version of the console. and to use at your own risk.
 
 Usage
@@ -12,6 +12,7 @@ Releases:
 * 1.1.0.3 - bugg remove for multi layout
 * 1.1.1.0 - add label layout & number layout
 * 1.1.1.1 - add numerique input
+* 1.1.1.2 - Bugg Layouts Number
 
 Created by Richard Fontaine "RIRI", April 2020.
 --]] --
@@ -88,12 +89,14 @@ local function Main(display_handle)
     -- Store all Use Layout in a Table to find the last free number
     local TLay = root.ShowData.DataPools.Default.Layouts:Children()
     local TLayNr
-
+    local TLayNrRef
+    
     for k in pairs(TLay) do
         E(TLay[k].NO)
-        -- TLayNr = TLay[k].NO
-        TLayNr = k
+        TLayNr = Maf(tonumber(TLay[k].NO))
+        TLayNrRef = k
     end
+    E(TLayNr)
 
     -- Store all Used Sequence in a Table to find the last free number
     local SeqNr = root.ShowData.DataPools.Default.Sequences:Children()
@@ -108,13 +111,12 @@ local function Main(display_handle)
     local TIconNr
 
     for k in pairs(TIcon) do
-        E(TIcon[k].NO)
         TIconNr = Maf(TIcon[k].NO)
     end
 
     -- variables
-    local RefX = Maf(0 - TLay[TLayNr].DimensionW / 2)
-    local LayY = TLay[TLayNr].DimensionH / 2
+    local RefX = Maf(0 - TLay[TLayNrRef].DimensionW / 2)
+    local LayY = TLay[TLayNrRef].DimensionH / 2
     local LayW = 100
     local LayH = 100
     local LayNr = 1
@@ -145,7 +147,7 @@ local function Main(display_handle)
     local check = 0
     local NaLay = "Colors"
 
-    TLayNr = TLayNr + 1
+    TLayNr = Maf(TLayNr + 1)
     SeqNrStart = SeqNrStart + 1
 
     ---- Main Box
@@ -160,9 +162,22 @@ local function Main(display_handle)
             {name = OkBtn, value = ValOkBtn}, {name = 'Cancel', value = 0}
         },
         inputs = {
-            {name = SeqNrText, value = SeqNrStart, maxTextLength = 4, vkPlugin = "TextInputNumOnly"},
-            {name = 'Layout_Nr', value = TLayNr, maxTextLength = 4, vkPlugin = "TextInputNumOnly"},
-            {name = 'Layout_Name', value = NaLay, maxTextLength = 16}
+            {
+                name = SeqNrText,
+                value = SeqNrStart,
+                maxTextLength = 4,
+                vkPlugin = "TextInputNumOnly"
+            }, {
+                name = 'Layout_Nr',
+                value = TLayNr,
+                maxTextLength = 4,
+                vkPlugin = "TextInputNumOnly"
+            }, {
+                name = 'Layout_Name',
+                value = NaLay,
+                maxTextLength = 16,
+                vkPlugin = "TextInput"
+            }
         }
 
     })
