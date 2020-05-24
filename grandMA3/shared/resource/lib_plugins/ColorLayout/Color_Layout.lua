@@ -1,5 +1,5 @@
 --[[
-Color_Layout v1.1.1.3
+Color_Layout v1.1.2.0
 Please note that this will likly break in future version of the console. and to use at your own risk.
 
 Usage
@@ -7,13 +7,14 @@ Usage
 
 Releases:
 * 1.0.0.1 - Inital release
-* 1.1.0.1 - add logic if layout on off exist
-* 1.1.0.2 - add last free number
+* 1.1.0.1 - Add logic if layout on off exist
+* 1.1.0.2 - Add last free number
 * 1.1.0.3 - bugg remove for multi layout
-* 1.1.1.0 - add label layout & number layout
-* 1.1.1.1 - add numerique input
+* 1.1.1.0 - Add label layout & number layout
+* 1.1.1.1 - Add numerique input
 * 1.1.1.2 - Bugg Layouts Number
-* 1.1.1.3 - scale dimension w & h in use 
+* 1.1.1.3 - Scale dimension w & h in use 
+* 1.1.2.0 - For a lot color add Max_Color_By_Line
 
 Created by Richard Fontaine "RIRI", April 2020.
 --]] --
@@ -148,6 +149,8 @@ local function Main(display_handle)
     local UsedW
     local UsedH
 
+    local MaxColLgn = 40
+
     TLayNr = Maf(TLayNr + 1)
     SeqNrStart = SeqNrStart + 1
 
@@ -178,6 +181,11 @@ local function Main(display_handle)
                 value = NaLay,
                 maxTextLength = 16,
                 vkPlugin = "TextInput"
+            }, {
+                name = 'Max_Color_By_Line',
+                value = MaxColLgn,
+                maxTextLength = 2,
+                vkPlugin = "TextInputNumOnly"
             }
         }
 
@@ -200,12 +208,14 @@ local function Main(display_handle)
             SeqNrStart = box.inputs.Seq_Start_Nr
             TLayNr = box.inputs.Layout_Nr
             NaLay = box.inputs.Layout_Name
+            MaxColLgn = box.inputs.Max_Color_By_Line
             goto MainBox
         else
             E("add Group")
             SeqNrStart = box.inputs.Seq_Start_Nr
             TLayNr = box.inputs.Layout_Nr
             NaLay = box.inputs.Layout_Name
+            MaxColLgn = box.inputs.Max_Color_By_Line
             goto addGroup
         end
 
@@ -220,6 +230,7 @@ local function Main(display_handle)
         SeqNrStart = box.inputs.Seq_Start_Nr
         TLayNr = box.inputs.Layout_Nr
         NaLay = box.inputs.Layout_Name
+        MaxColLgn = box.inputs.Max_Color_By_Line
         goto addColorGel
 
     elseif (box.result == 1) then
@@ -228,6 +239,7 @@ local function Main(display_handle)
             SeqNrStart = box.inputs.Seq_Start_Nr
             TLayNr = box.inputs.Layout_Nr
             NaLay = box.inputs.Layout_Name
+            MaxColLgn = box.inputs.Max_Color_By_Line
             goto addColorGel
 
         elseif next(SelectedGrp) == nil then
@@ -235,11 +247,13 @@ local function Main(display_handle)
             SeqNrStart = box.inputs.Seq_Start_Nr
             TLayNr = box.inputs.Layout_Nr
             NaLay = box.inputs.Layout_Name
+            MaxColLgn = box.inputs.Max_Color_By_Line
             goto addGroup
         else
             SeqNrStart = box.inputs.Seq_Start_Nr
             TLayNr = box.inputs.Layout_Nr
             NaLay = box.inputs.Layout_Name
+            MaxColLgn = box.inputs.Max_Color_By_Line
             E("now i do some Magic stuff...")
             goto doMagicStuff
         end
@@ -321,10 +335,12 @@ local function Main(display_handle)
     -- end
 
     TCol = ColPath:Children()[SelectedGelNr]
+    MaxColLgn = tonumber(MaxColLgn)
 
     for g in ipairs(SelectedGrp) do
 
         local LayX = RefX
+        local col_count = 0
         LayY = Maf(LayY - LayH) -- Max Y Position minus hight from element. 0 are at the Bottom!
 
         if (AppCrea == 0) then
@@ -346,6 +362,7 @@ local function Main(display_handle)
         LayX = Maf(LayX + LayW + 20)
 
         for col in ipairs(TCol) do
+            col_count = col_count + 1
             StColCode = "\"" .. TCol[col].r .. "," .. TCol[col].g .. "," ..
                             TCol[col].b .. ",1\""
             StColName = TCol[col].name
@@ -388,7 +405,16 @@ local function Main(display_handle)
                     " Objectname=0 Bar=0")
 
             NrNeed = Maf(NrNeed + 2); -- Set App Nr to next color
-            LayX = Maf(LayX + LayW + 20)
+
+            if (col_count ~= MaxColLgn) then
+                LayX = Maf(LayX + LayW + 20)
+            else
+                LayX = RefX
+                LayX = Maf(LayX + LayW + 20)
+                LayY = Maf(LayY - 20) -- Add offset for Layout Element distance
+                LayY = Maf(LayY - LayH)
+                col_count = 0
+            end
 
             LayNr = Maf(LayNr + 1)
 
@@ -407,8 +433,10 @@ local function Main(display_handle)
                              .NO))) then TLayNrRef = k end
     end
 
-    UsedW = root.ShowData.DataPools.Default.Layouts:Children()[TLayNrRef].UsedW / 2
-    UsedH = root.ShowData.DataPools.Default.Layouts:Children()[TLayNrRef].UsedH / 2
+    UsedW =
+        root.ShowData.DataPools.Default.Layouts:Children()[TLayNrRef].UsedW / 2
+    UsedH =
+        root.ShowData.DataPools.Default.Layouts:Children()[TLayNrRef].UsedH / 2
     Cmd("Set Layout " .. TLayNr .. " DimensionW " .. UsedW .. " DimensionH " ..
             UsedH)
 
