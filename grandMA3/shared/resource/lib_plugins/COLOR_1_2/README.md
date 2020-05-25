@@ -1,4 +1,4 @@
-COLOR_1_2 v1.0.1.1
+COLOR_1_2 v1.1.2.0
 Please note that this will likly break in future version of the console. and to use at your own risk.
 
 Usage
