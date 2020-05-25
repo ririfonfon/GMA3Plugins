@@ -1,4 +1,4 @@
-COLOR_1_2_3_4 v1.1.2.0
+COLOR_1_2_3_4 v1.1.2.1
 Please note that this will likly break in future version of the console. and to use at your own risk.
 
 Usage
@@ -12,3 +12,4 @@ Releases:
 * 1.0.1.1 - Add choise of Preset Number
 * 1.0.1.2 - scale dimension w & h in use 
 * 1.1.2.0 - For a lot color add Max_Color_By_Line
+* 1.1.2.1 - Add delete seq 999 & clear all marco line
