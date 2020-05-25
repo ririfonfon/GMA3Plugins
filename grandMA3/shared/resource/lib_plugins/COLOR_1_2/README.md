@@ -11,3 +11,4 @@ Releases:
 * 1.0.0.1 - Inital release
 * 1.0.1.1 - Add choise of Preset Number
 * 1.0.1.2 - scale dimension w & h in use 
+* 1.1.2.0 - For a lot color add Max_Color_By_Line
