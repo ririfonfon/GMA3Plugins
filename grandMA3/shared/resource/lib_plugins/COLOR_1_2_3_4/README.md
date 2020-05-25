@@ -13,3 +13,4 @@ Releases:
 * 1.0.1.2 - scale dimension w & h in use 
 * 1.1.2.0 - For a lot color add Max_Color_By_Line
 * 1.1.2.1 - Add delete seq 999 & clear all marco line
+* 1.1.2.2 - Scroll Bug
