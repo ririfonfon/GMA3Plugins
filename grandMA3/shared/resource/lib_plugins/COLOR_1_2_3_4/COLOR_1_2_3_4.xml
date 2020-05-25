@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <GMA3 DataVersion="1.1.4.2">
-    <Plugin Guid="00 00 00 00 29 00 00 00 04 FF 4A E7 FA 83 3F 4C" Appearance="1_2_3_4" Author="Riri" Version="1.0.1.2">
+    <Plugin Guid="00 00 00 00 29 00 00 00 04 FF 4A E7 FA 83 3F 4C" Appearance="1_2_3_4" Author="Riri" Version="1.1.2.0">
         <DependencyExport Size="1">
             <Dependency Address="ShowData.Appearances.1_2_3_4">
                 <Appearance Name="1_2_3_4" Guid="00 00 00 00 A6 2E 00 00 E5 FF 4A E7 3C DD 20 4C" Color="1.000000,1.000000,1.000000,1.000000" MediaFileName="CUSTOM/Color_1_2_3_4.png">
