@@ -1,5 +1,5 @@
 --[[
-COLOR_1_2_3_4 v1.1.2.1
+COLOR_1_2_3_4 v1.1.2.2
 Please note that this will likly break in future version of the console. and to use at your own risk.
 
 Usage
@@ -14,6 +14,7 @@ Releases:
 * 1.0.1.2 - scale dimension w & h in use 
 * 1.1.2.0 - For a lot color add Max_Color_By_Line
 * 1.1.2.1 - Add delete seq 999 & clear all marco line
+* 1.1.2.2 - Scroll Bug
 
 Created by Richard Fontaine "RIRI", May 2020.
 --]] --
@@ -331,21 +332,10 @@ local function Main(display_handle)
         local col_count = 0
         LayY = Maf(LayY - LayH) -- Max Y Position minus hight from element. 0 are at the Bottom!
 
-        if (AppCrea == 0) then
-            AppNr = Maf(AppNr + 1);
-            Cmd("Store App " .. AppNr .. " \"Label\" Appearance=" .. StAppOn ..
-                    " color=\"0,0,0,1\"")
-        end
-
         NrSeq = Maf(AppNr + 1)
         NrNeed = Maf(AppNr + 1)
 
-        --  Cmd("Assign Group "..SelectedGrp[g].." at Layout "..TLayNr)
         Cmd("Store Layout " .. TLayNr)
-        Cmd("Set Layout " .. TLayNr .. "." .. LayNr .. "Action=0 Appearance=" ..
-                AppNr .. "Name " .. SelectedGrp[g] .. " PosX " .. LayX ..
-                " PosY " .. LayY .. " PositionW " .. LayW .. " PositionH " ..
-                LayH .. " Objectname=1 Bar=0 IndicatorBar=Background")
 
         LayNr = Maf(LayNr + 1)
         LayX = Maf(LayX + LayW + 20)
@@ -399,8 +389,6 @@ local function Main(display_handle)
             Cmd('Set 15 Command "Off Sequence 999" ')
             Cmd('CD Root')
 
-            E("g = ")
-            E(g)
             -- Add Cmd to Squence
             if (g == 1) then
                 Cmd("set seq " .. SeqNrStart ..
