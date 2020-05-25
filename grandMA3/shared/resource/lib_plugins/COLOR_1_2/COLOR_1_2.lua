@@ -1,5 +1,5 @@
 --[[
-COLOR_1_2 v1.1.2.0
+COLOR_1_2 v1.1.2.1
 Please note that this will likly break in future version of the console. and to use at your own risk.
 
 Usage
@@ -13,6 +13,7 @@ Releases:
 * 1.0.1.1 - Add choise of Preset Number
 * 1.0.1.2 - scale dimension w & h in use 
 * 1.1.2.0 - For a lot color add Max_Color_By_Line
+* 1.1.2.1 - Add delete seq 999 & clear all marco line
 
 Created by Richard Fontaine "RIRI", May 2020.
 --]] -- 
@@ -149,7 +150,7 @@ local function Main(display_handle)
     local check = 0
     local NaLay = "1_2"
     local PColor = 901
-    local MacroIndex = 13
+    local MacroIndex = 15
     local LongGel
     local Start_Seq_1
     local End_Seq_1
@@ -375,17 +376,19 @@ local function Main(display_handle)
             Cmd("CD Macro " .. MacroNrStart)
             Cmd('Set 1 Command "Store Group 999/o" ')
             Cmd('Set 2 Command "Store Preset 25.999/o" ')
-            Cmd('Set 3 Command "Group 999 At Preset 25.999')
-            Cmd('Set 4 Command "Store Sequence 999 cue 1 /o ')
-            Cmd('Set 5 Command "Go Sequence 999 cue 1')
-            Cmd('Set 6 Command "Blind On" ')
-            Cmd('Set 7 Command "Fixture Thru" ')
-            Cmd('Set 8 Command "Down; Down; Down" ')
-            Cmd('Set 9 Command "at Gel %d . %d" ', SelectedGelNr, TCol[col].no)
-            Cmd('Set 10 Command "Store preset 4. %d /o" ', PColor)
-            Cmd('Set 11 Command "ClearAll;  Preset 25.999; At Preset 25.999" ')
-            Cmd('Set 12 Command "Blind Off" ')
-            Cmd('Set 13 Command "Off Sequence 999" ')
+            Cmd('Set 3 Command "Group 999 At Preset 25.999" ')
+            Cmd('Set 4 Command "Delete Sequence 999 /o" ')
+            Cmd('Set 5 Command "Store Sequence 999 cue 1 /o" ')
+            Cmd('Set 6 Command "Go Sequence 999 cue 1" ')
+            Cmd('Set 7 Command "ClearAll" ')
+            Cmd('Set 8 Command "Blind On" ')
+            Cmd('Set 9 Command "Fixture Thru" ')
+            Cmd('Set 10 Command "Down; Down; Down" ')
+            Cmd('Set 11 Command "at Gel %d . %d" ', SelectedGelNr, TCol[col].no)
+            Cmd('Set 12 Command "Store preset 4. %d /o" ', PColor)
+            Cmd('Set 13 Command "ClearAll;  Preset 25.999; At Preset 25.999" ')
+            Cmd('Set 14 Command "Blind Off" ')
+            Cmd('Set 15 Command "Off Sequence 999" ')
             Cmd('CD Root')
 
             -- Add Cmd to Squence
@@ -418,7 +421,7 @@ local function Main(display_handle)
                     " Objectname=0 Bar=0")
 
             NrNeed = Maf(NrNeed + 2); -- Set App Nr to next color
-            
+
             if (col_count ~= MaxColLgn) then
                 LayX = Maf(LayX + LayW + 20)
             else
