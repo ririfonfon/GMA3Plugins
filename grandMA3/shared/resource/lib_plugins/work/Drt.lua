@@ -1,6 +1,20 @@
 
 
+local pluginName = select(1, ...);
+local componentName = select(2, ...);
+local signalTable = select(3, ...);
+local my_handle = select(4, ...);
 
+-- ****************************************************************
+-- speed up global functions, by creating local cache 
+-- this can be very important for high speed plugins
+-- caring about performance is imperative for plugins with execute function
+-- ****************************************************************
+
+local F = string.format
+local E = Echo
+local Co = Confirm
+local Maf = math.floor
 
 
 -- ****************************************************************
