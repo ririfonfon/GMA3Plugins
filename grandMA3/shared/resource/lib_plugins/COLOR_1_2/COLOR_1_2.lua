@@ -36,7 +36,7 @@ local Maf = math.floor
 
 local function Main(display_handle)
 
-    local root = Root();
+    local root = Root()
 
     -- Store all Display Settings in a Table and define the middle of Display 1
     local DisPath = root.GraphicsRoot.PultCollect[1].DisplayCollect:Children()
