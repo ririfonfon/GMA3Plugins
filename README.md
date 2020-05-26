@@ -8,6 +8,7 @@ Plugins for the grandMA3 Lighting Console.
 * [Color_Layout v1.1.1.3](https://github.com/ririfonfon/GMA3Plugins/tree/master/grandMA3/shared/resource/lib_plugins/ColorLayout)
 * [Instance Select v1.0.0.3](https://github.com/ririfonfon/GMA3Plugins/tree/master/grandMA3/shared/resource/lib_plugins/Instance)
 * [Export_Screen_shots v1.0.0.4](https://github.com/ririfonfon/GMA3Plugins/tree/master/grandMA3/shared/resource/lib_plugins/Export_Screen_Shoot)
+* [Load v1.0.0.0](https://github.com/ririfonfon/GMA3Plugins/tree/master/grandMA3/shared/resource/lib_plugins/LOAD)
 
 
 ## Documentation Hossimo Link
