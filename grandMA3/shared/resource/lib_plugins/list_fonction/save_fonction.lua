@@ -31,7 +31,9 @@ local function myFunction(display_handle)
     for k, v in pairs(_G) do
         i = i + 1
         Printf(string.format("%s\n", k))
-        data[i] = (string.format("%s\n", k))
+        -- data[i] = (string.format("%s", k))
+        table.insert(data, (string.format("%s", k)))
+        table.insert(data, (string.format("\n")))
     end
 
     -- grab a list of connected drives
