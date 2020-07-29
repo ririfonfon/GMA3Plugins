@@ -168,7 +168,7 @@
         "math",
         "next",
         "os",
-        "package"
+        "package",
         "pairs",
         "pcall",
         "performance3dMinor",
@@ -187,6 +187,6 @@
         "tostring",
         "type",
         "utf8",
-        "xpcall",
+        "xpcall"
     ]
 }
