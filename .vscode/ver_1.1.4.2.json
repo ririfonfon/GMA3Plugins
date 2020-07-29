@@ -188,6 +188,6 @@
         "tostring",
         "type",
         "utf8",
-        "xpcall",
+        "xpcall"
     ]
 }
