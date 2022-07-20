@@ -1,5 +1,5 @@
 --[[
-Color_Layout v1.1.2.0
+Color_Layout v1.1.3.0
 Please note that this will likly break in future version of the console. and to use at your own risk.
 
 Usage
@@ -15,6 +15,7 @@ Releases:
 * 1.1.1.2 - Bugg Layouts Number
 * 1.1.1.3 - Scale dimension w & h in use 
 * 1.1.2.0 - For a lot color add Max_Color_By_Line
+* 1.1.3.0 - gma 3 1.7.2.2 
 
 Created by Richard Fontaine "RIRI", April 2020.
 --]] --
@@ -34,7 +35,7 @@ local E = Echo
 local Co = Confirm
 local Maf = math.floor
 
-local function Main(display_handle)
+local function Main(display_Handle)
 
     local root = Root();
 
@@ -51,7 +52,7 @@ local function Main(display_handle)
     local ColGels = ColPath:Children()
 
     -- Store all Used CustomImage in a Table to find the last free number, and define the Images
-    local Img = root.ShowData.ImagePools.Custom:Children()
+    local Img = root.ShowData.MediaPools.Images:Children()
     local ImgNr
 
     for k in pairs(Img) do ImgNr = Maf(Img[k].NO) end
@@ -90,11 +91,12 @@ local function Main(display_handle)
 
     -- Store all Use Layout in a Table to find the last free number
     local TLay = root.ShowData.DataPools.Default.Layouts:Children()
+    E("Layout = %s",tostring(TLay))
     local TLayNr
     local TLayNrRef
 
     for k in pairs(TLay) do
-        E(TLay[k].NO)
+        E("Layout n° = %s",tostring(TLay[k].NO))
         TLayNr = Maf(tonumber(TLay[k].NO))
         TLayNrRef = k
     end
@@ -127,8 +129,8 @@ local function Main(display_handle)
     local StColCode
     local StAppNameOn
     local StAppNameOff
-    local StAppOn = "\"Showdata.ImagePools.Custom.on\""
-    local StAppOff = "\"Showdata.ImagePools.Custom.off\""
+    local StAppOn = "\"Showdata.MediaPools.Images.on\""
+    local StAppOff = "\"Showdata.MediaPools.Images.off\""
     local ColNr
     local SelGrp
     local TGrpChoise
@@ -145,6 +147,8 @@ local function Main(display_handle)
     local count = 0
     local check = 0
     local NaLay = "Colors"
+    local PopTableGrp = {}
+    local PopTableGel = {}
 
     local UsedW
     local UsedH
@@ -157,9 +161,9 @@ local function Main(display_handle)
     ---- Main Box
     ::MainBox::
     local box = MessageBox({
-        title = 'Color_Layout',
+        title = 'Color_Layout_By_RIRI',
+        display = display_Handle,
         backColor = "1.7",
-        icon = "riri_plugin_O",
         message = Message,
         commands = {
             {name = 'Add Group', value = 11}, {name = ColGelBtn, value = 12},
@@ -272,17 +276,26 @@ local function Main(display_handle)
     TGrpChoise = {}
     for k in ipairs(FixtureGroups) do
         table.insert(TGrpChoise, "'" .. FixtureGroups[k].name .. "'")
+        E(FixtureGroups[k].name)
     end
 
     -- Setup the Messagebox
-    SelGrp = PopupInput("Select Fixture Group", display_handle, TGrpChoise, "",
-                        DisMiW, DisMiH)
+    PopTableGrp = {
+    title = "Fixture Group",
+    caller = display_Handle,
+    items = TGrpChoise,
+    selectedValue = "",
+    add_args = {FilterSupport="Yes"},
+    }
+    SelGrp = PopupInput(PopTableGrp)
+
     table.insert(SelectedGrp, "'" .. FixtureGroups[SelGrp + 1].name .. "'")
+    E("A")
     Message = Message .. FixtureGroups[SelGrp + 1].name .. "\n"
     E("Select Group " .. FixtureGroups[SelGrp + 1].name)
     table.remove(FixtureGroups, SelGrp + 1)
     goto MainBox
-    ---- End Choise Fixture Group	
+    ---- End Choise Fixture Group	        
 
     ---- Choise ColorGel  
     -- Create a Choise for each Group in Table
@@ -294,8 +307,16 @@ local function Main(display_handle)
     end
 
     -- Setup the Messagebox
-    SelColGel = PopupInput("Select ColorGel", display_handle, ChoGel, "",
-                           DisMiW, DisMiH)
+    PopTableGel = {
+        title = "ColorGel",
+        caller = display_Handle,
+        items = ChoGel,
+        selectedValue = "",
+        add_args = {FilterSupport="Yes"},
+        }
+    SelColGel = PopupInput(PopTableGel)
+    -- SelColGel = PopupInput("Select ColorGel", display_Handle, ChoGel, "",
+    --                        DisMiW, DisMiH)
     SelectedGel = ColGels[SelColGel + 1].name;
     SelectedGelNr = SelColGel + 1
     E("ColorGel " .. ColGels[SelColGel + 1].name .. " selected")
@@ -352,11 +373,11 @@ local function Main(display_handle)
         NrSeq = Maf(AppNr + 1)
         NrNeed = Maf(AppNr + 1)
 
-        Cmd("Assign Group " .. SelectedGrp[g] .. " at Layout " .. TLayNr)
-        Cmd("Set Layout " .. TLayNr .. "." .. LayNr .. "Action=0 Appearance=" ..
-                AppNr .. " PosX " .. LayX .. " PosY " .. LayY .. " PositionW " ..
-                LayW .. " PositionH " .. LayH ..
-                " Objectname=1 Bar=0 IndicatorBar=Background")
+        Cmd("Assign Group "..SelectedGrp[g].." at Layout "..TLayNr)
+        Cmd("Set Layout " .. TLayNr .. "." .. LayNr .. " Action=0 Appearance="..
+        AppNr.." PosX "..LayX.." PosY "..LayY.." PositionW "..
+        LayW.." PositionH "..LayH..
+        " VisibilityObjectname=1 VisibilityBar=0 IndicatorBar=Background")
 
         LayNr = Maf(LayNr + 1)
         LayX = Maf(LayX + LayW + 20)
@@ -384,8 +405,9 @@ local function Main(display_handle)
             -- end Appearances
 
             -- Create Sequences
-            Cmd("clearall;Group " .. SelectedGrp[g] .. " at Gel " .. ColNr ..
-                    ";Store Sequence " .. SeqNrStart .. " \"" .. StColName ..
+            Cmd("clearall")
+            Cmd("Group " .. SelectedGrp[g] .. " at Gel " .. ColNr .."")
+            Cmd("Store Sequence " .. SeqNrStart .. " \"" .. StColName ..
                     " " .. SelectedGrp[g]:gsub('\'', '') .. "\"")
             -- Add Cmd to Squence
             Cmd(
@@ -402,7 +424,7 @@ local function Main(display_handle)
             Cmd("Set Layout " .. TLayNr .. "." .. LayNr .. " appearance=" ..
                     NrNeed + 1 .. " PosX " .. LayX .. " PosY " .. LayY ..
                     " PositionW " .. LayW .. " PositionH " .. LayH ..
-                    " Objectname=0 Bar=0")
+                    " VisibilityObjectname=0 VisibilityBar=0")
 
             NrNeed = Maf(NrNeed + 2); -- Set App Nr to next color
 
