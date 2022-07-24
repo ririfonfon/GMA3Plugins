@@ -20,7 +20,8 @@ local function myFunction(display_handle)
     end
 
     -- present a popup for the user choose (Internal may not work)
-    selectedDrive = PopupInput("Select a disk", display_handle, options)
+    selectedDrive = PopupInput("Select a disk")
+    -- selectedDrive = PopupInput("Select a disk", display_handle, options)
 
     -- if the user cancled then exit the plugin
     if selectedDrive == nil then return end
