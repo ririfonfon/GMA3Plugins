@@ -1,5 +1,5 @@
 --[[
-save_fonction v1.0.0.1
+save_fonction v1.0.0.2
 Please note that this will likly break in future version of the console. and to use at your own risk.
 
 Usage
@@ -7,6 +7,7 @@ Usage
 
 Releases:
 * 1.0.0.1 - Inital release
+* 1.0.0.2 - GMA3 V 1.7.2.2
 
 Created by Richard Fontaine "RIRI", May 2020.
 --]] --
@@ -14,6 +15,8 @@ local pluginName = select(1, ...);
 local componentName = select(2, ...);
 local signalTable = select(3, ...);
 local my_handle = select(4, ...);
+
+local E = Echo
 
 local filename = "ExportFile.JSON"
 local drives = Root().Temp.DriveCollect
@@ -43,18 +46,36 @@ local function myFunction(display_handle)
     end
 
     -- present a popup for the user choose (Internal may not work)
-    selectedDrive = PopupInput("Select a disk", display_handle, options)
+    PopTableDisk = {
+        title = "Select a disk",
+        caller = display_handle,
+        items = options,
+        selectedValue = "",
+        add_args = {FilterSupport="Yes"},
+        }
+    selectedDrive = PopupInput(PopTableDisk)
 
     -- if the user cancled then exit the plugin
     if selectedDrive == nil then return end
 
     -- grab the export path for the selected drive and append the file name
-    local exportPath = GetPathOverrideFor("export",
-                                          drives[selectedDrive + 1].path) .. sep ..
-                           filename
+
+    E("selectedDrive = %s",tostring(selectedDrive))
+    E("drives[selectedDrive + 1].path = %s",tostring(drives[selectedDrive + 1].path))
+    E("sep = %s",tostring(sep))
+    E("filename = %s",tostring(filename))
+    
+    local exportPath = GetPathOverrideFor("export", drives[selectedDrive + 1].path) .. sep .. filename
 
     -- export the JSON the the selected path
-    ask = PopupInput("Select format", display_handle, formats)
+    PopTableFormat = {
+        title = "Select a disk",
+        caller = display_handle,
+        items = formats,
+        selectedValue = "",
+        add_args = {FilterSupport="Yes"},
+        }
+    ask = PopupInput(PopTableFormat)
     if formats == 1 then
         local result = ExportJson(exportPath, data) -- as of 1.1.3.2 always returns nil
     else
