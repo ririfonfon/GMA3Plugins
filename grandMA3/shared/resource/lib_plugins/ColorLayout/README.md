@@ -14,3 +14,4 @@ Releases:
 * 1.1.1.2 - Bugg Layouts Number
 * 1.1.1.3 - Scale dimension w & h in use 
 * 1.1.2.0 - For a lot color add Max_Color_By_Line
+* 1.1.3.0 - gma 3 1.7.2.2
