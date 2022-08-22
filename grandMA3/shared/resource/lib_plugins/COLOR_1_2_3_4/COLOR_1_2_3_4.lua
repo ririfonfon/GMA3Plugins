@@ -1,5 +1,5 @@
 --[[
-COLOR_1_2_3_4 v1.1.2.2
+COLOR_1_2_3_4 v1.1.2.3
 Please note that this will likly break in future version of the console. and to use at your own risk.
 
 Usage
@@ -15,6 +15,7 @@ Releases:
 * 1.1.2.0 - For a lot color add Max_Color_By_Line
 * 1.1.2.1 - Add delete seq 999 & clear all marco line
 * 1.1.2.2 - Scroll Bug
+* 1.1.2.3 - gma3 1.8.1.0
 
 Created by Richard Fontaine "RIRI", May 2020.
 --]] --
@@ -48,7 +49,7 @@ local function Main(display_handle)
     local ColGels = ColPath:Children()
 
     -- Store all Used CustomImage in a Table to find the last free number, and define the Images
-    local Img = root.ShowData.ImagePools.Custom:Children()
+    local Img = root.ShowData.MediaPools.Images:Children()
     local ImgNr
 
     for k in pairs(Img) do ImgNr = Maf(Img[k].NO) end
@@ -87,20 +88,24 @@ local function Main(display_handle)
 
     -- Store all Use Layout in a Table to find the last free number
     local TLay = root.ShowData.DataPools.Default.Layouts:Children()
+    E("Layout = %s",tostring(TLay))
     local TLayNr
     local TLayNrRef
 
     for k in pairs(TLay) do
-        E(TLay[k].NO)
+        E("Layout n° = %s",tostring(TLay[k].NO))
         TLayNr = Maf(tonumber(TLay[k].NO))
         TLayNrRef = k
     end
+
+    E("layout ok")
 
     -- Store all Used Sequence in a Table to find the last free number
     local SeqNr = root.ShowData.DataPools.Default.Sequences:Children()
     local SeqNrStart
 
     for k in pairs(SeqNr) do SeqNrStart = Maf(SeqNr[k].NO) end
+    E("Seq ok")
 
     if SeqNrStart == nil then SeqNrStart = 0 end
 
@@ -109,12 +114,14 @@ local function Main(display_handle)
     local TIconNr
 
     for k in pairs(TIcon) do TIconNr = Maf(TIcon[k].NO) end
+    E("textures ok")
 
     -- Store all Used Macro in a Table to find the last free number
     local MacroNr = root.ShowData.DataPools.Default.Macros:Children()
     local MacroNrStart
 
     for k in pairs(MacroNr) do MacroNrStart = Maf(MacroNr[k].NO) end
+    E("Macro ok")
 
     if MacroNrStart == nil then MacroNrStart = 0 end
 
@@ -132,8 +139,8 @@ local function Main(display_handle)
     local StColCode
     local StAppNameOn
     local StAppNameOff
-    local StAppOn = "\"Showdata.ImagePools.Custom.on\""
-    local StAppOff = "\"Showdata.ImagePools.Custom.off\""
+    local StAppOn = "\"Showdata.MediaPools.Images.on\""
+    local StAppOff = "\"Showdata.MediaPools.Images.off\""
     local ColNr
     local SelGrp
     local TGrpChoise
@@ -162,10 +169,14 @@ local function Main(display_handle)
     local Start_Seq_4
     local End_Seq_4
 
+    local PopTableGel = {}
+
     local UsedW
     local UsedH
 
     local MaxColLgn = 40
+
+    E("local ok")
 
     TLayNr = Maf(TLayNr + 1)
     MacroNrStart = MacroNrStart + 1
@@ -174,9 +185,9 @@ local function Main(display_handle)
     ---- Main Box
     ::MainBox::
     local box = MessageBox({
-        title = 'COLOR_1_2_3_4',
+        title = 'COLOR_1_2_3_4_By_RIRI',
+        display = display_Handle,
         backColor = "1.7",
-        icon = "riri_plugin_O",
         message = Message,
         commands = {
             {name = ColGelBtn, value = 12}, {name = OkBtn, value = ValOkBtn},
@@ -233,6 +244,7 @@ local function Main(display_handle)
         NaLay = box.inputs.Layout_Name
         MaxColLgn = box.inputs.Max_Color_By_Line
         goto addColorGel
+
     elseif (box.result == 1) then
         if SelectedGel == nil then
             Co("no ColorGel are selected!")
@@ -264,14 +276,38 @@ local function Main(display_handle)
     -- Create a Choise for each Group in Table
     ::addColorGel::
 
+    E("addcolorgel ok")
+
     ChoGel = {};
     for k in ipairs(ColGels) do
         table.insert(ChoGel, "'" .. ColGels[k].name .. "'")
     end
+    E("ChoGel ok")
+
 
     -- Setup the Messagebox
-    SelColGel = PopupInput("Select ColorGel", display_handle, ChoGel, "",
-                           DisMiW, DisMiH);
+    PopTableGel = {
+        title = "ColorGel",
+        caller = display_handle,
+        items = ChoGel,
+        selectedValue = "",
+        add_args = {FilterSupport="Yes"},
+        }
+
+
+    SelColGel = PopupInput(PopTableGel)
+
+
+    -- SelColGel = PopupInput("Select ColorGel", display_Handle, ChoGel, "",
+    --                        DisMiW, DisMiH)
+    -- PopupInput({
+    --     title:str,
+    --     caller:handle,
+    --      items:table:{{'str'|'int'|'lua'|'handle', name, type-dependent}...},
+    --       selectedValue:str,
+    --        x:int, y:int, target:handle, render_options:{left_icon,number,right_icon}, useTopLeft:bool, properties:{prop:value}, add_args:{FilterSupport='Yes'/'No'}})
+
+
     SelectedGel = ColGels[SelColGel + 1].name;
     SelectedGelNr = SelColGel + 1
     E("ColorGel " .. ColGels[SelColGel + 1].name .. " selected")
@@ -367,68 +403,77 @@ local function Main(display_handle)
                 "clearall;Store Sequence " .. SeqNrStart .. " \"" .. StColName ..
                     " " .. SelectedGrp[g] .. "\"")
             -- Create Macros
-            Cmd("Store Macro " .. MacroNrStart .. ".1 Thru " .. MacroNrStart ..
-                    "." .. MacroIndex)
+
+            for i = 1 , 15 do
+                Cmd("Store Macro " .. MacroNrStart .. "." .. i .. "")
+            end
+
             Cmd("Label Macro " .. MacroNrStart .. " \"" .. StColName .. " " ..
                     SelectedGrp[g] .. "\"")
             Cmd("CD Macro " .. MacroNrStart)
-            Cmd('Set 1 Command "Store Group 999/o" ')
-            Cmd('Set 2 Command "Store Preset 25.999/o" ')
-            Cmd('Set 3 Command "Group 999 At Preset 25.999" ')
-            Cmd('Set 4 Command "Delete Sequence 999 /o" ')
-            Cmd('Set 5 Command "Store Sequence 999 cue 1 /o" ')
-            Cmd('Set 6 Command "Go Sequence 999 cue 1" ')
-            Cmd('Set 7 Command "ClearAll" ')
-            Cmd('Set 8 Command "Blind On" ')
-            Cmd('Set 9 Command "Fixture Thru" ')
-            Cmd('Set 10 Command "Down; Down; Down" ')
-            Cmd('Set 11 Command "at Gel %d . %d" ', SelectedGelNr, TCol[col].no)
-            Cmd('Set 12 Command "Store preset 4. %d /o" ', PColor)
-            Cmd('Set 13 Command "ClearAll;  Preset 25.999; At Preset 25.999" ')
-            Cmd('Set 14 Command "Blind Off" ')
-            Cmd('Set 15 Command "Off Sequence 999" ')
+            Cmd('Set 1 Property Command "Store Group 999/o" ')
+            Cmd('Set 2 Property Command "Store Preset 25.999/o" ')
+            Cmd('Set 3 Property Command "Group 999 At Preset 25.999" ')
+            Cmd('Set 4 Property Command "Delete Sequence 999 /o" ')
+            Cmd('Set 5 Property Command "Store Sequence 999 cue 1 /o" ')
+            Cmd('Set 6 Property Command "Go Sequence 999 cue 1" ')
+            Cmd('Set 7 Property Command "ClearAll" ')
+            Cmd('Set 8 Property Command "Blind On" ')
+            Cmd('Set 9 Property Command "Fixture Thru" ')
+            Cmd('Set 10 Property Command "Down; Down; Down" ')
+            Cmd('Set 11 Property Command "at Gel %d . %d" ', SelectedGelNr, TCol[col].no)
+            Cmd('Set 12 Property Command "Store preset 4. %d /o" ', PColor)
+            Cmd('Set 13 Property Command "ClearAll;  Preset 25.999; At Preset 25.999" ')
+            Cmd('Set 14 Property Command "Blind Off" ')
+            Cmd('Set 15 Property Command "Off Sequence 999" ')
             Cmd('CD Root')
 
             -- Add Cmd to Squence
             if (g == 1) then
+                E("G 1")
                 Cmd("set seq " .. SeqNrStart ..
-                        " cue \"CueZero\" cmd=\"Set Layout " .. TLayNr .. "." ..
+                        " cue \"CueZero\" Property Command=\"Set Layout " .. TLayNr .. "." ..
                         LayNr .. " Appearance=" .. NrNeed .. "; Macro " ..
                         MacroNrStart .. "; Off Sequence " .. Start_Seq_1 ..
                         " Thru " .. End_Seq_1 .. " - " .. SeqNrStart .. "\"")
             elseif (g == 2) then
+                E("G 2")
                 Cmd("set seq " .. SeqNrStart ..
-                        " cue \"CueZero\" cmd=\"Set Layout " .. TLayNr .. "." ..
+                        " cue \"CueZero\" Property Command=\"Set Layout " .. TLayNr .. "." ..
                         LayNr .. " Appearance=" .. NrNeed .. "; Macro " ..
                         MacroNrStart .. "; Off Sequence " .. Start_Seq_2 ..
                         " Thru " .. End_Seq_2 .. " - " .. SeqNrStart .. "\"")
             elseif (g == 3) then
+                E("G 3")
                 Cmd("set seq " .. SeqNrStart ..
-                        " cue \"CueZero\" cmd=\"Set Layout " .. TLayNr .. "." ..
+                        " cue \"CueZero\" Property Command=\"Set Layout " .. TLayNr .. "." ..
                         LayNr .. " Appearance=" .. NrNeed .. "; Macro " ..
                         MacroNrStart .. "; Off Sequence " .. Start_Seq_3 ..
                         " Thru " .. End_Seq_3 .. " - " .. SeqNrStart .. "\"")
             elseif (g == 4) then
+                E("G 4")
                 Cmd("set seq " .. SeqNrStart ..
-                        " cue \"CueZero\" cmd=\"Set Layout " .. TLayNr .. "." ..
+                        " cue \"CueZero\" Property Command=\"Set Layout " .. TLayNr .. "." ..
                         LayNr .. " Appearance=" .. NrNeed .. "; Macro " ..
                         MacroNrStart .. "; Off Sequence " .. Start_Seq_4 ..
                         " Thru " .. End_Seq_4 .. " - " .. SeqNrStart .. "\"")
             end
 
+            E("set seq")
             Cmd(
-                "set seq " .. SeqNrStart .. " cue \"OffCue\" cmd=\"Set Layout " ..
+                "set seq " .. SeqNrStart .. " cue \"OffCue\" Property Command=\"Set Layout " ..
                     TLayNr .. "." .. LayNr .. " Appearance=" .. NrNeed + 1 ..
                     "\"")
 
             -- end Sequences
 
-            -- Add Squences to Layout
+            -- Add Sequences to Layout
+            E('add sequence to layout')
             Cmd("Assign Seq " .. SeqNrStart .. " at Layout " .. TLayNr)
             Cmd("Set Layout " .. TLayNr .. "." .. LayNr .. " appearance=" ..
                     NrNeed + 1 .. " PosX " .. LayX .. " PosY " .. LayY ..
                     " PositionW " .. LayW .. " PositionH " .. LayH ..
-                    " Objectname=0 Bar=0")
+                    " VisibilityObjectname=0 VisibilityBar=0")
 
             NrNeed = Maf(NrNeed + 2); -- Set App Nr to next color
             
