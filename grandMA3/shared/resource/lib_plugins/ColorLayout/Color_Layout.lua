@@ -1,5 +1,5 @@
 --[[
-Color_Layout v1.1.3.0
+Color_Layout v1.1.3.1
 Please note that this will likly break in future version of the console. and to use at your own risk.
 
 Usage
@@ -16,6 +16,7 @@ Releases:
 * 1.1.1.3 - Scale dimension w & h in use 
 * 1.1.2.0 - For a lot color add Max_Color_By_Line
 * 1.1.3.0 - gma 3 1.7.2.2 
+* 1.1.3.1 - gma 3 1.8.1.0 
 
 Created by Richard Fontaine "RIRI", April 2020.
 --]] --
@@ -411,10 +412,10 @@ local function Main(display_Handle)
                     " " .. SelectedGrp[g]:gsub('\'', '') .. "\"")
             -- Add Cmd to Squence
             Cmd(
-                "set seq " .. SeqNrStart .. " cue \"CueZero\" cmd=\"Set Layout " ..
+                "set seq " .. SeqNrStart .. " cue \"CueZero\" Property Command=\"Set Layout " ..
                     TLayNr .. "." .. LayNr .. " Appearance=" .. NrNeed .. "\"")
             Cmd(
-                "set seq " .. SeqNrStart .. " cue \"OffCue\" cmd=\"Set Layout " ..
+                "set seq " .. SeqNrStart .. " cue \"OffCue\" Property Command=\"Set Layout " ..
                     TLayNr .. "." .. LayNr .. " Appearance=" .. NrNeed + 1 ..
                     "\"")
             -- end Sequences
