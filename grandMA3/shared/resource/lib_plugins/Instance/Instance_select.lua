@@ -1,5 +1,5 @@
 --[[
-Instance Select v1.0.0.3
+Instance Select v1.0.0.4
 Please note that this will likly break in future version of the console. and to use at your own risk.
 
 Usage:
@@ -11,6 +11,7 @@ Releases:
 * 1.0.0.1 - Inital release
 * 1.0.0.2 - bugs
 * 1.0.0.3 - add backColor & icon
+* 1.0.0.4 - gma3 1.8.1.0
 
 Created by Richard Fontaine "RIRI", April 2020.
 --]] --
@@ -98,7 +99,7 @@ local function Main(display_handle, argument)
             selcetionString = selcetionString .. result
             tt = 1
         elseif take == true and tt == 1 then
-            selcetionString = selcetionString .. " + "
+            selcetionString = selcetionString .. " + Fixture "
             selcetionString = selcetionString .. result
         end
 
