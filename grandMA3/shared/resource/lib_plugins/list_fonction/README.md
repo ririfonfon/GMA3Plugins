@@ -1,4 +1,4 @@
-# save_fonction v1.0.0.1
+# save_fonction v1.0.0.2
 Please note that this will likly break in future version of the console. and to use at your own risk.
 
 #### Usage:
@@ -6,3 +6,4 @@ Please note that this will likly break in future version of the console. and to 
 
 #### Releases:
 * 1.0.0.1 - Inital release
+* 1.0.0.2 - gma3 1.8.1.0
