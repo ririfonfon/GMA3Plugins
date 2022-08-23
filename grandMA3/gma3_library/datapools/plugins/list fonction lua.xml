@@ -1,0 +1,6 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<GMA3 DataVersion="1.8.1.0">
+    <UserPlugin Name="list fonction lua" Guid="4C 37 BA CD F6 EC 20 02 F4 0B 33 F0 A5 DF 7B 48" Version="0.0.0.1">
+        <ComponentLua Name="list" Guid="4C 37 BA CD AE F5 20 02 21 81 DB F7 A4 DF 7B 48" FileName="list.lua" />
+    </UserPlugin>
+</GMA3>
