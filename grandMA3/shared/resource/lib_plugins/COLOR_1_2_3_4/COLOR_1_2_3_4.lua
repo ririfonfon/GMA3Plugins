@@ -271,20 +271,20 @@ local function Main(display_handle)
     end
 
     ---- End Main Box  
-
+    
     ---- Choise ColorGel  
     -- Create a Choise for each Group in Table
     ::addColorGel::
 
     E("addcolorgel ok")
-
+    
     ChoGel = {};
     for k in ipairs(ColGels) do
         table.insert(ChoGel, "'" .. ColGels[k].name .. "'")
     end
     E("ChoGel ok")
-
-
+    
+    
     -- Setup the Messagebox
     PopTableGel = {
         title = "ColorGel",
@@ -293,31 +293,31 @@ local function Main(display_handle)
         selectedValue = "",
         add_args = {FilterSupport="Yes"},
         }
+        
+        
+        SelColGel = PopupInput(PopTableGel)
 
-
-    SelColGel = PopupInput(PopTableGel)
-
-
-    -- SelColGel = PopupInput("Select ColorGel", display_Handle, ChoGel, "",
-    --                        DisMiW, DisMiH)
-    -- PopupInput({
+        
+        -- SelColGel = PopupInput("Select ColorGel", display_Handle, ChoGel, "",
+        --                        DisMiW, DisMiH)
+        -- PopupInput({
     --     title:str,
     --     caller:handle,
     --      items:table:{{'str'|'int'|'lua'|'handle', name, type-dependent}...},
     --       selectedValue:str,
     --        x:int, y:int, target:handle, render_options:{left_icon,number,right_icon}, useTopLeft:bool, properties:{prop:value}, add_args:{FilterSupport='Yes'/'No'}})
-
-
+    
+    
     SelectedGel = ColGels[SelColGel + 1].name;
     SelectedGelNr = SelColGel + 1
     E("ColorGel " .. ColGels[SelColGel + 1].name .. " selected")
     ColGelBtn = "ColorGel " .. ColGels[SelColGel + 1].name .. " selected"
     goto MainBox
     ---- End ColorGel	
-
+    
     ---- Magic Stuff
     ::doMagicStuff::
-
+    
     ----check Images
     for k in pairs(Img) do
         if ('"' .. Img[k].name .. '"' == ImgImp[1].Name) then
@@ -333,25 +333,25 @@ local function Main(display_handle)
         Cmd(
             "Store Image 3." .. ImgNr .. " " .. ImgImp[1].Name .. " Filename=" ..
                 ImgImp[1].FileName .. " filepath=" .. ImgImp[1].Filepath .. "")
-        ImgNr = Maf(ImgNr + 1);
-        Cmd(
-            "Store Image 3." .. ImgNr .. " " .. ImgImp[2].Name .. " Filename=" ..
-                ImgImp[2].FileName .. " filepath=" .. ImgImp[2].Filepath .. "")
+                ImgNr = Maf(ImgNr + 1);
+                Cmd(
+                    "Store Image 3." .. ImgNr .. " " .. ImgImp[2].Name .. " Filename=" ..
+                    ImgImp[2].FileName .. " filepath=" .. ImgImp[2].Filepath .. "")
     end
     ---- End check Images  
 
     ---- Create Appearances/Sequences
-
+    
     -- Create new Layout View
     Cmd("Store Layout " .. TLayNr .. " \"" .. NaLay .. "")
     -- end
-
+    
     TCol = ColPath:Children()[SelectedGelNr]
-
+    
     -- check how long Gel
-
+    
     for k in ipairs(TCol) do LongGel = Maf(TCol[k].no) end
-
+    
     Start_Seq_1 = SeqNrStart
     End_Seq_1 = Maf(Start_Seq_1 + LongGel - 1)
     Start_Seq_2 = Maf(End_Seq_1 + 1)
@@ -362,25 +362,25 @@ local function Main(display_handle)
     End_Seq_4 = Maf(Start_Seq_4 + LongGel - 1)
     PColor = Maf(PColor)
     MaxColLgn = tonumber(MaxColLgn)
-
+    
     for g in ipairs(SelectedGrp) do
         local LayX = RefX
         local col_count = 0
         LayY = Maf(LayY - LayH) -- Max Y Position minus hight from element. 0 are at the Bottom!
-
+        
         NrSeq = Maf(AppNr + 1)
         NrNeed = Maf(AppNr + 1)
+        LayNr = Maf(LayNr)
 
         Cmd("Store Layout " .. TLayNr)
 
-        LayNr = Maf(LayNr + 1)
         LayX = Maf(LayX + LayW + 20)
-
+        
         for col in ipairs(TCol) do
             col_count = col_count + 1
             StColCode = "\"" .. TCol[col].r .. "," .. TCol[col].g .. "," ..
                             TCol[col].b .. ",1\""
-            StColName = TCol[col].name
+                            StColName = TCol[col].name
             ColNr = SelectedGelNr .. "." .. TCol[col].no
 
             -- Cretae Appearances only 1 times
@@ -394,8 +394,8 @@ local function Main(display_handle)
                 Cmd("Store App " .. NrSeq .. " " .. StAppNameOff ..
                         " Appearance=" .. StAppOff .. " color=" .. StColCode ..
                         "")
-                NrSeq = Maf(NrSeq + 1);
-            end
+                        NrSeq = Maf(NrSeq + 1);
+                    end
             -- end Appearances
 
             -- Create Sequences
@@ -403,13 +403,13 @@ local function Main(display_handle)
                 "clearall;Store Sequence " .. SeqNrStart .. " \"" .. StColName ..
                     " " .. SelectedGrp[g] .. "\"")
             -- Create Macros
-
+            
             for i = 1 , 15 do
                 Cmd("Store Macro " .. MacroNrStart .. "." .. i .. "")
             end
 
             Cmd("Label Macro " .. MacroNrStart .. " \"" .. StColName .. " " ..
-                    SelectedGrp[g] .. "\"")
+            SelectedGrp[g] .. "\"")
             Cmd("CD Macro " .. MacroNrStart)
             Cmd('Set 1 Property Command "Store Group 999/o" ')
             Cmd('Set 2 Property Command "Store Preset 25.999/o" ')
@@ -421,13 +421,13 @@ local function Main(display_handle)
             Cmd('Set 8 Property Command "Blind On" ')
             Cmd('Set 9 Property Command "Fixture Thru" ')
             Cmd('Set 10 Property Command "Down; Down; Down" ')
-            Cmd('Set 11 Property Command "at Gel %d . %d" ', SelectedGelNr, TCol[col].no)
+            Cmd('Set 11 Property Command "at Gel %d.%d" ', SelectedGelNr, TCol[col].no)
             Cmd('Set 12 Property Command "Store preset 4. %d /o" ', PColor)
             Cmd('Set 13 Property Command "ClearAll;  Preset 25.999; At Preset 25.999" ')
             Cmd('Set 14 Property Command "Blind Off" ')
             Cmd('Set 15 Property Command "Off Sequence 999" ')
             Cmd('CD Root')
-
+            
             -- Add Cmd to Squence
             if (g == 1) then
                 E("G 1")
@@ -439,7 +439,7 @@ local function Main(display_handle)
             elseif (g == 2) then
                 E("G 2")
                 Cmd("set seq " .. SeqNrStart ..
-                        " cue \"CueZero\" Property Command=\"Set Layout " .. TLayNr .. "." ..
+                " cue \"CueZero\" Property Command=\"Set Layout " .. TLayNr .. "." ..
                         LayNr .. " Appearance=" .. NrNeed .. "; Macro " ..
                         MacroNrStart .. "; Off Sequence " .. Start_Seq_2 ..
                         " Thru " .. End_Seq_2 .. " - " .. SeqNrStart .. "\"")
@@ -457,16 +457,16 @@ local function Main(display_handle)
                         LayNr .. " Appearance=" .. NrNeed .. "; Macro " ..
                         MacroNrStart .. "; Off Sequence " .. Start_Seq_4 ..
                         " Thru " .. End_Seq_4 .. " - " .. SeqNrStart .. "\"")
-            end
-
-            E("set seq")
-            Cmd(
-                "set seq " .. SeqNrStart .. " cue \"OffCue\" Property Command=\"Set Layout " ..
-                    TLayNr .. "." .. LayNr .. " Appearance=" .. NrNeed + 1 ..
+                    end
+                    
+                    E("set seq")
+                    Cmd(
+                        "set seq " .. SeqNrStart .. " cue \"OffCue\" Property Command=\"Set Layout " ..
+                        TLayNr .. "." .. LayNr .. " Appearance=" .. NrNeed + 1 ..
                     "\"")
 
             -- end Sequences
-
+            
             -- Add Sequences to Layout
             E('add sequence to layout')
             Cmd("Assign Seq " .. SeqNrStart .. " at Layout " .. TLayNr)
@@ -475,9 +475,9 @@ local function Main(display_handle)
                     " PositionW " .. LayW .. " PositionH " .. LayH ..
                     " VisibilityObjectname=0 VisibilityBar=0")
 
-            NrNeed = Maf(NrNeed + 2); -- Set App Nr to next color
-            
-            if (col_count ~= MaxColLgn) then
+                    NrNeed = Maf(NrNeed + 2); -- Set App Nr to next color
+                    
+                    if (col_count ~= MaxColLgn) then
                 LayX = Maf(LayX + LayW + 20)
             else
                 LayX = RefX
@@ -487,12 +487,12 @@ local function Main(display_handle)
                 col_count = 0
             end
             LayNr = Maf(LayNr + 1)
-
+            
             SeqNrStart = Maf(SeqNrStart + 1)
             MacroNrStart = Maf(MacroNrStart + 1)
         end
         -- end Squences to Layout
-
+        
         AppCrea = 1
         LayY = Maf(LayY - 20) -- Add offset for Layout Element distance
         PColor = Maf(PColor + 1)
@@ -508,7 +508,7 @@ local function Main(display_handle)
     UsedW = root.ShowData.DataPools.Default.Layouts:Children()[TLayNrRef].UsedW / 2
     UsedH = root.ShowData.DataPools.Default.Layouts:Children()[TLayNrRef].UsedH / 2
     Cmd("Set Layout " .. TLayNr .. " DimensionW " .. UsedW .. " DimensionH " ..
-            UsedH)
+    UsedH)
 
     ::cancle::
 
