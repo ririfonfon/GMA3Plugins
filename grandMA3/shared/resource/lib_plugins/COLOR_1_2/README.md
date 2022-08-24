@@ -1,10 +1,10 @@
-COLOR_1_2 v1.1.2.1
+COLOR_1_2 v1.1.2.3
 Please note that this will likly break in future version of the console. and to use at your own risk.
 
 Usage
 * Call Plugin "COLOR_1_2" 
 * Choose Gel color ...
-* You have two Preset Color reference 
+* You have two Preset Color reference in preset 4.906 & preset 4.907
 * It remains only to make sequences, chases with these two preset. and you can change the colors on the fly.
 
 Releases:
@@ -14,3 +14,4 @@ Releases:
 * 1.1.2.0 - For a lot color add Max_Color_By_Line
 * 1.1.2.1 - Add delete seq 999 & clear all marco line
 * 1.1.2.2 - Scroll Bug
+* 1.1.2.3 - gma3 1.8.1.0
