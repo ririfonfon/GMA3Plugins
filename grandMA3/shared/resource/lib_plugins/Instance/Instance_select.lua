@@ -57,7 +57,6 @@ local function Main(display_handle, argument)
         local messageBoxOptions = {
             title = "Instance Select",
             backColor = "1.7",
-            icon = "riri_plugin_O",
             timeout = nil,
             timeoutResultCancel = false,
             timeoutResultID = nil,
