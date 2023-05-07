@@ -57,48 +57,41 @@ local function Main(display_Handle)
     local Img = root.ShowData.MediaPools.Images:Children()
     local ImgNr
 
-    for k in pairs(Img) do ImgNr = Maf(Img[k].NO) end
+    for k in pairs(Img) do
+        ImgNr = Maf(Img[k].NO)
+    end
 
-    if ImgNr == nil then ImgNr = 0 end
+    if ImgNr == nil then
+        ImgNr = 0
+    end
 
-    local ImgImp = {
-        {
-            Name = "\"on\"",
-            FileName = "\"on.png\"",
-            Filepath = "\"../lib_plugins/ColorLayout/images\""
-        }, {
-            Name = "\"off\"",
-            FileName = "\"off.png\"",
-            Filepath = "\"../lib_plugins/ColorLayout/images\""
-        }
-    }
-
-    local IconImp = {
-        {
-            Name = "\"riri_plugin_Y\"",
-            FileName = "\"riri_plugin_Y.tga\"",
-            Filepath = "\"../lib_plugins/ColorLayout/images\""
-        }, {
-            Name = "\"riri_plugin_O\"",
-            FileName = "\"riri_plugin_O.tga\"",
-            Filepath = "\"../lib_plugins/ColorLayout/images\""
-        }
-    }
+    local ImgImp = {{
+        Name = "\"on\"",
+        FileName = "\"on.png\"",
+        Filepath = "\"../lib_plugins/ColorLayout/images\""
+    }, {
+        Name = "\"off\"",
+        FileName = "\"off.png\"",
+        Filepath = "\"../lib_plugins/ColorLayout/images\""
+    }}
 
     -- Store all Used Appearances in a Table to find the last free number
     local App = root.ShowData.Appearances:Children()
     local AppNr
 
-    for k in pairs(App) do AppNr = Maf(App[k].NO) end
+    for k in pairs(App) do
+        AppNr = Maf(App[k].NO)
+    end
+    AppNr = AppNr + 1
 
     -- Store all Use Layout in a Table to find the last free number
     local TLay = root.ShowData.DataPools.Default.Layouts:Children()
-    E("Layout = %s",tostring(TLay))
+    E("Layout = %s", tostring(TLay))
     local TLayNr
     local TLayNrRef
 
     for k in pairs(TLay) do
-        E("Layout n° = %s",tostring(TLay[k].NO))
+        E("Layout n° = %s", tostring(TLay[k].NO))
         TLayNr = Maf(tonumber(TLay[k].NO))
         TLayNrRef = k
     end
@@ -107,15 +100,21 @@ local function Main(display_Handle)
     local SeqNr = root.ShowData.DataPools.Default.Sequences:Children()
     local SeqNrStart
 
-    for k in pairs(SeqNr) do SeqNrStart = Maf(SeqNr[k].NO) end
+    for k in pairs(SeqNr) do
+        SeqNrStart = Maf(SeqNr[k].NO)
+    end
 
-    if SeqNrStart == nil then SeqNrStart = 0 end
+    if SeqNrStart == nil then
+        SeqNrStart = 0
+    end
 
     -- Store all Use Texture in a Table to find the last free number
     local TIcon = root.GraphicsRoot.TextureCollect.Textures:Children()
     local TIconNr
 
-    for k in pairs(TIcon) do TIconNr = Maf(TIcon[k].NO) end
+    for k in pairs(TIcon) do
+        TIconNr = Maf(TIcon[k].NO)
+    end
 
     -- variables
     local RefX = Maf(0 - TLay[TLayNrRef].DimensionW / 2)
@@ -133,7 +132,7 @@ local function Main(display_Handle)
     local StAppNameOff
     local StAppOn = "\"Showdata.MediaPools.Images.on\""
     local StAppOff = "\"Showdata.MediaPools.Images.off\""
-    local ColNr
+    local ColNr = 0
     local SelGrp
     local TGrpChoise
     local ChoGel
@@ -141,7 +140,7 @@ local function Main(display_Handle)
     local SelectedGrp = {}
     local SelectedGel
     local Message =
-        "Add Fixture Group and ColorGel, set beginning Sequence Number\n\n Selected Group(s) are: \n"
+        "Add Fixture Group and ColorGel\n * set beginning Appearance & Sequence Number\n\n Selected Group(s) are: \n"
     local ColGelBtn = "Add ColorGel"
     local SeqNrText = "Seq_Start_Nr"
     local OkBtn = ""
@@ -167,33 +166,47 @@ local function Main(display_Handle)
         display = display_Handle,
         backColor = "1.7",
         message = Message,
-        commands = {
-            {name = 'Add Group', value = 11}, {name = ColGelBtn, value = 12},
-            {name = OkBtn, value = ValOkBtn}, {name = 'Cancel', value = 0}
-        },
-        inputs = {
-            {
-                name = SeqNrText,
-                value = SeqNrStart,
-                maxTextLength = 4,
-                vkPlugin = "TextInputNumOnly"
-            }, {
-                name = 'Layout_Nr',
-                value = TLayNr,
-                maxTextLength = 4,
-                vkPlugin = "TextInputNumOnly"
-            }, {
-                name = 'Layout_Name',
-                value = NaLay,
-                maxTextLength = 16,
-                vkPlugin = "TextInput"
-            }, {
-                name = 'Max_Color_By_Line',
-                value = MaxColLgn,
-                maxTextLength = 2,
-                vkPlugin = "TextInputNumOnly"
-            }
-        }
+        commands = {{
+            name = 'Add Group',
+            value = 11
+        }, {
+            name = ColGelBtn,
+            value = 12
+        }, {
+            name = OkBtn,
+            value = ValOkBtn
+        }, {
+            name = 'Cancel',
+            value = 0
+        }},
+        inputs = {{
+            name = 'Layout_Nr',
+            value = TLayNr,
+            maxTextLength = 4,
+            vkPlugin = "TextInputNumOnly"
+        }, {
+            name = 'Layout_Name',
+            value = NaLay,
+            maxTextLength = 16,
+            vkPlugin = "TextInput"
+        }, {
+            name = 'Sequence_Start_Nr',
+            blackFilter = "*",
+            value = SeqNrStart,
+            maxTextLength = 4,
+            vkPlugin = "TextInputNumOnly"
+        }, {
+            name = 'Appearance_Start_Nr',
+            blackFilter = "*",
+            value = AppNr,
+            maxTextLength = 4,
+            vkPlugin = "TextInputNumOnly"
+        }, {
+            name = 'Max_Color_By_Line',
+            value = MaxColLgn,
+            maxTextLength = 2,
+            vkPlugin = "TextInputNumOnly"
+        }}
 
     })
 
@@ -201,24 +214,33 @@ local function Main(display_Handle)
 
         if (count == 0 or ValOkBtn == 100) then
             ValOkBtn = Maf(ValOkBtn / 10)
-            if (ValOkBtn < 10) then ValOkBtn = 1 end
+            if (ValOkBtn < 10) then
+                ValOkBtn = 1
+            end
         end
 
-        if (ValOkBtn == 1) then OkBtn = "OK Let's GO" end
+        if (ValOkBtn == 1) then
+            OkBtn = "OK Let's GO :)"
 
-        for k in pairs(FixtureGroups) do count = count + 1 end
+        end
+
+        for k in pairs(FixtureGroups) do
+            count = count + 1
+        end
 
         if (count == 0) then
             E("all Groups are added")
             Co("all Groups are added")
-            SeqNrStart = box.inputs.Seq_Start_Nr
+            SeqNrStart = box.inputs.Sequence_Start_Nr
+            AppNr = box.inputs.Appearance_Start_Nr
             TLayNr = box.inputs.Layout_Nr
             NaLay = box.inputs.Layout_Name
             MaxColLgn = box.inputs.Max_Color_By_Line
             goto MainBox
         else
             E("add Group")
-            SeqNrStart = box.inputs.Seq_Start_Nr
+            SeqNrStart = box.inputs.Sequence_Start_Nr
+            AppNr = box.inputs.Appearance_Start_Nr
             TLayNr = box.inputs.Layout_Nr
             NaLay = box.inputs.Layout_Name
             MaxColLgn = box.inputs.Max_Color_By_Line
@@ -229,11 +251,12 @@ local function Main(display_Handle)
         ValOkBtn = Maf(ValOkBtn / 10)
         if (ValOkBtn < 10) then
             ValOkBtn = 1
-            OkBtn = "OK Let's GO"
+            OkBtn = "OK Let's GO :)"
         end
 
         E("add ColorGel")
-        SeqNrStart = box.inputs.Seq_Start_Nr
+        SeqNrStart = box.inputs.Sequence_Start_Nr
+        AppNr = box.inputs.Appearance_Start_Nr
         TLayNr = box.inputs.Layout_Nr
         NaLay = box.inputs.Layout_Name
         MaxColLgn = box.inputs.Max_Color_By_Line
@@ -242,7 +265,8 @@ local function Main(display_Handle)
     elseif (box.result == 1) then
         if SelectedGel == nil then
             Co("no ColorGel are selected!")
-            SeqNrStart = box.inputs.Seq_Start_Nr
+            SeqNrStart = box.inputs.Sequence_Start_Nr
+            AppNr = box.inputs.Appearance_Start_Nr
             TLayNr = box.inputs.Layout_Nr
             NaLay = box.inputs.Layout_Name
             MaxColLgn = box.inputs.Max_Color_By_Line
@@ -250,13 +274,15 @@ local function Main(display_Handle)
 
         elseif next(SelectedGrp) == nil then
             Co("no Group are added!")
-            SeqNrStart = box.inputs.Seq_Start_Nr
+            SeqNrStart = box.inputs.Sequence_Start_Nr
+            AppNr = box.inputs.Appearance_Start_Nr
             TLayNr = box.inputs.Layout_Nr
             NaLay = box.inputs.Layout_Name
             MaxColLgn = box.inputs.Max_Color_By_Line
             goto addGroup
         else
-            SeqNrStart = box.inputs.Seq_Start_Nr
+            SeqNrStart = box.inputs.Sequence_Start_Nr
+            AppNr = box.inputs.Appearance_Start_Nr
             TLayNr = box.inputs.Layout_Nr
             NaLay = box.inputs.Layout_Name
             MaxColLgn = box.inputs.Max_Color_By_Line
@@ -265,8 +291,8 @@ local function Main(display_Handle)
         end
 
     elseif (box.result == 0) then
-        E("User Cancled")
-        goto cancle
+        E("User Canceled")
+        goto canceled
     end
 
     ---- End Main Box  
@@ -283,11 +309,13 @@ local function Main(display_Handle)
 
     -- Setup the Messagebox
     PopTableGrp = {
-    title = "Fixture Group",
-    caller = display_Handle,
-    items = TGrpChoise,
-    selectedValue = "",
-    add_args = {FilterSupport="Yes"},
+        title = "Fixture Group",
+        caller = display_Handle,
+        items = TGrpChoise,
+        selectedValue = "",
+        add_args = {
+            FilterSupport = "Yes"
+        }
     }
     SelGrp = PopupInput(PopTableGrp)
 
@@ -314,8 +342,10 @@ local function Main(display_Handle)
         caller = display_Handle,
         items = ChoGel,
         selectedValue = "",
-        add_args = {FilterSupport="Yes"},
+        add_args = {
+            FilterSupport = "Yes"
         }
+    }
     SelColGel = PopupInput(PopTableGel)
     -- SelColGel = PopupInput("Select ColorGel", display_Handle, ChoGel, "",
     --                        DisMiW, DisMiH)
@@ -341,13 +371,11 @@ local function Main(display_Handle)
     else
         ---- Import Images
         ImgNr = Maf(ImgNr + 1);
-        Cmd(
-            "Store Image 3." .. ImgNr .. " " .. ImgImp[1].Name .. " Filename=" ..
-                ImgImp[1].FileName .. " filepath=" .. ImgImp[1].Filepath .. "")
+        Cmd("Store Image 3." .. ImgNr .. " " .. ImgImp[1].Name .. " Filename=" .. ImgImp[1].FileName .. " filepath=" ..
+                ImgImp[1].Filepath .. "")
         ImgNr = Maf(ImgNr + 1);
-        Cmd(
-            "Store Image 3." .. ImgNr .. " " .. ImgImp[2].Name .. " Filename=" ..
-                ImgImp[2].FileName .. " filepath=" .. ImgImp[2].Filepath .. "")
+        Cmd("Store Image 3." .. ImgNr .. " " .. ImgImp[2].Name .. " Filename=" .. ImgImp[2].FileName .. " filepath=" ..
+                ImgImp[2].Filepath .. "")
     end
     ---- End check Images  
 
@@ -367,27 +395,25 @@ local function Main(display_Handle)
         LayY = Maf(LayY - LayH) -- Max Y Position minus hight from element. 0 are at the Bottom!
 
         if (AppCrea == 0) then
-            AppNr = Maf(AppNr + 1);
-            Cmd("Store App " .. AppNr .. " \"Label\" Appearance=" .. StAppOn ..
-                    " color=\"0,0,0,1\"")
+            AppNr = Maf(AppNr);
+            Cmd("Store App " .. AppNr .. " \"Label\" Appearance=" .. StAppOn .. " color=\"0,0,0,1\"")
         end
 
         NrSeq = Maf(AppNr + 1)
         NrNeed = Maf(AppNr + 1)
 
-        Cmd("Assign Group "..SelectedGrp[g].." at Layout "..TLayNr)
-        Cmd("Set Layout " .. TLayNr .. "." .. LayNr .. " Action=0 Appearance="..
-        AppNr.." PosX "..LayX.." PosY "..LayY.." PositionW "..
-        LayW.." PositionH "..LayH..
-        " VisibilityObjectname=1 VisibilityBar=0 IndicatorBar=Background")
+        Cmd("Assign Group " .. SelectedGrp[g] .. " at Layout " .. TLayNr)
+        Cmd(
+            "Set Layout " .. TLayNr .. "." .. LayNr .. " Action=0 Appearance=" .. AppNr .. " PosX " .. LayX .. " PosY " ..
+                LayY .. " PositionW " .. LayW .. " PositionH " .. LayH ..
+                " VisibilityObjectname=1 VisibilityBar=0 VisibilityIndicatorBar=0")
 
         LayNr = Maf(LayNr + 1)
         LayX = Maf(LayX + LayW + 20)
 
         for col in ipairs(TCol) do
             col_count = col_count + 1
-            StColCode = "\"" .. TCol[col].r .. "," .. TCol[col].g .. "," ..
-                            TCol[col].b .. ",1\""
+            StColCode = "\"" .. TCol[col].r .. "," .. TCol[col].g .. "," .. TCol[col].b .. ",1\""
             StColName = TCol[col].name
             ColNr = SelectedGelNr .. "." .. TCol[col].no
 
@@ -395,12 +421,12 @@ local function Main(display_Handle)
             if (AppCrea == 0) then
                 StAppNameOn = "\"" .. StColName .. " on\""
                 StAppNameOff = "\"" .. StColName .. " off\""
-                Cmd("Store App " .. NrSeq .. " " .. StAppNameOn ..
-                        " Appearance=" .. StAppOn .. " color=" .. StColCode ..
+                Cmd(
+                    "Store App " .. NrSeq .. " " .. StAppNameOn .. " Appearance=" .. StAppOn .. " color=" .. StColCode ..
                         "")
                 NrSeq = Maf(NrSeq + 1);
-                Cmd("Store App " .. NrSeq .. " " .. StAppNameOff ..
-                        " Appearance=" .. StAppOff .. " color=" .. StColCode ..
+                Cmd(
+                    "Store App " .. NrSeq .. " " .. StAppNameOff .. " Appearance=" .. StAppOff .. " color=" .. StColCode ..
                         "")
                 NrSeq = Maf(NrSeq + 1);
             end
@@ -408,25 +434,29 @@ local function Main(display_Handle)
 
             -- Create Sequences
             Cmd("clearall")
-            Cmd("Group " .. SelectedGrp[g] .. " at Gel " .. ColNr .."")
-            Cmd("Store Sequence " .. SeqNrStart .. " \"" .. StColName ..
-                    " " .. SelectedGrp[g]:gsub('\'', '') .. "\"")
+            Cmd("Group " .. SelectedGrp[g] .. " at Gel " .. ColNr .. "")
+            Cmd("Store Sequence " .. SeqNrStart .. " \"" .. StColName .. " " .. SelectedGrp[g]:gsub('\'', '') .. "\"")
             -- Add Cmd to Squence
             Cmd(
-                "set seq " .. SeqNrStart .. " cue \"CueZero\" Property Command=\"Set Layout " ..
-                    TLayNr .. "." .. LayNr .. " Appearance=" .. NrNeed .. "\"")
+                "set seq " .. SeqNrStart .. " cue \"CueZero\" Property Command=\"Set Layout " .. TLayNr .. "." .. LayNr ..
+                    " Appearance=" .. NrNeed .. "\"")
             Cmd(
-                "set seq " .. SeqNrStart .. " cue \"OffCue\" Property Command=\"Set Layout " ..
-                    TLayNr .. "." .. LayNr .. " Appearance=" .. NrNeed + 1 ..
-                    "\"")
+                "set seq " .. SeqNrStart .. " cue \"OffCue\" Property Command=\"Set Layout " .. TLayNr .. "." .. LayNr ..
+                    " Appearance=" .. NrNeed + 1 .. "\"")
+            Cmd("set seq " .. SeqNrStart .. " AutoStart=1 AutoStop=1 MasterGoMode=None AutoFix=0 AutoStomp=0") 
+            Cmd("set seq " .. SeqNrStart .. " Tracking=0 WrapAround=1 ReleaseFirstCue=0 RestartMode=1 CommandEnable=1 XFadeReload=0")
+            Cmd("set seq " .. SeqNrStart .. " OutputFilter='' Priority=0 SoftLTP=1 PlaybackMaster='' XfadeMode=0")
+            Cmd("set seq " .. SeqNrStart .. " RateMaster='' RateScale=0 SpeedMaster='' SpeedScale=0 SpeedfromRate=0")
+            Cmd("set seq " .. SeqNrStart .. " InputFilter='' SwapProtect=0 KillProtect=0 IncludeLinkLastGo=1 UseExecutorTime=1 OffwhenOverridden=1 Lock=0")
+            Cmd("set seq " .. SeqNrStart .. " SequMIB=0 SequMIBMode=1")
             -- end Sequences
 
             -- Add Squences to Layout
             Cmd("Assign Seq " .. SeqNrStart .. " at Layout " .. TLayNr)
-            Cmd("Set Layout " .. TLayNr .. "." .. LayNr .. " appearance=" ..
-                    NrNeed + 1 .. " PosX " .. LayX .. " PosY " .. LayY ..
-                    " PositionW " .. LayW .. " PositionH " .. LayH ..
-                    " VisibilityObjectname=0 VisibilityBar=0")
+            Cmd(
+                "Set Layout " .. TLayNr .. "." .. LayNr .. " appearance=" .. NrNeed + 1 .. " PosX " .. LayX .. " PosY " ..
+                    LayY .. " PositionW " .. LayW .. " PositionH " .. LayH ..
+                    " VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0")
 
             NrNeed = Maf(NrNeed + 2); -- Set App Nr to next color
 
@@ -452,19 +482,16 @@ local function Main(display_Handle)
     ---- end Appearances/Sequences 
 
     for k in pairs(root.ShowData.DataPools.Default.Layouts:Children()) do
-        if (Maf(TLayNr) ==
-            Maf(tonumber(root.ShowData.DataPools.Default.Layouts:Children()[k]
-                             .NO))) then TLayNrRef = k end
+        if (Maf(TLayNr) == Maf(tonumber(root.ShowData.DataPools.Default.Layouts:Children()[k].NO))) then
+            TLayNrRef = k
+        end
     end
 
-    UsedW =
-        root.ShowData.DataPools.Default.Layouts:Children()[TLayNrRef].UsedW / 2
-    UsedH =
-        root.ShowData.DataPools.Default.Layouts:Children()[TLayNrRef].UsedH / 2
-    Cmd("Set Layout " .. TLayNr .. " DimensionW " .. UsedW .. " DimensionH " ..
-            UsedH)
+    UsedW = root.ShowData.DataPools.Default.Layouts:Children()[TLayNrRef].UsedW / 2
+    UsedH = root.ShowData.DataPools.Default.Layouts:Children()[TLayNrRef].UsedH / 2
+    Cmd("Set Layout " .. TLayNr .. " DimensionW " .. UsedW .. " DimensionH " .. UsedH)
 
-    ::cancle::
+    ::canceled::
 
     Cmd("ClearAll")
 end
