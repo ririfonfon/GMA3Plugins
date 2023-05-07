@@ -68,11 +68,11 @@ local function Main(display_Handle)
     local ImgImp = {{
         Name = "\"on\"",
         FileName = "\"on.png\"",
-        Filepath = "\"../lib_plugins/ColorLayout/images\""
+        Filepath = "\"../images\""
     }, {
         Name = "\"off\"",
         FileName = "\"off.png\"",
-        Filepath = "\"../lib_plugins/ColorLayout/images\""
+        Filepath = "\"../images\""
     }}
 
     -- Store all Used Appearances in a Table to find the last free number
@@ -347,8 +347,6 @@ local function Main(display_Handle)
         }
     }
     SelColGel = PopupInput(PopTableGel)
-    -- SelColGel = PopupInput("Select ColorGel", display_Handle, ChoGel, "",
-    --                        DisMiW, DisMiH)
     SelectedGel = ColGels[SelColGel + 1].name;
     SelectedGelNr = SelColGel + 1
     E("ColorGel " .. ColGels[SelColGel + 1].name .. " selected")
@@ -369,6 +367,40 @@ local function Main(display_Handle)
     if (check > 0) then
         E("file exist")
     else
+        E("file NOT exist")
+        ---- Select a disk
+        local drives = Root().Temp.DriveCollect
+        local selectedDrive -- users selected drive
+        local options = {} -- popup options
+        local PopTableDisk = {} -- 
+        ---- grab a list of connected drives
+        for i = 1, drives.count, 1 do
+            table.insert(options, string.format("%s (%s)", drives[i].name, drives[i].DriveType))
+        end
+        ---- present a popup for the user choose (Internal may not work)
+        PopTableDisk = {
+            title = "Select a disk to import on & off image",
+            caller = display_Handle,
+            items = options,
+            selectedValue = "",
+            add_args = {
+                FilterSupport = "Yes"
+            }
+        }
+        selectedDrive = PopupInput(PopTableDisk)
+        selectedDrive = selectedDrive + 1
+
+        -- if the user cancled then exit the plugin
+        if selectedDrive == nil then
+            return
+        end
+
+        -- grab the export path for the selected drive and append the file name
+
+        E("selectedDrive = %s", tostring(selectedDrive))
+
+        Cmd("select Drive " .. selectedDrive .. "")
+
         ---- Import Images
         ImgNr = Maf(ImgNr + 1);
         Cmd("Store Image 3." .. ImgNr .. " " .. ImgImp[1].Name .. " Filename=" .. ImgImp[1].FileName .. " filepath=" ..
@@ -443,11 +475,13 @@ local function Main(display_Handle)
             Cmd(
                 "set seq " .. SeqNrStart .. " cue \"OffCue\" Property Command=\"Set Layout " .. TLayNr .. "." .. LayNr ..
                     " Appearance=" .. NrNeed + 1 .. "\"")
-            Cmd("set seq " .. SeqNrStart .. " AutoStart=1 AutoStop=1 MasterGoMode=None AutoFix=0 AutoStomp=0") 
-            Cmd("set seq " .. SeqNrStart .. " Tracking=0 WrapAround=1 ReleaseFirstCue=0 RestartMode=1 CommandEnable=1 XFadeReload=0")
+            Cmd("set seq " .. SeqNrStart .. " AutoStart=1 AutoStop=1 MasterGoMode=None AutoFix=0 AutoStomp=0")
+            Cmd("set seq " .. SeqNrStart ..
+                    " Tracking=0 WrapAround=1 ReleaseFirstCue=0 RestartMode=1 CommandEnable=1 XFadeReload=0")
             Cmd("set seq " .. SeqNrStart .. " OutputFilter='' Priority=0 SoftLTP=1 PlaybackMaster='' XfadeMode=0")
             Cmd("set seq " .. SeqNrStart .. " RateMaster='' RateScale=0 SpeedMaster='' SpeedScale=0 SpeedfromRate=0")
-            Cmd("set seq " .. SeqNrStart .. " InputFilter='' SwapProtect=0 KillProtect=0 IncludeLinkLastGo=1 UseExecutorTime=1 OffwhenOverridden=1 Lock=0")
+            Cmd("set seq " .. SeqNrStart ..
+                    " InputFilter='' SwapProtect=0 KillProtect=0 IncludeLinkLastGo=1 UseExecutorTime=1 OffwhenOverridden=1 Lock=0")
             Cmd("set seq " .. SeqNrStart .. " SequMIB=0 SequMIBMode=1")
             -- end Sequences
 
