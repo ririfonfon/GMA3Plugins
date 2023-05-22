@@ -151,6 +151,8 @@ local function Main(display_Handle)
     local PopTableGrp = {}
     local PopTableGel = {}
 
+    local CurrentSeqNr
+
     local UsedW
     local UsedH
 
@@ -357,6 +359,9 @@ local function Main(display_Handle)
     ---- Magic Stuff
     ::doMagicStuff::
 
+    ----fix SeqNrStart & use CurrentSeqNr
+    CurrentSeqNr = SeqNrStart
+
     ----check Images
     for k in pairs(Img) do
         if ('"' .. Img[k].name .. '"' == ImgImp[1].Name) then
@@ -467,26 +472,26 @@ local function Main(display_Handle)
             -- Create Sequences
             Cmd("clearall")
             Cmd("Group " .. SelectedGrp[g] .. " at Gel " .. ColNr .. "")
-            Cmd("Store Sequence " .. SeqNrStart .. " \"" .. StColName .. " " .. SelectedGrp[g]:gsub('\'', '') .. "\"")
+            Cmd("Store Sequence " .. CurrentSeqNr .. " \"" .. StColName .. " " .. SelectedGrp[g]:gsub('\'', '') .. "\"")
             -- Add Cmd to Squence
             Cmd(
-                "set seq " .. SeqNrStart .. " cue \"CueZero\" Property Command=\"Set Layout " .. TLayNr .. "." .. LayNr ..
+                "set seq " .. CurrentSeqNr .. " cue \"CueZero\" Property Command=\"Set Layout " .. TLayNr .. "." .. LayNr ..
                     " Appearance=" .. NrNeed .. "\"")
             Cmd(
-                "set seq " .. SeqNrStart .. " cue \"OffCue\" Property Command=\"Set Layout " .. TLayNr .. "." .. LayNr ..
+                "set seq " .. CurrentSeqNr .. " cue \"OffCue\" Property Command=\"Set Layout " .. TLayNr .. "." .. LayNr ..
                     " Appearance=" .. NrNeed + 1 .. "\"")
-            Cmd("set seq " .. SeqNrStart .. " AutoStart=1 AutoStop=1 MasterGoMode=None AutoFix=0 AutoStomp=0")
-            Cmd("set seq " .. SeqNrStart ..
+            Cmd("set seq " .. CurrentSeqNr .. " AutoStart=1 AutoStop=1 MasterGoMode=None AutoFix=0 AutoStomp=0")
+            Cmd("set seq " .. CurrentSeqNr ..
                     " Tracking=0 WrapAround=1 ReleaseFirstCue=0 RestartMode=1 CommandEnable=1 XFadeReload=0")
-            Cmd("set seq " .. SeqNrStart .. " OutputFilter='' Priority=0 SoftLTP=1 PlaybackMaster='' XfadeMode=0")
-            Cmd("set seq " .. SeqNrStart .. " RateMaster='' RateScale=0 SpeedMaster='' SpeedScale=0 SpeedfromRate=0")
-            Cmd("set seq " .. SeqNrStart ..
+            Cmd("set seq " .. CurrentSeqNr .. " OutputFilter='' Priority=0 SoftLTP=1 PlaybackMaster='' XfadeMode=0")
+            Cmd("set seq " .. CurrentSeqNr .. " RateMaster='' RateScale=0 SpeedMaster='' SpeedScale=0 SpeedfromRate=0")
+            Cmd("set seq " .. CurrentSeqNr ..
                     " InputFilter='' SwapProtect=0 KillProtect=0 IncludeLinkLastGo=1 UseExecutorTime=1 OffwhenOverridden=1 Lock=0")
-            Cmd("set seq " .. SeqNrStart .. " SequMIB=0 SequMIBMode=1")
+            Cmd("set seq " .. CurrentSeqNr .. " SequMIB=0 SequMIBMode=1")
             -- end Sequences
 
             -- Add Squences to Layout
-            Cmd("Assign Seq " .. SeqNrStart .. " at Layout " .. TLayNr)
+            Cmd("Assign Seq " .. CurrentSeqNr .. " at Layout " .. TLayNr)
             Cmd(
                 "Set Layout " .. TLayNr .. "." .. LayNr .. " appearance=" .. NrNeed + 1 .. " PosX " .. LayX .. " PosY " ..
                     LayY .. " PositionW " .. LayW .. " PositionH " .. LayH ..
@@ -506,7 +511,7 @@ local function Main(display_Handle)
 
             LayNr = Maf(LayNr + 1)
 
-            SeqNrStart = Maf(SeqNrStart + 1)
+            CurrentSeqNr = Maf(CurrentSeqNr + 1)
         end
         -- end Squences to Layout
 
