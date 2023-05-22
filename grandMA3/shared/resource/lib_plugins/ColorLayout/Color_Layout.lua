@@ -122,7 +122,7 @@ local function Main(display_Handle)
     local LayW = 100
     local LayH = 100
     local LayNr = 1
-    local NrSeq
+    local NrAppear
     local NrNeed
     local AppCrea = 0
     local TCol
@@ -431,7 +431,7 @@ local function Main(display_Handle)
             Cmd("Store App " .. AppNr .. " \"Label\" Appearance=" .. StAppOn .. " color=\"0,0,0,1\"")
         end
 
-        NrSeq = Maf(AppNr + 1)
+        NrAppear = Maf(AppNr + 1)
         NrNeed = Maf(AppNr + 1)
 
         Cmd("Assign Group " .. SelectedGrp[g] .. " at Layout " .. TLayNr)
@@ -454,13 +454,13 @@ local function Main(display_Handle)
                 StAppNameOn = "\"" .. StColName .. " on\""
                 StAppNameOff = "\"" .. StColName .. " off\""
                 Cmd(
-                    "Store App " .. NrSeq .. " " .. StAppNameOn .. " Appearance=" .. StAppOn .. " color=" .. StColCode ..
+                    "Store App " .. NrAppear .. " " .. StAppNameOn .. " Appearance=" .. StAppOn .. " color=" .. StColCode ..
                         "")
-                NrSeq = Maf(NrSeq + 1);
+                NrAppear = Maf(NrAppear + 1);
                 Cmd(
-                    "Store App " .. NrSeq .. " " .. StAppNameOff .. " Appearance=" .. StAppOff .. " color=" .. StColCode ..
+                    "Store App " .. NrAppear .. " " .. StAppNameOff .. " Appearance=" .. StAppOff .. " color=" .. StColCode ..
                         "")
-                NrSeq = Maf(NrSeq + 1);
+                NrAppear = Maf(NrAppear + 1);
             end
             -- end Appearances
 
