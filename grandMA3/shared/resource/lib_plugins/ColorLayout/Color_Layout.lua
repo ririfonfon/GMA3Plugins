@@ -18,6 +18,7 @@ Releases:
 * 1.1.3.0 - gma 3 1.7.2.2 
 * 1.1.3.1 - gma 3 1.8.1.0 
 * 1.1.3.2 - gma 3 1.9.2.2 
+* 1.1.3.3 - Add ALL color 
 
 Created by Richard Fontaine "RIRI", April 2020.
 --]] --
@@ -127,6 +128,7 @@ local function Main(display_Handle)
     local AppCrea = 0
     local TCol
     local StColName
+    local StringColName
     local StColCode
     local StAppNameOn
     local StAppNameOff
@@ -452,12 +454,13 @@ local function Main(display_Handle)
             col_count = col_count + 1
             StColCode = "\"" .. TCol[col].r .. "," .. TCol[col].g .. "," .. TCol[col].b .. ",1\""
             StColName = TCol[col].name
+            StringColName = string.gsub( StColName," ","" )
             ColNr = SelectedGelNr .. "." .. TCol[col].no
 
             -- Cretae Appearances only 1 times
             if (AppCrea == 0) then
-                StAppNameOn = "\"" .. StColName .. " on\""
-                StAppNameOff = "\"" .. StColName .. " off\""
+                StAppNameOn = "\"" .. StringColName .. " on\""
+                StAppNameOff = "\"" .. StringColName .. " off\""
                 Cmd(
                     "Store App " .. NrAppear .. " " .. StAppNameOn .. " Appearance=" .. StAppOn .. " color=" .. StColCode ..
                         "")
@@ -472,7 +475,7 @@ local function Main(display_Handle)
             -- Create Sequences
             Cmd("clearall")
             Cmd("Group " .. SelectedGrp[g] .. " at Gel " .. ColNr .. "")
-            Cmd("Store Sequence " .. CurrentSeqNr .. " \"" .. StColName .. " " .. SelectedGrp[g]:gsub('\'', '') .. "\"")
+            Cmd("Store Sequence " .. CurrentSeqNr .. " \"" .. StringColName .. " " .. SelectedGrp[g]:gsub('\'', '') .. "\"")
             -- Add Cmd to Squence
             Cmd(
                 "set seq " .. CurrentSeqNr .. " cue \"CueZero\" Property Command=\"Set Layout " .. TLayNr .. "." .. LayNr ..
@@ -519,6 +522,91 @@ local function Main(display_Handle)
         LayY = Maf(LayY - 20) -- Add offset for Layout Element distance
     end
     ---- end Appearances/Sequences 
+
+
+
+    
+    
+    
+    ---- add timming / Sequences
+    SeqNrEnd = CurrentSeqNr
+
+    ---- end timming / Sequences
+
+    ---- add All Color
+    LayY = TLay[TLayNrRef].DimensionH / 2
+    LayY = Maf(LayY + 20) -- Add offset for Layout Element distance
+    -- LayY = Maf(LayY + LayH)
+    LayX = RefX
+    LayX = Maf(LayX + LayW + 20)
+    NrNeed = Maf(AppNr + 1)
+    col_count = 0
+
+    for col in ipairs(TCol) do
+        col_count = col_count + 1
+        StColCode = "\"" .. TCol[col].r .. "," .. TCol[col].g .. "," .. TCol[col].b .. ",1\""
+        StColName = TCol[col].name
+        StringColName = string.gsub( StColName," ","" )
+        ColNr = SelectedGelNr .. "." .. TCol[col].no
+        
+
+       
+
+
+        -- Create Sequences
+        Cmd("clearall")
+        Cmd("Store Sequence " .. CurrentSeqNr .. " \"" .. "ALL" .. StringColName .. ""  .. "ALL\"")
+        -- Add Cmd to Squence
+        Cmd(
+            "set seq " .. CurrentSeqNr .. " cue \"CueZero\" Property Command=\"Set Layout " .. TLayNr .. "." .. LayNr ..
+                " Appearance=" .. NrNeed + 1 .. "\"")
+        Cmd(
+            'set seq ' .. CurrentSeqNr .. ' cue \''.. 'ALL' .. StringColName .. '' .. 'ALL\' Property Command=\' Go+ Sequence \'' .. StringColName ..  '*')
+        Cmd(
+            "set seq " .. CurrentSeqNr .. " cue \"OffCue\" Property Command=\"Set Layout " .. TLayNr .. "." .. LayNr ..
+                " Appearance=" .. NrNeed + 1 .. "\"")
+        Cmd("set seq " .. CurrentSeqNr .. " AutoStart=1 AutoStop=1 MasterGoMode=None AutoFix=0 AutoStomp=0")
+        Cmd("set seq " .. CurrentSeqNr .. " Tracking=0 WrapAround=1 ReleaseFirstCue=0 RestartMode=1 CommandEnable=1 XFadeReload=0")
+        Cmd("set seq " .. CurrentSeqNr .. " OutputFilter='' Priority=0 SoftLTP=1 PlaybackMaster='' XfadeMode=0")
+        Cmd("set seq " .. CurrentSeqNr .. " RateMaster='' RateScale=0 SpeedMaster='' SpeedScale=0 SpeedfromRate=0")
+        Cmd("set seq " .. CurrentSeqNr .. " InputFilter='' SwapProtect=0 KillProtect=0 IncludeLinkLastGo=1 UseExecutorTime=1 OffwhenOverridden=1 Lock=0")
+        Cmd("set seq " .. CurrentSeqNr .. " SequMIB=0 SequMIBMode=1")
+        -- end Sequences
+
+        -- Add Squences to Layout
+        Cmd("Assign Seq " .. CurrentSeqNr .. " at Layout " .. TLayNr)
+        Cmd(
+            "Set Layout " .. TLayNr .. "." .. LayNr .. " appearance=" .. NrNeed + 1 .. " PosX " .. LayX .. " PosY " ..
+                LayY .. " PositionW " .. LayW .. " PositionH " .. LayH ..
+                " VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0")
+
+        NrNeed = Maf(NrNeed + 2); -- Set App Nr to next color
+
+        if (col_count ~= MaxColLgn) then
+            LayX = Maf(LayX + LayW + 20)
+        else
+            LayX = RefX
+            LayX = Maf(LayX + LayW + 20)
+            LayY = Maf(LayY - 20) -- Add offset for Layout Element distance
+            LayY = Maf(LayY - LayH)
+            col_count = 0
+        end
+
+        LayNr = Maf(LayNr + 1)
+
+        CurrentSeqNr = Maf(CurrentSeqNr + 1)
+    end
+
+    ---- end All Color
+
+
+
+
+
+
+
+
+
 
     for k in pairs(root.ShowData.DataPools.Default.Layouts:Children()) do
         if (Maf(TLayNr) == Maf(tonumber(root.ShowData.DataPools.Default.Layouts:Children()[k].NO))) then
