@@ -1,4 +1,4 @@
---[[
+--[[--
 Color_Layout v1.1.3.1
 Please note that this will likly break in future version of the console. and to use at your own risk.
 
@@ -74,6 +74,14 @@ local function Main(display_Handle)
         Name = "\"off\"",
         FileName = "\"off.png\"",
         Filepath = "\"../images\""
+    }, {
+        Name = "\"time_on\"",
+        FileName = "\"time_on.png\"",
+        Filepath = "\"../images\""
+    }, {
+        Name = "\"time_off\"",
+        FileName = "\"time_off.png\"",
+        Filepath = "\"../images\""
     }}
 
     -- Store all Used Appearances in a Table to find the last free number
@@ -100,6 +108,7 @@ local function Main(display_Handle)
     -- Store all Used Sequence in a Table to find the last free number
     local SeqNr = root.ShowData.DataPools.Default.Sequences:Children()
     local SeqNrStart
+    local SeqNrEnd
 
     for k in pairs(SeqNr) do
         SeqNrStart = Maf(SeqNr[k].NO)
@@ -148,7 +157,7 @@ local function Main(display_Handle)
     local OkBtn = ""
     local ValOkBtn = 100
     local count = 0
-    local check = 0
+    local check = {0,0,0,0}
     local NaLay = "Colors"
     local PopTableGrp = {}
     local PopTableGel = {}
@@ -163,7 +172,7 @@ local function Main(display_Handle)
     TLayNr = Maf(TLayNr + 1)
     SeqNrStart = SeqNrStart + 1
 
-    ---- Main Box
+    -- Main Box
     ::MainBox::
     local box = MessageBox({
         title = 'Color_Layout_By_RIRI',
@@ -299,9 +308,9 @@ local function Main(display_Handle)
         goto canceled
     end
 
-    ---- End Main Box  
+    -- End Main Box  
 
-    ---- Choise Fixture Group  
+    -- Choise Fixture Group  
     -- Create a Choise for each Group in Table
     ::addGroup::
 
@@ -329,9 +338,9 @@ local function Main(display_Handle)
     E("Select Group " .. FixtureGroups[SelGrp + 1].name)
     table.remove(FixtureGroups, SelGrp + 1)
     goto MainBox
-    ---- End Choise Fixture Group	        
+    -- End Choise Fixture Group	        
 
-    ---- Choise ColorGel  
+    -- Choise ColorGel  
     -- Create a Choise for each Group in Table
     ::addColorGel::
 
@@ -356,35 +365,49 @@ local function Main(display_Handle)
     E("ColorGel " .. ColGels[SelColGel + 1].name .. " selected")
     ColGelBtn = "ColorGel " .. ColGels[SelColGel + 1].name .. " selected"
     goto MainBox
-    ---- End ColorGel	
+    -- End ColorGel	
 
-    ---- Magic Stuff
+    -- Magic Stuff
     ::doMagicStuff::
 
-    ----fix SeqNrStart & use CurrentSeqNr
+    --fix SeqNrStart & use CurrentSeqNr
     CurrentSeqNr = SeqNrStart
 
-    ----check Images
+
+
+
+
+
+    --check Images
     for k in pairs(Img) do
         if ('"' .. Img[k].name .. '"' == ImgImp[1].Name) then
-            check = check + 1
+            check[1] =  1
+        end
+        if ('"' .. Img[k].name .. '"' == ImgImp[2].Name) then
+            check[2] =  1
+        end
+        if ('"' .. Img[k].name .. '"' == ImgImp[3].Name) then
+            check[3] =  1
+        end
+        if ('"' .. Img[k].name .. '"' == ImgImp[4].Name) then
+            check[4] =  1
         end
     end
 
-    if (check > 0) then
+    if (check == 1111) then
         E("file exist")
     else
         E("file NOT exist")
-        ---- Select a disk
+        -- Select a disk
         local drives = Root().Temp.DriveCollect
         local selectedDrive -- users selected drive
         local options = {} -- popup options
         local PopTableDisk = {} -- 
-        ---- grab a list of connected drives
+        -- grab a list of connected drives
         for i = 1, drives.count, 1 do
             table.insert(options, string.format("%s (%s)", drives[i].name, drives[i].DriveType))
         end
-        ---- present a popup for the user choose (Internal may not work)
+        -- present a popup for the user choose (Internal may not work)
         PopTableDisk = {
             title = "Select a disk to import on & off image",
             caller = display_Handle,
@@ -408,17 +431,37 @@ local function Main(display_Handle)
 
         Cmd("select Drive " .. selectedDrive .. "")
 
-        ---- Import Images
+        -- Import Images
+
+        if(check[1] == 0) then
         ImgNr = Maf(ImgNr + 1);
         Cmd("Store Image 3." .. ImgNr .. " " .. ImgImp[1].Name .. " Filename=" .. ImgImp[1].FileName .. " filepath=" ..
                 ImgImp[1].Filepath .. "")
+        end
+        if(check[2] == 0) then
         ImgNr = Maf(ImgNr + 1);
         Cmd("Store Image 3." .. ImgNr .. " " .. ImgImp[2].Name .. " Filename=" .. ImgImp[2].FileName .. " filepath=" ..
                 ImgImp[2].Filepath .. "")
-    end
-    ---- End check Images  
+        end
+        if(check[3] == 0) then
+        ImgNr = Maf(ImgNr + 1);
+        Cmd("Store Image 3." .. ImgNr .. " " .. ImgImp[3].Name .. " Filename=" .. ImgImp[3].FileName .. " filepath=" ..
+                ImgImp[3].Filepath .. "")
+        end
+        if(check[4] == 0) then
+        ImgNr = Maf(ImgNr + 1);
+        Cmd("Store Image 3." .. ImgNr .. " " .. ImgImp[4].Name .. " Filename=" .. ImgImp[4].FileName .. " filepath=" ..
+                ImgImp[4].Filepath .. "")
+        end
 
-    ---- Create Appearances/Sequences
+    end
+    -- End check Images  
+
+
+
+
+
+    -- Create Appearances/Sequences
 
     -- Create new Layout View
     Cmd("Store Layout " .. TLayNr .. " \"" .. NaLay .. "")
@@ -454,7 +497,7 @@ local function Main(display_Handle)
             col_count = col_count + 1
             StColCode = "\"" .. TCol[col].r .. "," .. TCol[col].g .. "," .. TCol[col].b .. ",1\""
             StColName = TCol[col].name
-            StringColName = string.gsub( StColName," ","" )
+            StringColName = string.gsub( StColName," ","_" )
             ColNr = SelectedGelNr .. "." .. TCol[col].no
 
             -- Cretae Appearances only 1 times
@@ -521,22 +564,64 @@ local function Main(display_Handle)
         AppCrea = 1
         LayY = Maf(LayY - 20) -- Add offset for Layout Element distance
     end
-    ---- end Appearances/Sequences 
+    -- end Appearances/Sequences 
 
 
 
     
     
     
-    ---- add timming / Sequences
+    -- add timming / Sequences
     SeqNrEnd = CurrentSeqNr
+    LayY = Maf(LayY - 20) -- Add offset for Layout Element distance
 
-    ---- end timming / Sequences
 
-    ---- add All Color
+    -- -- Create Sequences
+    -- Cmd("clearall")
+    -- Cmd("Store Sequence " .. CurrentSeqNr .. " \"" .. "Time 0\"")
+    -- -- Add Cmd to Squence
+    -- Cmd(
+    --     "set seq " .. CurrentSeqNr .. " cue \"CueZero\" Property Command=\"Set Layout " .. TLayNr .. "." .. LayNr ..
+    --         " Appearance=" .. NrNeed + 1 .. "\"")
+    -- Cmd(
+    --     'set seq ' .. CurrentSeqNr .. ' cue \''.. 'Time 0\' Property Command=\' Go+ Sequence \'' .. StringColName ..  '*')
+    -- Cmd(
+    --     "set seq " .. CurrentSeqNr .. " cue \"OffCue\" Property Command=\"Set Layout " .. TLayNr .. "." .. LayNr ..
+    --         " Appearance=" .. NrNeed + 1 .. "\"")
+    -- Cmd("set seq " .. CurrentSeqNr .. " AutoStart=1 AutoStop=1 MasterGoMode=None AutoFix=0 AutoStomp=0")
+    -- Cmd("set seq " .. CurrentSeqNr .. " Tracking=0 WrapAround=1 ReleaseFirstCue=0 RestartMode=1 CommandEnable=1 XFadeReload=0")
+    -- Cmd("set seq " .. CurrentSeqNr .. " OutputFilter='' Priority=0 SoftLTP=1 PlaybackMaster='' XfadeMode=0")
+    -- Cmd("set seq " .. CurrentSeqNr .. " RateMaster='' RateScale=0 SpeedMaster='' SpeedScale=0 SpeedfromRate=0")
+    -- Cmd("set seq " .. CurrentSeqNr .. " InputFilter='' SwapProtect=0 KillProtect=0 IncludeLinkLastGo=1 UseExecutorTime=1 OffwhenOverridden=1 Lock=0")
+    -- Cmd("set seq " .. CurrentSeqNr .. " SequMIB=0 SequMIBMode=1")
+    -- -- end Sequences
+
+    -- -- Add Squences to Layout
+    -- Cmd("Assign Seq " .. CurrentSeqNr .. " at Layout " .. TLayNr)
+    -- Cmd(
+    --     "Set Layout " .. TLayNr .. "." .. LayNr .. " appearance=" .. NrNeed + 1 .. " PosX " .. LayX .. " PosY " ..
+    --         LayY .. " PositionW " .. LayW .. " PositionH " .. LayH ..
+    --         " VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0")
+
+   
+    -- LayX = Maf(LayX + LayW + 20)
+    -- LayNr = Maf(LayNr + 1)
+    -- CurrentSeqNr = Maf(CurrentSeqNr + 1)
+
+
+
+
+    -- end timming / Sequences
+
+
+
+
+
+
+
+    -- add All Color
     LayY = TLay[TLayNrRef].DimensionH / 2
     LayY = Maf(LayY + 20) -- Add offset for Layout Element distance
-    -- LayY = Maf(LayY + LayH)
     LayX = RefX
     LayX = Maf(LayX + LayW + 20)
     NrNeed = Maf(AppNr + 1)
@@ -546,7 +631,7 @@ local function Main(display_Handle)
         col_count = col_count + 1
         StColCode = "\"" .. TCol[col].r .. "," .. TCol[col].g .. "," .. TCol[col].b .. ",1\""
         StColName = TCol[col].name
-        StringColName = string.gsub( StColName," ","" )
+        StringColName = string.gsub( StColName," ","_" )
         ColNr = SelectedGelNr .. "." .. TCol[col].no
         
 
@@ -597,7 +682,7 @@ local function Main(display_Handle)
         CurrentSeqNr = Maf(CurrentSeqNr + 1)
     end
 
-    ---- end All Color
+    -- end All Color
 
 
 
