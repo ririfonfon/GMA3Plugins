@@ -594,13 +594,13 @@ local function Main(display_Handle)
 
     if (appcheck[1] == 0) then
         Cmd( 
-            'Store App ' .. NrAppear .. 'time_on\' Appearance=' .. StAppTimeOn .. '')
+            'Store App ' .. NrAppear .. ' \'time_on\' Appearance=' .. StAppTimeOn .. '')
         NrAppear = Maf(NrAppear + 1);
     end
 
     if (appcheck[2] == 0) then
         Cmd(
-            "Store App " .. NrAppear .. "time_off\" Appearance=" .. StAppTimeOff .. "")
+            'Store App ' .. NrAppear .. ' \'time_off\' Appearance=' .. StAppTimeOff .. '')
         NrAppear = Maf(NrAppear + 1);        
     end
     -- end check Appear. time_on & time off
