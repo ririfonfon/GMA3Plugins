@@ -133,6 +133,8 @@ local function Main(display_Handle)
     local LayH = 100
     local LayNr = 1
     local NrAppear
+    local NrAppeartimeon
+    local NrAppeartimeoff
     local NrNeed
     local AppCrea = 0
     local TCol
@@ -166,6 +168,8 @@ local function Main(display_Handle)
     local NaLay = "Colors"
     local PopTableGrp = {}
     local PopTableGel = {}
+    local FirstSeqTime
+    local LastSeqTime
 
     local CurrentSeqNr
 
@@ -519,6 +523,8 @@ local function Main(display_Handle)
                 NrAppear = Maf(NrAppear + 1);
             end
             -- end Appearances
+            E("NrAppear ")
+            E(NrAppear)
 
             -- Create Sequences
             Cmd("clearall")
@@ -537,7 +543,7 @@ local function Main(display_Handle)
             Cmd("set seq " .. CurrentSeqNr .. " OutputFilter='' Priority=0 SoftLTP=1 PlaybackMaster='' XfadeMode=0")
             Cmd("set seq " .. CurrentSeqNr .. " RateMaster='' RateScale=0 SpeedMaster='' SpeedScale=0 SpeedfromRate=0")
             Cmd("set seq " .. CurrentSeqNr ..
-                    " InputFilter='' SwapProtect=0 KillProtect=0 IncludeLinkLastGo=1 UseExecutorTime=1 OffwhenOverridden=1 Lock=0")
+                    " InputFilter='' SwapProtect=0 KillProtect=0 IncludeLinkLastGo=1 UseExecutorTime=0 OffwhenOverridden=1 Lock=0")
             Cmd("set seq " .. CurrentSeqNr .. " SequMIB=0 SequMIBMode=1")
             -- end Sequences
 
@@ -576,68 +582,213 @@ local function Main(display_Handle)
     
     
     
-    -- add timming / Sequences
-    SeqNrEnd = CurrentSeqNr
-    LayY = Maf(LayY - 20) -- Add offset for Layout Element distance
     
     -- check Appear. time_on & time off
+    E("check Appear.")
     for k in pairs(App) do
-        if ('"' .. App[k].name .. '"' == "time_on") then appcheck[1] = 1
+        if ('"' .. App[k].name .. '"' == "time_on") then 
+            appcheck[1] = 1
+            NrAppeartimeon = k
             E("time_on app ")
             E('"' .. App[k].name .. '"')
         end
-        if ('"' .. App[k].name .. '"' == "time_off") then appcheck[2] = 1
+        if ('"' .. App[k].name .. '"' == "time_off") then 
+            appcheck[2] = 1
+            NrAppeartimeoff = k
             E("time_off app ")
             E('"' .. App[k].name .. '"')
         end
     end
 
     if (appcheck[1] == 0) then
+        NrAppeartimeon = NrNeed
+        E("NrAppeartimeon ")
+        E(NrAppeartimeon)
         Cmd( 
-            'Store App ' .. NrAppear .. ' \'time_on\' Appearance=' .. StAppTimeOn .. '')
-        NrAppear = Maf(NrAppear + 1);
-    end
-
+            'Store App ' .. NrAppeartimeon .. ' \'time_on\' Appearance=' .. StAppTimeOn .. '')
+            NrNeed = Maf(NrNeed + 1);
+        end
+        
     if (appcheck[2] == 0) then
+        NrAppeartimeoff = NrNeed
+        E("NrAppeartimeoff ")
+        E(NrAppeartimeoff)
         Cmd(
-            'Store App ' .. NrAppear .. ' \'time_off\' Appearance=' .. StAppTimeOff .. '')
-        NrAppear = Maf(NrAppear + 1);        
-    end
+            'Store App ' .. NrAppeartimeoff .. ' \'time_off\' Appearance=' .. StAppTimeOff .. '')
+            NrNeed = Maf(NrNeed + 1);        
+        end
     -- end check Appear. time_on & time off
-    
+            
+            
+    -- add timming / Sequences
+    SeqNrEnd = CurrentSeqNr - 1
+    LayY = Maf(LayY - 100) -- Add offset for Layout Element distance
+    LayX = RefX
+    LayX = Maf(LayX + LayW + 20)
+    FirstSeqTime = CurrentSeqNr
+    LastSeqTime = Maf(CurrentSeqNr + 4)
 
+    -- Create Sequences ExecTime
+    Cmd("clearall")
+    Cmd("Store Sequence " .. CurrentSeqNr .. " \"" .. "ExecTime\"")
+    -- Add Cmd to Squence
+    Cmd(
+        "set seq " .. CurrentSeqNr .. " cue \"CueZero\" Property Command=\"Set Layout " .. TLayNr .. "." .. LayNr ..
+            " Appearance=" .. NrAppeartimeon .. "\"")
+    Cmd( 
+        'set seq ' .. CurrentSeqNr .. ' cue \''.. 'ExecTime\' Property Command=\'off seq ' .. FirstSeqTime .. ' thru ' .. LastSeqTime .. ' - ' .. CurrentSeqNr .. ' ; set seq ' .. SeqNrStart .. ' thru ' ..SeqNrEnd.. ' cuefade 0 UseExecutorTime=1 ')
+    Cmd(
+        "set seq " .. CurrentSeqNr .. " cue \"OffCue\" Property Command=\"Set Layout " .. TLayNr .. "." .. LayNr ..
+            " Appearance=" ..NrAppeartimeoff .. "\"")
+    Cmd("set seq " .. CurrentSeqNr .. " AutoStart=1 AutoStop=1 MasterGoMode=None AutoFix=0 AutoStomp=0")
+    Cmd("set seq " .. CurrentSeqNr .. " Tracking=0 WrapAround=1 ReleaseFirstCue=0 RestartMode=1 CommandEnable=1 XFadeReload=0")
+    Cmd("set seq " .. CurrentSeqNr .. " OutputFilter='' Priority=0 SoftLTP=1 PlaybackMaster='' XfadeMode=0")
+    Cmd("set seq " .. CurrentSeqNr .. " RateMaster='' RateScale=0 SpeedMaster='' SpeedScale=0 SpeedfromRate=0")
+    Cmd("set seq " .. CurrentSeqNr .. " InputFilter='' SwapProtect=0 KillProtect=0 IncludeLinkLastGo=1 UseExecutorTime=0 OffwhenOverridden=1 Lock=0")
+    Cmd("set seq " .. CurrentSeqNr .. " SequMIB=0 SequMIBMode=1")
+    -- end Sequences    
+    -- Add Squences to Layout
+    Cmd("Assign Seq " .. CurrentSeqNr .. " at Layout " .. TLayNr)
+    Cmd(
+        "Set Layout " .. TLayNr .. "." .. LayNr .. " appearance=" .. NrAppeartimeoff .. " PosX " .. LayX .. " PosY " ..
+        LayY .. " PositionW " .. LayW .. " PositionH " .. LayH ..
+        " VisibilityObjectname=1 VisibilityBar=0 VisibilityIndicatorBar=0")
+        
+    LayX = Maf(LayX + LayW + 20)
+    LayNr = Maf(LayNr + 1)
+    CurrentSeqNr = Maf(CurrentSeqNr + 1)
+    -- end Sequences ExecTime
 
-    -- -- Create Sequences
-    -- Cmd("clearall")
-    -- Cmd("Store Sequence " .. CurrentSeqNr .. " \"" .. "Time 0\"")
-    -- -- Add Cmd to Squence
-    -- Cmd(
-    --     "set seq " .. CurrentSeqNr .. " cue \"CueZero\" Property Command=\"Set Layout " .. TLayNr .. "." .. LayNr ..
-    --         " Appearance=" .. NrNeed + 1 .. "\"")
-    -- Cmd(
-    --     'set seq ' .. CurrentSeqNr .. ' cue \''.. 'Time 0\' Property Command=\' Go+ Sequence \'' .. StringColName ..  '*')
-    -- Cmd(
-    --     "set seq " .. CurrentSeqNr .. " cue \"OffCue\" Property Command=\"Set Layout " .. TLayNr .. "." .. LayNr ..
-    --         " Appearance=" .. NrNeed + 1 .. "\"")
-    -- Cmd("set seq " .. CurrentSeqNr .. " AutoStart=1 AutoStop=1 MasterGoMode=None AutoFix=0 AutoStomp=0")
-    -- Cmd("set seq " .. CurrentSeqNr .. " Tracking=0 WrapAround=1 ReleaseFirstCue=0 RestartMode=1 CommandEnable=1 XFadeReload=0")
-    -- Cmd("set seq " .. CurrentSeqNr .. " OutputFilter='' Priority=0 SoftLTP=1 PlaybackMaster='' XfadeMode=0")
-    -- Cmd("set seq " .. CurrentSeqNr .. " RateMaster='' RateScale=0 SpeedMaster='' SpeedScale=0 SpeedfromRate=0")
-    -- Cmd("set seq " .. CurrentSeqNr .. " InputFilter='' SwapProtect=0 KillProtect=0 IncludeLinkLastGo=1 UseExecutorTime=1 OffwhenOverridden=1 Lock=0")
-    -- Cmd("set seq " .. CurrentSeqNr .. " SequMIB=0 SequMIBMode=1")
-    -- -- end Sequences
+    -- Create Sequences time 0
+    Cmd("clearall")
+    Cmd("Store Sequence " .. CurrentSeqNr .. " \"" .. "Time 0\"")
+    -- Add Cmd to Squence
+    Cmd(
+        "set seq " .. CurrentSeqNr .. " cue \"CueZero\" Property Command=\"Set Layout " .. TLayNr .. "." .. LayNr ..
+            " Appearance=" .. NrAppeartimeon .. "\"")
+    Cmd( 
+        'set seq ' .. CurrentSeqNr .. ' cue \''.. 'Time 0\' Property Command=\'off seq ' .. FirstSeqTime .. ' thru ' .. LastSeqTime .. ' - ' .. CurrentSeqNr .. ' ; set seq ' .. SeqNrStart .. ' thru ' ..SeqNrEnd.. ' cuefade 0 UseExecutorTime=0')
+    Cmd(
+        "set seq " .. CurrentSeqNr .. " cue \"OffCue\" Property Command=\"Set Layout " .. TLayNr .. "." .. LayNr ..
+            " Appearance=" ..NrAppeartimeoff .. "\"")
+    Cmd("set seq " .. CurrentSeqNr .. " AutoStart=1 AutoStop=1 MasterGoMode=None AutoFix=0 AutoStomp=0")
+    Cmd("set seq " .. CurrentSeqNr .. " Tracking=0 WrapAround=1 ReleaseFirstCue=0 RestartMode=1 CommandEnable=1 XFadeReload=0")
+    Cmd("set seq " .. CurrentSeqNr .. " OutputFilter='' Priority=0 SoftLTP=1 PlaybackMaster='' XfadeMode=0")
+    Cmd("set seq " .. CurrentSeqNr .. " RateMaster='' RateScale=0 SpeedMaster='' SpeedScale=0 SpeedfromRate=0")
+    Cmd("set seq " .. CurrentSeqNr .. " InputFilter='' SwapProtect=0 KillProtect=0 IncludeLinkLastGo=1 UseExecutorTime=0 OffwhenOverridden=1 Lock=0")
+    Cmd("set seq " .. CurrentSeqNr .. " SequMIB=0 SequMIBMode=1")
+    -- end Sequences
 
-    -- -- Add Squences to Layout
-    -- Cmd("Assign Seq " .. CurrentSeqNr .. " at Layout " .. TLayNr)
-    -- Cmd(
-    --     "Set Layout " .. TLayNr .. "." .. LayNr .. " appearance=" .. NrNeed + 1 .. " PosX " .. LayX .. " PosY " ..
-    --         LayY .. " PositionW " .. LayW .. " PositionH " .. LayH ..
-    --         " VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0")
+    -- Add Squences to Layout
+    Cmd("Assign Seq " .. CurrentSeqNr .. " at Layout " .. TLayNr)
+    Cmd(
+        "Set Layout " .. TLayNr .. "." .. LayNr .. " appearance=" .. NrAppeartimeon .. " PosX " .. LayX .. " PosY " ..
+        LayY .. " PositionW " .. LayW .. " PositionH " .. LayH ..
+        " VisibilityObjectname=1 VisibilityBar=0 VisibilityIndicatorBar=0")
+        
+    LayX = Maf(LayX + LayW + 20)
+    LayNr = Maf(LayNr + 1)
+    CurrentSeqNr = Maf(CurrentSeqNr + 1)
+    -- end Sequences time 0
+
+    -- Create Sequences time 1
+    Cmd("clearall")
+    Cmd("Store Sequence " .. CurrentSeqNr .. " \"" .. "Time 1\"")
+    -- Add Cmd to Squence
+    Cmd(
+        "set seq " .. CurrentSeqNr .. " cue \"CueZero\" Property Command=\"Set Layout " .. TLayNr .. "." .. LayNr ..
+            " Appearance=" .. NrAppeartimeon .. "\"")
+    Cmd(
+        'set seq ' .. CurrentSeqNr .. ' cue \''.. 'Time 1\' Property Command=\'off seq ' .. FirstSeqTime .. ' thru ' .. LastSeqTime .. ' - ' .. CurrentSeqNr .. ' ;set seq ' .. SeqNrStart .. ' thru ' ..SeqNrEnd.. ' cuefade 1 UseExecutorTime=0 ')
+    Cmd(
+        "set seq " .. CurrentSeqNr .. " cue \"OffCue\" Property Command=\"Set Layout " .. TLayNr .. "." .. LayNr ..
+            " Appearance=" ..NrAppeartimeoff .. "\"")
+    Cmd("set seq " .. CurrentSeqNr .. " AutoStart=1 AutoStop=1 MasterGoMode=None AutoFix=0 AutoStomp=0")
+    Cmd("set seq " .. CurrentSeqNr .. " Tracking=0 WrapAround=1 ReleaseFirstCue=0 RestartMode=1 CommandEnable=1 XFadeReload=0")
+    Cmd("set seq " .. CurrentSeqNr .. " OutputFilter='' Priority=0 SoftLTP=1 PlaybackMaster='' XfadeMode=0")
+    Cmd("set seq " .. CurrentSeqNr .. " RateMaster='' RateScale=0 SpeedMaster='' SpeedScale=0 SpeedfromRate=0")
+    Cmd("set seq " .. CurrentSeqNr .. " InputFilter='' SwapProtect=0 KillProtect=0 IncludeLinkLastGo=1 UseExecutorTime=0 OffwhenOverridden=1 Lock=0")
+    Cmd("set seq " .. CurrentSeqNr .. " SequMIB=0 SequMIBMode=1")
+    -- end Sequences
+
+    -- Add Squences to Layout
+    Cmd("Assign Seq " .. CurrentSeqNr .. " at Layout " .. TLayNr)
+    Cmd(
+        "Set Layout " .. TLayNr .. "." .. LayNr .. " appearance=" .. NrAppeartimeoff .. " PosX " .. LayX .. " PosY " ..
+            LayY .. " PositionW " .. LayW .. " PositionH " .. LayH ..
+            " VisibilityObjectname=1 VisibilityBar=0 VisibilityIndicatorBar=0")
 
    
-    -- LayX = Maf(LayX + LayW + 20)
-    -- LayNr = Maf(LayNr + 1)
-    -- CurrentSeqNr = Maf(CurrentSeqNr + 1)
+    LayX = Maf(LayX + LayW + 20)
+    LayNr = Maf(LayNr + 1)
+    CurrentSeqNr = Maf(CurrentSeqNr + 1)
+    -- end Sequences time 1
+
+    -- Create Sequences time 2
+    Cmd("clearall")
+    Cmd("Store Sequence " .. CurrentSeqNr .. " \"" .. "Time 2\"")
+    -- Add Cmd to Squence
+    Cmd(
+        "set seq " .. CurrentSeqNr .. " cue \"CueZero\" Property Command=\"Set Layout " .. TLayNr .. "." .. LayNr ..
+            " Appearance=" .. NrAppeartimeon .. "\"")
+    Cmd(
+        'set seq ' .. CurrentSeqNr .. ' cue \''.. 'Time 2\' Property Command=\'off seq ' .. FirstSeqTime .. ' thru ' .. LastSeqTime .. ' - ' .. CurrentSeqNr .. ' ;set seq ' .. SeqNrStart .. ' thru ' ..SeqNrEnd.. ' cuefade 2 UseExecutorTime=0 ')
+    Cmd(
+        "set seq " .. CurrentSeqNr .. " cue \"OffCue\" Property Command=\"Set Layout " .. TLayNr .. "." .. LayNr ..
+            " Appearance=" ..NrAppeartimeoff .. "\"")
+    Cmd("set seq " .. CurrentSeqNr .. " AutoStart=1 AutoStop=1 MasterGoMode=None AutoFix=0 AutoStomp=0")
+    Cmd("set seq " .. CurrentSeqNr .. " Tracking=0 WrapAround=1 ReleaseFirstCue=0 RestartMode=1 CommandEnable=1 XFadeReload=0")
+    Cmd("set seq " .. CurrentSeqNr .. " OutputFilter='' Priority=0 SoftLTP=1 PlaybackMaster='' XfadeMode=0")
+    Cmd("set seq " .. CurrentSeqNr .. " RateMaster='' RateScale=0 SpeedMaster='' SpeedScale=0 SpeedfromRate=0")
+    Cmd("set seq " .. CurrentSeqNr .. " InputFilter='' SwapProtect=0 KillProtect=0 IncludeLinkLastGo=1 UseExecutorTime=0 OffwhenOverridden=1 Lock=0")
+    Cmd("set seq " .. CurrentSeqNr .. " SequMIB=0 SequMIBMode=1")
+    -- end Sequences
+
+    -- Add Squences to Layout
+    Cmd("Assign Seq " .. CurrentSeqNr .. " at Layout " .. TLayNr)
+    Cmd(
+        "Set Layout " .. TLayNr .. "." .. LayNr .. " appearance=" .. NrAppeartimeoff .. " PosX " .. LayX .. " PosY " ..
+            LayY .. " PositionW " .. LayW .. " PositionH " .. LayH ..
+            " VisibilityObjectname=1 VisibilityBar=0 VisibilityIndicatorBar=0")
+
+   
+    LayX = Maf(LayX + LayW + 20)
+    LayNr = Maf(LayNr + 1)
+    CurrentSeqNr = Maf(CurrentSeqNr + 1)
+    -- end Sequences time 2
+
+    -- Create Sequences time 3
+    Cmd("clearall")
+    Cmd("Store Sequence " .. CurrentSeqNr .. " \"" .. "Time 3\"")
+    -- Add Cmd to Squence
+    Cmd(
+        "set seq " .. CurrentSeqNr .. " cue \"CueZero\" Property Command=\"Set Layout " .. TLayNr .. "." .. LayNr ..
+            " Appearance=" .. NrAppeartimeon .. "\"")
+    Cmd(
+        'set seq ' .. CurrentSeqNr .. ' cue \''.. 'Time 3\' Property Command=\'off seq ' .. FirstSeqTime .. ' thru ' .. LastSeqTime .. ' - ' .. CurrentSeqNr .. ' ;set seq ' .. SeqNrStart .. ' thru ' ..SeqNrEnd.. ' cuefade 3 UseExecutorTime=0 ')
+    Cmd(
+        "set seq " .. CurrentSeqNr .. " cue \"OffCue\" Property Command=\"Set Layout " .. TLayNr .. "." .. LayNr ..
+            " Appearance=" ..NrAppeartimeoff .. "\"")
+    Cmd("set seq " .. CurrentSeqNr .. " AutoStart=1 AutoStop=1 MasterGoMode=None AutoFix=0 AutoStomp=0")
+    Cmd("set seq " .. CurrentSeqNr .. " Tracking=0 WrapAround=1 ReleaseFirstCue=0 RestartMode=1 CommandEnable=1 XFadeReload=0")
+    Cmd("set seq " .. CurrentSeqNr .. " OutputFilter='' Priority=0 SoftLTP=1 PlaybackMaster='' XfadeMode=0")
+    Cmd("set seq " .. CurrentSeqNr .. " RateMaster='' RateScale=0 SpeedMaster='' SpeedScale=0 SpeedfromRate=0")
+    Cmd("set seq " .. CurrentSeqNr .. " InputFilter='' SwapProtect=0 KillProtect=0 IncludeLinkLastGo=1 UseExecutorTime=0 OffwhenOverridden=1 Lock=0")
+    Cmd("set seq " .. CurrentSeqNr .. " SequMIB=0 SequMIBMode=1")
+    -- end Sequences
+
+    -- Add Squences to Layout
+    Cmd("Assign Seq " .. CurrentSeqNr .. " at Layout " .. TLayNr)
+    Cmd(
+        "Set Layout " .. TLayNr .. "." .. LayNr .. " appearance=" .. NrAppeartimeoff .. " PosX " .. LayX .. " PosY " ..
+            LayY .. " PositionW " .. LayW .. " PositionH " .. LayH ..
+            " VisibilityObjectname=1 VisibilityBar=0 VisibilityIndicatorBar=0")
+
+   
+    LayX = Maf(LayX + LayW + 20)
+    LayNr = Maf(LayNr + 1)
+    CurrentSeqNr = Maf(CurrentSeqNr + 1)
+    -- end Sequences time 3
 
 
 
