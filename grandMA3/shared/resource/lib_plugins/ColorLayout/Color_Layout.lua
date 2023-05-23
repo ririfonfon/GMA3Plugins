@@ -143,6 +143,10 @@ local function Main(display_Handle)
     local StAppNameOff
     local StAppOn = "\"Showdata.MediaPools.Images.on\""
     local StAppOff = "\"Showdata.MediaPools.Images.off\""
+    local StAppNameTimeOn
+    local StAppNameTimeOff
+    local StAppTimeOn = "\"Showdata.MediaPools.Images.time_on\""
+    local StAppTimeOff = "\"Showdata.MediaPools.Images.time_off\""
     local ColNr = 0
     local SelGrp
     local TGrpChoise
@@ -158,6 +162,7 @@ local function Main(display_Handle)
     local ValOkBtn = 100
     local count = 0
     local check = {0,0,0,0}
+    local appcheck = {0,0}
     local NaLay = "Colors"
     local PopTableGrp = {}
     local PopTableGel = {}
@@ -574,6 +579,32 @@ local function Main(display_Handle)
     -- add timming / Sequences
     SeqNrEnd = CurrentSeqNr
     LayY = Maf(LayY - 20) -- Add offset for Layout Element distance
+    
+    -- check Appear. time_on & time off
+    for k in pairs(App) do
+        if ('"' .. App[k].name .. '"' == "time_on") then appcheck[1] = 1
+            E("time_on app ")
+            E('"' .. App[k].name .. '"')
+        end
+        if ('"' .. App[k].name .. '"' == "time_off") then appcheck[2] = 1
+            E("time_off app ")
+            E('"' .. App[k].name .. '"')
+        end
+    end
+
+    if (appcheck[1] == 0) then
+        Cmd( 
+            'Store App ' .. NrAppear .. 'time_on\' Appearance=' .. StAppTimeOn .. '')
+        NrAppear = Maf(NrAppear + 1);
+    end
+
+    if (appcheck[2] == 0) then
+        Cmd(
+            "Store App " .. NrAppear .. "time_off\" Appearance=" .. StAppTimeOff .. "")
+        NrAppear = Maf(NrAppear + 1);        
+    end
+    -- end check Appear. time_on & time off
+    
 
 
     -- -- Create Sequences
