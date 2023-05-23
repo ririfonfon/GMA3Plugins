@@ -399,7 +399,7 @@ local function Main(display_Handle)
         end
     end
 
-    if (check == 1111) then
+    if (check[1] == 1 and check[2] == 1 and check[3] == 1 and check[4] == 1) then
         E("file exist")
     else
         E("file NOT exist")
