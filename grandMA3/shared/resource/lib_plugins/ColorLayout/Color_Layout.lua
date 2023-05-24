@@ -155,6 +155,8 @@ local function Main(display_Handle)
     local ChoGel
     local SelColGel
     local SelectedGrp = {}
+    local SelectedGrpNo = {}
+    local GrpNo
     local SelectedGel
     local Message =
         "Add Fixture Group and ColorGel\n * set beginning Appearance & Sequence Number\n\n Selected Group(s) are: \n"
@@ -342,6 +344,7 @@ local function Main(display_Handle)
     SelGrp = PopupInput(PopTableGrp)
 
     table.insert(SelectedGrp, "'" .. FixtureGroups[SelGrp + 1].name .. "'")
+    table.insert(SelectedGrpNo, "'" .. FixtureGroups[SelGrp + 1].NO .. "'")
     E("A")
     Message = Message .. FixtureGroups[SelGrp + 1].name .. "\n"
     E("Select Group " .. FixtureGroups[SelGrp + 1].name)
@@ -527,9 +530,13 @@ local function Main(display_Handle)
             E(NrAppear)
 
             -- Create Sequences
+            GrpNo = SelectedGrpNo[g]
+            GrpNo = string.gsub( GrpNo,"'","" )
             Cmd("clearall")
             Cmd("Group " .. SelectedGrp[g] .. " at Gel " .. ColNr .. "")
             Cmd("Store Sequence " .. CurrentSeqNr .. " \"" .. StringColName .. " " .. SelectedGrp[g]:gsub('\'', '') .. "\"")
+            Cmd("Store Sequence " .. CurrentSeqNr .. " Cue 1 Part 0.1")
+            Cmd("Assign Group " .. GrpNo .. " At Sequence " .. CurrentSeqNr .. " Cue 1 Part 0.1")
             -- Add Cmd to Squence
             Cmd(
                 "set seq " .. CurrentSeqNr .. " cue \"CueZero\" Property Command=\"Set Layout " .. TLayNr .. "." .. LayNr ..
