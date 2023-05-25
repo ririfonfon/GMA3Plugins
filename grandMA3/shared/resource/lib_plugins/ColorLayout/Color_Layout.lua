@@ -118,6 +118,18 @@ local function Main(display_Handle)
         SeqNrStart = 0
     end
 
+    -- Store all Used Macro in a Table to find the last free number
+    local MacroNr = root.ShowData.DataPools.Default.Macros:Children()
+    local MacroNrStart
+
+    for k in pairs(MacroNr) do
+        MacroNrStart = Maf(MacroNr[k].NO)
+    end
+
+    if MacroNrStart == nil then
+        MacroNrStart = 0
+    end
+
     -- Store all Use Texture in a Table to find the last free number
     local TIcon = root.GraphicsRoot.TextureCollect.Textures:Children()
     local TIconNr
@@ -162,6 +174,7 @@ local function Main(display_Handle)
         "Add Fixture Group and ColorGel\n * set beginning Appearance & Sequence Number\n\n Selected Group(s) are: \n"
     local ColGelBtn = "Add ColorGel"
     local SeqNrText = "Seq_Start_Nr"
+    local MacroNrText = "Macro_Start_Nr"
     local OkBtn = ""
     local ValOkBtn = 100
     local count = 0
@@ -174,6 +187,7 @@ local function Main(display_Handle)
     local LastSeqTime
 
     local CurrentSeqNr
+    local CurrentMacroNr
 
     local UsedW
     local UsedH
@@ -182,6 +196,7 @@ local function Main(display_Handle)
 
     TLayNr = Maf(TLayNr + 1)
     SeqNrStart = SeqNrStart + 1
+    MacroNrStart = MacroNrStart + 1
 
     -- Main Box
     ::MainBox::
@@ -217,6 +232,12 @@ local function Main(display_Handle)
             name = 'Sequence_Start_Nr',
             blackFilter = "*",
             value = SeqNrStart,
+            maxTextLength = 4,
+            vkPlugin = "TextInputNumOnly"
+        }, {
+            name = 'Macro_Start_Nr',
+            blackFilter = "*",
+            value = MacroNrStart,
             maxTextLength = 4,
             vkPlugin = "TextInputNumOnly"
         }, {
@@ -256,6 +277,7 @@ local function Main(display_Handle)
             E("all Groups are added")
             Co("all Groups are added")
             SeqNrStart = box.inputs.Sequence_Start_Nr
+            MacroNrStart = box.inputs.Macro_Start_Nr
             AppNr = box.inputs.Appearance_Start_Nr
             TLayNr = box.inputs.Layout_Nr
             NaLay = box.inputs.Layout_Name
@@ -264,6 +286,7 @@ local function Main(display_Handle)
         else
             E("add Group")
             SeqNrStart = box.inputs.Sequence_Start_Nr
+            MacroNrStart = box.inputs.Macro_Start_Nr
             AppNr = box.inputs.Appearance_Start_Nr
             TLayNr = box.inputs.Layout_Nr
             NaLay = box.inputs.Layout_Name
@@ -280,6 +303,7 @@ local function Main(display_Handle)
 
         E("add ColorGel")
         SeqNrStart = box.inputs.Sequence_Start_Nr
+        MacroNrStart = box.inputs.Macro_Start_Nr
         AppNr = box.inputs.Appearance_Start_Nr
         TLayNr = box.inputs.Layout_Nr
         NaLay = box.inputs.Layout_Name
@@ -290,6 +314,7 @@ local function Main(display_Handle)
         if SelectedGel == nil then
             Co("no ColorGel are selected!")
             SeqNrStart = box.inputs.Sequence_Start_Nr
+            MacroNrStart = box.inputs.Macro_Start_Nr
             AppNr = box.inputs.Appearance_Start_Nr
             TLayNr = box.inputs.Layout_Nr
             NaLay = box.inputs.Layout_Name
@@ -299,6 +324,7 @@ local function Main(display_Handle)
         elseif next(SelectedGrp) == nil then
             Co("no Group are added!")
             SeqNrStart = box.inputs.Sequence_Start_Nr
+            MacroNrStart = box.inputs.Macro_Start_Nr
             AppNr = box.inputs.Appearance_Start_Nr
             TLayNr = box.inputs.Layout_Nr
             NaLay = box.inputs.Layout_Name
@@ -306,6 +332,7 @@ local function Main(display_Handle)
             goto addGroup
         else
             SeqNrStart = box.inputs.Sequence_Start_Nr
+            MacroNrStart = box.inputs.Macro_Start_Nr
             AppNr = box.inputs.Appearance_Start_Nr
             TLayNr = box.inputs.Layout_Nr
             NaLay = box.inputs.Layout_Name
@@ -379,16 +406,16 @@ local function Main(display_Handle)
     goto MainBox
     -- End ColorGel	
 
+
+
+
+
     -- Magic Stuff
     ::doMagicStuff::
 
-    --fix SeqNrStart & use CurrentSeqNr
+    --fix *NrStart & use Current*Nr
     CurrentSeqNr = SeqNrStart
-
-
-
-
-
+    CurrentMacroNr = MacroNrStart
 
     --check Images
     for k in pairs(Img) do
@@ -633,7 +660,7 @@ local function Main(display_Handle)
     LayX = RefX
     LayX = Maf(LayX + LayW + 20)
     FirstSeqTime = CurrentSeqNr
-    LastSeqTime = Maf(CurrentSeqNr + 4)
+    LastSeqTime = Maf(CurrentSeqNr + 5)
 
     -- Create Sequences ExecTime
     Cmd("clearall")
@@ -689,7 +716,7 @@ local function Main(display_Handle)
     -- Add Squences to Layout
     Cmd("Assign Seq " .. CurrentSeqNr .. " at Layout " .. TLayNr)
     Cmd(
-        "Set Layout " .. TLayNr .. "." .. LayNr .. " appearance=" .. NrAppeartimeon .. " PosX " .. LayX .. " PosY " ..
+        "Set Layout " .. TLayNr .. "." .. LayNr .. " appearance=" .. NrAppeartimeoff .. " PosX " .. LayX .. " PosY " ..
         LayY .. " PositionW " .. LayW .. " PositionH " .. LayH ..
         " VisibilityObjectname=1 VisibilityBar=0 VisibilityIndicatorBar=0")
         
@@ -796,6 +823,49 @@ local function Main(display_Handle)
     LayNr = Maf(LayNr + 1)
     CurrentSeqNr = Maf(CurrentSeqNr + 1)
     -- end Sequences time 3
+
+    -- Create Sequences Time Input
+    Cmd("clearall")
+    Cmd("Store Sequence " .. CurrentSeqNr .. " \"" .. "Time Input\"")
+
+    -- Create Macro Time Input
+    Cmd("Store Macro " .. CurrentMacroNr .. " \"" .. "Time Input\"")
+    Cmd("ChangeDestination Macro " .. CurrentMacroNr .. "")
+    Cmd("Insert")
+    Cmd(
+        'set 1 Command=\'off seq ' .. FirstSeqTime .. ' thru ' .. LastSeqTime .. ' - ' .. CurrentSeqNr .. ' ;set seq ' .. SeqNrStart .. ' thru ' ..SeqNrEnd.. ' UseExecutorTime=0 cuefade=(Second ?) ')
+    Cmd("ChangeDestination Root")
+
+    -- Add Cmd to Squence
+    Cmd(
+        "set seq " .. CurrentSeqNr .. " cue \"CueZero\" Property Command=\"Set Layout " .. TLayNr .. "." .. LayNr ..
+            " Appearance=" .. NrAppeartimeon .. "\"")
+    Cmd(
+        'set seq ' .. CurrentSeqNr .. ' cue \''.. 'Time Input\' Property Command=\'Go Macro ' .. CurrentMacroNr ..  '')
+    Cmd(
+        "set seq " .. CurrentSeqNr .. " cue \"OffCue\" Property Command=\"Set Layout " .. TLayNr .. "." .. LayNr ..
+            " Appearance=" ..NrAppeartimeoff .. "\"")
+    Cmd("set seq " .. CurrentSeqNr .. " AutoStart=1 AutoStop=1 MasterGoMode=None AutoFix=0 AutoStomp=0")
+    Cmd("set seq " .. CurrentSeqNr .. " Tracking=0 WrapAround=1 ReleaseFirstCue=0 RestartMode=1 CommandEnable=1 XFadeReload=0")
+    Cmd("set seq " .. CurrentSeqNr .. " OutputFilter='' Priority=0 SoftLTP=1 PlaybackMaster='' XfadeMode=0")
+    Cmd("set seq " .. CurrentSeqNr .. " RateMaster='' RateScale=0 SpeedMaster='' SpeedScale=0 SpeedfromRate=0")
+    Cmd("set seq " .. CurrentSeqNr .. " InputFilter='' SwapProtect=0 KillProtect=0 IncludeLinkLastGo=1 UseExecutorTime=0 OffwhenOverridden=1 Lock=0")
+    Cmd("set seq " .. CurrentSeqNr .. " SequMIB=0 SequMIBMode=1")
+    -- end Sequences
+
+    -- Add Squences to Layout
+    Cmd("Assign Seq " .. CurrentSeqNr .. " at Layout " .. TLayNr)
+    Cmd(
+        "Set Layout " .. TLayNr .. "." .. LayNr .. " appearance=" .. NrAppeartimeoff .. " PosX " .. LayX .. " PosY " ..
+            LayY .. " PositionW " .. LayW .. " PositionH " .. LayH ..
+            " VisibilityObjectname=1 VisibilityBar=0 VisibilityIndicatorBar=0")
+
+    
+    LayX = Maf(LayX + LayW + 20)
+    LayNr = Maf(LayNr + 1)
+    CurrentSeqNr = Maf(CurrentSeqNr + 1)
+    CurrentMacroNr = Maf(CurrentMacroNr + 1)
+    -- end Sequences time ?
 
 
 
