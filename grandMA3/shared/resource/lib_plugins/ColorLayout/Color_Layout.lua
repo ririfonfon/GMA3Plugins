@@ -82,22 +82,22 @@ local function Main(display_Handle)
         Name = "\"time_off\"",
         FileName = "\"time_off.png\"",
         Filepath = "\"../images\""
-    }, {
-        Name = "\"delay_on\"",
-        FileName = "\"time_on.png\"",
-        Filepath = "\"../images\""
-    }, {
-        Name = "\"delay_off\"",
-        FileName = "\"time_off.png\"",
-        Filepath = "\"../images\""
-    }, {
-        Name = "\"delayto_on\"",
-        FileName = "\"timeto_on.png\"",
-        Filepath = "\"../images\""
-    }, {
-        Name = "\"delayto_off\"",
-        FileName = "\"timeto_off.png\"",
-        Filepath = "\"../images\""
+    -- }, {
+    --     Name = "\"delay_on\"",
+    --     FileName = "\"time_on.png\"",
+    --     Filepath = "\"../images\""
+    -- }, {
+    --     Name = "\"delay_off\"",
+    --     FileName = "\"time_off.png\"",
+    --     Filepath = "\"../images\""
+    -- }, {
+    --     Name = "\"delayto_on\"",
+    --     FileName = "\"timeto_on.png\"",
+    --     Filepath = "\"../images\""
+    -- }, {
+    --     Name = "\"delayto_off\"",
+    --     FileName = "\"timeto_off.png\"",
+    --     Filepath = "\"../images\""
     }}
 
     -- Store all Used Appearances in a Table to find the last free number
@@ -155,6 +155,7 @@ local function Main(display_Handle)
     end
 
     -- variables
+    local LayX
     local RefX = Maf(0 - TLay[TLayNrRef].DimensionW / 2)
     local LayY = TLay[TLayNrRef].DimensionH / 2
     local LayW = 100
@@ -181,14 +182,14 @@ local function Main(display_Handle)
     local StAppNameTimeOff
     local StAppTimeOn = "\"Showdata.MediaPools.Images.time_on\""
     local StAppTimeOff = "\"Showdata.MediaPools.Images.time_off\""
-    local StAppNameDelayOn
-    local StAppNameDelayOff
-    local StAppDelayOn = "\"Showdata.MediaPools.Images.delay_on\""
-    local StAppDelayOff = "\"Showdata.MediaPools.Images.delay_off\""
-    local StAppNameDelayToOn
-    local StAppNameDelayToOff
-    local StAppDelayToOn = "\"Showdata.MediaPools.Images.delayto_on\""
-    local StAppDelayToOff = "\"Showdata.MediaPools.Images.delayto_off\""
+    -- local StAppNameDelayOn
+    -- local StAppNameDelayOff
+    -- local StAppDelayOn = "\"Showdata.MediaPools.Images.delay_on\""
+    -- local StAppDelayOff = "\"Showdata.MediaPools.Images.delay_off\""
+    -- local StAppNameDelayToOn
+    -- local StAppNameDelayToOff
+    -- local StAppDelayToOn = "\"Showdata.MediaPools.Images.delayto_on\""
+    -- local StAppDelayToOff = "\"Showdata.MediaPools.Images.delayto_off\""
     local ColNr = 0
     local SelGrp
     local TGrpChoise
@@ -198,6 +199,7 @@ local function Main(display_Handle)
     local SelectedGrpNo = {}
     local GrpNo
     local SelectedGel
+    local col_count
     local Message =
         "Add Fixture Group and ColorGel\n * set beginning Appearance & Sequence Number\n\n Selected Group(s) are: \n"
     local ColGelBtn = "Add ColorGel"
@@ -477,21 +479,22 @@ local function Main(display_Handle)
         if ('"' .. Img[k].name .. '"' == ImgImp[4].Name) then
             check[4] =  1
         end
-        if ('"' .. Img[k].name .. '"' == ImgImp[5].Name) then
-            check[5] =  1
-        end
-        if ('"' .. Img[k].name .. '"' == ImgImp[6].Name) then
-            check[6] =  1
-        end
-        if ('"' .. Img[k].name .. '"' == ImgImp[7].Name) then
-            check[7] =  1
-        end
-        if ('"' .. Img[k].name .. '"' == ImgImp[8].Name) then
-            check[8] =  1
-        end
+        -- if ('"' .. Img[k].name .. '"' == ImgImp[5].Name) then
+        --     check[5] =  1
+        -- end
+        -- if ('"' .. Img[k].name .. '"' == ImgImp[6].Name) then
+        --     check[6] =  1
+        -- end
+        -- if ('"' .. Img[k].name .. '"' == ImgImp[7].Name) then
+        --     check[7] =  1
+        -- end
+        -- if ('"' .. Img[k].name .. '"' == ImgImp[8].Name) then
+        --     check[8] =  1
+        -- end
     end
 
-    if (check[1] == 1 and check[2] == 1 and check[3] == 1 and check[4] == 1 and check[5] == 1 and check[6] == 1 and check[7] == 1 and check[8] == 1) then
+    if (check[1] == 1 and check[2] == 1 and check[3] == 1 and check[4] == 1) then
+        -- if (check[1] == 1 and check[2] == 1 and check[3] == 1 and check[4] == 1 and check[5] == 1 and check[6] == 1 and check[7] == 1 and check[8] == 1) then
         E("file exist")
     else
         E("file NOT exist")
@@ -550,26 +553,26 @@ local function Main(display_Handle)
         Cmd("Store Image 3." .. ImgNr .. " " .. ImgImp[4].Name .. " Filename=" .. ImgImp[4].FileName .. " filepath=" ..
                 ImgImp[4].Filepath .. "")
         end
-        if(check[5] == 0) then
-        ImgNr = Maf(ImgNr + 1);
-        Cmd("Store Image 3." .. ImgNr .. " " .. ImgImp[5].Name .. " Filename=" .. ImgImp[5].FileName .. " filepath=" ..
-        ImgImp[5].Filepath .. "")
-        end
-        if(check[6] == 0) then
-        ImgNr = Maf(ImgNr + 1);
-        Cmd("Store Image 3." .. ImgNr .. " " .. ImgImp[6].Name .. " Filename=" .. ImgImp[6].FileName .. " filepath=" ..
-        ImgImp[6].Filepath .. "")
-        end
-        if(check[7] == 0) then
-        ImgNr = Maf(ImgNr + 1);
-        Cmd("Store Image 3." .. ImgNr .. " " .. ImgImp[7].Name .. " Filename=" .. ImgImp[7].FileName .. " filepath=" ..
-        ImgImp[7].Filepath .. "")
-        end
-        if(check[8] == 0) then
-        ImgNr = Maf(ImgNr + 1);
-        Cmd("Store Image 3." .. ImgNr .. " " .. ImgImp[8].Name .. " Filename=" .. ImgImp[8].FileName .. " filepath=" ..
-        ImgImp[8].Filepath .. "")
-        end
+        -- if(check[5] == 0) then
+        -- ImgNr = Maf(ImgNr + 1);
+        -- Cmd("Store Image 3." .. ImgNr .. " " .. ImgImp[5].Name .. " Filename=" .. ImgImp[5].FileName .. " filepath=" ..
+        -- ImgImp[5].Filepath .. "")
+        -- end
+        -- if(check[6] == 0) then
+        -- ImgNr = Maf(ImgNr + 1);
+        -- Cmd("Store Image 3." .. ImgNr .. " " .. ImgImp[6].Name .. " Filename=" .. ImgImp[6].FileName .. " filepath=" ..
+        -- ImgImp[6].Filepath .. "")
+        -- end
+        -- if(check[7] == 0) then
+        -- ImgNr = Maf(ImgNr + 1);
+        -- Cmd("Store Image 3." .. ImgNr .. " " .. ImgImp[7].Name .. " Filename=" .. ImgImp[7].FileName .. " filepath=" ..
+        -- ImgImp[7].Filepath .. "")
+        -- end
+        -- if(check[8] == 0) then
+        -- ImgNr = Maf(ImgNr + 1);
+        -- Cmd("Store Image 3." .. ImgNr .. " " .. ImgImp[8].Name .. " Filename=" .. ImgImp[8].FileName .. " filepath=" ..
+        -- ImgImp[8].Filepath .. "")
+        -- end
 
     end
     -- End check Images  
@@ -594,8 +597,8 @@ local function Main(display_Handle)
 
     for g in ipairs(SelectedGrp) do
 
-        local LayX = RefX
-        local col_count = 0
+        LayX = RefX
+        col_count = 0
         LayY = Maf(LayY - LayH) -- Max Y Position minus hight from element. 0 are at the Bottom!
 
         if (AppCrea == 0) then
@@ -722,7 +725,7 @@ local function Main(display_Handle)
         E("NrAppeartimeon ")
         E(NrAppeartimeon)
         Cmd( 
-            'Store App ' .. NrAppeartimeon .. ' \'time_on\' Appearance=' .. StAppTimeOn .. '')
+            'Store App ' .. NrAppeartimeon .. ' \'time_on\' Appearance=' .. StAppTimeOn .. ' color=\'0,0.8,0,1\'')
             NrNeed = Maf(NrNeed + 1);
         end
         
@@ -731,7 +734,7 @@ local function Main(display_Handle)
         E("NrAppeartimeoff ")
         E(NrAppeartimeoff)
         Cmd(
-            'Store App ' .. NrAppeartimeoff .. ' \'time_off\' Appearance=' .. StAppTimeOff .. '')
+            'Store App ' .. NrAppeartimeoff .. ' \'time_off\' Appearance=' .. StAppTimeOff .. ' color=\'0,0.8,0,1\'')
             NrNeed = Maf(NrNeed + 1);        
         end
     -- end check Appear. time_on & time off
@@ -995,7 +998,7 @@ local function Main(display_Handle)
          E("NrAppeardelayon ")
          E(NrAppeardelayon)
          Cmd( 
-             'Store App ' .. NrAppeardelayon .. ' \'delay_on\' Appearance=' .. StAppDelayOn .. '')
+             'Store App ' .. NrAppeardelayon .. ' \'delay_on\' Appearance=' .. StAppTimeOn .. ' color=\'0.8,0.8,0,1\'')
              NrNeed = Maf(NrNeed + 1);
          end
          
@@ -1004,7 +1007,7 @@ local function Main(display_Handle)
          E("NrAppeardelayoff ")
          E(NrAppeardelayoff)
          Cmd(
-             'Store App ' .. NrAppeardelayoff .. ' \'delay_off\' Appearance=' .. StAppDelayOff .. '')
+             'Store App ' .. NrAppeardelayoff .. ' \'delay_off\' Appearance=' .. StAppTimeOff .. ' color=\'0.8,0.8,0,1\'')
              NrNeed = Maf(NrNeed + 1);        
          end
      -- end check Appear. delay_on & delay off
@@ -1219,7 +1222,7 @@ local function Main(display_Handle)
          E("NrAppeardelayToon ")
          E(NrAppeardelayToon)
          Cmd( 
-             'Store App ' .. NrAppeardelayToon .. ' \'delayto_on\' Appearance=' .. StAppDelayToOn .. '')
+             'Store App ' .. NrAppeardelayToon .. ' \'delayto_on\' Appearance=' .. StAppTimeOn .. ' color=\'0.8,0.3,0,1\'')
              NrNeed = Maf(NrNeed + 1);
          end
          
@@ -1228,7 +1231,7 @@ local function Main(display_Handle)
          E("NrAppeardelayTooff ")
          E(NrAppeardelayTooff)
          Cmd(
-             'Store App ' .. NrAppeardelayTooff .. ' \'delayto_off\' Appearance=' .. StAppDelayToOff .. '')
+             'Store App ' .. NrAppeardelayTooff .. ' \'delayto_off\' Appearance=' .. StAppTimeOff .. ' color=\'0.8,0.3,0,1\'')
              NrNeed = Maf(NrNeed + 1);        
          end
      -- end check Appear. delay_on & delay off
