@@ -32,8 +32,8 @@ local function Main(display_Handle)
     local ColPath = root.ShowData.GelPools
     local ColGels = ColPath:Children()
 
-    -- Store all Used CustomImage in a Table to find the last free number, and define the Images
-    local Img = root.ShowData.MediaPools.Images:Children()
+    -- Store all Used CustomImage in a Table to find the last free number, and define the Symbols
+    local Img = root.ShowData.MediaPools.Symbols:Children()
     local ImgNr
 
     for k in pairs(Img) do
@@ -47,19 +47,19 @@ local function Main(display_Handle)
     local ImgImp = {{
         Name = "\"on\"",
         FileName = "\"on.png\"",
-        Filepath = "\"../images\""
+        Filepath = "\"Layout_Color\""
     }, {
         Name = "\"off\"",
         FileName = "\"off.png\"",
-        Filepath = "\"../images\""
+        Filepath = "\"Layout_Color\""
     }, {
         Name = "\"time_on\"",
         FileName = "\"time_on.png\"",
-        Filepath = "\"../images\""
+        Filepath = "\"Layout_Color\""
     }, {
         Name = "\"time_off\"",
         FileName = "\"time_off.png\"",
-        Filepath = "\"../images\""
+        Filepath = "\"Layout_Color\""
     }}
 
     -- Store all Used Appearances in a Table to find the last free number
@@ -138,12 +138,12 @@ local function Main(display_Handle)
     local StColCode
     local StAppNameOn
     local StAppNameOff
-    local StAppOn = "\"Showdata.MediaPools.Images.on\""
-    local StAppOff = "\"Showdata.MediaPools.Images.off\""
+    local StAppOn = "\"Showdata.MediaPools.Symbols.on\""
+    local StAppOff = "\"Showdata.MediaPools.Symbols.off\""
     local StAppNameTimeOn
     local StAppNameTimeOff
-    local StAppTimeOn = "\"Showdata.MediaPools.Images.time_on\""
-    local StAppTimeOff = "\"Showdata.MediaPools.Images.time_off\""
+    local StAppTimeOn = "\"Showdata.MediaPools.Symbols.time_on\""
+    local StAppTimeOff = "\"Showdata.MediaPools.Symbols.time_off\""
     local ColNr = 0
     local SelGrp
     local TGrpChoise
@@ -161,7 +161,7 @@ local function Main(display_Handle)
     local OkBtn = ""
     local ValOkBtn = 100
     local count = 0
-    local check = {0,0,0,0}
+    local check = {}
     local appcheck = {0,0}
     local NaLay = "Colors"
     local PopTableGrp = {}
@@ -188,6 +188,9 @@ local function Main(display_Handle)
     local UsedH
 
     local MaxColLgn = 40
+
+    local long_imgimp
+    local add_check = 0
 
     TLayNr = Maf(TLayNr + 1)
     SeqNrStart = SeqNrStart + 1
@@ -408,26 +411,20 @@ local function Main(display_Handle)
     CurrentSeqNr = SeqNrStart
     CurrentMacroNr = MacroNrStart
 
-    --check Images
+    --check Symbols
     for k in pairs(Img) do
-        if ('"' .. Img[k].name .. '"' == ImgImp[1].Name) then
-            check[1] =  1
-        end
-        if ('"' .. Img[k].name .. '"' == ImgImp[2].Name) then
-            check[2] =  1
-        end
-        if ('"' .. Img[k].name .. '"' == ImgImp[3].Name) then
-            check[3] =  1
-        end
-        if ('"' .. Img[k].name .. '"' == ImgImp[4].Name) then
-            check[4] =  1
+        for q in pairs(ImgImp) do
+            if ('"' .. Img[k].name .. '"' == ImgImp[q].Name) then
+                check[q] =  1
+                add_check = add_check + 1
+            end
+            long_imgimp = q
         end
     end
 
-    if (check[1] == 1 and check[2] == 1 and check[3] == 1 and check[4] == 1) then
-        -- if (check[1] == 1 and check[2] == 1 and check[3] == 1 and check[4] == 1 and check[5] == 1 and check[6] == 1 and check[7] == 1 and check[8] == 1) then
+    if (long_imgimp == add_check) then    
         E("file exist")
-    else
+        else
         E("file NOT exist")
         -- Select a disk
         local drives = Root().Temp.DriveCollect
@@ -440,7 +437,7 @@ local function Main(display_Handle)
         end
         -- present a popup for the user choose (Internal may not work)
         PopTableDisk = {
-            title = "Select a disk to import on & off image",
+            title = "Select a disk to import on & off symbols",
             caller = display_Handle,
             items = options,
             selectedValue = "",
@@ -457,34 +454,18 @@ local function Main(display_Handle)
         end
 
         -- grab the export path for the selected drive and append the file name
-
         E("selectedDrive = %s", tostring(selectedDrive))
-
         Cmd("select Drive " .. selectedDrive .. "")
 
-        -- Import Images
-
-        if(check[1] == 0) then
-        ImgNr = Maf(ImgNr + 1);
-        Cmd("Store Image 3." .. ImgNr .. " " .. ImgImp[1].Name .. " Filename=" .. ImgImp[1].FileName .. " filepath=" ..
-                ImgImp[1].Filepath .. "")
+        -- Import Symbols      
+        for k in pairs(ImgImp) do
+            
+            if(check[k] == nil) then
+                ImgNr = Maf(ImgNr + 1);
+                E(ImgNr)
+                Cmd("Store Image 2." .. ImgNr .. " " .. ImgImp[k].Name .. " Filename=" .. ImgImp[k].FileName .. " filepath=" ..    ImgImp[k].Filepath .. "")
+            end
         end
-        if(check[2] == 0) then
-        ImgNr = Maf(ImgNr + 1);
-        Cmd("Store Image 3." .. ImgNr .. " " .. ImgImp[2].Name .. " Filename=" .. ImgImp[2].FileName .. " filepath=" ..
-                ImgImp[2].Filepath .. "")
-        end
-        if(check[3] == 0) then
-        ImgNr = Maf(ImgNr + 1);
-        Cmd("Store Image 3." .. ImgNr .. " " .. ImgImp[3].Name .. " Filename=" .. ImgImp[3].FileName .. " filepath=" ..
-                ImgImp[3].Filepath .. "")
-        end
-        if(check[4] == 0) then
-        ImgNr = Maf(ImgNr + 1);
-        Cmd("Store Image 3." .. ImgNr .. " " .. ImgImp[4].Name .. " Filename=" .. ImgImp[4].FileName .. " filepath=" ..
-                ImgImp[4].Filepath .. "")
-        end
-
     end
     -- End check Images  
 
