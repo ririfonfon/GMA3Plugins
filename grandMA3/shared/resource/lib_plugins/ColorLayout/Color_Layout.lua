@@ -60,22 +60,6 @@ local function Main(display_Handle)
         Name = "\"time_off\"",
         FileName = "\"time_off.png\"",
         Filepath = "\"../images\""
-    -- }, {
-    --     Name = "\"delay_on\"",
-    --     FileName = "\"time_on.png\"",
-    --     Filepath = "\"../images\""
-    -- }, {
-    --     Name = "\"delay_off\"",
-    --     FileName = "\"time_off.png\"",
-    --     Filepath = "\"../images\""
-    -- }, {
-    --     Name = "\"delayto_on\"",
-    --     FileName = "\"timeto_on.png\"",
-    --     Filepath = "\"../images\""
-    -- }, {
-    --     Name = "\"delayto_off\"",
-    --     FileName = "\"timeto_off.png\"",
-    --     Filepath = "\"../images\""
     }}
 
     -- Store all Used Appearances in a Table to find the last free number
@@ -643,7 +627,7 @@ local function Main(display_Handle)
     Cmd("Store Sequence " .. CurrentSeqNr .. " \"" .. "ExecTime\"")
     -- Add Cmd to Squence
     Cmd("set seq " .. CurrentSeqNr .. " cue \"CueZero\" Property Command=\"Set Layout " .. TLayNr .. "." .. LayNr .. " Appearance=" .. NrAppeartimeon .. "\"")
-    Cmd( 'set seq ' .. CurrentSeqNr .. ' cue \''.. 'ExecTime\' Property Command=\'off seq ' .. FirstSeqTime .. ' thru ' .. LastSeqTime .. ' - ' .. CurrentSeqNr .. ' ; set seq ' .. SeqNrStart .. ' thru ' ..SeqNrEnd.. ' cuefade 0 UseExecutorTime=1 ')
+    Cmd('set seq ' .. CurrentSeqNr .. ' cue \''.. 'ExecTime\' Property Command=\'off seq ' .. FirstSeqTime .. ' thru ' .. LastSeqTime .. ' - ' .. CurrentSeqNr .. ' ; set seq ' .. SeqNrStart .. ' thru ' ..SeqNrEnd.. ' cuefade 0 UseExecutorTime=1 ')
     Cmd("set seq " .. CurrentSeqNr .. " cue \"OffCue\" Property Command=\"Set Layout " .. TLayNr .. "." .. LayNr .. " Appearance=" ..NrAppeartimeoff .. "\"")
     Cmd("set seq " .. CurrentSeqNr .. " AutoStart=1 AutoStop=1 MasterGoMode=None AutoFix=0 AutoStomp=0")
     Cmd("set seq " .. CurrentSeqNr .. " Tracking=0 WrapAround=1 ReleaseFirstCue=0 RestartMode=1 CommandEnable=1 XFadeReload=0")
@@ -666,7 +650,7 @@ local function Main(display_Handle)
     Cmd("Store Sequence " .. CurrentSeqNr .. " \"" .. "Time 0\"")
     -- Add Cmd to Squence
     Cmd("set seq " .. CurrentSeqNr .. " cue \"CueZero\" Property Command=\"Set Layout " .. TLayNr .. "." .. LayNr .. " Appearance=" .. NrAppeartimeon .. "\"")
-    Cmd( 'set seq ' .. CurrentSeqNr .. ' cue \''.. 'Time 0\' Property Command=\'off seq ' .. FirstSeqTime .. ' thru ' .. LastSeqTime .. ' - ' .. CurrentSeqNr .. ' ; set seq ' .. SeqNrStart .. ' thru ' ..SeqNrEnd.. ' cuefade 0 UseExecutorTime=0')
+    Cmd('set seq ' .. CurrentSeqNr .. ' cue \''.. 'Time 0\' Property Command=\'off seq ' .. FirstSeqTime .. ' thru ' .. LastSeqTime .. ' - ' .. CurrentSeqNr .. ' ; set seq ' .. SeqNrStart .. ' thru ' ..SeqNrEnd.. ' cuefade 0 UseExecutorTime=0')
     Cmd("set seq " .. CurrentSeqNr .. " cue \"OffCue\" Property Command=\"Set Layout " .. TLayNr .. "." .. LayNr .. " Appearance=" ..NrAppeartimeoff .. "\"")
     Cmd("set seq " .. CurrentSeqNr .. " AutoStart=1 AutoStop=1 MasterGoMode=None AutoFix=0 AutoStomp=0")
     Cmd("set seq " .. CurrentSeqNr .. " Tracking=0 WrapAround=1 ReleaseFirstCue=0 RestartMode=1 CommandEnable=1 XFadeReload=0")
@@ -843,7 +827,7 @@ local function Main(display_Handle)
      Cmd("Store Sequence " .. CurrentSeqNr .. " \"" .. "DelayFrom 0\"")
      -- Add Cmd to Squence
      Cmd("set seq " .. CurrentSeqNr .. " cue \"CueZero\" Property Command=\"Set Layout " .. TLayNr .. "." .. LayNr .. " Appearance=" .. NrAppeardelayon .. "\"")
-     Cmd( 'set seq ' .. CurrentSeqNr .. ' cue \''.. 'DelayFrom 0\' Property Command=\'off seq ' .. FirstSeqDelayFrom .. ' thru ' .. LastSeqDelayFrom .. ' - ' .. CurrentSeqNr .. ' ; set seq ' .. SeqNrStart .. ' thru ' ..SeqNrEnd.. ' cue 1 Part 0.1 delayfromx 0 UseExecutorTime=0')
+     Cmd('set seq ' .. CurrentSeqNr .. ' cue \''.. 'DelayFrom 0\' Property Command=\'off seq ' .. FirstSeqDelayFrom .. ' thru ' .. LastSeqDelayFrom .. ' - ' .. CurrentSeqNr .. ' ; set seq ' .. SeqNrStart .. ' thru ' ..SeqNrEnd.. ' cue 1 Part 0.1 delayfromx 0 UseExecutorTime=0')
      Cmd("set seq " .. CurrentSeqNr .. " cue \"OffCue\" Property Command=\"Set Layout " .. TLayNr .. "." .. LayNr .. " Appearance=" ..NrAppeardelayoff .. "\"")
      Cmd("set seq " .. CurrentSeqNr .. " AutoStart=1 AutoStop=1 MasterGoMode=None AutoFix=0 AutoStomp=0")
      Cmd("set seq " .. CurrentSeqNr .. " Tracking=0 WrapAround=1 ReleaseFirstCue=0 RestartMode=1 CommandEnable=1 XFadeReload=0")
@@ -1011,7 +995,7 @@ local function Main(display_Handle)
      Cmd("Store Sequence " .. CurrentSeqNr .. " \"" .. "DelayTo 0\"")
      -- Add Cmd to Squence
      Cmd("set seq " .. CurrentSeqNr .. " cue \"CueZero\" Property Command=\"Set Layout " .. TLayNr .. "." .. LayNr .. " Appearance=" .. NrAppeardelayToon .. "\"")
-     Cmd( 'set seq ' .. CurrentSeqNr .. ' cue \''.. 'DelayTo 0\' Property Command=\'off seq ' .. FirstSeqDelayTo .. ' thru ' .. LastSeqDelayTo .. ' - ' .. CurrentSeqNr .. ' ; set seq ' .. SeqNrStart .. ' thru ' ..SeqNrEnd.. ' cue 1 Part 0.1 delaytox 0 UseExecutorTime=0')
+     Cmd('set seq ' .. CurrentSeqNr .. ' cue \''.. 'DelayTo 0\' Property Command=\'off seq ' .. FirstSeqDelayTo .. ' thru ' .. LastSeqDelayTo .. ' - ' .. CurrentSeqNr .. ' ; set seq ' .. SeqNrStart .. ' thru ' ..SeqNrEnd.. ' cue 1 Part 0.1 delaytox 0 UseExecutorTime=0')
      Cmd("set seq " .. CurrentSeqNr .. " cue \"OffCue\" Property Command=\"Set Layout " .. TLayNr .. "." .. LayNr .. " Appearance=" ..NrAppeardelayTooff .. "\"")
      Cmd("set seq " .. CurrentSeqNr .. " AutoStart=1 AutoStop=1 MasterGoMode=None AutoFix=0 AutoStomp=0")
      Cmd("set seq " .. CurrentSeqNr .. " Tracking=0 WrapAround=1 ReleaseFirstCue=0 RestartMode=1 CommandEnable=1 XFadeReload=0")
