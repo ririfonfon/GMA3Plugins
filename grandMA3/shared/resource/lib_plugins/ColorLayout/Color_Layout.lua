@@ -6,32 +6,10 @@ Usage
 * Call Plugin "Color_layout"
 
 Releases:
-* 1.0.0.1 - Inital release
-* 1.1.0.1 - Add logic if layout on off exist
-* 1.1.0.2 - Add last free number
-* 1.1.0.3 - bugg remove for multi layout
-* 1.1.1.0 - Add label layout & number layout
-* 1.1.1.1 - Add numerique input
-* 1.1.1.2 - Bugg Layouts Number
-* 1.1.1.3 - Scale dimension w & h in use 
-* 1.1.2.0 - For a lot color add Max_Color_By_Line
-* 1.1.3.0 - gma 3 1.7.2.2 
-* 1.1.3.1 - gma 3 1.8.1.0 
-* 1.1.3.2 - gma 3 1.9.2.2 
 * 1.1.3.3 - Add ALL color , time 
 
 Created by Richard Fontaine "RIRI", April 2020.
 --]] --
-local pluginName = select(1, ...);
-local componentName = select(2, ...);
-local signalTable = select(3, ...);
-local my_handle = select(4, ...);
-
--- ****************************************************************
--- speed up global functions, by creating local cache 
--- this can be very important for high speed plugins
--- caring about performance is imperative for plugins with execute function
--- ****************************************************************
 
 local F = string.format
 local E = Echo
@@ -182,14 +160,6 @@ local function Main(display_Handle)
     local StAppNameTimeOff
     local StAppTimeOn = "\"Showdata.MediaPools.Images.time_on\""
     local StAppTimeOff = "\"Showdata.MediaPools.Images.time_off\""
-    -- local StAppNameDelayOn
-    -- local StAppNameDelayOff
-    -- local StAppDelayOn = "\"Showdata.MediaPools.Images.delay_on\""
-    -- local StAppDelayOff = "\"Showdata.MediaPools.Images.delay_off\""
-    -- local StAppNameDelayToOn
-    -- local StAppNameDelayToOff
-    -- local StAppDelayToOn = "\"Showdata.MediaPools.Images.delayto_on\""
-    -- local StAppDelayToOff = "\"Showdata.MediaPools.Images.delayto_off\""
     local ColNr = 0
     local SelGrp
     local TGrpChoise
@@ -200,8 +170,7 @@ local function Main(display_Handle)
     local GrpNo
     local SelectedGel
     local col_count
-    local Message =
-        "Add Fixture Group and ColorGel\n * set beginning Appearance & Sequence Number\n\n Selected Group(s) are: \n"
+    local Message ="Add Fixture Group and ColorGel\n * set beginning Appearance & Sequence Number\n\n Selected Group(s) are: \n"
     local ColGelBtn = "Add ColorGel"
     local SeqNrText = "Seq_Start_Nr"
     local MacroNrText = "Macro_Start_Nr"
@@ -387,8 +356,7 @@ local function Main(display_Handle)
         E("User Canceled")
         goto canceled
     end
-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
     -- End Main Box  
 
     -- Choise Fixture Group  
@@ -448,8 +416,7 @@ local function Main(display_Handle)
     ColGelBtn = "ColorGel " .. ColGels[SelColGel + 1].name .. " selected"
     goto MainBox
     -- End ColorGel	
-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
     -- Magic Stuff
     ::doMagicStuff::
 
@@ -471,18 +438,6 @@ local function Main(display_Handle)
         if ('"' .. Img[k].name .. '"' == ImgImp[4].Name) then
             check[4] =  1
         end
-        -- if ('"' .. Img[k].name .. '"' == ImgImp[5].Name) then
-        --     check[5] =  1
-        -- end
-        -- if ('"' .. Img[k].name .. '"' == ImgImp[6].Name) then
-        --     check[6] =  1
-        -- end
-        -- if ('"' .. Img[k].name .. '"' == ImgImp[7].Name) then
-        --     check[7] =  1
-        -- end
-        -- if ('"' .. Img[k].name .. '"' == ImgImp[8].Name) then
-        --     check[8] =  1
-        -- end
     end
 
     if (check[1] == 1 and check[2] == 1 and check[3] == 1 and check[4] == 1) then
@@ -545,31 +500,10 @@ local function Main(display_Handle)
         Cmd("Store Image 3." .. ImgNr .. " " .. ImgImp[4].Name .. " Filename=" .. ImgImp[4].FileName .. " filepath=" ..
                 ImgImp[4].Filepath .. "")
         end
-        -- if(check[5] == 0) then
-        -- ImgNr = Maf(ImgNr + 1);
-        -- Cmd("Store Image 3." .. ImgNr .. " " .. ImgImp[5].Name .. " Filename=" .. ImgImp[5].FileName .. " filepath=" ..
-        -- ImgImp[5].Filepath .. "")
-        -- end
-        -- if(check[6] == 0) then
-        -- ImgNr = Maf(ImgNr + 1);
-        -- Cmd("Store Image 3." .. ImgNr .. " " .. ImgImp[6].Name .. " Filename=" .. ImgImp[6].FileName .. " filepath=" ..
-        -- ImgImp[6].Filepath .. "")
-        -- end
-        -- if(check[7] == 0) then
-        -- ImgNr = Maf(ImgNr + 1);
-        -- Cmd("Store Image 3." .. ImgNr .. " " .. ImgImp[7].Name .. " Filename=" .. ImgImp[7].FileName .. " filepath=" ..
-        -- ImgImp[7].Filepath .. "")
-        -- end
-        -- if(check[8] == 0) then
-        -- ImgNr = Maf(ImgNr + 1);
-        -- Cmd("Store Image 3." .. ImgNr .. " " .. ImgImp[8].Name .. " Filename=" .. ImgImp[8].FileName .. " filepath=" ..
-        -- ImgImp[8].Filepath .. "")
-        -- end
 
     end
     -- End check Images  
-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
     -- Create Appearances/Sequences
 
     -- Create new Layout View
@@ -663,8 +597,7 @@ local function Main(display_Handle)
         LayY = Maf(LayY - 20) -- Add offset for Layout Element distance
     end
     -- end Appearances/Sequences 
-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
     -- check Appear. time_on & time off
     E("check Appear.")
     for k in pairs(App) do
@@ -867,9 +800,8 @@ local function Main(display_Handle)
     -- end Sequences time ?
 
     -- end timming / Sequences
-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-     -- check Appear. delay_on & delay off
+
+    -- check Appear. delay_on & delay off
      E("check Appear.")
      for k in pairs(App) do
          if ('"' .. App[k].name .. '"' == "delay_on") then 
@@ -1036,8 +968,7 @@ local function Main(display_Handle)
      -- end Sequences DelayFrom ?
 
      -- end timming / Sequences
-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
      -- check Appear. delayto_on & delayto_off
      E("check Appear.")
      for k in pairs(App) do
@@ -1205,9 +1136,8 @@ local function Main(display_Handle)
      -- end Sequences DelayTo ?
  
      -- end timming / Sequences
-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-    -- add All Color
+
+     -- add All Color
     LayY = TLay[TLayNrRef].DimensionH / 2
     LayY = Maf(LayY + 20) -- Add offset for Layout Element distance
     LayX = RefX
@@ -1257,8 +1187,7 @@ local function Main(display_Handle)
     end
 
     -- end All Color
-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
     for k in pairs(root.ShowData.DataPools.Default.Layouts:Children()) do
         if (Maf(TLayNr) == Maf(tonumber(root.ShowData.DataPools.Default.Layouts:Children()[k].NO))) then
             TLayNrRef = k
