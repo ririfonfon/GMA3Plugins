@@ -20,11 +20,6 @@ local function Main(display_Handle)
 
     local root = Root();
 
-    -- Store all Display Settings in a Table and define the middle of Display 1
-    local DisPath = root.GraphicsRoot.PultCollect[1].DisplayCollect:Children()
-    local DisMiW = Maf(DisPath[1].W / 2)
-    local DisMiH = Maf(DisPath[1].H / 2)
-
     -- Store all Groups in a Table
     local FixtureGroups = root.ShowData.DataPools.Default.Groups:Children()
 
@@ -166,6 +161,18 @@ local function Main(display_Handle)
         TIconNr = Maf(TIcon[k].NO)
     end
 
+    -- Store all Used MAtricks in a Table to find the last free number
+    local MatrickNr = root.ShowData.DataPools.Default.MAtricks:Children()
+    local MatrickNrStart
+    for k in pairs(MatrickNr) do
+        MatrickNrStart = Maf(MatrickNr[k].NO)
+    end
+    if MatrickNrStart == nil then
+        MatrickNrStart = 0
+    end
+
+    MatrickNrStart = Maf(MatrickNrStart + 1)
+
     -- variables
     local LayX
     local RefX = Maf(0 - TLay[TLayNrRef].DimensionW / 2)
@@ -282,6 +289,11 @@ local function Main(display_Handle)
             value = MaxColLgn,
             maxTextLength = 2,
             vkPlugin = "TextInputNumOnly"
+        }, {
+            name = 'Matrick_Start_Nr',
+            value = MatrickNrStart,
+            maxTextLength = 4,
+            vkPlugin = "TextInputNumOnly"
         }}
 
     })
@@ -313,6 +325,7 @@ local function Main(display_Handle)
             TLayNr = box.inputs.Layout_Nr
             NaLay = box.inputs.Layout_Name
             MaxColLgn = box.inputs.Max_Color_By_Line
+            MatrickNrStart = box.inputs.Matrick_Start_Nr
             goto MainBox
         else
             E("add Group")
@@ -322,6 +335,7 @@ local function Main(display_Handle)
             TLayNr = box.inputs.Layout_Nr
             NaLay = box.inputs.Layout_Name
             MaxColLgn = box.inputs.Max_Color_By_Line
+            MatrickNrStart = box.inputs.Matrick_Start_Nr
             goto addGroup
         end
 
@@ -339,6 +353,7 @@ local function Main(display_Handle)
         TLayNr = box.inputs.Layout_Nr
         NaLay = box.inputs.Layout_Name
         MaxColLgn = box.inputs.Max_Color_By_Line
+        MatrickNrStart = box.inputs.Matrick_Start_Nr
         goto addColorGel
 
     elseif (box.result == 1) then
@@ -350,6 +365,7 @@ local function Main(display_Handle)
             TLayNr = box.inputs.Layout_Nr
             NaLay = box.inputs.Layout_Name
             MaxColLgn = box.inputs.Max_Color_By_Line
+            MatrickNrStart = box.inputs.Matrick_Start_Nr
             goto addColorGel
 
         elseif next(SelectedGrp) == nil then
@@ -360,6 +376,7 @@ local function Main(display_Handle)
             TLayNr = box.inputs.Layout_Nr
             NaLay = box.inputs.Layout_Name
             MaxColLgn = box.inputs.Max_Color_By_Line
+            MatrickNrStart = box.inputs.Matrick_Start_Nr
             goto addGroup
         else
             SeqNrStart = box.inputs.Sequence_Start_Nr
@@ -368,6 +385,7 @@ local function Main(display_Handle)
             TLayNr = box.inputs.Layout_Nr
             NaLay = box.inputs.Layout_Name
             MaxColLgn = box.inputs.Max_Color_By_Line
+            MatrickNrStart = box.inputs.Matrick_Start_Nr
             E("now i do some Magic stuff...")
             goto doMagicStuff
         end
@@ -503,6 +521,9 @@ local function Main(display_Handle)
     end
     -- End check Images  
 
+    -- Create MAtricks
+    Cmd('Store MAtricks ' .. MatrickNrStart .. ' /nu')
+    Cmd('Set Matricks ' .. MatrickNrStart .. ' name = ' .. NaLay .. ' /nu')
     -- Create Appearances/Sequences
 
     -- Create new Layout View
@@ -560,6 +581,7 @@ local function Main(display_Handle)
             Cmd("Store Sequence " .. CurrentSeqNr .. " \"" .. StringColName .. " " .. SelectedGrp[g]:gsub('\'', '') .. "\"")
             Cmd("Store Sequence " .. CurrentSeqNr .. " Cue 1 Part 0.1")
             Cmd("Assign Group " .. GrpNo .. " At Sequence " .. CurrentSeqNr .. " Cue 1 Part 0.1")
+            Cmd('Assign MAtricks ' .. MatrickNrStart .. ' At Sequence ' .. CurrentSeqNr .. ' Cue 1 Part 0.1 /nu')
             -- Add Cmd to Squence
             Cmd("set seq " .. CurrentSeqNr .. " cue \"CueZero\" Property Command=\"Set Layout " .. TLayNr .. "." .. LayNr .. " Appearance=" .. NrNeed .. "\"")
             Cmd("set seq " .. CurrentSeqNr .. " cue \"OffCue\" Property Command=\"Set Layout " .. TLayNr .. "." .. LayNr .. " Appearance=" .. NrNeed + 1 .. "\"")
@@ -599,6 +621,7 @@ local function Main(display_Handle)
 
     -- check Appear. time_on & time off
     E("check Appear.")
+
     for k in pairs(App) do
         if ('"' .. App[k].name .. '"' == "time_on") then 
             appcheck[1] = 1
