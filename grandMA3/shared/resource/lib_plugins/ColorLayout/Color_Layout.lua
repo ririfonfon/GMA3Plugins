@@ -1,4 +1,4 @@
---[[--
+--[[
 Color_Layout v1.1.3.3
 Please note that this will likly break in future version of the console. and to use at your own risk.
 
@@ -9,7 +9,7 @@ Releases:
 * 1.1.3.3 - Add ALL color , time 
 
 Created by Richard Fontaine "RIRI", April 2020.
---]] --
+--]]
 
 local F = string.format
 local E = Echo
@@ -45,22 +45,53 @@ local function Main(display_Handle)
     end
 
     local ImgImp = {{
-        Name = "\"on\"",
+        Name =     "\"on\"",
         FileName = "\"on.png\"",
-        Filepath = "\"Layout_Color\""
+        Filepath = "\"../Layout_Color\""
     }, {
-        Name = "\"off\"",
+        Name =     "\"off\"",
         FileName = "\"off.png\"",
-        Filepath = "\"Layout_Color\""
+        Filepath = "\"../Layout_Color\""
     }, {
-        Name = "\"time_on\"",
+        Name =     "\"time_on\"",
         FileName = "\"time_on.png\"",
+        Filepath = "\"../Layout_Color\""
+    }, {
+        Name =     "\"time_off\"",
+        FileName = "\"time_off.png\"",
+        Filepath = "\"../Layout_Color\""
+    }, {
+        Name =     "\"exec_time_on\"",
+        FileName = "\"exec_time_on.png\"",
+        Filepath = "\"../Layout_Color\""
+    }, {
+        Name =     "\"exec_time_off\"",
+        FileName = "\"exec_time_off.png\"",
+        Filepath = "\"../Layout_Color\""
+    }, {
+        Name =     "\"calcul_on\"",
+        FileName = "\"calcul_on.png\"",
+        Filepath = "\"../Layout_Color\""
+    }, {
+        Name =     "\"calcul_off\"",
+        FileName = "\"calcul_off.png\"",
+        Filepath = "\"../Layout_Color\""
+    
+    }}
+
+    --[[
+    }, {
+        Name =     "\"_on\"",
+        FileName = "\"_on.png\"",
         Filepath = "\"Layout_Color\""
     }, {
-        Name = "\"time_off\"",
-        FileName = "\"time_off.png\"",
+        Name =     "\"_off\"",
+        FileName = "\"_off.png\"",
         Filepath = "\"Layout_Color\""
-    }}
+
+    --]]
+        
+
 
     -- Store all Used Appearances in a Table to find the last free number
     local App = root.ShowData.Appearances:Children()
@@ -70,6 +101,25 @@ local function Main(display_Handle)
         AppNr = Maf(App[k].NO)
     end
     AppNr = AppNr + 1
+
+    local NrAppear
+    local NrAppeartimeon
+    local NrAppeartimeoff
+    local NrAppeardelayon
+    local NrAppeardelayoff
+    local NrAppeardelayToon
+    local NrAppeardelayTooff
+    local NrNeed
+    local AppCrea = 0
+    local StAppNameOn
+    local StAppNameOff
+    local StAppOn = "\"Showdata.MediaPools.Symbols.on\""
+    local StAppOff = "\"Showdata.MediaPools.Symbols.off\""
+    local StAppNameTimeOn
+    local StAppNameTimeOff
+    local StAppTimeOn = "\"Showdata.MediaPools.Symbols.time_on\""
+    local StAppTimeOff = "\"Showdata.MediaPools.Symbols.time_off\""
+
 
     -- Store all Use Layout in a Table to find the last free number
     local TLay = root.ShowData.DataPools.Default.Layouts:Children()
@@ -123,27 +173,10 @@ local function Main(display_Handle)
     local LayW = 100
     local LayH = 100
     local LayNr = 1
-    local NrAppear
-    local NrAppeartimeon
-    local NrAppeartimeoff
-    local NrAppeardelayon
-    local NrAppeardelayoff
-    local NrAppeardelayToon
-    local NrAppeardelayTooff
-    local NrNeed
-    local AppCrea = 0
     local TCol
     local StColName
     local StringColName
     local StColCode
-    local StAppNameOn
-    local StAppNameOff
-    local StAppOn = "\"Showdata.MediaPools.Symbols.on\""
-    local StAppOff = "\"Showdata.MediaPools.Symbols.off\""
-    local StAppNameTimeOn
-    local StAppNameTimeOff
-    local StAppTimeOn = "\"Showdata.MediaPools.Symbols.time_on\""
-    local StAppTimeOff = "\"Showdata.MediaPools.Symbols.time_off\""
     local ColNr = 0
     local SelGrp
     local TGrpChoise
@@ -463,6 +496,7 @@ local function Main(display_Handle)
             if(check[k] == nil) then
                 ImgNr = Maf(ImgNr + 1);
                 E(ImgNr)
+                E(k)
                 Cmd("Store Image 2." .. ImgNr .. " " .. ImgImp[k].Name .. " Filename=" .. ImgImp[k].FileName .. " filepath=" ..    ImgImp[k].Filepath .. "")
             end
         end
