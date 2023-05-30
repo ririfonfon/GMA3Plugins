@@ -39,64 +39,16 @@ local function Main(display_Handle)
         ImgNr = 0
     end
 
-    local ImgImp = {{
-        Name =     "\"on\"",
-        FileName = "\"on.png\"",
-        Filepath = "\"../Layout_Color\"",
-        Nr =''
-    }, {
-        Name =     "\"off\"",
-        FileName = "\"off.png\"",
-        Filepath = "\"../Layout_Color\"",
-        Nr =''
-    }, {
-        Name =     "\"time_on\"",
-        FileName = "\"time_on.png\"",
-        Filepath = "\"../Layout_Color\"",
-        Nr ='',
-        RGBref = ' color=\'0,0.8,0,1\'' 
-    }, {
-        Name =     "\"time_off\"",
-        FileName = "\"time_off.png\"",
-        Filepath = "\"../Layout_Color\"",
-        Nr ='',
-        RGBref = ' color=\'0,0.8,0,1\'' 
-    }, {
-        Name =     "\"exec_time_on\"",
-        FileName = "\"exec_time_on.png\"",
-        Filepath = "\"../Layout_Color\"",
-        Nr ='',
-        RGBref = ' color=\'0,0.8,0,1\'' 
-    }, {
-        Name =     "\"exec_time_off\"",
-        FileName = "\"exec_time_off.png\"",
-        Filepath = "\"../Layout_Color\"",
-        Nr ='',
-        RGBref = ' color=\'0,0.8,0,1\'' 
-    }, {
-        Name =     "\"calcul_on\"",
-        FileName = "\"calcul_on.png\"",
-        Filepath = "\"../Layout_Color\"", 
-    }, {
-        Name =     "\"calcul_off\"",
-        FileName = "\"calcul_off.png\"",
-        Filepath = "\"../Layout_Color\"",
-    
-    }}
-
-    --[[
-    }, {
-        Name =     "\"_on\"",
-        FileName = "\"_on.png\"",
-        Filepath = "\"Layout_Color\""
-    }, {
-        Name =     "\"_off\"",
-        FileName = "\"_off.png\"",
-        Filepath = "\"Layout_Color\""
-
-    --]]
-    
-    
+    local ImgImp = {
+        {Name =     "\"on\"",               FileName = "\"on.png\"",            Filepath = "\"../Layout_Color\"", }, 
+        {Name =     "\"off\"",              FileName = "\"off.png\"",           Filepath = "\"../Layout_Color\"", }, 
+        {Name =     "\"time_on\"",          FileName = "\"time_on.png\"",       Filepath = "\"../Layout_Color\"", }, 
+        {Name =     "\"time_off\"",         FileName = "\"time_off.png\"",      Filepath = "\"../Layout_Color\"", }, 
+        {Name =     "\"exec_time_on\"",     FileName = "\"exec_time_on.png\"",  Filepath = "\"../Layout_Color\"", }, 
+        {Name =     "\"exec_time_off\"",    FileName = "\"exec_time_off.png\"", Filepath = "\"../Layout_Color\"", }, 
+        {Name =     "\"calcul_on\"",        FileName = "\"calcul_on.png\"",     Filepath = "\"../Layout_Color\"", }, 
+        {Name =     "\"calcul_off\"",       FileName = "\"calcul_off.png\"",    Filepath = "\"../Layout_Color\"", }
+    }    
     
     -- Store all Used Appearances in a Table to find the last free number
     local App = root.ShowData.Appearances:Children()
@@ -108,22 +60,12 @@ local function Main(display_Handle)
     AppNr = AppNr + 1
     
     local NrAppear
-    local NrAppeartimeon
-    local NrAppeartimeoff
-    local NrAppeardelayon
-    local NrAppeardelayoff
-    local NrAppeardelayToon
-    local NrAppeardelayTooff
     local NrNeed
     local AppCrea = 0
     local StAppNameOn
     local StAppNameOff
-    local StAppNameTimeOn
-    local StAppNameTimeOff
     local StAppOn =         '\"Showdata.MediaPools.Symbols.on\"'
     local StAppOff =        '\"Showdata.MediaPools.Symbols.off\"'
-    local StAppTimeOn =     '\"Showdata.MediaPools.Symbols.time_on\"'
-    local StAppTimeOff =    '\"Showdata.MediaPools.Symbols.time_off\"'
     local StAppExecOn =     '\"Showdata.MediaPools.Symbols.exec_time_on\"'
     local StAppExecOff =    '\"Showdata.MediaPools.Symbols.exec_time_off\"'
     local StAppCalculOn =   '\"Showdata.MediaPools.Symbols.calcul_on\"'
@@ -688,7 +630,7 @@ local function Main(display_Handle)
     end
     -- end Appearances/Sequences 
 
-    -- check Appear. time ....
+    -- check Appear. time .... TODO trouver procedure 
     -- E("check Appear.")
     -- add_check = 0
     -- for k in pairs(App) do
