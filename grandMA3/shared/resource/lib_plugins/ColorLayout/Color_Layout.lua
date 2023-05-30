@@ -199,7 +199,7 @@ local function Main(display_Handle)
     local ColNr = 0
     local SelGrp
     local TGrpChoise
-    local ChoGel
+    local ChoGel = {}
     local SelColGel
     local SelectedGrp = {}
     local SelectedGrpNo = {}
@@ -246,6 +246,20 @@ local function Main(display_Handle)
     TLayNr = Maf(TLayNr + 1)
     SeqNrStart = SeqNrStart + 1
     MacroNrStart = MacroNrStart + 1
+
+    for k in ipairs(ColGels) do
+        table.insert(ChoGel, "'" .. ColGels[k].name .. "'")
+    end
+
+    local Swipe_Color = {
+        {name ="Gels Choose", selectedValue=11, 
+            values={
+                ["'" .. ColGels[1].name .. "'"]=1,["'" .. ColGels[2].name .. "'"]=2,["'" .. ColGels[3].name .. "'"]=3,["'" .. ColGels[4].name .. "'"]=4,["'" .. ColGels[5].name .. "'"]=5,
+                ["'" .. ColGels[6].name .. "'"]=6,["'" .. ColGels[7].name .. "'"]=7,["'" .. ColGels[8].name .. "'"]=8,["'" .. ColGels[9].name .. "'"]=9,["'" .. ColGels[10].name .. "'"]=10,
+                ["'" .. ColGels[11].name .. "'"]=11
+            },type=0
+        }
+    }
 
     -- Main Box
     ::MainBox::
@@ -305,7 +319,8 @@ local function Main(display_Handle)
             value = MatrickNrStart,
             maxTextLength = 4,
             vkPlugin = "TextInputNumOnly"
-        }}
+        }},
+        selectors = Swipe_Color
 
     })
 
@@ -443,10 +458,10 @@ local function Main(display_Handle)
     -- Create a Choise for each Group in Table
     ::addColorGel::
 
-    ChoGel = {};
-    for k in ipairs(ColGels) do
-        table.insert(ChoGel, "'" .. ColGels[k].name .. "'")
-    end
+    -- ChoGel = {};
+    -- for k in ipairs(ColGels) do
+    --     table.insert(ChoGel, "'" .. ColGels[k].name .. "'")
+    -- end
 
     -- Setup the Messagebox
     PopTableGel = {
