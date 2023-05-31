@@ -85,8 +85,8 @@ local function main()
     )
 
     -- print results:
-    Printf("Success = "..tostring(resultTable.success))
-    Printf("Result = "..resultTable.result)
+    E("Success = "..tostring(resultTable.success))
+    E("Result = "..resultTable.result)
     for k,v in pairs(resultTable.states) do
         if v then
             E(k)
