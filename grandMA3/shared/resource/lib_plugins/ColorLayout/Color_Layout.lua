@@ -211,7 +211,7 @@ local function Main(display_Handle)
     local SeqNrText = "Seq_Start_Nr"
     local MacroNrText = "Macro_Start_Nr"
     local OkBtn = ""
-    local ValOkBtn = 100
+    local ValOkBtn = 12
     local count = 0
     local check = {}
     local NaLay = "Colors"
@@ -252,7 +252,7 @@ local function Main(display_Handle)
     end
 
     local Swipe_Color = {
-        {name ="Gels Choose", selectedValue=11, 
+        {name ="____GELS__CHOOSE____GELS__CHOOSE____GELS__CHOOSE____GELS__CHOOSE____GELS__CHOOSE____", selectedValue=11, 
             values={
                 ["'" .. ColGels[1].name .. "'"]=1,["'" .. ColGels[2].name .. "'"]=2,["'" .. ColGels[3].name .. "'"]=3,["'" .. ColGels[4].name .. "'"]=4,["'" .. ColGels[5].name .. "'"]=5,
                 ["'" .. ColGels[6].name .. "'"]=6,["'" .. ColGels[7].name .. "'"]=7,["'" .. ColGels[8].name .. "'"]=8,["'" .. ColGels[9].name .. "'"]=9,["'" .. ColGels[10].name .. "'"]=10,
@@ -271,9 +271,6 @@ local function Main(display_Handle)
         commands = {{
             name = 'Add Group',
             value = 11
-        }, {
-            name = ColGelBtn,
-            value = 12
         }, {
             name = OkBtn,
             value = ValOkBtn
@@ -352,6 +349,7 @@ local function Main(display_Handle)
             NaLay = box.inputs.Layout_Name
             MaxColLgn = box.inputs.Max_Color_By_Line
             MatrickNrStart = box.inputs.Matrick_Start_Nr
+            SelectedGel = box.selectors.____GELS__CHOOSE____GELS__CHOOSE____GELS__CHOOSE____GELS__CHOOSE____GELS__CHOOSE____
             goto MainBox
         else
             E("add Group")
@@ -362,39 +360,13 @@ local function Main(display_Handle)
             NaLay = box.inputs.Layout_Name
             MaxColLgn = box.inputs.Max_Color_By_Line
             MatrickNrStart = box.inputs.Matrick_Start_Nr
+            SelectedGel = box.selectors.____GELS__CHOOSE____GELS__CHOOSE____GELS__CHOOSE____GELS__CHOOSE____GELS__CHOOSE____
             goto addGroup
         end
 
-    elseif (box.result == 12) then
-        ValOkBtn = Maf(ValOkBtn / 10)
-        if (ValOkBtn < 10) then
-            ValOkBtn = 1
-            OkBtn = "OK Let's GO :)"
-        end
-
-        E("add ColorGel")
-        SeqNrStart = box.inputs.Sequence_Start_Nr
-        MacroNrStart = box.inputs.Macro_Start_Nr
-        AppNr = box.inputs.Appearance_Start_Nr
-        TLayNr = box.inputs.Layout_Nr
-        NaLay = box.inputs.Layout_Name
-        MaxColLgn = box.inputs.Max_Color_By_Line
-        MatrickNrStart = box.inputs.Matrick_Start_Nr
-        goto addColorGel
-
     elseif (box.result == 1) then
-        if SelectedGel == nil then
-            Co("no ColorGel are selected!")
-            SeqNrStart = box.inputs.Sequence_Start_Nr
-            MacroNrStart = box.inputs.Macro_Start_Nr
-            AppNr = box.inputs.Appearance_Start_Nr
-            TLayNr = box.inputs.Layout_Nr
-            NaLay = box.inputs.Layout_Name
-            MaxColLgn = box.inputs.Max_Color_By_Line
-            MatrickNrStart = box.inputs.Matrick_Start_Nr
-            goto addColorGel
-
-        elseif next(SelectedGrp) == nil then
+       
+        if next(SelectedGrp) == nil then
             Co("no Group are added!")
             SeqNrStart = box.inputs.Sequence_Start_Nr
             MacroNrStart = box.inputs.Macro_Start_Nr
@@ -403,6 +375,7 @@ local function Main(display_Handle)
             NaLay = box.inputs.Layout_Name
             MaxColLgn = box.inputs.Max_Color_By_Line
             MatrickNrStart = box.inputs.Matrick_Start_Nr
+            SelectedGel = box.selectors.____GELS__CHOOSE____GELS__CHOOSE____GELS__CHOOSE____GELS__CHOOSE____GELS__CHOOSE____
             goto addGroup
         else
             SeqNrStart = box.inputs.Sequence_Start_Nr
@@ -412,6 +385,7 @@ local function Main(display_Handle)
             NaLay = box.inputs.Layout_Name
             MaxColLgn = box.inputs.Max_Color_By_Line
             MatrickNrStart = box.inputs.Matrick_Start_Nr
+            SelectedGel = box.selectors.____GELS__CHOOSE____GELS__CHOOSE____GELS__CHOOSE____GELS__CHOOSE____GELS__CHOOSE____
             E("now i do some Magic stuff...")
             goto doMagicStuff
         end
@@ -456,30 +430,6 @@ local function Main(display_Handle)
 
     -- Choise ColorGel  
     -- Create a Choise for each Group in Table
-    ::addColorGel::
-
-    -- ChoGel = {};
-    -- for k in ipairs(ColGels) do
-    --     table.insert(ChoGel, "'" .. ColGels[k].name .. "'")
-    -- end
-
-    -- Setup the Messagebox
-    PopTableGel = {
-        title = "ColorGel",
-        caller = display_Handle,
-        items = ChoGel,
-        selectedValue = "",
-        add_args = {
-            FilterSupport = "Yes"
-        }
-    }
-    SelColGel = PopupInput(PopTableGel)
-    SelectedGel = ColGels[SelColGel + 1].name;
-    SelectedGelNr = SelColGel + 1
-    E("ColorGel " .. ColGels[SelColGel + 1].name .. " selected")
-    ColGelBtn = "ColorGel " .. ColGels[SelColGel + 1].name .. " selected"
-    goto MainBox
-    -- End ColorGel	
 
     -- Magic Stuff
     ::doMagicStuff::
