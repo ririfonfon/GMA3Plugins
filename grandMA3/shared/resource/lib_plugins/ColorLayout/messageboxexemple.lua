@@ -1,46 +1,16 @@
+local E = Echo
+
 local function main()
     -- create inputs:
     local states = {
-        {name = "State Albator", state = true, group = 1},
-        {name = "State Bgfdfgjdsg,d", state = false, group = 1},
-        {name = "State Csdqgsqgqsdgq", state = true, group = 2},
-        {name = "State D123354656654", state = false, group = 2},
-        {name = "State Asfsfdsfqs", state = true, group = 1},
-        {name = "State Bnfiohjidshfbsdj", state = false, group = 1},
-        {name = "State Cuujdgsqhqhdqskldq", state = true, group = 2},
-        {name = "State D", state = false, group = 2},
-        {name = "State A", state = true, group = 1},
-        {name = "State B", state = false, group = 1},
-        {name = "State C", state = true, group = 2},
-        {name = "State D", state = false, group = 2},
-        {name = "State A", state = true, group = 1},
-        {name = "State B", state = false, group = 1},
-        {name = "State C", state = true, group = 2},
-        {name = "State D", state = false, group = 2},
-        {name = "State A", state = true, group = 1},
-        {name = "State B", state = false, group = 1},
-        {name = "State C", state = true, group = 2},
-        {name = "State D", state = false, group = 2},
-        {name = "State A", state = true, group = 1},
-        {name = "State B", state = false, group = 1},
-        {name = "State C", state = true, group = 2},
-        {name = "State D", state = false, group = 2},
-        {name = "State A", state = true, group = 1},
-        {name = "State B", state = false, group = 1},
-        {name = "State C", state = true, group = 2},
-        {name = "State D", state = false, group = 2},
-        {name = "State A", state = true, group = 1},
-        {name = "State B", state = false, group = 1},
-        {name = "State C", state = true, group = 2},
-        {name = "State D", state = false, group = 2},
-        {name = "State A", state = true, group = 1},
-        {name = "State B", state = false, group = 1},
-        {name = "State C", state = true, group = 2},
-        {name = "State D", state = false, group = 2},
-        {name = "State A", state = true, group = 1},
-        {name = "State B", state = false, group = 1},
-        {name = "State C", state = true, group = 2},
-        {name = "State D", state = false, group = 2},
+        {name = "State A", state = false},
+        {name = "State B", state = false},
+        {name = "State C", state = false},
+        {name = "State D", state = false},
+        {name = "State E", state = false},
+        {name = "State F", state = false},
+        {name = "State G", state = false},
+        -- {name = "State D", state = false, group = 2},
     }
     local inputs = {
         {name = "Numbers Only", value = "1234", whiteFilter = "0123456789"},
@@ -51,6 +21,10 @@ local function main()
         { name="Swipe Selector", selectedValue=2, values={["Test"]=1,["Test2"]=2}, type=0},
         { name="Radio Selector", selectedValue=2, values={["Test"]=1,["Test2"]=2}, type=1}
     }
+
+    for k in ipairs(states) do
+        E(states[k].name)
+    end
 
     -- open messagebox:
     local resultTable =
