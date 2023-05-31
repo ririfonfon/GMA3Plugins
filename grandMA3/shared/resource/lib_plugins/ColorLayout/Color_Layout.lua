@@ -198,7 +198,7 @@ local function Main(display_Handle)
     local StColCode
     local ColNr = 0
     local SelGrp
-    local TGrpChoise
+    local TGrpChoise ={}
     local ChoGel = {}
     local SelColGel
     local SelectedGrp = {}
@@ -243,6 +243,9 @@ local function Main(display_Handle)
     local long_imgimp
     local add_check = 0
 
+    local result_nr = {}
+    local group_number
+
     TLayNr = Maf(TLayNr + 1)
     SeqNrStart = SeqNrStart + 1
     MacroNrStart = MacroNrStart + 1
@@ -252,7 +255,7 @@ local function Main(display_Handle)
     end
 
     local Swipe_Color = {
-        {name ="____GELS__CHOOSE____GELS__CHOOSE____GELS__CHOOSE____GELS__CHOOSE____GELS__CHOOSE____", selectedValue=11, 
+        {name ="Gels_Choose", selectedValue=11, 
             values={
                 ["'" .. ColGels[1].name .. "'"]=1,["'" .. ColGels[2].name .. "'"]=2,["'" .. ColGels[3].name .. "'"]=3,["'" .. ColGels[4].name .. "'"]=4,["'" .. ColGels[5].name .. "'"]=5,
                 ["'" .. ColGels[6].name .. "'"]=6,["'" .. ColGels[7].name .. "'"]=7,["'" .. ColGels[8].name .. "'"]=8,["'" .. ColGels[9].name .. "'"]=9,["'" .. ColGels[10].name .. "'"]=10,
@@ -261,6 +264,63 @@ local function Main(display_Handle)
         }
     }
 
+
+    local N_FG
+    for k in ipairs(FixtureGroups) do
+    N_FG = tonumber(FixtureGroups[k].NO)
+    end
+    local N_digit = 1
+    if N_FG > 1000 then
+        N_digit = 4
+    elseif N_FG > 100 then
+        N_digit = 3
+    elseif N_FG > 10 then
+        N_digit =2
+    end
+
+    local states = {}
+    for k in ipairs(FixtureGroups) do
+        if N_digit == 1 then
+            TGrpChoise[k] = {["name"] =  FixtureGroups[k].NO .. ' ' .. FixtureGroups[k].name  , ["state"] = false}
+            table.insert(states, TGrpChoise[k])
+        elseif N_digit == 2 then
+            if Maf(FixtureGroups[k].NO) < 10 then
+                TGrpChoise[k] = {["name"] = '0' .. FixtureGroups[k].NO .. ' ' .. FixtureGroups[k].name  , ["state"] = false}
+                table.insert(states, TGrpChoise[k]) 
+            elseif Maf(FixtureGroups[k].NO) >9 then
+                TGrpChoise[k] = {["name"] =  FixtureGroups[k].NO .. ' ' .. FixtureGroups[k].name  , ["state"] = false}
+                table.insert(states, TGrpChoise[k])   
+            end
+        elseif N_digit == 3 then
+            if Maf(FixtureGroups[k].NO) < 10 then
+                TGrpChoise[k] = {["name"] = '00' .. FixtureGroups[k].NO .. ' ' .. FixtureGroups[k].name  , ["state"] = false}
+                table.insert(states, TGrpChoise[k])
+            elseif Maf(FixtureGroups[k].NO) >9 and Maf(FixtureGroups[k].NO) <100 then
+                TGrpChoise[k] = {["name"] = '0' .. FixtureGroups[k].NO .. ' ' .. FixtureGroups[k].name  , ["state"] = false}
+                table.insert(states, TGrpChoise[k])
+            elseif Maf(FixtureGroups[k].NO) > 99 and Maf(FixtureGroups[k].NO) < 1000 then
+                TGrpChoise[k] = {["name"] =  FixtureGroups[k].NO .. ' ' .. FixtureGroups[k].name  , ["state"] = false}
+                table.insert(states, TGrpChoise[k])                 
+            end
+        elseif N_digit == 4 then
+            if Maf(FixtureGroups[k].NO) < 10 then
+                TGrpChoise[k] = {["name"] = '000' .. FixtureGroups[k].NO .. ' ' .. FixtureGroups[k].name  , ["state"] = false}
+                table.insert(states, TGrpChoise[k])
+            elseif Maf(FixtureGroups[k].NO) > 9 and Maf(FixtureGroups[k].NO) < 100 then
+                TGrpChoise[k] = {["name"] = '00' .. FixtureGroups[k].NO .. ' ' .. FixtureGroups[k].name  , ["state"] = false}
+                table.insert(states, TGrpChoise[k])               
+            elseif Maf(FixtureGroups[k].NO) > 99 and Maf(FixtureGroups[k].NO) < 1000 then
+                TGrpChoise[k] = {["name"] = '0' .. FixtureGroups[k].NO .. ' ' .. FixtureGroups[k].name  , ["state"] = false}
+                table.insert(states, TGrpChoise[k])
+            elseif Maf(FixtureGroups[k].NO) > 999 then
+                TGrpChoise[k] = {["name"] =  FixtureGroups[k].NO .. ' ' .. FixtureGroups[k].name  , ["state"] = false}
+                table.insert(states, TGrpChoise[k])   
+            end
+        end
+    end
+
+
+
     -- Main Box
     ::MainBox::
     local box = MessageBox({
@@ -268,105 +328,24 @@ local function Main(display_Handle)
         display = display_Handle,
         backColor = "1.7",
         message = Message,
-        commands = {{
-            name = 'Add Group',
-            value = 11
-        }, {
-            name = OkBtn,
-            value = ValOkBtn
-        }, {
-            name = 'Cancel',
-            value = 0
-        }},
-        inputs = {{
-            name = 'Layout_Nr',
-            value = TLayNr,
-            maxTextLength = 4,
-            vkPlugin = "TextInputNumOnly"
-        }, {
-            name = 'Layout_Name',
-            value = NaLay,
-            maxTextLength = 16,
-            vkPlugin = "TextInput"
-        }, {
-            name = 'Sequence_Start_Nr',
-            blackFilter = "*",
-            value = SeqNrStart,
-            maxTextLength = 4,
-            vkPlugin = "TextInputNumOnly"
-        }, {
-            name = 'Macro_Start_Nr',
-            blackFilter = "*",
-            value = MacroNrStart,
-            maxTextLength = 4,
-            vkPlugin = "TextInputNumOnly"
-        }, {
-            name = 'Appearance_Start_Nr',
-            blackFilter = "*",
-            value = AppNr,
-            maxTextLength = 4,
-            vkPlugin = "TextInputNumOnly"
-        }, {
-            name = 'Max_Color_By_Line',
-            value = MaxColLgn,
-            maxTextLength = 2,
-            vkPlugin = "TextInputNumOnly"
-        }, {
-            name = 'Matrick_Start_Nr',
-            value = MatrickNrStart,
-            maxTextLength = 4,
-            vkPlugin = "TextInputNumOnly"
-        }},
+        commands = {{value = 1, name = "Ok"}, {value = 0, name = "Cancel"}},
+        inputs = {  {name = 'Layout_Nr',value = TLayNr,maxTextLength = 4,vkPlugin = "TextInputNumOnly"}, 
+                    {name = 'Layout_Name',value = NaLay,maxTextLength = 16,vkPlugin = "TextInput"},
+                    {name = 'Sequence_Start_Nr',blackFilter = "*",value = SeqNrStart,maxTextLength = 4,vkPlugin = "TextInputNumOnly"},
+                    {name = 'Macro_Start_Nr',blackFilter = "*",value = MacroNrStart,maxTextLength = 4,vkPlugin = "TextInputNumOnly"}, 
+                    {name = 'Appearance_Start_Nr',blackFilter = "*",value = AppNr,maxTextLength = 4,vkPlugin = "TextInputNumOnly"}, 
+                    {name = 'Max_Color_By_Line',value = MaxColLgn,maxTextLength = 2,vkPlugin = "TextInputNumOnly"}, 
+                    {name = 'Matrick_Start_Nr',value = MatrickNrStart,maxTextLength = 4,vkPlugin = "TextInputNumOnly"}
+                },
+        states = states,
         selectors = Swipe_Color
 
     })
+    
 
-    if (box.result == 11 or box.result == 100 or box.result == 10) then
-
-        if (count == 0 or ValOkBtn == 100) then
-            ValOkBtn = Maf(ValOkBtn / 10)
-            if (ValOkBtn < 10) then
-                ValOkBtn = 1
-            end
-        end
-
-        if (ValOkBtn == 1) then
-            OkBtn = "OK Let's GO :)"
-
-        end
-
-        for k in pairs(FixtureGroups) do
-            count = count + 1
-        end
-
-        if (count == 0) then
-            E("all Groups are added")
-            Co("all Groups are added")
-            SeqNrStart = box.inputs.Sequence_Start_Nr
-            MacroNrStart = box.inputs.Macro_Start_Nr
-            AppNr = box.inputs.Appearance_Start_Nr
-            TLayNr = box.inputs.Layout_Nr
-            NaLay = box.inputs.Layout_Name
-            MaxColLgn = box.inputs.Max_Color_By_Line
-            MatrickNrStart = box.inputs.Matrick_Start_Nr
-            SelectedGel = box.selectors.____GELS__CHOOSE____GELS__CHOOSE____GELS__CHOOSE____GELS__CHOOSE____GELS__CHOOSE____
-            goto MainBox
-        else
-            E("add Group")
-            SeqNrStart = box.inputs.Sequence_Start_Nr
-            MacroNrStart = box.inputs.Macro_Start_Nr
-            AppNr = box.inputs.Appearance_Start_Nr
-            TLayNr = box.inputs.Layout_Nr
-            NaLay = box.inputs.Layout_Name
-            MaxColLgn = box.inputs.Max_Color_By_Line
-            MatrickNrStart = box.inputs.Matrick_Start_Nr
-            SelectedGel = box.selectors.____GELS__CHOOSE____GELS__CHOOSE____GELS__CHOOSE____GELS__CHOOSE____GELS__CHOOSE____
-            goto addGroup
-        end
-
-    elseif (box.result == 1) then
+   if (box.result == 1) then
        
-        if next(SelectedGrp) == nil then
+        if box.states == nil then
             Co("no Group are added!")
             SeqNrStart = box.inputs.Sequence_Start_Nr
             MacroNrStart = box.inputs.Macro_Start_Nr
@@ -375,9 +354,34 @@ local function Main(display_Handle)
             NaLay = box.inputs.Layout_Name
             MaxColLgn = box.inputs.Max_Color_By_Line
             MatrickNrStart = box.inputs.Matrick_Start_Nr
-            SelectedGel = box.selectors.____GELS__CHOOSE____GELS__CHOOSE____GELS__CHOOSE____GELS__CHOOSE____GELS__CHOOSE____
-            goto addGroup
+            SelectedGel = box.selectors.Gels_Choose
+            goto MainBox
         else
+
+            for k,v in pairs(box.states) do
+                if v then
+                    E(k)
+                    group_number = string.sub(k, 1, N_digit)
+                    group_number = tonumber(group_number)
+                    E(group_number)
+                    table.insert(result_nr, group_number) 
+                end    
+            end
+
+            table.sort(result_nr, function(a,b) return a<b end)
+            E("******** in order *************")
+            for i,v in ipairs(result_nr) do
+                E("result '%i'",v)
+                for k in ipairs(FixtureGroups) do
+                    if FixtureGroups[k].NO == v then
+                        E(FixtureGroups[k].NO)
+                        table.insert(SelectedGrp,'"' .. FixtureGroups[k].name .. '"')
+                        table.insert(SelectedGrpNo,'"' .. FixtureGroups[k].NO .. '"')
+                    end
+                end
+            end
+
+
             SeqNrStart = box.inputs.Sequence_Start_Nr
             MacroNrStart = box.inputs.Macro_Start_Nr
             AppNr = box.inputs.Appearance_Start_Nr
@@ -385,7 +389,7 @@ local function Main(display_Handle)
             NaLay = box.inputs.Layout_Name
             MaxColLgn = box.inputs.Max_Color_By_Line
             MatrickNrStart = box.inputs.Matrick_Start_Nr
-            SelectedGel = box.selectors.____GELS__CHOOSE____GELS__CHOOSE____GELS__CHOOSE____GELS__CHOOSE____GELS__CHOOSE____
+            SelectedGel = box.selectors.Gels_Choose
             E("now i do some Magic stuff...")
             goto doMagicStuff
         end
@@ -506,7 +510,8 @@ local function Main(display_Handle)
     Cmd("Store Layout " .. TLayNr .. " \"" .. NaLay .. "")
     -- end
 
-    TCol = ColPath:Children()[SelectedGelNr]
+    SelectedGel = tonumber(SelectedGel)
+    TCol = ColPath:Children()[SelectedGel]
     MaxColLgn = tonumber(MaxColLgn)
 
     for g in ipairs(SelectedGrp) do
@@ -534,7 +539,7 @@ local function Main(display_Handle)
             StColCode = "\"" .. TCol[col].r .. "," .. TCol[col].g .. "," .. TCol[col].b .. ",1\""
             StColName = TCol[col].name
             StringColName = string.gsub( StColName," ","_" )
-            ColNr = SelectedGelNr .. "." .. TCol[col].no
+            ColNr = SelectedGel .. "." .. TCol[col].no
 
             -- Cretae Appearances only 1 times
             if (AppCrea == 0) then
@@ -1130,7 +1135,7 @@ local function Main(display_Handle)
         StColCode = "\"" .. TCol[col].r .. "," .. TCol[col].g .. "," .. TCol[col].b .. ",1\""
         StColName = TCol[col].name
         StringColName = string.gsub( StColName," ","_" )
-        ColNr = SelectedGelNr .. "." .. TCol[col].no
+        ColNr = SelectedGel .. "." .. TCol[col].no
 
         -- Create Sequences
         Cmd("ClearAll /nu")
@@ -1176,6 +1181,7 @@ local function Main(display_Handle)
     UsedW = root.ShowData.DataPools.Default.Layouts:Children()[TLayNrRef].UsedW / 2
     UsedH = root.ShowData.DataPools.Default.Layouts:Children()[TLayNrRef].UsedH / 2
     Cmd("Set Layout " .. TLayNr .. " DimensionW " .. UsedW .. " DimensionH " .. UsedH)
+    Cmd('Select Layout ' .. TLayNr)
 
     ::canceled::
     Cmd("ClearAll /nu")
