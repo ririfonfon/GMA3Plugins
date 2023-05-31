@@ -204,7 +204,7 @@ local function Main(display_Handle)
     local SelectedGrp = {}
     local SelectedGrpNo = {}
     local GrpNo
-    local SelectedGel
+    local SelectedGelNr
     local col_count
     local Message ="Add Fixture Group and ColorGel\n * set beginning Appearance & Sequence Number\n\n Selected Group(s) are: \n"
     local ColGelBtn = "Add ColorGel"
@@ -349,7 +349,7 @@ local function Main(display_Handle)
             NaLay = box.inputs.Layout_Name
             MaxColLgn = box.inputs.Max_Color_By_Line
             MatrickNrStart = box.inputs.Matrick_Start_Nr
-            SelectedGel = box.selectors.____GELS__CHOOSE____GELS__CHOOSE____GELS__CHOOSE____GELS__CHOOSE____GELS__CHOOSE____
+            SelectedGelNr = box.selectors.____GELS__CHOOSE____GELS__CHOOSE____GELS__CHOOSE____GELS__CHOOSE____GELS__CHOOSE____
             goto MainBox
         else
             E("add Group")
@@ -360,7 +360,7 @@ local function Main(display_Handle)
             NaLay = box.inputs.Layout_Name
             MaxColLgn = box.inputs.Max_Color_By_Line
             MatrickNrStart = box.inputs.Matrick_Start_Nr
-            SelectedGel = box.selectors.____GELS__CHOOSE____GELS__CHOOSE____GELS__CHOOSE____GELS__CHOOSE____GELS__CHOOSE____
+            SelectedGelNr = box.selectors.____GELS__CHOOSE____GELS__CHOOSE____GELS__CHOOSE____GELS__CHOOSE____GELS__CHOOSE____
             goto addGroup
         end
 
@@ -375,7 +375,7 @@ local function Main(display_Handle)
             NaLay = box.inputs.Layout_Name
             MaxColLgn = box.inputs.Max_Color_By_Line
             MatrickNrStart = box.inputs.Matrick_Start_Nr
-            SelectedGel = box.selectors.____GELS__CHOOSE____GELS__CHOOSE____GELS__CHOOSE____GELS__CHOOSE____GELS__CHOOSE____
+            SelectedGelNr = box.selectors.____GELS__CHOOSE____GELS__CHOOSE____GELS__CHOOSE____GELS__CHOOSE____GELS__CHOOSE____
             goto addGroup
         else
             SeqNrStart = box.inputs.Sequence_Start_Nr
@@ -385,7 +385,7 @@ local function Main(display_Handle)
             NaLay = box.inputs.Layout_Name
             MaxColLgn = box.inputs.Max_Color_By_Line
             MatrickNrStart = box.inputs.Matrick_Start_Nr
-            SelectedGel = box.selectors.____GELS__CHOOSE____GELS__CHOOSE____GELS__CHOOSE____GELS__CHOOSE____GELS__CHOOSE____
+            SelectedGelNr = box.selectors.____GELS__CHOOSE____GELS__CHOOSE____GELS__CHOOSE____GELS__CHOOSE____GELS__CHOOSE____
             E("now i do some Magic stuff...")
             goto doMagicStuff
         end
@@ -506,6 +506,7 @@ local function Main(display_Handle)
     Cmd("Store Layout " .. TLayNr .. " \"" .. NaLay .. "")
     -- end
 
+    SelectedGelNr = tonumber(SelectedGelNr)
     TCol = ColPath:Children()[SelectedGelNr]
     MaxColLgn = tonumber(MaxColLgn)
 
@@ -1176,6 +1177,7 @@ local function Main(display_Handle)
     UsedW = root.ShowData.DataPools.Default.Layouts:Children()[TLayNrRef].UsedW / 2
     UsedH = root.ShowData.DataPools.Default.Layouts:Children()[TLayNrRef].UsedH / 2
     Cmd("Set Layout " .. TLayNr .. " DimensionW " .. UsedW .. " DimensionH " .. UsedH)
+    Cmd('Select Layout ' .. TLayNr)
 
     ::canceled::
     Cmd("ClearAll /nu")
