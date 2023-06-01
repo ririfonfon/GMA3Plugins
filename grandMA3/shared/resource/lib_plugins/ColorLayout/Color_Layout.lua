@@ -85,65 +85,125 @@ local function Main(display_Handle)
     local FadeRef =         ' color=\'0,0.8,0,1\''
     local DelayRef =        ' color=\'0.8,0.8,0,1\'' 
     local DelayToRef =      ' color=\'0.8,0.3,0,1\''
+    local XgrpRef =         ' color=\'0,0.8,0.8,1\''
+    local XblockRef =       ' color=\'0.8,0,0.8,1\''
+    local XwingsRef =       ' color=\'0.8,0,0.3,1\''
+    local PhaseRef =        ' color=\'0.3,0,0.8,1\''
     
     local AppImp = {
-        {Name ='\'exectime_on\'',       StApp = StAppExecOn,    Nr ='', RGBref = FadeRef},
-        {Name ='\'exectime_off\'',      StApp = StAppExecOff,   Nr ='', RGBref = FadeRef},
-        {Name ='\'fade0_on\'',          StApp = StApp0On,       Nr ='', RGBref = FadeRef,       Time = 0},
-        {Name ='\'fade0_off\'',         StApp = StApp0Off,      Nr ='', RGBref = FadeRef,       Time = 0},
-        {Name ='\'fade1_on\'',          StApp = StApp1On,       Nr ='', RGBref = FadeRef,       Time = 1},
-        {Name ='\'fade1_off\'',         StApp = StApp1Off,      Nr ='', RGBref = FadeRef,       Time = 1},
-        {Name ='\'fade2_on\'',          StApp = StApp2On,       Nr ='', RGBref = FadeRef,       Time = 2},
-        {Name ='\'fade2_off\'',         StApp = StApp2Off,      Nr ='', RGBref = FadeRef,       Time = 2},
-        {Name ='\'fade4_on\'',          StApp = StApp4On,       Nr ='', RGBref = FadeRef,       Time = 4},
-        {Name ='\'fade4_off\'',         StApp = StApp4Off,      Nr ='', RGBref = FadeRef,       Time = 4},
-        {Name ='\'input_fade_on\'',     StApp = StAppCalculOn,  Nr ='', RGBref = FadeRef},
-        {Name ='\'input_fade_off\'',    StApp = StAppCalculOff, Nr ='', RGBref = FadeRef},
-        {Name ='\'delay0_on\'',         StApp = StApp0On,       Nr ='', RGBref = DelayRef,      Time = 0},
-        {Name ='\'delay0_off\'',        StApp = StApp0Off,      Nr ='', RGBref = DelayRef,      Time = 0},
-        {Name ='\'delay1_on\'',         StApp = StApp1On,       Nr ='', RGBref = DelayRef,      Time = 1},
-        {Name ='\'delay1_off\'',        StApp = StApp1Off,      Nr ='', RGBref = DelayRef,      Time = 1},
-        {Name ='\'delay2_on\'',         StApp = StApp2On,       Nr ='', RGBref = DelayRef,      Time = 2},
-        {Name ='\'delay2_off\'',        StApp = StApp2Off,      Nr ='', RGBref = DelayRef,      Time = 2},
-        {Name ='\'delay4_on\'',         StApp = StApp4On,       Nr ='', RGBref = DelayRef,      Time = 4},
-        {Name ='\'delay4_off\'',        StApp = StApp4Off,      Nr ='', RGBref = DelayRef,      Time = 4},
-        {Name ='\'input_delay_on\'',    StApp = StAppCalculOn,  Nr ='', RGBref = DelayRef},
-        {Name ='\'input_delay_off\'',   StApp = StAppCalculOff, Nr ='', RGBref = DelayRef},
-        {Name ='\'delayto0_on\'',       StApp = StApp0On,       Nr ='', RGBref = DelayToRef,    Time = 0},
-        {Name ='\'delayto0_off\'',      StApp = StApp0Off,      Nr ='', RGBref = DelayToRef,    Time = 0},
-        {Name ='\'delayto1_on\'',       StApp = StApp1On,       Nr ='', RGBref = DelayToRef,    Time = 1},
-        {Name ='\'delayto1_off\'',      StApp = StApp1Off,      Nr ='', RGBref = DelayToRef,    Time = 1},
-        {Name ='\'delayto2_on\'',       StApp = StApp2On,       Nr ='', RGBref = DelayToRef,    Time = 2},
-        {Name ='\'delayto2_off\'',      StApp = StApp2Off,      Nr ='', RGBref = DelayToRef,    Time = 2},
-        {Name ='\'delayto4_on\'',       StApp = StApp4On,       Nr ='', RGBref = DelayToRef,    Time = 4},
-        {Name ='\'delayto4_off\'',      StApp = StApp4Off,      Nr ='', RGBref = DelayToRef,    Time = 4},
-        {Name ='\'input_delayto_on\'',  StApp = StAppCalculOn,  Nr ='', RGBref = DelayToRef},
-        {Name ='\'input_delayto_off\'', StApp = StAppCalculOff, Nr ='', RGBref = DelayToRef}
-    }
+        {Name ='\'exectime_on\'',           StApp = StAppExecOn,        Nr ='', RGBref = FadeRef},
+        {Name ='\'exectime_off\'',          StApp = StAppExecOff,       Nr ='', RGBref = FadeRef},
+        {Name ='\'fade0_on\'',              StApp = StApp0On,           Nr ='', RGBref = FadeRef},
+        {Name ='\'fade0_off\'',             StApp = StApp0Off,          Nr ='', RGBref = FadeRef},
+        {Name ='\'fade1_on\'',              StApp = StApp1On,           Nr ='', RGBref = FadeRef},
+        {Name ='\'fade1_off\'',             StApp = StApp1Off,          Nr ='', RGBref = FadeRef},
+        {Name ='\'fade2_on\'',              StApp = StApp2On,           Nr ='', RGBref = FadeRef},
+        {Name ='\'fade2_off\'',             StApp = StApp2Off,          Nr ='', RGBref = FadeRef},
+        {Name ='\'fade4_on\'',              StApp = StApp4On,           Nr ='', RGBref = FadeRef},
+        {Name ='\'fade4_off\'',             StApp = StApp4Off,          Nr ='', RGBref = FadeRef},
+        {Name ='\'input_fade_on\'',         StApp = StAppCalculOn,      Nr ='', RGBref = FadeRef},
+        {Name ='\'input_fade_off\'',        StApp = StAppCalculOff,     Nr ='', RGBref = FadeRef},
+        {Name ='\'delay0_on\'',             StApp = StApp0On,           Nr ='', RGBref = DelayRef},
+        {Name ='\'delay0_off\'',            StApp = StApp0Off,          Nr ='', RGBref = DelayRef},
+        {Name ='\'delay1_on\'',             StApp = StApp1On,           Nr ='', RGBref = DelayRef},
+        {Name ='\'delay1_off\'',            StApp = StApp1Off,          Nr ='', RGBref = DelayRef},
+        {Name ='\'delay2_on\'',             StApp = StApp2On,           Nr ='', RGBref = DelayRef},
+        {Name ='\'delay2_off\'',            StApp = StApp2Off,          Nr ='', RGBref = DelayRef},
+        {Name ='\'delay4_on\'',             StApp = StApp4On,           Nr ='', RGBref = DelayRef},
+        {Name ='\'delay4_off\'',            StApp = StApp4Off,          Nr ='', RGBref = DelayRef},
+        {Name ='\'input_delay_on\'',        StApp = StAppCalculOn,      Nr ='', RGBref = DelayRef},
+        {Name ='\'input_delay_off\'',       StApp = StAppCalculOff,     Nr ='', RGBref = DelayRef},
+        {Name ='\'delayto0_on\'',           StApp = StApp0On,           Nr ='', RGBref = DelayToRef},
+        {Name ='\'delayto0_off\'',          StApp = StApp0Off,          Nr ='', RGBref = DelayToRef},
+        {Name ='\'delayto1_on\'',           StApp = StApp1On,           Nr ='', RGBref = DelayToRef},
+        {Name ='\'delayto1_off\'',          StApp = StApp1Off,          Nr ='', RGBref = DelayToRef},
+        {Name ='\'delayto2_on\'',           StApp = StApp2On,           Nr ='', RGBref = DelayToRef},
+        {Name ='\'delayto2_off\'',          StApp = StApp2Off,          Nr ='', RGBref = DelayToRef},
+        {Name ='\'delayto4_on\'',           StApp = StApp4On,           Nr ='', RGBref = DelayToRef},
+        {Name ='\'delayto4_off\'',          StApp = StApp4Off,          Nr ='', RGBref = DelayToRef},
+        {Name ='\'input_delayto_on\'',      StApp = StAppCalculOn,      Nr ='', RGBref = DelayToRef},
+        {Name ='\'input_delayto_off\'',     StApp = StAppCalculOff,     Nr ='', RGBref = DelayToRef},
+        {Name ='\'xgroup0_on\'',            StApp = StApp0On,           Nr ='', RGBref = XgrpRef},
+        {Name ='\'xgroup0_off\'',           StApp = StApp0Off,          Nr ='', RGBref = XgrpRef},
+        {Name ='\'xgroup2_on\'',            StApp = StApp2On,           Nr ='', RGBref = XgrpRef},
+        {Name ='\'xgroup2_off\'',           StApp = StApp2Off,          Nr ='', RGBref = XgrpRef},
+        {Name ='\'xgroup3_on\'',            StApp = StApp3On,           Nr ='', RGBref = XgrpRef},
+        {Name ='\'xgroup3_off\'',           StApp = StApp3Off,          Nr ='', RGBref = XgrpRef},
+        {Name ='\'xgroup4_on\'',            StApp = StApp4On,           Nr ='', RGBref = XgrpRef},
+        {Name ='\'xgroup4_off\'',           StApp = StApp4Off,          Nr ='', RGBref = XgrpRef},
+        {Name ='\'input_xgroup_on\'',       StApp = StAppCalculOn,      Nr ='', RGBref = XgrpRef},
+        {Name ='\'input_xgroup_off\'',      StApp = StAppCalculOff,     Nr ='', RGBref = XgrpRef},
+        {Name ='\'xblock0_on\'',            StApp = StApp0On,           Nr ='', RGBref = XblockRef},
+        {Name ='\'xblock0_off\'',           StApp = StApp0Off,          Nr ='', RGBref = XblockRef},
+        {Name ='\'xblock2_on\'',            StApp = StApp2On,           Nr ='', RGBref = XblockRef},
+        {Name ='\'xblock2_off\'',           StApp = StApp2Off,          Nr ='', RGBref = XblockRef},
+        {Name ='\'xblock3_on\'',            StApp = StApp3On,           Nr ='', RGBref = XblockRef},
+        {Name ='\'xblock3_off\'',           StApp = StApp3Off,          Nr ='', RGBref = XblockRef},
+        {Name ='\'xblock4_on\'',            StApp = StApp4On,           Nr ='', RGBref = XblockRef},
+        {Name ='\'xblock4_off\'',           StApp = StApp4Off,          Nr ='', RGBref = XblockRef},
+        {Name ='\'input_xblock_on\'',       StApp = StAppCalculOn,      Nr ='', RGBref = XblockRef},
+        {Name ='\'input_xblock_off\'',      StApp = StAppCalculOff,     Nr ='', RGBref = XblockRef},
+        {Name ='\'xwings0_on\'',            StApp = StApp0On,           Nr ='', RGBref = XwingsRef},
+        {Name ='\'xwings0_off\'',           StApp = StApp0Off,          Nr ='', RGBref = XwingsRef},
+        {Name ='\'xwings2_on\'',            StApp = StApp2On,           Nr ='', RGBref = XwingsRef},
+        {Name ='\'xwings2_off\'',           StApp = StApp2Off,          Nr ='', RGBref = XwingsRef},
+        {Name ='\'xwings3_on\'',            StApp = StApp3On,           Nr ='', RGBref = XwingsRef},
+        {Name ='\'xwings3_off\'',           StApp = StApp3Off,          Nr ='', RGBref = XwingsRef},
+        {Name ='\'xwings4_on\'',            StApp = StApp4On,           Nr ='', RGBref = XwingsRef},
+        {Name ='\'xwings4_off\'',           StApp = StApp4Off,          Nr ='', RGBref = XwingsRef},
+        {Name ='\'input_xwings_on\'',       StApp = StAppCalculOn,      Nr ='', RGBref = XwingsRef},
+        {Name ='\'input_xwings_off\'',      StApp = StAppCalculOff,     Nr ='', RGBref = XwingsRef},
+        {Name ='\'input_phase_on\'',        StApp = StAppCalculOn,      Nr ='', RGBref = PhaseRef},
+        {Name ='\'input_phase_off\'',       StApp = StAppCalculOff,     Nr ='', RGBref = PhaseRef}
+    }   
     
     local Argument_Fade = {
-        {name = 'ExecTime',    UseExTime = 1,     FadeTime = 0},
-        {name = 'Time 0',      UseExTime = 0,     FadeTime = 0},
-        {name = 'Time 1',      UseExTime = 0,     FadeTime = 1},
-        {name = 'Time 2',      UseExTime = 0,     FadeTime = 2},
-        {name = 'Time 4',      UseExTime = 0,     FadeTime = 4},
-        {name = 'Time Input',  UseExTime = 0,     FadeTime = 0}
+        {name = 'ExecTime',    UseExTime = 1,     Time = 0},
+        {name = 'Time 0',      UseExTime = 0,     Time = 0},
+        {name = 'Time 1',      UseExTime = 0,     Time = 1},
+        {name = 'Time 2',      UseExTime = 0,     Time = 2},
+        {name = 'Time 4',      UseExTime = 0,     Time = 4},
+        {name = 'Time Input',  UseExTime = 0,     Time = 0}
     }
 
     local Argument_Delay = {
-        {name = 'Delay From 0',     DelayTime = 0},
-        {name = 'Delay From 1',     DelayTime = 1},
-        {name = 'Delay From 2',     DelayTime = 2},
-        {name = 'Delay From 4',     DelayTime = 4},
-        {name = 'Delay From Input', DelayTime = 0},
+        {name = 'Delay From 0',     Time = 0},
+        {name = 'Delay From 1',     Time = 1},
+        {name = 'Delay From 2',     Time = 2},
+        {name = 'Delay From 4',     Time = 4},
+        {name = 'Delay From Input', Time = 0},
     }
 
     local Argument_DelayTo = {
-        {name = 'Delay To 0',     DelayTime = 0},
-        {name = 'Delay To 1',     DelayTime = 1},
-        {name = 'Delay To 2',     DelayTime = 2},
-        {name = 'Delay To 4',     DelayTime = 4},
-        {name = 'Delay To Input', DelayTime = 0},
+        {name = 'Delay To 0',     Time = 0},
+        {name = 'Delay To 1',     Time = 1},
+        {name = 'Delay To 2',     Time = 2},
+        {name = 'Delay To 4',     Time = 4},
+        {name = 'Delay To Input', Time = 0},
+    }
+
+    local Argument_Xgrp = {
+        {name = 'XGroup To 0',     Time = 0},
+        {name = 'XGroup To 2',     Time = 2},
+        {name = 'XGroup To 3',     Time = 3},
+        {name = 'XGroup To 4',     Time = 4},
+        {name = 'XGroup To Input', Time = 0},
+    }
+
+    local Argument_Xblock = {
+        {name = 'XBlock To 0',     Time = 0},
+        {name = 'XBlock To 2',     Time = 2},
+        {name = 'XBlock To 3',     Time = 3},
+        {name = 'XBlock To 4',     Time = 4},
+        {name = 'XBlock To Input', Time = 0},
+    }
+
+    local Argument_Xwings = {
+        {name = 'XWings To 0',     Time = 0},
+        {name = 'XWings To 2',     Time = 2},
+        {name = 'XWings To 3',     Time = 3},
+        {name = 'XWings To 4',     Time = 4},
+        {name = 'XWings To Input', Time = 0},
     }
 
     E(AppImp[3].StApp)
@@ -256,6 +316,12 @@ local function Main(display_Handle)
     local LastSeqDelayFrom
     local FirstSeqDelayTo
     local LastSeqDelayTo
+    local FirstSeqXgrp
+    local LastSeqXgrp
+    local FirstSeqXblock
+    local LastSeqXblock
+    local FirstSeqXwings
+    local LastSeqXwings
 
     local CurrentSeqNr
     local CurrentMacroNr
@@ -651,19 +717,23 @@ local function Main(display_Handle)
         NrNeed = Maf(NrNeed + 1)
     end
     
-
-
-    -- add timming / Sequences
     SeqNrEnd = CurrentSeqNr - 1
-    LayY = Maf(LayY - 150) -- Add offset for Layout Element distance
+    
+    
+
+    
+    
+    -- Add offset for Layout Element distance
+    LayY = Maf(LayY - 150) 
     LayX = RefX
     LayX = Maf(LayX + LayW - 100)
+    
+    
+    -- add Sequence FADE
+    
+    --Setup Fade seq
     FirstSeqTime = CurrentSeqNr
     LastSeqTime = Maf(CurrentSeqNr + 5)
-    
-
-    
-
     -- Create Macro Time Input
     Cmd('Store Macro ' .. CurrentMacroNr .. ' \'' .. 'Time Input\'')
     Cmd('ChangeDestination Macro ' .. CurrentMacroNr .. '')
@@ -688,7 +758,7 @@ local function Main(display_Handle)
         elseif i == 6 then        
         Cmd('set seq ' .. CurrentSeqNr .. ' cue \''.. Argument_Fade[i].name .. '\' Property Command=\'Go Macro ' .. CurrentMacroNr ..  '')
         else
-            Cmd('set seq ' .. CurrentSeqNr .. ' cue \''.. Argument_Fade[i].name .. '\' Property Command=\'off seq ' .. FirstSeqTime .. ' thru ' .. LastSeqTime .. ' - ' .. CurrentSeqNr .. ' ; set seq ' .. SeqNrStart .. ' thru ' ..SeqNrEnd.. ' UseExecutorTime='.. Argument_Fade[i].UseExTime .. ' ; Set Matricks ' .. MatrickNrStart .. ' Property "FadeFromx" '.. Argument_Fade[i].FadeTime ..' ; Set Matricks ' .. MatrickNrStart .. ' Property "FadeTox" '.. Argument_Fade[i].FadeTime ..'')
+            Cmd('set seq ' .. CurrentSeqNr .. ' cue \''.. Argument_Fade[i].name .. '\' Property Command=\'off seq ' .. FirstSeqTime .. ' thru ' .. LastSeqTime .. ' - ' .. CurrentSeqNr .. ' ; set seq ' .. SeqNrStart .. ' thru ' ..SeqNrEnd.. ' UseExecutorTime='.. Argument_Fade[i].UseExTime .. ' ; Set Matricks ' .. MatrickNrStart .. ' Property "FadeFromx" '.. Argument_Fade[i].Time ..' ; Set Matricks ' .. MatrickNrStart .. ' Property "FadeTox" '.. Argument_Fade[i].Time ..'')
         end
         Cmd('set seq ' .. CurrentSeqNr .. ' cue \'OffCue\' Property Command=\'Set Layout ' .. TLayNr .. '.' .. LayNr .. ' Appearance=' .. AppImp[ib].Nr .. '\'')
         Cmd('set seq ' .. CurrentSeqNr .. ' AutoStart=1 AutoStop=1 MasterGoMode=None AutoFix=0 AutoStomp=0')
@@ -702,21 +772,34 @@ local function Main(display_Handle)
         -- Add Squences to Layout
         Cmd('Assign Seq ' .. CurrentSeqNr .. ' at Layout ' .. TLayNr)
         Cmd('Set Layout ' .. TLayNr .. '.' .. LayNr .. ' appearance=' .. AppImp[ib].Nr .. ' PosX ' .. LayX .. ' PosY ' .. LayY .. ' PositionW ' .. LayW .. ' PositionH ' .. LayH .. ' VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0')
-
+        if i == 1 then
+            LayNr = Maf(LayNr + 1)
+            Cmd('Store Layout ' .. TLayNr .. '.' .. LayNr .. 'Property CustomTextText=\'FADE')
+            Cmd('Set Layout ' .. TLayNr .. '.' .. LayNr .. 'Property CustomTextSize \'32')
+            Cmd('Set Layout ' .. TLayNr .. '.' .. LayNr .. 'Property CustomTextAlignmentV \'Top')
+            Cmd('Set Layout ' .. TLayNr .. '.' .. LayNr .. 'Property VisibilityBorder \'0')
+            Cmd('Set Layout ' .. TLayNr .. '.' .. LayNr .. 'Property PosX ' .. LayX .. ' PosY ' .. LayY .. ' PositionW 700 PositionH 140')
+            LayNr = Maf(LayNr + 1)
+            Cmd('Store Layout ' .. TLayNr .. '.' .. LayNr .. 'Property CustomTextText=\'Ex.Time')
+            Cmd('Set Layout ' .. TLayNr .. '.' .. LayNr .. 'Property CustomTextSize \'32')
+            Cmd('Set Layout ' .. TLayNr .. '.' .. LayNr .. 'Property CustomTextAlignmentV \'Top')
+            Cmd('Set Layout ' .. TLayNr .. '.' .. LayNr .. 'Property VisibilityBorder \'0')
+            Cmd('Set Layout ' .. TLayNr .. '.' .. LayNr .. 'Property PosX ' .. LayX .. ' PosY ' .. LayY .. ' PositionW 120 PositionH 140')
+        end
         LayX = Maf(LayX + LayW + 20)
         LayNr = Maf(LayNr + 1)
         CurrentSeqNr = Maf(CurrentSeqNr + 1)
         -- end Sequences
 
     end
-
-    CurrentMacroNr = Maf(CurrentMacroNr + 1)
     -- end Sequences FADE
 
-
-
-                     
+    
+    
+    
+    
     -- Setup DelayFrom seq
+    CurrentMacroNr = Maf(CurrentMacroNr + 1)
     FirstSeqDelayFrom = CurrentSeqNr
     LastSeqDelayFrom = Maf(CurrentSeqNr + 4)
     -- Create Macro DelayFrom Input
@@ -739,7 +822,7 @@ local function Main(display_Handle)
         if i == 5 then
             Cmd('set seq ' .. CurrentSeqNr .. ' cue \''.. Argument_Delay[i].name .. '\' Property Command=\'Go Macro ' .. CurrentMacroNr ..  '')
         else
-            Cmd('set seq ' .. CurrentSeqNr .. ' cue \''.. Argument_Delay[i].name .. '\' Property Command=\'off seq ' .. FirstSeqDelayFrom .. ' thru ' .. LastSeqDelayFrom .. ' - ' .. CurrentSeqNr .. ' ; Set Matricks ' .. MatrickNrStart .. ' Property "DelayFromx" '.. Argument_Delay[i].DelayTime ..'')
+            Cmd('set seq ' .. CurrentSeqNr .. ' cue \''.. Argument_Delay[i].name .. '\' Property Command=\'off seq ' .. FirstSeqDelayFrom .. ' thru ' .. LastSeqDelayFrom .. ' - ' .. CurrentSeqNr .. ' ; Set Matricks ' .. MatrickNrStart .. ' Property "DelayFromx" '.. Argument_Delay[i].Time ..'')
         end
         Cmd('set seq ' .. CurrentSeqNr .. ' cue \'OffCue\' Property Command=\'Set Layout ' .. TLayNr .. '.' .. LayNr .. ' Appearance=' ..AppImp[ib].Nr .. '\'')
         Cmd('set seq ' .. CurrentSeqNr .. ' AutoStart=1 AutoStop=1 MasterGoMode=None AutoFix=0 AutoStomp=0')
@@ -753,7 +836,14 @@ local function Main(display_Handle)
         -- Add Squences to Layout
         Cmd("Assign Seq " .. CurrentSeqNr .. " at Layout " .. TLayNr)
         Cmd("Set Layout " .. TLayNr .. "." .. LayNr .. " appearance=" .. AppImp[ib].Nr .. " PosX " .. LayX .. " PosY " .. LayY .. " PositionW " .. LayW .. " PositionH " .. LayH .. " VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0")
-
+        if i == 1 then
+            LayNr = Maf(LayNr + 1)
+            Cmd('Store Layout ' .. TLayNr .. '.' .. LayNr .. 'Property CustomTextText=\'DELAY FROM')
+            Cmd('Set Layout ' .. TLayNr .. '.' .. LayNr .. 'Property CustomTextSize \'32')
+            Cmd('Set Layout ' .. TLayNr .. '.' .. LayNr .. 'Property CustomTextAlignmentV \'Top')
+            Cmd('Set Layout ' .. TLayNr .. '.' .. LayNr .. 'Property VisibilityBorder \'0')
+            Cmd('Set Layout ' .. TLayNr .. '.' .. LayNr .. 'Property PosX ' .. LayX .. ' PosY ' .. LayY .. ' PositionW 580 PositionH 140')
+        end
         LayX = Maf(LayX + LayW + 20)
         LayNr = Maf(LayNr + 1)
         CurrentSeqNr = Maf(CurrentSeqNr + 1)
@@ -763,6 +853,7 @@ local function Main(display_Handle)
     
     
     -- Setup DelayTo seq
+    CurrentMacroNr = Maf(CurrentMacroNr + 1)
     FirstSeqDelayTo = CurrentSeqNr
     LastSeqDelayTo = Maf(CurrentSeqNr + 4)
     -- Create Macro DelayTo Input
@@ -785,7 +876,7 @@ local function Main(display_Handle)
     if i == 5 then
      Cmd('set seq ' .. CurrentSeqNr .. ' cue \'' .. Argument_DelayTo[i].name .. '\' Property Command=\'Go Macro ' .. CurrentMacroNr ..  '')
     else
-        Cmd('set seq ' .. CurrentSeqNr .. ' cue \'' .. Argument_DelayTo[i].name .. '\' Property Command=\'off seq ' .. FirstSeqDelayTo .. ' thru ' .. LastSeqDelayTo .. ' - ' .. CurrentSeqNr .. ' ; Set Matricks ' .. MatrickNrStart .. ' Property "DelayTox" '.. Argument_DelayTo[i].DelayTime ..'')
+        Cmd('set seq ' .. CurrentSeqNr .. ' cue \'' .. Argument_DelayTo[i].name .. '\' Property Command=\'off seq ' .. FirstSeqDelayTo .. ' thru ' .. LastSeqDelayTo .. ' - ' .. CurrentSeqNr .. ' ; Set Matricks ' .. MatrickNrStart .. ' Property "DelayTox" '.. Argument_DelayTo[i].Time ..'')
     end
     Cmd('set seq ' .. CurrentSeqNr .. ' cue \'OffCue\' Property Command=\'Set Layout ' .. TLayNr .. '.' .. LayNr .. ' Appearance=' ..AppImp[ib].Nr .. '\'')
     Cmd('set seq ' .. CurrentSeqNr .. ' AutoStart=1 AutoStop=1 MasterGoMode=None AutoFix=0 AutoStomp=0')
@@ -799,12 +890,245 @@ local function Main(display_Handle)
     -- Add Squences to Layout
     Cmd('Assign Seq ' .. CurrentSeqNr .. ' at Layout ' .. TLayNr)
     Cmd('Set Layout ' .. TLayNr .. '.' .. LayNr .. ' appearance=' .. AppImp[ib].Nr .. ' PosX ' .. LayX .. ' PosY ' .. LayY .. ' PositionW ' .. LayW .. ' PositionH ' .. LayH .. ' VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0')
-        
+    if i == 1 then
+        LayNr = Maf(LayNr + 1)
+        Cmd('Store Layout ' .. TLayNr .. '.' .. LayNr .. 'Property CustomTextText=\'DELAY TO')
+        Cmd('Set Layout ' .. TLayNr .. '.' .. LayNr .. 'Property CustomTextSize \'32')
+        Cmd('Set Layout ' .. TLayNr .. '.' .. LayNr .. 'Property CustomTextAlignmentV \'Top')
+        Cmd('Set Layout ' .. TLayNr .. '.' .. LayNr .. 'Property VisibilityBorder \'0')
+        Cmd('Set Layout ' .. TLayNr .. '.' .. LayNr .. 'Property PosX ' .. LayX .. ' PosY ' .. LayY .. ' PositionW 580 PositionH 140')
+    end    
     LayX = Maf(LayX + LayW + 20)
     LayNr = Maf(LayNr + 1)
     CurrentSeqNr = Maf(CurrentSeqNr + 1)
     end
     -- end Sequences DelayTo
+
+
+
+    -- Add offset for Layout Element distance
+    LayY = Maf(LayY - 150) 
+    LayX = RefX
+    LayX = Maf(LayX + LayW - 100)
+
+
+    -- Create Macro Phase Input
+    CurrentMacroNr = Maf(CurrentMacroNr + 1)
+    Cmd('Store Macro ' .. CurrentMacroNr .. ' \'' .. 'Phase Input\'')
+    Cmd('ChangeDestination Macro ' .. CurrentMacroNr .. '')
+    Cmd('Insert')    
+    Cmd('set 1 Command=\'Edit Matricks ' .. MatrickNrStart .. ' Property "PhaseFromx" ')
+    Cmd("Insert")    
+    Cmd('set 2 Command=\'Edit Matricks ' .. MatrickNrStart .. ' Property "PhaseTox" ')
+    Cmd('ChangeDestination Root')
+ 
+    -- Create Sequences 
+    Cmd('ClearAll /nu')
+    Cmd('Store Sequence ' .. CurrentSeqNr .. ' \'Phase Input\'')
+    -- Add Cmd to Squence
+    Cmd('set seq ' .. CurrentSeqNr .. ' cue \'CueZero\' Property Command=\'Set Layout ' .. TLayNr .. '.' .. LayNr .. ' Appearance=' .. AppImp[63].Nr .. '\'')      
+    Cmd('set seq ' .. CurrentSeqNr .. ' cue \'Phase Input\' Property Command=\'Go Macro ' .. CurrentMacroNr ..  '')
+    Cmd('set seq ' .. CurrentSeqNr .. ' cue \'OffCue\' Property Command=\'Set Layout ' .. TLayNr .. '.' .. LayNr .. ' Appearance=' .. AppImp[64].Nr .. '\'')
+    Cmd('set seq ' .. CurrentSeqNr .. ' AutoStart=1 AutoStop=1 MasterGoMode=None AutoFix=0 AutoStomp=0')
+    Cmd('set seq ' .. CurrentSeqNr .. ' Tracking=0 WrapAround=1 ReleaseFirstCue=0 RestartMode=1 CommandEnable=1 XFadeReload=0')
+    Cmd('set seq ' .. CurrentSeqNr .. ' OutputFilter="" Priority=0 SoftLTP=1 PlaybackMaster="" XfadeMode=0')
+    Cmd('set seq ' .. CurrentSeqNr .. ' RateMaster="" RateScale=0 SpeedMaster="" SpeedScale=0 SpeedfromRate=0')
+    Cmd('set seq ' .. CurrentSeqNr .. ' InputFilter="" SwapProtect=0 KillProtect=0 IncludeLinkLastGo=1 UseExecutorTime=0 OffwhenOverridden=1 Lock=0')
+    Cmd('set seq ' .. CurrentSeqNr .. ' SequMIB=0 SequMIBMode=1')
+    -- end Sequences
+    -- Add Squences to Layout
+    Cmd('Assign Seq ' .. CurrentSeqNr .. ' at Layout ' .. TLayNr)
+    Cmd('Set Layout ' .. TLayNr .. '.' .. LayNr .. ' appearance=' .. AppImp[64].Nr .. ' PosX ' .. LayX .. ' PosY ' .. LayY .. ' PositionW ' .. LayW .. ' PositionH ' .. LayH .. ' VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0')
+        LayNr = Maf(LayNr + 1)
+        Cmd('Store Layout ' .. TLayNr .. '.' .. LayNr .. 'Property CustomTextText=\'PHASE')
+        Cmd('Set Layout ' .. TLayNr .. '.' .. LayNr .. 'Property CustomTextSize \'32')
+        Cmd('Set Layout ' .. TLayNr .. '.' .. LayNr .. 'Property CustomTextAlignmentV \'Top')
+        Cmd('Set Layout ' .. TLayNr .. '.' .. LayNr .. 'Property VisibilityBorder \'0')
+        Cmd('Set Layout ' .. TLayNr .. '.' .. LayNr .. 'Property PosX ' .. LayX .. ' PosY ' .. LayY .. ' PositionW 120 PositionH 140')
+    LayX = Maf(LayX + LayW + 20)
+    LayNr = Maf(LayNr + 1)
+    CurrentSeqNr = Maf(CurrentSeqNr + 1)
+    -- end Sequences Phase
+
+
+
+
+
+    
+    
+    
+    -- Setup XGroup seq
+    CurrentMacroNr = Maf(CurrentMacroNr + 1)
+    FirstSeqXgrp = CurrentSeqNr
+    LastSeqXgrp = Maf(CurrentSeqNr + 4)
+    -- Create Macro DelayTo Input
+    Cmd('Store Macro ' .. CurrentMacroNr .. ' \'' .. 'XGroup Input\'')
+    Cmd('ChangeDestination Macro ' .. CurrentMacroNr .. '')
+    Cmd('Insert')
+    Cmd('set 1 Command=\'off seq ' .. FirstSeqXgrp .. ' thru ' .. LastSeqXgrp .. ' - ' .. LastSeqXgrp .. '')
+    Cmd('Insert')    
+    Cmd('set 2 Command=\'Edit Matricks ' .. MatrickNrStart .. ' Property "XGroup" ')
+    Cmd('ChangeDestination Root')
+    
+
+    -- Create Sequences XGroup
+    for i = 1,5 do 
+        local ia= tonumber(i * 2 + 31)
+        local ib= tonumber(i * 2 + 32)
+        Cmd('ClearAll /nu')
+        Cmd('Store Sequence ' .. CurrentSeqNr .. ' \'' .. Argument_Xgrp[i].name .. '\'')
+        -- Add Cmd to Squence
+        Cmd('set seq ' .. CurrentSeqNr .. ' cue \'CueZero\' Property Command=\'Set Layout ' .. TLayNr .. '.' .. LayNr .. ' Appearance=' .. AppImp[ia].Nr .. '\'')
+        if i == 5 then
+         Cmd('set seq ' .. CurrentSeqNr .. ' cue \'' .. Argument_Xgrp[i].name .. '\' Property Command=\'Go Macro ' .. CurrentMacroNr ..  '')
+        else
+            Cmd('set seq ' .. CurrentSeqNr .. ' cue \'' .. Argument_Xgrp[i].name .. '\' Property Command=\'off seq ' .. FirstSeqXgrp .. ' thru ' .. LastSeqXgrp .. ' - ' .. CurrentSeqNr .. ' ; Set Matricks ' .. MatrickNrStart .. ' Property "XGroup" '.. Argument_Xgrp[i].Time ..'')
+        end
+        Cmd('set seq ' .. CurrentSeqNr .. ' cue \'OffCue\' Property Command=\'Set Layout ' .. TLayNr .. '.' .. LayNr .. ' Appearance=' ..AppImp[ib].Nr .. '\'')
+        Cmd('set seq ' .. CurrentSeqNr .. ' AutoStart=1 AutoStop=1 MasterGoMode=None AutoFix=0 AutoStomp=0')
+        Cmd('set seq ' .. CurrentSeqNr .. ' Tracking=0 WrapAround=1 ReleaseFirstCue=0 RestartMode=1 CommandEnable=1 XFadeReload=0')
+        Cmd('set seq ' .. CurrentSeqNr .. ' OutputFilter="" Priority=0 SoftLTP=1 PlaybackMaster="" XfadeMode=0')
+        Cmd('set seq ' .. CurrentSeqNr .. ' RateMaster="" RateScale=0 SpeedMaster="" SpeedScale=0 SpeedfromRate=0')
+        Cmd('set seq ' .. CurrentSeqNr .. ' InputFilter="" SwapProtect=0 KillProtect=0 IncludeLinkLastGo=1 UseExecutorTime=0 OffwhenOverridden=1 Lock=0')
+        Cmd('set seq ' .. CurrentSeqNr .. ' SequMIB=0 SequMIBMode=1')
+        -- end Sequences
+    
+        -- Add Squences to Layout
+        Cmd('Assign Seq ' .. CurrentSeqNr .. ' at Layout ' .. TLayNr)
+        Cmd('Set Layout ' .. TLayNr .. '.' .. LayNr .. ' appearance=' .. AppImp[ib].Nr .. ' PosX ' .. LayX .. ' PosY ' .. LayY .. ' PositionW ' .. LayW .. ' PositionH ' .. LayH .. ' VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0')
+        if i == 1 then
+            LayNr = Maf(LayNr + 1)
+            Cmd('Store Layout ' .. TLayNr .. '.' .. LayNr .. 'Property CustomTextText=\'X GROUP')
+            Cmd('Set Layout ' .. TLayNr .. '.' .. LayNr .. 'Property CustomTextSize \'32')
+            Cmd('Set Layout ' .. TLayNr .. '.' .. LayNr .. 'Property CustomTextAlignmentV \'Top')
+            Cmd('Set Layout ' .. TLayNr .. '.' .. LayNr .. 'Property VisibilityBorder \'0')
+            Cmd('Set Layout ' .. TLayNr .. '.' .. LayNr .. 'Property PosX ' .. LayX .. ' PosY ' .. LayY .. ' PositionW 580 PositionH 140')
+        end    
+        LayX = Maf(LayX + LayW + 20)
+        LayNr = Maf(LayNr + 1)
+        CurrentSeqNr = Maf(CurrentSeqNr + 1)
+    end
+    -- end Sequences XGroup
+
+
+
+
+
+    -- Setup XBlock seq
+    CurrentMacroNr = Maf(CurrentMacroNr + 1)
+    FirstSeqXblock = CurrentSeqNr
+    LastSeqXblock = Maf(CurrentSeqNr + 4)
+    -- Create Macro DelayTo Input
+    Cmd('Store Macro ' .. CurrentMacroNr .. ' \'' .. 'XBlock Input\'')
+    Cmd('ChangeDestination Macro ' .. CurrentMacroNr .. '')
+    Cmd('Insert')
+    Cmd('set 1 Command=\'off seq ' .. FirstSeqXblock .. ' thru ' .. LastSeqXblock .. ' - ' .. LastSeqXblock .. '')
+    Cmd('Insert')    
+    Cmd('set 2 Command=\'Edit Matricks ' .. MatrickNrStart .. ' Property "XBlock" ')
+    Cmd('ChangeDestination Root')
+    
+
+    -- Create Sequences XBlock
+    for i = 1,5 do 
+        local ia= tonumber(i * 2 + 41)
+        local ib= tonumber(i * 2 + 42)
+        Cmd('ClearAll /nu')
+        Cmd('Store Sequence ' .. CurrentSeqNr .. ' \'' .. Argument_Xblock[i].name .. '\'')
+        -- Add Cmd to Squence
+        Cmd('set seq ' .. CurrentSeqNr .. ' cue \'CueZero\' Property Command=\'Set Layout ' .. TLayNr .. '.' .. LayNr .. ' Appearance=' .. AppImp[ia].Nr .. '\'')
+        if i == 5 then
+         Cmd('set seq ' .. CurrentSeqNr .. ' cue \'' .. Argument_Xblock[i].name .. '\' Property Command=\'Go Macro ' .. CurrentMacroNr ..  '')
+        else
+            Cmd('set seq ' .. CurrentSeqNr .. ' cue \'' .. Argument_Xblock[i].name .. '\' Property Command=\'off seq ' .. FirstSeqXblock .. ' thru ' .. LastSeqXblock .. ' - ' .. CurrentSeqNr .. ' ; Set Matricks ' .. MatrickNrStart .. ' Property "XBlock" '.. Argument_Xblock[i].Time ..'')
+        end
+        Cmd('set seq ' .. CurrentSeqNr .. ' cue \'OffCue\' Property Command=\'Set Layout ' .. TLayNr .. '.' .. LayNr .. ' Appearance=' ..AppImp[ib].Nr .. '\'')
+        Cmd('set seq ' .. CurrentSeqNr .. ' AutoStart=1 AutoStop=1 MasterGoMode=None AutoFix=0 AutoStomp=0')
+        Cmd('set seq ' .. CurrentSeqNr .. ' Tracking=0 WrapAround=1 ReleaseFirstCue=0 RestartMode=1 CommandEnable=1 XFadeReload=0')
+        Cmd('set seq ' .. CurrentSeqNr .. ' OutputFilter="" Priority=0 SoftLTP=1 PlaybackMaster="" XfadeMode=0')
+        Cmd('set seq ' .. CurrentSeqNr .. ' RateMaster="" RateScale=0 SpeedMaster="" SpeedScale=0 SpeedfromRate=0')
+        Cmd('set seq ' .. CurrentSeqNr .. ' InputFilter="" SwapProtect=0 KillProtect=0 IncludeLinkLastGo=1 UseExecutorTime=0 OffwhenOverridden=1 Lock=0')
+        Cmd('set seq ' .. CurrentSeqNr .. ' SequMIB=0 SequMIBMode=1')
+        -- end Sequences
+    
+        -- Add Squences to Layout
+        Cmd('Assign Seq ' .. CurrentSeqNr .. ' at Layout ' .. TLayNr)
+        Cmd('Set Layout ' .. TLayNr .. '.' .. LayNr .. ' appearance=' .. AppImp[ib].Nr .. ' PosX ' .. LayX .. ' PosY ' .. LayY .. ' PositionW ' .. LayW .. ' PositionH ' .. LayH .. ' VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0')
+        if i == 1 then
+            LayNr = Maf(LayNr + 1)
+            Cmd('Store Layout ' .. TLayNr .. '.' .. LayNr .. 'Property CustomTextText=\'XBLOCK')
+            Cmd('Set Layout ' .. TLayNr .. '.' .. LayNr .. 'Property CustomTextSize \'32')
+            Cmd('Set Layout ' .. TLayNr .. '.' .. LayNr .. 'Property CustomTextAlignmentV \'Top')
+            Cmd('Set Layout ' .. TLayNr .. '.' .. LayNr .. 'Property VisibilityBorder \'0')
+            Cmd('Set Layout ' .. TLayNr .. '.' .. LayNr .. 'Property PosX ' .. LayX .. ' PosY ' .. LayY .. ' PositionW 580 PositionH 140')
+        end    
+        LayX = Maf(LayX + LayW + 20)
+        LayNr = Maf(LayNr + 1)
+        CurrentSeqNr = Maf(CurrentSeqNr + 1)
+    end
+    -- end Sequences XBlock
+
+
+
+
+
+
+
+     -- Setup XWings seq
+     CurrentMacroNr = Maf(CurrentMacroNr + 1)
+     FirstSeqXwings = CurrentSeqNr
+     LastSeqXwings = Maf(CurrentSeqNr + 4)
+     -- Create Macro DelayTo Input
+     Cmd('Store Macro ' .. CurrentMacroNr .. ' \'' .. 'XWings Input\'')
+     Cmd('ChangeDestination Macro ' .. CurrentMacroNr .. '')
+     Cmd('Insert')
+     Cmd('set 1 Command=\'off seq ' .. FirstSeqXwings .. ' thru ' .. LastSeqXwings .. ' - ' .. LastSeqXwings .. '')
+     Cmd('Insert')    
+     Cmd('set 2 Command=\'Edit Matricks ' .. MatrickNrStart .. ' Property "XWings" ')
+     Cmd('ChangeDestination Root')
+     
+ 
+     -- Create Sequences XWings
+     for i = 1,5 do 
+         local ia= tonumber(i * 2 + 51)
+         local ib= tonumber(i * 2 + 52)
+         Cmd('ClearAll /nu')
+         Cmd('Store Sequence ' .. CurrentSeqNr .. ' \'' .. Argument_Xwings[i].name .. '\'')
+         -- Add Cmd to Squence
+         Cmd('set seq ' .. CurrentSeqNr .. ' cue \'CueZero\' Property Command=\'Set Layout ' .. TLayNr .. '.' .. LayNr .. ' Appearance=' .. AppImp[ia].Nr .. '\'')
+         if i == 5 then
+          Cmd('set seq ' .. CurrentSeqNr .. ' cue \'' .. Argument_Xwings[i].name .. '\' Property Command=\'Go Macro ' .. CurrentMacroNr ..  '')
+         else
+             Cmd('set seq ' .. CurrentSeqNr .. ' cue \'' .. Argument_Xwings[i].name .. '\' Property Command=\'off seq ' .. FirstSeqXwings .. ' thru ' .. LastSeqXwings .. ' - ' .. CurrentSeqNr .. ' ; Set Matricks ' .. MatrickNrStart .. ' Property "XWings" '.. Argument_Xwings[i].Time ..'')
+         end
+         Cmd('set seq ' .. CurrentSeqNr .. ' cue \'OffCue\' Property Command=\'Set Layout ' .. TLayNr .. '.' .. LayNr .. ' Appearance=' ..AppImp[ib].Nr .. '\'')
+         Cmd('set seq ' .. CurrentSeqNr .. ' AutoStart=1 AutoStop=1 MasterGoMode=None AutoFix=0 AutoStomp=0')
+         Cmd('set seq ' .. CurrentSeqNr .. ' Tracking=0 WrapAround=1 ReleaseFirstCue=0 RestartMode=1 CommandEnable=1 XFadeReload=0')
+         Cmd('set seq ' .. CurrentSeqNr .. ' OutputFilter="" Priority=0 SoftLTP=1 PlaybackMaster="" XfadeMode=0')
+         Cmd('set seq ' .. CurrentSeqNr .. ' RateMaster="" RateScale=0 SpeedMaster="" SpeedScale=0 SpeedfromRate=0')
+         Cmd('set seq ' .. CurrentSeqNr .. ' InputFilter="" SwapProtect=0 KillProtect=0 IncludeLinkLastGo=1 UseExecutorTime=0 OffwhenOverridden=1 Lock=0')
+         Cmd('set seq ' .. CurrentSeqNr .. ' SequMIB=0 SequMIBMode=1')
+         -- end Sequences
+     
+         -- Add Squences to Layout
+         Cmd('Assign Seq ' .. CurrentSeqNr .. ' at Layout ' .. TLayNr)
+         Cmd('Set Layout ' .. TLayNr .. '.' .. LayNr .. ' appearance=' .. AppImp[ib].Nr .. ' PosX ' .. LayX .. ' PosY ' .. LayY .. ' PositionW ' .. LayW .. ' PositionH ' .. LayH .. ' VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0')
+         if i == 1 then
+            LayNr = Maf(LayNr + 1)
+            Cmd('Store Layout ' .. TLayNr .. '.' .. LayNr .. 'Property CustomTextText=\'XWINGS')
+            Cmd('Set Layout ' .. TLayNr .. '.' .. LayNr .. 'Property CustomTextSize \'32')
+            Cmd('Set Layout ' .. TLayNr .. '.' .. LayNr .. 'Property CustomTextAlignmentV \'Top')
+            Cmd('Set Layout ' .. TLayNr .. '.' .. LayNr .. 'Property VisibilityBorder \'0')
+            Cmd('Set Layout ' .. TLayNr .. '.' .. LayNr .. 'Property PosX ' .. LayX .. ' PosY ' .. LayY .. ' PositionW 580 PositionH 140')
+        end    
+         LayX = Maf(LayX + LayW + 20)
+         LayNr = Maf(LayNr + 1)
+         CurrentSeqNr = Maf(CurrentSeqNr + 1)
+     end
+     -- end Sequences XWings
+
+
+
+
 
 
 
