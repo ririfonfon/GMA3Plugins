@@ -649,15 +649,15 @@ local function Main(display_Handle)
     
 
     -- Create Macro Time Input
-    Cmd("Store Macro " .. CurrentMacroNr .. " \"" .. "Time Input\"")
-    Cmd("ChangeDestination Macro " .. CurrentMacroNr .. "")
-    Cmd("Insert")
+    Cmd('Store Macro ' .. CurrentMacroNr .. ' \'' .. 'Time Input\'')
+    Cmd('ChangeDestination Macro ' .. CurrentMacroNr .. '')
+    Cmd('Insert')
     Cmd('set 1 Command=\'off seq ' .. FirstSeqTime .. ' thru ' .. LastSeqTime .. ' - ' .. CurrentSeqNr .. '')
-    Cmd("Insert")    
+    Cmd('Insert')    
     Cmd('set 2 Command=\'Edit Matricks ' .. MatrickNrStart .. ' Property "FadeFromx" ')
     Cmd("Insert")    
     Cmd('set 3 Command=\'Edit Matricks ' .. MatrickNrStart .. ' Property "FadeTox" ')
-    Cmd("ChangeDestination Root")
+    Cmd('ChangeDestination Root')
 
     for i = 1,6 do
         local ia= tonumber(i * 2 - 1)
@@ -694,35 +694,39 @@ local function Main(display_Handle)
 
     end
 
-
-
-
-
-
     CurrentMacroNr = Maf(CurrentMacroNr + 1)
-    -- end Sequences time ?
+    -- end Sequences FADE
 
-    -- end timming / Sequences
+
 
                      
-     -- Update Sequences & pos
-    --  LayX = Maf(LayX - 100)
-     FirstSeqDelayFrom = CurrentSeqNr
-     LastSeqDelayFrom = Maf(CurrentSeqNr + 4)
- 
+    -- Setup Delay seq
+    FirstSeqDelayFrom = CurrentSeqNr
+    LastSeqDelayFrom = Maf(CurrentSeqNr + 4)
+    
+    -- Create Macro DelayFrom Input
+    Cmd('Store Macro ' .. CurrentMacroNr .. ' \'' .. 'DelayFrom Input\'')
+    Cmd('ChangeDestination Macro ' .. CurrentMacroNr .. '')
+    Cmd('Insert')
+    Cmd('set 1 Command=\'off seq ' .. FirstSeqDelayFrom .. ' thru ' .. LastSeqDelayFrom .. ' - ' .. CurrentSeqNr .. '')
+    Cmd("Insert")    
+    Cmd('set 2 Command=\'Edit Matricks ' .. MatrickNrStart .. ' Property "DelayFromx" ')
+    Cmd('ChangeDestination Root')
+
+
      -- Create Sequences delayfrom 0
-     Cmd("ClearAll /nu")
-     Cmd("Store Sequence " .. CurrentSeqNr .. " \"" .. "DelayFrom 0\"")
+     Cmd('ClearAll /nu')
+     Cmd('Store Sequence ' .. CurrentSeqNr .. ' \'' .. 'DelayFrom 0\'')
      -- Add Cmd to Squence
-     Cmd("set seq " .. CurrentSeqNr .. " cue \"CueZero\" Property Command=\"Set Layout " .. TLayNr .. "." .. LayNr .. " Appearance=" .. AppImp[13].Nr .. "\"")
+     Cmd('set seq ' .. CurrentSeqNr .. ' cue \'CueZero\' Property Command=\'Set Layout ' .. TLayNr .. '.' .. LayNr .. ' Appearance=' .. AppImp[13].Nr .. '\'')
      Cmd('set seq ' .. CurrentSeqNr .. ' cue \''.. 'DelayFrom 0\' Property Command=\'off seq ' .. FirstSeqDelayFrom .. ' thru ' .. LastSeqDelayFrom .. ' - ' .. CurrentSeqNr .. ' ; Set Matricks ' .. MatrickNrStart .. ' Property "DelayFromx" 0 ')
-     Cmd("set seq " .. CurrentSeqNr .. " cue \"OffCue\" Property Command=\"Set Layout " .. TLayNr .. "." .. LayNr .. " Appearance=" ..AppImp[14].Nr .. "\"")
-     Cmd("set seq " .. CurrentSeqNr .. " AutoStart=1 AutoStop=1 MasterGoMode=None AutoFix=0 AutoStomp=0")
-     Cmd("set seq " .. CurrentSeqNr .. " Tracking=0 WrapAround=1 ReleaseFirstCue=0 RestartMode=1 CommandEnable=1 XFadeReload=0")
-     Cmd("set seq " .. CurrentSeqNr .. " OutputFilter='' Priority=0 SoftLTP=1 PlaybackMaster='' XfadeMode=0")
-     Cmd("set seq " .. CurrentSeqNr .. " RateMaster='' RateScale=0 SpeedMaster='' SpeedScale=0 SpeedfromRate=0")
-     Cmd("set seq " .. CurrentSeqNr .. " InputFilter='' SwapProtect=0 KillProtect=0 IncludeLinkLastGo=1 UseExecutorTime=0 OffwhenOverridden=1 Lock=0")
-     Cmd("set seq " .. CurrentSeqNr .. " SequMIB=0 SequMIBMode=1")
+     Cmd('set seq ' .. CurrentSeqNr .. ' cue \'OffCue\' Property Command=\'Set Layout ' .. TLayNr .. '.' .. LayNr .. ' Appearance=' ..AppImp[14].Nr .. '\'')
+     Cmd('set seq ' .. CurrentSeqNr .. ' AutoStart=1 AutoStop=1 MasterGoMode=None AutoFix=0 AutoStomp=0')
+     Cmd('set seq ' .. CurrentSeqNr .. ' Tracking=0 WrapAround=1 ReleaseFirstCue=0 RestartMode=1 CommandEnable=1 XFadeReload=0')
+     Cmd('set seq ' .. CurrentSeqNr .. ' OutputFilter="" Priority=0 SoftLTP=1 PlaybackMaster="" XfadeMode=0')
+     Cmd('set seq ' .. CurrentSeqNr .. ' RateMaster="" RateScale=0 SpeedMaster="" SpeedScale=0 SpeedfromRate=0')
+     Cmd('set seq ' .. CurrentSeqNr .. ' InputFilter="" SwapProtect=0 KillProtect=0 IncludeLinkLastGo=1 UseExecutorTime=0 OffwhenOverridden=1 Lock=0')
+     Cmd('set seq ' .. CurrentSeqNr .. ' SequMIB=0 SequMIBMode=1')
      -- end Sequences
  
      -- Add Squences to Layout
@@ -810,14 +814,7 @@ local function Main(display_Handle)
      Cmd("ClearAll /nu")
      Cmd("Store Sequence " .. CurrentSeqNr .. " \"" .. "DelayFrom Input\"")
  
-     -- Create Macro DelayFrom Input
-     Cmd("Store Macro " .. CurrentMacroNr .. " \"" .. "DelayFrom Input\"")
-     Cmd("ChangeDestination Macro " .. CurrentMacroNr .. "")
-     Cmd("Insert")
-     Cmd('set 1 Command=\'off seq ' .. FirstSeqDelayFrom .. ' thru ' .. LastSeqDelayFrom .. ' - ' .. CurrentSeqNr .. '')
-     Cmd("Insert")    
-     Cmd('set 2 Command=\'Edit Matricks ' .. MatrickNrStart .. ' Property "DelayFromx" ')
-     Cmd("ChangeDestination Root")
+
      
 
 
