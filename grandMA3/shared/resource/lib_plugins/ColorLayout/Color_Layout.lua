@@ -120,9 +120,18 @@ local function Main(display_Handle)
         {Name ='\'input_delayto_on\'',  StApp = StAppCalculOn,  Nr ='', RGBref = DelayToRef},
         {Name ='\'input_delayto_off\'', StApp = StAppCalculOff, Nr ='', RGBref = DelayToRef}
     }
+    
+    local Argument_Fade = {
+        {name = 'ExecTime',    UseExTime = 1,     FadeTime = 0},
+        {name = 'Time 0',      UseExTime = 0,     FadeTime = 0},
+        {name = 'Time 1',      UseExTime = 0,     FadeTime = 1},
+        {name = 'Time 2',      UseExTime = 0,     FadeTime = 2},
+        {name = 'Time 4',      UseExTime = 0,     FadeTime = 4},
+        {name = 'Time Input',  UseExTime = 0,     FadeTime = 0}
+    }
 
     E(AppImp[3].StApp)
-
+    
     local appcheck = {}
     for k in pairs(AppImp) do
         appcheck[k] = setmetatable({value = ''}, {ref = ''})
@@ -133,7 +142,7 @@ local function Main(display_Handle)
     E("Layout = %s", tostring(TLay))
     local TLayNr
     local TLayNrRef
-
+    
     for k in pairs(TLay) do
         E("Layout n° = %s", tostring(TLay[k].NO))
         TLayNr = Maf(tonumber(TLay[k].NO))
@@ -144,11 +153,11 @@ local function Main(display_Handle)
     local SeqNr = root.ShowData.DataPools.Default.Sequences:Children()
     local SeqNrStart
     local SeqNrEnd
-
+    
     for k in pairs(SeqNr) do
         SeqNrStart = Maf(SeqNr[k].NO)
     end
-
+    
     if SeqNrStart == nil then
         SeqNrStart = 0
     end
@@ -184,7 +193,7 @@ local function Main(display_Handle)
     end
 
     MatrickNrStart = Maf(MatrickNrStart + 1)
-
+    
     -- variables
     local LayX
     local RefX = Maf(0 - TLay[TLayNrRef].DimensionW / 2)
@@ -242,16 +251,8 @@ local function Main(display_Handle)
 
     local long_imgimp
     local add_check = 0
-
-    local Argument_Fade = {
-        {name = 'ExecTime',   AppFade = AppImp[1].Nr,     UseExTime = 1,     FadeTime = 0},
-        {name = 'Time 0',     AppFade = AppImp[3].Nr,     UseExTime = 0,     FadeTime = 0},
-        {name = 'Time 1',     AppFade = AppImp[5].Nr,     UseExTime = 0,     FadeTime = 1},
-        {name = 'Time 2',     AppFade = AppImp[7].Nr,     UseExTime = 0,     FadeTime = 2},
-        {name = 'Time 4',     AppFade = AppImp[9].Nr,     UseExTime = 0,     FadeTime = 4},
-        {name = 'Time Input', AppFade = AppImp[11].Nr,    UseExTime = 0,     FadeTime = 0}
-    }
-
+    
+    
     TLayNr = Maf(TLayNr + 1)
     SeqNrStart = SeqNrStart + 1
     MacroNrStart = MacroNrStart + 1
@@ -436,7 +437,7 @@ local function Main(display_Handle)
     table.remove(FixtureGroups, SelGrp + 1)
     goto MainBox
     -- End Choise Fixture Group	        
-
+    
     -- Choise ColorGel  
     -- Create a Choise for each Group in Table
 
@@ -457,7 +458,7 @@ local function Main(display_Handle)
             long_imgimp = q
         end
     end
-
+    
     if (long_imgimp == add_check) then    
         E("file exist")
     else
@@ -485,83 +486,83 @@ local function Main(display_Handle)
         selectedDrive = selectedDrive + 1
 
         -- if the user cancled then exit the plugin
-        if selectedDrive == nil then
-            return
-        end
-
-        -- grab the export path for the selected drive and append the file name
-        E("selectedDrive = %s", tostring(selectedDrive))
-        Cmd("select Drive " .. selectedDrive .. "")
-
-        -- Import Symbols      
-        for k in pairs(ImgImp) do
+            if selectedDrive == nil then
+                return
+            end
             
-            if(check[k] == nil) then
-                ImgNr = Maf(ImgNr + 1);
-                E(ImgNr)
-                E(k)
-                Cmd("Store Image 2." .. ImgNr .. " " .. ImgImp[k].Name .. " Filename=" .. ImgImp[k].FileName .. " filepath=" ..    ImgImp[k].Filepath .. "")
+            -- grab the export path for the selected drive and append the file name
+            E("selectedDrive = %s", tostring(selectedDrive))
+            Cmd("select Drive " .. selectedDrive .. "")
+            
+            -- Import Symbols      
+            for k in pairs(ImgImp) do
+                
+                if(check[k] == nil) then
+                    ImgNr = Maf(ImgNr + 1);
+                    E(ImgNr)
+                    E(k)
+                    Cmd("Store Image 2." .. ImgNr .. " " .. ImgImp[k].Name .. " Filename=" .. ImgImp[k].FileName .. " filepath=" ..    ImgImp[k].Filepath .. "")
+                end
             end
         end
-    end
-    -- End check Images  
-
-    -- Create MAtricks
-    Cmd('Store MAtricks ' .. MatrickNrStart .. ' /nu')
-    Cmd('Set Matricks ' .. MatrickNrStart .. ' name = ' .. NaLay .. ' /nu')
-    -- Create Appearances/Sequences
-
-    -- Create new Layout View
-    Cmd("Store Layout " .. TLayNr .. " \"" .. NaLay .. "")
-    -- end
-
-    SelectedGelNr = tonumber(SelectedGelNr)
-    TCol = ColPath:Children()[SelectedGelNr]
-    MaxColLgn = tonumber(MaxColLgn)
-
-    for g in ipairs(SelectedGrp) do
-
-        LayX = RefX
-        col_count = 0
-        LayY = Maf(LayY - LayH) -- Max Y Position minus hight from element. 0 are at the Bottom!
-
-        if (AppCrea == 0) then
-            AppNr = Maf(AppNr);
-            Cmd("Store App " .. AppNr .. " \"Label\" Appearance=" .. StAppOn .. " color=\"0,0,0,1\"")
-        end
-
-        NrAppear = Maf(AppNr + 1)
-        NrNeed = Maf(AppNr + 1)
-
-        Cmd("Assign Group " .. SelectedGrp[g] .. " at Layout " .. TLayNr)
-        Cmd("Set Layout " .. TLayNr .. "." .. LayNr .. " Action=0 Appearance=" .. AppNr .. " PosX " .. LayX .. " PosY " .. LayY .. " PositionW " .. LayW .. " PositionH " .. LayH .. " VisibilityObjectname=1 VisibilityBar=0 VisibilityIndicatorBar=0")
-
-        LayNr = Maf(LayNr + 1)
-        LayX = Maf(LayX + LayW + 20)
-
-        for col in ipairs(TCol) do
-            col_count = col_count + 1
-            StColCode = "\"" .. TCol[col].r .. "," .. TCol[col].g .. "," .. TCol[col].b .. ",1\""
-            StColName = TCol[col].name
-            StringColName = string.gsub( StColName," ","_" )
-            ColNr = SelectedGelNr .. "." .. TCol[col].no
-
-            -- Cretae Appearances only 1 times
+        -- End check Images  
+        
+        -- Create MAtricks
+        Cmd('Store MAtricks ' .. MatrickNrStart .. ' /nu')
+        Cmd('Set Matricks ' .. MatrickNrStart .. ' name = ' .. NaLay .. ' /nu')
+        -- Create Appearances/Sequences
+        
+        -- Create new Layout View
+        Cmd("Store Layout " .. TLayNr .. " \"" .. NaLay .. "")
+        -- end
+        
+        SelectedGelNr = tonumber(SelectedGelNr)
+        TCol = ColPath:Children()[SelectedGelNr]
+        MaxColLgn = tonumber(MaxColLgn)
+        
+        for g in ipairs(SelectedGrp) do
+            
+            LayX = RefX
+            col_count = 0
+            LayY = Maf(LayY - LayH) -- Max Y Position minus hight from element. 0 are at the Bottom!
+            
             if (AppCrea == 0) then
-                StAppNameOn = "\"" .. StringColName .. " on\""
-                StAppNameOff = "\"" .. StringColName .. " off\""
-                Cmd("Store App " .. NrAppear .. " " .. StAppNameOn .. " Appearance=" .. StAppOn .. " color=" .. StColCode .. "")
-                NrAppear = Maf(NrAppear + 1);
-                Cmd("Store App " .. NrAppear .. " " .. StAppNameOff .. " Appearance=" .. StAppOff .. " color=" .. StColCode .. "")
-                NrAppear = Maf(NrAppear + 1);
+                AppNr = Maf(AppNr);
+                Cmd("Store App " .. AppNr .. " \"Label\" Appearance=" .. StAppOn .. " color=\"0,0,0,1\"")
             end
-            -- end Appearances
-            E("NrAppear ")
-            E(NrAppear)
-
-            -- Create Sequences
-            GrpNo = SelectedGrpNo[g]
-            GrpNo = string.gsub( GrpNo,"'","" )
+            
+            NrAppear = Maf(AppNr + 1)
+            NrNeed = Maf(AppNr + 1)
+            
+            Cmd("Assign Group " .. SelectedGrp[g] .. " at Layout " .. TLayNr)
+            Cmd("Set Layout " .. TLayNr .. "." .. LayNr .. " Action=0 Appearance=" .. AppNr .. " PosX " .. LayX .. " PosY " .. LayY .. " PositionW " .. LayW .. " PositionH " .. LayH .. " VisibilityObjectname=1 VisibilityBar=0 VisibilityIndicatorBar=0")
+            
+            LayNr = Maf(LayNr + 1)
+            LayX = Maf(LayX + LayW + 20)
+            
+            for col in ipairs(TCol) do
+                col_count = col_count + 1
+                StColCode = "\"" .. TCol[col].r .. "," .. TCol[col].g .. "," .. TCol[col].b .. ",1\""
+                StColName = TCol[col].name
+                StringColName = string.gsub( StColName," ","_" )
+                ColNr = SelectedGelNr .. "." .. TCol[col].no
+                
+                -- Cretae Appearances only 1 times
+                if (AppCrea == 0) then
+                    StAppNameOn = "\"" .. StringColName .. " on\""
+                    StAppNameOff = "\"" .. StringColName .. " off\""
+                    Cmd("Store App " .. NrAppear .. " " .. StAppNameOn .. " Appearance=" .. StAppOn .. " color=" .. StColCode .. "")
+                    NrAppear = Maf(NrAppear + 1);
+                    Cmd("Store App " .. NrAppear .. " " .. StAppNameOff .. " Appearance=" .. StAppOff .. " color=" .. StColCode .. "")
+                    NrAppear = Maf(NrAppear + 1);
+                end
+                -- end Appearances
+                E("NrAppear ")
+                E(NrAppear)
+                
+                -- Create Sequences
+                GrpNo = SelectedGrpNo[g]
+                GrpNo = string.gsub( GrpNo,"'","" )
             Cmd("ClearAll /nu")
             Cmd("Group " .. SelectedGrp[g] .. " at Gel " .. ColNr .. "")
             Cmd("Store Sequence " .. CurrentSeqNr .. " \"" .. StringColName .. " " .. SelectedGrp[g]:gsub('\'', '') .. "\"")
@@ -578,11 +579,11 @@ local function Main(display_Handle)
             Cmd("set seq " .. CurrentSeqNr .. " InputFilter='' SwapProtect=0 KillProtect=0 IncludeLinkLastGo=1 UseExecutorTime=0 OffwhenOverridden=1 Lock=0")
             Cmd("set seq " .. CurrentSeqNr .. " SequMIB=0 SequMIBMode=1")
             -- end Sequences
-
+            
             -- Add Squences to Layout
             Cmd("Assign Seq " .. CurrentSeqNr .. " at Layout " .. TLayNr)
             Cmd("Set Layout " .. TLayNr .. "." .. LayNr .. " appearance=" .. NrNeed + 1 .. " PosX " .. LayX .. " PosY " .. LayY .. " PositionW " .. LayW .. " PositionH " .. LayH .. " VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0")
-
+            
             NrNeed = Maf(NrNeed + 2); -- Set App Nr to next color
 
             if (col_count ~= MaxColLgn) then
@@ -599,7 +600,7 @@ local function Main(display_Handle)
             CurrentSeqNr = Maf(CurrentSeqNr + 1)
         end
         -- end Squences to Layout
-
+        
         AppCrea = 1
         LayY = Maf(LayY - 20) -- Add offset for Layout Element distance
     end
@@ -624,16 +625,18 @@ local function Main(display_Handle)
     -- end"clearall /nu"
     
     -- if (long_imgimp == add_check) then
-    --     E("Appear. exist")
-    -- else
-    --     E("Appear. NOT exist")
+        --     E("Appear. exist")
+        -- else
+            --     E("Appear. NOT exist")
     E('Create Appear. Time Ref')
     for q in pairs(AppImp) do
         AppImp[q].Nr = Maf(NrNeed)
         Cmd( 'Store App ' .. AppImp[q].Nr .. ' "' .. AppImp[q].Name .. '" "Appearance"=' .. AppImp[q].StApp .. '' .. AppImp[q].RGBref ..'')
         NrNeed = Maf(NrNeed + 1)
     end
-                   
+    
+
+
     -- add timming / Sequences
     SeqNrEnd = CurrentSeqNr - 1
     LayY = Maf(LayY - 150) -- Add offset for Layout Element distance
@@ -657,11 +660,13 @@ local function Main(display_Handle)
     Cmd("ChangeDestination Root")
 
     for i = 1,6 do
+        local ia= tonumber(i * 2 - 1)
+        local ib= tonumber(i * 2)
         -- Create Sequences 
         Cmd('ClearAll /nu')
         Cmd('Store Sequence ' .. CurrentSeqNr .. ' \'' .. Argument_Fade[i].name .. '\'')
         -- Add Cmd to Squence
-        Cmd('set seq ' .. CurrentSeqNr .. ' cue \'CueZero\' Property Command=\'Set Layout ' .. TLayNr .. '.' .. LayNr .. ' Appearance=' .. Argument_Fade[i].AppFade .. '\'')
+        Cmd('set seq ' .. CurrentSeqNr .. ' cue \'CueZero\' Property Command=\'Set Layout ' .. TLayNr .. '.' .. LayNr .. ' Appearance=' .. AppImp[ia].Nr .. '\'')
         if i == 1 then
             Cmd('set seq ' .. CurrentSeqNr .. ' cue \''.. Argument_Fade[i].name .. '\' Property Command=\'off seq ' .. FirstSeqTime .. ' thru ' .. LastSeqTime .. ' - ' .. CurrentSeqNr .. ' ; set seq ' .. SeqNrStart .. ' thru ' ..SeqNrEnd.. ' UseExecutorTime='.. Argument_Fade[i].UseExTime .. '')
         elseif i == 6 then        
@@ -669,7 +674,7 @@ local function Main(display_Handle)
         else
             Cmd('set seq ' .. CurrentSeqNr .. ' cue \''.. Argument_Fade[i].name .. '\' Property Command=\'off seq ' .. FirstSeqTime .. ' thru ' .. LastSeqTime .. ' - ' .. CurrentSeqNr .. ' ; set seq ' .. SeqNrStart .. ' thru ' ..SeqNrEnd.. ' UseExecutorTime='.. Argument_Fade[i].UseExTime .. ' ; Set Matricks ' .. MatrickNrStart .. ' Property "FadeFromx" '.. Argument_Fade[i].FadeTime ..' ; Set Matricks ' .. MatrickNrStart .. ' Property "FadeTox" '.. Argument_Fade[i].FadeTime ..'')
         end
-        Cmd('set seq ' .. CurrentSeqNr .. ' cue \'OffCue\' Property Command=\'Set Layout ' .. TLayNr .. '.' .. LayNr .. ' Appearance=' .. Argument_Fade[i+1].AppFade .. '\'')
+        Cmd('set seq ' .. CurrentSeqNr .. ' cue \'OffCue\' Property Command=\'Set Layout ' .. TLayNr .. '.' .. LayNr .. ' Appearance=' .. AppImp[ib].Nr .. '\'')
         Cmd('set seq ' .. CurrentSeqNr .. ' AutoStart=1 AutoStop=1 MasterGoMode=None AutoFix=0 AutoStomp=0')
         Cmd('set seq ' .. CurrentSeqNr .. ' Tracking=0 WrapAround=1 ReleaseFirstCue=0 RestartMode=1 CommandEnable=1 XFadeReload=0')
         Cmd('set seq ' .. CurrentSeqNr .. ' OutputFilter="" Priority=0 SoftLTP=1 PlaybackMaster="" XfadeMode=0')
@@ -680,7 +685,7 @@ local function Main(display_Handle)
 
         -- Add Squences to Layout
         Cmd('Assign Seq ' .. CurrentSeqNr .. ' at Layout ' .. TLayNr)
-        Cmd('Set Layout ' .. TLayNr .. '.' .. LayNr .. ' appearance=' .. Argument_Fade[i+1].AppFade .. ' PosX ' .. LayX .. ' PosY ' .. LayY .. ' PositionW ' .. LayW .. ' PositionH ' .. LayH .. ' VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0')
+        Cmd('Set Layout ' .. TLayNr .. '.' .. LayNr .. ' appearance=' .. AppImp[ib].Nr .. ' PosX ' .. LayX .. ' PosY ' .. LayY .. ' PositionW ' .. LayW .. ' PositionH ' .. LayH .. ' VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0')
 
         LayX = Maf(LayX + LayW + 20)
         LayNr = Maf(LayNr + 1)
@@ -698,28 +703,6 @@ local function Main(display_Handle)
     -- end Sequences time ?
 
     -- end timming / Sequences
-
-
-    
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
                      
      -- Update Sequences & pos
