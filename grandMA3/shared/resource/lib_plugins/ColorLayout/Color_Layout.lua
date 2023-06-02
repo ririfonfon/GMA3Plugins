@@ -6,7 +6,7 @@ Usage
 * Call Plugin "Color_layout"
 
 Releases:
-* 1.1.4.0 - exec time delay from to X Matricks 
+* 1.1.4.2
 
 Created by Richard Fontaine "RIRI", April 2020.
 --]]
@@ -206,33 +206,46 @@ local function Main(display_Handle)
         {name = 'XWings To Input', Time = 0},
     }
 
-    E(AppImp[3].StApp)
     
     local appcheck = {}
     for k in pairs(AppImp) do
         appcheck[k] = setmetatable({value = ''}, {ref = ''})
     end
-
+    
     -- Store all Use Layout in a Table to find the last free number
     local TLay = root.ShowData.DataPools.Default.Layouts:Children()
-    E("Layout = %s", tostring(TLay))
     local TLayNr
     local TLayNrRef
     
     for k in pairs(TLay) do
-        E("Layout n° = %s", tostring(TLay[k].NO))
         TLayNr = Maf(tonumber(TLay[k].NO))
         TLayNrRef = k
     end
-
+    
     -- Store all Used Sequence in a Table to find the last free number
     local SeqNr = root.ShowData.DataPools.Default.Sequences:Children()
     local SeqNrStart
     local SeqNrEnd
-    
-    for k in pairs(SeqNr) do
-        SeqNrStart = Maf(SeqNr[k].NO)
-    end
+    local prefix_index = 1
+    local old_prefix_index
+    local prefix = 'LC'..tostring(prefix_index)..'_'
+    local exit = false
+
+    repeat
+        old_prefix_index = prefix_index
+        for k in pairs(SeqNr) do
+            if string.match(SeqNr[k].name,prefix) then
+                E("LC found %s", tostring(SeqNr[k].name))
+                prefix_index = prefix_index + 1  
+            end
+            SeqNrStart = Maf(SeqNr[k].NO)
+        end
+        prefix = 'LC'..tostring(prefix_index)..'_'
+        if old_prefix_index == prefix_index then
+            exit = true
+        end
+
+    until exit == true
     
     if SeqNrStart == nil then
         SeqNrStart = 0
