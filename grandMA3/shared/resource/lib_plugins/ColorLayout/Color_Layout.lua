@@ -1,10 +1,4 @@
 --[[
-Color_Layout v1.1.3.3
-Please note that this will likly break in future version of the console. and to use at your own risk.
-
-Usage
-* Call Plugin "Color_layout"
-
 Releases:
 * 1.1.4.2
 
@@ -80,6 +74,11 @@ local function Main(display_Handle)
     local StApp4Off =       '\"Showdata.MediaPools.Symbols.[number_4_white_png]\"'
     local StApp6On =        '\"Showdata.MediaPools.Symbols.[number_6_black_png]\"'
     local StApp6Off =       '\"Showdata.MediaPools.Symbols.[number_6_white_png]\"'
+    local StAppSkullOn =    '\"Showdata.MediaPools.Symbols.[skull_black_png]\"'
+    local StAppSkullOff =   '\"Showdata.MediaPools.Symbols.[skull_white_png]\"'
+    local StAppTricksOn =   '\"Showdata.MediaPools.Symbols.[arrow_right_black_png]\"'
+    local StAppTricksOff =  '\"Showdata.MediaPools.Symbols.[home_white_png]\"'
+    local StAppMacroTricks ='\"Showdata.MediaPools.Symbols.[gear_white_png]\"'
     local FadeRef =         ' color=\'0,0.8,0,1\''
     local DelayRef =        ' color=\'0.8,0.8,0,1\'' 
     local DelayToRef =      ' color=\'0.8,0.3,0,1\''
@@ -87,7 +86,16 @@ local function Main(display_Handle)
     local XblockRef =       ' color=\'0.8,0,0.8,1\''
     local XwingsRef =       ' color=\'0.8,0,0.3,1\''
     local PhaseRef =        ' color=\'0.3,0,0.8,1\''
+    local SkullRef =        ' color=\'0.6,0,0,1\''
+    local NoRef =            ' color=\'1,1,1,1\''
+    local NrAppTricks = 1
     
+    local AppTricks = {
+        {Name ='\'tricks_on\'',             StApp = StAppTricksOn,      Nr ='', RGBref = NoRef},
+        {Name ='\'tricks_off\'',            StApp = StAppTricksOff,     Nr ='', RGBref = NoRef},
+        {Name ='\'macrotricks_off\'',       StApp = StAppMacroTricks,   Nr ='', RGBref = NoRef}
+    }  
+
     local AppImp = {
         {Name ='\'exectime_on\'',           StApp = StAppExecOn,        Nr ='', RGBref = FadeRef},
         {Name ='\'exectime_off\'',          StApp = StAppExecOff,       Nr ='', RGBref = FadeRef},
@@ -152,7 +160,9 @@ local function Main(display_Handle)
         {Name ='\'input_xwings_on\'',       StApp = StAppCalculOn,      Nr ='', RGBref = XwingsRef},
         {Name ='\'input_xwings_off\'',      StApp = StAppCalculOff,     Nr ='', RGBref = XwingsRef},
         {Name ='\'input_phase_on\'',        StApp = StAppCalculOn,      Nr ='', RGBref = PhaseRef},
-        {Name ='\'input_phase_off\'',       StApp = StAppCalculOff,     Nr ='', RGBref = PhaseRef}
+        {Name ='\'input_phase_off\'',       StApp = StAppCalculOff,     Nr ='', RGBref = PhaseRef},
+        {Name ='\'skull_on\'',              StApp = StAppSkullOn,       Nr ='', RGBref = SkullRef},
+        {Name ='\'skull_off\'',             StApp = StAppSkullOff,      Nr ='', RGBref = SkullRef}
     }   
     
     local Argument_Fade = {
@@ -281,6 +291,7 @@ local function Main(display_Handle)
     end
 
     MatrickNrStart = Maf(MatrickNrStart + 1)
+    local MatrickNr = MatrickNrStart
     
     -- variables
     local LayX
@@ -299,6 +310,7 @@ local function Main(display_Handle)
     local ChoGel = {}
     local SelColGel
     local SelectedGrp = {}
+    local SelectedGrpName = {}
     local SelectedGrpNo = {}
     local GrpNo
     local SelectedGelNr
@@ -332,6 +344,8 @@ local function Main(display_Handle)
     local LastSeqXblock
     local FirstSeqXwings
     local LastSeqXwings
+    local FirstSeqColor
+    local LastSeqColor
     local CurrentSeqNr
     local CurrentMacroNr
     local UsedW
@@ -534,6 +548,11 @@ local function Main(display_Handle)
     -- Magic Stuff
     ::doMagicStuff::
 
+    --fix name SelectedGrp 
+    for g in pairs(SelectedGrp) do
+    SelectedGrpName[g] = SelectedGrp[g]:gsub(' ','_')
+    end
+
     --fix *NrStart & use Current*Nr
     CurrentSeqNr = SeqNrStart
     CurrentMacroNr = MacroNrStart
@@ -576,123 +595,162 @@ local function Main(display_Handle)
         selectedDrive = selectedDrive + 1
 
         -- if the user cancled then exit the plugin
-            if selectedDrive == nil then
-                return
-            end
+        if selectedDrive == nil then
+            return
+        end
             
-            -- grab the export path for the selected drive and append the file name
-            E("selectedDrive = %s", tostring(selectedDrive))
-            Cmd("select Drive " .. selectedDrive .. "")
+        -- grab the export path for the selected drive and append the file name
+        E("selectedDrive = %s", tostring(selectedDrive))
+        Cmd("select Drive " .. selectedDrive .. "")
             
-            -- Import Symbols      
-            for k in pairs(ImgImp) do
-                
-                if(check[k] == nil) then
-                    ImgNr = Maf(ImgNr + 1);
-                    E(ImgNr)
-                    E(k)
-                    Cmd("Store Image 2." .. ImgNr .. " " .. ImgImp[k].Name .. " Filename=" .. ImgImp[k].FileName .. " filepath=" .. ImgImp[k].Filepath .. "")
-                end
+        -- Import Symbols      
+        for k in pairs(ImgImp) do
+            
+            if(check[k] == nil) then
+                ImgNr = Maf(ImgNr + 1);
+                E(ImgNr)
+                E(k)
+                Cmd("Store Image 2." .. ImgNr .. " " .. ImgImp[k].Name .. " Filename=" .. ImgImp[k].FileName .. " filepath=" .. ImgImp[k].Filepath .. "")
             end
         end
-        -- End check Images  
+    end
+    -- End check Images  
+
+
         
-        -- Create MAtricks
-        Cmd('Store MAtricks ' .. MatrickNrStart .. ' /nu')
-        Cmd('Set Matricks ' .. MatrickNrStart .. ' name = ' .. prefix .. NaLay .. ' /nu')
-        -- Create Appearances/Sequences
+    -- Create MAtricks
+    Cmd('Store MAtricks ' .. MatrickNrStart .. ' /nu')
+    Cmd('Set Matricks ' .. MatrickNrStart .. ' name = ' .. prefix .. NaLay .. ' /nu')
+    MatrickNr = Maf(MatrickNrStart + 1) 
+
+    for g in pairs(SelectedGrp) do
+     Cmd('Store MAtricks ' .. MatrickNr .. ' /nu')
+     Cmd('Set Matricks ' .. MatrickNr .. ' name = ' .. prefix .. SelectedGrpName[g]:gsub('\'', '') .. ' /nu')
+     MatrickNr = Maf(MatrickNr + 1)
+    end
+
+    -- Create Appearances/Sequences
         
-        -- Create new Layout View
-        Cmd("Store Layout "  .. TLayNr .. " \"" .. prefix .. NaLay .. "")
-        -- end
+    -- Create new Layout View
+    Cmd("Store Layout "  .. TLayNr .. " \"" .. prefix .. NaLay .. "")
+    -- end
         
-        SelectedGelNr = tonumber(SelectedGelNr)
-        TCol = ColPath:Children()[SelectedGelNr]
-        MaxColLgn = tonumber(MaxColLgn)
+    SelectedGelNr = tonumber(SelectedGelNr)
+    TCol = ColPath:Children()[SelectedGelNr]
+    MaxColLgn = tonumber(MaxColLgn)
+
+    E('Create Appear. Tricks Ref')
+    for q in pairs(AppTricks) do
+        AppTricks[q].Nr = Maf(AppNr)
+        Cmd( 'Store App ' .. AppTricks[q].Nr .. ' "' .. prefix .. AppTricks[q].Name .. '" "Appearance"=' .. AppTricks[q].StApp .. '' .. AppTricks[q].RGBref ..'')
+        AppNr = Maf(AppNr + 1)
+    end
         
-        for g in ipairs(SelectedGrp) do
+    for g in ipairs(SelectedGrp) do
             
-            LayX = RefX
-            col_count = 0
-            LayY = Maf(LayY - LayH) -- Max Y Position minus hight from element. 0 are at the Bottom!
+        LayX = RefX
+        col_count = 0
+        LayY = Maf(LayY - LayH) -- Max Y Position minus hight from element. 0 are at the Bottom!
+        
+        if (AppCrea == 0) then
+            AppNr = Maf(AppNr);
+            Cmd('Store App ' .. AppNr .. ' \'' .. prefix ..' Label\' Appearance=' .. StAppOn .. ' color=\'0,0,0,1\'')
+        end 
+        
+        NrAppear = Maf(AppNr + 1)
+        NrNeed = Maf(AppNr + 1)
+        
+        Cmd("Assign Group " .. SelectedGrp[g] .. " at Layout " .. TLayNr)
+        Cmd("Set Layout "  .. TLayNr .. "." .. LayNr .. " Action=0 Appearance=" .. AppNr .. " PosX " .. LayX .. " PosY " .. LayY .. " PositionW " .. LayW .. " PositionH " .. LayH .. " VisibilityObjectname=1 VisibilityBar=0 VisibilityIndicatorBar=0 VisibilitySelectionRelevance=1")
+        
+        LayNr = Maf(LayNr + 1)
+        LayX = Maf(LayX + LayW + 20)
+
+        FirstSeqColor = CurrentSeqNr
+        for col in ipairs(TCol) do
+            col_count = col_count + 1
+            StColCode = "\"" .. TCol[col].r .. "," .. TCol[col].g .. "," .. TCol[col].b .. ",1\""
+            StColName = TCol[col].name
+            StringColName = string.gsub( StColName," ","_" )
+            ColNr = SelectedGelNr .. "." .. TCol[col].no
             
+            -- Create Appearances only 1 times
             if (AppCrea == 0) then
-                AppNr = Maf(AppNr);
-                Cmd('Store App ' .. AppNr .. ' \'' .. prefix ..' Label\' Appearance=' .. StAppOn .. ' color=\'0,0,0,1\'')
-            end 
-            
-            NrAppear = Maf(AppNr + 1)
-            NrNeed = Maf(AppNr + 1)
-            
-            Cmd("Assign Group " .. SelectedGrp[g] .. " at Layout " .. TLayNr)
-            Cmd("Set Layout "  .. TLayNr .. "." .. LayNr .. " Action=0 Appearance=" .. AppNr .. " PosX " .. LayX .. " PosY " .. LayY .. " PositionW " .. LayW .. " PositionH " .. LayH .. " VisibilityObjectname=1 VisibilityBar=0 VisibilityIndicatorBar=0 VisibilitySelectionRelevance=1")
-            
-            LayNr = Maf(LayNr + 1)
-            LayX = Maf(LayX + LayW + 20)
-            
-            for col in ipairs(TCol) do
-                col_count = col_count + 1
-                StColCode = "\"" .. TCol[col].r .. "," .. TCol[col].g .. "," .. TCol[col].b .. ",1\""
-                StColName = TCol[col].name
-                StringColName = string.gsub( StColName," ","_" )
-                ColNr = SelectedGelNr .. "." .. TCol[col].no
-                
-                -- Cretae Appearances only 1 times
-                if (AppCrea == 0) then
-                    StAppNameOn = "\"" .. prefix .. StringColName .. " on\""
-                    StAppNameOff = "\"" .. prefix .. StringColName .. " off\""
-                    Cmd("Store App " .. NrAppear .. " " .. StAppNameOn .. " Appearance=" .. StAppOn .. " color=" .. StColCode .. "")
-                    NrAppear = Maf(NrAppear + 1);
-                    Cmd("Store App " .. NrAppear .. " " .. StAppNameOff .. " Appearance=" .. StAppOff .. " color=" .. StColCode .. "")
-                    NrAppear = Maf(NrAppear + 1);
-                end
-                -- end Appearances
-                E("NrAppear ")
-                E(NrAppear)
-                
-                -- Create Sequences
-                GrpNo = SelectedGrpNo[g]
-                GrpNo = string.gsub( GrpNo,"'","" )
-            Cmd("ClearAll /nu")
-            Cmd("Group " .. SelectedGrp[g] .. " at Gel " .. ColNr .. "")
-            Cmd("Store Sequence " .. CurrentSeqNr .. " \"" .. prefix .. StringColName .. " " .. SelectedGrp[g]:gsub('\'', '') .. "\"")
-            Cmd("Store Sequence " .. CurrentSeqNr .. " Cue 1 Part 0.1")
-            Cmd("Assign Group " .. GrpNo .. " At Sequence " .. CurrentSeqNr .. " Cue 1 Part 0.1")
-            Cmd('Assign MAtricks ' .. MatrickNrStart .. ' At Sequence ' .. CurrentSeqNr .. ' Cue 1 Part 0.1 /nu')
-            -- Add Cmd to Squence
-            Cmd("set seq " .. CurrentSeqNr .. " cue \"CueZero\" Property Command=\"Set Layout "  .. TLayNr .. "." .. LayNr .. " Appearance=" .. NrNeed .. "\"")
-            Cmd("set seq " .. CurrentSeqNr .. " cue \"OffCue\" Property Command=\"Set Layout "  .. TLayNr .. "." .. LayNr .. " Appearance=" .. NrNeed + 1 .. "\"")
-            Cmd("set seq " .. CurrentSeqNr .. " AutoStart=1 AutoStop=1 MasterGoMode=None AutoFix=0 AutoStomp=0")
-            Cmd("set seq " .. CurrentSeqNr .. " Tracking=0 WrapAround=1 ReleaseFirstCue=0 RestartMode=1 CommandEnable=1 XFadeReload=0")
-            Cmd("set seq " .. CurrentSeqNr .. " OutputFilter='' Priority=0 SoftLTP=1 PlaybackMaster='' XfadeMode=0")
-            Cmd("set seq " .. CurrentSeqNr .. " RateMaster='' RateScale=0 SpeedMaster='' SpeedScale=0 SpeedfromRate=0")
-            Cmd("set seq " .. CurrentSeqNr .. " InputFilter='' SwapProtect=0 KillProtect=0 IncludeLinkLastGo=1 UseExecutorTime=0 OffwhenOverridden=1 Lock=0")
-            Cmd("set seq " .. CurrentSeqNr .. " SequMIB=0 SequMIBMode=1")
-            -- end Sequences
-            
-            -- Add Squences to Layout
-            Cmd("Assign Seq " .. CurrentSeqNr .. " at Layout " .. TLayNr)
-            Cmd("Set Layout "  .. TLayNr .. "." .. LayNr .. " appearance=" .. NrNeed + 1 .. " PosX " .. LayX .. " PosY " .. LayY .. " PositionW " .. LayW .. " PositionH " .. LayH .. " VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0")
-            
-            NrNeed = Maf(NrNeed + 2); -- Set App Nr to next color
-
-            if (col_count ~= MaxColLgn) then
-                LayX = Maf(LayX + LayW + 20)
-            else
-                LayX = RefX
-                LayX = Maf(LayX + LayW + 20)
-                LayY = Maf(LayY - 20) -- Add offset for Layout Element distance
-                LayY = Maf(LayY - LayH)
-                col_count = 0
+                StAppNameOn = "\"" .. prefix .. StringColName .. " on\""
+                StAppNameOff = "\"" .. prefix .. StringColName .. " off\""
+                Cmd("Store App " .. NrAppear .. " " .. StAppNameOn .. " Appearance=" .. StAppOn .. " color=" .. StColCode .. "")
+                NrAppear = Maf(NrAppear + 1);
+                Cmd("Store App " .. NrAppear .. " " .. StAppNameOff .. " Appearance=" .. StAppOff .. " color=" .. StColCode .. "")
+                NrAppear = Maf(NrAppear + 1);
             end
+            -- end Appearances
+            
+            -- Create Sequences
+            GrpNo = SelectedGrpNo[g]
+            GrpNo = string.gsub( GrpNo,"'","" )
+         Cmd("ClearAll /nu")
+         Cmd("Group " .. SelectedGrp[g] .. " at Gel " .. ColNr .. "")
+         Cmd("Store Sequence " .. CurrentSeqNr .. " \"" .. prefix .. StringColName .. " " .. SelectedGrp[g]:gsub('\'', '') .. "\"")
+         Cmd("Store Sequence " .. CurrentSeqNr .. " Cue 1 Part 0.1")
+         Cmd("Assign Group " .. GrpNo .. " At Sequence " .. CurrentSeqNr .. " Cue 1 Part 0.1")
+         Cmd('Assign MAtricks ' .. MatrickNrStart .. ' At Sequence ' .. CurrentSeqNr .. ' Cue 1 Part 0.1 /nu')
+         -- Add Cmd to Squence
+         Cmd("set seq " .. CurrentSeqNr .. " cue \"CueZero\" Property Command=\"Set Layout "  .. TLayNr .. "." .. LayNr .. " Appearance=" .. NrNeed .. "\"")
+         Cmd("set seq " .. CurrentSeqNr .. " cue \"OffCue\" Property Command=\"Set Layout "  .. TLayNr .. "." .. LayNr .. " Appearance=" .. NrNeed + 1 .. "\"")
+         Command_Ext_Suite(CurrentSeqNr)
+         -- end Sequences
+         
+         -- Add Squences to Layout
+         Cmd("Assign Seq " .. CurrentSeqNr .. " at Layout " .. TLayNr)
+         Cmd("Set Layout "  .. TLayNr .. "." .. LayNr .. " appearance=" .. NrNeed + 1 .. " PosX " .. LayX .. " PosY " .. LayY .. " PositionW " .. LayW .. " PositionH " .. LayH .. " VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0")
+         
+         NrNeed = Maf(NrNeed + 2); -- Set App Nr to next color
 
-            LayNr = Maf(LayNr + 1)
-            CurrentSeqNr = Maf(CurrentSeqNr + 1)
+         if (col_count ~= MaxColLgn) then
+             LayX = Maf(LayX + LayW + 20)
+         else
+             LayX = RefX
+             LayX = Maf(LayX + LayW + 20)
+             LayY = Maf(LayY - 20) -- Add offset for Layout Element distance
+             LayY = Maf(LayY - LayH)
+             col_count = 0
+         end
+
+         LayNr = Maf(LayNr + 1)
+         LastSeqColor = CurrentSeqNr
+         CurrentSeqNr = Maf(CurrentSeqNr + 1)
         end
-        -- end Squences to Layout
-        
-        AppCrea = 1
-        LayY = Maf(LayY - 20) -- Add offset for Layout Element distance
+        -- end COLOR SEQ
+    
+     -- add matrick group
+     Cmd('ClearAll /nu')
+     Cmd('Store Sequence ' .. CurrentSeqNr .. ' \'' .. prefix .. "Tricks" .. SelectedGrpName[g]:gsub('\'', '') )
+     Cmd('set seq ' .. CurrentSeqNr .. ' cue \'' .. prefix .. "Tricks" .. SelectedGrpName[g]:gsub('\'', '') .. '\' Property Command=\'Assign MaTricks ' .. prefix .. SelectedGrpName[g]:gsub('\'', '') .. ' At Sequence ' .. FirstSeqColor .. ' Thru ' .. LastSeqColor .. ' cue 1 part 0.1 ;  Assign Sequence ' .. CurrentSeqNr + 1 .. ' At Layout ' .. TLayNr .. '.' .. LayNr )
+     Cmd('set seq ' .. CurrentSeqNr .. ' Property Appearance=' .. AppTricks[2].Nr )
+     Cmd("Assign Seq " .. CurrentSeqNr .. " at Layout " .. TLayNr)
+     Cmd("Set Layout "  .. TLayNr .. "." .. LayNr .. " PosX " .. LayX .. " PosY " .. LayY .. " PositionW " .. LayW .. " PositionH " .. LayH .. " VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0")
+     CurrentSeqNr = Maf(CurrentSeqNr + 1)
+     Cmd('ClearAll /nu')
+     Cmd('Store Sequence ' .. CurrentSeqNr .. ' \'' .. prefix .. "Tricksh" .. SelectedGrpName[g]:gsub('\'', '') .. '\'')
+     Cmd('set seq ' .. CurrentSeqNr .. ' cue \'' .. prefix .. "Tricksh" .. SelectedGrpName[g]:gsub('\'', '') .. '\' Property Command=\'Assign MaTricks ' .. MatrickNrStart ..  ' At Sequence ' .. FirstSeqColor .. ' Thru ' .. LastSeqColor .. ' cue 1 part 0.1 ; Assign Sequence ' .. CurrentSeqNr - 1 .. ' At Layout ' .. TLayNr .. '.' .. LayNr )
+     Cmd('set seq ' .. CurrentSeqNr .. ' Property Appearance=' .. AppTricks[1].Nr )  
+     LayNr = Maf(LayNr + 1)
+     LayX = Maf(LayX + LayW + 20)
+     Cmd('Store Macro ' .. CurrentMacroNr .. ' \'' .. prefix .. SelectedGrpName[g]:gsub('\'', '') )
+     Cmd('ChangeDestination Macro ' .. CurrentMacroNr .. '')
+     Cmd('Insert')
+     Cmd('set 1 Command=\'Edit Matrick ' .. prefix .. SelectedGrpName[g]:gsub('\'', '') )
+     Cmd('ChangeDestination Root')
+     Cmd('Assign Macro ' .. CurrentMacroNr .. " at layout " .. TLayNr)
+     Cmd('set Macro ' .. CurrentMacroNr .. ' Property Appearance='.. AppTricks[3].Nr )
+     Cmd('Set Layout ' .. TLayNr .. '.' .. LayNr .. ' PosX ' .. LayX .. ' PosY ' .. LayY .. ' PositionW ' .. LayW .. ' PositionH ' .. LayH .. ' VisibilityObjectname= 0 VisibilityBar=0 VisibilityIndicatorBar=0')
+     
+     CurrentMacroNr = Maf(CurrentMacroNr + 1)        
+     LayNr = Maf(LayNr + 1)
+     CurrentSeqNr = Maf(CurrentSeqNr + 1)
+     FirstSeqColor = CurrentSeqNr   
+     AppCrea = 1
+     LayY = Maf(LayY - 20) -- Add offset for Layout Element distance
     end
     -- end Appearances/Sequences 
 
@@ -769,12 +827,8 @@ local function Main(display_Handle)
             Cmd('set seq ' .. CurrentSeqNr .. ' cue \'' .. prefix .. Argument_Fade[i].name .. '\' Property Command=\'off seq ' .. FirstSeqTime .. ' thru ' .. LastSeqTime .. ' - ' .. CurrentSeqNr .. ' ; set seq ' .. SeqNrStart .. ' thru ' ..SeqNrEnd.. ' UseExecutorTime='.. Argument_Fade[i].UseExTime .. ' ; Set Matricks ' .. MatrickNrStart .. ' Property "FadeFromx" '.. Argument_Fade[i].Time ..' ; Set Matricks ' .. MatrickNrStart .. ' Property "FadeTox" '.. Argument_Fade[i].Time ..'')
         end
         Cmd('set seq ' .. CurrentSeqNr .. ' cue \'OffCue\' Property Command=\'Set Layout '  .. TLayNr .. '.' .. LayNr .. ' Appearance=' .. AppImp[ib].Nr .. '\'')
-        Cmd('set seq ' .. CurrentSeqNr .. ' AutoStart=1 AutoStop=1 MasterGoMode=None AutoFix=0 AutoStomp=0')
-        Cmd('set seq ' .. CurrentSeqNr .. ' Tracking=0 WrapAround=1 ReleaseFirstCue=0 RestartMode=1 CommandEnable=1 XFadeReload=0')
-        Cmd('set seq ' .. CurrentSeqNr .. ' OutputFilter="" Priority=0 SoftLTP=1 PlaybackMaster="" XfadeMode=0')
-        Cmd('set seq ' .. CurrentSeqNr .. ' RateMaster="" RateScale=0 SpeedMaster="" SpeedScale=0 SpeedfromRate=0')
-        Cmd('set seq ' .. CurrentSeqNr .. ' InputFilter="" SwapProtect=0 KillProtect=0 IncludeLinkLastGo=1 UseExecutorTime=0 OffwhenOverridden=1 Lock=0')
-        Cmd('set seq ' .. CurrentSeqNr .. ' SequMIB=0 SequMIBMode=1')
+        Command_Ext_Suite(CurrentSeqNr)
+
         -- end Sequences
 
         -- Add Squences to Layout
@@ -783,13 +837,13 @@ local function Main(display_Handle)
         if i == 1 then
             LayNr = Maf(LayNr + 1)
             Cmd('Store Layout '  .. TLayNr .. '.' .. LayNr .. 'Property CustomTextText=\'FADE')
-            Cmd('Set Layout '  .. TLayNr .. '.' .. LayNr .. 'Property CustomTextSize \'32')
+            Cmd('Set Layout '  .. TLayNr .. '.' .. LayNr .. 'Property CustomTextSize \'24')
             Cmd('Set Layout '  .. TLayNr .. '.' .. LayNr .. 'Property CustomTextAlignmentV \'Top')
             Cmd('Set Layout '  .. TLayNr .. '.' .. LayNr .. 'Property VisibilityBorder \'0')
             Cmd('Set Layout '  .. TLayNr .. '.' .. LayNr .. 'Property PosX ' .. LayX .. ' PosY ' .. LayY .. ' PositionW 700 PositionH 140')
             LayNr = Maf(LayNr + 1)
             Cmd('Store Layout '  .. TLayNr .. '.' .. LayNr .. 'Property CustomTextText=\'Ex.Time')
-            Cmd('Set Layout '  .. TLayNr .. '.' .. LayNr .. 'Property CustomTextSize \'32')
+            Cmd('Set Layout '  .. TLayNr .. '.' .. LayNr .. 'Property CustomTextSize \'24')
             Cmd('Set Layout '  .. TLayNr .. '.' .. LayNr .. 'Property CustomTextAlignmentV \'Top')
             Cmd('Set Layout '  .. TLayNr .. '.' .. LayNr .. 'Property VisibilityBorder \'0')
             Cmd('Set Layout '  .. TLayNr .. '.' .. LayNr .. 'Property PosX ' .. LayX .. ' PosY ' .. LayY .. ' PositionW 120 PositionH 140')
@@ -834,11 +888,8 @@ local function Main(display_Handle)
         end
         Cmd('set seq ' .. CurrentSeqNr .. ' cue \'OffCue\' Property Command=\'Set Layout '  .. TLayNr .. '.' .. LayNr .. ' Appearance=' ..AppImp[ib].Nr .. '\'')
         Cmd('set seq ' .. CurrentSeqNr .. ' AutoStart=1 AutoStop=1 MasterGoMode=None AutoFix=0 AutoStomp=0')
-        Cmd('set seq ' .. CurrentSeqNr .. ' Tracking=0 WrapAround=1 ReleaseFirstCue=0 RestartMode=1 CommandEnable=1 XFadeReload=0')
-        Cmd('set seq ' .. CurrentSeqNr .. ' OutputFilter="" Priority=0 SoftLTP=1 PlaybackMaster="" XfadeMode=0')
-        Cmd('set seq ' .. CurrentSeqNr .. ' RateMaster="" RateScale=0 SpeedMaster="" SpeedScale=0 SpeedfromRate=0')
-        Cmd('set seq ' .. CurrentSeqNr .. ' InputFilter="" SwapProtect=0 KillProtect=0 IncludeLinkLastGo=1 UseExecutorTime=0 OffwhenOverridden=1 Lock=0')
-        Cmd('set seq ' .. CurrentSeqNr .. ' SequMIB=0 SequMIBMode=1')
+        Command_Ext_Suite(CurrentSeqNr)
+
         -- end Sequences
         
         -- Add Squences to Layout
@@ -887,12 +938,8 @@ local function Main(display_Handle)
         Cmd('set seq ' .. CurrentSeqNr .. ' cue \'' .. prefix .. Argument_DelayTo[i].name .. '\' Property Command=\'off seq ' .. FirstSeqDelayTo .. ' thru ' .. LastSeqDelayTo .. ' - ' .. CurrentSeqNr .. ' ; Set Matricks ' .. MatrickNrStart .. ' Property "DelayTox" '.. Argument_DelayTo[i].Time ..'')
     end
     Cmd('set seq ' .. CurrentSeqNr .. ' cue \'OffCue\' Property Command=\'Set Layout '  .. TLayNr .. '.' .. LayNr .. ' Appearance=' ..AppImp[ib].Nr .. '\'')
-    Cmd('set seq ' .. CurrentSeqNr .. ' AutoStart=1 AutoStop=1 MasterGoMode=None AutoFix=0 AutoStomp=0')
-    Cmd('set seq ' .. CurrentSeqNr .. ' Tracking=0 WrapAround=1 ReleaseFirstCue=0 RestartMode=1 CommandEnable=1 XFadeReload=0')
-    Cmd('set seq ' .. CurrentSeqNr .. ' OutputFilter="" Priority=0 SoftLTP=1 PlaybackMaster="" XfadeMode=0')
-    Cmd('set seq ' .. CurrentSeqNr .. ' RateMaster="" RateScale=0 SpeedMaster="" SpeedScale=0 SpeedfromRate=0')
-    Cmd('set seq ' .. CurrentSeqNr .. ' InputFilter="" SwapProtect=0 KillProtect=0 IncludeLinkLastGo=1 UseExecutorTime=0 OffwhenOverridden=1 Lock=0')
-    Cmd('set seq ' .. CurrentSeqNr .. ' SequMIB=0 SequMIBMode=1')
+    Command_Ext_Suite(CurrentSeqNr)
+
     -- end Sequences
 
     -- Add Squences to Layout
@@ -938,12 +985,8 @@ local function Main(display_Handle)
     Cmd('set seq ' .. CurrentSeqNr .. ' cue \'CueZero\' Property Command=\'Set Layout '  .. TLayNr .. '.' .. LayNr .. ' Appearance=' .. AppImp[63].Nr .. '\'')      
     Cmd('set seq ' .. CurrentSeqNr .. ' cue \'' .. prefix ..'Phase Input\' Property Command=\'Go Macro ' .. CurrentMacroNr ..  '')
     Cmd('set seq ' .. CurrentSeqNr .. ' cue \'OffCue\' Property Command=\'Set Layout '  .. TLayNr .. '.' .. LayNr .. ' Appearance=' .. AppImp[64].Nr .. '\'')
-    Cmd('set seq ' .. CurrentSeqNr .. ' AutoStart=1 AutoStop=1 MasterGoMode=None AutoFix=0 AutoStomp=0')
-    Cmd('set seq ' .. CurrentSeqNr .. ' Tracking=0 WrapAround=1 ReleaseFirstCue=0 RestartMode=1 CommandEnable=1 XFadeReload=0')
-    Cmd('set seq ' .. CurrentSeqNr .. ' OutputFilter="" Priority=0 SoftLTP=1 PlaybackMaster="" XfadeMode=0')
-    Cmd('set seq ' .. CurrentSeqNr .. ' RateMaster="" RateScale=0 SpeedMaster="" SpeedScale=0 SpeedfromRate=0')
-    Cmd('set seq ' .. CurrentSeqNr .. ' InputFilter="" SwapProtect=0 KillProtect=0 IncludeLinkLastGo=1 UseExecutorTime=0 OffwhenOverridden=1 Lock=0')
-    Cmd('set seq ' .. CurrentSeqNr .. ' SequMIB=0 SequMIBMode=1')
+    Command_Ext_Suite(CurrentSeqNr)
+
     -- end Sequences
 
     -- Add Squences to Layout
@@ -959,13 +1002,6 @@ local function Main(display_Handle)
     LayNr = Maf(LayNr + 1)
     CurrentSeqNr = Maf(CurrentSeqNr + 1)
     -- end Sequences Phase
-
-
-
-
-
-    
-    
     
     -- Setup XGroup seq
     CurrentMacroNr = Maf(CurrentMacroNr + 1)
@@ -995,12 +1031,8 @@ local function Main(display_Handle)
             Cmd('set seq ' .. CurrentSeqNr .. ' cue \'' .. prefix .. Argument_Xgrp[i].name .. '\' Property Command=\'off seq ' .. FirstSeqXgrp .. ' thru ' .. LastSeqXgrp .. ' - ' .. CurrentSeqNr .. ' ; Set Matricks ' .. MatrickNrStart .. ' Property "XGroup" '.. Argument_Xgrp[i].Time ..'')
         end
         Cmd('set seq ' .. CurrentSeqNr .. ' cue \'OffCue\' Property Command=\'Set Layout '  .. TLayNr .. '.' .. LayNr .. ' Appearance=' ..AppImp[ib].Nr .. '\'')
-        Cmd('set seq ' .. CurrentSeqNr .. ' AutoStart=1 AutoStop=1 MasterGoMode=None AutoFix=0 AutoStomp=0')
-        Cmd('set seq ' .. CurrentSeqNr .. ' Tracking=0 WrapAround=1 ReleaseFirstCue=0 RestartMode=1 CommandEnable=1 XFadeReload=0')
-        Cmd('set seq ' .. CurrentSeqNr .. ' OutputFilter="" Priority=0 SoftLTP=1 PlaybackMaster="" XfadeMode=0')
-        Cmd('set seq ' .. CurrentSeqNr .. ' RateMaster="" RateScale=0 SpeedMaster="" SpeedScale=0 SpeedfromRate=0')
-        Cmd('set seq ' .. CurrentSeqNr .. ' InputFilter="" SwapProtect=0 KillProtect=0 IncludeLinkLastGo=1 UseExecutorTime=0 OffwhenOverridden=1 Lock=0')
-        Cmd('set seq ' .. CurrentSeqNr .. ' SequMIB=0 SequMIBMode=1')
+        Command_Ext_Suite(CurrentSeqNr)
+
         -- end Sequences
     
         -- Add Squences to Layout
@@ -1052,12 +1084,8 @@ local function Main(display_Handle)
             Cmd('set seq ' .. CurrentSeqNr .. ' cue \'' .. prefix .. Argument_Xblock[i].name .. '\' Property Command=\'off seq ' .. FirstSeqXblock .. ' thru ' .. LastSeqXblock .. ' - ' .. CurrentSeqNr .. ' ; Set Matricks ' .. MatrickNrStart .. ' Property "XBlock" '.. Argument_Xblock[i].Time ..'')
         end
         Cmd('set seq ' .. CurrentSeqNr .. ' cue \'OffCue\' Property Command=\'Set Layout '  .. TLayNr .. '.' .. LayNr .. ' Appearance=' ..AppImp[ib].Nr .. '\'')
-        Cmd('set seq ' .. CurrentSeqNr .. ' AutoStart=1 AutoStop=1 MasterGoMode=None AutoFix=0 AutoStomp=0')
-        Cmd('set seq ' .. CurrentSeqNr .. ' Tracking=0 WrapAround=1 ReleaseFirstCue=0 RestartMode=1 CommandEnable=1 XFadeReload=0')
-        Cmd('set seq ' .. CurrentSeqNr .. ' OutputFilter="" Priority=0 SoftLTP=1 PlaybackMaster="" XfadeMode=0')
-        Cmd('set seq ' .. CurrentSeqNr .. ' RateMaster="" RateScale=0 SpeedMaster="" SpeedScale=0 SpeedfromRate=0')
-        Cmd('set seq ' .. CurrentSeqNr .. ' InputFilter="" SwapProtect=0 KillProtect=0 IncludeLinkLastGo=1 UseExecutorTime=0 OffwhenOverridden=1 Lock=0')
-        Cmd('set seq ' .. CurrentSeqNr .. ' SequMIB=0 SequMIBMode=1')
+        Command_Ext_Suite(CurrentSeqNr)
+
         -- end Sequences
     
         -- Add Squences to Layout
@@ -1083,69 +1111,80 @@ local function Main(display_Handle)
 
 
 
-     -- Setup XWings seq
-     CurrentMacroNr = Maf(CurrentMacroNr + 1)
-     FirstSeqXwings = CurrentSeqNr
-     LastSeqXwings = Maf(CurrentSeqNr + 4)
-     -- Create Macro DelayTo Input
-     Cmd('Store Macro ' .. CurrentMacroNr .. ' \'' .. prefix .. 'XWings Input\'')
-     Cmd('ChangeDestination Macro ' .. CurrentMacroNr .. '')
-     Cmd('Insert')
-     Cmd('set 1 Command=\'off seq ' .. FirstSeqXwings .. ' thru ' .. LastSeqXwings .. ' - ' .. LastSeqXwings .. '')
-     Cmd('Insert')    
-     Cmd('set 2 Command=\'Edit Matricks ' .. MatrickNrStart .. ' Property "XWings" ')
-     Cmd('ChangeDestination Root')
-     
- 
-     -- Create Sequences XWings
-     for i = 1,5 do 
-         local ia= tonumber(i * 2 + 51)
-         local ib= tonumber(i * 2 + 52)
-         Cmd('ClearAll /nu')
-         Cmd('Store Sequence ' .. CurrentSeqNr .. ' \'' .. prefix .. Argument_Xwings[i].name .. '\'')
-         -- Add Cmd to Squence
-         Cmd('set seq ' .. CurrentSeqNr .. ' cue \'CueZero\' Property Command=\'Set Layout '  .. TLayNr .. '.' .. LayNr .. ' Appearance=' .. AppImp[ia].Nr .. '\'')
-         if i == 5 then
-          Cmd('set seq ' .. CurrentSeqNr .. ' cue \'' .. prefix .. Argument_Xwings[i].name .. '\' Property Command=\'Go Macro ' .. CurrentMacroNr ..  '')
-         else
-             Cmd('set seq ' .. CurrentSeqNr .. ' cue \'' .. prefix .. Argument_Xwings[i].name .. '\' Property Command=\'off seq ' .. FirstSeqXwings .. ' thru ' .. LastSeqXwings .. ' - ' .. CurrentSeqNr .. ' ; Set Matricks ' .. MatrickNrStart .. ' Property "XWings" '.. Argument_Xwings[i].Time ..'')
-         end
-         Cmd('set seq ' .. CurrentSeqNr .. ' cue \'OffCue\' Property Command=\'Set Layout '  .. TLayNr .. '.' .. LayNr .. ' Appearance=' ..AppImp[ib].Nr .. '\'')
-         Cmd('set seq ' .. CurrentSeqNr .. ' AutoStart=1 AutoStop=1 MasterGoMode=None AutoFix=0 AutoStomp=0')
-         Cmd('set seq ' .. CurrentSeqNr .. ' Tracking=0 WrapAround=1 ReleaseFirstCue=0 RestartMode=1 CommandEnable=1 XFadeReload=0')
-         Cmd('set seq ' .. CurrentSeqNr .. ' OutputFilter="" Priority=0 SoftLTP=1 PlaybackMaster="" XfadeMode=0')
-         Cmd('set seq ' .. CurrentSeqNr .. ' RateMaster="" RateScale=0 SpeedMaster="" SpeedScale=0 SpeedfromRate=0')
-         Cmd('set seq ' .. CurrentSeqNr .. ' InputFilter="" SwapProtect=0 KillProtect=0 IncludeLinkLastGo=1 UseExecutorTime=0 OffwhenOverridden=1 Lock=0')
-         Cmd('set seq ' .. CurrentSeqNr .. ' SequMIB=0 SequMIBMode=1')
-         -- end Sequences
-     
-         -- Add Squences to Layout
-         Cmd('Assign Seq ' .. CurrentSeqNr .. ' at Layout ' .. TLayNr)
-         Cmd('Set Layout '  .. TLayNr .. '.' .. LayNr .. ' appearance=' .. AppImp[ib].Nr .. ' PosX ' .. LayX .. ' PosY ' .. LayY .. ' PositionW ' .. LayW .. ' PositionH ' .. LayH .. ' VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0')
-         if i == 1 then
-            LayNr = Maf(LayNr + 1)
-            Cmd('Store Layout '  .. TLayNr .. '.' .. LayNr .. 'Property CustomTextText=\'XWINGS')
-            Cmd('Set Layout '  .. TLayNr .. '.' .. LayNr .. 'Property CustomTextSize \'32')
-            Cmd('Set Layout '  .. TLayNr .. '.' .. LayNr .. 'Property CustomTextAlignmentV \'Top')
-            Cmd('Set Layout '  .. TLayNr .. '.' .. LayNr .. 'Property VisibilityBorder \'0')
-            Cmd('Set Layout '  .. TLayNr .. '.' .. LayNr .. 'Property PosX ' .. LayX .. ' PosY ' .. LayY .. ' PositionW 580 PositionH 140')
-        end    
-         LayX = Maf(LayX + LayW + 20)
-         LayNr = Maf(LayNr + 1)
-         CurrentSeqNr = Maf(CurrentSeqNr + 1)
-     end
-     -- end Sequences XWings
+    -- Setup XWings seq
+    CurrentMacroNr = Maf(CurrentMacroNr + 1)
+    FirstSeqXwings = CurrentSeqNr
+    LastSeqXwings = Maf(CurrentSeqNr + 4)
+    -- Create Macro DelayTo Input
+    Cmd('Store Macro ' .. CurrentMacroNr .. ' \'' .. prefix .. 'XWings Input\'')
+    Cmd('ChangeDestination Macro ' .. CurrentMacroNr .. '')
+    Cmd('Insert')
+    Cmd('set 1 Command=\'off seq ' .. FirstSeqXwings .. ' thru ' .. LastSeqXwings .. ' - ' .. LastSeqXwings .. '')
+    Cmd('Insert')    
+    Cmd('set 2 Command=\'Edit Matricks ' .. MatrickNrStart .. ' Property "XWings" ')
+    Cmd('ChangeDestination Root')
+    
 
+    -- Create Sequences XWings
+    for i = 1,5 do 
+        local ia= tonumber(i * 2 + 51)
+        local ib= tonumber(i * 2 + 52)
+        Cmd('ClearAll /nu')
+        Cmd('Store Sequence ' .. CurrentSeqNr .. ' \'' .. prefix .. Argument_Xwings[i].name .. '\'')
+        -- Add Cmd to Squence
+        Cmd('set seq ' .. CurrentSeqNr .. ' cue \'CueZero\' Property Command=\'Set Layout '  .. TLayNr .. '.' .. LayNr .. ' Appearance=' .. AppImp[ia].Nr .. '\'')
+        if i == 5 then
+         Cmd('set seq ' .. CurrentSeqNr .. ' cue \'' .. prefix .. Argument_Xwings[i].name .. '\' Property Command=\'Go Macro ' .. CurrentMacroNr ..  '')
+        else
+            Cmd('set seq ' .. CurrentSeqNr .. ' cue \'' .. prefix .. Argument_Xwings[i].name .. '\' Property Command=\'off seq ' .. FirstSeqXwings .. ' thru ' .. LastSeqXwings .. ' - ' .. CurrentSeqNr .. ' ; Set Matricks ' .. MatrickNrStart .. ' Property "XWings" '.. Argument_Xwings[i].Time ..'')
+        end
+        Cmd('set seq ' .. CurrentSeqNr .. ' cue \'OffCue\' Property Command=\'Set Layout '  .. TLayNr .. '.' .. LayNr .. ' Appearance=' ..AppImp[ib].Nr .. '\'')
+        Command_Ext_Suite(CurrentSeqNr)
+       
+        -- end Sequences
+    
+        -- Add Squences to Layout
+        Cmd('Assign Seq ' .. CurrentSeqNr .. ' at Layout ' .. TLayNr)
+        Cmd('Set Layout '  .. TLayNr .. '.' .. LayNr .. ' appearance=' .. AppImp[ib].Nr .. ' PosX ' .. LayX .. ' PosY ' .. LayY .. ' PositionW ' .. LayW .. ' PositionH ' .. LayH .. ' VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0')
+        if i == 1 then
+           LayNr = Maf(LayNr + 1)
+           Cmd('Store Layout '  .. TLayNr .. '.' .. LayNr .. 'Property CustomTextText=\'XWINGS')
+           Cmd('Set Layout '  .. TLayNr .. '.' .. LayNr .. 'Property CustomTextSize \'32')
+           Cmd('Set Layout '  .. TLayNr .. '.' .. LayNr .. 'Property CustomTextAlignmentV \'Top')
+           Cmd('Set Layout '  .. TLayNr .. '.' .. LayNr .. 'Property VisibilityBorder \'0')
+           Cmd('Set Layout '  .. TLayNr .. '.' .. LayNr .. 'Property PosX ' .. LayX .. ' PosY ' .. LayY .. ' PositionW 580 PositionH 140')
+       end    
+       LayX = Maf(LayX + LayW + 20)
+       LayNr = Maf(LayNr + 1)
+       CurrentSeqNr = Maf(CurrentSeqNr + 1)
+    end
+    -- end Sequences XWings
 
-
-
-
-
-
-     -- add All Color
+    -- add Kill all LCx_
     LayY = TLay[TLayNrRef].DimensionH / 2
     LayY = Maf(LayY + 20) -- Add offset for Layout Element distance
     LayX = RefX
+    -- Create Sequences
+    Cmd("ClearAll /nu")
+    Cmd('Store Sequence ' .. CurrentSeqNr .. ' \'' .. prefix .. 'KILL_ALL\'')
+    -- Add Cmd to Squence
+    Cmd("set seq " .. CurrentSeqNr .. " cue \"CueZero\" Property Command=\"Set Layout "  .. TLayNr .. "." .. LayNr .. " Appearance=" .. prefix .. "'skull_on'\"")
+    Cmd('set seq ' .. CurrentSeqNr .. ' cue \''.. prefix .. 'KILL_ALL\' Property Command=\'Off Sequence \'' .. prefix .. '*')
+    Cmd("set seq " .. CurrentSeqNr .. " cue \"OffCue\" Property Command=\"Set Layout "  .. TLayNr .. "." .. LayNr .. " Appearance=" .. prefix .. "'skull_off'\"")
+    Command_Ext_Suite(CurrentSeqNr)
+
+    -- end Sequences
+
+    -- Add Squences to Layout
+    Cmd("Assign Seq " .. CurrentSeqNr .. " at Layout " .. TLayNr)
+    Cmd('Set Layout '  .. TLayNr .. '.' .. LayNr .. ' Appearance=' .. prefix .. "'skull_off'" .. ' PosX ' .. LayX .. ' PosY ' .. LayY .. ' PositionW ' .. LayW .. ' PositionH ' .. LayH .. ' VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0')
+    --end Kill al LCx_
+
+
+    LayNr = Maf(LayNr + 1)
+    CurrentSeqNr = Maf(CurrentSeqNr + 1)
+     
+    -- add All Color
     LayX = Maf(LayX + LayW + 20)
     NrNeed = Maf(AppNr + 1)
     col_count = 0
@@ -1159,18 +1198,13 @@ local function Main(display_Handle)
 
         -- Create Sequences
         Cmd("ClearAll /nu")
-        -- Cmd('Store Sequence ' .. CurrentSeqNr .. ' \'' .. prefix .. 'ALL' .. StringColName .. ''  .. 'ALL\'')
         Cmd('Store Sequence ' .. CurrentSeqNr .. ' \'' .. prefix .. 'ALL' .. StringColName .. 'ALL\'')
         -- Add Cmd to Squence
         Cmd("set seq " .. CurrentSeqNr .. " cue \"CueZero\" Property Command=\"Set Layout "  .. TLayNr .. "." .. LayNr .. " Appearance=" .. NrNeed + 1 .. "\"")
         Cmd('set seq ' .. CurrentSeqNr .. ' cue \''.. prefix .. 'ALL' .. StringColName .. '' .. 'ALL\' Property Command=\'Go+ Sequence \'' .. prefix .. StringColName ..  '*')
         Cmd("set seq " .. CurrentSeqNr .. " cue \"OffCue\" Property Command=\"Set Layout "  .. TLayNr .. "." .. LayNr .. " Appearance=" .. NrNeed + 1 .. "\"")
-        Cmd("set seq " .. CurrentSeqNr .. " AutoStart=1 AutoStop=1 MasterGoMode=None AutoFix=0 AutoStomp=0")
-        Cmd("set seq " .. CurrentSeqNr .. " Tracking=0 WrapAround=1 ReleaseFirstCue=0 RestartMode=1 CommandEnable=1 XFadeReload=0")
-        Cmd("set seq " .. CurrentSeqNr .. " OutputFilter='' Priority=0 SoftLTP=1 PlaybackMaster='' XfadeMode=0")
-        Cmd("set seq " .. CurrentSeqNr .. " RateMaster='' RateScale=0 SpeedMaster='' SpeedScale=0 SpeedfromRate=0")
-        Cmd("set seq " .. CurrentSeqNr .. " InputFilter='' SwapProtect=0 KillProtect=0 IncludeLinkLastGo=1 UseExecutorTime=1 OffwhenOverridden=1 Lock=0")
-        Cmd("set seq " .. CurrentSeqNr .. " SequMIB=0 SequMIBMode=1")
+        Command_Ext_Suite(CurrentSeqNr)
+        
         -- end Sequences
 
         -- Add Squences to Layout
