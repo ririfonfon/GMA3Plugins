@@ -40,14 +40,12 @@ local function Main(display_Handle)
     end
 
     local ImgImp = {
-        {Name =     "\"on\"",               FileName = "\"on.png\"",            Filepath = "\"../Layout_Color\"", }, 
-        {Name =     "\"off\"",              FileName = "\"off.png\"",           Filepath = "\"../Layout_Color\"", }, 
-        {Name =     "\"time_on\"",          FileName = "\"time_on.png\"",       Filepath = "\"../Layout_Color\"", }, 
-        {Name =     "\"time_off\"",         FileName = "\"time_off.png\"",      Filepath = "\"../Layout_Color\"", }, 
-        {Name =     "\"exec_time_on\"",     FileName = "\"exec_time_on.png\"",  Filepath = "\"../Layout_Color\"", }, 
-        {Name =     "\"exec_time_off\"",    FileName = "\"exec_time_off.png\"", Filepath = "\"../Layout_Color\"", }, 
-        {Name =     "\"calcul_on\"",        FileName = "\"calcul_on.png\"",     Filepath = "\"../Layout_Color\"", }, 
-        {Name =     "\"calcul_off\"",       FileName = "\"calcul_off.png\"",    Filepath = "\"../Layout_Color\"", }
+        {Name =     "\"on\"",               FileName = "\"on.png\"",            Filepath = "", }, 
+        {Name =     "\"off\"",              FileName = "\"off.png\"",           Filepath = "", }, 
+        {Name =     "\"exec_time_on\"",     FileName = "\"exec_time_on.png\"",  Filepath = "", }, 
+        {Name =     "\"exec_time_off\"",    FileName = "\"exec_time_off.png\"", Filepath = "", }, 
+        {Name =     "\"calcul_on\"",        FileName = "\"calcul_on.png\"",     Filepath = "", }, 
+        {Name =     "\"calcul_off\"",       FileName = "\"calcul_off.png\"",    Filepath = "", }
     }    
     
     -- Store all Used Appearances in a Table to find the last free number
@@ -593,7 +591,7 @@ local function Main(display_Handle)
                     ImgNr = Maf(ImgNr + 1);
                     E(ImgNr)
                     E(k)
-                    Cmd("Store Image 2." .. ImgNr .. " " .. ImgImp[k].Name .. " Filename=" .. ImgImp[k].FileName .. " filepath=" ..    ImgImp[k].Filepath .. "")
+                    Cmd("Store Image 2." .. ImgNr .. " " .. ImgImp[k].Name .. " Filename=" .. ImgImp[k].FileName .. " filepath=" .. ImgImp[k].Filepath .. "")
                 end
             end
         end
@@ -627,7 +625,7 @@ local function Main(display_Handle)
             NrNeed = Maf(AppNr + 1)
             
             Cmd("Assign Group " .. SelectedGrp[g] .. " at Layout " .. TLayNr)
-            Cmd("Set Layout "  .. TLayNr .. "." .. LayNr .. " Action=0 Appearance=" .. AppNr .. " PosX " .. LayX .. " PosY " .. LayY .. " PositionW " .. LayW .. " PositionH " .. LayH .. " VisibilityObjectname=1 VisibilityBar=0 VisibilityIndicatorBar=0")
+            Cmd("Set Layout "  .. TLayNr .. "." .. LayNr .. " Action=0 Appearance=" .. AppNr .. " PosX " .. LayX .. " PosY " .. LayY .. " PositionW " .. LayW .. " PositionH " .. LayH .. " VisibilityObjectname=1 VisibilityBar=0 VisibilityIndicatorBar=0 VisibilitySelectionRelevance=1")
             
             LayNr = Maf(LayNr + 1)
             LayX = Maf(LayX + LayW + 20)
