@@ -19,3 +19,43 @@ function Command_Title(title,LayNr,TLayNr,LayX,LayY,Pw,Ph)
     Cmd('Set Layout '  .. TLayNr .. '.' .. LayNr .. 'Property VisibilityBorder \'0')
     Cmd('Set Layout '  .. TLayNr .. '.' .. LayNr .. 'Property PosX ' .. LayX .. ' PosY ' .. LayY .. ' PositionW ' .. Pw .. ' PositionH ' .. Ph .. '')
 end
+
+function AddAllColor(TCol,CurrentSeqNr,prefix,TLayNr,LayNr,NrNeed,LayX,LayY,LayW,LayH,SelectedGelNr)
+    local col_count = 0
+    for col in ipairs(TCol) do
+        col_count = col_count + 1
+        local StColCode = "\"" .. TCol[col].r .. "," .. TCol[col].g .. "," .. TCol[col].b .. ",1\""
+        local StColName = TCol[col].name
+        local StringColName = string.gsub( StColName," ","_" )
+        local ColNr = SelectedGelNr .. "." .. TCol[col].no
+
+        -- Create Sequences
+        Cmd("ClearAll /nu")
+        Cmd('Store Sequence ' .. CurrentSeqNr .. ' \'' .. prefix .. 'ALL' .. StringColName .. 'ALL\'')
+        -- Add Cmd to Squence
+        Cmd("set seq " .. CurrentSeqNr .. " cue \"CueZero\" Property Command=\"Set Layout "  .. TLayNr .. "." .. LayNr .. " Appearance=" .. NrNeed + 1 .. "\"")
+        Cmd('set seq ' .. CurrentSeqNr .. ' cue \''.. prefix .. 'ALL' .. StringColName .. '' .. 'ALL\' Property Command=\'Go+ Sequence \'' .. prefix .. StringColName ..  '*')
+        Cmd("set seq " .. CurrentSeqNr .. " cue \"OffCue\" Property Command=\"Set Layout "  .. TLayNr .. "." .. LayNr .. " Appearance=" .. NrNeed + 1 .. "\"")
+        Command_Ext_Suite(CurrentSeqNr)
+        
+        -- end Sequences
+
+        -- Add Squences to Layout
+        Cmd("Assign Seq " .. CurrentSeqNr .. " at Layout " .. TLayNr)
+        Cmd("Set Layout "  .. TLayNr .. "." .. LayNr .. " appearance=" .. NrNeed + 1 .. " PosX " .. LayX .. " PosY " .. LayY .. " PositionW " .. LayW .. " PositionH " .. LayH .. " VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0")
+        NrNeed = Maf(NrNeed + 2); -- Set App Nr to next color
+
+        if (col_count ~= MaxColLgn) then
+            LayX = Maf(LayX + LayW + 20)
+        else
+            LayX = RefX
+            LayX = Maf(LayX + LayW + 20)
+            LayY = Maf(LayY - 20) -- Add offset for Layout Element distance
+            LayY = Maf(LayY - LayH)
+            col_count = 0
+        end
+
+        LayNr = Maf(LayNr + 1)
+        CurrentSeqNr = Maf(CurrentSeqNr + 1)
+    end
+end
