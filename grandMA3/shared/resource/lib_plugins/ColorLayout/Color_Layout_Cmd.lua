@@ -59,3 +59,62 @@ function AddAllColor(TCol,CurrentSeqNr,prefix,TLayNr,LayNr,NrNeed,LayX,LayY,LayW
         CurrentSeqNr = Maf(CurrentSeqNr + 1)
     end
 end
+
+function CheckSymbols(Img,ImgImp,check,add_check,long_imgimp,ImgNr)
+    for k in pairs(Img) do
+        for q in pairs(ImgImp) do
+            if ('"' .. Img[k].name .. '"' == ImgImp[q].Name) then
+                check[q] =  1
+                add_check = Maf(add_check + 1)
+            end
+            long_imgimp = q
+        end
+    end
+    
+    if (long_imgimp == add_check) then    
+        E("file exist")
+    else
+        E("file NOT exist")
+        -- Select a disk
+        local drives = Root().Temp.DriveCollect
+        local selectedDrive -- users selected drive
+        local options = {} -- popup options
+        local PopTableDisk = {} -- 
+        -- grab a list of connected drives
+        for i = 1, drives.count, 1 do
+            table.insert(options, string.format("%s (%s)", drives[i].name, drives[i].DriveType))
+        end
+        -- present a popup for the user choose (Internal may not work)
+        PopTableDisk = {
+            title = "Select a disk to import on & off symbols",
+            caller = display_Handle,
+            items = options,
+            selectedValue = "",
+            add_args = {
+                FilterSupport = "Yes"
+            }
+        }
+        selectedDrive = PopupInput(PopTableDisk)
+        selectedDrive = selectedDrive + 1
+
+        -- if the user cancled then exit the plugin
+        if selectedDrive == nil then
+            return
+        end
+            
+        -- grab the export path for the selected drive and append the file name
+        E("selectedDrive = %s", tostring(selectedDrive))
+        Cmd("select Drive " .. selectedDrive .. "")
+            
+        -- Import Symbols      
+        for k in pairs(ImgImp) do
+            
+            if(check[k] == nil) then
+                ImgNr = Maf(ImgNr + 1);
+                E(ImgNr)
+                E(k)
+                Cmd("Store Image 2." .. ImgNr .. " " .. ImgImp[k].Name .. " Filename=" .. ImgImp[k].FileName .. " filepath=" .. ImgImp[k].Filepath .. "")
+            end
+        end
+    end
+end
