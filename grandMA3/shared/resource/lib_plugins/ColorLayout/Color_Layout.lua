@@ -334,12 +334,6 @@ local function Main(display_Handle)
     local NaLay = "Colors"
     local FirstSeqTime
     local LastSeqTime
-    local FirstSeqTimeFrom
-    local LastSeqTimeFrom
-    local FirstSeqTimeTo
-    local LastSeqTimeTo
-    local FirstSeqDelay
-    local LastSeqDelay
     local FirstSeqDelayFrom
     local LastSeqDelayFrom
     local FirstSeqDelayTo
@@ -620,14 +614,12 @@ local function Main(display_Handle)
                 if a == 1 then
                     First_Id_Lay[1] = Maf(LayNr)
                     First_Id_Lay[2] = CurrentSeqNr
-                    Current_Id_Lay = CurrentSeqNr
                 elseif a == 2 then
                     First_Id_Lay[3] = CurrentSeqNr
-                    Current_Id_Lay = CurrentSeqNr
                 elseif a == 3 then
                     First_Id_Lay[4] = CurrentSeqNr
-                    Current_Id_Lay = CurrentSeqNr
                 end
+                Current_Id_Lay = First_Id_Lay[1]
             end
             -- Create Sequences
             Cmd('ClearAll /nu')
@@ -638,7 +630,7 @@ local function Main(display_Handle)
                 Cmd('set seq ' .. CurrentSeqNr .. ' cue \'' .. prefix .. Argument_Fade[i].name .. surfix[a] ..
                     '\' Property Command=\'Go Macro ' .. CurrentMacroNr .. '')
             else
-                Cmd('set seq ' .. CurrentSeqNr .. ' cue \'' .. prefix .. Argument_Fade[i].name .. surfix[a] ..'\' Property Command=\'off seq ' .. FirstSeqTime .. ' thru ' .. LastSeqTime .. ' - ' ..CurrentSeqNr .. ' ; set seq ' .. SeqNrStart .. ' thru ' .. SeqNrEnd .. ' UseExecutorTime=' ..Argument_Fade[i].UseExTime .. ' ; Set Matricks ' .. MatrickNrStart .. ' Property "FadeFrom' ..surfix[a] .. '"' .. Argument_Fade[i].Time .. ' ; Set Matricks ' .. MatrickNrStart ..' Property "FadeTo' .. surfix[a] .. '"' .. Argument_Fade[i].Time .. '')
+                Cmd('set seq ' .. CurrentSeqNr .. ' cue \'' .. prefix .. Argument_Fade[i].name .. surfix[a] ..'\' Property Command=\'off seq ' .. FirstSeqTime .. ' thru ' .. LastSeqTime .. ' - ' ..CurrentSeqNr .. ' ; set seq ' .. SeqNrStart .. ' thru ' .. SeqNrEnd .. ' UseExecutorTime=' ..Argument_Fade[i].UseExTime .. ' ; Set Matricks ' .. MatrickNrStart .. ' Property "FadeFrom' ..surfix[a] .. '" ' .. Argument_Fade[i].Time .. ' ; Set Matricks ' .. MatrickNrStart ..' Property "FadeTo' .. surfix[a] .. '" ' .. Argument_Fade[i].Time .. '')
             end
             Cmd('set seq ' .. CurrentSeqNr .. ' cue \'OffCue\' Property Command=\'Set Layout ' .. TLayNr .. '.' ..Current_Id_Lay + i - 2 .. ' Appearance=' .. AppImp[ib].Nr .. '\'')
             Command_Ext_Suite(CurrentSeqNr)
@@ -684,14 +676,12 @@ local function Main(display_Handle)
                 if a == 1 then
                     First_Id_Lay[5] = Maf(LayNr)
                     First_Id_Lay[6] = CurrentSeqNr
-                    Current_Id_Lay = CurrentSeqNr
                 elseif a == 2 then
                     First_Id_Lay[7] = CurrentSeqNr
-                    Current_Id_Lay = CurrentSeqNr
                 elseif a == 3 then
                     First_Id_Lay[8] = CurrentSeqNr
-                    Current_Id_Lay = CurrentSeqNr
                 end
+                Current_Id_Lay = First_Id_Lay[5]
             end
             Cmd('ClearAll /nu')
             Cmd('Store Sequence ' .. CurrentSeqNr .. ' \'' .. prefix .. Argument_Delay[i].name .. surfix[a] .. '\'')
@@ -700,7 +690,7 @@ local function Main(display_Handle)
             if i == 5 then
                 Cmd('set seq ' .. CurrentSeqNr .. ' cue \'' .. prefix .. Argument_Delay[i].name .. surfix[a] ..'\' Property Command=\'Go Macro ' .. CurrentMacroNr .. '')
             else
-                Cmd('set seq ' .. CurrentSeqNr .. ' cue \'' .. prefix .. Argument_Delay[i].name .. surfix[a] ..'\' Property Command=\'off seq ' .. FirstSeqDelayFrom .. ' thru ' .. LastSeqDelayFrom .. ' - ' ..CurrentSeqNr .. ' ; Set Matricks ' .. MatrickNrStart .. ' Property "DelayFrom' .. surfix[a] ..'"' .. Argument_Delay[i].Time .. '')
+                Cmd('set seq ' .. CurrentSeqNr .. ' cue \'' .. prefix .. Argument_Delay[i].name .. surfix[a] ..'\' Property Command=\'off seq ' .. FirstSeqDelayFrom .. ' thru ' .. LastSeqDelayFrom .. ' - ' ..CurrentSeqNr .. ' ; Set Matricks ' .. MatrickNrStart .. ' Property "DelayFrom' .. surfix[a] ..'" ' .. Argument_Delay[i].Time .. '')
             end
             Cmd('set seq ' .. CurrentSeqNr .. ' cue \'OffCue\' Property Command=\'Set Layout ' .. TLayNr .. '.' ..Current_Id_Lay + i - 1 .. ' Appearance=' .. AppImp[ib].Nr .. '\'')
             Cmd('set seq ' .. CurrentSeqNr .. ' AutoStart=1 AutoStop=1 MasterGoMode=None AutoFix=0 AutoStomp=0')
@@ -746,14 +736,12 @@ local function Main(display_Handle)
                 if a == 1 then
                     First_Id_Lay[9] = Maf(LayNr)
                     First_Id_Lay[10] = CurrentSeqNr
-                    Current_Id_Lay = CurrentSeqNr
                 elseif a == 2 then
                     First_Id_Lay[11] = CurrentSeqNr
-                    Current_Id_Lay = CurrentSeqNr
                 elseif a == 3 then
                     First_Id_Lay[12] = CurrentSeqNr
-                    Current_Id_Lay = CurrentSeqNr
                 end
+                Current_Id_Lay = First_Id_Lay[9]
             end
             Cmd('ClearAll /nu')
             Cmd('Store Sequence ' .. CurrentSeqNr .. ' \'' .. prefix .. Argument_DelayTo[i].name .. surfix[a] .. '\'')
@@ -762,7 +750,7 @@ local function Main(display_Handle)
             if i == 5 then
                 Cmd('set seq ' .. CurrentSeqNr .. ' cue \'' .. prefix .. Argument_DelayTo[i].name .. surfix[a] ..'\' Property Command=\'Go Macro ' .. CurrentMacroNr .. '')
             else
-                Cmd('set seq ' .. CurrentSeqNr .. ' cue \'' .. prefix .. Argument_DelayTo[i].name .. surfix[a] ..'\' Property Command=\'off seq ' .. FirstSeqDelayTo .. ' thru ' .. LastSeqDelayTo .. ' - ' ..CurrentSeqNr .. ' ; Set Matricks ' .. MatrickNrStart .. ' Property "DelayTo' .. surfix[a] .. '"' ..Argument_DelayTo[i].Time .. '')
+                Cmd('set seq ' .. CurrentSeqNr .. ' cue \'' .. prefix .. Argument_DelayTo[i].name .. surfix[a] ..'\' Property Command=\'off seq ' .. FirstSeqDelayTo .. ' thru ' .. LastSeqDelayTo .. ' - ' ..CurrentSeqNr .. ' ; Set Matricks ' .. MatrickNrStart .. ' Property "DelayTo' .. surfix[a] .. '" ' ..Argument_DelayTo[i].Time .. '')
             end
             Cmd('set seq ' .. CurrentSeqNr .. ' cue \'OffCue\' Property Command=\'Set Layout ' .. TLayNr .. '.' ..Current_Id_Lay + i - 1 .. ' Appearance=' .. AppImp[ib].Nr .. '\'')
             Command_Ext_Suite(CurrentSeqNr)
@@ -779,292 +767,281 @@ local function Main(display_Handle)
             CurrentSeqNr = Maf(CurrentSeqNr + 1)
             -- end Sequences DelayTo
 
-            -- Add offset for Layout Element distance
-            LayY = Maf(LayY - 150)
-            LayX = RefX
-            LayX = Maf(LayX + LayW - 100)
+        end
 
-            -- Create Macro Phase Input
-            if a == 1 then
-                First_Id_Lay[13] = Maf(LayNr)
-                First_Id_Lay[14] = CurrentSeqNr
-                Current_Id_Lay = CurrentSeqNr
-            elseif a == 2 then
-                First_Id_Lay[15] = CurrentSeqNr
-                Current_Id_Lay = CurrentSeqNr
-            elseif a == 3 then
-                First_Id_Lay[16] = CurrentSeqNr
-                Current_Id_Lay = CurrentSeqNr
+
+        -- Add offset for Layout Element distance
+        LayY = Maf(LayY - 150)
+        LayX = RefX
+        LayX = Maf(LayX + LayW - 100)
+        -- Create Macro Phase Input
+        if a == 1 then
+            First_Id_Lay[13] = Maf(LayNr)
+            First_Id_Lay[14] = CurrentSeqNr
+        elseif a == 2 then
+            First_Id_Lay[15] = CurrentSeqNr
+        elseif a == 3 then
+            First_Id_Lay[16] = CurrentSeqNr
+        end
+        Current_Id_Lay = First_Id_Lay[13]
+        CurrentMacroNr = Maf(CurrentMacroNr + 1)
+        Cmd('Store Macro ' .. CurrentMacroNr .. ' \'' .. prefix .. 'Phase Input\'' .. surfix[a] .. "'")
+        Cmd('ChangeDestination Macro ' .. CurrentMacroNr .. '')
+        Cmd('Insert')
+        Cmd('set 1 Command=\'Edit Matricks ' .. MatrickNrStart .. ' Property "PhaseFrom' .. surfix[a] .. '"')
+        Cmd("Insert")
+        Cmd('set 2 Command=\'Edit Matricks ' .. MatrickNrStart .. ' Property "PhaseTo' .. surfix[a] .. '"')
+        Cmd('ChangeDestination Root')
+        -- Create Sequences
+        Cmd('ClearAll /nu')
+        Cmd('Store Sequence ' .. CurrentSeqNr .. ' \'' .. prefix .. 'Phase Input' .. surfix[a] .. '\'')
+        -- Add Cmd to Squence
+        Cmd('set seq ' .. CurrentSeqNr .. ' cue \'CueZero\' Property Command=\'Set Layout ' .. TLayNr .. '.' ..Current_Id_Lay .. ' Appearance=' .. AppImp[63].Nr .. '\'')
+        Cmd('set seq ' .. CurrentSeqNr .. ' cue \'' .. prefix .. 'Phase Input' .. surfix[a] ..'\' Property Command=\'Go Macro ' .. CurrentMacroNr .. '')
+        Cmd('set seq ' .. CurrentSeqNr .. ' cue \'OffCue\' Property Command=\'Set Layout ' .. TLayNr .. '.' ..Current_Id_Lay .. ' Appearance=' .. AppImp[64].Nr .. '\'')
+        Command_Ext_Suite(CurrentSeqNr)
+        -- end Sequences
+        -- Add Squences to Layout
+        if MakeX then
+            Cmd('Assign Seq ' .. CurrentSeqNr .. ' at Layout ' .. TLayNr)
+            Cmd('Set Layout ' .. TLayNr .. '.' .. LayNr .. ' appearance=' .. AppImp[64].Nr .. ' PosX ' .. LayX ..' PosY ' .. LayY .. ' PositionW ' .. LayW .. ' PositionH ' .. LayH ..' VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0')
+            LayNr = Maf(LayNr + 1)
+            Command_Title('PHASE', LayNr, TLayNr, LayX, LayY, 125, 140)
+            LayX = Maf(LayX + LayW + 20)
+            LayNr = Maf(LayNr + 1)
+        end
+        CurrentSeqNr = Maf(CurrentSeqNr + 1)
+        -- end Sequences Phase
+        -- Setup XGroup seq
+        CurrentMacroNr = Maf(CurrentMacroNr + 1)
+        FirstSeqXgrp = CurrentSeqNr
+        LastSeqXgrp = Maf(CurrentSeqNr + 4)
+        -- Create Macro DelayTo Input
+        Cmd('Store Macro ' .. CurrentMacroNr .. ' \'' .. prefix .. 'XGroup Input\'' .. surfix[a] .. '"')
+        Cmd('ChangeDestination Macro ' .. CurrentMacroNr .. '')
+        Cmd('Insert')
+        Cmd('set 1 Command=\'off seq ' .. FirstSeqXgrp .. ' thru ' .. LastSeqXgrp .. ' - ' .. LastSeqXgrp .. '')
+        Cmd('Insert')
+        Cmd('set 2 Command=\'Edit Matricks ' .. MatrickNrStart .. ' Property "' .. surfix[a] .. 'Group" ')
+        Cmd('ChangeDestination Root')
+        if MakeX then
+            Command_Title('GROUP', LayNr, TLayNr, LayX, LayY, 580, 140)
+            LayNr = Maf(LayNr + 1)
+        end
+        -- Create Sequences XGroup
+        for i = 1, 5 do
+            local ia = tonumber(i * 2 + 31)
+            local ib = tonumber(i * 2 + 32)
+            if i == 1 then
+                if a == 1 then
+                    First_Id_Lay[17] = Maf(LayNr)
+                    First_Id_Lay[18] = CurrentSeqNr
+                elseif a == 2 then
+                    First_Id_Lay[19] = CurrentSeqNr
+                elseif a == 3 then
+                    First_Id_Lay[20] = CurrentSeqNr
+                end
+                Current_Id_Lay = First_Id_Lay[17]
             end
-            CurrentMacroNr = Maf(CurrentMacroNr + 1)
-            Cmd('Store Macro ' .. CurrentMacroNr .. ' \'' .. prefix .. 'Phase Input\'' .. surfix[a] .. "'")
-            Cmd('ChangeDestination Macro ' .. CurrentMacroNr .. '')
-            Cmd('Insert')
-            Cmd('set 1 Command=\'Edit Matricks ' .. MatrickNrStart .. ' Property "PhaseFrom' .. surfix[a] .. '"')
-            Cmd("Insert")
-            Cmd('set 2 Command=\'Edit Matricks ' .. MatrickNrStart .. ' Property "PhaseTo' .. surfix[a] .. '"')
-            Cmd('ChangeDestination Root')
-
-            -- Create Sequences
             Cmd('ClearAll /nu')
-            Cmd('Store Sequence ' .. CurrentSeqNr .. ' \'' .. prefix .. 'Phase Input' .. surfix[a] .. '\'')
-
+            Cmd('Store Sequence ' .. CurrentSeqNr .. ' \'' .. prefix .. Argument_Xgrp[i].name .. surfix[a] .. '\'')
             -- Add Cmd to Squence
-            Cmd('set seq ' .. CurrentSeqNr .. ' cue \'CueZero\' Property Command=\'Set Layout ' .. TLayNr .. '.' ..Current_Id_Lay .. ' Appearance=' .. AppImp[63].Nr .. '\'')
-            Cmd('set seq ' .. CurrentSeqNr .. ' cue \'' .. prefix .. 'Phase Input' .. surfix[a] ..'\' Property Command=\'Go Macro ' .. CurrentMacroNr .. '')
-            Cmd('set seq ' .. CurrentSeqNr .. ' cue \'OffCue\' Property Command=\'Set Layout ' .. TLayNr .. '.' ..Current_Id_Lay .. ' Appearance=' .. AppImp[64].Nr .. '\'')
+            Cmd('set seq ' .. CurrentSeqNr .. ' cue \'CueZero\' Property Command=\'Set Layout ' .. TLayNr .. '.' ..Current_Id_Lay + i - 1 .. ' Appearance=' .. AppImp[ia].Nr .. '\'')
+            if i == 5 then
+                Cmd('set seq ' .. CurrentSeqNr .. ' cue \'' .. prefix .. Argument_Xgrp[i].name .. surfix[a] ..'\' Property Command=\'Go Macro ' .. CurrentMacroNr .. '')
+            else
+                Cmd('set seq ' .. CurrentSeqNr .. ' cue \'' .. prefix .. Argument_Xgrp[i].name .. surfix[a] ..'\' Property Command=\'off seq ' .. FirstSeqXgrp .. ' thru ' .. LastSeqXgrp .. ' - ' ..CurrentSeqNr .. ' ; Set Matricks ' .. MatrickNrStart .. ' Property "' .. surfix[a] ..'Group" ' .. Argument_Xgrp[i].Time .. '')
+            end
+            Cmd('set seq ' .. CurrentSeqNr .. ' cue \'OffCue\' Property Command=\'Set Layout ' .. TLayNr .. '.' ..Current_Id_Lay + i - 1 .. ' Appearance=' .. AppImp[ib].Nr .. '\'')
             Command_Ext_Suite(CurrentSeqNr)
-
             -- end Sequences
-
             -- Add Squences to Layout
             if MakeX then
                 Cmd('Assign Seq ' .. CurrentSeqNr .. ' at Layout ' .. TLayNr)
-                Cmd('Set Layout ' .. TLayNr .. '.' .. LayNr .. ' appearance=' .. AppImp[64].Nr .. ' PosX ' .. LayX ..' PosY ' .. LayY .. ' PositionW ' .. LayW .. ' PositionH ' .. LayH ..' VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0')
-                LayNr = Maf(LayNr + 1)
-                Command_Title('PHASE', LayNr, TLayNr, LayX, LayY, 125, 140)
+                Cmd('Set Layout ' .. TLayNr .. '.' .. LayNr .. ' appearance=' .. AppImp[ib].Nr .. ' PosX ' .. LayX ..' PosY ' .. LayY .. ' PositionW ' .. LayW .. ' PositionH ' .. LayH ..' VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0')
                 LayX = Maf(LayX + LayW + 20)
                 LayNr = Maf(LayNr + 1)
             end
             CurrentSeqNr = Maf(CurrentSeqNr + 1)
-            -- end Sequences Phase
-
-            -- Setup XGroup seq
-            CurrentMacroNr = Maf(CurrentMacroNr + 1)
-            FirstSeqXgrp = CurrentSeqNr
-            LastSeqXgrp = Maf(CurrentSeqNr + 4)
-            -- Create Macro DelayTo Input
-            Cmd('Store Macro ' .. CurrentMacroNr .. ' \'' .. prefix .. 'XGroup Input\'' .. surfix[a] .. '"')
-            Cmd('ChangeDestination Macro ' .. CurrentMacroNr .. '')
-            Cmd('Insert')
-            Cmd('set 1 Command=\'off seq ' .. FirstSeqXgrp .. ' thru ' .. LastSeqXgrp .. ' - ' .. LastSeqXgrp .. '')
-            Cmd('Insert')
-            Cmd('set 2 Command=\'Edit Matricks ' .. MatrickNrStart .. ' Property "' .. surfix[a] .. 'Group" ')
-            Cmd('ChangeDestination Root')
-
-            if MakeX then
-                Command_Title('GROUP', LayNr, TLayNr, LayX, LayY, 580, 140)
-                LayNr = Maf(LayNr + 1)
-            end
-
-            -- Create Sequences XGroup
-            for i = 1, 5 do
-                local ia = tonumber(i * 2 + 31)
-                local ib = tonumber(i * 2 + 32)
-                if i == 1 then
-                    if a == 1 then
-                        First_Id_Lay[17] = Maf(LayNr)
-                        First_Id_Lay[18] = CurrentSeqNr
-                        Current_Id_Lay = CurrentSeqNr
-                    elseif a == 2 then
-                        First_Id_Lay[19] = CurrentSeqNr
-                        Current_Id_Lay = CurrentSeqNr
-                    elseif a == 3 then
-                        First_Id_Lay[20] = CurrentSeqNr
-                        Current_Id_Lay = CurrentSeqNr
-                    end
-                end
-                Cmd('ClearAll /nu')
-                Cmd('Store Sequence ' .. CurrentSeqNr .. ' \'' .. prefix .. Argument_Xgrp[i].name .. surfix[a] .. '\'')
-                -- Add Cmd to Squence
-                Cmd('set seq ' .. CurrentSeqNr .. ' cue \'CueZero\' Property Command=\'Set Layout ' .. TLayNr .. '.' ..Current_Id_Lay + i - 1 .. ' Appearance=' .. AppImp[ia].Nr .. '\'')
-                if i == 5 then
-                    Cmd('set seq ' .. CurrentSeqNr .. ' cue \'' .. prefix .. Argument_Xgrp[i].name .. surfix[a] ..'\' Property Command=\'Go Macro ' .. CurrentMacroNr .. '')
-                else
-                    Cmd('set seq ' .. CurrentSeqNr .. ' cue \'' .. prefix .. Argument_Xgrp[i].name .. surfix[a] ..'\' Property Command=\'off seq ' .. FirstSeqXgrp .. ' thru ' .. LastSeqXgrp .. ' - ' ..CurrentSeqNr .. ' ; Set Matricks ' .. MatrickNrStart .. ' Property "' .. surfix[a] ..'"Group" ' .. Argument_Xgrp[i].Time .. '')
-                end
-                Cmd('set seq ' .. CurrentSeqNr .. ' cue \'OffCue\' Property Command=\'Set Layout ' .. TLayNr .. '.' ..Current_Id_Lay + i - 1 .. ' Appearance=' .. AppImp[ib].Nr .. '\'')
-                Command_Ext_Suite(CurrentSeqNr)
-
-                -- end Sequences
-
-                -- Add Squences to Layout
-                if MakeX then
-                    Cmd('Assign Seq ' .. CurrentSeqNr .. ' at Layout ' .. TLayNr)
-                    Cmd('Set Layout ' .. TLayNr .. '.' .. LayNr .. ' appearance=' .. AppImp[ib].Nr .. ' PosX ' .. LayX ..' PosY ' .. LayY .. ' PositionW ' .. LayW .. ' PositionH ' .. LayH ..' VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0')
-                    LayX = Maf(LayX + LayW + 20)
-                    LayNr = Maf(LayNr + 1)
-                end
-                CurrentSeqNr = Maf(CurrentSeqNr + 1)
-            end
-            -- end Sequences XGroup
-
-            -- Setup XBlock seq
-            CurrentMacroNr = Maf(CurrentMacroNr + 1)
-            FirstSeqXblock = CurrentSeqNr
-            LastSeqXblock = Maf(CurrentSeqNr + 4)
-            -- Create Macro DelayTo Input
-            Cmd('Store Macro ' .. CurrentMacroNr .. ' \'' .. prefix .. 'XBlock Input\'' .. surfix[a] .. '"')
-            Cmd('ChangeDestination Macro ' .. CurrentMacroNr .. '')
-            Cmd('Insert')
-            Cmd('set 1 Command=\'off seq ' .. FirstSeqXblock .. ' thru ' .. LastSeqXblock .. ' - ' .. LastSeqXblock ..'')
-            Cmd('Insert')
-            Cmd('set 2 Command=\'Edit Matricks ' .. MatrickNrStart .. ' Property "' .. surfix[a] .. 'Block" ')
-            Cmd('ChangeDestination Root')
-
-            if MakeX then
-                Command_Title('BLOCK', LayNr, TLayNr, LayX, LayY, 580, 140)
-                LayNr = Maf(LayNr + 1)
-            end
-
-            -- Create Sequences XBlock
-            for i = 1, 5 do
-                local ia = tonumber(i * 2 + 41)
-                local ib = tonumber(i * 2 + 42)
-                if i == 1 then
-                    if a == 1 then
-                        First_Id_Lay[21] = Maf(LayNr)
-                        First_Id_Lay[22] = CurrentSeqNr
-                        Current_Id_Lay = CurrentSeqNr
-                    elseif a == 2 then
-                        First_Id_Lay[23] = CurrentSeqNr
-                        Current_Id_Lay = CurrentSeqNr
-                    elseif a == 3 then
-                        First_Id_Lay[24] = CurrentSeqNr
-                        Current_Id_Lay = CurrentSeqNr
-                    end
-                end
-                Cmd('ClearAll /nu')
-                Cmd('Store Sequence ' .. CurrentSeqNr .. ' \'' .. prefix .. Argument_Xblock[i].name .. surfix[a] .. '\'')
-                -- Add Cmd to Squence
-                Cmd('set seq ' .. CurrentSeqNr .. ' cue \'CueZero\' Property Command=\'Set Layout ' .. TLayNr .. '.' ..Current_Id_Lay + i - 1 .. ' Appearance=' .. AppImp[ia].Nr .. '\'')
-                if i == 5 then
-                    Cmd('set seq ' .. CurrentSeqNr .. ' cue \'' .. prefix .. Argument_Xblock[i].name .. surfix[a] ..'\' Property Command=\'Go Macro ' .. CurrentMacroNr .. '')
-                else
-                    Cmd('set seq ' .. CurrentSeqNr .. ' cue \'' .. prefix .. Argument_Xblock[i].name .. surfix[a] ..'\' Property Command=\'off seq ' .. FirstSeqXblock .. ' thru ' .. LastSeqXblock .. ' - ' ..CurrentSeqNr .. ' ; Set Matricks ' .. MatrickNrStart .. ' Property "' .. surfix[a] ..'"Block" ' .. Argument_Xblock[i].Time .. '')
-                end
-                Cmd('set seq ' .. CurrentSeqNr .. ' cue \'OffCue\' Property Command=\'Set Layout ' .. TLayNr .. '.' .. Current_Id_Lay + i - 1 .. ' Appearance=' .. AppImp[ib].Nr .. '\'')
-                Command_Ext_Suite(CurrentSeqNr)
-
-                -- end Sequences
-
-                -- Add Squences to Layout
-                if MakeX then
-                    Cmd('Assign Seq ' .. CurrentSeqNr .. ' at Layout ' .. TLayNr)
-                    Cmd('Set Layout ' .. TLayNr .. '.' .. LayNr .. ' appearance=' .. AppImp[ib].Nr .. ' PosX ' .. LayX ..' PosY ' .. LayY .. ' PositionW ' .. LayW .. ' PositionH ' .. LayH ..' VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0')
-                    LayX = Maf(LayX + LayW + 20)
-                    LayNr = Maf(LayNr + 1)
-                end
-                CurrentSeqNr = Maf(CurrentSeqNr + 1)
-            end
-            -- end Sequences XBlock
-
-            -- Setup XWings seq
-            CurrentMacroNr = Maf(CurrentMacroNr + 1)
-            FirstSeqXwings = CurrentSeqNr
-            LastSeqXwings = Maf(CurrentSeqNr + 4)
-            -- Create Macro DelayTo Input
-            Cmd('Store Macro ' .. CurrentMacroNr .. ' \'' .. prefix .. 'XWings Input\'' .. surfix[a] .. '"')
-            Cmd('ChangeDestination Macro ' .. CurrentMacroNr .. '')
-            Cmd('Insert')
-            Cmd('set 1 Command=\'off seq ' .. FirstSeqXwings .. ' thru ' .. LastSeqXwings .. ' - ' .. LastSeqXwings ..'')
-            Cmd('Insert')
-            Cmd('set 2 Command=\'Edit Matricks ' .. MatrickNrStart .. ' Property "' .. surfix[a] .. 'Wings" ')
-            Cmd('ChangeDestination Root')
-
-            if MakeX then
-                Command_Title('WINGS', LayNr, TLayNr, LayX, LayY, 580, 140)
-                LayNr = Maf(LayNr + 1)
-            end
-
-            -- Create Sequences XWings
-            for i = 1, 5 do
-                local ia = tonumber(i * 2 + 51)
-                local ib = tonumber(i * 2 + 52)
-                if i == 1 then
-                    if a == 1 then
-                        First_Id_Lay[25] = Maf(LayNr)
-                        First_Id_Lay[26] = CurrentSeqNr
-                        Current_Id_Lay = CurrentSeqNr
-                    elseif a == 2 then
-                        First_Id_Lay[27] = CurrentSeqNr
-                        Current_Id_Lay = CurrentSeqNr
-                    elseif a == 3 then
-                        First_Id_Lay[28] = CurrentSeqNr
-                        Current_Id_Lay = CurrentSeqNr
-                    end
-                end
-                Cmd('ClearAll /nu')
-                Cmd('Store Sequence ' .. CurrentSeqNr .. ' \'' .. prefix .. Argument_Xwings[i].name .. surfix[a] .. '\'')
-                -- Add Cmd to Squence
-                Cmd('set seq ' .. CurrentSeqNr .. ' cue \'CueZero\' Property Command=\'Set Layout ' .. TLayNr .. '.' ..Current_Id_Lay + i - 1 .. ' Appearance=' .. AppImp[ia].Nr .. '\'')
-                if i == 5 then
-                    Cmd('set seq ' .. CurrentSeqNr .. ' cue \'' .. prefix .. Argument_Xwings[i].name .. surfix[a] ..'\' Property Command=\'Go Macro ' .. CurrentMacroNr .. '')
-                else
-                    Cmd('set seq ' .. CurrentSeqNr .. ' cue \'' .. prefix .. Argument_Xwings[i].name .. surfix[a] ..'\' Property Command=\'off seq ' .. FirstSeqXwings .. ' thru ' .. LastSeqXwings .. ' - ' ..CurrentSeqNr .. ' ; Set Matricks ' .. MatrickNrStart .. ' Property "' .. surfix[a] ..'"Wings" ' .. Argument_Xwings[i].Time .. '')
-                end
-                Cmd('set seq ' .. CurrentSeqNr .. ' cue \'OffCue\' Property Command=\'Set Layout ' .. TLayNr .. '.' ..Current_Id_Lay + i - 1 .. ' Appearance=' .. AppImp[ib].Nr .. '\'')
-                Command_Ext_Suite(CurrentSeqNr)
-
-                -- end Sequences
-
-                -- Add Squences to Layout
-                if MakeX then
-                    Cmd('Assign Seq ' .. CurrentSeqNr .. ' at Layout ' .. TLayNr)
-                    Cmd('Set Layout ' .. TLayNr .. '.' .. LayNr .. ' appearance=' .. AppImp[ib].Nr .. ' PosX ' .. LayX ..' PosY ' .. LayY .. ' PositionW ' .. LayW .. ' PositionH ' .. LayH ..' VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0')
-                    LayX = Maf(LayX + LayW + 20)
-                    LayNr = Maf(LayNr + 1)
-                end
-                CurrentSeqNr = Maf(CurrentSeqNr + 1)
-            end
-
-            CurrentMacroNr = Maf(CurrentMacroNr + 1)
-            Cmd('Store Macro ' .. CurrentMacroNr .. ' \'' .. prefix .. surfix[a] .. '_Call\'')
-            Cmd('ChangeDestination Macro ' .. CurrentMacroNr .. '')
-            for m = 1, 31 do
-                if m == 1 or m == 6 or m == 11 or m == 16 or m == 17 or m == 22 or m == 27 then
-                    Call_inc = 0
-                end
-
-                if m < 6 then
-                    CallT = 1
-                elseif m < 11 then
-                    CallT = 5
-                elseif m < 16 then
-                    CallT = 9
-                elseif m < 17 then
-                    CallT = 13
-                elseif m < 22 then
-                    CallT = 17
-                elseif m < 27 then
-                    CallT = 21
-                elseif m <= 31 then
-                    CallT = 25
-                end
-
-                E(Call_inc)
-                Cmd('Insert')
-                Cmd('set ' ..m .. ' Command=\'Assign Sequence ' .. First_Id_Lay[CallT + a] + Call_inc .. ' At Layout ' ..TLayNr .. '.' .. First_Id_Lay[CallT] + Call_inc)
-                Call_inc = Maf(Call_inc + 1)
-            end
-            Cmd('ChangeDestination Root')
-            Cmd('ClearAll /nu')
-            Cmd('Store Sequence ' .. CurrentSeqNr .. ' \'' .. prefix .. surfix[a] .. '_Call\'')
-            Cmd('set seq ' .. CurrentSeqNr .. ' cue \'CueZero\' Property Command=\'Set Layout ' .. TLayNr .. '.' ..LayNr .. ' Appearance=' .. AppImp[67].Nr .. '\'')
-            Cmd('set seq ' ..CurrentSeqNr .. ' cue \'' .. prefix .. surfix[a] .. '_Call\' Property Command=\'Go Macro ' ..CurrentMacroNr .. '')
-            Cmd('set seq ' ..CurrentSeqNr .. ' cue \'OffCue\' Property Command=\'Set Layout ' .. TLayNr .. '.' .. LayNr ..' Appearance=' .. AppImp[68].Nr .. '\'')
-            First_Id_Lay[14 + a] = CurrentSeqNr
-            Cmd('Assign Seq ' .. CurrentSeqNr .. ' at Layout ' .. TLayNr)
-            LayNr = Maf(LayNr + 1)
-            if a == 1 then
-                Cmd('Set Layout ' .. TLayNr .. '.' .. LayNr .. ' appearance=' .. AppImp[67].Nr .. ' PosX ' .. LayX ..' PosY ' .. LayY - 150 .. ' PositionW ' .. LayW - 20 .. ' PositionH ' .. LayH - 20 ..' VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0')
-            elseif a == 2 then
-                Cmd('Set Layout ' .. TLayNr .. '.' .. LayNr .. ' appearance=' .. AppImp[70].Nr .. ' PosX ' .. LayX ..' PosY ' .. LayY - 75 .. ' PositionW ' .. LayW - 20 .. ' PositionH ' .. LayH - 20 ..' VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0')
-            elseif a == 3 then
-                Cmd('Set Layout ' .. TLayNr .. '.' .. LayNr .. ' appearance=' .. AppImp[72].Nr .. ' PosX ' .. LayX ..' PosY ' .. LayY .. ' PositionW ' .. LayW - 20 .. ' PositionH ' .. LayH - 20 ..' VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0')
-            end
-
-            CurrentSeqNr = Maf(CurrentSeqNr + 1)
-            CurrentMacroNr = Maf(CurrentMacroNr + 1)
-            MakeX = false
         end
+        -- end Sequences XGroup
+        -- Setup XBlock seq
+        CurrentMacroNr = Maf(CurrentMacroNr + 1)
+        FirstSeqXblock = CurrentSeqNr
+        LastSeqXblock = Maf(CurrentSeqNr + 4)
+        -- Create Macro DelayTo Input
+        Cmd('Store Macro ' .. CurrentMacroNr .. ' \'' .. prefix .. 'XBlock Input\'' .. surfix[a] .. '"')
+        Cmd('ChangeDestination Macro ' .. CurrentMacroNr .. '')
+        Cmd('Insert')
+        Cmd('set 1 Command=\'off seq ' .. FirstSeqXblock .. ' thru ' .. LastSeqXblock .. ' - ' .. LastSeqXblock ..'')
+        Cmd('Insert')
+        Cmd('set 2 Command=\'Edit Matricks ' .. MatrickNrStart .. ' Property "' .. surfix[a] .. 'Block" ')
+        Cmd('ChangeDestination Root')
+        if MakeX then
+            Command_Title('BLOCK', LayNr, TLayNr, LayX, LayY, 580, 140)
+            LayNr = Maf(LayNr + 1)
+        end
+        -- Create Sequences XBlock
+        for i = 1, 5 do
+            local ia = tonumber(i * 2 + 41)
+            local ib = tonumber(i * 2 + 42)
+            if i == 1 then
+                if a == 1 then
+                    First_Id_Lay[21] = Maf(LayNr)
+                    First_Id_Lay[22] = CurrentSeqNr
+                elseif a == 2 then
+                    First_Id_Lay[23] = CurrentSeqNr
+                elseif a == 3 then
+                    First_Id_Lay[24] = CurrentSeqNr
+                end
+                Current_Id_Lay = First_Id_Lay[21]
+            end
+            Cmd('ClearAll /nu')
+            Cmd('Store Sequence ' .. CurrentSeqNr .. ' \'' .. prefix .. Argument_Xblock[i].name .. surfix[a] .. '\'')
+            -- Add Cmd to Squence
+            Cmd('set seq ' .. CurrentSeqNr .. ' cue \'CueZero\' Property Command=\'Set Layout ' .. TLayNr .. '.' ..Current_Id_Lay + i - 1 .. ' Appearance=' .. AppImp[ia].Nr .. '\'')
+            if i == 5 then
+                Cmd('set seq ' .. CurrentSeqNr .. ' cue \'' .. prefix .. Argument_Xblock[i].name .. surfix[a] ..'\' Property Command=\'Go Macro ' .. CurrentMacroNr .. '')
+            else
+                Cmd('set seq ' .. CurrentSeqNr .. ' cue \'' .. prefix .. Argument_Xblock[i].name .. surfix[a] ..'\' Property Command=\'off seq ' .. FirstSeqXblock .. ' thru ' .. LastSeqXblock .. ' - ' ..CurrentSeqNr .. ' ; Set Matricks ' .. MatrickNrStart .. ' Property "' .. surfix[a] ..'Block" ' .. Argument_Xblock[i].Time .. '')
+            end
+            Cmd('set seq ' .. CurrentSeqNr .. ' cue \'OffCue\' Property Command=\'Set Layout ' .. TLayNr .. '.' .. Current_Id_Lay + i - 1 .. ' Appearance=' .. AppImp[ib].Nr .. '\'')
+            Command_Ext_Suite(CurrentSeqNr)
+            -- end Sequences
+            -- Add Squences to Layout
+            if MakeX then
+                Cmd('Assign Seq ' .. CurrentSeqNr .. ' at Layout ' .. TLayNr)
+                Cmd('Set Layout ' .. TLayNr .. '.' .. LayNr .. ' appearance=' .. AppImp[ib].Nr .. ' PosX ' .. LayX ..' PosY ' .. LayY .. ' PositionW ' .. LayW .. ' PositionH ' .. LayH ..' VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0')
+                LayX = Maf(LayX + LayW + 20)
+                LayNr = Maf(LayNr + 1)
+            end
+            CurrentSeqNr = Maf(CurrentSeqNr + 1)
+        end
+        -- end Sequences XBlock
+        -- Setup XWings seq
+        CurrentMacroNr = Maf(CurrentMacroNr + 1)
+        FirstSeqXwings = CurrentSeqNr
+        LastSeqXwings = Maf(CurrentSeqNr + 4)
+        -- Create Macro DelayTo Input
+        Cmd('Store Macro ' .. CurrentMacroNr .. ' \'' .. prefix .. 'XWings Input' .. surfix[a] .. '"')
+        Cmd('ChangeDestination Macro ' .. CurrentMacroNr .. '')
+        Cmd('Insert')
+        Cmd('set 1 Command=\'off seq ' .. FirstSeqXwings .. ' thru ' .. LastSeqXwings .. ' - ' .. LastSeqXwings ..'')
+        Cmd('Insert')
+        Cmd('set 2 Command=\'Edit Matricks ' .. MatrickNrStart .. ' Property "' .. surfix[a] .. 'Wings" ')
+        Cmd('ChangeDestination Root')
+        if MakeX then
+            Command_Title('WINGS', LayNr, TLayNr, LayX, LayY, 580, 140)
+            LayNr = Maf(LayNr + 1)
+        end
+        -- Create Sequences XWings
+        for i = 1, 5 do
+            local ia = tonumber(i * 2 + 51)
+            local ib = tonumber(i * 2 + 52)
+            if i == 1 then
+                if a == 1 then
+                    First_Id_Lay[25] = Maf(LayNr)
+                    First_Id_Lay[26] = CurrentSeqNr
+                elseif a == 2 then
+                    First_Id_Lay[27] = CurrentSeqNr
+                elseif a == 3 then
+                    First_Id_Lay[28] = CurrentSeqNr
+                end
+                Current_Id_Lay = First_Id_Lay[25]
+            end
+            Cmd('ClearAll /nu')
+            Cmd('Store Sequence ' .. CurrentSeqNr .. ' \'' .. prefix .. Argument_Xwings[i].name .. surfix[a] .. '\'')
+            -- Add Cmd to Squence
+            Cmd('set seq ' .. CurrentSeqNr .. ' cue \'CueZero\' Property Command=\'Set Layout ' .. TLayNr .. '.' ..Current_Id_Lay + i - 1 .. ' Appearance=' .. AppImp[ia].Nr .. '\'')
+            if i == 5 then
+                Cmd('set seq ' .. CurrentSeqNr .. ' cue \'' .. prefix .. Argument_Xwings[i].name .. surfix[a] ..'\' Property Command=\'Go Macro ' .. CurrentMacroNr .. '')
+            else
+                Cmd('set seq ' .. CurrentSeqNr .. ' cue \'' .. prefix .. Argument_Xwings[i].name .. surfix[a] ..'\' Property Command=\'off seq ' .. FirstSeqXwings .. ' thru ' .. LastSeqXwings .. ' - ' ..CurrentSeqNr .. ' ; Set Matricks ' .. MatrickNrStart .. ' Property "' .. surfix[a] ..'Wings" ' .. Argument_Xwings[i].Time .. '')
+            end
+            Cmd('set seq ' .. CurrentSeqNr .. ' cue \'OffCue\' Property Command=\'Set Layout ' .. TLayNr .. '.' ..Current_Id_Lay + i - 1 .. ' Appearance=' .. AppImp[ib].Nr .. '\'')
+            Command_Ext_Suite(CurrentSeqNr)
+            -- end Sequences
+            -- Add Squences to Layout
+            if MakeX then
+                Cmd('Assign Seq ' .. CurrentSeqNr .. ' at Layout ' .. TLayNr)
+                Cmd('Set Layout ' .. TLayNr .. '.' .. LayNr .. ' appearance=' .. AppImp[ib].Nr .. ' PosX ' .. LayX ..' PosY ' .. LayY .. ' PositionW ' .. LayW .. ' PositionH ' .. LayH ..' VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0')
+                LayX = Maf(LayX + LayW + 20)
+                LayNr = Maf(LayNr + 1)
+            end
+            CurrentSeqNr = Maf(CurrentSeqNr + 1)
+        end
+        -- end Sequences XWings
+
+        -- add Sequences X Y Z call
+        CurrentMacroNr = Maf(CurrentMacroNr + 1)
+        First_Id_Lay[33 + a] = CurrentMacroNr
+        Cmd('Store Macro ' .. CurrentMacroNr .. ' \'' .. prefix .. surfix[a] .. '_Call\'')
+        Cmd('ChangeDestination Macro ' .. CurrentMacroNr .. '')
+        for m = 1, 31 do
+            if m == 1 or m == 6 or m == 11 or m == 16 or m == 17 or m == 22 or m == 27 then
+                Call_inc = 0
+            end
+            if m < 6 then
+                CallT = 1
+            elseif m < 11 then
+                CallT = 5
+            elseif m < 16 then
+                CallT = 9
+            elseif m < 17 then
+                CallT = 13
+            elseif m < 22 then
+                CallT = 17
+            elseif m < 27 then
+                CallT = 21
+            elseif m <= 31 then
+                CallT = 25
+            end
+            Cmd('Insert')
+            Cmd('set ' ..m .. ' Command=\'Assign Sequence ' .. First_Id_Lay[CallT + a] + Call_inc .. ' At Layout ' ..TLayNr .. '.' .. First_Id_Lay[CallT] + Call_inc)
+            Call_inc = Maf(Call_inc + 1)
+        end
+        Cmd('ChangeDestination Root')
+        First_Id_Lay[28 + a] = CurrentSeqNr
+        Cmd('ClearAll /nu')
+        Cmd('Store Sequence ' .. CurrentSeqNr .. ' \'' .. prefix .. surfix[a] .. '_Call\'')
+        Cmd('set seq ' .. CurrentSeqNr .. ' cue \'CueZero\' Property Command=\'Set Layout ' .. TLayNr .. '.' ..LayNr .. ' Appearance=' .. AppImp[67].Nr .. '\'')
+        Cmd('set seq ' ..CurrentSeqNr .. ' cue \'' .. prefix .. surfix[a] .. '_Call\' Property Command=\'Go Macro ' ..CurrentMacroNr .. '')
+        Cmd('set seq ' ..CurrentSeqNr .. ' cue \'OffCue\' Property Command=\'Set Layout ' .. TLayNr .. '.' .. LayNr ..' Appearance=' .. AppImp[68].Nr .. '\'')
+        Cmd('Assign Seq ' .. CurrentSeqNr .. ' at Layout ' .. TLayNr)
+        if MakeX == false then
+            LayNr = Maf(LayNr + 1)
+        end
+        if a == 1 then
+            First_Id_Lay[32] = LayX
+            First_Id_Lay[33] = LayY
+            Cmd('Set Layout ' .. TLayNr .. '.' .. LayNr .. ' appearance=' .. AppImp[67].Nr .. ' PosX ' .. First_Id_Lay[32]  ..' PosY ' .. First_Id_Lay[33] + 170 .. ' PositionW ' .. LayW - 35 .. ' PositionH ' .. LayH - 35 ..' VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0')
+        elseif a == 2 then
+            Cmd('Set Layout ' .. TLayNr .. '.' .. LayNr .. ' appearance=' .. AppImp[70].Nr .. ' PosX ' .. First_Id_Lay[32] ..' PosY ' .. First_Id_Lay[33] + 90 .. ' PositionW ' .. LayW - 35 .. ' PositionH ' .. LayH - 35 ..' VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0')
+        elseif a == 3 then
+            Cmd('Set Layout ' .. TLayNr .. '.' .. LayNr .. ' appearance=' .. AppImp[72].Nr .. ' PosX ' .. First_Id_Lay[32] .. ' PosY ' .. First_Id_Lay[33] + 10 .. ' PositionW ' .. LayW - 35 .. ' PositionH ' .. LayH - 35 ..' VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0')
+        end
+        CurrentSeqNr = Maf(CurrentSeqNr + 1)
+        CurrentMacroNr = Maf(CurrentMacroNr + 1)
+        MakeX = false
+        E("****************************************************************************************")
     end
-    -- end Sequences XWings
+    -- end Sequences X Y Z call
+
+    -- add line macro X Y Z Call
+    for i = 1,3 do
+        Cmd('ChangeDestination Macro ' .. First_Id_Lay[33 + i])
+        Cmd('Insert')
+        Cmd('set 32 Command=\'Off Sequence ' .. First_Id_Lay[29] .. ' Thru ' .. First_Id_Lay[31] .. ' - ' .. First_Id_Lay[28 + i])
+        Cmd('ChangeDestination Root')
+    end
+    -- end line macro X Y Z Call
+
 
     -- add Kill all LCx_
     LayY = TLay[TLayNrRef].DimensionH / 2
     LayY = Maf(LayY + 20) -- Add offset for Layout Element distance
     LayX = RefX
+    LayNr = Maf(LayNr + 1)
     -- Create Sequences
     Cmd("ClearAll /nu")
     Cmd('Store Sequence ' .. CurrentSeqNr .. ' \'' .. prefix .. 'KILL_ALL\'')
