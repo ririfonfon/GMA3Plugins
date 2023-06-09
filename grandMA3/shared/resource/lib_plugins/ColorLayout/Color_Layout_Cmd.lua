@@ -4,6 +4,7 @@ local Co = Confirm
 local Maf = math.floor
 
 function Command_Ext_Suite(CurrentSeqNr)
+    Cmd('set seq ' .. CurrentSeqNr .. ' property prefercueappearance=on')
     Cmd('set seq ' .. CurrentSeqNr .. ' AutoStart=1 AutoStop=1 MasterGoMode=None AutoFix=0 AutoStomp=0')
     Cmd('set seq ' .. CurrentSeqNr .. ' Tracking=0 WrapAround=1 ReleaseFirstCue=0 RestartMode=1 CommandEnable=1 XFadeReload=0')
     Cmd('set seq ' .. CurrentSeqNr .. ' OutputFilter="" Priority=0 SoftLTP=1 PlaybackMaster="" XfadeMode=0')
