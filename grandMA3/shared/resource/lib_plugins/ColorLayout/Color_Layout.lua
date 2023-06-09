@@ -484,7 +484,7 @@ local function Main(display_Handle)
 
             -- Add Squences to Layout
             Cmd("Assign Seq " .. CurrentSeqNr .. " at Layout " .. TLayNr)
-            Cmd("Set Layout " ..TLayNr .. "." .. LayNr .. " property appearance <default> PosX " .. LayX .. " PosY " ..LayY .. " PositionW " .. LayW .. " PositionH " .. LayH .." VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0")
+            Cmd("Set Layout " ..TLayNr .. "." .. LayNr .. " property appearance <Default> PosX " .. LayX .. " PosY " ..LayY .. " PositionW " .. LayW .. " PositionH " .. LayH .." VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0")
 
             NrNeed = Maf(NrNeed + 2); -- Set App Nr to next color
 
@@ -1055,25 +1055,19 @@ local function Main(display_Handle)
     LayX = RefX
     LayNr = Maf(LayNr + 1)
     -- Create Sequences
-    Cmd("ClearAll /nu")
+    Cmd('ClearAll /nu')
     Cmd('Store Sequence ' .. CurrentSeqNr .. ' \'' .. prefix .. 'KILL_ALL\'')
     -- Add Cmd to Squence
-    Cmd("set seq " .. CurrentSeqNr .. " cue \"CueZero\" Property Command=\"Set Layout " .. TLayNr .. "." .. LayNr ..
-        " Appearance=" .. prefix .. "'skull_on'\"")
-    Cmd(
-        'set seq ' .. CurrentSeqNr .. ' cue \'' .. prefix .. 'KILL_ALL\' Property Command=\'Off Sequence \'' .. prefix ..
-        '*')
-    Cmd("set seq " .. CurrentSeqNr .. " cue \"OffCue\" Property Command=\"Set Layout " .. TLayNr .. "." .. LayNr ..
-        " Appearance=" .. prefix .. "'skull_off'\"")
+    Cmd("set seq " .. CurrentSeqNr .. " cue 1 Property Appearance=" .. prefix .. "'skull_on'")
+    Cmd('set seq ' .. CurrentSeqNr .. ' cue \'' .. prefix .. 'KILL_ALL\' Property Command=\'Off Sequence \'' .. prefix ..'*')
+    Cmd("set seq " .. CurrentSeqNr .. " Property Appearance=" .. prefix .. "'skull_off'")
     Command_Ext_Suite(CurrentSeqNr)
 
     -- end Sequences
 
     -- Add Squences to Layout
     Cmd("Assign Seq " .. CurrentSeqNr .. " at Layout " .. TLayNr)
-    Cmd('Set Layout ' .. TLayNr .. '.' .. LayNr .. ' Appearance=' .. prefix .. "'skull_off'" .. ' PosX ' .. LayX ..
-        ' PosY ' .. LayY .. ' PositionW ' .. LayW .. ' PositionH ' .. LayH ..
-        ' VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0')
+    Cmd('Set Layout ' .. TLayNr .. '.' .. LayNr .. ' property appearance <default> PosX ' .. LayX ..' PosY ' .. LayY .. ' PositionW ' .. LayW .. ' PositionH ' .. LayH ..' VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0')
     -- end Kill al LCx_
 
     LayNr = Maf(LayNr + 1)
@@ -1083,14 +1077,12 @@ local function Main(display_Handle)
     LayX = Maf(LayX + LayW + 20)
     NrNeed = Maf(AppNr + 1)
 
-    AddAllColor(TCol, CurrentSeqNr, prefix, TLayNr, LayNr, NrNeed, LayX, LayY, LayW, LayH, SelectedGelNr)
+    AddAllColor(TCol, CurrentSeqNr, prefix, TLayNr, LayNr, NrNeed, LayX, LayY, LayW, LayH, SelectedGelNr,MaxColLgn,RefX)
     -- end All Color
 
     -- Macro Del LC prefix
     CurrentMacroNr = Maf(CurrentMacroNr + 1)
-    condition_string = "Lua 'if Confirm(\"Delete Layout Color LC" .. prefix:gsub('%D*', '') ..
-        "?\") then; Cmd(\"Go macro " .. CurrentMacroNr .. "\"); else Cmd(\"Off macro " ..
-        CurrentMacroNr .. "\"); end'" .. ' /nu'
+    condition_string = "Lua 'if Confirm(\"Delete Layout Color LC" .. prefix:gsub('%D*', '') .."?\") then; Cmd(\"Go macro " .. CurrentMacroNr .. "\"); else Cmd(\"Off macro " ..CurrentMacroNr .. "\"); end'" .. ' /nu'
 
     Cmd('Store Macro ' .. CurrentMacroNr .. ' \'' .. 'ERASE\'')
     Cmd('ChangeDestination Macro ' .. CurrentMacroNr .. '')
