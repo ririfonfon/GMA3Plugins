@@ -510,14 +510,14 @@ local function Main(display_Handle)
         Cmd('set seq ' .. CurrentSeqNr .. ' cue \'' .. prefix .. "Tricks" .. SelectedGrpName[g]:gsub('\'', '') ..'\' Property Command=\'Assign MaTricks ' .. prefix .. SelectedGrpName[g]:gsub('\'', '') ..' At Sequence ' .. FirstSeqColor .. ' Thru ' .. LastSeqColor .. ' cue 1 part 0.1 ;  Assign Sequence ' ..CurrentSeqNr + 1 .. ' At Layout ' .. TLayNr .. '.' .. LayNr)
         Cmd('set seq ' .. CurrentSeqNr .. ' Property Appearance=' .. AppTricks[2].Nr)
         Cmd("Assign Seq " .. CurrentSeqNr .. " at Layout " .. TLayNr)
-        Cmd("Set Layout " .. TLayNr .. "." .. LayNr .. " PosX " .. LayX .. " PosY " .. LayY .. " PositionW " .. LayW .." PositionH " .. LayH .. " VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0")
+        Cmd("Set Layout " .. TLayNr .. "." .. LayNr .. " PosX " .. LayX .. " PosY " .. LayY .. " PositionW " .. LayW - 35 .." PositionH " .. LayH -35 .. " VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0")
         CurrentSeqNr = Maf(CurrentSeqNr + 1)
         Cmd('ClearAll /nu')
         Cmd('Store Sequence ' .. CurrentSeqNr .. ' \'' .. prefix .. "Tricksh" .. SelectedGrpName[g]:gsub('\'', '') ..'\'')
         Cmd('set seq ' .. CurrentSeqNr .. ' cue \'' .. prefix .. "Tricksh" .. SelectedGrpName[g]:gsub('\'', '') ..'\' Property Command=\'Assign MaTricks ' .. MatrickNrStart .. ' At Sequence ' .. FirstSeqColor ..' Thru ' .. LastSeqColor .. ' cue 1 part 0.1 ; Assign Sequence ' .. CurrentSeqNr - 1 .. ' At Layout ' ..TLayNr .. '.' .. LayNr)
         Cmd('set seq ' .. CurrentSeqNr .. ' Property Appearance=' .. AppTricks[1].Nr)
         LayNr = Maf(LayNr + 1)
-        LayX = Maf(LayX + LayW + 20)
+        LayX = Maf(LayX + LayW - 35 + 20)
         Cmd('Store Macro ' .. CurrentMacroNr .. ' \'' .. prefix .. SelectedGrpName[g]:gsub('\'', ''))
         Cmd('ChangeDestination Macro ' .. CurrentMacroNr .. '')
         Cmd('Insert')
@@ -525,8 +525,7 @@ local function Main(display_Handle)
         Cmd('ChangeDestination Root')
         Cmd('Assign Macro ' .. CurrentMacroNr .. " at layout " .. TLayNr)
         Cmd('set Macro ' .. CurrentMacroNr .. ' Property Appearance=' .. AppTricks[3].Nr)
-        Cmd('Set Layout ' .. TLayNr .. '.' .. LayNr .. ' PosX ' .. LayX .. ' PosY ' .. LayY .. ' PositionW ' .. LayW ..
-            ' PositionH ' .. LayH .. ' VisibilityObjectname= 0 VisibilityBar=0 VisibilityIndicatorBar=0')
+        Cmd('Set Layout ' .. TLayNr .. '.' .. LayNr .. ' PosX ' .. LayX .. ' PosY ' .. LayY .. ' PositionW ' .. LayW - 35 ..' PositionH ' .. LayH - 35 .. ' VisibilityObjectname= 0 VisibilityBar=0 VisibilityIndicatorBar=0')
 
         CurrentMacroNr = Maf(CurrentMacroNr + 1)
         LayNr = Maf(LayNr + 1)
@@ -1012,6 +1011,9 @@ local function Main(display_Handle)
             Call_inc = Maf(Call_inc + 1)
         end
         Cmd('ChangeDestination Root')
+
+        Make_Macro_Reset(CurrentMacroNr,prefix,surfix,MatrickNrStart,a,CurrentSeqNr,First_Id_Lay)
+        
         First_Id_Lay[28 + a] = CurrentSeqNr
         Cmd('ClearAll /nu')
         Cmd('Store Sequence ' .. CurrentSeqNr .. ' \'' .. prefix .. surfix[a] .. '_Call\'')
@@ -1020,6 +1022,15 @@ local function Main(display_Handle)
         Cmd('set seq ' ..CurrentSeqNr .. ' Property Appearance=' .. AppImp[67 + tonumber(a * 2 - 1)].Nr )
         Command_Ext_Suite(CurrentSeqNr)
         Cmd('Assign Seq ' .. CurrentSeqNr .. ' at Layout ' .. TLayNr)
+
+        Cmd('ClearAll /nu')
+        Cmd('Store Sequence ' .. CurrentSeqNr + 1 .. ' \'' .. prefix .. surfix[a] .. '_Reset\'')
+        Cmd("set seq " .. CurrentSeqNr + 1 .. " cue 1 Property Appearance=" .. prefix .. "'skull_on'")
+        Cmd('set seq ' ..CurrentSeqNr + 1 .. ' cue \'' .. prefix .. surfix[a] .. '_Reset\' Property Command=\'Go Macro ' ..CurrentMacroNr + 1 .. '')
+        Cmd("set seq " .. CurrentSeqNr + 1 .. " Property Appearance=" .. prefix .. "'skull_off'")
+        Command_Ext_Suite(CurrentSeqNr + 1)
+        
+
         if MakeX == false then
             LayNr = Maf(LayNr + 1)
         end
@@ -1027,13 +1038,21 @@ local function Main(display_Handle)
             First_Id_Lay[32] = LayX
             First_Id_Lay[33] = LayY
             Cmd('Set Layout ' .. TLayNr .. '.' .. LayNr .. ' property appearance <default> PosX ' .. First_Id_Lay[32]  ..' PosY ' .. First_Id_Lay[33] + 170 .. ' PositionW ' .. LayW - 35 .. ' PositionH ' .. LayH - 35 ..' VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0')
+            Cmd('Assign Seq ' .. CurrentSeqNr + 1 .. ' at Layout ' .. TLayNr)
+            Cmd('Set Layout ' .. TLayNr .. '.' .. LayNr + 1 .. ' property appearance <default> PosX ' .. First_Id_Lay[32] + 85  ..' PosY ' .. First_Id_Lay[33] + 170 .. ' PositionW ' .. LayW - 35 .. ' PositionH ' .. LayH - 35 ..' VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0')
         elseif a == 2 then
             Cmd('Set Layout ' .. TLayNr .. '.' .. LayNr .. ' property appearance <default> PosX ' .. First_Id_Lay[32] ..' PosY ' .. First_Id_Lay[33] + 90 .. ' PositionW ' .. LayW - 35 .. ' PositionH ' .. LayH - 35 ..' VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0')
+            Cmd('Assign Seq ' .. CurrentSeqNr + 1 .. ' at Layout ' .. TLayNr)
+            Cmd('Set Layout ' .. TLayNr .. '.' .. LayNr + 1 .. ' property appearance <default> PosX ' .. First_Id_Lay[32] + 85 ..' PosY ' .. First_Id_Lay[33] + 90 .. ' PositionW ' .. LayW - 35 .. ' PositionH ' .. LayH - 35 ..' VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0')
         elseif a == 3 then
             Cmd('Set Layout ' .. TLayNr .. '.' .. LayNr .. ' property appearance <default> PosX ' .. First_Id_Lay[32] .. ' PosY ' .. First_Id_Lay[33] + 10 .. ' PositionW ' .. LayW - 35 .. ' PositionH ' .. LayH - 35 ..' VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0')
+            Cmd('Assign Seq ' .. CurrentSeqNr + 1 .. ' at Layout ' .. TLayNr)
+            Cmd('Set Layout ' .. TLayNr .. '.' .. LayNr + 1 .. ' property appearance <default> PosX ' .. First_Id_Lay[32] + 85 .. ' PosY ' .. First_Id_Lay[33] + 10 .. ' PositionW ' .. LayW - 35 .. ' PositionH ' .. LayH - 35 ..' VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0')
         end
-        CurrentSeqNr = Maf(CurrentSeqNr + 1)
-        CurrentMacroNr = Maf(CurrentMacroNr + 1)
+
+        LayNr = Maf(LayNr + 1)
+        CurrentSeqNr = Maf(CurrentSeqNr + 2)
+        CurrentMacroNr = Maf(CurrentMacroNr + 2)
         MakeX = false
         E("****************************************************************************************")
     end
