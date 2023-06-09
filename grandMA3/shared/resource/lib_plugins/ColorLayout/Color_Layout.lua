@@ -1004,9 +1004,9 @@ local function Main(display_Handle)
         First_Id_Lay[28 + a] = CurrentSeqNr
         Cmd('ClearAll /nu')
         Cmd('Store Sequence ' .. CurrentSeqNr .. ' \'' .. prefix .. surfix[a] .. '_Call\'')
-        Cmd('set seq ' .. CurrentSeqNr .. ' cue \'CueZero\' Property Command=\'Set Layout ' .. TLayNr .. '.' ..LayNr .. ' Appearance=' .. AppImp[67].Nr .. '\'')
+        Cmd('set seq ' .. CurrentSeqNr .. ' cue \'CueZero\' Property Command=\'Set Layout ' .. TLayNr .. '.' ..LayNr .. ' Appearance=' .. AppImp[66 + a].Nr .. '\'')
         Cmd('set seq ' ..CurrentSeqNr .. ' cue \'' .. prefix .. surfix[a] .. '_Call\' Property Command=\'Go Macro ' ..CurrentMacroNr .. '')
-        Cmd('set seq ' ..CurrentSeqNr .. ' cue \'OffCue\' Property Command=\'Set Layout ' .. TLayNr .. '.' .. LayNr ..' Appearance=' .. AppImp[68].Nr .. '\'')
+        Cmd('set seq ' ..CurrentSeqNr .. ' cue \'OffCue\' Property Command=\'Set Layout ' .. TLayNr .. '.' .. LayNr ..' Appearance=' .. AppImp[67 + a].Nr .. '\'')
         Cmd('Assign Seq ' .. CurrentSeqNr .. ' at Layout ' .. TLayNr)
         if MakeX == false then
             LayNr = Maf(LayNr + 1)
