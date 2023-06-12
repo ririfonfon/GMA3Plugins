@@ -396,7 +396,7 @@ local function Main(display_Handle)
     CurrentMacroNr = MacroNrStart
 
     -- check Symbols
-    CheckSymbols(Img, ImgImp, check, add_check, long_imgimp, ImgNr)
+    CheckSymbols(display_Handle,Img,ImgImp,check,add_check,long_imgimp,ImgNr)
     -- End check Images
 
     -- Create MAtricks
