@@ -64,7 +64,7 @@ function AddAllColor(TCol,CurrentSeqNr,prefix,TLayNr,LayNr,NrNeed,LayX,LayY,LayW
     end
 end
 
-function CheckSymbols(Img,ImgImp,check,add_check,long_imgimp,ImgNr)
+function CheckSymbols(display_Handle,Img,ImgImp,check,add_check,long_imgimp,ImgNr)
     for k in pairs(Img) do
         for q in pairs(ImgImp) do
             if ('"' .. Img[k].name .. '"' == ImgImp[q].Name) then
