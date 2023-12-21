@@ -1,8 +1,8 @@
 --[[
 Releases:
-* 1.1.5.2
+* 1.1.6.1
 
-Created by Richard Fontaine "RIRI", April 2020.
+Created by Richard Fontaine "RIRI", Decembre 2023.
 --]]
 local F = string.format
 local E = Echo
@@ -351,6 +351,7 @@ local function Main(display_Handle)
     local UsedW
     local UsedH
     local MaxColLgn = 40
+    local ColLgnCount = 0
     local long_imgimp
     local add_check = 0
 
@@ -427,15 +428,33 @@ local function Main(display_Handle)
         AppNr = Maf(AppNr + 1)
     end
 
+    -- Create Appearances 
     for g in ipairs(SelectedGrp) do
+        AppNr = Maf(AppNr);
+        Cmd('Store App ' .. AppNr .. ' \'' .. prefix .. ' Label\' Appearance=' .. StAppOn .. ' color=\'0,0,0,1\'')
+        NrAppear = Maf(AppNr + 1)
+        for col in ipairs(TCol) do
+            StColCode = "\"" .. TCol[col].r .. "," .. TCol[col].g .. "," .. TCol[col].b .. ",1\""
+            StColName = TCol[col].name
+            StringColName = string.gsub(StColName, " ", "_")
+
+            StAppNameOn = "\"" .. prefix .. StringColName .. " on\""
+            StAppNameOff = "\"" .. prefix .. StringColName .. " off\""
+            Cmd("Store App " .. NrAppear .. " " .. StAppNameOn .. " Appearance=" .. StAppOn .. " color=" ..StColCode .. "")
+            NrAppear = Maf(NrAppear + 1);
+            Cmd("Store App " .. NrAppear .. " " .. StAppNameOff .. " Appearance=" .. StAppOff .. " color=" ..StColCode .. "")
+            NrAppear = Maf(NrAppear + 1);
+        end
+    end
+    -- end Appearances
+
+    
+    -- Appearances/Sequences
+    for g in ipairs(SelectedGrp) do
+        ColLgnCount = 0
         LayX = RefX
         col_count = 0
         LayY = Maf(LayY - LayH) -- Max Y Position minus hight from element. 0 are at the Bottom!
-
-        if (AppCrea == 0) then
-            AppNr = Maf(AppNr);
-            Cmd('Store App ' .. AppNr .. ' \'' .. prefix .. ' Label\' Appearance=' .. StAppOn .. ' color=\'0,0,0,1\'')
-        end
 
         NrAppear = Maf(AppNr + 1)
         NrNeed = Maf(AppNr + 1)
@@ -447,23 +466,14 @@ local function Main(display_Handle)
         LayX = Maf(LayX + LayW + 20)
 
         FirstSeqColor = CurrentSeqNr
+        
+        -- COLOR SEQ
         for col in ipairs(TCol) do
             col_count = col_count + 1
             StColCode = "\"" .. TCol[col].r .. "," .. TCol[col].g .. "," .. TCol[col].b .. ",1\""
             StColName = TCol[col].name
             StringColName = string.gsub(StColName, " ", "_")
             ColNr = SelectedGelNr .. "." .. TCol[col].no
-
-            -- Create Appearances only 1 times
-            if (AppCrea == 0) then
-                StAppNameOn = "\"" .. prefix .. StringColName .. " on\""
-                StAppNameOff = "\"" .. prefix .. StringColName .. " off\""
-                Cmd("Store App " .. NrAppear .. " " .. StAppNameOn .. " Appearance=" .. StAppOn .. " color=" ..StColCode .. "")
-                NrAppear = Maf(NrAppear + 1);
-                Cmd("Store App " .. NrAppear .. " " .. StAppNameOff .. " Appearance=" .. StAppOff .. " color=" ..StColCode .. "")
-                NrAppear = Maf(NrAppear + 1);
-            end
-            -- end Appearances
 
             -- Create Sequences
             GrpNo = SelectedGrpNo[g]
@@ -474,10 +484,7 @@ local function Main(display_Handle)
             Cmd("Store Sequence " .. CurrentSeqNr .. " Cue 1 Part 0.1")
             Cmd("Assign Group " .. GrpNo .. " At Sequence " .. CurrentSeqNr .. " Cue 1 Part 0.1")
             Cmd('Assign MAtricks ' .. MatrickNrStart .. ' At Sequence ' .. CurrentSeqNr .. ' Cue 1 Part 0.1 /nu')
-            -- Add Cmd to Squence
-            -- Cmd("set seq " .. CurrentSeqNr .. " cue \"CueZero\" Property Command=\"Set Layout " .. TLayNr .. "." ..LayNr .. " Appearance=" .. NrNeed .. "\"")
             Cmd('set seq ' .. CurrentSeqNr .. ' cue 1 Property Appearance=' .. NrNeed )
-            -- Cmd("set seq " ..CurrentSeqNr .. " cue \"OffCue\" Property Command=\"Set Layout " .. TLayNr .. "." .. LayNr .." Appearance=" .. NrNeed + 1 .. "\"")
             Cmd('set seq ' ..CurrentSeqNr .. ' Property Appearance=' .. NrNeed + 1 )
             Command_Ext_Suite(CurrentSeqNr)
             -- end Sequences
@@ -496,6 +503,7 @@ local function Main(display_Handle)
                 LayY = Maf(LayY - 20) -- Add offset for Layout Element distance
                 LayY = Maf(LayY - LayH)
                 col_count = 0
+                ColLgnCount = Maf(ColLgnCount + 1)
             end
 
             LayNr = Maf(LayNr + 1)
@@ -530,8 +538,7 @@ local function Main(display_Handle)
         CurrentMacroNr = Maf(CurrentMacroNr + 1)
         LayNr = Maf(LayNr + 1)
         CurrentSeqNr = Maf(CurrentSeqNr + 1)
-        FirstSeqColor = CurrentSeqNr
-        AppCrea = 1
+        FirstSeqColor = CurrentSeqNr1
         LayY = Maf(LayY - 20) -- Add offset for Layout Element distance
     end
     -- end Appearances/Sequences
@@ -1081,36 +1088,39 @@ local function Main(display_Handle)
     -- end line macro X Y Z Call
 
 
-    -- add Kill all LCx_
-    LayY = TLay[TLayNrRef].DimensionH / 2
-    LayY = Maf(LayY + 20) -- Add offset for Layout Element distance
-    LayX = RefX
-    LayNr = Maf(LayNr + 1)
-    -- Create Sequences
-    Cmd('ClearAll /nu')
-    Cmd('Store Sequence ' .. CurrentSeqNr .. ' \'' .. prefix .. 'KILL_ALL\'')
-    -- Add Cmd to Squence
-    Cmd("set seq " .. CurrentSeqNr .. " cue 1 Property Appearance=" .. prefix .. "'skull_on'")
-    Cmd('set seq ' .. CurrentSeqNr .. ' cue \'' .. prefix .. 'KILL_ALL\' Property Command=\'Off Sequence \'' .. prefix ..'*')
-    Cmd("set seq " .. CurrentSeqNr .. " Property Appearance=" .. prefix .. "'skull_off'")
-    Command_Ext_Suite(CurrentSeqNr)
+   -- add Kill all LCx_
+   LayY = TLay[TLayNrRef].DimensionH / 2
+   LayY = Maf(LayY + 20) -- Add offset for Layout Element distance
+   LayY = Maf(LayY + (120 * ColLgnCount ))
+   LayX = RefX
+   LayNr = Maf(LayNr + 1)
+   -- Create Sequences
+   Cmd('ClearAll /nu')
+   Cmd('Store Sequence ' .. CurrentSeqNr .. ' \'' .. prefix .. 'KILL_ALL\'')
+   -- Add Cmd to Squence
+   Cmd("set seq " .. CurrentSeqNr .. " cue 1 Property Appearance=" .. prefix .. "'skull_on'")
+   Cmd('set seq ' .. CurrentSeqNr .. ' cue \'' .. prefix .. 'KILL_ALL\' Property Command=\'Off Sequence \'' .. prefix ..'*')
+   Cmd("set seq " .. CurrentSeqNr .. " Property Appearance=" .. prefix .. "'skull_off'")
+   Command_Ext_Suite(CurrentSeqNr)
+   -- end Sequences
 
-    -- end Sequences
+   -- Add Squences to Layout
+   Cmd("Assign Seq " .. CurrentSeqNr .. " at Layout " .. TLayNr)
+   Cmd('Set Layout ' .. TLayNr .. '.' .. LayNr .. ' property appearance <default> PosX ' .. LayX ..' PosY ' .. LayY .. ' PositionW ' .. LayW .. ' PositionH ' .. LayH ..' VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0')
+   -- end Kill al LCx_
 
-    -- Add Squences to Layout
-    Cmd("Assign Seq " .. CurrentSeqNr .. " at Layout " .. TLayNr)
-    Cmd('Set Layout ' .. TLayNr .. '.' .. LayNr .. ' property appearance <default> PosX ' .. LayX ..' PosY ' .. LayY .. ' PositionW ' .. LayW .. ' PositionH ' .. LayH ..' VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0')
-    -- end Kill al LCx_
+   LayNr = Maf(LayNr + 1)
+   CurrentSeqNr = Maf(CurrentSeqNr + 1)
 
-    LayNr = Maf(LayNr + 1)
-    CurrentSeqNr = Maf(CurrentSeqNr + 1)
+ -- add All Color
+ LayX = Maf(LayX + LayW + 20)
+ NrNeed = Maf(AppNr + 1)
 
-    -- add All Color
-    LayX = Maf(LayX + LayW + 20)
-    NrNeed = Maf(AppNr + 1)
+ AddAllColor(TCol, CurrentSeqNr, prefix, TLayNr, LayNr, NrNeed, LayX, LayY, LayW, LayH, SelectedGelNr,MaxColLgn,RefX)
+ -- end All Color
 
-    AddAllColor(TCol, CurrentSeqNr, prefix, TLayNr, LayNr, NrNeed, LayX, LayY, LayW, LayH, SelectedGelNr,MaxColLgn,RefX)
-    -- end All Color
+
+
 
     -- Macro Del LC prefix
     CurrentMacroNr = Maf(CurrentMacroNr + 1)
