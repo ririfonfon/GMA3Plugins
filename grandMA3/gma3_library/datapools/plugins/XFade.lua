@@ -1,5 +1,4 @@
 local function main()
-    local Maf = math.floor
     local root = Root();
     local TLay = root.ShowData.DataPools.Default.Layouts:Children()
     local MatrickNr = root.ShowData.DataPools.Default.MAtricks:Children()
