@@ -4,17 +4,17 @@ local root = Root();
 local MatrickNr = root.ShowData.DataPools.Default.MAtricks:Children()
 
 
-function Fade(axes,layout,element)
+function Fade(axes,layout,element,matrick)
     local fx, tx
     if (axes == "x") then
-        fx = tonumber(MatrickNr[1]:Get('FadeFromX', Enums.Roles.Display)) or 'None'
-        tx = tonumber(MatrickNr[1]:Get('FadeToX', Enums.Roles.Display)) or 'None'
+        fx = tonumber(MatrickNr[matrick]:Get('FadeFromX', Enums.Roles.Display)) or 'None'
+        tx = tonumber(MatrickNr[matrick]:Get('FadeToX', Enums.Roles.Display)) or 'None'
     elseif (axes == "y") then
-        fx = tonumber(MatrickNr[1]:Get('FadeFromY', Enums.Roles.Display)) or 'None'
-        tx = tonumber(MatrickNr[1]:Get('FadeToY', Enums.Roles.Display)) or 'None'
+        fx = tonumber(MatrickNr[matrick]:Get('FadeFromY', Enums.Roles.Display)) or 'None'
+        tx = tonumber(MatrickNr[matrick]:Get('FadeToY', Enums.Roles.Display)) or 'None'
     elseif (axes == "z") then
-        fx = tonumber(MatrickNr[1]:Get('FadeFromZ', Enums.Roles.Display)) or 'None'
-        tx = tonumber(MatrickNr[1]:Get('FadeToZ', Enums.Roles.Display)) or 'None'
+        fx = tonumber(MatrickNr[matrick]:Get('FadeFromZ', Enums.Roles.Display)) or 'None'
+        tx = tonumber(MatrickNr[matrick]:Get('FadeToZ', Enums.Roles.Display)) or 'None'
     end
     local text
     if (fx ~= "None" ) then
@@ -34,14 +34,14 @@ function Fade(axes,layout,element)
     -- Cmd('Set Layout 2.40 Property "CustomTextText" '.. text ..' ')
 end
 
-function Delay_From(axes,layout,element)
+function Delay_From(axes,layout,element,matrick)
 	local fx 
 	if (axes == "x") then
-        fx = tonumber(MatrickNr[1]:Get('DelayFromX', Enums.Roles.Display)) or 'None'
+        fx = tonumber(MatrickNr[matrick]:Get('DelayFromX', Enums.Roles.Display)) or 'None'
     elseif (axes == "y") then
-	    fx = tonumber(MatrickNr[1]:Get('DelayFromY', Enums.Roles.Display)) or 'None'
+	    fx = tonumber(MatrickNr[matrick]:Get('DelayFromY', Enums.Roles.Display)) or 'None'
     elseif (axes == "z") then
-	    fx = tonumber(MatrickNr[1]:Get('DelayFromZ', Enums.Roles.Display)) or 'None'
+	    fx = tonumber(MatrickNr[matrick]:Get('DelayFromZ', Enums.Roles.Display)) or 'None'
     end
     local text
     if (fx ~= "None" ) then
@@ -53,14 +53,14 @@ function Delay_From(axes,layout,element)
     -- Cmd('Set Layout 2.47 Property "CustomTextText" '.. text ..' ')
 end
 
-function Delay_To(axes,layout,element)
+function Delay_To(axes,layout,element,matrick)
 	local tx
 	if (axes == "x") then
-        tx = tonumber(MatrickNr[1]:Get('DelayToX', Enums.Roles.Display)) or 'None'
+        tx = tonumber(MatrickNr[matrick]:Get('DelayToX', Enums.Roles.Display)) or 'None'
     elseif (axes == "y") then
-        tx = tonumber(MatrickNr[1]:Get('DelayToY', Enums.Roles.Display)) or 'None'
+        tx = tonumber(MatrickNr[matrick]:Get('DelayToY', Enums.Roles.Display)) or 'None'
     elseif (axes == "z") then
-        tx = tonumber(MatrickNr[1]:Get('DelayToZ', Enums.Roles.Display)) or 'None'
+        tx = tonumber(MatrickNr[matrick]:Get('DelayToZ', Enums.Roles.Display)) or 'None'
     end
     local text
     if (tx ~= "None" ) then
@@ -72,17 +72,17 @@ function Delay_To(axes,layout,element)
     -- Cmd('Set Layout 2.54 Property "CustomTextText" '.. text ..' ')
 end
 
-function Phase(axes,layout,element)
+function Phase(axes,layout,element,matrick)
 	local fx, tx
     if (axes == "x") then
-        fx = MatrickNr[1]:Get('PhaseFromX', Enums.Roles.Display)
-        tx = MatrickNr[1]:Get('PhaseToX', Enums.Roles.Display)
+        fx = MatrickNr[matrick]:Get('PhaseFromX', Enums.Roles.Display)
+        tx = MatrickNr[matrick]:Get('PhaseToX', Enums.Roles.Display)
     elseif (axes == "y") then
-        fx = MatrickNr[1]:Get('PhaseFromY', Enums.Roles.Display)
-        tx = MatrickNr[1]:Get('PhaseToY', Enums.Roles.Display)
+        fx = MatrickNr[matrick]:Get('PhaseFromY', Enums.Roles.Display)
+        tx = MatrickNr[matrick]:Get('PhaseToY', Enums.Roles.Display)
     elseif (axes == "z") then
-        fx = MatrickNr[1]:Get('PhaseFromZ', Enums.Roles.Display)
-    	tx = MatrickNr[1]:Get('PhaseToZ', Enums.Roles.Display)
+        fx = MatrickNr[matrick]:Get('PhaseFromZ', Enums.Roles.Display)
+    	tx = MatrickNr[matrick]:Get('PhaseToZ', Enums.Roles.Display)
     end
     local text
     if (fx ~= "None" and fx ~= "90°" and fx ~= "180°" and fx ~= "270°" and fx ~= "360°" ) then
@@ -102,14 +102,14 @@ function Phase(axes,layout,element)
     -- Cmd('Set Layout 2.62 Property "CustomTextText" '.. text ..' ')
 end
 
-function Group(axes,layout,element)
+function Group(axes,layout,element,matrick)
 	local fx
 	if (axes == "x") then
-        fx = tonumber(MatrickNr[1]:Get('xGroup', Enums.Roles.Display)) or 'None'
+        fx = tonumber(MatrickNr[matrick]:Get('xGroup', Enums.Roles.Display)) or 'None'
     elseif (axes == "y") then
-        fx = tonumber(MatrickNr[1]:Get('yGroup', Enums.Roles.Display)) or 'None'
+        fx = tonumber(MatrickNr[matrick]:Get('yGroup', Enums.Roles.Display)) or 'None'
     elseif (axes == "z") then
-        fx = tonumber(MatrickNr[1]:Get('zGroup', Enums.Roles.Display)) or 'None'
+        fx = tonumber(MatrickNr[matrick]:Get('zGroup', Enums.Roles.Display)) or 'None'
     end
     local text
     if (fx ~= "None" ) then
@@ -121,14 +121,14 @@ function Group(axes,layout,element)
     -- Cmd('Set Layout 2.64 Property "CustomTextText" '.. text ..' ')
 end
 
-function Block(axes,layout,element)
+function Block(axes,layout,element,matrick)
     local fx
 	if (axes == "x") then
-        fx = tonumber(MatrickNr[1]:Get('xBlock', Enums.Roles.Display)) or 'None'
+        fx = tonumber(MatrickNr[matrick]:Get('xBlock', Enums.Roles.Display)) or 'None'
     elseif (axes == "y") then
-        fx = tonumber(MatrickNr[1]:Get('yBlock', Enums.Roles.Display)) or 'None'
+        fx = tonumber(MatrickNr[matrick]:Get('yBlock', Enums.Roles.Display)) or 'None'
     elseif (axes == "z") then
-        fx = tonumber(MatrickNr[1]:Get('zBlock', Enums.Roles.Display)) or 'None'
+        fx = tonumber(MatrickNr[matrick]:Get('zBlock', Enums.Roles.Display)) or 'None'
     end
     local text
     if (fx ~= "None" ) then
@@ -140,14 +140,14 @@ function Block(axes,layout,element)
     -- Cmd('Set Layout 2.71 Property "CustomTextText" '.. text ..' ')
 end
 
-function Wings(axes,layout,element)
+function Wings(axes,layout,element,matrick)
     local fx
     if (axes == "x") then
-        fx = tonumber(MatrickNr[1]:Get('xWings', Enums.Roles.Display)) or 'None'
+        fx = tonumber(MatrickNr[matrick]:Get('xWings', Enums.Roles.Display)) or 'None'
     elseif (axes == "y") then
-        fx = tonumber(MatrickNr[1]:Get('yWings', Enums.Roles.Display)) or 'None'
+        fx = tonumber(MatrickNr[matrick]:Get('yWings', Enums.Roles.Display)) or 'None'
     elseif (axes == "z") then
-        fx = tonumber(MatrickNr[1]:Get('zWings', Enums.Roles.Display)) or 'None'
+        fx = tonumber(MatrickNr[matrick]:Get('zWings', Enums.Roles.Display)) or 'None'
     end
     local text
     if (fx ~= "None" ) then
