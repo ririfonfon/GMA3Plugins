@@ -1,3 +1,9 @@
+--[[
+Releases:
+* 1.1.6.3
+
+Created by Richard Fontaine "RIRI", January 2023.
+--]]
 local F = string.format
 local E = Echo
 local Co = Confirm
@@ -13,11 +19,21 @@ function Command_Ext_Suite(CurrentSeqNr)
     Cmd('set seq ' .. CurrentSeqNr .. ' SequMIB=0 SequMIBMode=1')
 end -- end function Command_Ext_Suite(...)
 
-function Command_Title(title,LayNr,TLayNr,LayX,LayY,Pw,Ph)
+function Command_Title(title,LayNr,TLayNr,LayX,LayY,Pw,Ph,align)
     Cmd('Store Layout '  .. TLayNr .. '.' .. LayNr .. 'Property CustomTextText=\' '.. title ..' \'')
     Cmd('Set Layout '  .. TLayNr .. '.' .. LayNr .. 'Property CustomTextSize \'24')
     Cmd('Set Layout '  .. TLayNr .. '.' .. LayNr .. 'Property CustomTextAlignmentV \'Top')
-    Cmd('Set Layout '  .. TLayNr .. '.' .. LayNr .. 'Property VisibilityBorder \'0')
+    if (align == 1) then
+        Cmd('Set Layout '  .. TLayNr .. '.' .. LayNr .. 'Property CustomTextAlignmentH \'Left')
+    elseif (align == 2)  then
+        Cmd('Set Layout '  .. TLayNr .. '.' .. LayNr .. 'Property CustomTextAlignmentH \'Center')
+    elseif (align == 3)  then
+        Cmd('Set Layout '  .. TLayNr .. '.' .. LayNr .. 'Property CustomTextAlignmentH \'Right')
+    elseif (align == 4)  then
+        Cmd('Set Layout '  .. TLayNr .. '.' .. LayNr .. 'Property CustomTextAlignmentH \'Left')
+        Cmd('Set Layout '  .. TLayNr .. '.' .. LayNr .. 'Property CustomTextAlignmentV \'Bottom')
+    end
+        Cmd('Set Layout '  .. TLayNr .. '.' .. LayNr .. 'Property VisibilityBorder \'0')
     Cmd('Set Layout '  .. TLayNr .. '.' .. LayNr .. 'Property PosX ' .. LayX .. ' PosY ' .. LayY .. ' PositionW ' .. Pw .. ' PositionH ' .. Ph .. '')
 end -- end function Command_Title(...)
 

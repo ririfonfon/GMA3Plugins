@@ -1,8 +1,8 @@
 --[[
 Releases:
-* 1.1.6.2
+* 1.1.6.3
 
-Created by Richard Fontaine "RIRI", Decembre 2023.
+Created by Richard Fontaine "RIRI", January 2023.
 --]]
 local F = string.format
 local E = Echo
@@ -584,9 +584,11 @@ local function Main(display_Handle)
                 Cmd('Assign Seq ' .. CurrentSeqNr .. ' at Layout ' .. TLayNr)
                 Cmd('Set Layout ' .. TLayNr .. '.' .. LayNr .. ' property appearance <default> PosX ' .. LayX ..' PosY ' .. LayY .. ' PositionW ' .. LayW .. ' PositionH ' .. LayH ..' VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0')
                 LayNr = Maf(LayNr + 1)
-                Command_Title('FADE', LayNr, TLayNr, LayX, LayY, 700, 140)
+                Command_Title('Ex.Time', LayNr, TLayNr, LayX, LayY, 700, 140, 1)
                 LayNr = Maf(LayNr + 1)
-                Command_Title('Ex.Time', LayNr, TLayNr, LayX, LayY, 125, 140)
+                Command_Title('FADE', LayNr, TLayNr, LayX, LayY, 700, 140, 2)
+                LayNr = Maf(LayNr + 1)
+                Command_Title('none > none', LayNr, TLayNr, LayX, LayY, 700, 140, 3)
                 LayX = Maf(LayX + LayW + 20)
                 LayNr = Maf(LayNr + 1)
                 CurrentSeqNr = Maf(CurrentSeqNr + 1)
@@ -655,7 +657,9 @@ local function Main(display_Handle)
             Cmd('set 2 Command=\'Edit Matricks ' .. MatrickNrStart .. ' Property "DelayFrom' .. surfix[a] .. '"')
             Cmd('ChangeDestination Root')
             if MakeX then
-                Command_Title('DELAY FROM', LayNr, TLayNr, LayX, LayY, 580, 140)
+                Command_Title('DELAY FROM', LayNr, TLayNr, LayX, LayY, 580, 140, 2)
+                LayNr = Maf(LayNr + 1)
+                Command_Title('none', LayNr, TLayNr, LayX, LayY, 580, 140, 3)
                 LayNr = Maf(LayNr + 1)
             end
             -- Create Sequences Delayfrom
@@ -707,7 +711,9 @@ local function Main(display_Handle)
             Cmd('set 2 Command=\'Edit Matricks ' .. MatrickNrStart .. ' Property "DelayTo' .. surfix[a] .. '"')
             Cmd('ChangeDestination Root')
             if MakeX then
-                Command_Title('DELAY TO', LayNr, TLayNr, LayX, LayY, 580, 140)
+                Command_Title('DELAY TO', LayNr, TLayNr, LayX, LayY, 580, 140, 2)
+                LayNr = Maf(LayNr + 1)
+                Command_Title('none', LayNr, TLayNr, LayX, LayY, 580, 140, 3)
                 LayNr = Maf(LayNr + 1)
             end
             -- Create Sequences DelayTo
@@ -783,9 +789,11 @@ local function Main(display_Handle)
             if MakeX then
                 Cmd('Assign Seq ' .. CurrentSeqNr .. ' at Layout ' .. TLayNr)
                 Cmd('Set Layout ' .. TLayNr .. '.' .. LayNr .. ' property appearance <default> PosX ' .. LayX ..' PosY ' .. LayY .. ' PositionW ' .. LayW .. ' PositionH ' .. LayH ..' VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0')
-                LayNr = Maf(LayNr + 1)
-                Command_Title('PHASE', LayNr, TLayNr, LayX, LayY, 125, 140)
                 LayX = Maf(LayX + LayW + 20)
+                LayNr = Maf(LayNr + 1)
+                Command_Title('PHASE', LayNr, TLayNr, LayX-120, LayY-30, 700, 170, 4)
+                LayNr = Maf(LayNr + 1)
+                Command_Title('none > none', LayNr, TLayNr, LayX-120, LayY-30, 700, 170, 1)
                 LayNr = Maf(LayNr + 1)
             end
             CurrentSeqNr = Maf(CurrentSeqNr + 1)
@@ -803,7 +811,9 @@ local function Main(display_Handle)
             Cmd('set 2 Command=\'Edit Matricks ' .. MatrickNrStart .. ' Property "' .. surfix[a] .. 'Group" ')
             Cmd('ChangeDestination Root')
             if MakeX then
-                Command_Title('GROUP', LayNr, TLayNr, LayX, LayY, 580, 140)
+                Command_Title('GROUP', LayNr, TLayNr, LayX-120, LayY-30, 700, 170, 2)
+                LayNr = Maf(LayNr + 1)
+                Command_Title('None', LayNr, TLayNr, LayX-120, LayY-30, 700, 170, 3)
                 LayNr = Maf(LayNr + 1)
             end
             -- Create Sequences XGroup
@@ -856,7 +866,9 @@ local function Main(display_Handle)
             Cmd('set 2 Command=\'Edit Matricks ' .. MatrickNrStart .. ' Property "' .. surfix[a] .. 'Block" ')
             Cmd('ChangeDestination Root')
             if MakeX then
-                Command_Title('BLOCK', LayNr, TLayNr, LayX, LayY, 580, 140)
+                Command_Title('BLOCK', LayNr, TLayNr, LayX, LayY, 580, 140, 2)
+                LayNr = Maf(LayNr + 1)
+                Command_Title('none', LayNr, TLayNr, LayX, LayY, 580, 140, 3)
                 LayNr = Maf(LayNr + 1)
             end
             -- Create Sequences XBlock
@@ -909,7 +921,9 @@ local function Main(display_Handle)
             Cmd('set 2 Command=\'Edit Matricks ' .. MatrickNrStart .. ' Property "' .. surfix[a] .. 'Wings" ')
             Cmd('ChangeDestination Root')
             if MakeX then
-                Command_Title('WINGS', LayNr, TLayNr, LayX, LayY, 580, 140)
+                Command_Title('WINGS', LayNr, TLayNr, LayX, LayY, 580, 140, 2)
+                LayNr = Maf(LayNr + 1)
+                Command_Title('none', LayNr, TLayNr, LayX, LayY, 580, 140, 3)
                 LayNr = Maf(LayNr + 1)
             end
             -- Create Sequences XWings
