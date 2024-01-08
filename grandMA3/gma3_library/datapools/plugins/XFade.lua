@@ -17,6 +17,6 @@ local function main()
         text = string.format( '"%s > %s"', fx , tx )
         end
     end
-    Cmd('Set Layout 2.99 Property "CustomTextText" '.. text ..' ')
+    Cmd('Set Layout 2.40 Property "CustomTextText" '.. text ..' ')
 end
 return main
