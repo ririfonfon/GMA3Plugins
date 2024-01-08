@@ -513,7 +513,7 @@ local function Main(display_Handle)
             CurrentMacroNr = Maf(CurrentMacroNr + 1)
             LayNr = Maf(LayNr + 1)
             CurrentSeqNr = Maf(CurrentSeqNr + 1)
-            FirstSeqColor = CurrentSeqNr1
+            -- FirstSeqColor = CurrentSeqNr
             LayY = Maf(LayY - 20) -- Add offset for Layout Element distance
         end -- end GRP
         -- end Appearances/Sequences
@@ -572,7 +572,19 @@ local function Main(display_Handle)
             Cmd('Insert')
             Cmd('set 2 Command=\'Edit Matricks ' .. MatrickNrStart .. ' Property "FadeFrom' .. surfix[a] .. '"')
             Cmd("Insert")
-            Cmd('set 3 Command=\'Edit Matricks ' .. MatrickNrStart .. ' Property "FadeTo' .. surfix[a] .. '"')
+            Cmd('set 3 Command=\'Edit Matricks ' .. MatrickNrStart .. ' Property "FadeTo'.. surfix[a] .. '"')
+            Cmd("Insert")
+            Cmd('set 4 Command=\'SetUserVariable "LC_Fonction" 1')
+            Cmd("Insert")
+            Cmd('set 5 Command=\'SetUserVariable "LC_Axes" "' .. surfix[a] .. '"')
+            Cmd("Insert")
+            Cmd('set 6 Command=\'SetUserVariable "LC_Layout" ' .. TLayNr .. '')
+            Cmd("Insert")
+            Cmd('set 7 Command=\'SetUserVariable "LC_Element" ' .. Maf(LayNr + 3) .. '')
+            Cmd("Insert")
+            Cmd('set 8 Command=\'SetUserVariable "LC_Matrick" ' .. MatrickNrStart .. '')
+            Cmd("Insert")
+            Cmd('set 9 Command=\'Call Plugin "LC_View"')
             Cmd('ChangeDestination Root')
             if a == 1 then
                 Cmd('ClearAll /nu')
