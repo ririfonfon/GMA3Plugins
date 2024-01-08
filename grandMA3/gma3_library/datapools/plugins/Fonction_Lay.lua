@@ -4,7 +4,7 @@ local root = Root();
 local MatrickNr = root.ShowData.DataPools.Default.MAtricks:Children()
 
 
-function Fade(axes)
+function Fade(axes,layout,element)
     local fx, tx
     if (axes == "x") then
         fx = tonumber(MatrickNr[1]:Get('FadeFromX', Enums.Roles.Display)) or 'None'
@@ -30,10 +30,11 @@ function Fade(axes)
         text = string.format( '"%s > %s"', fx , tx )
         end
     end
-    Cmd('Set Layout 2.40 Property "CustomTextText" '.. text ..' ')
+    Cmd('Set Layout '.. layout .. "." .. element .. ' Property "CustomTextText" '.. text ..' ')
+    -- Cmd('Set Layout 2.40 Property "CustomTextText" '.. text ..' ')
 end
 
-function Delay_From(axes)
+function Delay_From(axes,layout,element)
 	local fx 
 	if (axes == "x") then
         fx = tonumber(MatrickNr[1]:Get('DelayFromX', Enums.Roles.Display)) or 'None'
@@ -48,10 +49,11 @@ function Delay_From(axes)
     else
         text = string.format( '"%s"', fx )
     end
-    Cmd('Set Layout 2.47 Property "CustomTextText" '.. text ..' ')
+    Cmd('Set Layout '.. layout .. "." .. element .. ' Property "CustomTextText" '.. text ..' ')
+    -- Cmd('Set Layout 2.47 Property "CustomTextText" '.. text ..' ')
 end
 
-function Delay_To(axes)
+function Delay_To(axes,layout,element)
 	local tx
 	if (axes == "x") then
         tx = tonumber(MatrickNr[1]:Get('DelayToX', Enums.Roles.Display)) or 'None'
@@ -66,10 +68,11 @@ function Delay_To(axes)
     else
         text = string.format( '"%s"', tx )
     end
-    Cmd('Set Layout 2.54 Property "CustomTextText" '.. text ..' ')
+    Cmd('Set Layout '.. layout .. "." .. element .. ' Property "CustomTextText" '.. text ..' ')
+    -- Cmd('Set Layout 2.54 Property "CustomTextText" '.. text ..' ')
 end
 
-function Phase(axes)
+function Phase(axes,layout,element)
 	local fx, tx
     if (axes == "x") then
         fx = MatrickNr[1]:Get('PhaseFromX', Enums.Roles.Display)
@@ -95,10 +98,11 @@ function Phase(axes)
         text = string.format( '"%s > %s"', fx , tx )
         end
     end
-    Cmd('Set Layout 2.62 Property "CustomTextText" '.. text ..' ')
+    Cmd('Set Layout '.. layout .. "." .. element .. ' Property "CustomTextText" '.. text ..' ')
+    -- Cmd('Set Layout 2.62 Property "CustomTextText" '.. text ..' ')
 end
 
-function Group(axes)
+function Group(axes,layout,element)
 	local fx
 	if (axes == "x") then
         fx = tonumber(MatrickNr[1]:Get('xGroup', Enums.Roles.Display)) or 'None'
@@ -113,10 +117,11 @@ function Group(axes)
     else
         text = string.format( '"%s"', fx )
     end
-    Cmd('Set Layout 2.64 Property "CustomTextText" '.. text ..' ')
+    Cmd('Set Layout '.. layout .. "." .. element .. ' Property "CustomTextText" '.. text ..' ')
+    -- Cmd('Set Layout 2.64 Property "CustomTextText" '.. text ..' ')
 end
 
-function Block(axes)
+function Block(axes,layout,element)
     local fx
 	if (axes == "x") then
         fx = tonumber(MatrickNr[1]:Get('xBlock', Enums.Roles.Display)) or 'None'
@@ -131,10 +136,11 @@ function Block(axes)
     else
         text = string.format( '"%s"', fx )
     end
-    Cmd('Set Layout 2.71 Property "CustomTextText" '.. text ..' ')
+    Cmd('Set Layout '.. layout .. "." .. element .. ' Property "CustomTextText" '.. text ..' ')
+    -- Cmd('Set Layout 2.71 Property "CustomTextText" '.. text ..' ')
 end
 
-function Wings(axes)
+function Wings(axes,layout,element)
     local fx
     if (axes == "x") then
         fx = tonumber(MatrickNr[1]:Get('xWings', Enums.Roles.Display)) or 'None'
@@ -149,5 +155,6 @@ function Wings(axes)
     else
         text = string.format( '"%s"', fx )
     end
-    Cmd('Set Layout 2.78 Property "CustomTextText" '.. text ..' ')
+    Cmd('Set Layout '.. layout .. "." .. element .. ' Property "CustomTextText" '.. text ..' ')
+    -- Cmd('Set Layout 2.78 Property "CustomTextText" '.. text ..' ')
 end
