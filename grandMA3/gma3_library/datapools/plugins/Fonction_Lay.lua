@@ -1,21 +1,28 @@
+--[[
+Releases:
+* 1.1.6.3
 
+Created by Richard Fontaine "RIRI", January 2023.
+--]]
 
 local root = Root();
-local MatrickNr = root.ShowData.DataPools.Default.MAtricks:Children()
+local MATricks = root.ShowData.DataPools.Default.MAtricks:Children()
 
 
 function Fade(axes,layout,element,matrick)
     local fx, tx
-    if (axes == "x") then
-        fx = tonumber(MatrickNr[matrick]:Get('FadeFromX', Enums.Roles.Display)) or 'None'
-        tx = tonumber(MatrickNr[matrick]:Get('FadeToX', Enums.Roles.Display)) or 'None'
-    elseif (axes == "y") then
-        fx = tonumber(MatrickNr[matrick]:Get('FadeFromY', Enums.Roles.Display)) or 'None'
-        tx = tonumber(MatrickNr[matrick]:Get('FadeToY', Enums.Roles.Display)) or 'None'
-    elseif (axes == "z") then
-        fx = tonumber(MatrickNr[matrick]:Get('FadeFromZ', Enums.Roles.Display)) or 'None'
-        tx = tonumber(MatrickNr[matrick]:Get('FadeToZ', Enums.Roles.Display)) or 'None'
+    if (axes == 1) then
+        fx = tonumber(MATricks[matrick]:Get('FadeFromX', Enums.Roles.Display)) or 'None'
+        tx = tonumber(MATricks[matrick]:Get('FadeToX', Enums.Roles.Display)) or 'None'
+    elseif (axes == 2) then
+        fx = tonumber(MATricks[matrick]:Get('FadeFromY', Enums.Roles.Display)) or 'None'
+        tx = tonumber(MATricks[matrick]:Get('FadeToY', Enums.Roles.Display)) or 'None'
+    elseif (axes == 3) then
+        fx = tonumber(MATricks[matrick]:Get('FadeFromZ', Enums.Roles.Display)) or 'None'
+        tx = tonumber(MATricks[matrick]:Get('FadeToZ', Enums.Roles.Display)) or 'None'
     end
+    Echo(fx)
+    Echo(tx)
     local text
     if (fx ~= "None" ) then
         if (tx ~= "None") then
@@ -35,14 +42,15 @@ function Fade(axes,layout,element,matrick)
 end
 
 function Delay_From(axes,layout,element,matrick)
-	local fx 
-	if (axes == "x") then
-        fx = tonumber(MatrickNr[matrick]:Get('DelayFromX', Enums.Roles.Display)) or 'None'
-    elseif (axes == "y") then
-	    fx = tonumber(MatrickNr[matrick]:Get('DelayFromY', Enums.Roles.Display)) or 'None'
-    elseif (axes == "z") then
-	    fx = tonumber(MatrickNr[matrick]:Get('DelayFromZ', Enums.Roles.Display)) or 'None'
+	local fx
+	if (axes == 1) then
+        fx = tonumber(MATricks[matrick]:Get('DelayFromX', Enums.Roles.Display)) or 'None'
+    elseif (axes == 2) then
+	    fx = tonumber(MATricks[matrick]:Get('DelayFromY', Enums.Roles.Display)) or 'None'
+    elseif (axes == 3) then
+	    fx = tonumber(MATricks[matrick]:Get('DelayFromZ', Enums.Roles.Display)) or 'None'
     end
+    Echo(fx)
     local text
     if (fx ~= "None" ) then
         text = string.format( '"%.2f"', fx )
@@ -55,13 +63,14 @@ end
 
 function Delay_To(axes,layout,element,matrick)
 	local tx
-	if (axes == "x") then
-        tx = tonumber(MatrickNr[matrick]:Get('DelayToX', Enums.Roles.Display)) or 'None'
-    elseif (axes == "y") then
-        tx = tonumber(MatrickNr[matrick]:Get('DelayToY', Enums.Roles.Display)) or 'None'
-    elseif (axes == "z") then
-        tx = tonumber(MatrickNr[matrick]:Get('DelayToZ', Enums.Roles.Display)) or 'None'
+	if (axes == 1) then
+        tx = tonumber(MATricks[matrick]:Get('DelayToX', Enums.Roles.Display)) or 'None'
+    elseif (axes == 2) then
+        tx = tonumber(MATricks[matrick]:Get('DelayToY', Enums.Roles.Display)) or 'None'
+    elseif (axes == 3) then
+        tx = tonumber(MATricks[matrick]:Get('DelayToZ', Enums.Roles.Display)) or 'None'
     end
+    Echo(tx)
     local text
     if (tx ~= "None" ) then
         text = string.format( '"%.2f"', tx )
@@ -74,16 +83,18 @@ end
 
 function Phase(axes,layout,element,matrick)
 	local fx, tx
-    if (axes == "x") then
-        fx = MatrickNr[matrick]:Get('PhaseFromX', Enums.Roles.Display)
-        tx = MatrickNr[matrick]:Get('PhaseToX', Enums.Roles.Display)
-    elseif (axes == "y") then
-        fx = MatrickNr[matrick]:Get('PhaseFromY', Enums.Roles.Display)
-        tx = MatrickNr[matrick]:Get('PhaseToY', Enums.Roles.Display)
-    elseif (axes == "z") then
-        fx = MatrickNr[matrick]:Get('PhaseFromZ', Enums.Roles.Display)
-    	tx = MatrickNr[matrick]:Get('PhaseToZ', Enums.Roles.Display)
+    if (axes == 1) then
+        fx = MATricks[matrick]:Get('PhaseFromX', Enums.Roles.Display)
+        tx = MATricks[matrick]:Get('PhaseToX', Enums.Roles.Display)
+    elseif (axes == 2) then
+        fx = MATricks[matrick]:Get('PhaseFromY', Enums.Roles.Display)
+        tx = MATricks[matrick]:Get('PhaseToY', Enums.Roles.Display)
+    elseif (axes == 3) then
+        fx = MATricks[matrick]:Get('PhaseFromZ', Enums.Roles.Display)
+    	tx = MATricks[matrick]:Get('PhaseToZ', Enums.Roles.Display)
     end
+    Echo(fx)
+    Echo(tx)
     local text
     if (fx ~= "None" and fx ~= "90°" and fx ~= "180°" and fx ~= "270°" and fx ~= "360°" ) then
         if (tx ~= "None" and tx ~= "90°" and tx ~= "180°" and tx ~= "270°" and tx ~= "360°") then
@@ -104,13 +115,14 @@ end
 
 function Group(axes,layout,element,matrick)
 	local fx
-	if (axes == "x") then
-        fx = tonumber(MatrickNr[matrick]:Get('xGroup', Enums.Roles.Display)) or 'None'
-    elseif (axes == "y") then
-        fx = tonumber(MatrickNr[matrick]:Get('yGroup', Enums.Roles.Display)) or 'None'
-    elseif (axes == "z") then
-        fx = tonumber(MatrickNr[matrick]:Get('zGroup', Enums.Roles.Display)) or 'None'
+	if (axes == 1) then
+        fx = tonumber(MATricks[matrick]:Get('xGroup', Enums.Roles.Display)) or 'None'
+    elseif (axes == 2) then
+        fx = tonumber(MATricks[matrick]:Get('yGroup', Enums.Roles.Display)) or 'None'
+    elseif (axes == 3) then
+        fx = tonumber(MATricks[matrick]:Get('zGroup', Enums.Roles.Display)) or 'None'
     end
+    Echo(fx)
     local text
     if (fx ~= "None" ) then
         text = string.format( '"%d"', fx )
@@ -123,13 +135,14 @@ end
 
 function Block(axes,layout,element,matrick)
     local fx
-	if (axes == "x") then
-        fx = tonumber(MatrickNr[matrick]:Get('xBlock', Enums.Roles.Display)) or 'None'
-    elseif (axes == "y") then
-        fx = tonumber(MatrickNr[matrick]:Get('yBlock', Enums.Roles.Display)) or 'None'
-    elseif (axes == "z") then
-        fx = tonumber(MatrickNr[matrick]:Get('zBlock', Enums.Roles.Display)) or 'None'
+	if (axes == 1) then
+        fx = tonumber(MATricks[matrick]:Get('xBlock', Enums.Roles.Display)) or 'None'
+    elseif (axes == 2) then
+        fx = tonumber(MATricks[matrick]:Get('yBlock', Enums.Roles.Display)) or 'None'
+    elseif (axes == 3) then
+        fx = tonumber(MATricks[matrick]:Get('zBlock', Enums.Roles.Display)) or 'None'
     end
+    Echo(fx)
     local text
     if (fx ~= "None" ) then
         text = string.format( '"%d"', fx )
@@ -142,13 +155,14 @@ end
 
 function Wings(axes,layout,element,matrick)
     local fx
-    if (axes == "x") then
-        fx = tonumber(MatrickNr[matrick]:Get('xWings', Enums.Roles.Display)) or 'None'
-    elseif (axes == "y") then
-        fx = tonumber(MatrickNr[matrick]:Get('yWings', Enums.Roles.Display)) or 'None'
-    elseif (axes == "z") then
-        fx = tonumber(MatrickNr[matrick]:Get('zWings', Enums.Roles.Display)) or 'None'
+    if (axes == 1) then
+        fx = tonumber(MATricks[matrick]:Get('xWings', Enums.Roles.Display)) or 'None'
+    elseif (axes == 2) then
+        fx = tonumber(MATricks[matrick]:Get('yWings', Enums.Roles.Display)) or 'None'
+    elseif (axes == 3) then
+        fx = tonumber(MATricks[matrick]:Get('zWings', Enums.Roles.Display)) or 'None'
     end
+    Echo(fx)
     local text
     if (fx ~= "None" ) then
         text = string.format( '"%d"', fx )
