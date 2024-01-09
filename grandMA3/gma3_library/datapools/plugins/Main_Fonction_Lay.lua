@@ -1,10 +1,17 @@
+--[[
+Releases:
+* 1.1.6.3
+
+Created by Richard Fontaine "RIRI", January 2023.
+--]]
+
 local function main()
 
     local Select = UserVars()
-    local sel = GetVar(Select, "LC_Fonction")
-    local axes = GetVar(Select, "LC_Axes")
-    local layout = GetVar(Select, "LC_Layout")
-    local element = GetVar(Select, "LC_Element")
+    local sel = tonumber(GetVar(Select, "LC_Fonction"))
+    local axes = tonumber(GetVar(Select, "LC_Axes"))
+    local layout = tonumber(GetVar(Select, "LC_Layout"))
+    local element = tonumber(GetVar(Select, "LC_Element"))
     local matrick = tonumber(GetVar(Select, "LC_Matrick"))
 
     if (sel == 1) then
@@ -22,5 +29,11 @@ local function main()
     elseif (sel == 7) then
         Wings(axes,layout,element,matrick)
     end
+
+    DelVar(Select, "LC_Fonction")
+    DelVar(Select, "LC_Axes")
+    DelVar(Select, "LC_Layout")
+    DelVar(Select, "LC_Element")
+    DelVar(Select, "LC_Matrick")
 end
 return main
