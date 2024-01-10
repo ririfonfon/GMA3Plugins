@@ -634,30 +634,7 @@ local function Main(display_Handle)
                 if i == 6 then
                     Cmd('set seq ' .. CurrentSeqNr .. ' cue \'' .. prefix .. Argument_Fade[i].name .. surfix[a] ..'\' Property Command=\'Go Macro ' .. CurrentMacroNr .. '')
                 else
-                    E(CurrentMacroNr + i - 1)
-                    Cmd('Store Macro ' .. CurrentMacroNr + i - 1 .. ' \'' .. prefix .. Argument_Fade[i].name .. surfix[a] .. '')
-                    Cmd('ChangeDestination Macro ' .. CurrentMacroNr + i - 1 .. '')
-                    Cmd('Insert')
-                    Cmd('set  1 Command=\'off seq ' .. FirstSeqTime .. ' thru ' .. LastSeqTime .. ' - ' ..CurrentSeqNr .. '')
-                    Cmd('Insert')
-                    Cmd('set  2 Command=\'set seq ' .. SeqNrStart .. ' thru ' .. SeqNrEnd .. ' UseExecutorTime=' ..Argument_Fade[i].UseExTime .. '')
-                    Cmd('Insert')
-                    Cmd('set  3 Command=\'Set Matricks ' .. MatrickNrStart .. ' Property "FadeFrom' ..surfix[a] .. '" ' .. Argument_Fade[i].Time .. '')
-                    Cmd('Insert')
-                    Cmd('set  4 Command=\'Set Matricks ' .. MatrickNrStart ..' Property "FadeTo' .. surfix[a] .. '" ' .. Argument_Fade[i].Time .. '')
-                    Cmd("Insert")
-                    Cmd('set 5 Command=\'SetUserVariable "LC_Fonction" 1')
-                    Cmd("Insert")
-                    Cmd('set 6 Command=\'SetUserVariable "LC_Axes" "' .. a .. '"')
-                    Cmd("Insert")
-                    Cmd('set 7 Command=\'SetUserVariable "LC_Layout" ' .. TLayNr .. '')
-                    Cmd("Insert")
-                    Cmd('set 8 Command=\'SetUserVariable "LC_Element" ' .. Fade_Element .. '')
-                    Cmd("Insert")
-                    Cmd('set 9 Command=\'SetUserVariable "LC_Matrick" ' .. MatrickNrStart .. '')
-                    Cmd("Insert")
-                    Cmd('set 10 Command=\'Call Plugin "LC_View"')
-                    Cmd('ChangeDestination Root')
+                    Create_Macro_Fade_E(CurrentMacroNr,prefix,Argument_Fade,i,surfix,a,FirstSeqTime,LastSeqTime,CurrentSeqNr,SeqNrStart,SeqNrEnd,MatrickNrStart,TLayNr,Fade_Element)
                     Cmd('set seq ' .. CurrentSeqNr .. ' cue \'' .. prefix .. Argument_Fade[i].name .. surfix[a] ..'\' Property Command=\'Go Macro ' .. CurrentMacroNr + i - 1 .. '')
                 end
                 Cmd('set seq ' ..CurrentSeqNr .. ' Property Appearance=' .. AppImp[ib].Nr )
@@ -710,7 +687,7 @@ local function Main(display_Handle)
                 if i == 5 then
                     Cmd('set seq ' .. CurrentSeqNr .. ' cue \'' .. prefix .. Argument_Delay[i].name .. surfix[a] ..'\' Property Command=\'Go Macro ' .. CurrentMacroNr .. '')
                 else
-                    Cmd('set seq ' .. CurrentSeqNr .. ' cue \'' .. prefix .. Argument_Delay[i].name .. surfix[a] ..'\' Property Command=\'off seq ' .. FirstSeqDelayFrom .. ' thru ' .. LastSeqDelayFrom .. ' - ' ..CurrentSeqNr .. ' ; Set Matricks ' .. MatrickNrStart .. ' Property "DelayFrom' .. surfix[a] ..'" ' .. Argument_Delay[i].Time .. '')
+                    Cmd('set seq ' .. CurrentSeqNr .. ' cue \'' .. prefix .. Argument_Delay[i].name .. surfix[a] ..'\' Property Command=\'off seq ' .. FirstSeqDelayFrom .. ' thru ' .. LastSeqDelayFrom .. ' - ' ..CurrentSeqNr .. ' ; Set Matricks ' .. MatrickNrStart .. ' Property "DelayFrom' .. surfix[a] ..'" ' .. Argument_Delay[i].Time .. '  ; SetUserVariable "LC_Fonction" 2 ; SetUserVariable "LC_Axes" "' .. a .. '" ; SetUserVariable "LC_Layout" ' .. TLayNr .. ' ; SetUserVariable "LC_Element" ' .. Delay_F_Element .. ' ; SetUserVariable "LC_Matrick" ' .. MatrickNrStart .. ' ; Call Plugin "LC_View" ')
                 end
                 Cmd('set seq ' ..CurrentSeqNr .. ' Property Appearance=' .. AppImp[ib].Nr )
                 Command_Ext_Suite(CurrentSeqNr)
@@ -760,7 +737,7 @@ local function Main(display_Handle)
                 if i == 5 then
                     Cmd('set seq ' .. CurrentSeqNr .. ' cue \'' .. prefix .. Argument_DelayTo[i].name .. surfix[a] ..'\' Property Command=\'Go Macro ' .. CurrentMacroNr .. '')
                 else
-                    Cmd('set seq ' .. CurrentSeqNr .. ' cue \'' .. prefix .. Argument_DelayTo[i].name .. surfix[a] ..'\' Property Command=\'off seq ' .. FirstSeqDelayTo .. ' thru ' .. LastSeqDelayTo .. ' - ' ..CurrentSeqNr .. ' ; Set Matricks ' .. MatrickNrStart .. ' Property "DelayTo' .. surfix[a] .. '" ' ..Argument_DelayTo[i].Time .. '')
+                    Cmd('set seq ' .. CurrentSeqNr .. ' cue \'' .. prefix .. Argument_DelayTo[i].name .. surfix[a] ..'\' Property Command=\'off seq ' .. FirstSeqDelayTo .. ' thru ' .. LastSeqDelayTo .. ' - ' ..CurrentSeqNr .. ' ; Set Matricks ' .. MatrickNrStart .. ' Property "DelayTo' .. surfix[a] .. '" ' ..Argument_DelayTo[i].Time .. ' ; SetUserVariable "LC_Fonction" 3 ; SetUserVariable "LC_Axes" "' .. a .. '" ; SetUserVariable "LC_Layout" ' .. TLayNr .. ' ; SetUserVariable "LC_Element" ' .. Delay_T_Element .. ' ; SetUserVariable "LC_Matrick" ' .. MatrickNrStart .. ' ; Call Plugin "LC_View" ')
                 end
                 Cmd('set seq ' ..CurrentSeqNr .. ' Property Appearance=' .. AppImp[ib].Nr )
                 Command_Ext_Suite(CurrentSeqNr)
@@ -852,7 +829,7 @@ local function Main(display_Handle)
                 if i == 5 then
                     Cmd('set seq ' .. CurrentSeqNr .. ' cue \'' .. prefix .. Argument_Xgrp[i].name .. surfix[a] ..'\' Property Command=\'Go Macro ' .. CurrentMacroNr .. '')
                 else
-                    Cmd('set seq ' .. CurrentSeqNr .. ' cue \'' .. prefix .. Argument_Xgrp[i].name .. surfix[a] ..'\' Property Command=\'off seq ' .. FirstSeqGrp .. ' thru ' .. LastSeqGrp .. ' - ' ..CurrentSeqNr .. ' ; Set Matricks ' .. MatrickNrStart .. ' Property "' .. surfix[a] ..'Group" ' .. Argument_Xgrp[i].Time .. '')
+                    Cmd('set seq ' .. CurrentSeqNr .. ' cue \'' .. prefix .. Argument_Xgrp[i].name .. surfix[a] ..'\' Property Command=\'off seq ' .. FirstSeqGrp .. ' thru ' .. LastSeqGrp .. ' - ' ..CurrentSeqNr .. ' ; Set Matricks ' .. MatrickNrStart .. ' Property "' .. surfix[a] ..'Group" ' .. Argument_Xgrp[i].Time .. '  ; SetUserVariable "LC_Fonction" 5 ; SetUserVariable "LC_Axes" "' .. a .. '" ; SetUserVariable "LC_Layout" ' .. TLayNr .. ' ; SetUserVariable "LC_Element" ' .. Group_Element .. ' ; SetUserVariable "LC_Matrick" ' .. MatrickNrStart .. ' ; Call Plugin "LC_View" ')
                 end
                 Cmd('set seq ' ..CurrentSeqNr .. ' Property Appearance=' .. AppImp[ib].Nr )
                 Command_Ext_Suite(CurrentSeqNr)
@@ -903,7 +880,7 @@ local function Main(display_Handle)
                 if i == 5 then
                     Cmd('set seq ' .. CurrentSeqNr .. ' cue \'' .. prefix .. Argument_Xblock[i].name .. surfix[a] ..'\' Property Command=\'Go Macro ' .. CurrentMacroNr .. '')
                 else
-                    Cmd('set seq ' .. CurrentSeqNr .. ' cue \'' .. prefix .. Argument_Xblock[i].name .. surfix[a] ..'\' Property Command=\'off seq ' .. FirstSeqBlock .. ' thru ' .. LastSeqBlock .. ' - ' ..CurrentSeqNr .. ' ; Set Matricks ' .. MatrickNrStart .. ' Property "' .. surfix[a] ..'Block" ' .. Argument_Xblock[i].Time .. '')
+                    Cmd('set seq ' .. CurrentSeqNr .. ' cue \'' .. prefix .. Argument_Xblock[i].name .. surfix[a] ..'\' Property Command=\'off seq ' .. FirstSeqBlock .. ' thru ' .. LastSeqBlock .. ' - ' ..CurrentSeqNr .. ' ; Set Matricks ' .. MatrickNrStart .. ' Property "' .. surfix[a] ..'Block" ' .. Argument_Xblock[i].Time .. '  ; SetUserVariable "LC_Fonction" 6 ; SetUserVariable "LC_Axes" "' .. a .. '" ; SetUserVariable "LC_Layout" ' .. TLayNr .. ' ; SetUserVariable "LC_Element" ' .. Block_Element .. ' ; SetUserVariable "LC_Matrick" ' .. MatrickNrStart .. ' ; Call Plugin "LC_View" ')
                 end
                 Cmd('set seq ' ..CurrentSeqNr .. ' Property Appearance=' .. AppImp[ib].Nr )
                 Command_Ext_Suite(CurrentSeqNr)
@@ -954,7 +931,7 @@ local function Main(display_Handle)
                 if i == 5 then
                     Cmd('set seq ' .. CurrentSeqNr .. ' cue \'' .. prefix .. Argument_Xwings[i].name .. surfix[a] ..'\' Property Command=\'Go Macro ' .. CurrentMacroNr .. '')
                 else
-                    Cmd('set seq ' .. CurrentSeqNr .. ' cue \'' .. prefix .. Argument_Xwings[i].name .. surfix[a] ..'\' Property Command=\'off seq ' .. FirstSeqWings .. ' thru ' .. LastSeqWings .. ' - ' ..CurrentSeqNr .. ' ; Set Matricks ' .. MatrickNrStart .. ' Property "' .. surfix[a] ..'Wings" ' .. Argument_Xwings[i].Time .. '')
+                    Cmd('set seq ' .. CurrentSeqNr .. ' cue \'' .. prefix .. Argument_Xwings[i].name .. surfix[a] ..'\' Property Command=\'off seq ' .. FirstSeqWings .. ' thru ' .. LastSeqWings .. ' - ' ..CurrentSeqNr .. ' ; Set Matricks ' .. MatrickNrStart .. ' Property "' .. surfix[a] ..'Wings" ' .. Argument_Xwings[i].Time .. '  ; SetUserVariable "LC_Fonction" 7 ; SetUserVariable "LC_Axes" "' .. a .. '" ; SetUserVariable "LC_Layout" ' .. TLayNr .. ' ; SetUserVariable "LC_Element" ' .. Wings_Element .. ' ; SetUserVariable "LC_Matrick" ' .. MatrickNrStart .. ' ; Call Plugin "LC_View" ')
                 end
                 Cmd('set seq ' ..CurrentSeqNr .. ' Property Appearance=' .. AppImp[ib].Nr )
                 Command_Ext_Suite(CurrentSeqNr)
