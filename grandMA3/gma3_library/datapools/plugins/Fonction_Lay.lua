@@ -5,11 +5,11 @@ Releases:
 Created by Richard Fontaine "RIRI", January 2023.
 --]]
 
-local root = Root();
-local MATricks = root.ShowData.DataPools.Default.MAtricks:Children()
 
 
 function Fade(axes,layout,element,matrick)
+    local root = Root();
+    local MATricks = root.ShowData.DataPools.Default.MAtricks:Children()
     local fx, tx
     if (axes == 1) then
         fx = tonumber(MATricks[matrick]:Get('FadeFromX', Enums.Roles.Display)) or 'None'
@@ -38,11 +38,12 @@ function Fade(axes,layout,element,matrick)
         end
     end
     Cmd('Set Layout '.. layout .. "." .. element .. ' Property "CustomTextText" '.. text ..' ')
-    -- Cmd('Set Layout 2.40 Property "CustomTextText" '.. text ..' ')
 end
 
 function Delay_From(axes,layout,element,matrick)
-	local fx
+    local root = Root();
+    local MATricks = root.ShowData.DataPools.Default.MAtricks:Children()
+    local fx
 	if (axes == 1) then
         fx = tonumber(MATricks[matrick]:Get('DelayFromX', Enums.Roles.Display)) or 'None'
     elseif (axes == 2) then
@@ -58,11 +59,12 @@ function Delay_From(axes,layout,element,matrick)
         text = string.format( '"%s"', fx )
     end
     Cmd('Set Layout '.. layout .. "." .. element .. ' Property "CustomTextText" '.. text ..' ')
-    -- Cmd('Set Layout 2.47 Property "CustomTextText" '.. text ..' ')
 end
 
 function Delay_To(axes,layout,element,matrick)
-	local tx
+    local root = Root();
+    local MATricks = root.ShowData.DataPools.Default.MAtricks:Children()
+    local tx
 	if (axes == 1) then
         tx = tonumber(MATricks[matrick]:Get('DelayToX', Enums.Roles.Display)) or 'None'
     elseif (axes == 2) then
@@ -78,11 +80,12 @@ function Delay_To(axes,layout,element,matrick)
         text = string.format( '"%s"', tx )
     end
     Cmd('Set Layout '.. layout .. "." .. element .. ' Property "CustomTextText" '.. text ..' ')
-    -- Cmd('Set Layout 2.54 Property "CustomTextText" '.. text ..' ')
 end
 
 function Phase(axes,layout,element,matrick)
-	local fx, tx
+    local root = Root();
+    local MATricks = root.ShowData.DataPools.Default.MAtricks:Children()
+    local fx, tx
     if (axes == 1) then
         fx = MATricks[matrick]:Get('PhaseFromX', Enums.Roles.Display)
         tx = MATricks[matrick]:Get('PhaseToX', Enums.Roles.Display)
@@ -110,11 +113,12 @@ function Phase(axes,layout,element,matrick)
         end
     end
     Cmd('Set Layout '.. layout .. "." .. element .. ' Property "CustomTextText" '.. text ..' ')
-    -- Cmd('Set Layout 2.62 Property "CustomTextText" '.. text ..' ')
 end
 
 function Group(axes,layout,element,matrick)
-	local fx
+    local root = Root();
+    local MATricks = root.ShowData.DataPools.Default.MAtricks:Children()
+    local fx
 	if (axes == 1) then
         fx = tonumber(MATricks[matrick]:Get('xGroup', Enums.Roles.Display)) or 'None'
     elseif (axes == 2) then
@@ -130,10 +134,11 @@ function Group(axes,layout,element,matrick)
         text = string.format( '"%s"', fx )
     end
     Cmd('Set Layout '.. layout .. "." .. element .. ' Property "CustomTextText" '.. text ..' ')
-    -- Cmd('Set Layout 2.64 Property "CustomTextText" '.. text ..' ')
 end
 
 function Block(axes,layout,element,matrick)
+    local root = Root();
+    local MATricks = root.ShowData.DataPools.Default.MAtricks:Children()
     local fx
 	if (axes == 1) then
         fx = tonumber(MATricks[matrick]:Get('xBlock', Enums.Roles.Display)) or 'None'
@@ -150,11 +155,12 @@ function Block(axes,layout,element,matrick)
         text = string.format( '"%s"', fx )
     end
     Cmd('Set Layout '.. layout .. "." .. element .. ' Property "CustomTextText" '.. text ..' ')
-    -- Cmd('Set Layout 2.71 Property "CustomTextText" '.. text ..' ')
 end
 
 function Wings(axes,layout,element,matrick)
-    local fx
+    
+    local root = Root();
+    local MATricks = root.ShowData.DataPools.Default.MAtricks:Children()local fx
     if (axes == 1) then
         fx = tonumber(MATricks[matrick]:Get('xWings', Enums.Roles.Display)) or 'None'
     elseif (axes == 2) then
@@ -170,5 +176,4 @@ function Wings(axes,layout,element,matrick)
         text = string.format( '"%s"', fx )
     end
     Cmd('Set Layout '.. layout .. "." .. element .. ' Property "CustomTextText" '.. text ..' ')
-    -- Cmd('Set Layout 2.78 Property "CustomTextText" '.. text ..' ')
 end
