@@ -976,7 +976,7 @@ local function Main(display_Handle)
                 Call_inc = Maf(Call_inc + 1)
             end
             Cmd('ChangeDestination Root')
-            Make_Macro_Reset(CurrentMacroNr,prefix,surfix,MatrickNrStart,a,CurrentSeqNr,First_Id_Lay)
+            Make_Macro_Reset(CurrentMacroNr,prefix,surfix,MatrickNrStart,a,CurrentSeqNr,First_Id_Lay,TLayNr,Fade_Element,Delay_F_Element,Delay_T_Element,Phase_Element,Group_Element,Block_Element,Wings_Element)
             First_Id_Lay[28 + a] = CurrentSeqNr
             Cmd('ClearAll /nu')
             Cmd('Store Sequence ' .. CurrentSeqNr .. ' \'' .. prefix .. surfix[a] .. '_Call\'')
@@ -1024,6 +1024,7 @@ local function Main(display_Handle)
             Cmd('ChangeDestination Macro ' .. First_Id_Lay[33 + i])
             Cmd('Insert')
             Cmd('set 32 Command=\'Off Sequence ' .. First_Id_Lay[29] .. ' + ' .. First_Id_Lay[30] .. ' + ' .. First_Id_Lay[31] .. ' - ' .. First_Id_Lay[28 + i])
+            Add_Macro_Call(i,TLayNr,Fade_Element,MatrickNrStart,Delay_F_Element,Delay_T_Element,Phase_Element,Group_Element,Block_Element,Wings_Element)
             Cmd('ChangeDestination Root')
         end
         -- end line macro X Y Z Call
