@@ -130,7 +130,7 @@ function CheckSymbols(display_Handle,Img,ImgImp,check,add_check,long_imgimp,ImgN
     end
 end -- end function CheckSymbols(...)
 
-function Mainbox_Call(display_Handle,TLayNr,NaLay,SeqNrStart,MacroNrStart,AppNr,MaxColLgn,MatrickNrStart,ColGels,FixtureGroups,SelectedGelNr,SelectedGrp,SelectedGrpNo)
+function Mainbox_Call(display_Handle,TLayNr,NaLay,SeqNrStart,MacroNrStart,AppNr,MaxColLgn,MatrickNrStart,ColGels,FixtureGroups,SelectedGelNr,SelectedGrp,SelectedGrpNo,All_5_NrStart)
 
     local ChoGel = {}
     for k in ipairs(ColGels) do
@@ -208,6 +208,11 @@ function Mainbox_Call(display_Handle,TLayNr,NaLay,SeqNrStart,MacroNrStart,AppNr,
                 value = MatrickNrStart,
                 maxTextLength = 4,
                 vkPlugin = "TextInputNumOnly"
+            }, {
+                name = 'Preset_All_5_Start_Nr',
+                value = All_5_NrStart,
+                maxTextLength = 4,
+                vkPlugin = "TextInputNumOnly"
             } },
             selectors = Swipe_Color
 
@@ -239,6 +244,7 @@ function Mainbox_Call(display_Handle,TLayNr,NaLay,SeqNrStart,MacroNrStart,AppNr,
                 NaLay = box.inputs.Layout_Name
                 MaxColLgn = box.inputs.Max_Color_By_Line
                 MatrickNrStart = box.inputs.Matrick_Start_Nr
+                All_5_NrStart = box.inputs.Preset_All_5_Start_Nr
                 SelectedGelNr = box.selectors
                     .____GELS__CHOOSE____GELS__CHOOSE____GELS__CHOOSE____GELS__CHOOSE____GELS__CHOOSE____
                 goto MainBox
@@ -251,6 +257,7 @@ function Mainbox_Call(display_Handle,TLayNr,NaLay,SeqNrStart,MacroNrStart,AppNr,
                 NaLay = box.inputs.Layout_Name
                 MaxColLgn = box.inputs.Max_Color_By_Line
                 MatrickNrStart = box.inputs.Matrick_Start_Nr
+                All_5_NrStart = box.inputs.Preset_All_5_Start_Nr
                 SelectedGelNr = box.selectors
                     .____GELS__CHOOSE____GELS__CHOOSE____GELS__CHOOSE____GELS__CHOOSE____GELS__CHOOSE____
                 goto addGroup
@@ -265,6 +272,7 @@ function Mainbox_Call(display_Handle,TLayNr,NaLay,SeqNrStart,MacroNrStart,AppNr,
                 NaLay = box.inputs.Layout_Name
                 MaxColLgn = box.inputs.Max_Color_By_Line
                 MatrickNrStart = box.inputs.Matrick_Start_Nr
+                All_5_NrStart = box.inputs.Preset_All_5_Start_Nr
                 SelectedGelNr = box.selectors
                     .____GELS__CHOOSE____GELS__CHOOSE____GELS__CHOOSE____GELS__CHOOSE____GELS__CHOOSE____
                 goto addGroup
@@ -276,10 +284,11 @@ function Mainbox_Call(display_Handle,TLayNr,NaLay,SeqNrStart,MacroNrStart,AppNr,
                 NaLay = box.inputs.Layout_Name
                 MaxColLgn = box.inputs.Max_Color_By_Line
                 MatrickNrStart = box.inputs.Matrick_Start_Nr
+                All_5_NrStart = box.inputs.Preset_All_5_Start_Nr
                 SelectedGelNr = box.selectors
                     .____GELS__CHOOSE____GELS__CHOOSE____GELS__CHOOSE____GELS__CHOOSE____GELS__CHOOSE____
                 E("now i do some Magic stuff...")
-                do return 1,SeqNrStart,MacroNrStart,AppNr,TLayNr,NaLay,MaxColLgn,MatrickNrStart,SelectedGelNr end
+                do return 1,SeqNrStart,MacroNrStart,AppNr,TLayNr,NaLay,MaxColLgn,MatrickNrStart,SelectedGelNr,All_5_NrStart end
             end
         elseif (box.result == 0) then
             E("User Canceled")
