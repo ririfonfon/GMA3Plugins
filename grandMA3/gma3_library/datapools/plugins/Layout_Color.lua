@@ -2,7 +2,7 @@
 Releases:
 * 1.1.6.3
 
-Created by Richard Fontaine "RIRI", January 2023.
+Created by Richard Fontaine "RIRI", January 2024.
 --]]
 local F = string.format
 local E = Echo
