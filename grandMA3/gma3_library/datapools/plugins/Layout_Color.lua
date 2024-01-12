@@ -28,7 +28,7 @@ local function Main(display_Handle)
     end
 
     if ImgNr == nil then
-        ImgNr = 0
+        ImgNr = 1
     end
 
     local ImgImp = { 
@@ -52,6 +52,9 @@ local function Main(display_Handle)
 
     for k in pairs(App) do
         AppNr = Maf(App[k].NO)
+    end
+    if AppNr == nil then
+        AppNr = 1
     end
     AppNr = AppNr + 1
 
@@ -244,29 +247,36 @@ local function Main(display_Handle)
     local TLayNrRef
     local First_Id_Lay = {}
     local Current_Id_Lay
-
+    
     for k in pairs(TLay) do
         TLayNr = Maf(tonumber(TLay[k].NO))
         TLayNrRef = k
     end
+    if TLayNr == nil then
+        TLayNr = 1
+    end
 
+    TLayNr = Maf(TLayNr + 1)
+    
     -- Store all Used Sequence in a Table to find the last free number
     local SeqNr = root.ShowData.DataPools.Default.Sequences:Children()
     local SeqNrStart
     local SeqNrEnd
-
+    
     for k in pairs(SeqNr) do
         SeqNrStart = Maf(SeqNr[k].NO)
     end
     if SeqNrStart == nil then
-        SeqNrStart = 0
+        SeqNrStart = 1
     end
 
+    SeqNrStart = SeqNrStart + 1
+    
     local prefix_index = 1
     local old_prefix_index
     local prefix = 'LC' .. tostring(prefix_index) .. '_'
     local exit = false
-
+    
     repeat
         old_prefix_index = prefix_index
         for k in pairs(TLay) do
@@ -285,13 +295,15 @@ local function Main(display_Handle)
     local Macro_Pool = root.ShowData.DataPools.Default.Macros
     local MacroNr = root.ShowData.DataPools.Default.Macros:Children()
     local MacroNrStart
-
+    
     for k in pairs(MacroNr) do
         MacroNrStart = Maf(MacroNr[k].NO)
     end
     if MacroNrStart == nil then
-        MacroNrStart = 0
+        MacroNrStart = 1
     end
+    
+    MacroNrStart = MacroNrStart + 1
 
     -- Store all Use Texture in a Table to find the last free number
     local TIcon = root.GraphicsRoot.TextureCollect.Textures:Children()
@@ -308,11 +320,26 @@ local function Main(display_Handle)
         MatrickNrStart = Maf(MatrickNr[k].NO)
     end
     if MatrickNrStart == nil then
-        MatrickNrStart = 0
+        MatrickNrStart = 1
     end
 
     MatrickNrStart = Maf(MatrickNrStart + 1)
-    local MatrickNr = MatrickNrStart
+    MatrickNr = MatrickNrStart
+
+    -- Store all Used Preset All 1 in a Table to find the last free number
+    local All_5_Nr = root.ShowData.DataPools.Default.PresetPools[25]:Children()
+    local All_5_NrStart
+    local All_5_NrEnd
+    local All_5_Current
+    for k in pairs(All_5_Nr) do
+        All_5_NrStart = Maf(All_5_Nr[k].NO)
+    end
+    if All_5_NrStart == nil then
+        All_5_NrStart = 1
+    end
+
+    All_5_NrStart = Maf(All_5_NrStart + 1)
+    All_5_Current = All_5_NrStart
 
     -- variables
     local LayX
@@ -369,13 +396,10 @@ local function Main(display_Handle)
     local Block_Element
     local Wings_Element
 
-    TLayNr = Maf(TLayNr + 1)
-    SeqNrStart = SeqNrStart + 1
-    MacroNrStart = MacroNrStart + 1
 
     
 
-    local Return_Main_Call ={Mainbox_Call(display_Handle,TLayNr,NaLay,SeqNrStart,MacroNrStart,AppNr,MaxColLgn,MatrickNrStart,ColGels,FixtureGroups,SelectedGelNr,SelectedGrp,SelectedGrpNo)}
+    local Return_Main_Call ={Mainbox_Call(display_Handle,TLayNr,NaLay,SeqNrStart,MacroNrStart,AppNr,MaxColLgn,MatrickNrStart,ColGels,FixtureGroups,SelectedGelNr,SelectedGrp,SelectedGrpNo,All_5_NrStart)}
 
     if Return_Main_Call[1] then
         SeqNrStart = Return_Main_Call[2]
@@ -387,6 +411,9 @@ local function Main(display_Handle)
         MaxColLgn = Return_Main_Call[7]
         MatrickNrStart = Return_Main_Call[8]
         SelectedGelNr = Return_Main_Call[9]
+        All_5_NrStart = Return_Main_Call[10]
+        All_5_NrStart = Maf(All_5_NrStart)
+        E(All_5_NrStart)
         goto doMagicStuff
     else
         goto canceled
@@ -437,12 +464,27 @@ local function Main(display_Handle)
                 StAppNameOn = "\"" .. prefix .. StringColName .. " on\""
                 StAppNameOff = "\"" .. prefix .. StringColName .. " off\""
                 Cmd("Store App " .. NrAppear .. " " .. StAppNameOn .. " Appearance=" .. StAppOn .. " color=" ..StColCode .. "")
-                NrAppear = Maf(NrAppear + 1);
+                NrAppear = Maf(NrAppear + 1)
                 Cmd("Store App " .. NrAppear .. " " .. StAppNameOff .. " Appearance=" .. StAppOff .. " color=" ..StColCode .. "")
-                NrAppear = Maf(NrAppear + 1);
+                NrAppear = Maf(NrAppear + 1)
             end
         end
         -- end Appearances
+        -- Create Preset 25
+        Cmd("ClearAll /nu")
+        Cmd('Set Preset 25 Property PresetMode "Universal"')
+        Cmd('Fixture Thru')
+        for col in ipairs(TCol) do
+            StColName = TCol[col].name
+            StringColName = string.gsub(StColName, " ", "_")
+            Cmd('At Gel ' ..SelectedGelNr .. "."  .. col .. '')
+            Cmd('Store Preset 25.' .. All_5_Current .. '')
+            Cmd('Label Preset 25.' .. All_5_Current ..  " " .. StringColName .. " " )
+            All_5_NrEnd = All_5_Current
+            All_5_Current = Maf(All_5_Current + 1)
+        end
+        -- endCreate Preset 25
+
         -- Appearances/Sequences
         for g in ipairs(SelectedGrp) do
             ColLgnCount = 0
@@ -456,7 +498,8 @@ local function Main(display_Handle)
             LayNr = Maf(LayNr + 1)
             LayX = Maf(LayX + LayW + 20)
             FirstSeqColor = CurrentSeqNr
-            -- COLOR SEQ
+
+            -- COLOR SEQ  /// Assign Values Preset 21.2 At Sequence 22 cue 1 part 0.1 /// Set Preset 25 Property'PresetMode' "Universal"
             for col in ipairs(TCol) do
                 col_count = col_count + 1
                 StColCode = "\"" .. TCol[col].r .. "," .. TCol[col].g .. "," .. TCol[col].b .. ",1\""
@@ -467,10 +510,11 @@ local function Main(display_Handle)
                 GrpNo = SelectedGrpNo[g]
                 GrpNo = string.gsub(GrpNo, "'", "")
                 Cmd("ClearAll /nu")
-                Cmd("Group " .. SelectedGrp[g] .. " at Gel " .. ColNr .. "")
+                -- Cmd("Group " .. SelectedGrp[g] .. " at Gel " .. ColNr .. "")
                 Cmd("Store Sequence " .. CurrentSeqNr .. " \"" .. prefix .. StringColName .. " " ..SelectedGrp[g]:gsub('\'', '') .. "\"")
                 Cmd("Store Sequence " .. CurrentSeqNr .. " Cue 1 Part 0.1")
                 Cmd("Assign Group " .. GrpNo .. " At Sequence " .. CurrentSeqNr .. " Cue 1 Part 0.1")
+                Cmd('Assign Values Preset 25.' .. All_5_NrStart + col - 1 .. "At Sequence " .. CurrentSeqNr .. 'cue 1 part 0.1')
                 Cmd('Assign MAtricks ' .. MatrickNrStart .. ' At Sequence ' .. CurrentSeqNr .. ' Cue 1 Part 0.1 /nu')
                 Cmd('set seq ' .. CurrentSeqNr .. ' cue 1 Property Appearance=' .. NrNeed )
                 Cmd('set seq ' ..CurrentSeqNr .. ' Property Appearance=' .. NrNeed + 1 )
