@@ -420,6 +420,7 @@ local function Main(display_Handle)
         SelectedGelNr = Return_Main_Call[9]
         All_5_NrStart = Return_Main_Call[10]
         All_5_NrStart = Maf(All_5_NrStart)
+        All_5_Current = All_5_NrStart
         E(All_5_NrStart)
         goto doMagicStuff
     else
