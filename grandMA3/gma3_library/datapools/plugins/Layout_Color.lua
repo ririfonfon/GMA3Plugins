@@ -1,6 +1,6 @@
 --[[
 Releases:
-* 1.1.7.0
+* 1.1.7.1
 
 Created by Richard Fontaine "RIRI", January 2024.
 --]]
@@ -28,7 +28,7 @@ local function Main(display_Handle)
     end
 
     if ImgNr == nil then
-        ImgNr = 1
+        ImgNr = 0
     end
 
     local ImgImp = { 
@@ -54,7 +54,7 @@ local function Main(display_Handle)
         AppNr = Maf(App[k].NO)
     end
     if AppNr == nil then
-        AppNr = 1
+        AppNr = 0
     end
     AppNr = AppNr + 1
 
@@ -248,12 +248,12 @@ local function Main(display_Handle)
     local First_Id_Lay = {}
     local Current_Id_Lay
     
-    for k in pairs(TLay) do
+    for k in ipairs(TLay) do
         TLayNr = Maf(tonumber(TLay[k].NO))
         TLayNrRef = k
     end
     if TLayNr == nil then
-        TLayNr = 1
+        TLayNr = 0
     end
 
     TLayNr = Maf(TLayNr + 1)
@@ -267,7 +267,7 @@ local function Main(display_Handle)
         SeqNrStart = Maf(SeqNr[k].NO)
     end
     if SeqNrStart == nil then
-        SeqNrStart = 1
+        SeqNrStart = 0
     end
 
     SeqNrStart = SeqNrStart + 1
@@ -300,7 +300,7 @@ local function Main(display_Handle)
         MacroNrStart = Maf(MacroNr[k].NO)
     end
     if MacroNrStart == nil then
-        MacroNrStart = 1
+        MacroNrStart = 0
     end
     
     MacroNrStart = MacroNrStart + 1
@@ -320,7 +320,7 @@ local function Main(display_Handle)
         MatrickNrStart = Maf(MatrickNr[k].NO)
     end
     if MatrickNrStart == nil then
-        MatrickNrStart = 1
+        MatrickNrStart = 0
     end
 
     MatrickNrStart = Maf(MatrickNrStart + 1)
@@ -335,7 +335,7 @@ local function Main(display_Handle)
         All_5_NrStart = Maf(All_5_Nr[k].NO)
     end
     if All_5_NrStart == nil then
-        All_5_NrStart = 1
+        All_5_NrStart = 0
     end
 
     All_5_NrStart = Maf(All_5_NrStart + 1)
@@ -343,15 +343,22 @@ local function Main(display_Handle)
 
     -- variables
     local LayX
-    local RefX = Maf(0 - TLay[TLayNrRef].DimensionW / 2)
-    local LayY = TLay[TLayNrRef].DimensionH / 2
+    local RefX
+    local LayY
+    if TLayNrRef then
+        RefX = Maf(0 - TLay[TLayNrRef].DimensionW / 2)
+        LayY = TLay[TLayNrRef].DimensionH / 2
+    else
+        RefX = -960
+        LayY = 540
+    end
     local LayW = 100
     local LayH = 100
     local LayNr = 1
     local TCol
     local StColName
     local StringColName
-    local StColCode
+    local StColCodeFirstSeqTime
     local ColNr = 0
     local SelectedGrp = {}
     local SelectedGrpName = {}
@@ -479,7 +486,7 @@ local function Main(display_Handle)
             StringColName = string.gsub(StColName, " ", "_")
             Cmd('At Gel ' ..SelectedGelNr .. "."  .. col .. '')
             Cmd('Store Preset 25.' .. All_5_Current .. '')
-            Cmd('Label Preset 25.' .. All_5_Current ..  " " .. StringColName .. " " )
+            Cmd('Label Preset 25.' .. All_5_Current ..  " " .. prefix .. StringColName .. " " )
             All_5_NrEnd = All_5_Current
             All_5_Current = Maf(All_5_Current + 1)
         end
@@ -1074,7 +1081,11 @@ local function Main(display_Handle)
         -- end line macro X Y Z Call
 
         -- add Kill all LCx_
-        LayY = TLay[TLayNrRef].DimensionH / 2
+        if TLayNrRef then
+            LayY = TLay[TLayNrRef].DimensionH / 2
+        else
+            LayY = 540
+        end
         LayY = Maf(LayY + 20) -- Add offset for Layout Element distance
         LayY = Maf(LayY + (120 * ColLgnCount ))
         LayX = RefX
@@ -1102,7 +1113,7 @@ local function Main(display_Handle)
         condition_string = "Lua 'if Confirm(\"Delete Layout Color LC" .. prefix:gsub('%D*', '') .."?\") then; Cmd(\"Go macro " .. CurrentMacroNr .. "\"); else Cmd(\"Off macro " ..CurrentMacroNr .. "\"); end'" .. ' /nu'
         Cmd('Store Macro ' .. CurrentMacroNr .. ' \'' .. 'ERASE\'')
         Cmd('ChangeDestination Macro ' .. CurrentMacroNr .. '')
-        for i = 1, 7 do
+        for i = 1, 8 do
             Cmd('Insert')
         end
         Cmd('ChangeDestination Root')
@@ -1113,8 +1124,9 @@ local function Main(display_Handle)
         Macro_Pool[CurrentMacroNr][3]:Set('Command', 'Delete Layout ' .. prefix .. '*' .. ' /nc')
         Macro_Pool[CurrentMacroNr][4]:Set('Command', 'Delete Matricks ' .. prefix .. '*' .. ' /nc')
         Macro_Pool[CurrentMacroNr][5]:Set('Command', 'Delete Appearance ' .. prefix .. '*' .. ' /nc')
-        Macro_Pool[CurrentMacroNr][6]:Set('Command', 'Delete  Macro ' .. prefix .. '*' .. ' /nc')
-        Macro_Pool[CurrentMacroNr][7]:Set('Command', 'Delete  Macro ' .. CurrentMacroNr .. ' /nc')
+        Macro_Pool[CurrentMacroNr][6]:Set('Command', 'Delete Preset 25. ' .. prefix .. '*' .. ' /nc')
+        Macro_Pool[CurrentMacroNr][7]:Set('Command', 'Delete  Macro ' .. prefix .. '*' .. ' /nc')
+        Macro_Pool[CurrentMacroNr][8]:Set('Command', 'Delete  Macro ' .. CurrentMacroNr .. ' /nc')
         -- end Macro Del LC prefix
 
         -- dimension of layout & scal it
