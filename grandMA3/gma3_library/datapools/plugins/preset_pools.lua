@@ -14,7 +14,7 @@ local function Main()
     local All_5_NrStart
     local All_5_NrEnd
     local All_5_Current
-    for k in pairs(All_5_Nr) do
+    for k in ipairs(All_5_Nr) do
         All_5_NrStart = Maf(All_5_Nr[k].NO)
     end
     if All_5_NrStart == nil then
