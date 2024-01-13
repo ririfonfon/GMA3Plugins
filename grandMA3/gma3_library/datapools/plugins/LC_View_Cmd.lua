@@ -1,15 +1,25 @@
 --[[
 Releases:
-* 1.1.6.3
+* 1.1.7.1
 
 Created by Richard Fontaine "RIRI", January 2024.
 --]]
 
 
 
-function Fade(axes,layout,element,matrick)
+function Fade(axes,layout,element,matrick_call)
     local root = Root();
+    local Maf = math.floor
     local MATricks = root.ShowData.DataPools.Default.MAtricks:Children()
+    local Matrick_check
+    local matrick
+    for k in ipairs(MATricks) do
+        Matrick_check = Maf(MATricks[k].NO)
+        if Matrick_check == matrick_call then
+            matrick = k
+        end
+    end
+    matrick = tonumber(matrick)
     local fx, tx
     if (axes == 1) then
         fx = tonumber(MATricks[matrick]:Get('FadeFromX', Enums.Roles.Display)) or 'None'
@@ -40,9 +50,19 @@ function Fade(axes,layout,element,matrick)
     Cmd('Set Layout '.. layout .. "." .. element .. ' Property "CustomTextText" '.. text ..' ')
 end
 
-function Delay_From(axes,layout,element,matrick)
+function Delay_From(axes,layout,element,matrick_call)
     local root = Root();
+    local Maf = math.floor
     local MATricks = root.ShowData.DataPools.Default.MAtricks:Children()
+    local Matrick_check
+    local matrick
+    for k in ipairs(MATricks) do
+        Matrick_check = Maf(MATricks[k].NO)
+        if Matrick_check == matrick_call then
+            matrick = k
+        end
+    end
+    matrick = tonumber(matrick)
     local fx
 	if (axes == 1) then
         fx = tonumber(MATricks[matrick]:Get('DelayFromX', Enums.Roles.Display)) or 'None'
@@ -61,9 +81,19 @@ function Delay_From(axes,layout,element,matrick)
     Cmd('Set Layout '.. layout .. "." .. element .. ' Property "CustomTextText" '.. text ..' ')
 end
 
-function Delay_To(axes,layout,element,matrick)
+function Delay_To(axes,layout,element,matrick_call)
     local root = Root();
+    local Maf = math.floor
     local MATricks = root.ShowData.DataPools.Default.MAtricks:Children()
+    local Matrick_check
+    local matrick
+    for k in ipairs(MATricks) do
+        Matrick_check = Maf(MATricks[k].NO)
+        if Matrick_check == matrick_call then
+            matrick = k
+        end
+    end
+    matrick = tonumber(matrick)
     local tx
 	if (axes == 1) then
         tx = tonumber(MATricks[matrick]:Get('DelayToX', Enums.Roles.Display)) or 'None'
@@ -82,9 +112,19 @@ function Delay_To(axes,layout,element,matrick)
     Cmd('Set Layout '.. layout .. "." .. element .. ' Property "CustomTextText" '.. text ..' ')
 end
 
-function Phase(axes,layout,element,matrick)
+function Phase(axes,layout,element,matrick_call)
     local root = Root();
+    local Maf = math.floor
     local MATricks = root.ShowData.DataPools.Default.MAtricks:Children()
+    local Matrick_check
+    local matrick
+    for k in ipairs(MATricks) do
+        Matrick_check = Maf(MATricks[k].NO)
+        if Matrick_check == matrick_call then
+            matrick = k
+        end
+    end
+    matrick = tonumber(matrick)
     local fx, tx
     if (axes == 1) then
         fx = MATricks[matrick]:Get('PhaseFromX', Enums.Roles.Display)
@@ -115,9 +155,19 @@ function Phase(axes,layout,element,matrick)
     Cmd('Set Layout '.. layout .. "." .. element .. ' Property "CustomTextText" '.. text ..' ')
 end
 
-function Group(axes,layout,element,matrick)
+function Group(axes,layout,element,matrick_call)
     local root = Root();
+    local Maf = math.floor
     local MATricks = root.ShowData.DataPools.Default.MAtricks:Children()
+    local Matrick_check
+    local matrick
+    for k in ipairs(MATricks) do
+        Matrick_check = Maf(MATricks[k].NO)
+        if Matrick_check == matrick_call then
+            matrick = k
+        end
+    end
+    matrick = tonumber(matrick)
     local fx
 	if (axes == 1) then
         fx = tonumber(MATricks[matrick]:Get('xGroup', Enums.Roles.Display)) or 'None'
@@ -136,9 +186,19 @@ function Group(axes,layout,element,matrick)
     Cmd('Set Layout '.. layout .. "." .. element .. ' Property "CustomTextText" '.. text ..' ')
 end
 
-function Block(axes,layout,element,matrick)
+function Block(axes,layout,element,matrick_call)
     local root = Root();
+    local Maf = math.floor
     local MATricks = root.ShowData.DataPools.Default.MAtricks:Children()
+    local Matrick_check
+    local matrick
+    for k in ipairs(MATricks) do
+        Matrick_check = Maf(MATricks[k].NO)
+        if Matrick_check == matrick_call then
+            matrick = k
+        end
+    end
+    matrick = tonumber(matrick)
     local fx
 	if (axes == 1) then
         fx = tonumber(MATricks[matrick]:Get('xBlock', Enums.Roles.Display)) or 'None'
@@ -157,10 +217,20 @@ function Block(axes,layout,element,matrick)
     Cmd('Set Layout '.. layout .. "." .. element .. ' Property "CustomTextText" '.. text ..' ')
 end
 
-function Wings(axes,layout,element,matrick)
+function Wings(axes,layout,element,matrick_call)
     
     local root = Root();
-    local MATricks = root.ShowData.DataPools.Default.MAtricks:Children()local fx
+    local Maf = math.floor
+    local MATricks = root.ShowData.DataPools.Default.MAtricks:Children()
+    local Matrick_check
+    local matrick
+    for k in ipairs(MATricks) do
+        Matrick_check = Maf(MATricks[k].NO)
+        if Matrick_check == matrick_call then
+            matrick = k
+        end
+    end
+    matrick = tonumber(matrick)
     if (axes == 1) then
         fx = tonumber(MATricks[matrick]:Get('xWings', Enums.Roles.Display)) or 'None'
     elseif (axes == 2) then
