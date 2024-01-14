@@ -1,6 +1,6 @@
 --[[
 Releases:
-* 1.1.7.1
+* 1.1.7.2
 
 Created by Richard Fontaine "RIRI", January 2024.
 --]]
