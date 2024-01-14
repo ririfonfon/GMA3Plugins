@@ -1,6 +1,6 @@
 --[[
 Releases:
-* 1.1.7.1
+* 1.1.7.2
 
 Created by Richard Fontaine "RIRI", January 2024.
 --]]
@@ -156,7 +156,7 @@ function Mainbox_Call(display_Handle,TLayNr,NaLay,SeqNrStart,MacroNrStart,AppNr,
     -- Main Box
     ::MainBox:: do
         local box = MessageBox({
-            title = 'Color_Layout_By_RIRI',
+            title = 'Layout_Color_By_RIRI',
             display = display_Handle,
             backColor = "1.7",
             message = Message,
@@ -170,50 +170,51 @@ function Mainbox_Call(display_Handle,TLayNr,NaLay,SeqNrStart,MacroNrStart,AppNr,
                 name = 'Cancel',
                 value = 0
             } },
-            inputs = { {
-                name = 'Layout_Nr',
-                value = TLayNr,
-                maxTextLength = 4,
-                vkPlugin = "TextInputNumOnly"
-            }, {
-                name = 'Layout_Name',
+            inputs = {
+                {
+                name = 'a_Layout_Name',
                 value = NaLay,
                 maxTextLength = 16,
-                vkPlugin = "TextInput"
-            }, {
-                name = 'Sequence_Start_Nr',
+                vkPlugin = "TextInput"},
+                {
+                name = 'b_Layout_Nr',
+                value = TLayNr,
+                maxTextLength = 4,
+                vkPlugin = "TextInputNumOnly"},
+                {
+                name = 'c_Sequence_Start_Nr',
                 blackFilter = "*",
                 value = SeqNrStart,
                 maxTextLength = 4,
-                vkPlugin = "TextInputNumOnly"
-            }, {
-                name = 'Macro_Start_Nr',
+                vkPlugin = "TextInputNumOnly"},
+                {
+                name = 'd_Macro_Start_Nr',
                 blackFilter = "*",
                 value = MacroNrStart,
                 maxTextLength = 4,
-                vkPlugin = "TextInputNumOnly"
-            }, {
-                name = 'Appearance_Start_Nr',
+                vkPlugin = "TextInputNumOnly"},
+                {
+                name = 'e_Appearance_Start_Nr',
                 blackFilter = "*",
                 value = AppNr,
                 maxTextLength = 4,
-                vkPlugin = "TextInputNumOnly"
-            }, {
-                name = 'Max_Color_By_Line',
-                value = MaxColLgn,
-                maxTextLength = 2,
-                vkPlugin = "TextInputNumOnly"
-            }, {
-                name = 'Matrick_Start_Nr',
-                value = MatrickNrStart,
-                maxTextLength = 4,
-                vkPlugin = "TextInputNumOnly"
-            }, {
-                name = 'Preset_All_5_Start_Nr',
+                vkPlugin = "TextInputNumOnly"},
+                {
+                name = 'f_Preset_All_5_Start_Nr',
                 value = All_5_NrStart,
                 maxTextLength = 4,
-                vkPlugin = "TextInputNumOnly"
-            } },
+                vkPlugin = "TextInputNumOnly"},
+                {
+                name = 'g_Matrick_Start_Nr',
+                value = MatrickNrStart,
+                maxTextLength = 4,
+                vkPlugin = "TextInputNumOnly"},
+                {
+                name = 'h_Max_Color_By_Line',
+                value = MaxColLgn,
+                maxTextLength = 2,
+                vkPlugin = "TextInputNumOnly"}
+            },
             selectors = Swipe_Color
 
         })
@@ -237,27 +238,27 @@ function Mainbox_Call(display_Handle,TLayNr,NaLay,SeqNrStart,MacroNrStart,AppNr,
             if (count == 0) then
                 E("all Groups are added")
                 Co("all Groups are added")
-                SeqNrStart = box.inputs.Sequence_Start_Nr
-                MacroNrStart = box.inputs.Macro_Start_Nr
-                AppNr = box.inputs.Appearance_Start_Nr
-                TLayNr = box.inputs.Layout_Nr
-                NaLay = box.inputs.Layout_Name
-                MaxColLgn = box.inputs.Max_Color_By_Line
-                MatrickNrStart = box.inputs.Matrick_Start_Nr
-                All_5_NrStart = box.inputs.Preset_All_5_Start_Nr
+                SeqNrStart = box.inputs.c_Sequence_Start_Nr
+                MacroNrStart = box.inputs.d_Macro_Start_Nr
+                AppNr = box.inputs.e_Appearance_Start_Nr
+                TLayNr = box.inputs.b_Layout_Nr
+                NaLay = box.inputs.a_Layout_Name
+                MaxColLgn = box.inputs.h_Max_Color_By_Line
+                MatrickNrStart = box.inputs.g_Matrick_Start_Nr
+                All_5_NrStart = box.inputs.f_Preset_All_5_Start_Nr
                 SelectedGelNr = box.selectors
                     .____GELS__CHOOSE____GELS__CHOOSE____GELS__CHOOSE____GELS__CHOOSE____GELS__CHOOSE____
                 goto MainBox
             else
                 E("add Group")
-                SeqNrStart = box.inputs.Sequence_Start_Nr
-                MacroNrStart = box.inputs.Macro_Start_Nr
-                AppNr = box.inputs.Appearance_Start_Nr
-                TLayNr = box.inputs.Layout_Nr
-                NaLay = box.inputs.Layout_Name
-                MaxColLgn = box.inputs.Max_Color_By_Line
-                MatrickNrStart = box.inputs.Matrick_Start_Nr
-                All_5_NrStart = box.inputs.Preset_All_5_Start_Nr
+                SeqNrStart = box.inputs.c_Sequence_Start_Nr
+                MacroNrStart = box.inputs.d_Macro_Start_Nr
+                AppNr = box.inputs.e_Appearance_Start_Nr
+                TLayNr = box.inputs.b_Layout_Nr
+                NaLay = box.inputs.a_Layout_Name
+                MaxColLgn = box.inputs.h_Max_Color_By_Line
+                MatrickNrStart = box.inputs.g_Matrick_Start_Nr
+                All_5_NrStart = box.inputs.f_Preset_All_5_Start_Nr
                 SelectedGelNr = box.selectors
                     .____GELS__CHOOSE____GELS__CHOOSE____GELS__CHOOSE____GELS__CHOOSE____GELS__CHOOSE____
                 goto addGroup
@@ -265,26 +266,26 @@ function Mainbox_Call(display_Handle,TLayNr,NaLay,SeqNrStart,MacroNrStart,AppNr,
         elseif (box.result == 1) then
             if next(SelectedGrp) == nil then
                 Co("no Group are added!")
-                SeqNrStart = box.inputs.Sequence_Start_Nr
-                MacroNrStart = box.inputs.Macro_Start_Nr
-                AppNr = box.inputs.Appearance_Start_Nr
-                TLayNr = box.inputs.Layout_Nr
-                NaLay = box.inputs.Layout_Name
-                MaxColLgn = box.inputs.Max_Color_By_Line
-                MatrickNrStart = box.inputs.Matrick_Start_Nr
-                All_5_NrStart = box.inputs.Preset_All_5_Start_Nr
+                SeqNrStart = box.inputs.c_Sequence_Start_Nr
+                MacroNrStart = box.inputs.d_Macro_Start_Nr
+                AppNr = box.inputs.e_Appearance_Start_Nr
+                TLayNr = box.inputs.b_Layout_Nr
+                NaLay = box.inputs.a_Layout_Name
+                MaxColLgn = box.inputs.h_Max_Color_By_Line
+                MatrickNrStart = box.inputs.g_Matrick_Start_Nr
+                All_5_NrStart = box.inputs.f_Preset_All_5_Start_Nr
                 SelectedGelNr = box.selectors
                     .____GELS__CHOOSE____GELS__CHOOSE____GELS__CHOOSE____GELS__CHOOSE____GELS__CHOOSE____
                 goto addGroup
             else
-                SeqNrStart = box.inputs.Sequence_Start_Nr
-                MacroNrStart = box.inputs.Macro_Start_Nr
-                AppNr = box.inputs.Appearance_Start_Nr
-                TLayNr = box.inputs.Layout_Nr
-                NaLay = box.inputs.Layout_Name
-                MaxColLgn = box.inputs.Max_Color_By_Line
-                MatrickNrStart = box.inputs.Matrick_Start_Nr
-                All_5_NrStart = box.inputs.Preset_All_5_Start_Nr
+                SeqNrStart = box.inputs.c_Sequence_Start_Nr
+                MacroNrStart = box.inputs.d_Macro_Start_Nr
+                AppNr = box.inputs.e_Appearance_Start_Nr
+                TLayNr = box.inputs.b_Layout_Nr
+                NaLay = box.inputs.a_Layout_Name
+                MaxColLgn = box.inputs.h_Max_Color_By_Line
+                MatrickNrStart = box.inputs.g_Matrick_Start_Nr
+                All_5_NrStart = box.inputs.f_Preset_All_5_Start_Nr
                 SelectedGelNr = box.selectors
                     .____GELS__CHOOSE____GELS__CHOOSE____GELS__CHOOSE____GELS__CHOOSE____GELS__CHOOSE____
                 E("now i do some Magic stuff...")
