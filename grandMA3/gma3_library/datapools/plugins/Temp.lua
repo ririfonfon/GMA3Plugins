@@ -16,6 +16,7 @@ function CreateInputDialog(displayHandle)
     local colorBackgroundPlease = Root().ColorTheme.ColorGroups.Button.BackgroundPlease
     local colorPartlySelected = Root().ColorTheme.ColorGroups.Global.PartlySelected
     local colorPartlySelectedPreset = Root().ColorTheme.ColorGroups.Global.PartlySelectedPreset
+    local colorPartlySelectedMacro = Root().ColorTheme.ColorGroups.PoolWindow.Macros
 
     -- Get the overlay.
     local display = GetDisplayByIndex(displayIndex)
@@ -25,7 +26,7 @@ function CreateInputDialog(displayHandle)
     screenOverlay:ClearUIChildren()
 
     -- Create the dialog base.
-    local dialogWidth = 650
+    local dialogWidth = 800
     local baseInput = screenOverlay:Append("BaseInput")
     baseInput.Name = "DMXTesterWindow"
     baseInput.H = "0"
@@ -35,7 +36,7 @@ function CreateInputDialog(displayHandle)
     baseInput.Columns = 1
     baseInput.Rows = 2
     baseInput[1][1].SizePolicy = "Fixed"
-    baseInput[1][1].Size = "60"
+    baseInput[1][1].Size = "150"
     baseInput[1][2].SizePolicy = "Stretch"
     baseInput.AutoClose = "No"
     baseInput.CloseOnEscape = "Yes"
@@ -46,14 +47,16 @@ function CreateInputDialog(displayHandle)
     titleBar.Rows = 1
     titleBar.Anchors = "0,0"
     titleBar[2][2].SizePolicy = "Fixed"
-    titleBar[2][2].Size = "50"
+    titleBar[2][2].Size = "200"
     titleBar.Texture = "corner2"
 
     local titleBarIcon = titleBar:Append("TitleButton")
     titleBarIcon.Text = "Dialog Example"
     titleBarIcon.Texture = "corner1"
     titleBarIcon.Anchors = "0,0"
-    titleBarIcon.Icon = "star"
+    -- titleBarIcon.Icon = "star"
+    -- titleBarIcon.Icon = "plugins"
+    titleBarIcon.Icon = "448"
 
     local titleBarCloseButton = titleBar:Append("CloseButton")
     titleBarCloseButton.Anchors = "1,0"
@@ -72,11 +75,12 @@ function CreateInputDialog(displayHandle)
         bottom = 1
     }
     dlgFrame[1][1].SizePolicy = "Fixed"
-    dlgFrame[1][1].Size = "60"
+    -- dlgFrame[1][1].Size = "60"
+    dlgFrame[1][1].Size = "500"
     dlgFrame[1][2].SizePolicy = "Fixed"
-    dlgFrame[1][2].Size = "200"
+    dlgFrame[1][2].Size = "500"
     dlgFrame[1][3].SizePolicy = "Fixed"
-    dlgFrame[1][3].Size = "80"
+    dlgFrame[1][3].Size = "500"
 
     -- Create the sub title.
     -- This is row 1 of the dlgFrame.
@@ -128,8 +132,8 @@ function CreateInputDialog(displayHandle)
         top = 0,
         bottom = 0
     }
-    input1Icon.Icon = "time"
-    -- input1Icon.Icon = "Time"
+    -- input1Icon.Icon = "time"
+    input1Icon.Icon = "469"
     input1Icon.Margin = {
         left = 0,
         right = 2,
@@ -259,7 +263,7 @@ function CreateInputDialog(displayHandle)
         bottom = 2
     }
     input3Icon.HasHover = "No";
-    input3Icon.BackColor = colorPartlySelectedPreset
+    input3Icon.BackColor = colorPartlySelectedMacro
 
     local input3Label = inputsGrid:Append("UIObject")
     input3Label.Text = "Input 3 - Text"
@@ -278,7 +282,7 @@ function CreateInputDialog(displayHandle)
         bottom = 2
     }
     input3Label.HasHover = "No";
-    input3Label.BackColor = colorPartlySelectedPreset
+    input3Label.BackColor = colorPartlySelectedMacro
 
     local input3LineEdit = inputsGrid:Append("LineEdit")
     input3LineEdit.Margin = {
@@ -364,6 +368,7 @@ function CreateInputDialog(displayHandle)
 
     signalTable.OnInput1TextChanged = function(caller)
         Echo("Input1 changed: '" .. caller.Content .. "'")
+    input1Icon.Icon = tonumber(caller.Content)
     end
 
     signalTable.OnInput2TextChanged = function(caller)
