@@ -709,3 +709,23 @@ function Create_Appear_Tricks(AppTricks,AppNr,prefix)
         end
     do return 1,AppNr,AppTricks end
 end
+
+function Create_Appearances(SelectedGrp,AppNr,prefix,StAppOn,TCol,NrAppear,StColCode,StColName,StringColName,StAppNameOn,StAppNameOff,StAppOff)
+    for g in ipairs(SelectedGrp) do
+        AppNr = Maf(AppNr);
+        Cmd('Store App ' .. AppNr .. ' \'' .. prefix .. ' Label\' Appearance=' .. StAppOn .. ' color=\'0,0,0,1\'')
+        NrAppear = Maf(AppNr + 1)
+        for col in ipairs(TCol) do
+            StColCode = "\"" .. TCol[col].r .. "," .. TCol[col].g .. "," .. TCol[col].b .. ",1\""
+            StColName = TCol[col].name
+            StringColName = string.gsub(StColName, " ", "_")
+            StAppNameOn = "\"" .. prefix .. StringColName .. " on\""
+            StAppNameOff = "\"" .. prefix .. StringColName .. " off\""
+            Cmd("Store App " .. NrAppear .. " " .. StAppNameOn .. " Appearance=" .. StAppOn .. " color=" .. StColCode .. "")
+            NrAppear = Maf(NrAppear + 1)
+            Cmd("Store App " .. NrAppear .. " " .. StAppNameOff .. " Appearance=" .. StAppOff .. " color=" .. StColCode .. "")
+            NrAppear = Maf(NrAppear + 1)
+        end
+    end
+    do return 1,NrAppear end
+end
