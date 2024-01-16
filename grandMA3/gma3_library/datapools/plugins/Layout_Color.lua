@@ -477,85 +477,14 @@ local function Main(display_Handle)
         -- endCreate Preset 25
 
         -- Appearances/Sequences
-        for g in ipairs(SelectedGrp) do
-            ColLgnCount = 0
-            LayX = RefX
-            col_count = 0
-            LayY = Maf(LayY - LayH) -- Max Y Position minus hight from element. 0 are at the Bottom!
-            NrAppear = Maf(AppNr + 1)
-            NrNeed = Maf(AppNr + 1)
-            Cmd("Assign Group " .. SelectedGrp[g] .. " at Layout " .. TLayNr)
-            Cmd("Set Layout " ..TLayNr .. "." .. LayNr .. " Action=0 Appearance=" .. AppNr .. " PosX " .. LayX .. " PosY " ..LayY .. " PositionW " .. LayW .. " PositionH " .. LayH .." VisibilityObjectname=1 VisibilityBar=0 VisibilityIndicatorBar=0 VisibilitySelectionRelevance=1")
-            LayNr = Maf(LayNr + 1)
-            LayX = Maf(LayX + LayW + 20)
-            FirstSeqColor = CurrentSeqNr
-
-            -- COLOR SEQ  /// Assign Values Preset 21.2 At Sequence 22 cue 1 part 0.1 /// Set Preset 25 Property'PresetMode' "Universal"
-            for col in ipairs(TCol) do
-                col_count = col_count + 1
-                StColCode = "\"" .. TCol[col].r .. "," .. TCol[col].g .. "," .. TCol[col].b .. ",1\""
-                StColName = TCol[col].name
-                StringColName = string.gsub(StColName, " ", "_")
-                ColNr = SelectedGelNr .. "." .. TCol[col].no
-                -- Create Sequences
-                GrpNo = SelectedGrpNo[g]
-                GrpNo = string.gsub(GrpNo, "'", "")
-                Cmd("ClearAll /nu")
-                -- Cmd("Group " .. SelectedGrp[g] .. " at Gel " .. ColNr .. "")
-                Cmd("Store Sequence " .. CurrentSeqNr .. " \"" .. prefix .. StringColName .. " " ..SelectedGrp[g]:gsub('\'', '') .. "\"")
-                Cmd("Store Sequence " .. CurrentSeqNr .. " Cue 1 Part 0.1")
-                Cmd("Assign Group " .. GrpNo .. " At Sequence " .. CurrentSeqNr .. " Cue 1 Part 0.1")
-                Cmd('Assign Values Preset 25.' .. All_5_NrStart + col - 1 .. "At Sequence " .. CurrentSeqNr .. 'cue 1 part 0.1')
-                Cmd('Assign MAtricks ' .. MatrickNrStart .. ' At Sequence ' .. CurrentSeqNr .. ' Cue 1 Part 0.1 /nu')
-                Cmd('set seq ' .. CurrentSeqNr .. ' cue 1 Property Appearance=' .. NrNeed )
-                Cmd('set seq ' ..CurrentSeqNr .. ' Property Appearance=' .. NrNeed + 1 )
-                Command_Ext_Suite(CurrentSeqNr)
-                -- Add Squences to Layout
-                Cmd("Assign Seq " .. CurrentSeqNr .. " at Layout " .. TLayNr)
-                Cmd("Set Layout " ..TLayNr .. "." .. LayNr .. " property appearance <Default> PosX " .. LayX .. " PosY " ..LayY .. " PositionW " .. LayW .. " PositionH " .. LayH .." VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0")
-                NrNeed = Maf(NrNeed + 2); -- Set App Nr to next color
-                if (col_count ~= MaxColLgn) then
-                    LayX = Maf(LayX + LayW + 20)
-                else
-                    LayX = RefX
-                    LayX = Maf(LayX + LayW + 20)
-                    LayY = Maf(LayY - 20) -- Add offset for Layout Element distance
-                    LayY = Maf(LayY - LayH)
-                    col_count = 0
-                    ColLgnCount = Maf(ColLgnCount + 1)
-                end
-                LayNr = Maf(LayNr + 1)
-                LastSeqColor = CurrentSeqNr
-                CurrentSeqNr = Maf(CurrentSeqNr + 1)
-            end -- end COLOR SEQ
-            -- add matrick group
-            Cmd('ClearAll /nu')
-            Cmd('Store Sequence ' .. CurrentSeqNr .. ' \'' .. prefix .. "Tricks" .. SelectedGrpName[g]:gsub('\'', ''))
-            Cmd('set seq ' .. CurrentSeqNr .. ' cue \'' .. prefix .. "Tricks" .. SelectedGrpName[g]:gsub('\'', '') ..'\' Property Command=\'Assign MaTricks ' .. prefix .. SelectedGrpName[g]:gsub('\'', '') ..' At Sequence ' .. FirstSeqColor .. ' Thru ' .. LastSeqColor .. ' cue 1 part 0.1 ;  Assign Sequence ' ..CurrentSeqNr + 1 .. ' At Layout ' .. TLayNr .. '.' .. LayNr)
-            Cmd('set seq ' .. CurrentSeqNr .. ' Property Appearance=' .. AppTricks[2].Nr)
-            Cmd("Assign Seq " .. CurrentSeqNr .. " at Layout " .. TLayNr)
-            Cmd("Set Layout " .. TLayNr .. "." .. LayNr .. " PosX " .. LayX .. " PosY " .. LayY .. " PositionW " .. LayW - 35 .." PositionH " .. LayH -35 .. " VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0")
-            CurrentSeqNr = Maf(CurrentSeqNr + 1)
-            Cmd('ClearAll /nu')
-            Cmd('Store Sequence ' .. CurrentSeqNr .. ' \'' .. prefix .. "Tricksh" .. SelectedGrpName[g]:gsub('\'', '') ..'\'')
-            Cmd('set seq ' .. CurrentSeqNr .. ' cue \'' .. prefix .. "Tricksh" .. SelectedGrpName[g]:gsub('\'', '') ..'\' Property Command=\'Assign MaTricks ' .. MatrickNrStart .. ' At Sequence ' .. FirstSeqColor ..' Thru ' .. LastSeqColor .. ' cue 1 part 0.1 ; Assign Sequence ' .. CurrentSeqNr - 1 .. ' At Layout ' ..TLayNr .. '.' .. LayNr)
-            Cmd('set seq ' .. CurrentSeqNr .. ' Property Appearance=' .. AppTricks[1].Nr)
-            LayNr = Maf(LayNr + 1)
-            LayX = Maf(LayX + LayW - 35 + 20)
-            Cmd('Store Macro ' .. CurrentMacroNr .. ' \'' .. prefix .. SelectedGrpName[g]:gsub('\'', ''))
-            Cmd('ChangeDestination Macro ' .. CurrentMacroNr .. '')
-            Cmd('Insert')
-            Cmd('set 1 Command=\'Edit Matrick ' .. prefix .. SelectedGrpName[g]:gsub('\'', ''))
-            Cmd('ChangeDestination Root')
-            Cmd('Assign Macro ' .. CurrentMacroNr .. " at layout " .. TLayNr)
-            Cmd('set Macro ' .. CurrentMacroNr .. ' Property Appearance=' .. AppTricks[3].Nr)
-            Cmd('Set Layout ' .. TLayNr .. '.' .. LayNr .. ' PosX ' .. LayX .. ' PosY ' .. LayY .. ' PositionW ' .. LayW - 35 ..' PositionH ' .. LayH - 35 .. ' VisibilityObjectname= 0 VisibilityBar=0 VisibilityIndicatorBar=0')
-            CurrentMacroNr = Maf(CurrentMacroNr + 1)
-            LayNr = Maf(LayNr + 1)
-            CurrentSeqNr = Maf(CurrentSeqNr + 1)
-            -- FirstSeqColor = CurrentSeqNr
-            LayY = Maf(LayY - 20) -- Add offset for Layout Element distance
-        end -- end GRP
+        local Return_Create_Appearances_Sequences = {Create_Appearances_Sequences(CurrentMacroNr,SelectedGelNr,SelectedGrp,RefX,LayY,LayH,NrAppear,AppNr,NrNeed,TLayNr,LayW,LayNr,CurrentSeqNr,MaxColLgn,TCol,SelectedGrpNo,prefix,All_5_NrStart,MatrickNrStart,SelectedGrpName,AppTricks)}
+        if Return_Create_Appearances_Sequences[1] then
+            LayY = Return_Create_Appearances_Sequences[2]
+            NrNeed = Return_Create_Appearances_Sequences[3]
+            LayNr = Return_Create_Appearances_Sequences[4]
+            CurrentSeqNr = Return_Create_Appearances_Sequences[5]
+            CurrentMacroNr = Return_Create_Appearances_Sequences[6]
+        end
         -- end Appearances/Sequences
         -- check Appear. time .... TODO trouver procedure
         -- E("check Appear.")
