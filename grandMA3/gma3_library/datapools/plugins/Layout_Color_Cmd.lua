@@ -729,3 +729,19 @@ function Create_Appearances(SelectedGrp,AppNr,prefix,StAppOn,TCol,NrAppear,StCol
     end
     do return 1,NrAppear end
 end
+
+function Create_Preset_25(TCol,StColName,StringColName,SelectedGelNr,prefix,All_5_NrEnd,All_5_Current)
+    Cmd("ClearAll /nu")
+        Cmd('Set Preset 25 Property PresetMode "Universal"')
+        Cmd('Fixture Thru')
+        for col in ipairs(TCol) do
+            StColName = TCol[col].name
+            StringColName = string.gsub(StColName, " ", "_")
+            Cmd('At Gel ' ..SelectedGelNr .. "."  .. col .. '')
+            Cmd('Store Preset 25.' .. All_5_Current .. '')
+            Cmd('Label Preset 25.' .. All_5_Current ..  " " .. prefix .. StringColName .. " " )
+            All_5_NrEnd = All_5_Current
+            All_5_Current = Maf(All_5_Current + 1)
+        end
+    do return 1,All_5_NrEnd,All_5_Current end
+end
