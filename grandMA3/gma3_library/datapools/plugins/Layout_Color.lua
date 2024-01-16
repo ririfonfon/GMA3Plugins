@@ -356,6 +356,7 @@ local function Main(display_Handle)
     local LayH = 100
     local LayNr = 1
     local TCol
+    local StColCode
     local StColName
     local StringColName
     local StColCodeFirstSeqTime
@@ -462,21 +463,9 @@ local function Main(display_Handle)
         end
         -- end Appearances Tricks Ref
         -- Create Appearances 
-        for g in ipairs(SelectedGrp) do
-            AppNr = Maf(AppNr);
-            Cmd('Store App ' .. AppNr .. ' \'' .. prefix .. ' Label\' Appearance=' .. StAppOn .. ' color=\'0,0,0,1\'')
-            NrAppear = Maf(AppNr + 1)
-            for col in ipairs(TCol) do
-                StColCode = "\"" .. TCol[col].r .. "," .. TCol[col].g .. "," .. TCol[col].b .. ",1\""
-                StColName = TCol[col].name
-                StringColName = string.gsub(StColName, " ", "_")
-                StAppNameOn = "\"" .. prefix .. StringColName .. " on\""
-                StAppNameOff = "\"" .. prefix .. StringColName .. " off\""
-                Cmd("Store App " .. NrAppear .. " " .. StAppNameOn .. " Appearance=" .. StAppOn .. " color=" ..StColCode .. "")
-                NrAppear = Maf(NrAppear + 1)
-                Cmd("Store App " .. NrAppear .. " " .. StAppNameOff .. " Appearance=" .. StAppOff .. " color=" ..StColCode .. "")
-                NrAppear = Maf(NrAppear + 1)
-            end
+        local Return_Create_Appearances = {Create_Appearances(SelectedGrp,AppNr,prefix,StAppOn,TCol,NrAppear,StColCode,StColName,StringColName,StAppNameOn,StAppNameOff,StAppOff)}
+        if Return_Create_Appearances[1] then
+            NrAppear =Return_Create_Appearances[2]
         end
         -- end Appearances
         -- Create Preset 25
