@@ -1,6 +1,6 @@
 --[[
 Releases:
-* 1.1.7.2
+* 1.1.7.3
 
 Created by Richard Fontaine "RIRI", January 2024.
 --]]
@@ -454,12 +454,13 @@ local function Main(display_Handle)
         SelectedGelNr = tonumber(SelectedGelNr)
         TCol = ColPath:Children()[SelectedGelNr]
         MaxColLgn = tonumber(MaxColLgn)
-        E('Create Appear. Tricks Ref')
-        for q in pairs(AppTricks) do
-            AppTricks[q].Nr = Maf(AppNr)
-            Cmd('Store App ' .. AppTricks[q].Nr .. ' "' .. prefix .. AppTricks[q].Name .. '" "Appearance"=' ..AppTricks[q].StApp .. '' .. AppTricks[q].RGBref .. '')
-            AppNr = Maf(AppNr + 1)
+        -- Create Appearances Tricks Ref
+        local Return_Create_Appear_Tricks ={Create_Appear_Tricks(AppTricks,AppNr,prefix)}
+        if Return_Create_Appear_Tricks[1] then
+            AppNr = Return_Create_Appear_Tricks[2]
+            AppTricks = Return_Create_Appear_Tricks[3]
         end
+        -- end Appearances Tricks Ref
         -- Create Appearances 
         for g in ipairs(SelectedGrp) do
             AppNr = Maf(AppNr);
@@ -1106,7 +1107,10 @@ local function Main(display_Handle)
         CurrentSeqNr = Maf(CurrentSeqNr + 1)
         LayX = Maf(LayX + LayW + 20)
         NrNeed = Maf(AppNr + 1)
-        AddAllColor(TCol, CurrentSeqNr, prefix, TLayNr, LayNr, NrNeed, LayX, LayY, LayW, LayH, SelectedGelNr,MaxColLgn,RefX)
+        local Return_AddAllColor = {AddAllColor(TCol, CurrentSeqNr, prefix, TLayNr, LayNr, NrNeed, LayX, LayY, LayW, LayH, SelectedGelNr,MaxColLgn,RefX)}
+        if Return_AddAllColor[1] then
+            LayNr = Return_AddAllColor[2]
+        end
         -- end All Color
 
         -- Macro Del LC prefix
