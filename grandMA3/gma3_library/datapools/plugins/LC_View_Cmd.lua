@@ -217,8 +217,7 @@ function Block(axes,layout,element,matrick_call)
     Cmd('Set Layout '.. layout .. "." .. element .. ' Property "CustomTextText" '.. text ..' ')
 end
 
-function Wings(axes,layout,element,matrick_call)
-    
+function Wings(axes,layout,element,matrick_call)  
     local root = Root();
     local Maf = math.floor
     local MATricks = root.ShowData.DataPools.Default.MAtricks:Children()
@@ -231,6 +230,7 @@ function Wings(axes,layout,element,matrick_call)
         end
     end
     matrick = tonumber(matrick)
+    local fx
     if (axes == 1) then
         fx = tonumber(MATricks[matrick]:Get('xWings', Enums.Roles.Display)) or 'None'
     elseif (axes == 2) then
@@ -246,4 +246,44 @@ function Wings(axes,layout,element,matrick_call)
         text = string.format( '"%s"', fx )
     end
     Cmd('Set Layout '.. layout .. "." .. element .. ' Property "CustomTextText" '.. text ..' ')
+end
+
+function Priority(layout,element,seq_call)
+    local root = Root();
+    local Maf = math.floor
+    local SEQ_Root = root.ShowData.DataPools.Default.Sequences:Children()
+    local seq_check
+    local seq
+    local prio
+    Echo(seq_call)
+    -- seq_call = seq_call +"ALLWhiteALL"
+    Echo(seq_call)
+    for k in ipairs(SEQ_Root) do
+        seq_check = SEQ_Root[k].name
+        if seq_check == seq_call then
+            Echo("good")
+            seq = k
+        end
+    end
+    seq = tonumber(seq)
+    Echo(seq)
+    prio = SEQ_Root[seq]:Get('Priority' , Enums.Roles.Display) or 'None'
+    Echo(prio)
+    if prio == "Super" then
+        Cmd('Set Layout '.. layout .. "." .. element .. ' Property "Appearance" "p_super_png" ')
+    elseif prio == "Swap" then
+        Cmd('Set Layout '.. layout .. "." .. element .. ' Property "Appearance" "p_swap_png" ')
+    elseif prio == "HTP" then
+        Cmd('Set Layout '.. layout .. "." .. element .. ' Property "Appearance" "p_htp_png" ')
+    elseif prio == "Highest" then
+        Cmd('Set Layout '.. layout .. "." .. element .. ' Property "Appearance" "p_highest_png" ')
+    elseif prio == "High" then
+        Cmd('Set Layout '.. layout .. "." .. element .. ' Property "Appearance" "p_high_png" ')
+    elseif prio == "LTP" then
+        Cmd('Set Layout '.. layout .. "." .. element .. ' Property "Appearance" "p_ltp_png" ')
+    elseif prio == "Low" then
+        Cmd('Set Layout '.. layout .. "." .. element .. ' Property "Appearance" "p_low_png" ')
+    elseif prio == "Lowest" then
+        Cmd('Set Layout '.. layout .. "." .. element .. ' Property "Appearance" "p_lowest_png" ')
+    end
 end
