@@ -1,6 +1,6 @@
 --[[
 Releases:
-* 1.1.7.2
+* 1.1.7.3
 
 Created by Richard Fontaine "RIRI", January 2024.
 --]]
@@ -69,6 +69,7 @@ function AddAllColor(TCol,CurrentSeqNr,prefix,TLayNr,LayNr,NrNeed,LayX,LayY,LayW
         LayNr = Maf(LayNr + 1)
         CurrentSeqNr = Maf(CurrentSeqNr + 1)
     end
+    do return 1,LayNr end
 end -- end function AddAllColor(...)
 
 function CheckSymbols(display_Handle,Img,ImgImp,check,add_check,long_imgimp,ImgNr)
@@ -697,4 +698,14 @@ function Add_Macro_Call(a,TLayNr,Fade_Element,MatrickNrStart,Delay_F_Element,Del
     Cmd('set 73 Command=\'SetUserVariable "LC_Matrick" ' .. MatrickNrStart .. '')
     Cmd("Insert")
     Cmd('set 74 Command=\'Call Plugin "LC_View"')
+end
+
+function Create_Appear_Tricks(AppTricks,AppNr,prefix)
+    E('Create Appear. Tricks Ref')
+        for q in pairs(AppTricks) do
+            AppTricks[q].Nr = Maf(AppNr)
+            Cmd('Store App ' .. AppTricks[q].Nr .. ' "' .. prefix .. AppTricks[q].Name .. '" "Appearance"=' ..AppTricks[q].StApp .. '' .. AppTricks[q].RGBref .. '')
+            AppNr = Maf(AppNr + 1)
+        end
+    do return 1,AppNr,AppTricks end
 end
