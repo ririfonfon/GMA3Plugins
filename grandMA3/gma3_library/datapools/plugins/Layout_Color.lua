@@ -469,17 +469,10 @@ local function Main(display_Handle)
         end
         -- end Appearances
         -- Create Preset 25
-        Cmd("ClearAll /nu")
-        Cmd('Set Preset 25 Property PresetMode "Universal"')
-        Cmd('Fixture Thru')
-        for col in ipairs(TCol) do
-            StColName = TCol[col].name
-            StringColName = string.gsub(StColName, " ", "_")
-            Cmd('At Gel ' ..SelectedGelNr .. "."  .. col .. '')
-            Cmd('Store Preset 25.' .. All_5_Current .. '')
-            Cmd('Label Preset 25.' .. All_5_Current ..  " " .. prefix .. StringColName .. " " )
-            All_5_NrEnd = All_5_Current
-            All_5_Current = Maf(All_5_Current + 1)
+        local Return_Create_Preset_25 = {Create_Preset_25(TCol,StColName,StringColName,SelectedGelNr,prefix,All_5_NrEnd,All_5_Current)}
+        if Return_Create_Preset_25[1] then
+            All_5_NrEnd = Return_Create_Preset_25[2]
+            All_5_Current = Return_Create_Preset_25[2]
         end
         -- endCreate Preset 25
 
