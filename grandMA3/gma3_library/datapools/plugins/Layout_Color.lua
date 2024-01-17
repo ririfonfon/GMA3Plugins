@@ -383,6 +383,7 @@ local function Main(display_Handle)
     local LastSeqWings
     local FirstSeqColor
     local LastSeqColor
+    local First_All_Color
     local CurrentSeqNr
     local CurrentMacroNr
     local UsedW
@@ -1021,11 +1022,32 @@ local function Main(display_Handle)
         local Return_AddAllColor = {AddAllColor(TCol, CurrentSeqNr, prefix, TLayNr, LayNr, NrNeed, LayX, LayY, LayW, LayH, SelectedGelNr,MaxColLgn,RefX)}
         if Return_AddAllColor[1] then
             LayNr = Return_AddAllColor[2]
+            LayX = Return_AddAllColor[3]
+            First_All_Color = Return_AddAllColor[4]
         end
         -- end All Color
 
+        -- add Macro priority
+        CurrentMacroNr = Maf(CurrentMacroNr)
+        Cmd('Store Macro ' .. CurrentMacroNr .. ' \'' .. 'Priority\'')
+        Cmd('ChangeDestination Macro ' .. CurrentMacroNr .. '')
+        for i = 1, 6 do
+            Cmd('Insert')
+        end
+        Cmd('Assign Macro ' .. CurrentMacroNr .. ' at Layout ' .. TLayNr)
+        Cmd('Set Layout ' .. TLayNr .. '.' .. LayNr .. ' property appearance <default> PosX ' .. LayX ..' PosY ' .. LayY .. ' PositionW ' .. LayW .. ' PositionH ' .. LayH ..' VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0')
+        Cmd('ChangeDestination Root')
+        Macro_Pool[CurrentMacroNr]:Set('name', '' .. prefix .. 'Priority')
+        Macro_Pool[CurrentMacroNr][1]:Set('Command', 'Edit Sequence ' .. prefix .. '* Property "priority"')
+        Macro_Pool[CurrentMacroNr][2]:Set('Command', 'SetUserVariable "LC_Fonction" 8')
+        Macro_Pool[CurrentMacroNr][3]:Set('Command', 'SetUserVariable "LC_Layout" "' .. TLayNr)
+        Macro_Pool[CurrentMacroNr][4]:Set('Command', 'SetUserVariable "LC_Element" "' .. LayNr)
+        Macro_Pool[CurrentMacroNr][5]:Set('Command', 'SetUserVariable "LC_Sequence"""' .. First_All_Color ..'"')
+        Macro_Pool[CurrentMacroNr][6]:Set('Command', 'Call Plugin "LC_View"')
+        -- end Macro priority
+
         -- Macro Del LC prefix
-        CurrentMacroNr = Maf(CurrentMacroNr + 1)
+        CurrentMacroNr = Maf(CurrentMacroNr + 2)
         condition_string = "Lua 'if Confirm(\"Delete Layout Color LC" .. prefix:gsub('%D*', '') .."?\") then; Cmd(\"Go macro " .. CurrentMacroNr .. "\"); else Cmd(\"Off macro " ..CurrentMacroNr .. "\"); end'" .. ' /nu'
         Cmd('Store Macro ' .. CurrentMacroNr .. ' \'' .. 'ERASE\'')
         Cmd('ChangeDestination Macro ' .. CurrentMacroNr .. '')
@@ -1055,6 +1077,11 @@ local function Main(display_Handle)
         UsedH = root.ShowData.DataPools.Default.Layouts:Children()[TLayNrRef].UsedH / 2
         Cmd("Set Layout " .. TLayNr .. " DimensionW " .. UsedW .. " DimensionH " .. UsedH)
         Cmd('Select Layout ' .. TLayNr)
+        -- Cmd('SetUserVariable "LC_Fonction" 8')
+        -- Cmd('SetUserVariable "LC_Layout" "' .. TLayNr)
+        -- Cmd('SetUserVariable "LC_Element" "' .. LayNr)
+        -- Cmd('SetUserVariable "LC_Sequence" "' .. First_All_Color)
+        -- Cmd('Call Plugin "LC_View"')
         -- end dimension of layout & scal it
 
     end -- end MagicStuff
