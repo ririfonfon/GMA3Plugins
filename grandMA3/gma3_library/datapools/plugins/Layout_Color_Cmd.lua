@@ -39,6 +39,7 @@ end -- end function Command_Title(...)
 
 function AddAllColor(TCol,CurrentSeqNr,prefix,TLayNr,LayNr,NrNeed,LayX,LayY,LayW,LayH,SelectedGelNr,MaxColLgn,RefX)
     local col_count = 0
+    local First_All_Color
     for col in ipairs(TCol) do
         col_count = col_count + 1
         local StColCode = "\"" .. TCol[col].r .. "," .. TCol[col].g .. "," .. TCol[col].b .. ",1\""
@@ -46,6 +47,9 @@ function AddAllColor(TCol,CurrentSeqNr,prefix,TLayNr,LayNr,NrNeed,LayX,LayY,LayW
         local StringColName = string.gsub( StColName," ","_" )
         local ColNr = SelectedGelNr .. "." .. TCol[col].no
 
+        if col == 1 then
+            First_All_Color = ''.. prefix .. 'All' .. StringColName .. 'All\''
+        end
         Cmd("ClearAll /nu")
         Cmd('Store Sequence ' .. CurrentSeqNr .. ' \'' .. prefix .. 'ALL' .. StringColName .. 'ALL\'')
         Cmd('set seq ' .. CurrentSeqNr .. ' cue 1 Property Appearance=' .. NrNeed + 1 )
@@ -69,7 +73,7 @@ function AddAllColor(TCol,CurrentSeqNr,prefix,TLayNr,LayNr,NrNeed,LayX,LayY,LayW
         LayNr = Maf(LayNr + 1)
         CurrentSeqNr = Maf(CurrentSeqNr + 1)
     end
-    do return 1,LayNr end
+    do return 1,LayNr,LayX,First_All_Color end
 end -- end function AddAllColor(...)
 
 function CheckSymbols(display_Handle,Img,ImgImp,check,add_check,long_imgimp,ImgNr)
