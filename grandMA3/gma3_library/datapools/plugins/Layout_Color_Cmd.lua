@@ -48,7 +48,7 @@ function AddAllColor(TCol,CurrentSeqNr,prefix,TLayNr,LayNr,NrNeed,LayX,LayY,LayW
         local ColNr = SelectedGelNr .. "." .. TCol[col].no
 
         if col == 1 then
-            First_All_Color = ''.. prefix .. 'All' .. StringColName .. 'All\''
+            First_All_Color = ''.. prefix .. 'ALL' .. StringColName .. 'ALL\''
         end
         Cmd("ClearAll /nu")
         Cmd('Store Sequence ' .. CurrentSeqNr .. ' \'' .. prefix .. 'ALL' .. StringColName .. 'ALL\'')
@@ -136,6 +136,8 @@ function CheckSymbols(display_Handle,Img,ImgImp,check,add_check,long_imgimp,ImgN
 end -- end function CheckSymbols(...)
 
 function Mainbox_Call(display_Handle,TLayNr,NaLay,SeqNrStart,MacroNrStart,AppNr,MaxColLgn,MatrickNrStart,ColGels,FixtureGroups,SelectedGelNr,SelectedGrp,SelectedGrpNo,All_5_NrStart)
+    local colorPartlySelectedMacro = Root().ColorTheme.ColorGroups.PoolWindow.Macros
+
 
     local ChoGel = {}
     for k in ipairs(ColGels) do
@@ -165,6 +167,7 @@ function Mainbox_Call(display_Handle,TLayNr,NaLay,SeqNrStart,MacroNrStart,AppNr,
             display = display_Handle,
             backColor = "1.7",
             message = Message,
+            icon = 10,
             commands = { {
                 name = 'Add Group',
                 value = 11
@@ -178,6 +181,7 @@ function Mainbox_Call(display_Handle,TLayNr,NaLay,SeqNrStart,MacroNrStart,AppNr,
             inputs = {
                 {
                 name = 'a_Layout_Name',
+                TextalignmentH = "Left",
                 value = NaLay,
                 maxTextLength = 16,
                 vkPlugin = "TextInput"},
@@ -195,6 +199,7 @@ function Mainbox_Call(display_Handle,TLayNr,NaLay,SeqNrStart,MacroNrStart,AppNr,
                 {
                 name = 'd_Macro_Start_Nr',
                 blackFilter = "*",
+                backColor = colorPartlySelectedMacro,
                 value = MacroNrStart,
                 maxTextLength = 4,
                 vkPlugin = "TextInputNumOnly"},
