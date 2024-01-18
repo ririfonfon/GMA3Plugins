@@ -1036,13 +1036,16 @@ local function Main(display_Handle)
         end
         Cmd('Assign Macro ' .. CurrentMacroNr .. ' at Layout ' .. TLayNr)
         Cmd('Set Layout ' .. TLayNr .. '.' .. LayNr .. ' property appearance <default> PosX ' .. LayX ..' PosY ' .. LayY .. ' PositionW ' .. LayW .. ' PositionH ' .. LayH ..' VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0')
+        Cmd('Set Layout '.. TLayNr .. "." .. LayNr .. ' Property "Appearance" "p_super_png" ')
         Cmd('ChangeDestination Root')
+        local Color_message = 'SetUserVariable "LC_Sequence" "' .. First_All_Color .. '"'
+        Color_message = string.gsub( Color_message,"'","" )
         Macro_Pool[CurrentMacroNr]:Set('name', '' .. prefix .. 'Priority')
-        Macro_Pool[CurrentMacroNr][1]:Set('Command', 'Edit Sequence ' .. prefix .. '* Property "priority"')
+        Macro_Pool[CurrentMacroNr][1]:Set('Command', 'Edit Sequence "' .. prefix .. '*" Property "priority"')
         Macro_Pool[CurrentMacroNr][2]:Set('Command', 'SetUserVariable "LC_Fonction" 8')
-        Macro_Pool[CurrentMacroNr][3]:Set('Command', 'SetUserVariable "LC_Layout" "' .. TLayNr)
-        Macro_Pool[CurrentMacroNr][4]:Set('Command', 'SetUserVariable "LC_Element" "' .. LayNr)
-        Macro_Pool[CurrentMacroNr][5]:Set('Command', 'SetUserVariable "LC_Sequence"""' .. First_All_Color ..'"')
+        Macro_Pool[CurrentMacroNr][3]:Set('Command', 'SetUserVariable "LC_Layout" ' .. TLayNr)
+        Macro_Pool[CurrentMacroNr][4]:Set('Command', 'SetUserVariable "LC_Element" ' .. LayNr)
+        Macro_Pool[CurrentMacroNr][5]:Set('Command', Color_message)
         Macro_Pool[CurrentMacroNr][6]:Set('Command', 'Call Plugin "LC_View"')
         -- end Macro priority
 
