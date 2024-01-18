@@ -24,6 +24,7 @@ function CreateInputDialog(displayHandle)
   local colorAppearances = Root().ColorTheme.ColorGroups.PoolWindow.Appearances
   local colorPresets = Root().ColorTheme.ColorGroups.PoolWindow.Presets
   local colorMatricks = Root().ColorTheme.ColorGroups.PoolWindow.Matricks
+  local colorPlugins = Root().ColorTheme.ColorGroups.PoolWindow.Plugins
   
   -- Get the overlay.
   local display = GetDisplayByIndex(displayIndex)
@@ -33,7 +34,7 @@ function CreateInputDialog(displayHandle)
   screenOverlay:ClearUIChildren()   
   
   -- Create the dialog base.
-  local dialogWidth = 650
+  local dialogWidth = 800
   local baseInput = screenOverlay:Append("BaseInput")
   baseInput.Name = "LC_Main_Box"
   baseInput.H = "0"
@@ -55,13 +56,14 @@ function CreateInputDialog(displayHandle)
   titleBar.Anchors = "0,0"
   titleBar[2][2].SizePolicy = "Fixed"
   titleBar[2][2].Size = "50"
-  titleBar.Texture = "corner2"
+  titleBar.Texture = "corner2"  
   
   local titleBarIcon = titleBar:Append("TitleButton")
   titleBarIcon.Text = "Layout_Color_By_RIRI"
   titleBarIcon.Texture = "corner1"
   titleBarIcon.Anchors = "0,0"
   titleBarIcon.Icon = "448"
+  titleBarIcon.backColor = colorPlugins
   
   local titleBarCloseButton = titleBar:Append("CloseButton")
   titleBarCloseButton.Anchors = "1,0"
@@ -80,16 +82,19 @@ function CreateInputDialog(displayHandle)
     bottom = 1
   }
   dlgFrame[1][1].SizePolicy = "Fixed"
-  dlgFrame[1][1].Size = "60"
+  dlgFrame[1][1].Size = "200"
+  --   dlgFrame[1][1].Size = "60"
   dlgFrame[1][2].SizePolicy = "Fixed"
-  dlgFrame[1][2].Size = "200"
+  dlgFrame[1][2].Size = "500"
+  --   dlgFrame[1][2].Size = "200"
   dlgFrame[1][3].SizePolicy = "Fixed"  
-  dlgFrame[1][3].Size = "80"    
+  dlgFrame[1][3].Size = "50"    
+  --   dlgFrame[1][3].Size = "80"    
   
   -- Create the sub title.
   -- This is row 1 of the dlgFrame.
   local subTitle = dlgFrame:Append("UIObject")
-  subTitle.Text = "This example shows multiple inputs."
+  subTitle.Text = "Add Fixture Group and ColorGel\n * set beginning Appearance & Sequence Number\n\n Selected Group(s) are: \n"
   subTitle.ContentDriven = "Yes"
   subTitle.ContentWidth = "No"
   subTitle.TextAutoAdjust = "No"
@@ -113,7 +118,7 @@ function CreateInputDialog(displayHandle)
   -- This is row 2 of the dlgFrame.
   local inputsGrid = dlgFrame:Append("UILayoutGrid")
   inputsGrid.Columns = 10
-  inputsGrid.Rows = 4
+  inputsGrid.Rows = 5
   inputsGrid.Anchors = {
     left = 0,
     right = 0,
@@ -136,7 +141,7 @@ function CreateInputDialog(displayHandle)
     top = 0,
     bottom = 0
   }
-  input1Icon.Icon = "Time"
+  input1Icon.Icon = "469"
   input1Icon.Margin = {
     left = 0,
     right = 2,
@@ -144,13 +149,15 @@ function CreateInputDialog(displayHandle)
     bottom = 2    
   }
   input1Icon.HasHover = "No";
+  input1Icon.BackColor = colorLayouts
   
   local input1Label = inputsGrid:Append("UIObject")
-  input1Label.Text = "Input 1 - Integer"
+  input1Label.Text = "Layout Name"
   input1Label.TextalignmentH = "Left"
   input1Label.Anchors = {
     left = 1,
-    right = 5,
+    right = 2,
+    -- right = 5,
     top = 0,
     bottom = 0
   }
@@ -162,6 +169,7 @@ function CreateInputDialog(displayHandle)
     bottom = 2    
   }
   input1Label.HasHover = "No";
+  input1Label.BackColor = colorLayouts
   
   local input1LineEdit = inputsGrid:Append("LineEdit")
   input1LineEdit.Margin = {
@@ -170,22 +178,23 @@ function CreateInputDialog(displayHandle)
     top = 0,
     bottom = 2
   }
-  input1LineEdit.Prompt = "Value 1: "
+  input1LineEdit.Prompt = "Name: "
   input1LineEdit.TextAutoAdjust = "Yes"
   input1LineEdit.Anchors = {
-    left = 6,
+    left = 3,
+    -- left = 6,
     right = 9,
     top = 0,
     bottom = 0
   }
   input1LineEdit.Padding = "5,5"
-  input1LineEdit.Filter = "0123456789"
-  input1LineEdit.VkPluginName = "TextInputNumOnly"
-  input1LineEdit.Content = ""
-  input1LineEdit.MaxTextLength = 6
+  input1LineEdit.VkPluginName = "TextInput"
+  input1LineEdit.Content = "Colors"
+  input1LineEdit.MaxTextLength = 16
   input1LineEdit.HideFocusFrame = "Yes"
   input1LineEdit.PluginComponent = myHandle
   input1LineEdit.TextChanged = "OnInput1TextChanged"  
+  input1LineEdit.BackColor = colorLayouts
   
   -- Create the UI elements for the second input.
   local input2Icon = inputsGrid:Append("Button")
@@ -196,7 +205,7 @@ function CreateInputDialog(displayHandle)
     top = 1,
     bottom = 1
   }
-  input2Icon.Icon = "tools"   
+  input2Icon.Icon = "469"   
   input2Icon.Margin = {
     left = 0,
     right = 2,
@@ -204,14 +213,14 @@ function CreateInputDialog(displayHandle)
     bottom = 2    
   }  
   input2Icon.HasHover = "No";
-  input2Icon.BackColor = colorPartlySelected
+  input2Icon.BackColor = colorLayouts
   
   local input2Label = inputsGrid:Append("UIObject")
-  input2Label.Text = "Input 2 - Decimal"
+  input2Label.Text = "Layout Nr"
   input2Label.TextalignmentH = "Left"  
   input2Label.Anchors = {
     left = 1,
-    right = 5,
+    right = 2,
     top = 1,
     bottom = 1
   }
@@ -223,7 +232,7 @@ function CreateInputDialog(displayHandle)
     bottom = 2    
   }  
   input2Label.HasHover = "No"; 
-  input2Label.BackColor = colorPartlySelected
+  input2Label.BackColor = colorLayouts
   
   local input2LineEdit = inputsGrid:Append("LineEdit")
   input2LineEdit.Margin = {
@@ -232,10 +241,10 @@ function CreateInputDialog(displayHandle)
     top = 2,
     bottom = 2
   }
-  input2LineEdit.Prompt = "Value 2: "
+  input2LineEdit.Prompt = "Nr: "
   input2LineEdit.TextAutoAdjust = "Yes"
   input2LineEdit.Anchors = {
-    left = 6,
+    left = 3,
     right = 9,
     top = 1,
     bottom = 1
@@ -247,7 +256,8 @@ function CreateInputDialog(displayHandle)
   input2LineEdit.MaxTextLength = 8
   input2LineEdit.HideFocusFrame = "Yes"
   input2LineEdit.PluginComponent = myHandle
-  input2LineEdit.TextChanged = "OnInput2TextChanged" 
+  input2LineEdit.TextChanged = "OnInput2TextChanged"
+  input2LineEdit.BackColor = colorLayouts
   
   -- Create the UI elements for the third input.
   local input3Icon = inputsGrid:Append("Button")
@@ -273,7 +283,7 @@ function CreateInputDialog(displayHandle)
   input3Label.TextalignmentH = "Left"
   input3Label.Anchors = {
     left = 1,
-    right = 5,
+    right = 2,
     top = 2,
     bottom = 2
   }
@@ -297,7 +307,7 @@ function CreateInputDialog(displayHandle)
   input3LineEdit.Prompt = "Value 3: "
   input3LineEdit.TextAutoAdjust = "Yes"
   input3LineEdit.Anchors = {
-    left = 6,
+    left = 3,
     right = 9,
     top = 2,
     bottom = 2
@@ -334,7 +344,7 @@ function CreateInputDialog(displayHandle)
    input4Label.TextalignmentH = "Left"
    input4Label.Anchors = {
        left = 1,
-       right = 5,
+       right = 2,
        top = 3,
        bottom = 3
    }
@@ -357,7 +367,7 @@ function CreateInputDialog(displayHandle)
    input4LineEdit.Prompt = "Value 4: "
    input4LineEdit.TextAutoAdjust = "Yes"
    input4LineEdit.Anchors = {
-       left = 6,
+       left = 3,
        right = 9,
        top = 3,
        bottom = 3
@@ -372,65 +382,64 @@ function CreateInputDialog(displayHandle)
    input4LineEdit.TextChanged = "OnInput4TextChanged"
 
    -- Create the UI elements for the 4 input.
-   local input4Icon = inputsGrid:Append("Button")
-   input4Icon.Text = ""
-   input4Icon.Anchors = {
+   local input5Icon = inputsGrid:Append("Button")
+   input5Icon.Text = ""
+   input5Icon.Anchors = {
        left = 0,
        right = 0,
-       top = 3,
-       bottom = 3
+       top = 4,
+       bottom = 4
    }
-   -- input4Icon.Icon = "time"
-   input4Icon.Icon = "469"
-   input4Icon.Margin = {
+   input5Icon.Icon = "469"
+   input5Icon.Margin = {
        left = 0,
        right = 2,
-       top = 3,
+       top = 4,
        bottom = 2
    }
-   input4Icon.HasHover = "No";
+   input5Icon.HasHover = "No";
 
-   local input4Label = inputsGrid:Append("UIObject")
-   input4Label.Text = "Input 4 - Integer"
-   input4Label.TextalignmentH = "Left"
-   input4Label.Anchors = {
+   local input5Label = inputsGrid:Append("UIObject")
+   input5Label.Text = "Input 5 - Integer"
+   input5Label.TextalignmentH = "Left"
+   input5Label.Anchors = {
        left = 1,
-       right = 5,
-       top = 3,
-       bottom = 3
+       right = 2,
+       top = 4,
+       bottom = 4
    }
-   input4Label.Padding = "5,5"
-   input4Label.Margin = {
+   input5Label.Padding = "5,5"
+   input5Label.Margin = {
        left = 2,
        right = 2,
-       top = 3,
+       top = 4,
        bottom = 2
    }
-   input4Label.HasHover = "No";
+   input5Label.HasHover = "No";
 
-   local input4LineEdit = inputsGrid:Append("LineEdit")
-   input4LineEdit.Margin = {
+   local input5LineEdit = inputsGrid:Append("LineEdit")
+   input5LineEdit.Margin = {
        left = 2,
        right = 0,
-       top = 3,
+       top = 4,
        bottom = 2
    }
-   input4LineEdit.Prompt = "Value 4: "
-   input4LineEdit.TextAutoAdjust = "Yes"
-   input4LineEdit.Anchors = {
-       left = 6,
+   input5LineEdit.Prompt = "Value 5: "
+   input5LineEdit.TextAutoAdjust = "Yes"
+   input5LineEdit.Anchors = {
+       left = 3,
        right = 9,
-       top = 3,
-       bottom = 3
+       top = 4,
+       bottom = 4
    }
-   input4LineEdit.Padding = "5,5"
-   input4LineEdit.Filter = "0123456789"
-   input4LineEdit.VkPluginName = "TextInputNumOnly"
-   input4LineEdit.Content = ""
-   input4LineEdit.MaxTextLength = 6
-   input4LineEdit.HideFocusFrame = "Yes"
-   input4LineEdit.PluginComponent = myHandle
-   input4LineEdit.TextChanged = "OnInput4TextChanged"
+   input5LineEdit.Padding = "5,5"
+   input5LineEdit.Filter = "0123456789"
+   input5LineEdit.VkPluginName = "TextInputNumOnly"
+   input5LineEdit.Content = ""
+   input5LineEdit.MaxTextLength = 6
+   input5LineEdit.HideFocusFrame = "Yes"
+   input5LineEdit.PluginComponent = myHandle
+   input5LineEdit.TextChanged = "OnInput4TextChanged"
   
   -- Create the button grid.
   -- This is row 3 of the dlgFrame.
