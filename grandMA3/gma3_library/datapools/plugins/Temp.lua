@@ -16,7 +16,13 @@ function CreateInputDialog(displayHandle)
     local colorBackgroundPlease = Root().ColorTheme.ColorGroups.Button.BackgroundPlease
     local colorPartlySelected = Root().ColorTheme.ColorGroups.Global.PartlySelected
     local colorPartlySelectedPreset = Root().ColorTheme.ColorGroups.Global.PartlySelectedPreset
-    local colorPartlySelectedMacro = Root().ColorTheme.ColorGroups.PoolWindow.Macros
+    
+    local colorLayouts = Root().ColorTheme.ColorGroups.PoolWindow.Layouts
+    local colorSequences = Root().ColorTheme.ColorGroups.PoolWindow.Sequences
+    local colorMacro = Root().ColorTheme.ColorGroups.PoolWindow.Macros
+    local colorAppearances = Root().ColorTheme.ColorGroups.PoolWindow.Appearances
+    local colorPresets = Root().ColorTheme.ColorGroups.PoolWindow.Presets
+    local colorMatricks = Root().ColorTheme.ColorGroups.PoolWindow.Matricks
 
     -- Get the overlay.
     local display = GetDisplayByIndex(displayIndex)
@@ -28,7 +34,7 @@ function CreateInputDialog(displayHandle)
     -- Create the dialog base.
     local dialogWidth = 800
     local baseInput = screenOverlay:Append("BaseInput")
-    baseInput.Name = "DMXTesterWindow"
+    baseInput.Name = "LC_Main_Box"
     baseInput.H = "0"
     baseInput.W = dialogWidth
     baseInput.MaxSize = string.format("%s,%s", display.W * 0.8, display.H)
@@ -51,16 +57,14 @@ function CreateInputDialog(displayHandle)
     titleBar.Texture = "corner2"
 
     local titleBarIcon = titleBar:Append("TitleButton")
-    titleBarIcon.Text = "Dialog Example"
+    titleBarIcon.Text = "Layout_Color_By_RIRI"
     titleBarIcon.Texture = "corner1"
     titleBarIcon.Anchors = "0,0"
-    -- titleBarIcon.Icon = "star"
-    -- titleBarIcon.Icon = "plugins"
     titleBarIcon.Icon = "448"
 
-    local titleBarCloseButton = titleBar:Append("CloseButton")
-    titleBarCloseButton.Anchors = "1,0"
-    titleBarCloseButton.Texture = "corner2"
+    local titleBarCancelButton = titleBar:Append("CancelButton")
+    titleBarCancelButton.Anchors = "1,0"
+    titleBarCancelButton.Texture = "corner2"
 
     -- Create the dialog's main frame.
     local dlgFrame = baseInput:Append("DialogFrame")
@@ -81,11 +85,21 @@ function CreateInputDialog(displayHandle)
     dlgFrame[1][2].Size = "500"
     dlgFrame[1][3].SizePolicy = "Fixed"
     dlgFrame[1][3].Size = "500"
+    -- dlgFrame[1][4].SizePolicy = "Fixed"
+    -- dlgFrame[1][4].Size = "500"
+    -- dlgFrame[1][5].SizePolicy = "Fixed"
+    -- dlgFrame[1][5].Size = "500"
+    -- dlgFrame[1][6].SizePolicy = "Fixed"
+    -- dlgFrame[1][6].Size = "500"
+    -- dlgFrame[1][7].SizePolicy = "Fixed"
+    -- dlgFrame[1][7].Size = "500"
+    -- dlgFrame[1][8].SizePolicy = "Fixed"
+    -- dlgFrame[1][8].Size = "500"
 
     -- Create the sub title.
     -- This is row 1 of the dlgFrame.
     local subTitle = dlgFrame:Append("UIObject")
-    subTitle.Text = "This example shows multiple inputs."
+    subTitle.Text = "Add Fixture Group and ColorGel\n * set beginning Appearance & Sequence Number\n\n Selected Group(s) are: \n"
     subTitle.ContentDriven = "Yes"
     subTitle.ContentWidth = "No"
     subTitle.TextAutoAdjust = "No"
@@ -263,7 +277,7 @@ function CreateInputDialog(displayHandle)
         bottom = 2
     }
     input3Icon.HasHover = "No";
-    input3Icon.BackColor = colorPartlySelectedMacro
+    input3Icon.BackColor = colorMacro
 
     local input3Label = inputsGrid:Append("UIObject")
     input3Label.Text = "Input 3 - Text"
@@ -282,7 +296,7 @@ function CreateInputDialog(displayHandle)
         bottom = 2
     }
     input3Label.HasHover = "No";
-    input3Label.BackColor = colorPartlySelectedMacro
+    input3Label.BackColor = colorMacro
 
     local input3LineEdit = inputsGrid:Append("LineEdit")
     input3LineEdit.Margin = {
@@ -306,6 +320,67 @@ function CreateInputDialog(displayHandle)
     input3LineEdit.HideFocusFrame = "Yes"
     input3LineEdit.PluginComponent = myHandle
     input3LineEdit.TextChanged = "OnInput3TextChanged"
+
+     -- Create the UI elements for the 4 input.
+     local input4Icon = inputsGrid:Append("Button")
+     input4Icon.Text = ""
+     input4Icon.Anchors = {
+         left = 0,
+         right = 0,
+         top = 0,
+         bottom = 0
+     }
+     -- input4Icon.Icon = "time"
+     input4Icon.Icon = "469"
+     input4Icon.Margin = {
+         left = 0,
+         right = 2,
+         top = 0,
+         bottom = 2
+     }
+     input4Icon.HasHover = "No";
+ 
+     local input4Label = inputsGrid:Append("UIObject")
+     input4Label.Text = "Input 4 - Integer"
+     input4Label.TextalignmentH = "Left"
+     input4Label.Anchors = {
+         left = 1,
+         right = 5,
+         top = 0,
+         bottom = 0
+     }
+     input4Label.Padding = "5,5"
+     input4Label.Margin = {
+         left = 2,
+         right = 2,
+         top = 0,
+         bottom = 2
+     }
+     input4Label.HasHover = "No";
+ 
+     local input4LineEdit = inputsGrid:Append("LineEdit")
+     input4LineEdit.Margin = {
+         left = 2,
+         right = 0,
+         top = 0,
+         bottom = 2
+     }
+     input4LineEdit.Prompt = "Value 1: "
+     input4LineEdit.TextAutoAdjust = "Yes"
+     input4LineEdit.Anchors = {
+         left = 6,
+         right = 9,
+         top = 0,
+         bottom = 0
+     }
+     input4LineEdit.Padding = "5,5"
+     input4LineEdit.Filter = "0123456789"
+     input4LineEdit.VkPluginName = "TextInputNumOnly"
+     input4LineEdit.Content = ""
+     input4LineEdit.MaxTextLength = 6
+     input4LineEdit.HideFocusFrame = "Yes"
+     input4LineEdit.PluginComponent = myHandle
+     input4LineEdit.TextChanged = "OnInput4TextChanged"
 
     -- Create the button grid.
     -- This is row 3 of the dlgFrame.
