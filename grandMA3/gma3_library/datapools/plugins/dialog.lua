@@ -67,6 +67,7 @@ function CreateInputDialog(displayHandle)
   local titleBarCloseButton = titleBar:Append("CloseButton")
   titleBarCloseButton.Anchors = "1,0"
   titleBarCloseButton.Texture = "corner2"
+  titleBarCloseButton.backColor = colorPlugins
 
   -- Create the dialog's main frame.
   local dlgFrame = baseInput:Append("DialogFrame")
@@ -88,14 +89,16 @@ function CreateInputDialog(displayHandle)
   -- Create the sub title.
   -- This is row 1 of the dlgFrame.
   local subTitle = dlgFrame:Append("UIObject")
-  subTitle.Text =
-  "Add Fixture Group and ColorGel\n * set beginning Appearance & Sequence Number\n\n Selected Group(s) are: \n"
+  subTitle.Text = "Add Fixture Group & ColorGel\nSet Number begin Appearance & Sequence\nSelected Group(s) are:\n"
+  subTitle.TextalignmentH = "Left"
+  subTitle.TextalignmentV = "Top"
   subTitle.ContentDriven = "Yes"
-  subTitle.ContentWidth = "No"
-  subTitle.TextAutoAdjust = "No"
+  subTitle.ContentWidth = "Yes"
+  subTitle.TextAutoAdjust = "Yes"
   subTitle.Anchors = { left = 0, right = 0, top = 0, bottom = 0 }
-  subTitle.Padding = { left = 20, right = 20, top = 15, bottom = 15 }
-  subTitle.Font = "Medium20"
+  subTitle.Padding = { left = 0, right = 0, top = 5, bottom = 5 }
+  subTitle.Font = "3"
+  -- subTitle.Font = "Medium20"
   subTitle.HasHover = "No"
   subTitle.BackColor = colorTransparent
 
@@ -103,34 +106,35 @@ function CreateInputDialog(displayHandle)
   -- This is row 2 of the dlgFrame.
   local inputsGrid = dlgFrame:Append("UILayoutGrid")
   inputsGrid.Columns = 10
-  inputsGrid.Rows = 5
+  inputsGrid.Rows = 9
   inputsGrid.Anchors = { left = 0, right = 0, top = 1, bottom = 1 }
   inputsGrid.Margin = { left = 0, right = 0, top = 0, bottom = 5 }
 
-  -- Create the UI elements for the first input.
+  -- Create the UI elements for the 1 input.
   local input1Icon = inputsGrid:Append("Button")
   input1Icon.Text = ""
   input1Icon.Anchors = { left = 0, right = 0, top = 0, bottom = 0 }
   input1Icon.Margin = { left = 0, right = 2, top = 0, bottom = 2 }
-  input1Icon.Icon = "469"
+  input1Icon.Icon = "object_layout"
   input1Icon.HasHover = "No";
   input1Icon.BackColor = colorLayouts
 
   local input1Label = inputsGrid:Append("UIObject")
   input1Label.Text = "Layout Name"
   input1Label.TextalignmentH = "Left"
-  input1Label.Anchors = { left = 1, right = 2, top = 0, bottom = 0 }
+  input1Label.Anchors = { left = 1, right = 3, top = 0, bottom = 0 }
   input1Label.Padding = "5,5"
   input1Label.Margin = { left = 2, right = 2, top = 0, bottom = 2 }
   input1Label.HasHover = "No";
   input1Label.BackColor = colorLayouts
+  input1Label.Font = "3"
 
   local input1LineEdit = inputsGrid:Append("LineEdit")
-  input1LineEdit.Margin = { left = 2, right = 0, top = 0, bottom = 2 }
   input1LineEdit.Prompt = "Name: "
   input1LineEdit.TextAutoAdjust = "Yes"
-  input1LineEdit.Anchors = { left = 3, right = 9, top = 0, bottom = 0 }
+  input1LineEdit.Anchors = { left = 4, right = 9, top = 0, bottom = 0 }
   input1LineEdit.Padding = "5,5"
+  input1LineEdit.Margin = { left = 2, right = 0, top = 0, bottom = 2 }
   input1LineEdit.VkPluginName = "TextInput"
   input1LineEdit.Content = "Colors"
   input1LineEdit.MaxTextLength = 16
@@ -138,12 +142,13 @@ function CreateInputDialog(displayHandle)
   input1LineEdit.PluginComponent = myHandle
   input1LineEdit.TextChanged = "OnInput1TextChanged"
   input1LineEdit.BackColor = colorLayouts
+  input1LineEdit.Font = "3"
 
-  -- Create the UI elements for the second input.
+  -- Create the UI elements for the 2 input.
   local input2Icon = inputsGrid:Append("Button")
   input2Icon.Text = ""
   input2Icon.Anchors = { left = 0, right = 0, top = 1, bottom = 1 }
-  input2Icon.Icon = "469"
+  input2Icon.Icon = "object_layout"
   input2Icon.Margin = { left = 0, right = 2, top = 2, bottom = 2 }
   input2Icon.HasHover = "No";
   input2Icon.BackColor = colorLayouts
@@ -151,18 +156,19 @@ function CreateInputDialog(displayHandle)
   local input2Label = inputsGrid:Append("UIObject")
   input2Label.Text = "Layout Nr"
   input2Label.TextalignmentH = "Left"
-  input2Label.Anchors = { left = 1, right = 2, top = 1, bottom = 1 }
+  input2Label.Anchors = { left = 1, right = 3, top = 1, bottom = 1 }
   input2Label.Padding = "5,5"
   input2Label.Margin = { left = 2, right = 2, top = 2, bottom = 2 }
   input2Label.HasHover = "No";
   input2Label.BackColor = colorLayouts
+  input2Label.Font = "3"
 
   local input2LineEdit = inputsGrid:Append("LineEdit")
-  input2LineEdit.Margin = { left = 2, right = 0, top = 2, bottom = 2 }
   input2LineEdit.Prompt = "Nr: "
   input2LineEdit.TextAutoAdjust = "Yes"
-  input2LineEdit.Anchors = { left = 3, right = 9, top = 1, bottom = 1 }
+  input2LineEdit.Anchors = { left = 4, right = 9, top = 1, bottom = 1 }
   input2LineEdit.Padding = "5,5"
+  input2LineEdit.Margin = { left = 2, right = 0, top = 2, bottom = 2 }
   input2LineEdit.Filter = "0123456789."
   input2LineEdit.VkPluginName = "TextInputNumOnly"
   input2LineEdit.Content = ""
@@ -171,61 +177,68 @@ function CreateInputDialog(displayHandle)
   input2LineEdit.PluginComponent = myHandle
   input2LineEdit.TextChanged = "OnInput2TextChanged"
   input2LineEdit.BackColor = colorLayouts
+  input2LineEdit.Font = "3"
 
-  -- Create the UI elements for the third input.
+  -- Create the UI elements for the 3 input.
   local input3Icon = inputsGrid:Append("Button")
   input3Icon.Text = ""
   input3Icon.Anchors = { left = 0, right = 0, top = 2, bottom = 2 }
   input3Icon.Icon = "object_sequence"
   input3Icon.Margin = { left = 0, right = 2, top = 2, bottom = 2 }
   input3Icon.HasHover = "No";
-  input3Icon.BackColor = colorPartlySelectedPreset
+  input3Icon.BackColor = colorSequences
 
   local input3Label = inputsGrid:Append("UIObject")
-  input3Label.Text = "Input 3 - Text"
+  input3Label.Text = "Sequence Nr"
   input3Label.TextalignmentH = "Left"
-  input3Label.Anchors = { left = 1, right = 2, top = 2, bottom = 2 }
+  input3Label.Anchors = { left = 1, right = 3, top = 2, bottom = 2 }
   input3Label.Padding = "5,5"
   input3Label.Margin = { left = 2, right = 2, top = 2, bottom = 2 }
   input3Label.HasHover = "No";
   input3Label.BackColor = colorPartlySelectedPreset
+  input3Label.Font = "3"
+  input3Label.BackColor = colorSequences
 
   local input3LineEdit = inputsGrid:Append("LineEdit")
-  input3LineEdit.Margin = { left = 2, right = 0, top = 2, bottom = 2 }
-  input3LineEdit.Prompt = "Value 3: "
+  input3LineEdit.Prompt = "Nr: "
   input3LineEdit.TextAutoAdjust = "Yes"
-  input3LineEdit.Anchors = { left = 3, right = 9, top = 2, bottom = 2 }
+  input3LineEdit.Anchors = { left = 4, right = 9, top = 2, bottom = 2 }
   input3LineEdit.Padding = "5,5"
+  input3LineEdit.Margin = { left = 2, right = 0, top = 2, bottom = 2 }
   input3LineEdit.VkPluginName = "TextInput"
   input3LineEdit.Content = ""
   input3LineEdit.MaxTextLength = 10
   input3LineEdit.HideFocusFrame = "Yes"
   input3LineEdit.PluginComponent = myHandle
   input3LineEdit.TextChanged = "OnInput3TextChanged"
+  input3LineEdit.Font = "3"
+  input3LineEdit.BackColor = colorSequences
 
   -- Create the UI elements for the 4 input.
   local input4Icon = inputsGrid:Append("Button")
   input4Icon.Text = ""
   input4Icon.Anchors = { left = 0, right = 0, top = 3, bottom = 3 }
-  -- input4Icon.Icon = "time"
-  input4Icon.Icon = "469"
+  input4Icon.Icon = "object_macro"
   input4Icon.Margin = { left = 0, right = 2, top = 3, bottom = 2 }
   input4Icon.HasHover = "No";
+  input4Icon.BackColor = colorMacro
 
   local input4Label = inputsGrid:Append("UIObject")
-  input4Label.Text = "Input 4 - Integer"
+  input4Label.Text = "Macro Nr"
   input4Label.TextalignmentH = "Left"
-  input4Label.Anchors = { left = 1, right = 2, top = 3, bottom = 3 }
+  input4Label.Anchors = { left = 1, right = 3, top = 3, bottom = 3 }
   input4Label.Padding = "5,5"
   input4Label.Margin = { left = 2, right = 2, top = 3, bottom = 2 }
   input4Label.HasHover = "No";
+  input4Label.Font = "3"
+  input4Label.BackColor = colorMacro
 
   local input4LineEdit = inputsGrid:Append("LineEdit")
-  input4LineEdit.Margin = { left = 2, right = 0, top = 3, bottom = 2 }
-  input4LineEdit.Prompt = "Value 4: "
+  input4LineEdit.Prompt = "Nr: "
   input4LineEdit.TextAutoAdjust = "Yes"
-  input4LineEdit.Anchors = { left = 3, right = 9, top = 3, bottom = 3 }
+  input4LineEdit.Anchors = { left = 4, right = 9, top = 3, bottom = 3 }
   input4LineEdit.Padding = "5,5"
+  input4LineEdit.Margin = { left = 2, right = 0, top = 3, bottom = 2 }
   input4LineEdit.Filter = "0123456789"
   input4LineEdit.VkPluginName = "TextInputNumOnly"
   input4LineEdit.Content = ""
@@ -233,36 +246,147 @@ function CreateInputDialog(displayHandle)
   input4LineEdit.HideFocusFrame = "Yes"
   input4LineEdit.PluginComponent = myHandle
   input4LineEdit.TextChanged = "OnInput4TextChanged"
+  input4LineEdit.Font = "3"
+  input4LineEdit.BackColor = colorMacro
 
-  -- Create the UI elements for the 4 input.
+  -- Create the UI elements for the 5 input.
   local input5Icon = inputsGrid:Append("Button")
   input5Icon.Text = ""
   input5Icon.Anchors = { left = 0, right = 0, top = 4, bottom = 4 }
-  input5Icon.Icon = "469"
+  input5Icon.Icon = "object_appear."
   input5Icon.Margin = { left = 0, right = 2, top = 4, bottom = 2 }
   input5Icon.HasHover = "No";
+  input5Icon.BackColor = colorAppearances
 
   local input5Label = inputsGrid:Append("UIObject")
-  input5Label.Text = "Input 5 - Integer"
+  input5Label.Text = "Appear. Nr"
   input5Label.TextalignmentH = "Left"
-  input5Label.Anchors = { left = 1, right = 2, top = 4, bottom = 4 }
+  input5Label.Anchors = { left = 1, right = 3, top = 4, bottom = 4 }
   input5Label.Padding = "5,5"
   input5Label.Margin = { left = 2, right = 2, top = 4, bottom = 2 }
   input5Label.HasHover = "No";
+  input5Label.Font = "3"
+  input5Label.BackColor = colorAppearances
 
   local input5LineEdit = inputsGrid:Append("LineEdit")
-  input5LineEdit.Margin = { left = 2, right = 0, top = 4, bottom = 2 }
-  input5LineEdit.Prompt = "Value 5: "
+  input5LineEdit.Prompt = "Nr: "
   input5LineEdit.TextAutoAdjust = "Yes"
-  input5LineEdit.Anchors = { left = 3, right = 9, top = 4, bottom = 4 }
+  input5LineEdit.Anchors = { left = 4, right = 9, top = 4, bottom = 4 }
   input5LineEdit.Padding = "5,5"
+  input5LineEdit.Margin = { left = 2, right = 0, top = 4, bottom = 2 }
   input5LineEdit.Filter = "0123456789"
   input5LineEdit.VkPluginName = "TextInputNumOnly"
   input5LineEdit.Content = ""
   input5LineEdit.MaxTextLength = 6
   input5LineEdit.HideFocusFrame = "Yes"
   input5LineEdit.PluginComponent = myHandle
-  input5LineEdit.TextChanged = "OnInput4TextChanged"
+  input5LineEdit.TextChanged = "OnInput5TextChanged"
+  input5LineEdit.Font = "3"
+  input5LineEdit.BackColor = colorAppearances
+
+  -- Create the UI elements for the 6 input.
+  local input6Icon = inputsGrid:Append("Button")
+  input6Icon.Text = ""
+  input6Icon.Anchors = { left = 0, right = 0, top = 5, bottom = 5 }
+  input6Icon.Icon = "object_preset"
+  input6Icon.Margin = { left = 0, right = 2, top = 5, bottom = 2 }
+  input6Icon.HasHover = "No";
+  input6Icon.BackColor = colorPresets
+
+  local input6Label = inputsGrid:Append("UIObject")
+  input6Label.Text = "Preset All 5 Nr"
+  input6Label.TextalignmentH = "Left"
+  input6Label.Anchors = { left = 1, right = 3, top = 5, bottom = 5 }
+  input6Label.Padding = "5,5"
+  input6Label.Margin = { left = 2, right = 2, top = 5, bottom = 2 }
+  input6Label.HasHover = "No";
+  input6Label.Font = "3"
+  input6Label.BackColor = colorPresets
+
+  local input6LineEdit = inputsGrid:Append("LineEdit")
+  input6LineEdit.Prompt = "Nr: "
+  input6LineEdit.TextAutoAdjust = "Yes"
+  input6LineEdit.Anchors = { left = 4, right = 9, top = 5, bottom = 5 }
+  input6LineEdit.Padding = "5,5"
+  input6LineEdit.Margin = { left = 2, right = 0, top = 5, bottom = 2 }
+  input6LineEdit.Filter = "0123456789"
+  input6LineEdit.VkPluginName = "TextInputNumOnly"
+  input6LineEdit.Content = ""
+  input6LineEdit.MaxTextLength = 6
+  input6LineEdit.HideFocusFrame = "Yes"
+  input6LineEdit.PluginComponent = myHandle
+  input6LineEdit.TextChanged = "OnInput6TextChanged"
+  input6LineEdit.Font = "3"
+  input6LineEdit.BackColor = colorPresets
+
+  -- Create the UI elements for the 7 input.
+  local input7Icon = inputsGrid:Append("Button")
+  input7Icon.Text = ""
+  input7Icon.Anchors = { left = 0, right = 0, top = 6, bottom = 6 }
+  input7Icon.Icon = "object_matricks"
+  input7Icon.Margin = { left = 0, right = 2, top = 6, bottom = 2 }
+  input7Icon.HasHover = "No";
+  input7Icon.BackColor = colorMatricks
+
+  local input7Label = inputsGrid:Append("UIObject")
+  input7Label.Text = "Matrick Nr"
+  input7Label.TextalignmentH = "Left"
+  input7Label.Anchors = { left = 1, right = 3, top = 6, bottom = 6 }
+  input7Label.Padding = "5,5"
+  input7Label.Margin = { left = 2, right = 2, top = 6, bottom = 2 }
+  input7Label.HasHover = "No";
+  input7Label.Font = "3"
+  input7Label.BackColor = colorMatricks
+
+  local input7LineEdit = inputsGrid:Append("LineEdit")
+  input7LineEdit.Prompt = "Nr: "
+  input7LineEdit.TextAutoAdjust = "Yes"
+  input7LineEdit.Anchors = { left = 4, right = 9, top = 6, bottom = 6 }
+  input7LineEdit.Padding = "5,5"
+  input7LineEdit.Margin = { left = 2, right = 0, top = 6, bottom = 2 }
+  input7LineEdit.Filter = "0123456789"
+  input7LineEdit.VkPluginName = "TextInputNumOnly"
+  input7LineEdit.Content = ""
+  input7LineEdit.MaxTextLength = 6
+  input7LineEdit.HideFocusFrame = "Yes"
+  input7LineEdit.PluginComponent = myHandle
+  input7LineEdit.TextChanged = "OnInput7TextChanged"
+  input7LineEdit.Font = "3"
+  input7LineEdit.BackColor = colorMatricks
+
+  -- Create the UI elements for the 8 input.
+  local input8Icon = inputsGrid:Append("Button")
+  input8Icon.Text = ""
+  input8Icon.Anchors = { left = 0, right = 0, top = 7, bottom = 7 }
+  input8Icon.Icon = "24"
+  input8Icon.Margin = { left = 0, right = 2, top = 7, bottom = 2 }
+  input8Icon.HasHover = "No";
+  input8Icon.BackColor = colorPartlySelected
+  local input8Label = inputsGrid:Append("UIObject")
+  input8Label.Text = "Nr color / line"
+  input8Label.TextalignmentH = "Left"
+  input8Label.Anchors = { left = 1, right = 3, top = 7, bottom = 7 }
+  input8Label.Padding = "5,5"
+  input8Label.Margin = { left = 2, right = 2, top = 7, bottom = 2 }
+  input8Label.HasHover = "No";
+  input8Label.Font = "3"
+  input8Label.BackColor = colorPartlySelected
+
+  local input8LineEdit = inputsGrid:Append("LineEdit")
+  input8LineEdit.Prompt = "Nr: "
+  input8LineEdit.TextAutoAdjust = "Yes"
+  input8LineEdit.Anchors = { left = 4, right = 9, top = 7, bottom = 7 }
+  input8LineEdit.Padding = "5,5"
+  input8LineEdit.Margin = { left = 2, right = 0, top = 7, bottom = 2 }
+  input8LineEdit.Filter = "0123456789"
+  input8LineEdit.VkPluginName = "TextInputNumOnly"
+  input8LineEdit.Content = ""
+  input8LineEdit.MaxTextLength = 6
+  input8LineEdit.HideFocusFrame = "Yes"
+  input8LineEdit.PluginComponent = myHandle
+  input8LineEdit.TextChanged = "OnInput7TextChanged"
+  input8LineEdit.Font = "3"
+  input8LineEdit.BackColor = colorPartlySelected
 
   -- Create the button grid.
   -- This is row 3 of the dlgFrame.
@@ -273,20 +397,22 @@ function CreateInputDialog(displayHandle)
 
   local applyButton = buttonGrid:Append("Button");
   applyButton.Anchors = { left = 0, right = 0, top = 0, bottom = 0 }
-  applyButton.Textshadow = 1;
-  applyButton.HasHover = "Yes";
-  applyButton.Text = "Apply";
-  applyButton.Font = "Medium20";
+  applyButton.Textshadow = 1
+  applyButton.HasHover = "Yes"
+  applyButton.Text = "Apply"
+  applyButton.Font = "3"
+  -- applyButton.Font = "Medium20";
   applyButton.TextalignmentH = "Centre";
   applyButton.PluginComponent = myHandle
   applyButton.Clicked = "ApplyButtonClicked"
 
   local cancelButton = buttonGrid:Append("Button");
   cancelButton.Anchors = { left = 1, right = 1, top = 0, bottom = 0 }
-  cancelButton.Textshadow = 1;
-  cancelButton.HasHover = "Yes";
-  cancelButton.Text = "Cancel";
-  cancelButton.Font = "Medium20";
+  cancelButton.Textshadow = 1
+  cancelButton.HasHover = "Yes"
+  cancelButton.Text = "Cancel"
+  cancelButton.Font = "3"
+  -- cancelButton.Font = "Medium20";
   cancelButton.TextalignmentH = "Centre";
   cancelButton.PluginComponent = myHandle
   cancelButton.Clicked = "CancelButtonClicked"
