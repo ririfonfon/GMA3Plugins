@@ -1,7 +1,17 @@
 local pluginName = select(1, ...)
 local componentName = select(2, ...)
-local signalTable = select(3, ...)
+local signalTable, thiscomponent = select(3, ...)
 local myHandle = select(4, ...)
+
+local popuplists = {Grp_Select = {'Spot','Wash','Beam'}, Gel_Select = {'Ma','Lee','Rosco','Custom'}}
+
+function signalTable.mypopup(caller)
+  local itemlist = popuplists[caller.Name]
+  local _, choice = PopupInput{title = caller.Name, caller = caller:GetDisplay(), items = itemlist, selectedValue = caller.Text}
+  if caller.Name == "Gel_Select" then
+    caller.Text = choice or caller.Text
+  end
+end
 
 function CreateInputDialog(displayHandle)
   -- Get the index of the display on which to create the dialog.
@@ -24,6 +34,7 @@ function CreateInputDialog(displayHandle)
   local colorPresets = Root().ColorTheme.ColorGroups.PoolWindow.Presets
   local colorMatricks = Root().ColorTheme.ColorGroups.PoolWindow.Matricks
   local colorPlugins = Root().ColorTheme.ColorGroups.PoolWindow.Plugins
+  local colorGroups = Root().ColorTheme.ColorGroups.PoolWindow.Groups
 
   -- Get the overlay.
   local display = GetDisplayByIndex(displayIndex)
@@ -89,7 +100,7 @@ function CreateInputDialog(displayHandle)
   -- Create the sub title.
   -- This is row 1 of the dlgFrame.
   local subTitle = dlgFrame:Append("UIObject")
-  subTitle.Text = "Add Fixture Group & ColorGel\nSet Number begin Appearance & Sequence\nSelected Group(s) are:\n"
+  subTitle.Text = "Add Fixture Group & ColorGel\nSet Number begin Layout, Sequence, Macro, Appearance & Preset & Matrick\nSelected Group(s) are:\n"
   subTitle.TextalignmentH = "Left"
   subTitle.TextalignmentV = "Top"
   subTitle.ContentDriven = "Yes"
@@ -106,7 +117,7 @@ function CreateInputDialog(displayHandle)
   -- This is row 2 of the dlgFrame.
   local inputsGrid = dlgFrame:Append("UILayoutGrid")
   inputsGrid.Columns = 10
-  inputsGrid.Rows = 9
+  inputsGrid.Rows = 10
   inputsGrid.Anchors = { left = 0, right = 0, top = 1, bottom = 1 }
   inputsGrid.Margin = { left = 0, right = 0, top = 0, bottom = 5 }
 
@@ -362,8 +373,9 @@ function CreateInputDialog(displayHandle)
   input8Icon.Margin = { left = 0, right = 2, top = 7, bottom = 2 }
   input8Icon.HasHover = "No";
   input8Icon.BackColor = colorPartlySelected
+
   local input8Label = inputsGrid:Append("UIObject")
-  input8Label.Text = "Nr color / line"
+  input8Label.Text = "Nb color / line"
   input8Label.TextalignmentH = "Left"
   input8Label.Anchors = { left = 1, right = 3, top = 7, bottom = 7 }
   input8Label.Padding = "5,5"
@@ -373,7 +385,7 @@ function CreateInputDialog(displayHandle)
   input8Label.BackColor = colorPartlySelected
 
   local input8LineEdit = inputsGrid:Append("LineEdit")
-  input8LineEdit.Prompt = "Nr: "
+  input8LineEdit.Prompt = "Nb: "
   input8LineEdit.TextAutoAdjust = "Yes"
   input8LineEdit.Anchors = { left = 4, right = 9, top = 7, bottom = 7 }
   input8LineEdit.Padding = "5,5"
@@ -384,9 +396,51 @@ function CreateInputDialog(displayHandle)
   input8LineEdit.MaxTextLength = 6
   input8LineEdit.HideFocusFrame = "Yes"
   input8LineEdit.PluginComponent = myHandle
-  input8LineEdit.TextChanged = "OnInput7TextChanged"
+  input8LineEdit.TextChanged = "OnInput8TextChanged"
   input8LineEdit.Font = "3"
   input8LineEdit.BackColor = colorPartlySelected
+
+  -- Create the UI elements for the 9 input button.
+  local input9Icon = inputsGrid:Append("Button")
+  input9Icon.Text = ""
+  input9Icon.Anchors = { left = 0, right = 0, top = 8, bottom = 8 }
+  input9Icon.Icon = "437"
+  input9Icon.Margin = { left = 0, right = 2, top = 8, bottom = 2 }
+  input9Icon.HasHover = "No";
+  input9Icon.BackColor = colorGroups
+  input9Icon.Font = "3"
+
+  local input9Button = inputsGrid:Append('Button')
+  input9Button.Anchors = { left = 1, right = 9, top = 8, bottom = 8 }
+  input9Button.Padding = "5,5"
+  input9Button.Margin = { left = 2, right = 0, top = 8, bottom = 2 }
+  input9Button.Text = 'Please add Group'
+  input9Button.Name = 'Grp_Select'
+  -- input9Button.Name, input9Button.Text = 'Grp_Select', 'please add Group'
+  -- input9Button.PluginComponent = thiscomponent
+  -- input9Button.Clicked = 'mypopup' 
+  input9Button.PluginComponent, input9Button.Clicked = thiscomponent, 'mypopup' 
+  input9Button.BackColor = colorGroups
+  input9Button.Font = "3"
+
+  -- Create the UI elements for the 10 input button.
+  local input10Icon = inputsGrid:Append("Button")
+  input10Icon.Text = ""
+  input10Icon.Anchors = { left = 0, right = 0, top = 9, bottom = 9 }
+  input10Icon.Icon = "object_gels"
+  input10Icon.Margin = { left = 0, right = 2, top = 9, bottom = 2 }
+  input10Icon.HasHover = "No";
+  input10Icon.BackColor = colorPartlySelectedPreset
+  input10Icon.Font = "3"
+
+  local input10Button = inputsGrid:Append('Button')
+  input10Button.Anchors = { left = 1, right = 9, top = 9, bottom = 9 }
+  input10Button.Padding = "5,5"
+  input10Button.Margin = { left = 2, right = 0, top = 9, bottom = 2 }
+  input10Button.Name, input10Button.Text = 'Gel_Select', 'Please choose Gels'
+  input10Button.PluginComponent, input10Button.Clicked = thiscomponent, 'mypopup' 
+  input10Button.BackColor = colorPartlySelectedPreset
+  input10Button.Font = "3"
 
   -- Create the button grid.
   -- This is row 3 of the dlgFrame.
@@ -445,6 +499,26 @@ function CreateInputDialog(displayHandle)
   signalTable.OnInput3TextChanged = function(caller)
     Echo("Input3 changed: '" .. caller.Content .. "'")
   end
+
+  signalTable.OnInput4TextChanged = function(caller)
+    Echo("Input4 changed: '" .. caller.Content .. "'")
+  end
+
+  signalTable.OnInput5TextChanged = function(caller)
+    Echo("Input5 changed: '" .. caller.Content .. "'")
+  end
+
+  signalTable.OnInput6TextChanged = function(caller)
+    Echo("Input6 changed: '" .. caller.Content .. "'")
+  end
+
+  signalTable.OnInput7TextChanged = function(caller)
+    Echo("Input7 changed: '" .. caller.Content .. "'")
+  end
+
+  signalTable.OnInput8TextChanged = function(caller)
+    Echo("Input8 changed: '" .. caller.Content .. "'")
+  end  
 end
 
 -- Run the plugin.
