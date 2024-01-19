@@ -3,7 +3,20 @@ local componentName = select(2, ...)
 local signalTable, thiscomponent = select(3, ...)
 local myHandle = select(4, ...)
 
-local popuplists = {Grp_Select = {'Spot','Wash','Beam'}, Gel_Select = {'Ma','Lee','Rosco','Custom'}}
+local FixtureGroups = Root().ShowData.DataPools.Default.Groups:Children()
+local ColPath = Root().ShowData.GelPools
+local ColGels = ColPath:Children()
+
+
+local popuplists = {Grp_Select = {}, Gel_Select = {}}
+-- local popuplists = {Grp_Select = {'Spot','Wash','Beam'}, Gel_Select = {'Ma','Lee','Rosco','Custom'}}
+for k in ipairs(FixtureGroups) do
+  table.insert(popuplists.Grp_Select, "'" .. FixtureGroups[k].name .. "'")
+end
+for k in ipairs(ColGels) do
+  table.insert(popuplists.Gel_Select, "'" .. ColGels[k].name .. "'")
+end
+
 
 function signalTable.mypopup(caller)
   local itemlist = popuplists[caller.Name]
@@ -69,10 +82,10 @@ function CreateInputDialog(displayHandle)
   titleBar.Texture = "corner2"
 
   local titleBarIcon = titleBar:Append("TitleButton")
-  titleBarIcon.Text = "Layout_Color_By_RIRI"
+  titleBarIcon.Text = "Layout Color By RIRI"
   titleBarIcon.Texture = "corner1"
   titleBarIcon.Anchors = "0,0"
-  titleBarIcon.Icon = "448"
+  titleBarIcon.Icon = "object_plugin1"
   titleBarIcon.backColor = colorPlugins
 
   local titleBarCloseButton = titleBar:Append("CloseButton")
@@ -100,7 +113,7 @@ function CreateInputDialog(displayHandle)
   -- Create the sub title.
   -- This is row 1 of the dlgFrame.
   local subTitle = dlgFrame:Append("UIObject")
-  subTitle.Text = "Add Fixture Group & ColorGel\nSet Number begin Layout, Sequence, Macro, Appearance & Preset & Matrick\nSelected Group(s) are:\n"
+  subTitle.Text = "Set Number begin Layout, Sequence, Macro, Appearance & Preset & Matrick\nAdd ColorGel & FixtureGroup\nSelected Group(s) are:\n"
   subTitle.TextalignmentH = "Left"
   subTitle.TextalignmentV = "Top"
   subTitle.ContentDriven = "Yes"
@@ -369,7 +382,7 @@ function CreateInputDialog(displayHandle)
   local input8Icon = inputsGrid:Append("Button")
   input8Icon.Text = ""
   input8Icon.Anchors = { left = 0, right = 0, top = 7, bottom = 7 }
-  input8Icon.Icon = "24"
+  input8Icon.Icon = "settings"
   input8Icon.Margin = { left = 0, right = 2, top = 7, bottom = 2 }
   input8Icon.HasHover = "No";
   input8Icon.BackColor = colorPartlySelected
@@ -400,46 +413,47 @@ function CreateInputDialog(displayHandle)
   input8LineEdit.Font = "3"
   input8LineEdit.BackColor = colorPartlySelected
 
+  
   -- Create the UI elements for the 9 input button.
   local input9Icon = inputsGrid:Append("Button")
   input9Icon.Text = ""
   input9Icon.Anchors = { left = 0, right = 0, top = 8, bottom = 8 }
-  input9Icon.Icon = "437"
+  input9Icon.Icon = "object_gels"
   input9Icon.Margin = { left = 0, right = 2, top = 8, bottom = 2 }
   input9Icon.HasHover = "No";
-  input9Icon.BackColor = colorGroups
+  input9Icon.BackColor = colorPartlySelectedPreset
   input9Icon.Font = "3"
-
+  
   local input9Button = inputsGrid:Append('Button')
   input9Button.Anchors = { left = 1, right = 9, top = 8, bottom = 8 }
   input9Button.Padding = "5,5"
   input9Button.Margin = { left = 2, right = 0, top = 8, bottom = 2 }
-  input9Button.Text = 'Please add Group'
-  input9Button.Name = 'Grp_Select'
-  -- input9Button.Name, input9Button.Text = 'Grp_Select', 'please add Group'
-  -- input9Button.PluginComponent = thiscomponent
-  -- input9Button.Clicked = 'mypopup' 
-  input9Button.PluginComponent, input9Button.Clicked = thiscomponent, 'mypopup' 
-  input9Button.BackColor = colorGroups
+  input9Button.Name = 'Gel_Select'
+  input9Button.Text = 'Please choose Gels'
+  input9Button.PluginComponent = thiscomponent
+  input9Button.Clicked = 'mypopup'
+  input9Button.BackColor = colorPartlySelectedPreset
   input9Button.Font = "3"
-
+  
   -- Create the UI elements for the 10 input button.
   local input10Icon = inputsGrid:Append("Button")
   input10Icon.Text = ""
   input10Icon.Anchors = { left = 0, right = 0, top = 9, bottom = 9 }
-  input10Icon.Icon = "object_gels"
+  input10Icon.Icon = "object_group2"
   input10Icon.Margin = { left = 0, right = 2, top = 9, bottom = 2 }
   input10Icon.HasHover = "No";
-  input10Icon.BackColor = colorPartlySelectedPreset
+  input10Icon.BackColor = colorGroups
   input10Icon.Font = "3"
 
   local input10Button = inputsGrid:Append('Button')
   input10Button.Anchors = { left = 1, right = 9, top = 9, bottom = 9 }
   input10Button.Padding = "5,5"
   input10Button.Margin = { left = 2, right = 0, top = 9, bottom = 2 }
-  input10Button.Name, input10Button.Text = 'Gel_Select', 'Please choose Gels'
-  input10Button.PluginComponent, input10Button.Clicked = thiscomponent, 'mypopup' 
-  input10Button.BackColor = colorPartlySelectedPreset
+  input10Button.Name = 'Grp_Select'
+  input10Button.Text = 'Please add Group'
+  input10Button.PluginComponent = thiscomponent
+  input10Button.Clicked = 'mypopup' 
+  input10Button.BackColor = colorGroups
   input10Button.Font = "3"
 
   -- Create the button grid.
