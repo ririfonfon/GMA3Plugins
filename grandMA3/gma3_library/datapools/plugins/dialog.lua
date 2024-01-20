@@ -6,27 +6,48 @@ local myHandle = select(4, ...)
 local FixtureGroups = Root().ShowData.DataPools.Default.Groups:Children()
 local ColPath = Root().ShowData.GelPools
 local ColGels = ColPath:Children()
+local TLay = Root().ShowData.DataPools.Default.Layouts:Children()
+local SeqNr = Root().ShowData.DataPools.Default.Sequences:Children()
+local App = Root().ShowData.Appearances:Children()
+local MacroNr = Root().ShowData.DataPools.Default.Macros:Children()
+local MatrickNr = Root().ShowData.DataPools.Default.MAtricks:Children()
+local All_5_Nr = Root().ShowData.DataPools.Default.PresetPools[25]:Children()
 
 
-local popuplists = {Grp_Select = {}, Gel_Select = {}}
--- local popuplists = {Grp_Select = {'Spot','Wash','Beam'}, Gel_Select = {'Ma','Lee','Rosco','Custom'}}
+
+local popuplists = {Grp_Select = {}, Gel_Select = {}, Name_Select = {'Color','Kolor'}, Lay_Select = {}, Seq_Select = {}, Macro_Select = {},
+Appear_Select = {}, Preset_Select = {}, Matrick_Select = {} }
+local Select_Nr = { 1, 11, 101, 201, 301, 401, 501, 601, 701, 801, 901 ,1001}
+popuplists.Lay_Select = Select_Nr
+popuplists.Seq_Select = Select_Nr
+popuplists.Macro_Select = Select_Nr
+popuplists.Appear_Select = Select_Nr
+popuplists.Preset_Select = Select_Nr
+popuplists.Matrick_Select = Select_Nr
 for k in ipairs(FixtureGroups) do
   table.insert(popuplists.Grp_Select, "'" .. FixtureGroups[k].name .. "'")
 end
 for k in ipairs(ColGels) do
   table.insert(popuplists.Gel_Select, "'" .. ColGels[k].name .. "'")
 end
-
-
-function signalTable.mypopup(caller)
-  local itemlist = popuplists[caller.Name]
-  local _, choice = PopupInput{title = caller.Name, caller = caller:GetDisplay(), items = itemlist, selectedValue = caller.Text}
-  if caller.Name == "Gel_Select" then
-    caller.Text = choice or caller.Text
+for k in ipairs(TLay) do
+  for i in ipairs(popuplists.Lay_Select) do
+    if popuplists.Lay_Select[i] == TLay[k].no then
+      table.remove(popuplists.Lay_Select, TLay[k].no)
+    end
   end
 end
+-- for k in ipairs(SeqNr) do
+--   for i in ipairs(popuplists.Seq_Select) do
+--     if popuplists.Seq_Select[i] == SeqNr[k].no then
+--       table.remove(popuplists.Seq_Select, SeqNr[k].no)
+--     end
+--   end
+-- end
+
 
 function CreateInputDialog(displayHandle)
+
   -- Get the index of the display on which to create the dialog.
   local displayIndex = Obj.Index(GetFocusDisplay())
   if displayIndex > 5 then
@@ -149,16 +170,16 @@ function CreateInputDialog(displayHandle)
   input1Label.Anchors = { left = 1, right = 3, top = 0, bottom = 0 }
   input1Label.Padding = "5,5"
   input1Label.Margin = { left = 2, right = 2, top = 0, bottom = 2 }
-  input1Label.HasHover = "No";
+  input1Label.HasHover = "No"
   input1Label.BackColor = colorLayouts
   input1Label.Font = "3"
 
   local input1LineEdit = inputsGrid:Append("LineEdit")
   input1LineEdit.Prompt = "Name: "
   input1LineEdit.TextAutoAdjust = "Yes"
-  input1LineEdit.Anchors = { left = 4, right = 9, top = 0, bottom = 0 }
+  input1LineEdit.Anchors = { left = 4, right = 7, top = 0, bottom = 0 }
   input1LineEdit.Padding = "5,5"
-  input1LineEdit.Margin = { left = 2, right = 0, top = 0, bottom = 2 }
+  input1LineEdit.Margin = { left = 2, right = 2, top = 0, bottom = 2 }
   input1LineEdit.VkPluginName = "TextInput"
   input1LineEdit.Content = "Colors"
   input1LineEdit.MaxTextLength = 16
@@ -167,6 +188,17 @@ function CreateInputDialog(displayHandle)
   input1LineEdit.TextChanged = "OnInput1TextChanged"
   input1LineEdit.BackColor = colorLayouts
   input1LineEdit.Font = "3"
+
+  local input1Sujestion = inputsGrid:Append("Button")
+  input1Sujestion.Text = ""
+  input1Sujestion.Anchors = { left = 8, right = 9, top = 0, bottom = 0 }
+  input1Sujestion.Margin = { left = 2, right = 0, top = 0, bottom = 2 }
+  input1Sujestion.Icon = "object_layout"
+  input1Sujestion.Name = 'Name_Select'
+  input1Sujestion.PluginComponent = thiscomponent
+  input1Sujestion.Clicked = 'mypopup'
+  input1Sujestion.HasHover = "yes"
+  input1Sujestion.backColor = colorLayouts
 
   -- Create the UI elements for the 2 input.
   local input2Icon = inputsGrid:Append("Button")
@@ -190,7 +222,7 @@ function CreateInputDialog(displayHandle)
   local input2LineEdit = inputsGrid:Append("LineEdit")
   input2LineEdit.Prompt = "Nr: "
   input2LineEdit.TextAutoAdjust = "Yes"
-  input2LineEdit.Anchors = { left = 4, right = 9, top = 1, bottom = 1 }
+  input2LineEdit.Anchors = { left = 4, right = 7, top = 1, bottom = 1 }
   input2LineEdit.Padding = "5,5"
   input2LineEdit.Margin = { left = 2, right = 0, top = 2, bottom = 2 }
   input2LineEdit.Filter = "0123456789."
@@ -202,6 +234,17 @@ function CreateInputDialog(displayHandle)
   input2LineEdit.TextChanged = "OnInput2TextChanged"
   input2LineEdit.BackColor = colorLayouts
   input2LineEdit.Font = "3"
+
+  local input2Sujestion = inputsGrid:Append("Button")
+  input2Sujestion.Text = ""
+  input2Sujestion.Anchors = { left = 8, right = 9, top = 1, bottom = 1 }
+  input2Sujestion.Margin = { left = 2, right = 0, top = 2, bottom = 2 }
+  input2Sujestion.Icon = "object_layout"
+  input2Sujestion.Name = 'Lay_Select'
+  input2Sujestion.PluginComponent = thiscomponent
+  input2Sujestion.Clicked = 'mypopup'
+  input2Sujestion.HasHover = "yes"
+  input2Sujestion.backColor = colorLayouts
 
   -- Create the UI elements for the 3 input.
   local input3Icon = inputsGrid:Append("Button")
@@ -226,7 +269,7 @@ function CreateInputDialog(displayHandle)
   local input3LineEdit = inputsGrid:Append("LineEdit")
   input3LineEdit.Prompt = "Nr: "
   input3LineEdit.TextAutoAdjust = "Yes"
-  input3LineEdit.Anchors = { left = 4, right = 9, top = 2, bottom = 2 }
+  input3LineEdit.Anchors = { left = 4, right = 7, top = 2, bottom = 2 }
   input3LineEdit.Padding = "5,5"
   input3LineEdit.Margin = { left = 2, right = 0, top = 2, bottom = 2 }
   input3LineEdit.VkPluginName = "TextInput"
@@ -237,6 +280,17 @@ function CreateInputDialog(displayHandle)
   input3LineEdit.TextChanged = "OnInput3TextChanged"
   input3LineEdit.Font = "3"
   input3LineEdit.BackColor = colorSequences
+
+  local input3Sujestion = inputsGrid:Append("Button")
+  input3Sujestion.Text = ""
+  input3Sujestion.Anchors = { left = 8, right = 9, top = 2, bottom = 2 }
+  input3Sujestion.Margin = { left = 2, right = 0, top = 2, bottom = 2 }
+  input3Sujestion.Icon = "object_sequence"
+  input3Sujestion.Name = 'Seq_Select'
+  input3Sujestion.PluginComponent = thiscomponent
+  input3Sujestion.Clicked = 'mypopup'
+  input3Sujestion.HasHover = "yes"
+  input2Sujestion.backColor = colorLayouts
 
   -- Create the UI elements for the 4 input.
   local input4Icon = inputsGrid:Append("Button")
@@ -532,7 +586,22 @@ function CreateInputDialog(displayHandle)
 
   signalTable.OnInput8TextChanged = function(caller)
     Echo("Input8 changed: '" .. caller.Content .. "'")
-  end  
+  end
+
+  function signalTable.mypopup(caller)
+    local itemlist = popuplists[caller.Name]
+    local _, choice = PopupInput{title = caller.Name, caller = caller:GetDisplay(), items = itemlist, selectedValue = caller.Text}
+    if caller.Name == "Gel_Select" then
+      caller.Text = choice or caller.Text
+    elseif caller.Name == "Name_Select" then
+      input1LineEdit.Content  = choice
+    elseif caller.Name == "Lay_Select" then
+      input2LineEdit.Content  = choice
+    elseif caller.Name == "Seq_Select" then
+      input3LineEdit.Content  = choice
+    end
+  end
+
 end
 
 -- Run the plugin.
