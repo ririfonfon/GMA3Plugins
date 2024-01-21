@@ -9,19 +9,25 @@ function CreateInputDialog(displayHandle)
   local ColPath = Root().ShowData.GelPools
   local ColGels = ColPath:Children()
   local TLay = Root().ShowData.DataPools.Default.Layouts:Children()
+  local TLay_Nr
   local SeqNr = Root().ShowData.DataPools.Default.Sequences:Children()
+  local SeqNr_Nr
   local MacroNr = Root().ShowData.DataPools.Default.Macros:Children()
+  local MacroNr_Nr
   local App = Root().ShowData.Appearances:Children()
+  local App_Nr
   local All_5_Nr = Root().ShowData.DataPools.Default.PresetPools[25]:Children()
+  local All_5_Nr_Nr
   local MatrickNr = Root().ShowData.DataPools.Default.MAtricks:Children()
+  local MatrickNr_Nr
 
   local popuplists = {Grp_Select = {}, Gel_Select = {}, Name_Select = {'Color','Kolor'}, 
-  Lay_Select     = {1, 11, 101, 201, 301, 401, 501, 601, 701, 801, 901 ,1001},
-  Seq_Select     = {1, 11, 101, 201, 301, 401, 501, 601, 701, 801, 901 ,1001},
-  Macro_Select   = {1, 11, 101, 201, 301, 401, 501, 601, 701, 801, 901 ,1001},
-  Appear_Select  = {1, 11, 101, 201, 301, 401, 501, 601, 701, 801, 901 ,1001},
-  Preset_Select  = {1, 11, 101, 201, 301, 401, 501, 601, 701, 801, 901 ,1001},
-  Matrick_Select = {1, 11, 101, 201, 301, 401, 501, 601, 701, 801, 901 ,1001} }
+  Lay_Select     = {1, 11, 101, 201, 301, 401, 501, 601, 701, 801, 901, 1001, 2001},
+  Seq_Select     = {1, 11, 101, 201, 301, 401, 501, 601, 701, 801, 901, 1001, 2001},
+  Macro_Select   = {1, 11, 101, 201, 301, 401, 501, 601, 701, 801, 901, 1001, 2001},
+  Appear_Select  = {1, 11, 101, 201, 301, 401, 501, 601, 701, 801, 901, 1001, 2001},
+  Preset_Select  = {1, 11, 101, 201, 301, 401, 501, 601, 701, 801, 901, 1001, 2001},
+  Matrick_Select = {1, 11, 101, 201, 301, 401, 501, 601, 701, 801, 901, 1001, 2001} }
 
   for k in ipairs(FixtureGroups) do
     table.insert(popuplists.Grp_Select, "'" .. FixtureGroups[k].name .. "'")
@@ -35,6 +41,7 @@ function CreateInputDialog(displayHandle)
         table.remove(popuplists.Lay_Select, i)
       end
     end
+    TLay_Nr = TLay[k].NO + 1
   end
   for k in ipairs(SeqNr) do
     for i in ipairs(popuplists.Seq_Select) do
@@ -42,6 +49,7 @@ function CreateInputDialog(displayHandle)
         table.remove(popuplists.Seq_Select, i)
       end
     end
+    SeqNr_Nr = SeqNr[k].NO + 1
   end
   for k in ipairs(MacroNr) do
     for i in ipairs(popuplists.Macro_Select) do
@@ -49,6 +57,7 @@ function CreateInputDialog(displayHandle)
         table.remove(popuplists.Macro_Select, i)
       end
     end
+    MacroNr_Nr = MacroNr[k].NO + 1
   end
   for k in ipairs(App) do
     for i in ipairs(popuplists.Appear_Select) do
@@ -56,6 +65,7 @@ function CreateInputDialog(displayHandle)
         table.remove(popuplists.Appear_Select, i)
       end
     end
+    App_Nr = App[k].NO + 1
   end
   for k in ipairs(All_5_Nr) do
     for i in ipairs(popuplists.Preset_Select) do
@@ -63,6 +73,7 @@ function CreateInputDialog(displayHandle)
         table.remove(popuplists.Preset_Select, i)
       end
     end
+    All_5_Nr_Nr = All_5_Nr[k].NO + 1
   end
   for k in ipairs(MatrickNr) do
     for i in ipairs(popuplists.Matrick_Select) do
@@ -70,6 +81,7 @@ function CreateInputDialog(displayHandle)
         table.remove(popuplists.Matrick_Select, i)
       end
     end
+    MatrickNr_Nr = MatrickNr[k].NO + 1
   end
 
   -- Get the index of the display on which to create the dialog.
@@ -217,7 +229,7 @@ function CreateInputDialog(displayHandle)
   input1Sujestion.Text = ""
   input1Sujestion.Anchors = { left = 8, right = 9, top = 0, bottom = 0 }
   input1Sujestion.Margin = { left = 2, right = 0, top = 0, bottom = 2 }
-  input1Sujestion.Icon = "object_layout"
+  input1Sujestion.Icon = "zoom"
   input1Sujestion.Name = 'Name_Select'
   input1Sujestion.PluginComponent = thiscomponent
   input1Sujestion.Clicked = 'mypopup'
@@ -251,7 +263,7 @@ function CreateInputDialog(displayHandle)
   input2LineEdit.Margin = { left = 2, right = 0, top = 2, bottom = 2 }
   input2LineEdit.Filter = "0123456789."
   input2LineEdit.VkPluginName = "TextInputNumOnly"
-  input2LineEdit.Content = ""
+  input2LineEdit.Content = TLay_Nr
   input2LineEdit.MaxTextLength = 8
   input2LineEdit.HideFocusFrame = "Yes"
   input2LineEdit.PluginComponent = myHandle
@@ -263,7 +275,7 @@ function CreateInputDialog(displayHandle)
   input2Sujestion.Text = ""
   input2Sujestion.Anchors = { left = 8, right = 9, top = 1, bottom = 1 }
   input2Sujestion.Margin = { left = 2, right = 0, top = 2, bottom = 2 }
-  input2Sujestion.Icon = "object_layout"
+  input2Sujestion.Icon = "zoom"
   input2Sujestion.Name = 'Lay_Select'
   input2Sujestion.PluginComponent = thiscomponent
   input2Sujestion.Clicked = 'mypopup'
@@ -297,7 +309,7 @@ function CreateInputDialog(displayHandle)
   input3LineEdit.Padding = "5,5"
   input3LineEdit.Margin = { left = 2, right = 0, top = 2, bottom = 2 }
   input3LineEdit.VkPluginName = "TextInput"
-  input3LineEdit.Content = ""
+  input3LineEdit.Content = SeqNr_Nr
   input3LineEdit.MaxTextLength = 10
   input3LineEdit.HideFocusFrame = "Yes"
   input3LineEdit.PluginComponent = myHandle
@@ -309,12 +321,12 @@ function CreateInputDialog(displayHandle)
   input3Sujestion.Text = ""
   input3Sujestion.Anchors = { left = 8, right = 9, top = 2, bottom = 2 }
   input3Sujestion.Margin = { left = 2, right = 0, top = 2, bottom = 2 }
-  input3Sujestion.Icon = "object_sequence"
+  input3Sujestion.Icon = "zoom"
   input3Sujestion.Name = 'Seq_Select'
   input3Sujestion.PluginComponent = thiscomponent
   input3Sujestion.Clicked = 'mypopup'
   input3Sujestion.HasHover = "yes"
-  input3Sujestion.backColor = colorLayouts
+  input3Sujestion.backColor = colorSequences
 
   -- Create the UI elements for the 4 input.
   local input4Icon = inputsGrid:Append("Button")
@@ -343,7 +355,7 @@ function CreateInputDialog(displayHandle)
   input4LineEdit.Margin = { left = 2, right = 0, top = 3, bottom = 2 }
   input4LineEdit.Filter = "0123456789"
   input4LineEdit.VkPluginName = "TextInputNumOnly"
-  input4LineEdit.Content = ""
+  input4LineEdit.Content = MacroNr_Nr
   input4LineEdit.MaxTextLength = 6
   input4LineEdit.HideFocusFrame = "Yes"
   input4LineEdit.PluginComponent = myHandle
@@ -355,7 +367,7 @@ function CreateInputDialog(displayHandle)
   input4Sujestion.Text = ""
   input4Sujestion.Anchors = { left = 8, right = 9, top = 3, bottom = 3 }
   input4Sujestion.Margin = { left = 2, right = 0, top = 2, bottom = 2 }
-  input4Sujestion.Icon = "object_macro"
+  input4Sujestion.Icon = "zoom"
   input4Sujestion.Name = 'Macro_Select'
   input4Sujestion.PluginComponent = thiscomponent
   input4Sujestion.Clicked = 'mypopup'
@@ -384,18 +396,29 @@ function CreateInputDialog(displayHandle)
   local input5LineEdit = inputsGrid:Append("LineEdit")
   input5LineEdit.Prompt = "Nr: "
   input5LineEdit.TextAutoAdjust = "Yes"
-  input5LineEdit.Anchors = { left = 4, right = 9, top = 4, bottom = 4 }
+  input5LineEdit.Anchors = { left = 4, right = 7, top = 4, bottom = 4 }
   input5LineEdit.Padding = "5,5"
   input5LineEdit.Margin = { left = 2, right = 0, top = 4, bottom = 2 }
   input5LineEdit.Filter = "0123456789"
   input5LineEdit.VkPluginName = "TextInputNumOnly"
-  input5LineEdit.Content = ""
+  input5LineEdit.Content = App_Nr
   input5LineEdit.MaxTextLength = 6
   input5LineEdit.HideFocusFrame = "Yes"
   input5LineEdit.PluginComponent = myHandle
   input5LineEdit.TextChanged = "OnInput5TextChanged"
   input5LineEdit.Font = "3"
   input5LineEdit.BackColor = colorAppearances
+
+  local input5Sujestion = inputsGrid:Append("Button")
+  input5Sujestion.Text = ""
+  input5Sujestion.Anchors = { left = 8, right = 9, top = 4, bottom = 4 }
+  input5Sujestion.Margin = { left = 2, right = 0, top = 2, bottom = 2 }
+  input5Sujestion.Icon = "zoom"
+  input5Sujestion.Name = 'Appear_Select'
+  input5Sujestion.PluginComponent = thiscomponent
+  input5Sujestion.Clicked = 'mypopup'
+  input5Sujestion.HasHover = "yes"
+  input5Sujestion.backColor = colorAppearances
 
   -- Create the UI elements for the 6 input.
   local input6Icon = inputsGrid:Append("Button")
@@ -419,18 +442,29 @@ function CreateInputDialog(displayHandle)
   local input6LineEdit = inputsGrid:Append("LineEdit")
   input6LineEdit.Prompt = "Nr: "
   input6LineEdit.TextAutoAdjust = "Yes"
-  input6LineEdit.Anchors = { left = 4, right = 9, top = 5, bottom = 5 }
+  input6LineEdit.Anchors = { left = 4, right = 7, top = 5, bottom = 5 }
   input6LineEdit.Padding = "5,5"
   input6LineEdit.Margin = { left = 2, right = 0, top = 5, bottom = 2 }
   input6LineEdit.Filter = "0123456789"
   input6LineEdit.VkPluginName = "TextInputNumOnly"
-  input6LineEdit.Content = ""
+  input6LineEdit.Content = All_5_Nr_Nr
   input6LineEdit.MaxTextLength = 6
   input6LineEdit.HideFocusFrame = "Yes"
   input6LineEdit.PluginComponent = myHandle
   input6LineEdit.TextChanged = "OnInput6TextChanged"
   input6LineEdit.Font = "3"
   input6LineEdit.BackColor = colorPresets
+
+  local input6Sujestion = inputsGrid:Append("Button")
+  input6Sujestion.Text = ""
+  input6Sujestion.Anchors = { left = 8, right = 9, top = 5, bottom = 5 }
+  input6Sujestion.Margin = { left = 2, right = 0, top = 2, bottom = 2 }
+  input6Sujestion.Icon = "zoom"
+  input6Sujestion.Name = 'Preset_Select'
+  input6Sujestion.PluginComponent = thiscomponent
+  input6Sujestion.Clicked = 'mypopup'
+  input6Sujestion.HasHover = "yes"
+  input6Sujestion.backColor = colorPresets
 
   -- Create the UI elements for the 7 input.
   local input7Icon = inputsGrid:Append("Button")
@@ -454,18 +488,29 @@ function CreateInputDialog(displayHandle)
   local input7LineEdit = inputsGrid:Append("LineEdit")
   input7LineEdit.Prompt = "Nr: "
   input7LineEdit.TextAutoAdjust = "Yes"
-  input7LineEdit.Anchors = { left = 4, right = 9, top = 6, bottom = 6 }
+  input7LineEdit.Anchors = { left = 4, right = 7, top = 6, bottom = 6 }
   input7LineEdit.Padding = "5,5"
   input7LineEdit.Margin = { left = 2, right = 0, top = 6, bottom = 2 }
   input7LineEdit.Filter = "0123456789"
   input7LineEdit.VkPluginName = "TextInputNumOnly"
-  input7LineEdit.Content = ""
+  input7LineEdit.Content = MatrickNr_Nr
   input7LineEdit.MaxTextLength = 6
   input7LineEdit.HideFocusFrame = "Yes"
   input7LineEdit.PluginComponent = myHandle
   input7LineEdit.TextChanged = "OnInput7TextChanged"
   input7LineEdit.Font = "3"
   input7LineEdit.BackColor = colorMatricks
+
+  local input7Sujestion = inputsGrid:Append("Button")
+  input7Sujestion.Text = ""
+  input7Sujestion.Anchors = { left = 8, right = 9, top = 6, bottom = 6 }
+  input7Sujestion.Margin = { left = 2, right = 0, top = 2, bottom = 2 }
+  input7Sujestion.Icon = "zoom"
+  input7Sujestion.Name = 'Matrick_Select'
+  input7Sujestion.PluginComponent = thiscomponent
+  input7Sujestion.Clicked = 'mypopup'
+  input7Sujestion.HasHover = "yes"
+  input7Sujestion.backColor = colorMatricks
 
   -- Create the UI elements for the 8 input.
   local input8Icon = inputsGrid:Append("Button")
@@ -494,7 +539,7 @@ function CreateInputDialog(displayHandle)
   input8LineEdit.Margin = { left = 2, right = 0, top = 7, bottom = 2 }
   input8LineEdit.Filter = "0123456789"
   input8LineEdit.VkPluginName = "TextInputNumOnly"
-  input8LineEdit.Content = ""
+  input8LineEdit.Content = "40"
   input8LineEdit.MaxTextLength = 6
   input8LineEdit.HideFocusFrame = "Yes"
   input8LineEdit.PluginComponent = myHandle
@@ -518,7 +563,7 @@ function CreateInputDialog(displayHandle)
   input9Button.Padding = "5,5"
   input9Button.Margin = { left = 2, right = 0, top = 8, bottom = 2 }
   input9Button.Name = 'Gel_Select'
-  input9Button.Text = 'Please choose Gels'
+  input9Button.Text = "'Custom'"
   input9Button.PluginComponent = thiscomponent
   input9Button.Clicked = 'mypopup'
   input9Button.BackColor = colorPartlySelectedPreset
@@ -541,7 +586,7 @@ function CreateInputDialog(displayHandle)
   input10Button.Name = 'Grp_Select'
   input10Button.Text = 'Please add Group'
   input10Button.PluginComponent = thiscomponent
-  input10Button.Clicked = 'mypopup' 
+  input10Button.Clicked = 'mypopup'
   input10Button.BackColor = colorGroups
   input10Button.Font = "3"
 
@@ -558,8 +603,7 @@ function CreateInputDialog(displayHandle)
   applyButton.HasHover = "Yes"
   applyButton.Text = "Apply"
   applyButton.Font = "3"
-  -- applyButton.Font = "Medium20";
-  applyButton.TextalignmentH = "Centre";
+  applyButton.TextalignmentH = "Centre"
   applyButton.PluginComponent = myHandle
   applyButton.Clicked = "ApplyButtonClicked"
 
@@ -569,8 +613,7 @@ function CreateInputDialog(displayHandle)
   cancelButton.HasHover = "Yes"
   cancelButton.Text = "Cancel"
   cancelButton.Font = "3"
-  -- cancelButton.Font = "Medium20";
-  cancelButton.TextalignmentH = "Centre";
+  cancelButton.TextalignmentH = "Centre"
   cancelButton.PluginComponent = myHandle
   cancelButton.Clicked = "CancelButtonClicked"
   cancelButton.Visible = "Yes"
@@ -644,7 +687,6 @@ function CreateInputDialog(displayHandle)
       input7LineEdit.Content  = choice
     end
   end
-
 end
 
 -- Run the plugin.
