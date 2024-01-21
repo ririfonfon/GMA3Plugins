@@ -597,15 +597,16 @@ function CreateInputDialog(displayHandle)
   buttonGrid.Rows = 1
   buttonGrid.Anchors = { left = 0, right = 0, top = 2, bottom = 2 }
 
-  local applyButton = buttonGrid:Append("Button");
-  applyButton.Anchors = { left = 0, right = 0, top = 0, bottom = 0 }
-  applyButton.Textshadow = 1
-  applyButton.HasHover = "Yes"
-  applyButton.Text = "Apply"
-  applyButton.Font = "3"
-  applyButton.TextalignmentH = "Centre"
-  applyButton.PluginComponent = myHandle
-  applyButton.Clicked = "ApplyButtonClicked"
+  local OkButton = buttonGrid:Append("Button");
+  OkButton.Anchors = { left = 0, right = 0, top = 0, bottom = 0 }
+  OkButton.Textshadow = 1
+  OkButton.HasHover = "Yes"
+  OkButton.Text = "OK Let's GO"
+  OkButton.Font = "3"
+  OkButton.TextalignmentH = "Centre"
+  OkButton.PluginComponent = myHandle
+  OkButton.Clicked = "OkButtonClicked"
+  OkButton.Visible = "Yes"
 
   local cancelButton = buttonGrid:Append("Button");
   cancelButton.Anchors = { left = 1, right = 1, top = 0, bottom = 0 }
@@ -624,13 +625,13 @@ function CreateInputDialog(displayHandle)
     Obj.Delete(screenOverlay, Obj.Index(baseInput))
   end
 
-  signalTable.ApplyButtonClicked = function(caller)
+  signalTable.OkButtonClicked = function(caller)
     Echo("Apply button clicked.")
 
-    if (applyButton.BackColor == colorBackground) then
-      applyButton.BackColor = colorBackgroundPlease
+    if (OkButton.BackColor == colorBackground) then
+      OkButton.BackColor = colorBackgroundPlease
     else
-      applyButton.BackColor = colorBackground
+      OkButton.BackColor = colorBackground
     end
   end
 
