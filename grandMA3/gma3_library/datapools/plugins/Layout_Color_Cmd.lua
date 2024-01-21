@@ -298,8 +298,8 @@ function Mainbox_Call(display_Handle,TLayNr,NaLay,SeqNrStart,MacroNrStart,AppNr,
                 All_5_NrStart = box.inputs.f_Preset_All_5_Start_Nr
                 SelectedGelNr = box.selectors
                     .____GELS__CHOOSE____GELS__CHOOSE____GELS__CHOOSE____GELS__CHOOSE____GELS__CHOOSE____
-                E("now i do some Magic stuff...")
-                do return 1,SeqNrStart,MacroNrStart,AppNr,TLayNr,NaLay,MaxColLgn,MatrickNrStart,SelectedGelNr,All_5_NrStart end
+                E("Construction du Layout...")
+                do return 1,SeqNrStart,MacroNrStart,AppNr,TLayNr,NaLay,MaxColLgn,MatrickNrStart,SelectedGelNr,All_5_NrStart,SelectedGrp end
             end
         elseif (box.result == 0) then
             E("User Canceled")
