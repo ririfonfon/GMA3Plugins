@@ -10,27 +10,19 @@ function CreateInputDialog(displayHandle)
   local ColGels = ColPath:Children()
   local TLay = Root().ShowData.DataPools.Default.Layouts:Children()
   local SeqNr = Root().ShowData.DataPools.Default.Sequences:Children()
-  local App = Root().ShowData.Appearances:Children()
   local MacroNr = Root().ShowData.DataPools.Default.Macros:Children()
-  local MatrickNr = Root().ShowData.DataPools.Default.MAtricks:Children()
+  local App = Root().ShowData.Appearances:Children()
   local All_5_Nr = Root().ShowData.DataPools.Default.PresetPools[25]:Children()
-  
-  
-  
+  local MatrickNr = Root().ShowData.DataPools.Default.MAtricks:Children()
+
   local popuplists = {Grp_Select = {}, Gel_Select = {}, Name_Select = {'Color','Kolor'}, 
-  Lay_Select = {1, 11, 101, 201, 301, 401, 501, 601, 701, 801, 901 ,1001},
-  Seq_Select = {1, 11, 101, 201, 301, 401, 501, 601, 701, 801, 901 ,1001},
-  Macro_Select = {1, 11, 101, 201, 301, 401, 501, 601, 701, 801, 901 ,1001},
-  Appear_Select = {1, 11, 101, 201, 301, 401, 501, 601, 701, 801, 901 ,1001},
-  Preset_Select = {1, 11, 101, 201, 301, 401, 501, 601, 701, 801, 901 ,1001},
+  Lay_Select     = {1, 11, 101, 201, 301, 401, 501, 601, 701, 801, 901 ,1001},
+  Seq_Select     = {1, 11, 101, 201, 301, 401, 501, 601, 701, 801, 901 ,1001},
+  Macro_Select   = {1, 11, 101, 201, 301, 401, 501, 601, 701, 801, 901 ,1001},
+  Appear_Select  = {1, 11, 101, 201, 301, 401, 501, 601, 701, 801, 901 ,1001},
+  Preset_Select  = {1, 11, 101, 201, 301, 401, 501, 601, 701, 801, 901 ,1001},
   Matrick_Select = {1, 11, 101, 201, 301, 401, 501, 601, 701, 801, 901 ,1001} }
-  -- local Select_Nr = { 1, 11, 101, 201, 301, 401, 501, 601, 701, 801, 901 ,1001}
-  -- popuplists.Lay_Select = Select_Nr
-  -- popuplists.Seq_Select = Select_Nr
-  -- popuplists.Macro_Select = Select_Nr
-  -- popuplists.Appear_Select = Select_Nr
-  -- popuplists.Preset_Select = Select_Nr
-  -- popuplists.Matrick_Select = Select_Nr
+
   for k in ipairs(FixtureGroups) do
     table.insert(popuplists.Grp_Select, "'" .. FixtureGroups[k].name .. "'")
   end
@@ -48,6 +40,34 @@ function CreateInputDialog(displayHandle)
     for i in ipairs(popuplists.Seq_Select) do
       if popuplists.Seq_Select[i] == SeqNr[k].NO then
         table.remove(popuplists.Seq_Select, i)
+      end
+    end
+  end
+  for k in ipairs(MacroNr) do
+    for i in ipairs(popuplists.Macro_Select) do
+      if popuplists.Macro_Select[i] == MacroNr[k].NO then
+        table.remove(popuplists.Macro_Select, i)
+      end
+    end
+  end
+  for k in ipairs(App) do
+    for i in ipairs(popuplists.Appear_Select) do
+      if popuplists.Appear_Select[i] == App[k].NO then
+        table.remove(popuplists.Appear_Select, i)
+      end
+    end
+  end
+  for k in ipairs(All_5_Nr) do
+    for i in ipairs(popuplists.Preset_Select) do
+      if popuplists.Preset_Select[i] == All_5_Nr[k].NO then
+        table.remove(popuplists.Preset_Select, i)
+      end
+    end
+  end
+  for k in ipairs(MatrickNr) do
+    for i in ipairs(popuplists.Matrick_Select) do
+      if popuplists.Matrick_Select[i] == MatrickNr[k].NO then
+        table.remove(popuplists.Matrick_Select, i)
       end
     end
   end
@@ -294,7 +314,7 @@ function CreateInputDialog(displayHandle)
   input3Sujestion.PluginComponent = thiscomponent
   input3Sujestion.Clicked = 'mypopup'
   input3Sujestion.HasHover = "yes"
-  input2Sujestion.backColor = colorLayouts
+  input3Sujestion.backColor = colorLayouts
 
   -- Create the UI elements for the 4 input.
   local input4Icon = inputsGrid:Append("Button")
@@ -318,7 +338,7 @@ function CreateInputDialog(displayHandle)
   local input4LineEdit = inputsGrid:Append("LineEdit")
   input4LineEdit.Prompt = "Nr: "
   input4LineEdit.TextAutoAdjust = "Yes"
-  input4LineEdit.Anchors = { left = 4, right = 9, top = 3, bottom = 3 }
+  input4LineEdit.Anchors = { left = 4, right = 7, top = 3, bottom = 3 }
   input4LineEdit.Padding = "5,5"
   input4LineEdit.Margin = { left = 2, right = 0, top = 3, bottom = 2 }
   input4LineEdit.Filter = "0123456789"
@@ -330,6 +350,17 @@ function CreateInputDialog(displayHandle)
   input4LineEdit.TextChanged = "OnInput4TextChanged"
   input4LineEdit.Font = "3"
   input4LineEdit.BackColor = colorMacro
+
+  local input4Sujestion = inputsGrid:Append("Button")
+  input4Sujestion.Text = ""
+  input4Sujestion.Anchors = { left = 8, right = 9, top = 3, bottom = 3 }
+  input4Sujestion.Margin = { left = 2, right = 0, top = 2, bottom = 2 }
+  input4Sujestion.Icon = "object_macro"
+  input4Sujestion.Name = 'Macro_Select'
+  input4Sujestion.PluginComponent = thiscomponent
+  input4Sujestion.Clicked = 'mypopup'
+  input4Sujestion.HasHover = "yes"
+  input4Sujestion.backColor = colorMacro
 
   -- Create the UI elements for the 5 input.
   local input5Icon = inputsGrid:Append("Button")
@@ -603,6 +634,14 @@ function CreateInputDialog(displayHandle)
       input2LineEdit.Content  = choice
     elseif caller.Name == "Seq_Select" then
       input3LineEdit.Content  = choice
+    elseif caller.Name == "Macro_Select" then
+      input4LineEdit.Content  = choice
+    elseif caller.Name == "Appear_Select" then
+      input5LineEdit.Content  = choice
+    elseif caller.Name == "Preset_Select" then
+      input6LineEdit.Content  = choice
+    elseif caller.Name == "Matrick_Select" then
+      input7LineEdit.Content  = choice
     end
   end
 
