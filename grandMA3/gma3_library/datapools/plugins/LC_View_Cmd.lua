@@ -256,8 +256,6 @@ function Priority(layout,element,seq_call)
     local seq
     local prio
     Echo(seq_call)
-    -- seq_call = seq_call +"ALLWhiteALL"
-    Echo(seq_call)
     for k in ipairs(SEQ_Root) do
         seq_check = SEQ_Root[k].name
         if seq_check == seq_call then
