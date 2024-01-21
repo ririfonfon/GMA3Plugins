@@ -3,50 +3,54 @@ local componentName = select(2, ...)
 local signalTable, thiscomponent = select(3, ...)
 local myHandle = select(4, ...)
 
-local FixtureGroups = Root().ShowData.DataPools.Default.Groups:Children()
-local ColPath = Root().ShowData.GelPools
-local ColGels = ColPath:Children()
-local TLay = Root().ShowData.DataPools.Default.Layouts:Children()
-local SeqNr = Root().ShowData.DataPools.Default.Sequences:Children()
-local App = Root().ShowData.Appearances:Children()
-local MacroNr = Root().ShowData.DataPools.Default.Macros:Children()
-local MatrickNr = Root().ShowData.DataPools.Default.MAtricks:Children()
-local All_5_Nr = Root().ShowData.DataPools.Default.PresetPools[25]:Children()
+function CreateInputDialog(displayHandle)
 
-
-
-local popuplists = {Grp_Select = {}, Gel_Select = {}, Name_Select = {'Color','Kolor'}, Lay_Select = {}, Seq_Select = {}, Macro_Select = {},
-Appear_Select = {}, Preset_Select = {}, Matrick_Select = {} }
-local Select_Nr = { 1, 11, 101, 201, 301, 401, 501, 601, 701, 801, 901 ,1001}
-popuplists.Lay_Select = Select_Nr
-popuplists.Seq_Select = Select_Nr
-popuplists.Macro_Select = Select_Nr
-popuplists.Appear_Select = Select_Nr
-popuplists.Preset_Select = Select_Nr
-popuplists.Matrick_Select = Select_Nr
-for k in ipairs(FixtureGroups) do
-  table.insert(popuplists.Grp_Select, "'" .. FixtureGroups[k].name .. "'")
-end
-for k in ipairs(ColGels) do
-  table.insert(popuplists.Gel_Select, "'" .. ColGels[k].name .. "'")
-end
-for k in ipairs(TLay) do
-  for i in ipairs(popuplists.Lay_Select) do
-    if popuplists.Lay_Select[i] == TLay[k].no then
-      table.remove(popuplists.Lay_Select, TLay[k].no)
+  local FixtureGroups = Root().ShowData.DataPools.Default.Groups:Children()
+  local ColPath = Root().ShowData.GelPools
+  local ColGels = ColPath:Children()
+  local TLay = Root().ShowData.DataPools.Default.Layouts:Children()
+  local SeqNr = Root().ShowData.DataPools.Default.Sequences:Children()
+  local App = Root().ShowData.Appearances:Children()
+  local MacroNr = Root().ShowData.DataPools.Default.Macros:Children()
+  local MatrickNr = Root().ShowData.DataPools.Default.MAtricks:Children()
+  local All_5_Nr = Root().ShowData.DataPools.Default.PresetPools[25]:Children()
+  
+  
+  
+  local popuplists = {Grp_Select = {}, Gel_Select = {}, Name_Select = {'Color','Kolor'}, 
+  Lay_Select = {1, 11, 101, 201, 301, 401, 501, 601, 701, 801, 901 ,1001},
+  Seq_Select = {1, 11, 101, 201, 301, 401, 501, 601, 701, 801, 901 ,1001},
+  Macro_Select = {1, 11, 101, 201, 301, 401, 501, 601, 701, 801, 901 ,1001},
+  Appear_Select = {1, 11, 101, 201, 301, 401, 501, 601, 701, 801, 901 ,1001},
+  Preset_Select = {1, 11, 101, 201, 301, 401, 501, 601, 701, 801, 901 ,1001},
+  Matrick_Select = {1, 11, 101, 201, 301, 401, 501, 601, 701, 801, 901 ,1001} }
+  -- local Select_Nr = { 1, 11, 101, 201, 301, 401, 501, 601, 701, 801, 901 ,1001}
+  -- popuplists.Lay_Select = Select_Nr
+  -- popuplists.Seq_Select = Select_Nr
+  -- popuplists.Macro_Select = Select_Nr
+  -- popuplists.Appear_Select = Select_Nr
+  -- popuplists.Preset_Select = Select_Nr
+  -- popuplists.Matrick_Select = Select_Nr
+  for k in ipairs(FixtureGroups) do
+    table.insert(popuplists.Grp_Select, "'" .. FixtureGroups[k].name .. "'")
+  end
+  for k in ipairs(ColGels) do
+    table.insert(popuplists.Gel_Select, "'" .. ColGels[k].name .. "'")
+  end
+  for k in ipairs(TLay) do
+    for i in ipairs(popuplists.Lay_Select) do
+      if popuplists.Lay_Select[i] == TLay[k].NO then
+        table.remove(popuplists.Lay_Select, i)
+      end
     end
   end
-end
--- for k in ipairs(SeqNr) do
---   for i in ipairs(popuplists.Seq_Select) do
---     if popuplists.Seq_Select[i] == SeqNr[k].no then
---       table.remove(popuplists.Seq_Select, SeqNr[k].no)
---     end
---   end
--- end
-
-
-function CreateInputDialog(displayHandle)
+  for k in ipairs(SeqNr) do
+    for i in ipairs(popuplists.Seq_Select) do
+      if popuplists.Seq_Select[i] == SeqNr[k].NO then
+        table.remove(popuplists.Seq_Select, i)
+      end
+    end
+  end
 
   -- Get the index of the display on which to create the dialog.
   local displayIndex = Obj.Index(GetFocusDisplay())
