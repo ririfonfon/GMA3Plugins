@@ -403,13 +403,9 @@ local function Main(display_Handle)
     local Phase_Element
     local Group_Element
     local Block_Element
-    local Wings_Element
-
-
-    
+    local Wings_Element  
 
     local Return_Main_Call ={Mainbox_Call(display_Handle,TLayNr,NaLay,SeqNrStart,MacroNrStart,AppNr,MaxColLgn,MatrickNrStart,ColGels,FixtureGroups,SelectedGelNr,SelectedGrp,SelectedGrpNo,All_5_NrStart)}
-
     if Return_Main_Call[1] then
         SeqNrStart = Return_Main_Call[2]
         MacroNrStart = Return_Main_Call[3]
@@ -424,6 +420,7 @@ local function Main(display_Handle)
         All_5_NrStart = Maf(All_5_NrStart)
         All_5_Current = All_5_NrStart
         E(All_5_NrStart)
+        SelectedGrp = Return_Main_Call[11]
         goto doMagicStuff
     else
         goto canceled
@@ -1080,12 +1077,6 @@ local function Main(display_Handle)
         UsedH = root.ShowData.DataPools.Default.Layouts:Children()[TLayNrRef].UsedH / 2
         Cmd("Set Layout " .. TLayNr .. " DimensionW " .. UsedW .. " DimensionH " .. UsedH)
         Cmd('Select Layout ' .. TLayNr)
-        -- Cmd('SetUserVariable "LC_Fonction" 8')
-        -- Cmd('SetUserVariable "LC_Layout" "' .. TLayNr)
-        -- Cmd('SetUserVariable "LC_Element" "' .. LayNr)
-        -- Cmd('SetUserVariable "LC_Sequence" "' .. First_All_Color)
-        -- Cmd('Call Plugin "LC_View"')
-        -- end dimension of layout & scal it
 
     end -- end MagicStuff
 
