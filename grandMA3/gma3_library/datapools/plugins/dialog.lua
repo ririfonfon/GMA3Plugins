@@ -22,9 +22,11 @@ function CreateInputDialog(displayHandle)
   local SeqNrStart
   local SeqNrRange
   local MacroNr = Root().ShowData.DataPools.Default.Macros:Children()
-  local MacroNr_Nr
+  local MacroNrStart
+  local MacroNrRange
   local App = Root().ShowData.Appearances:Children()
-  local App_Nr
+  local AppNr
+  local AppNrRange
   local All_5_Nr = Root().ShowData.DataPools.Default.PresetPools[25]:Children()
   local All_5_Nr_Nr
   local MatrickNr = Root().ShowData.DataPools.Default.MAtricks:Children()
@@ -72,7 +74,7 @@ function CreateInputDialog(displayHandle)
           table.remove(popuplists.Macro_Select, i)
         end
       end
-      MacroNr_Nr = MacroNr[k].NO + 1
+      MacroNrStart = MacroNr[k].NO + 1
     end
     for k in ipairs(App) do
       for i in ipairs(popuplists.Appear_Select) do
@@ -80,7 +82,7 @@ function CreateInputDialog(displayHandle)
           table.remove(popuplists.Appear_Select, i)
         end
       end
-      App_Nr = App[k].NO + 1
+      AppNr = App[k].NO + 1
     end
     for k in ipairs(All_5_Nr) do
       for i in ipairs(popuplists.Preset_Select) do
@@ -329,10 +331,11 @@ function CreateInputDialog(displayHandle)
   input3LineEdit.Anchors = { left = 4, right = 7, top = 2, bottom = 2 }
   input3LineEdit.Padding = "5,5"
   input3LineEdit.Margin = { left = 2, right = 0, top = 2, bottom = 2 }
-  input3LineEdit.VkPluginName = "TextInput"
+  input3LineEdit.VkPluginName = "TextInputNumOnly"
   input3LineEdit.Content = SeqNrStart
   input3LineEdit.MaxTextLength = 10
   input3LineEdit.HideFocusFrame = "Yes"
+  input3LineEdit.Filter = "0123456789."
   input3LineEdit.PluginComponent = myHandle
   input3LineEdit.TextChanged = "OnInput3TextChanged"
   input3LineEdit.Font = "3"
@@ -376,7 +379,7 @@ function CreateInputDialog(displayHandle)
   input4LineEdit.Margin = { left = 2, right = 0, top = 3, bottom = 2 }
   input4LineEdit.Filter = "0123456789"
   input4LineEdit.VkPluginName = "TextInputNumOnly"
-  input4LineEdit.Content = MacroNr_Nr
+  input4LineEdit.Content = MacroNrStart
   input4LineEdit.MaxTextLength = 6
   input4LineEdit.HideFocusFrame = "Yes"
   input4LineEdit.PluginComponent = myHandle
@@ -422,7 +425,7 @@ function CreateInputDialog(displayHandle)
   input5LineEdit.Margin = { left = 2, right = 0, top = 4, bottom = 2 }
   input5LineEdit.Filter = "0123456789"
   input5LineEdit.VkPluginName = "TextInputNumOnly"
-  input5LineEdit.Content = App_Nr
+  input5LineEdit.Content = AppNr
   input5LineEdit.MaxTextLength = 6
   input5LineEdit.HideFocusFrame = "Yes"
   input5LineEdit.PluginComponent = myHandle
@@ -703,15 +706,7 @@ function CreateInputDialog(displayHandle)
     end
     SeqNrStart = caller.Content:gsub("'", "")
     SeqNrStart = tonumber(SeqNrStart)
-    Echo("SeqNrStart")
-    Echo(SeqNrStart)
-    Echo("Nr_SelectedGrp")
-    Echo(Nr_SelectedGrp)
-    Echo("NGel")
-    Echo(NGel)
     SeqNrRange = SeqNrStart + tonumber((Nr_SelectedGrp*(NGel+2))+NGel+100)
-    Echo("SeqNrRange")
-    Echo(SeqNrRange)
     for k in ipairs(SeqNr) do
       if SeqNrStart <= tonumber(SeqNr[k].NO) then
         if SeqNrRange >= tonumber(SeqNr[k].NO) then
@@ -731,10 +726,54 @@ function CreateInputDialog(displayHandle)
 
   signalTable.OnInput4TextChanged = function(caller)
     Echo("Input4 changed: '" .. caller.Content .. "'")
+    local checks = false
+    if caller.Content == "" then
+      checks = true
+    end
+    MacroNrStart = caller.Content:gsub("'", "")
+    MacroNrStart = tonumber(MacroNrStart)
+    MacroNrRange = MacroNrStart + 45
+    for k in ipairs(MacroNr) do
+      if MacroNrStart <= tonumber(MacroNr[k].NO) then
+        if MacroNrRange >= tonumber(MacroNr[k].NO) then
+          OkButton.Visible = "No"
+          input4LineEdit.TextColor = colorAlertText
+          checks = true
+        end
+      end
+    end
+    if checks == false then
+      input4LineEdit.TextColor = colorText
+      if check_grp == true then
+        OkButton.Visible = "Yes"
+      end
+    end
   end
 
   signalTable.OnInput5TextChanged = function(caller)
     Echo("Input5 changed: '" .. caller.Content .. "'")
+    local checks = false
+    if caller.Content == "" then
+      checks = true
+    end
+    AppNr = caller.Content:gsub("'", "")
+    AppNr = tonumber(AppNr)
+    AppNrRange = AppNr + 75 + (NGel * 2)
+    for k in ipairs(App) do
+      if AppNr <= tonumber(App[k].NO) then
+        if AppNrRange >= tonumber(App[k].NO) then
+          OkButton.Visible = "No"
+          input5LineEdit.TextColor = colorAlertText
+          checks = true
+        end
+      end
+    end
+    if checks == false then
+      input5LineEdit.TextColor = colorText
+      if check_grp == true then
+        OkButton.Visible = "Yes"
+      end
+    end
   end
 
   signalTable.OnInput6TextChanged = function(caller)
