@@ -4,10 +4,8 @@ Releases:
 
 Created by Richard Fontaine "RIRI", January 2024.
 --]]
-local F = string.format
-local E = Echo
-local Co = Confirm
-local Maf = math.floor
+-- local F = string.format
+-- local Co = Confirm
 
 local function Main(display_Handle)
     local root = Root();
@@ -24,7 +22,7 @@ local function Main(display_Handle)
     local ImgNr
 
     for k in pairs(Img) do
-        ImgNr = Maf(Img[k].NO)
+        ImgNr = math.floor(Img[k].NO)
     end
 
     if ImgNr == nil then
@@ -51,7 +49,7 @@ local function Main(display_Handle)
     local AppNr
 
     for k in pairs(App) do
-        AppNr = Maf(App[k].NO)
+        AppNr = math.floor(App[k].NO)
     end
     if AppNr == nil then
         AppNr = 0
@@ -249,14 +247,14 @@ local function Main(display_Handle)
     local Current_Id_Lay
     
     for k in ipairs(TLay) do
-        TLayNr = Maf(tonumber(TLay[k].NO))
+        TLayNr = math.floor(tonumber(TLay[k].NO))
         TLayNrRef = k
     end
     if TLayNr == nil then
         TLayNr = 0
     end
 
-    TLayNr = Maf(TLayNr + 1)
+    TLayNr = math.floor(TLayNr + 1)
     
     -- Store all Used Sequence in a Table to find the last free number
     local SeqNr = root.ShowData.DataPools.Default.Sequences:Children()
@@ -264,7 +262,7 @@ local function Main(display_Handle)
     local SeqNrEnd
     
     for k in pairs(SeqNr) do
-        SeqNrStart = Maf(SeqNr[k].NO)
+        SeqNrStart = math.floor(SeqNr[k].NO)
     end
     if SeqNrStart == nil then
         SeqNrStart = 0
@@ -281,8 +279,8 @@ local function Main(display_Handle)
         old_prefix_index = prefix_index
         for k in pairs(TLay) do
             if string.match(TLay[k].name, prefix) then
-                E("LC found %s", tostring(TLay[k].name))
-                prefix_index = Maf(prefix_index + 1)
+                Echo("LC found %s", tostring(TLay[k].name))
+                prefix_index = math.floor(prefix_index + 1)
             end
         end
         prefix = 'LC' .. tostring(prefix_index) .. '_'
@@ -297,7 +295,7 @@ local function Main(display_Handle)
     local MacroNrStart
     
     for k in pairs(MacroNr) do
-        MacroNrStart = Maf(MacroNr[k].NO)
+        MacroNrStart = math.floor(MacroNr[k].NO)
     end
     if MacroNrStart == nil then
         MacroNrStart = 0
@@ -310,20 +308,20 @@ local function Main(display_Handle)
     local TIconNr
 
     for k in pairs(TIcon) do
-        TIconNr = Maf(TIcon[k].NO)
+        TIconNr = math.floor(TIcon[k].NO)
     end
 
     -- Store all Used MAtricks in a Table to find the last free number
     local MatrickNr = root.ShowData.DataPools.Default.MAtricks:Children()
     local MatrickNrStart
     for k in pairs(MatrickNr) do
-        MatrickNrStart = Maf(MatrickNr[k].NO)
+        MatrickNrStart = math.floor(MatrickNr[k].NO)
     end
     if MatrickNrStart == nil then
         MatrickNrStart = 0
     end
 
-    MatrickNrStart = Maf(MatrickNrStart + 1)
+    MatrickNrStart = math.floor(MatrickNrStart + 1)
     MatrickNr = MatrickNrStart
 
     -- Store all Used Preset All 1 in a Table to find the last free number
@@ -332,13 +330,13 @@ local function Main(display_Handle)
     local All_5_NrEnd
     local All_5_Current
     for k in pairs(All_5_Nr) do
-        All_5_NrStart = Maf(All_5_Nr[k].NO)
+        All_5_NrStart = math.floor(All_5_Nr[k].NO)
     end
     if All_5_NrStart == nil then
         All_5_NrStart = 0
     end
 
-    All_5_NrStart = Maf(All_5_NrStart + 1)
+    All_5_NrStart = math.floor(All_5_NrStart + 1)
     All_5_Current = All_5_NrStart
 
     -- variables
@@ -346,7 +344,7 @@ local function Main(display_Handle)
     local RefX
     local LayY
     if TLayNrRef then
-        RefX = Maf(0 - TLay[TLayNrRef].DimensionW / 2)
+        RefX = math.floor(0 - TLay[TLayNrRef].DimensionW / 2)
         LayY = TLay[TLayNrRef].DimensionH / 2
     else
         RefX = -960
@@ -411,15 +409,15 @@ local function Main(display_Handle)
         MacroNrStart = Return_Main_Call[3]
         AppNr = Return_Main_Call[4]
         TLayNr = Return_Main_Call[5]
-        TLayNr = Maf(TLayNr)
+        TLayNr = math.floor(TLayNr)
         NaLay = Return_Main_Call[6]
         MaxColLgn = Return_Main_Call[7]
         MatrickNrStart = Return_Main_Call[8]
         SelectedGelNr = Return_Main_Call[9]
         All_5_NrStart = Return_Main_Call[10]
-        All_5_NrStart = Maf(All_5_NrStart)
+        All_5_NrStart = math.floor(All_5_NrStart)
         All_5_Current = All_5_NrStart
-        E(All_5_NrStart)
+        Echo(All_5_NrStart)
         SelectedGrp = Return_Main_Call[11]
         goto doMagicStuff
     else
@@ -441,11 +439,11 @@ local function Main(display_Handle)
         -- Create MAtricks
         Cmd('Store MAtricks ' .. MatrickNrStart .. ' /nu')
         Cmd('Set Matricks ' .. MatrickNrStart .. ' name = ' .. prefix .. NaLay .. ' /nu')
-        MatrickNr = Maf(MatrickNrStart + 1)
+        MatrickNr = math.floor(MatrickNrStart + 1)
         for g in pairs(SelectedGrp) do
             Cmd('Store MAtricks ' .. MatrickNr .. ' /nu')
             Cmd('Set Matricks ' .. MatrickNr .. ' name = ' .. prefix .. SelectedGrpName[g]:gsub('\'', '') .. ' /nu')
-            MatrickNr = Maf(MatrickNr + 1)
+            MatrickNr = math.floor(MatrickNr + 1)
         end
         -- Create new Layout View
         Cmd("Store Layout " .. TLayNr .. " \"" .. prefix .. NaLay .. "")
@@ -485,47 +483,47 @@ local function Main(display_Handle)
         end
         -- end Appearances/Sequences
         -- check Appear. time .... TODO trouver procedure
-        -- E("check Appear.")
+        -- Echo("check Appear.")
         -- add_check = 0
         -- for k in pairs(App) do
         --     for q in pairs(AppImp) do
         --         if ('"' .. App[k].name .. '"' == AppImp[q].Name) then
-        --             add_check = Maf(add_check + 1)
+        --             add_check = math.floor(add_check + 1)
         --             appcheck[q].value = 1
         --             appcheck[q].ref = k
         --             -- table.insert(appcheck.value, q, 1)
         --             -- table.insert(appcheck.ref, q, k)
-        --             E(appcheck[q].value)
-        --             E(appcheck[q].ref)
+        --             Echo(appcheck[q].value)
+        --             Echo(appcheck[q].ref)
         --         end
         --         long_imgimp = q
         --     end
         -- end"clearall /nu"
         -- if (long_imgimp == add_check) then
-        --     E("Appear. exist")
+        --     Echo("Appear. exist")
         -- else
-        --     E("Appear. NOT exist")
-        E('Create Appear. Time Ref')
+        --     Echo("Appear. NOT exist")
+        Echo('Create Appear. Time Ref')
         for q in pairs(AppImp) do
-            AppImp[q].Nr = Maf(NrNeed)
+            AppImp[q].Nr = math.floor(NrNeed)
             Cmd('Store App ' .. AppImp[q].Nr .. ' "' .. prefix .. AppImp[q].Name .. '" "Appearance"=' .. AppImp[q].StApp ..'' .. AppImp[q].RGBref .. '')
-            NrNeed = Maf(NrNeed + 1)
+            NrNeed = math.floor(NrNeed + 1)
         end
         SeqNrEnd = CurrentSeqNr - 1
         -- Add offset for Layout Element distance
-        LayY = Maf(LayY - 150)
+        LayY = math.floor(LayY - 150)
         LayX = RefX
-        LayX = Maf(LayX + LayW - 100)
+        LayX = math.floor(LayX + LayW - 100)
         -- add Sequence FADE
         for a = 1, 3 do
             -- Setup Fade seq
             if MakeX then 
                 FirstSeqTime = CurrentSeqNr
                 First_Id_Lay[37] = CurrentSeqNr
-                LastSeqTime = Maf(CurrentSeqNr + 5)
+                LastSeqTime = math.floor(CurrentSeqNr + 5)
             else
                 FirstSeqTime = CurrentSeqNr
-                LastSeqTime = Maf(CurrentSeqNr + 4)
+                LastSeqTime = math.floor(CurrentSeqNr + 4)
             end
             -- Create Macro Time Input
             Cmd('Store Macro ' .. CurrentMacroNr .. ' \'' .. prefix .. 'Time Input' .. surfix[a] .. '')
@@ -533,7 +531,7 @@ local function Main(display_Handle)
             Cmd('Insert')
             if MakeX then
                 Cmd('set 1 Command=\'off seq ' .. FirstSeqTime .. ' thru ' .. LastSeqTime .. ' - ' .. LastSeqTime .. '')
-                Fade_Element = Maf(LayNr + 3)
+                Fade_Element = math.floor(LayNr + 3)
             else
                 Cmd('set 1 Command=\'off seq ' .. First_Id_Lay[37] .. ' + ' .. FirstSeqTime .. ' thru ' .. LastSeqTime .. ' - ' .. LastSeqTime .. '')
             end
@@ -563,15 +561,15 @@ local function Main(display_Handle)
                 Command_Ext_Suite(CurrentSeqNr)
                 Cmd('Assign Seq ' .. CurrentSeqNr .. ' at Layout ' .. TLayNr)
                 Cmd('Set Layout ' .. TLayNr .. '.' .. LayNr .. ' property appearance <default> PosX ' .. LayX ..' PosY ' .. LayY .. ' PositionW ' .. LayW .. ' PositionH ' .. LayH ..' VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0')
-                LayNr = Maf(LayNr + 1)
+                LayNr = math.floor(LayNr + 1)
                 Command_Title('Ex.Time', LayNr, TLayNr, LayX, LayY, 700, 140, 1)
-                LayNr = Maf(LayNr + 1)
+                LayNr = math.floor(LayNr + 1)
                 Command_Title('FADE', LayNr, TLayNr, LayX, LayY, 700, 140, 2)
-                LayNr = Maf(LayNr + 1)
+                LayNr = math.floor(LayNr + 1)
                 Command_Title('none > none', LayNr, TLayNr, LayX, LayY, 700, 140, 3)
-                LayX = Maf(LayX + LayW + 20)
-                LayNr = Maf(LayNr + 1)
-                CurrentSeqNr = Maf(CurrentSeqNr + 1)
+                LayX = math.floor(LayX + LayW + 20)
+                LayNr = math.floor(LayNr + 1)
+                CurrentSeqNr = math.floor(CurrentSeqNr + 1)
             end
 
             for i = 2, 6 do
@@ -579,7 +577,7 @@ local function Main(display_Handle)
                 local ib = tonumber(i * 2)
                 if i == 2 then
                     if a == 1 then
-                        First_Id_Lay[1] = Maf(LayNr)
+                        First_Id_Lay[1] = math.floor(LayNr)
                         First_Id_Lay[2] = CurrentSeqNr
                     elseif a == 2 then
                         First_Id_Lay[3] = CurrentSeqNr
@@ -606,26 +604,26 @@ local function Main(display_Handle)
                 if MakeX then
                     Cmd('Assign Seq ' .. CurrentSeqNr .. ' at Layout ' .. TLayNr)
                     Cmd('Set Layout ' .. TLayNr .. '.' .. LayNr .. ' property appearance <default> PosX ' .. LayX ..' PosY ' .. LayY .. ' PositionW ' .. LayW .. ' PositionH ' .. LayH ..' VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0')
-                    LayX = Maf(LayX + LayW + 20)
-                    LayNr = Maf(LayNr + 1)
-                    Delay_F_Element = Maf(LayNr + 1)
+                    LayX = math.floor(LayX + LayW + 20)
+                    LayNr = math.floor(LayNr + 1)
+                    Delay_F_Element = math.floor(LayNr + 1)
                 end
-                CurrentSeqNr = Maf(CurrentSeqNr + 1)
+                CurrentSeqNr = math.floor(CurrentSeqNr + 1)
                 -- end Sequences
             end -- end Sequences FADE
 
             -- Setup DelayFrom seq
-            CurrentMacroNr = Maf(CurrentMacroNr + 5)
+            CurrentMacroNr = math.floor(CurrentMacroNr + 5)
             FirstSeqDelayFrom = CurrentSeqNr
-            LastSeqDelayFrom = Maf(CurrentSeqNr + 4)
+            LastSeqDelayFrom = math.floor(CurrentSeqNr + 4)
             -- Create Macro DelayFrom Input
             Create_Macro_Delay_From(CurrentMacroNr,prefix,surfix,a,FirstSeqDelayFrom,LastSeqDelayFrom,MatrickNrStart,2,TLayNr,Delay_F_Element)
 
             if MakeX then
                 Command_Title('DELAY FROM', LayNr, TLayNr, LayX, LayY, 580, 140, 2)
-                LayNr = Maf(LayNr + 1)
+                LayNr = math.floor(LayNr + 1)
                 Command_Title('none', LayNr, TLayNr, LayX, LayY, 580, 140, 3)
-                LayNr = Maf(LayNr + 1)
+                LayNr = math.floor(LayNr + 1)
             end
             -- Create Sequences Delayfrom
             for i = 1, 5 do
@@ -633,7 +631,7 @@ local function Main(display_Handle)
                 local ib = tonumber(i * 2 + 12)
                 if i == 1 then
                     if a == 1 then
-                        First_Id_Lay[5] = Maf(LayNr)
+                        First_Id_Lay[5] = math.floor(LayNr)
                         First_Id_Lay[6] = CurrentSeqNr
                     elseif a == 2 then
                         First_Id_Lay[7] = CurrentSeqNr
@@ -657,25 +655,25 @@ local function Main(display_Handle)
                 if MakeX then
                     Cmd("Assign Seq " .. CurrentSeqNr .. " at Layout " .. TLayNr)
                     Cmd("Set Layout " .. TLayNr .. "." .. LayNr .. " property appearance <default> PosX " .. LayX .." PosY " .. LayY .. " PositionW " .. LayW .. " PositionH " .. LayH .." VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0")
-                    LayX = Maf(LayX + LayW + 20)
-                    LayNr = Maf(LayNr + 1)
-                    Delay_T_Element = Maf(LayNr + 1)
+                    LayX = math.floor(LayX + LayW + 20)
+                    LayNr = math.floor(LayNr + 1)
+                    Delay_T_Element = math.floor(LayNr + 1)
                 end
-                CurrentSeqNr = Maf(CurrentSeqNr + 1)
+                CurrentSeqNr = math.floor(CurrentSeqNr + 1)
             end -- end Sequences DelayFrom
 
             -- Setup DelayTo seq
-            CurrentMacroNr = Maf(CurrentMacroNr + 1)
+            CurrentMacroNr = math.floor(CurrentMacroNr + 1)
             FirstSeqDelayTo = CurrentSeqNr
-            LastSeqDelayTo = Maf(CurrentSeqNr + 4)
+            LastSeqDelayTo = math.floor(CurrentSeqNr + 4)
             -- Create Macro DelayTo Input
             Create_Macro_Delay_To(CurrentMacroNr,prefix,surfix,a,FirstSeqDelayTo,LastSeqDelayTo,MatrickNrStart,3,TLayNr,Delay_T_Element)
 
             if MakeX then
                 Command_Title('DELAY TO', LayNr, TLayNr, LayX, LayY, 580, 140, 2)
-                LayNr = Maf(LayNr + 1)
+                LayNr = math.floor(LayNr + 1)
                 Command_Title('none', LayNr, TLayNr, LayX, LayY, 580, 140, 3)
-                LayNr = Maf(LayNr + 1)
+                LayNr = math.floor(LayNr + 1)
             end
             -- Create Sequences DelayTo
             for i = 1, 5 do
@@ -683,7 +681,7 @@ local function Main(display_Handle)
                 local ib = tonumber(i * 2 + 22)
                 if i == 1 then
                     if a == 1 then
-                        First_Id_Lay[9] = Maf(LayNr)
+                        First_Id_Lay[9] = math.floor(LayNr)
                         First_Id_Lay[10] = CurrentSeqNr
                     elseif a == 2 then
                         First_Id_Lay[11] = CurrentSeqNr
@@ -708,21 +706,21 @@ local function Main(display_Handle)
                 if MakeX then
                     Cmd('Assign Seq ' .. CurrentSeqNr .. ' at Layout ' .. TLayNr)
                     Cmd('Set Layout ' .. TLayNr .. '.' .. LayNr .. ' property appearance <default> PosX ' .. LayX ..' PosY ' .. LayY .. ' PositionW ' .. LayW .. ' PositionH ' .. LayH ..' VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0')
-                    LayX = Maf(LayX + LayW + 20)
-                    LayNr = Maf(LayNr + 1)
-                    Phase_Element = Maf(LayNr + 2)
+                    LayX = math.floor(LayX + LayW + 20)
+                    LayNr = math.floor(LayNr + 1)
+                    Phase_Element = math.floor(LayNr + 2)
                 end
-                CurrentSeqNr = Maf(CurrentSeqNr + 1)
+                CurrentSeqNr = math.floor(CurrentSeqNr + 1)
             end -- end Sequences DelayTo
 
             -- Add offset for Layout Element distance
-            LayY = Maf(LayY - 150)
+            LayY = math.floor(LayY - 150)
             LayX = RefX
-            LayX = Maf(LayX + LayW - 100)
+            LayX = math.floor(LayX + LayW - 100)
 
             -- Create Macro Phase Input
             if a == 1 then
-                First_Id_Lay[13] = Maf(LayNr)
+                First_Id_Lay[13] = math.floor(LayNr)
                 First_Id_Lay[14] = CurrentSeqNr
             elseif a == 2 then
                 First_Id_Lay[15] = CurrentSeqNr
@@ -730,7 +728,7 @@ local function Main(display_Handle)
                 First_Id_Lay[16] = CurrentSeqNr
             end
             Current_Id_Lay = First_Id_Lay[13]
-            CurrentMacroNr = Maf(CurrentMacroNr + 1)
+            CurrentMacroNr = math.floor(CurrentMacroNr + 1)
             Create_Macro_Phase(CurrentMacroNr,prefix,surfix,a,MatrickNrStart,4,TLayNr,Phase_Element)
 
             -- Create Sequences
@@ -746,28 +744,28 @@ local function Main(display_Handle)
             if MakeX then
                 Cmd('Assign Seq ' .. CurrentSeqNr .. ' at Layout ' .. TLayNr)
                 Cmd('Set Layout ' .. TLayNr .. '.' .. LayNr .. ' property appearance <default> PosX ' .. LayX ..' PosY ' .. LayY .. ' PositionW ' .. LayW .. ' PositionH ' .. LayH ..' VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0')
-                LayX = Maf(LayX + LayW + 20)
-                LayNr = Maf(LayNr + 1)
+                LayX = math.floor(LayX + LayW + 20)
+                LayNr = math.floor(LayNr + 1)
                 Command_Title('PHASE', LayNr, TLayNr, LayX-120, LayY-30, 700, 170, 4)
-                LayNr = Maf(LayNr + 1)
+                LayNr = math.floor(LayNr + 1)
                 Command_Title('none > none', LayNr, TLayNr, LayX-120, LayY-30, 700, 170, 1)
-                LayNr = Maf(LayNr + 1)
-                Group_Element = Maf(LayNr + 1)
+                LayNr = math.floor(LayNr + 1)
+                Group_Element = math.floor(LayNr + 1)
             end
-            CurrentSeqNr = Maf(CurrentSeqNr + 1)
+            CurrentSeqNr = math.floor(CurrentSeqNr + 1)
             -- end Sequences Phase
             -- Setup XGroup seq
-            CurrentMacroNr = Maf(CurrentMacroNr + 1)
+            CurrentMacroNr = math.floor(CurrentMacroNr + 1)
             FirstSeqGrp = CurrentSeqNr
-            LastSeqGrp = Maf(CurrentSeqNr + 4)
+            LastSeqGrp = math.floor(CurrentSeqNr + 4)
             -- Create Macro Group Input
             Create_Macro_Group(CurrentMacroNr,prefix,surfix,a,FirstSeqGrp,LastSeqGrp,MatrickNrStart,5,TLayNr,Group_Element)
 
             if MakeX then
                 Command_Title('GROUP', LayNr, TLayNr, LayX-120, LayY-30, 700, 170, 2)
-                LayNr = Maf(LayNr + 1)
+                LayNr = math.floor(LayNr + 1)
                 Command_Title('None', LayNr, TLayNr, LayX-120, LayY-30, 700, 170, 3)
-                LayNr = Maf(LayNr + 1)
+                LayNr = math.floor(LayNr + 1)
             end
             -- Create Sequences XGroup
             for i = 1, 5 do
@@ -775,7 +773,7 @@ local function Main(display_Handle)
                 local ib = tonumber(i * 2 + 32)
                 if i == 1 then
                     if a == 1 then
-                        First_Id_Lay[17] = Maf(LayNr)
+                        First_Id_Lay[17] = math.floor(LayNr)
                         First_Id_Lay[18] = CurrentSeqNr
                     elseif a == 2 then
                         First_Id_Lay[19] = CurrentSeqNr
@@ -800,25 +798,25 @@ local function Main(display_Handle)
                 if MakeX then
                     Cmd('Assign Seq ' .. CurrentSeqNr .. ' at Layout ' .. TLayNr)
                     Cmd('Set Layout ' .. TLayNr .. '.' .. LayNr .. ' property appearance <default> PosX ' .. LayX ..' PosY ' .. LayY .. ' PositionW ' .. LayW .. ' PositionH ' .. LayH ..' VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0')
-                    LayX = Maf(LayX + LayW + 20)
-                    LayNr = Maf(LayNr + 1)
-                    Block_Element = Maf(LayNr + 1)
+                    LayX = math.floor(LayX + LayW + 20)
+                    LayNr = math.floor(LayNr + 1)
+                    Block_Element = math.floor(LayNr + 1)
                 end
-                CurrentSeqNr = Maf(CurrentSeqNr + 1)
+                CurrentSeqNr = math.floor(CurrentSeqNr + 1)
             end
             -- end Sequences XGroup
             -- Setup XBlock seq
-            CurrentMacroNr = Maf(CurrentMacroNr + 1)
+            CurrentMacroNr = math.floor(CurrentMacroNr + 1)
             FirstSeqBlock = CurrentSeqNr
-            LastSeqBlock = Maf(CurrentSeqNr + 4)
+            LastSeqBlock = math.floor(CurrentSeqNr + 4)
             -- Create Macro Block Input
             Create_Macro_Block(CurrentMacroNr,prefix,surfix,a,FirstSeqBlock,LastSeqBlock,MatrickNrStart,6,TLayNr,Block_Element)
 
             if MakeX then
                 Command_Title('BLOCK', LayNr, TLayNr, LayX, LayY, 580, 140, 2)
-                LayNr = Maf(LayNr + 1)
+                LayNr = math.floor(LayNr + 1)
                 Command_Title('none', LayNr, TLayNr, LayX, LayY, 580, 140, 3)
-                LayNr = Maf(LayNr + 1)
+                LayNr = math.floor(LayNr + 1)
             end
             -- Create Sequences XBlock
             for i = 1, 5 do
@@ -826,7 +824,7 @@ local function Main(display_Handle)
                 local ib = tonumber(i * 2 + 42)
                 if i == 1 then
                     if a == 1 then
-                        First_Id_Lay[21] = Maf(LayNr)
+                        First_Id_Lay[21] = math.floor(LayNr)
                         First_Id_Lay[22] = CurrentSeqNr
                     elseif a == 2 then
                         First_Id_Lay[23] = CurrentSeqNr
@@ -851,25 +849,25 @@ local function Main(display_Handle)
                 if MakeX then
                     Cmd('Assign Seq ' .. CurrentSeqNr .. ' at Layout ' .. TLayNr)
                     Cmd('Set Layout ' .. TLayNr .. '.' .. LayNr .. ' property appearance <default> PosX ' .. LayX ..' PosY ' .. LayY .. ' PositionW ' .. LayW .. ' PositionH ' .. LayH ..' VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0')
-                    LayX = Maf(LayX + LayW + 20)
-                    LayNr = Maf(LayNr + 1)
-                    Wings_Element =  Maf(LayNr + 1)
+                    LayX = math.floor(LayX + LayW + 20)
+                    LayNr = math.floor(LayNr + 1)
+                    Wings_Element =  math.floor(LayNr + 1)
                 end
-                CurrentSeqNr = Maf(CurrentSeqNr + 1)
+                CurrentSeqNr = math.floor(CurrentSeqNr + 1)
             end
             -- end Sequences XBlock
             -- Setup XWings seq
-            CurrentMacroNr = Maf(CurrentMacroNr + 1)
+            CurrentMacroNr = math.floor(CurrentMacroNr + 1)
             FirstSeqWings = CurrentSeqNr
-            LastSeqWings = Maf(CurrentSeqNr + 4)
+            LastSeqWings = math.floor(CurrentSeqNr + 4)
             -- Create Macro Wings Input
             Create_Macro_Wings(CurrentMacroNr,prefix,surfix,a,FirstSeqWings,LastSeqWings,MatrickNrStart,7,TLayNr,Wings_Element)
 
             if MakeX then
                 Command_Title('WINGS', LayNr, TLayNr, LayX, LayY, 580, 140, 2)
-                LayNr = Maf(LayNr + 1)
+                LayNr = math.floor(LayNr + 1)
                 Command_Title('none', LayNr, TLayNr, LayX, LayY, 580, 140, 3)
-                LayNr = Maf(LayNr + 1)
+                LayNr = math.floor(LayNr + 1)
             end
             -- Create Sequences XWings
             for i = 1, 5 do
@@ -877,7 +875,7 @@ local function Main(display_Handle)
                 local ib = tonumber(i * 2 + 52)
                 if i == 1 then
                     if a == 1 then
-                        First_Id_Lay[25] = Maf(LayNr)
+                        First_Id_Lay[25] = math.floor(LayNr)
                         First_Id_Lay[26] = CurrentSeqNr
                     elseif a == 2 then
                         First_Id_Lay[27] = CurrentSeqNr
@@ -902,15 +900,15 @@ local function Main(display_Handle)
                 if MakeX then
                     Cmd('Assign Seq ' .. CurrentSeqNr .. ' at Layout ' .. TLayNr)
                     Cmd('Set Layout ' .. TLayNr .. '.' .. LayNr .. ' property appearance <default> PosX ' .. LayX ..' PosY ' .. LayY .. ' PositionW ' .. LayW .. ' PositionH ' .. LayH ..' VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0')
-                    LayX = Maf(LayX + LayW + 20)
-                    LayNr = Maf(LayNr + 1)
+                    LayX = math.floor(LayX + LayW + 20)
+                    LayNr = math.floor(LayNr + 1)
                 end
-                CurrentSeqNr = Maf(CurrentSeqNr + 1)
+                CurrentSeqNr = math.floor(CurrentSeqNr + 1)
             end
             -- end Sequences XWings
 
             -- add Sequences X Y Z call
-            CurrentMacroNr = Maf(CurrentMacroNr + 1)
+            CurrentMacroNr = math.floor(CurrentMacroNr + 1)
             First_Id_Lay[33 + a] = CurrentMacroNr
             Cmd('Store Macro ' .. CurrentMacroNr .. ' \'' .. prefix .. surfix[a] .. '_Call\'')
             Cmd('ChangeDestination Macro ' .. CurrentMacroNr .. '')
@@ -935,7 +933,7 @@ local function Main(display_Handle)
                 end
                 Cmd('Insert')
                 Cmd('set ' ..m .. ' Command=\'Assign Sequence ' .. First_Id_Lay[CallT + a] + Call_inc .. ' At Layout ' ..TLayNr .. '.' .. First_Id_Lay[CallT] + Call_inc)
-                Call_inc = Maf(Call_inc + 1)
+                Call_inc = math.floor(Call_inc + 1)
             end
             Cmd('ChangeDestination Root')
             Make_Macro_Reset(CurrentMacroNr,prefix,surfix,MatrickNrStart,a,CurrentSeqNr,First_Id_Lay,TLayNr,Fade_Element,Delay_F_Element,Delay_T_Element,Phase_Element,Group_Element,Block_Element,Wings_Element)
@@ -953,7 +951,7 @@ local function Main(display_Handle)
             Cmd("set seq " .. CurrentSeqNr + 1 .. " Property Appearance=" .. prefix .. "'skull_off'")
             Command_Ext_Suite(CurrentSeqNr + 1)
             if MakeX == false then
-                LayNr = Maf(LayNr + 1)
+                LayNr = math.floor(LayNr + 1)
             end
             if a == 1 then
                 First_Id_Lay[32] = LayX
@@ -973,11 +971,11 @@ local function Main(display_Handle)
                 Cmd('Assign Seq ' .. CurrentSeqNr + 1 .. ' at Layout ' .. TLayNr)
                 Cmd('Set Layout ' .. TLayNr .. '.' .. LayNr + 1 .. ' property appearance <default> PosX ' .. First_Id_Lay[32] + 85 .. ' PosY ' .. First_Id_Lay[33] + 10 .. ' PositionW ' .. LayW - 35 .. ' PositionH ' .. LayH - 35 ..' VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0')
             end
-            LayNr = Maf(LayNr + 1)
-            CurrentSeqNr = Maf(CurrentSeqNr + 2)
-            CurrentMacroNr = Maf(CurrentMacroNr + 2)
+            LayNr = math.floor(LayNr + 1)
+            CurrentSeqNr = math.floor(CurrentSeqNr + 2)
+            CurrentMacroNr = math.floor(CurrentMacroNr + 2)
             MakeX = false
-            E("****************************************************************************************")
+            Echo("****************************************************************************************")
         end
         -- end Sequences X Y Z call
 
@@ -997,10 +995,10 @@ local function Main(display_Handle)
         else
             LayY = 540
         end
-        LayY = Maf(LayY + 20) -- Add offset for Layout Element distance
-        LayY = Maf(LayY + (120 * ColLgnCount ))
+        LayY = math.floor(LayY + 20) -- Add offset for Layout Element distance
+        LayY = math.floor(LayY + (120 * ColLgnCount ))
         LayX = RefX
-        LayNr = Maf(LayNr + 1)
+        LayNr = math.floor(LayNr + 1)
         Cmd('ClearAll /nu')
         Cmd('Store Sequence ' .. CurrentSeqNr .. ' \'' .. prefix .. 'KILL_ALL\'')
         Cmd("set seq " .. CurrentSeqNr .. " cue 1 Property Appearance=" .. prefix .. "'skull_on'")
@@ -1012,10 +1010,10 @@ local function Main(display_Handle)
         -- end Kill all LCx_
     
         -- add All Color
-        LayNr = Maf(LayNr + 1)
-        CurrentSeqNr = Maf(CurrentSeqNr + 1)
-        LayX = Maf(LayX + LayW + 20)
-        NrNeed = Maf(AppNr + 1)
+        LayNr = math.floor(LayNr + 1)
+        CurrentSeqNr = math.floor(CurrentSeqNr + 1)
+        LayX = math.floor(LayX + LayW + 20)
+        NrNeed = math.floor(AppNr + 1)
         local Return_AddAllColor = {AddAllColor(TCol, CurrentSeqNr, prefix, TLayNr, LayNr, NrNeed, LayX, LayY, LayW, LayH, SelectedGelNr,MaxColLgn,RefX)}
         if Return_AddAllColor[1] then
             LayNr = Return_AddAllColor[2]
@@ -1025,7 +1023,7 @@ local function Main(display_Handle)
         -- end All Color
 
         -- add Macro priority
-        CurrentMacroNr = Maf(CurrentMacroNr)
+        CurrentMacroNr = math.floor(CurrentMacroNr)
         Cmd('Store Macro ' .. CurrentMacroNr .. ' \'' .. 'Priority\'')
         Cmd('ChangeDestination Macro ' .. CurrentMacroNr .. '')
         for i = 1, 6 do
@@ -1047,7 +1045,7 @@ local function Main(display_Handle)
         -- end Macro priority
 
         -- Macro Del LC prefix
-        CurrentMacroNr = Maf(CurrentMacroNr + 2)
+        CurrentMacroNr = math.floor(CurrentMacroNr + 2)
         condition_string = "Lua 'if Confirm(\"Delete Layout Color LC" .. prefix:gsub('%D*', '') .."?\") then; Cmd(\"Go macro " .. CurrentMacroNr .. "\"); else Cmd(\"Off macro " ..CurrentMacroNr .. "\"); end'" .. ' /nu'
         Cmd('Store Macro ' .. CurrentMacroNr .. ' \'' .. 'ERASE\'')
         Cmd('ChangeDestination Macro ' .. CurrentMacroNr .. '')
@@ -1069,7 +1067,7 @@ local function Main(display_Handle)
 
         -- dimension of layout & scal it
         for k in pairs(root.ShowData.DataPools.Default.Layouts:Children()) do
-            if (Maf(TLayNr) == Maf(tonumber(root.ShowData.DataPools.Default.Layouts:Children()[k].NO))) then
+            if (math.floor(TLayNr) == math.floor(tonumber(root.ShowData.DataPools.Default.Layouts:Children()[k].NO))) then
                 TLayNrRef = k
             end
         end
