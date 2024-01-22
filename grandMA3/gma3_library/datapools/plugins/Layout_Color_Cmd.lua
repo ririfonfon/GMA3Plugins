@@ -4,10 +4,6 @@ Releases:
 
 Created by Richard Fontaine "RIRI", January 2024.
 --]]
-local F = string.format
-local E = Echo
-local Co = Confirm
-local Maf = math.floor
 
 function Command_Ext_Suite(CurrentSeqNr)
     Cmd('set seq ' .. CurrentSeqNr .. ' property prefercueappearance=on')
@@ -60,18 +56,18 @@ function AddAllColor(TCol,CurrentSeqNr,prefix,TLayNr,LayNr,NrNeed,LayX,LayY,LayW
         Cmd("Set Layout "  .. TLayNr .. "." .. LayNr .. " property appearance <default> PosX " .. LayX .. " PosY " .. LayY .. " PositionW " .. LayW .. " PositionH " .. LayH .. " VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0")
 
         if (col_count ~= MaxColLgn) then
-            LayX = Maf(LayX + LayW + 20)
+            LayX = math.floor(LayX + LayW + 20)
         else
             LayX = RefX
-            LayX = Maf(LayX + LayW + 20)
-            LayY = Maf(LayY - 20) -- Add offset for Layout Element distance
-            LayY = Maf(LayY - LayH)
+            LayX = math.floor(LayX + LayW + 20)
+            LayY = math.floor(LayY - 20) -- Add offset for Layout Element distance
+            LayY = math.floor(LayY - LayH)
             col_count = 0
         end
 
-        NrNeed = Maf(NrNeed + 2); -- Set App Nr to next color
-        LayNr = Maf(LayNr + 1)
-        CurrentSeqNr = Maf(CurrentSeqNr + 1)
+        NrNeed = math.floor(NrNeed + 2); -- Set App Nr to next color
+        LayNr = math.floor(LayNr + 1)
+        CurrentSeqNr = math.floor(CurrentSeqNr + 1)
     end
     do return 1,LayNr,LayX,First_All_Color end
 end -- end function AddAllColor(...)
@@ -81,16 +77,16 @@ function CheckSymbols(display_Handle,Img,ImgImp,check,add_check,long_imgimp,ImgN
         for q in pairs(ImgImp) do
             if ('"' .. Img[k].name .. '"' == ImgImp[q].Name) then
                 check[q] =  1
-                add_check = Maf(add_check + 1)
+                add_check = math.floor(add_check + 1)
             end
             long_imgimp = q
         end
     end
 
     if (long_imgimp == add_check) then
-        E("file exist")
+        Echo("file exist")
     else
-        E("file NOT exist")
+        Echo("file NOT exist")
         -- Select a disk
         local drives = Root().Temp.DriveCollect
         local selectedDrive -- users selected drive
@@ -119,16 +115,16 @@ function CheckSymbols(display_Handle,Img,ImgImp,check,add_check,long_imgimp,ImgN
         end
 
         -- grab the export path for the selected drive and append the file name
-        E("selectedDrive = %s", tostring(selectedDrive))
+        Echo("selectedDrive = %s", tostring(selectedDrive))
         Cmd("select Drive " .. selectedDrive .. "")
 
         -- Import Symbols      
         for k in pairs(ImgImp) do
 
             if(check[k] == nil) then
-                ImgNr = Maf(ImgNr + 1);
-                E(ImgNr)
-                E(k)
+                ImgNr = math.floor(ImgNr + 1);
+                Echo(ImgNr)
+                Echo(k)
                 Cmd("Store Image 2." .. ImgNr .. " " .. ImgImp[k].Name .. " Filename=" .. ImgImp[k].FileName .. " filepath=" .. ImgImp[k].Filepath .. "")
             end
         end
@@ -231,7 +227,7 @@ function Mainbox_Call(display_Handle,TLayNr,NaLay,SeqNrStart,MacroNrStart,AppNr,
 
         if (box.result == 11 or box.result == 100 or box.result == 10) then
             if (count == 0 or ValOkBtn == 100) then
-                ValOkBtn = Maf(ValOkBtn / 10)
+                ValOkBtn = math.floor(ValOkBtn / 10)
                 if (ValOkBtn < 10) then
                     ValOkBtn = 1
                 end
@@ -246,8 +242,8 @@ function Mainbox_Call(display_Handle,TLayNr,NaLay,SeqNrStart,MacroNrStart,AppNr,
             end
 
             if (count == 0) then
-                E("all Groups are added")
-                Co("all Groups are added")
+                Echo("all Groups are added")
+                Confirm("all Groups are added")
                 SeqNrStart = box.inputs.c_Sequence_Start_Nr
                 MacroNrStart = box.inputs.d_Macro_Start_Nr
                 AppNr = box.inputs.e_Appearance_Start_Nr
@@ -260,7 +256,7 @@ function Mainbox_Call(display_Handle,TLayNr,NaLay,SeqNrStart,MacroNrStart,AppNr,
                     .____GELS__CHOOSE____GELS__CHOOSE____GELS__CHOOSE____GELS__CHOOSE____GELS__CHOOSE____
                 goto MainBox
             else
-                E("add Group")
+                Echo("add Group")
                 SeqNrStart = box.inputs.c_Sequence_Start_Nr
                 MacroNrStart = box.inputs.d_Macro_Start_Nr
                 AppNr = box.inputs.e_Appearance_Start_Nr
@@ -275,7 +271,7 @@ function Mainbox_Call(display_Handle,TLayNr,NaLay,SeqNrStart,MacroNrStart,AppNr,
             end
         elseif (box.result == 1) then
             if next(SelectedGrp) == nil then
-                Co("no Group are added!")
+                Confirm("no Group are added!")
                 SeqNrStart = box.inputs.c_Sequence_Start_Nr
                 MacroNrStart = box.inputs.d_Macro_Start_Nr
                 AppNr = box.inputs.e_Appearance_Start_Nr
@@ -298,11 +294,11 @@ function Mainbox_Call(display_Handle,TLayNr,NaLay,SeqNrStart,MacroNrStart,AppNr,
                 All_5_NrStart = box.inputs.f_Preset_All_5_Start_Nr
                 SelectedGelNr = box.selectors
                     .____GELS__CHOOSE____GELS__CHOOSE____GELS__CHOOSE____GELS__CHOOSE____GELS__CHOOSE____
-                E("Construction du Layout...")
+                Echo("Construction du Layout...")
                 do return 1,SeqNrStart,MacroNrStart,AppNr,TLayNr,NaLay,MaxColLgn,MatrickNrStart,SelectedGelNr,All_5_NrStart,SelectedGrp end
             end
         elseif (box.result == 0) then
-            E("User Canceled")
+            Echo("User Canceled")
             do return end
         end
     end -- End Main Box
@@ -312,7 +308,7 @@ function Mainbox_Call(display_Handle,TLayNr,NaLay,SeqNrStart,MacroNrStart,AppNr,
         TGrpChoise = {}
         for k in ipairs(FixtureGroups) do
             table.insert(TGrpChoise, "'" .. FixtureGroups[k].name .. "'")
-            E(FixtureGroups[k].name)
+            Echo(FixtureGroups[k].name)
         end
 
         -- Setup the Messagebox
@@ -329,9 +325,9 @@ function Mainbox_Call(display_Handle,TLayNr,NaLay,SeqNrStart,MacroNrStart,AppNr,
 
         table.insert(SelectedGrp, "'" .. FixtureGroups[SelGrp + 1].name .. "'")
         table.insert(SelectedGrpNo, "'" .. FixtureGroups[SelGrp + 1].NO .. "'")
-        E("A")
+        Echo("A")
         Message = Message .. FixtureGroups[SelGrp + 1].name .. "\n"
-        E("Select Group " .. FixtureGroups[SelGrp + 1].name)
+        Echo("Select Group " .. FixtureGroups[SelGrp + 1].name)
         table.remove(FixtureGroups, SelGrp + 1)
         goto MainBox
     end -- end ::addGroup:: do
@@ -596,7 +592,7 @@ function Create_Macro_Wings(CurrentMacroNr,prefix,surfix,a,FirstSeq,LastSeq,Matr
 end
 
 function Create_Macro_Fade_E(CurrentMacroNr,prefix,Argument_Fade,i,surfix,a,FirstSeqTime,LastSeqTime,CurrentSeqNr,SeqNrStart,SeqNrEnd,MatrickNrStart,TLayNr,Fade_Element)
-    E(CurrentMacroNr + i - 1)
+    Echo(CurrentMacroNr + i - 1)
     Cmd('Store Macro ' .. CurrentMacroNr + i - 1 .. ' \'' .. prefix .. Argument_Fade[i].name .. surfix[a] .. '')
     Cmd('ChangeDestination Macro ' .. CurrentMacroNr + i - 1 .. '')
     Cmd('Insert')
@@ -710,20 +706,20 @@ function Add_Macro_Call(a,TLayNr,Fade_Element,MatrickNrStart,Delay_F_Element,Del
 end
 
 function Create_Appear_Tricks(AppTricks,AppNr,prefix)
-    E('Create Appear. Tricks Ref')
+    Echo('Create Appear. Tricks Ref')
         for q in pairs(AppTricks) do
-            AppTricks[q].Nr = Maf(AppNr)
+            AppTricks[q].Nr = math.floor(AppNr)
             Cmd('Store App ' .. AppTricks[q].Nr .. ' "' .. prefix .. AppTricks[q].Name .. '" "Appearance"=' ..AppTricks[q].StApp .. '' .. AppTricks[q].RGBref .. '')
-            AppNr = Maf(AppNr + 1)
+            AppNr = math.floor(AppNr + 1)
         end
     do return 1,AppNr,AppTricks end
 end
 
 function Create_Appearances(SelectedGrp,AppNr,prefix,StAppOn,TCol,NrAppear,StColCode,StColName,StringColName,StAppNameOn,StAppNameOff,StAppOff)
     for g in ipairs(SelectedGrp) do
-        AppNr = Maf(AppNr);
+        AppNr = math.floor(AppNr);
         Cmd('Store App ' .. AppNr .. ' \'' .. prefix .. ' Label\' Appearance=' .. StAppOn .. ' color=\'0,0,0,1\'')
-        NrAppear = Maf(AppNr + 1)
+        NrAppear = math.floor(AppNr + 1)
         for col in ipairs(TCol) do
             StColCode = "\"" .. TCol[col].r .. "," .. TCol[col].g .. "," .. TCol[col].b .. ",1\""
             StColName = TCol[col].name
@@ -731,9 +727,9 @@ function Create_Appearances(SelectedGrp,AppNr,prefix,StAppOn,TCol,NrAppear,StCol
             StAppNameOn = "\"" .. prefix .. StringColName .. " on\""
             StAppNameOff = "\"" .. prefix .. StringColName .. " off\""
             Cmd("Store App " .. NrAppear .. " " .. StAppNameOn .. " Appearance=" .. StAppOn .. " color=" .. StColCode .. "")
-            NrAppear = Maf(NrAppear + 1)
+            NrAppear = math.floor(NrAppear + 1)
             Cmd("Store App " .. NrAppear .. " " .. StAppNameOff .. " Appearance=" .. StAppOff .. " color=" .. StColCode .. "")
-            NrAppear = Maf(NrAppear + 1)
+            NrAppear = math.floor(NrAppear + 1)
         end
     end
     do return 1,NrAppear end
@@ -750,7 +746,7 @@ function Create_Preset_25(TCol,StColName,StringColName,SelectedGelNr,prefix,All_
             Cmd('Store Preset 25.' .. All_5_Current .. '')
             Cmd('Label Preset 25.' .. All_5_Current ..  " " .. prefix .. StringColName .. " " )
             All_5_NrEnd = All_5_Current
-            All_5_Current = Maf(All_5_Current + 1)
+            All_5_Current = math.floor(All_5_Current + 1)
         end
     do return 1,All_5_NrEnd,All_5_Current end
 end
@@ -760,13 +756,13 @@ function Create_Appearances_Sequences(CurrentMacroNr,SelectedGelNr,SelectedGrp,R
         local ColLgnCount = 0
         local LayX = RefX
         local col_count = 0
-        LayY = Maf(LayY - LayH) -- Max Y Position minus hight from element. 0 are at the Bottom!
-        NrAppear = Maf(AppNr + 1)
-        NrNeed = Maf(AppNr + 1)
+        LayY = math.floor(LayY - LayH) -- Max Y Position minus hight from element. 0 are at the Bottom!
+        NrAppear = math.floor(AppNr + 1)
+        NrNeed = math.floor(AppNr + 1)
         Cmd("Assign Group " .. SelectedGrp[g] .. " at Layout " .. TLayNr)
         Cmd("Set Layout " ..TLayNr .. "." .. LayNr .. " Action=0 Appearance=" .. AppNr .. " PosX " .. LayX .. " PosY " ..LayY .. " PositionW " .. LayW .. " PositionH " .. LayH .." VisibilityObjectname=1 VisibilityBar=0 VisibilityIndicatorBar=0 VisibilitySelectionRelevance=1")
-        LayNr = Maf(LayNr + 1)
-        LayX = Maf(LayX + LayW + 20)
+        LayNr = math.floor(LayNr + 1)
+        LayX = math.floor(LayX + LayW + 20)
         local FirstSeqColor = CurrentSeqNr
 
         -- COLOR SEQ  /// Assign Values Preset 21.2 At Sequence 22 cue 1 part 0.1 /// Set Preset 25 Property'PresetMode' "Universal"
@@ -792,20 +788,20 @@ function Create_Appearances_Sequences(CurrentMacroNr,SelectedGelNr,SelectedGrp,R
             -- Add Squences to Layout
             Cmd("Assign Seq " .. CurrentSeqNr .. " at Layout " .. TLayNr)
             Cmd("Set Layout " ..TLayNr .. "." .. LayNr .. " property appearance <Default> PosX " .. LayX .. " PosY " ..LayY .. " PositionW " .. LayW .. " PositionH " .. LayH .." VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0")
-            NrNeed = Maf(NrNeed + 2); -- Set App Nr to next color
+            NrNeed = math.floor(NrNeed + 2); -- Set App Nr to next color
             if (col_count ~= MaxColLgn) then
-                LayX = Maf(LayX + LayW + 20)
+                LayX = math.floor(LayX + LayW + 20)
             else
                 LayX = RefX
-                LayX = Maf(LayX + LayW + 20)
-                LayY = Maf(LayY - 20) -- Add offset for Layout Element distance
-                LayY = Maf(LayY - LayH)
+                LayX = math.floor(LayX + LayW + 20)
+                LayY = math.floor(LayY - 20) -- Add offset for Layout Element distance
+                LayY = math.floor(LayY - LayH)
                 col_count = 0
-                ColLgnCount = Maf(ColLgnCount + 1)
+                ColLgnCount = math.floor(ColLgnCount + 1)
             end
-            LayNr = Maf(LayNr + 1)
+            LayNr = math.floor(LayNr + 1)
             LastSeqColor = CurrentSeqNr
-            CurrentSeqNr = Maf(CurrentSeqNr + 1)
+            CurrentSeqNr = math.floor(CurrentSeqNr + 1)
         end -- end COLOR SEQ
         -- add matrick group
         Cmd('ClearAll /nu')
@@ -814,13 +810,13 @@ function Create_Appearances_Sequences(CurrentMacroNr,SelectedGelNr,SelectedGrp,R
         Cmd('set seq ' .. CurrentSeqNr .. ' Property Appearance=' .. AppTricks[2].Nr)
         Cmd("Assign Seq " .. CurrentSeqNr .. " at Layout " .. TLayNr)
         Cmd("Set Layout " .. TLayNr .. "." .. LayNr .. " PosX " .. LayX .. " PosY " .. LayY .. " PositionW " .. LayW - 35 .." PositionH " .. LayH -35 .. " VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0")
-        CurrentSeqNr = Maf(CurrentSeqNr + 1)
+        CurrentSeqNr = math.floor(CurrentSeqNr + 1)
         Cmd('ClearAll /nu')
         Cmd('Store Sequence ' .. CurrentSeqNr .. ' \'' .. prefix .. "Tricksh" .. SelectedGrpName[g]:gsub('\'', '') ..'\'')
         Cmd('set seq ' .. CurrentSeqNr .. ' cue \'' .. prefix .. "Tricksh" .. SelectedGrpName[g]:gsub('\'', '') ..'\' Property Command=\'Assign MaTricks ' .. MatrickNrStart .. ' At Sequence ' .. FirstSeqColor ..' Thru ' .. LastSeqColor .. ' cue 1 part 0.1 ; Assign Sequence ' .. CurrentSeqNr - 1 .. ' At Layout ' ..TLayNr .. '.' .. LayNr)
         Cmd('set seq ' .. CurrentSeqNr .. ' Property Appearance=' .. AppTricks[1].Nr)
-        LayNr = Maf(LayNr + 1)
-        LayX = Maf(LayX + LayW - 35 + 20)
+        LayNr = math.floor(LayNr + 1)
+        LayX = math.floor(LayX + LayW - 35 + 20)
         Cmd('Store Macro ' .. CurrentMacroNr .. ' \'' .. prefix .. SelectedGrpName[g]:gsub('\'', ''))
         Cmd('ChangeDestination Macro ' .. CurrentMacroNr .. '')
         Cmd('Insert')
@@ -829,11 +825,11 @@ function Create_Appearances_Sequences(CurrentMacroNr,SelectedGelNr,SelectedGrp,R
         Cmd('Assign Macro ' .. CurrentMacroNr .. " at layout " .. TLayNr)
         Cmd('set Macro ' .. CurrentMacroNr .. ' Property Appearance=' .. AppTricks[3].Nr)
         Cmd('Set Layout ' .. TLayNr .. '.' .. LayNr .. ' PosX ' .. LayX .. ' PosY ' .. LayY .. ' PositionW ' .. LayW - 35 ..' PositionH ' .. LayH - 35 .. ' VisibilityObjectname= 0 VisibilityBar=0 VisibilityIndicatorBar=0')
-        CurrentMacroNr = Maf(CurrentMacroNr + 1)
-        LayNr = Maf(LayNr + 1)
-        CurrentSeqNr = Maf(CurrentSeqNr + 1)
+        CurrentMacroNr = math.floor(CurrentMacroNr + 1)
+        LayNr = math.floor(LayNr + 1)
+        CurrentSeqNr = math.floor(CurrentSeqNr + 1)
         -- FirstSeqColor = CurrentSeqNr
-        LayY = Maf(LayY - 20) -- Add offset for Layout Element distance
+        LayY = math.floor(LayY - 20) -- Add offset for Layout Element distance
     end -- end GRP
     do return 1,LayY,NrNeed,LayNr,CurrentSeqNr,CurrentMacroNr end
 end
