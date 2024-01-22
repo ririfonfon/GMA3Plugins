@@ -4,15 +4,17 @@ local signalTable, thiscomponent = select(3, ...)
 local myHandle = select(4, ...)
 
 function CreateInputDialog(displayHandle)
-
+  local list = false
   local FixtureGroups = Root().ShowData.DataPools.Default.Groups:Children()
   local SelectedGrp = {}
-  local SelectedGrpNo ={}
+  local SelectedGrpNo = {}
   local SelGrp
   local Nr_SelectedGrp
   local check_grp = false
   local ColPath = Root().ShowData.GelPools
   local ColGels = ColPath:Children()
+  local SelectedGelNr
+  local NGel
   local TLay = Root().ShowData.DataPools.Default.Layouts:Children()
   local TLayNr
   local Nalay
@@ -28,68 +30,75 @@ function CreateInputDialog(displayHandle)
   local MatrickNr = Root().ShowData.DataPools.Default.MAtricks:Children()
   local MatrickNr_Nr
 
-  local popuplists = {Grp_Select = {}, Gel_Select = {}, Name_Select = {'Color','Kolor'}, 
-  Lay_Select     = {1, 11, 101, 201, 301, 401, 501, 601, 701, 801, 901, 1001, 2001},
-  Seq_Select     = {1, 11, 101, 201, 301, 401, 501, 601, 701, 801, 901, 1001, 2001},
-  Macro_Select   = {1, 11, 101, 201, 301, 401, 501, 601, 701, 801, 901, 1001, 2001},
-  Appear_Select  = {1, 11, 101, 201, 301, 401, 501, 601, 701, 801, 901, 1001, 2001},
-  Preset_Select  = {1, 11, 101, 201, 301, 401, 501, 601, 701, 801, 901, 1001, 2001},
-  Matrick_Select = {1, 11, 101, 201, 301, 401, 501, 601, 701, 801, 901, 1001, 2001} }
+  local popuplists = {
+    Grp_Select = {},
+    Gel_Select = {},
+    Name_Select = { 'Color', 'Kolor' },
+    Lay_Select     = { 1, 11, 101, 201, 301, 401, 501, 601, 701, 801, 901, 1001, 2001 },
+    Seq_Select     = { 1, 11, 101, 201, 301, 401, 501, 601, 701, 801, 901, 1001, 2001 },
+    Macro_Select   = { 1, 11, 101, 201, 301, 401, 501, 601, 701, 801, 901, 1001, 2001 },
+    Appear_Select  = { 1, 11, 101, 201, 301, 401, 501, 601, 701, 801, 901, 1001, 2001 },
+    Preset_Select  = { 1, 11, 101, 201, 301, 401, 501, 601, 701, 801, 901, 1001, 2001 },
+    Matrick_Select = { 1, 11, 101, 201, 301, 401, 501, 601, 701, 801, 901, 1001, 2001 }
+  }
 
-
-  for k in ipairs(FixtureGroups) do
-    table.insert(popuplists.Grp_Select, "'" .. FixtureGroups[k].name .. "'")
-  end
-  for k in ipairs(ColGels) do
-    table.insert(popuplists.Gel_Select, "'" .. ColGels[k].name .. "'")
-  end
-  for k in ipairs(TLay) do
-    for i in ipairs(popuplists.Lay_Select) do
-      if popuplists.Lay_Select[i] == TLay[k].NO then
-        table.remove(popuplists.Lay_Select, i)
-      end
+  if list == false then
+    Echo("list")
+    for k in ipairs(FixtureGroups) do
+      table.insert(popuplists.Grp_Select, "'" .. FixtureGroups[k].name .. "'")
     end
-    TLayNr = TLay[k].NO + 1
-  end
-  for k in ipairs(SeqNr) do
-    for i in ipairs(popuplists.Seq_Select) do
-      if popuplists.Seq_Select[i] == SeqNr[k].NO then
-        table.remove(popuplists.Seq_Select, i)
-      end
+    for k in ipairs(ColGels) do
+      table.insert(popuplists.Gel_Select, "'" .. ColGels[k].name .. "'")
     end
-    SeqNrStart = SeqNr[k].NO + 1
-  end
-  for k in ipairs(MacroNr) do
-    for i in ipairs(popuplists.Macro_Select) do
-      if popuplists.Macro_Select[i] == MacroNr[k].NO then
-        table.remove(popuplists.Macro_Select, i)
+    for k in ipairs(TLay) do
+      for i in ipairs(popuplists.Lay_Select) do
+        if popuplists.Lay_Select[i] == TLay[k].NO then
+          table.remove(popuplists.Lay_Select, i)
+        end
       end
+      TLayNr = TLay[k].NO + 1
     end
-    MacroNr_Nr = MacroNr[k].NO + 1
-  end
-  for k in ipairs(App) do
-    for i in ipairs(popuplists.Appear_Select) do
-      if popuplists.Appear_Select[i] == App[k].NO then
-        table.remove(popuplists.Appear_Select, i)
+    for k in ipairs(SeqNr) do
+      for i in ipairs(popuplists.Seq_Select) do
+        if popuplists.Seq_Select[i] == SeqNr[k].NO then
+          table.remove(popuplists.Seq_Select, i)
+        end
       end
+      SeqNrStart = SeqNr[k].NO + 1
     end
-    App_Nr = App[k].NO + 1
-  end
-  for k in ipairs(All_5_Nr) do
-    for i in ipairs(popuplists.Preset_Select) do
-      if popuplists.Preset_Select[i] == All_5_Nr[k].NO then
-        table.remove(popuplists.Preset_Select, i)
+    for k in ipairs(MacroNr) do
+      for i in ipairs(popuplists.Macro_Select) do
+        if popuplists.Macro_Select[i] == MacroNr[k].NO then
+          table.remove(popuplists.Macro_Select, i)
+        end
       end
+      MacroNr_Nr = MacroNr[k].NO + 1
     end
-    All_5_Nr_Nr = All_5_Nr[k].NO + 1
-  end
-  for k in ipairs(MatrickNr) do
-    for i in ipairs(popuplists.Matrick_Select) do
-      if popuplists.Matrick_Select[i] == MatrickNr[k].NO then
-        table.remove(popuplists.Matrick_Select, i)
+    for k in ipairs(App) do
+      for i in ipairs(popuplists.Appear_Select) do
+        if popuplists.Appear_Select[i] == App[k].NO then
+          table.remove(popuplists.Appear_Select, i)
+        end
       end
+      App_Nr = App[k].NO + 1
     end
-    MatrickNr_Nr = MatrickNr[k].NO + 1
+    for k in ipairs(All_5_Nr) do
+      for i in ipairs(popuplists.Preset_Select) do
+        if popuplists.Preset_Select[i] == All_5_Nr[k].NO then
+          table.remove(popuplists.Preset_Select, i)
+        end
+      end
+      All_5_Nr_Nr = All_5_Nr[k].NO + 1
+    end
+    for k in ipairs(MatrickNr) do
+      for i in ipairs(popuplists.Matrick_Select) do
+        if popuplists.Matrick_Select[i] == MatrickNr[k].NO then
+          table.remove(popuplists.Matrick_Select, i)
+        end
+      end
+      MatrickNr_Nr = MatrickNr[k].NO + 1
+    end
+    list = true
   end
 
   -- Get the index of the display on which to create the dialog.
@@ -180,7 +189,8 @@ function CreateInputDialog(displayHandle)
   -- Create the sub title.
   -- This is row 1 of the dlgFrame.
   local subTitle = dlgFrame:Append("UIObject")
-  subTitle.Text = "Set Number begin Layout, Sequence, Macro, Appearance & Preset & Matrick\nAdd ColorGel & FixtureGroup\nSelected Group(s) are:\n"
+  subTitle.Text =
+  "Set Number begin Layout, Sequence, Macro, Appearance & Preset & Matrick\nAdd ColorGel & FixtureGroup\nSelected Group(s) are:\n"
   subTitle.TextalignmentH = "Left"
   subTitle.TextalignmentV = "Top"
   subTitle.ContentDriven = "Yes"
@@ -558,7 +568,7 @@ function CreateInputDialog(displayHandle)
   input8LineEdit.Font = "3"
   input8LineEdit.BackColor = colorPartlySelected
 
-  
+
   -- Create the UI elements for the 9 input button.
   local input9Icon = inputsGrid:Append("Button")
   input9Icon.Text = ""
@@ -578,18 +588,19 @@ function CreateInputDialog(displayHandle)
   input9Label.HasHover = "No";
   input9Label.Font = "3"
   input9Label.BackColor = colorPartlySelectedPreset
-  
+
   local input9Button = inputsGrid:Append('Button')
   input9Button.Anchors = { left = 4, right = 9, top = 8, bottom = 8 }
   input9Button.Padding = "5,5"
   input9Button.Margin = { left = 2, right = 0, top = 8, bottom = 2 }
   input9Button.Name = 'Gel_Select'
-  input9Button.Text = "'Custom'"
+  input9Button.Text = ""
+  -- input9Button.Text = "'Custom'"
   input9Button.PluginComponent = thiscomponent
   input9Button.Clicked = 'mypopup'
   input9Button.BackColor = colorPartlySelectedPreset
   input9Button.Font = "3"
-  
+
   -- Create the UI elements for the 10 input button.
   local input10Icon = inputsGrid:Append("Button")
   input10Icon.Text = ""
@@ -658,8 +669,8 @@ function CreateInputDialog(displayHandle)
 
   signalTable.OnInput1TextChanged = function(caller)
     Echo("Input1 changed: '" .. caller.Content .. "'")
-      Nalay = caller.Content:gsub("'","")
-    end
+    Nalay = caller.Content:gsub("'", "")
+  end
 
   signalTable.OnInput2TextChanged = function(caller)
     Echo("Input2 changed: '" .. caller.Content .. "'")
@@ -667,7 +678,7 @@ function CreateInputDialog(displayHandle)
     if caller.Content == "" then
       check = true
     end
-    TLayNr = caller.Content:gsub("'","")
+    TLayNr = caller.Content:gsub("'", "")
     TLayNr = tonumber(TLayNr)
     for k in ipairs(TLay) do
       if TLayNr == tonumber(TLay[k].NO) then
@@ -690,13 +701,24 @@ function CreateInputDialog(displayHandle)
     if caller.Content == "" then
       checks = true
     end
-    SeqNrStart = caller.Content:gsub("'","")
+    SeqNrStart = caller.Content:gsub("'", "")
     SeqNrStart = tonumber(SeqNrStart)
+    Echo("SeqNrStart")
+    Echo(SeqNrStart)
+    Echo("Nr_SelectedGrp")
+    Echo(Nr_SelectedGrp)
+    Echo("NGel")
+    Echo(NGel)
+    SeqNrRange = SeqNrStart + tonumber((Nr_SelectedGrp*(NGel+2))+NGel+100)
+    Echo("SeqNrRange")
+    Echo(SeqNrRange)
     for k in ipairs(SeqNr) do
-      if SeqNrStart == tonumber(SeqNr[k].NO) then
-        OkButton.Visible = "No"
-        input3LineEdit.TextColor = colorAlertText
-        checks = true
+      if SeqNrStart <= tonumber(SeqNr[k].NO) then
+        if SeqNrRange >= tonumber(SeqNr[k].NO) then
+          OkButton.Visible = "No"
+          input3LineEdit.TextColor = colorAlertText
+          checks = true
+        end
       end
     end
     if checks == false then
@@ -729,10 +751,20 @@ function CreateInputDialog(displayHandle)
 
   function signalTable.mypopup(caller)
     local itemlist = popuplists[caller.Name]
-    local _, choice = PopupInput{title = caller.Name, caller = caller:GetDisplay(), items = itemlist, selectedValue = caller.Text}
+    local _, choice = PopupInput { title = caller.Name, caller = caller:GetDisplay(), items = itemlist, selectedValue = caller.Text }
     if caller.Name == "Gel_Select" then
       caller.Text = choice or caller.Text
       Echo("Gelchanged: " .. caller.Text .. "'")
+      for k in ipairs(ColGels) do
+        if ColGels[k].name == caller.Text:gsub("'", "") then
+          SelectedGelNr = k
+        end
+      end
+      local TCol = ColPath:Children()[SelectedGelNr]
+      for k in ipairs(TCol) do
+        NGel = k
+      end
+      Echo (NGel)
     elseif caller.Name == "Grp_Select" then
       for k in ipairs(popuplists.Grp_Select) do
         Echo(popuplists.Grp_Select[k])
@@ -757,23 +789,23 @@ function CreateInputDialog(displayHandle)
       OkButton.Visible = "Yes"
       check_grp = true
     elseif caller.Name == "Name_Select" then
-      input1LineEdit.Content  = choice
+      input1LineEdit.Content = choice
     elseif caller.Name == "Lay_Select" then
       Echo(("lay call"))
-      input2LineEdit.Content  = choice
+      input2LineEdit.Content = choice
     elseif caller.Name == "Seq_Select" then
-      input3LineEdit.Content  = choice
+      input3LineEdit.Content = choice
     elseif caller.Name == "Macro_Select" then
-      input4LineEdit.Content  = choice
+      input4LineEdit.Content = choice
     elseif caller.Name == "Appear_Select" then
-      input5LineEdit.Content  = choice
+      input5LineEdit.Content = choice
     elseif caller.Name == "Preset_Select" then
-      input6LineEdit.Content  = choice
+      input6LineEdit.Content = choice
     elseif caller.Name == "Matrick_Select" then
-      input7LineEdit.Content  = choice
+      input7LineEdit.Content = choice
     end
   end
-
 end
+
 -- Run the plugin.
 return CreateInputDialog
