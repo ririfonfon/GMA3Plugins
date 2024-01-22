@@ -303,7 +303,7 @@ function Mainbox_Call(display_Handle,TLayNr,NaLay,SeqNrStart,MacroNrStart,AppNr,
             end
         elseif (box.result == 0) then
             E("User Canceled")
-            do return 0 end
+            do return end
         end
     end -- End Main Box
 
