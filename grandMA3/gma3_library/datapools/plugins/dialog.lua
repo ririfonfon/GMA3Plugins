@@ -9,10 +9,12 @@ function CreateInputDialog(displayHandle)
   local SelectedGrp = {}
   local SelectedGrpNo ={}
   local SelGrp
+  local Nr_SelectedGrp
+  local check_grp = false
   local ColPath = Root().ShowData.GelPools
   local ColGels = ColPath:Children()
   local TLay = Root().ShowData.DataPools.Default.Layouts:Children()
-  local TLay_Nr
+  local TLayNr
   local SeqNr = Root().ShowData.DataPools.Default.Sequences:Children()
   local SeqNr_Nr
   local MacroNr = Root().ShowData.DataPools.Default.Macros:Children()
@@ -32,7 +34,6 @@ function CreateInputDialog(displayHandle)
   Preset_Select  = {1, 11, 101, 201, 301, 401, 501, 601, 701, 801, 901, 1001, 2001},
   Matrick_Select = {1, 11, 101, 201, 301, 401, 501, 601, 701, 801, 901, 1001, 2001} }
 
-  local Nr_SelectedGrp
 
   for k in ipairs(FixtureGroups) do
     table.insert(popuplists.Grp_Select, "'" .. FixtureGroups[k].name .. "'")
@@ -46,7 +47,7 @@ function CreateInputDialog(displayHandle)
         table.remove(popuplists.Lay_Select, i)
       end
     end
-    TLay_Nr = TLay[k].NO + 1
+    TLayNr = TLay[k].NO + 1
   end
   for k in ipairs(SeqNr) do
     for i in ipairs(popuplists.Seq_Select) do
@@ -110,6 +111,8 @@ function CreateInputDialog(displayHandle)
   local colorMatricks = Root().ColorTheme.ColorGroups.PoolWindow.Matricks
   local colorPlugins = Root().ColorTheme.ColorGroups.PoolWindow.Plugins
   local colorGroups = Root().ColorTheme.ColorGroups.PoolWindow.Groups
+  local colorText = Root().ColorTheme.colorGroups.Global.Text
+  local colorAlertText = Root().ColorTheme.colorGroups.Global.AlertText
 
   -- Get the overlay.
   local display = GetDisplayByIndex(displayIndex)
@@ -268,12 +271,13 @@ function CreateInputDialog(displayHandle)
   input2LineEdit.Margin = { left = 2, right = 0, top = 2, bottom = 2 }
   input2LineEdit.Filter = "0123456789."
   input2LineEdit.VkPluginName = "TextInputNumOnly"
-  input2LineEdit.Content = TLay_Nr
+  input2LineEdit.Content = TLayNr
   input2LineEdit.MaxTextLength = 8
   input2LineEdit.HideFocusFrame = "Yes"
   input2LineEdit.PluginComponent = myHandle
   input2LineEdit.TextChanged = "OnInput2TextChanged"
   input2LineEdit.BackColor = colorLayouts
+  -- input2LineEdit.TextColor = colorAlertText
   input2LineEdit.Font = "3"
 
   local input2Sujestion = inputsGrid:Append("Button")
@@ -562,9 +566,19 @@ function CreateInputDialog(displayHandle)
   input9Icon.HasHover = "No";
   input9Icon.BackColor = colorPartlySelectedPreset
   input9Icon.Font = "3"
+
+  local input9Label = inputsGrid:Append("UIObject")
+  input9Label.Text = "Gel  "
+  input9Label.TextalignmentH = "Left"
+  input9Label.Anchors = { left = 1, right = 3, top = 8, bottom = 8 }
+  input9Label.Padding = "5,5"
+  input9Label.Margin = { left = 2, right = 2, top = 8, bottom = 2 }
+  input9Label.HasHover = "No";
+  input9Label.Font = "3"
+  input9Label.BackColor = colorPartlySelectedPreset
   
   local input9Button = inputsGrid:Append('Button')
-  input9Button.Anchors = { left = 1, right = 9, top = 8, bottom = 8 }
+  input9Button.Anchors = { left = 4, right = 9, top = 8, bottom = 8 }
   input9Button.Padding = "5,5"
   input9Button.Margin = { left = 2, right = 0, top = 8, bottom = 2 }
   input9Button.Name = 'Gel_Select'
@@ -646,6 +660,25 @@ function CreateInputDialog(displayHandle)
 
   signalTable.OnInput2TextChanged = function(caller)
     Echo("Input2 changed: '" .. caller.Content .. "'")
+    local check = false
+    if caller.Content == "" then
+      check = true
+    end
+    TLayNr = caller.Content:gsub("'","")
+    TLayNr = tonumber(TLayNr)
+    for k in ipairs(TLay) do
+      if TLayNr == tonumber(TLay[k].NO) then
+        OkButton.Visible = "No"
+        input2LineEdit.TextColor = colorAlertText
+        check = true
+      end
+    end
+    if check == false then
+      input2LineEdit.TextColor = colorText
+      if check_grp == true then
+        OkButton.Visible = "Yes"
+      end
+    end
   end
 
   signalTable.OnInput3TextChanged = function(caller)
@@ -700,10 +733,32 @@ function CreateInputDialog(displayHandle)
       subTitle.Text = subTitle.Text .. Nr_SelectedGrp .. "." .. FixtureGroups[SelGrp].name .. " "
       Echo("Select Group " .. FixtureGroups[SelGrp].name)
       OkButton.Visible = "Yes"
+      check_grp = true
     elseif caller.Name == "Name_Select" then
       input1LineEdit.Content  = choice
+      -- Nalay = choice
     elseif caller.Name == "Lay_Select" then
+      Echo(("lay call"))
       input2LineEdit.Content  = choice
+      local check = false
+      if caller.Content == "" then
+        check = true
+      end
+      TLayNr = caller.Content:gsub("'","")
+      TLayNr = tonumber(TLayNr)
+      for k in ipairs(TLay) do
+        if TLayNr == tonumber(TLay[k].NO) then
+          OkButton.Visible = "No"
+          input2LineEdit.TextColor = colorAlertText
+          check = true
+        end
+      end
+      if check == false then
+        input2LineEdit.TextColor = colorText
+        if check_grp == true then
+          OkButton.Visible = "Yes"
+        end
+      end
     elseif caller.Name == "Seq_Select" then
       input3LineEdit.Content  = choice
     elseif caller.Name == "Macro_Select" then
