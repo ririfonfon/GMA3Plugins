@@ -4,8 +4,6 @@ Releases:
 
 Created by Richard Fontaine "RIRI", January 2024.
 --]]
--- local F = string.format
--- local Co = Confirm
 
 local function Main(display_Handle)
     local root = Root();
