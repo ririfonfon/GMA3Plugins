@@ -459,7 +459,7 @@ local function Main(display_Handle)
         -- Create Appearances 
         local Return_Create_Appearances = {Create_Appearances(SelectedGrp,AppNr,prefix,StAppOn,TCol,NrAppear,StColCode,StColName,StringColName,StAppNameOn,StAppNameOff,StAppOff)}
         if Return_Create_Appearances[1] then
-            NrAppear =Return_Create_Appearances[2]
+            NrAppear = Return_Create_Appearances[2]
         end
         -- end Appearances
         -- Create Preset 25
