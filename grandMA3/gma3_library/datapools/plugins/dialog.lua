@@ -6,6 +6,9 @@ local myHandle = select(4, ...)
 function CreateInputDialog(displayHandle)
 
   local FixtureGroups = Root().ShowData.DataPools.Default.Groups:Children()
+  local SelectedGrp = {}
+  local SelectedGrpNo ={}
+  local SelGrp
   local ColPath = Root().ShowData.GelPools
   local ColGels = ColPath:Children()
   local TLay = Root().ShowData.DataPools.Default.Layouts:Children()
@@ -28,6 +31,8 @@ function CreateInputDialog(displayHandle)
   Appear_Select  = {1, 11, 101, 201, 301, 401, 501, 601, 701, 801, 901, 1001, 2001},
   Preset_Select  = {1, 11, 101, 201, 301, 401, 501, 601, 701, 801, 901, 1001, 2001},
   Matrick_Select = {1, 11, 101, 201, 301, 401, 501, 601, 701, 801, 901, 1001, 2001} }
+
+  local Nr_SelectedGrp
 
   for k in ipairs(FixtureGroups) do
     table.insert(popuplists.Grp_Select, "'" .. FixtureGroups[k].name .. "'")
@@ -606,7 +611,7 @@ function CreateInputDialog(displayHandle)
   OkButton.TextalignmentH = "Centre"
   OkButton.PluginComponent = myHandle
   OkButton.Clicked = "OkButtonClicked"
-  OkButton.Visible = "Yes"
+  OkButton.Visible = "No"
 
   local cancelButton = buttonGrid:Append("Button");
   cancelButton.Anchors = { left = 1, right = 1, top = 0, bottom = 0 }
@@ -626,7 +631,7 @@ function CreateInputDialog(displayHandle)
   end
 
   signalTable.OkButtonClicked = function(caller)
-    Echo("Apply button clicked.")
+    Echo("OK button clicked.")
 
     if (OkButton.BackColor == colorBackground) then
       OkButton.BackColor = colorBackgroundPlease
@@ -672,6 +677,29 @@ function CreateInputDialog(displayHandle)
     local _, choice = PopupInput{title = caller.Name, caller = caller:GetDisplay(), items = itemlist, selectedValue = caller.Text}
     if caller.Name == "Gel_Select" then
       caller.Text = choice or caller.Text
+      Echo("Gelchanged: " .. caller.Text .. "'")
+    elseif caller.Name == "Grp_Select" then
+      for k in ipairs(popuplists.Grp_Select) do
+        Echo(popuplists.Grp_Select[k])
+        if popuplists.Grp_Select[k] == choice then
+          table.remove(popuplists.Grp_Select, k)
+        end
+      end
+      choice = choice:gsub("'", "")
+      Echo("Grp add : " .. choice)
+      for k in ipairs(FixtureGroups) do
+        if choice == FixtureGroups[k].name then
+          SelGrp = k
+        end
+      end
+      table.insert(SelectedGrp, "'" .. FixtureGroups[SelGrp].name .. "'")
+      table.insert(SelectedGrpNo, "'" .. FixtureGroups[SelGrp].NO .. "'")
+      for k in ipairs(SelectedGrp) do
+        Nr_SelectedGrp = k
+      end
+      subTitle.Text = subTitle.Text .. Nr_SelectedGrp .. "." .. FixtureGroups[SelGrp].name .. " "
+      Echo("Select Group " .. FixtureGroups[SelGrp].name)
+      OkButton.Visible = "Yes"
     elseif caller.Name == "Name_Select" then
       input1LineEdit.Content  = choice
     elseif caller.Name == "Lay_Select" then
@@ -688,7 +716,7 @@ function CreateInputDialog(displayHandle)
       input7LineEdit.Content  = choice
     end
   end
-end
 
+end
 -- Run the plugin.
 return CreateInputDialog
