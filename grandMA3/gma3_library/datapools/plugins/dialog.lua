@@ -15,8 +15,10 @@ function CreateInputDialog(displayHandle)
   local ColGels = ColPath:Children()
   local TLay = Root().ShowData.DataPools.Default.Layouts:Children()
   local TLayNr
+  local Nalay
   local SeqNr = Root().ShowData.DataPools.Default.Sequences:Children()
-  local SeqNr_Nr
+  local SeqNrStart
+  local SeqNrRange
   local MacroNr = Root().ShowData.DataPools.Default.Macros:Children()
   local MacroNr_Nr
   local App = Root().ShowData.Appearances:Children()
@@ -55,7 +57,7 @@ function CreateInputDialog(displayHandle)
         table.remove(popuplists.Seq_Select, i)
       end
     end
-    SeqNr_Nr = SeqNr[k].NO + 1
+    SeqNrStart = SeqNr[k].NO + 1
   end
   for k in ipairs(MacroNr) do
     for i in ipairs(popuplists.Macro_Select) do
@@ -318,7 +320,7 @@ function CreateInputDialog(displayHandle)
   input3LineEdit.Padding = "5,5"
   input3LineEdit.Margin = { left = 2, right = 0, top = 2, bottom = 2 }
   input3LineEdit.VkPluginName = "TextInput"
-  input3LineEdit.Content = SeqNr_Nr
+  input3LineEdit.Content = SeqNrStart
   input3LineEdit.MaxTextLength = 10
   input3LineEdit.HideFocusFrame = "Yes"
   input3LineEdit.PluginComponent = myHandle
@@ -656,7 +658,8 @@ function CreateInputDialog(displayHandle)
 
   signalTable.OnInput1TextChanged = function(caller)
     Echo("Input1 changed: '" .. caller.Content .. "'")
-  end
+      Nalay = caller.Content:gsub("'","")
+    end
 
   signalTable.OnInput2TextChanged = function(caller)
     Echo("Input2 changed: '" .. caller.Content .. "'")
@@ -683,6 +686,25 @@ function CreateInputDialog(displayHandle)
 
   signalTable.OnInput3TextChanged = function(caller)
     Echo("Input3 changed: '" .. caller.Content .. "'")
+    local checks = false
+    if caller.Content == "" then
+      checks = true
+    end
+    SeqNrStart = caller.Content:gsub("'","")
+    SeqNrStart = tonumber(SeqNrStart)
+    for k in ipairs(SeqNr) do
+      if SeqNrStart == tonumber(SeqNr[k].NO) then
+        OkButton.Visible = "No"
+        input3LineEdit.TextColor = colorAlertText
+        checks = true
+      end
+    end
+    if checks == false then
+      input3LineEdit.TextColor = colorText
+      if check_grp == true then
+        OkButton.Visible = "Yes"
+      end
+    end
   end
 
   signalTable.OnInput4TextChanged = function(caller)
@@ -736,29 +758,9 @@ function CreateInputDialog(displayHandle)
       check_grp = true
     elseif caller.Name == "Name_Select" then
       input1LineEdit.Content  = choice
-      -- Nalay = choice
     elseif caller.Name == "Lay_Select" then
       Echo(("lay call"))
       input2LineEdit.Content  = choice
-      local check = false
-      if caller.Content == "" then
-        check = true
-      end
-      TLayNr = caller.Content:gsub("'","")
-      TLayNr = tonumber(TLayNr)
-      for k in ipairs(TLay) do
-        if TLayNr == tonumber(TLay[k].NO) then
-          OkButton.Visible = "No"
-          input2LineEdit.TextColor = colorAlertText
-          check = true
-        end
-      end
-      if check == false then
-        input2LineEdit.TextColor = colorText
-        if check_grp == true then
-          OkButton.Visible = "Yes"
-        end
-      end
     elseif caller.Name == "Seq_Select" then
       input3LineEdit.Content  = choice
     elseif caller.Name == "Macro_Select" then
