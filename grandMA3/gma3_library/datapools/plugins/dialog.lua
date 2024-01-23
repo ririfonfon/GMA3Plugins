@@ -167,10 +167,11 @@ function CreateInputDialog(displayHandle)
   titleBar.Texture = "corner2"
 
   local titleBarIcon = titleBar:Append("TitleButton")
-  titleBarIcon.Text = "Layout Color By RIRI"
+  titleBarIcon.Text = "                       Layout Color By RIRI"
   titleBarIcon.Texture = "corner1"
   titleBarIcon.Anchors = "0,0"
   titleBarIcon.Icon = "object_plugin1"
+  titleBarIcon.Font = "2"
   titleBarIcon.backColor = colorPlugins
 
   local titleBarCloseButton = titleBar:Append("CloseButton")
@@ -207,7 +208,7 @@ function CreateInputDialog(displayHandle)
   subTitle.TextAutoAdjust = "Yes"
   subTitle.Anchors = { left = 0, right = 0, top = 0, bottom = 0 }
   subTitle.Padding = { left = 0, right = 0, top = 5, bottom = 5 }
-  subTitle.Font = "3"
+  subTitle.Font = "2"
   -- subTitle.Font = "Medium20"
   subTitle.HasHover = "No"
   subTitle.BackColor = colorTransparent
@@ -237,7 +238,7 @@ function CreateInputDialog(displayHandle)
   input1Label.Margin = { left = 2, right = 2, top = 0, bottom = 2 }
   input1Label.HasHover = "No"
   input1Label.BackColor = colorLayouts
-  input1Label.Font = "3"
+  input1Label.Font = "2"
 
   local input1LineEdit = inputsGrid:Append("LineEdit")
   input1LineEdit.Prompt = "Name: "
@@ -252,7 +253,7 @@ function CreateInputDialog(displayHandle)
   input1LineEdit.PluginComponent = myHandle
   input1LineEdit.TextChanged = "OnInput1TextChanged"
   input1LineEdit.BackColor = colorLayouts
-  input1LineEdit.Font = "3"
+  input1LineEdit.Font = "2"
 
   local input1Sujestion = inputsGrid:Append("Button")
   input1Sujestion.Text = ""
@@ -282,7 +283,7 @@ function CreateInputDialog(displayHandle)
   input2Label.Margin = { left = 2, right = 2, top = 2, bottom = 2 }
   input2Label.HasHover = "No";
   input2Label.BackColor = colorLayouts
-  input2Label.Font = "3"
+  input2Label.Font = "2"
 
   local input2LineEdit = inputsGrid:Append("LineEdit")
   input2LineEdit.Prompt = "Nr: "
@@ -299,7 +300,7 @@ function CreateInputDialog(displayHandle)
   input2LineEdit.TextChanged = "OnInput2TextChanged"
   input2LineEdit.BackColor = colorLayouts
   -- input2LineEdit.TextColor = colorAlertText
-  input2LineEdit.Font = "3"
+  input2LineEdit.Font = "2"
 
   local input2Sujestion = inputsGrid:Append("Button")
   input2Sujestion.Text = ""
@@ -329,7 +330,7 @@ function CreateInputDialog(displayHandle)
   input3Label.Margin = { left = 2, right = 2, top = 2, bottom = 2 }
   input3Label.HasHover = "No";
   input3Label.BackColor = colorPartlySelectedPreset
-  input3Label.Font = "3"
+  input3Label.Font = "2"
   input3Label.BackColor = colorSequences
 
   local input3LineEdit = inputsGrid:Append("LineEdit")
@@ -345,7 +346,7 @@ function CreateInputDialog(displayHandle)
   input3LineEdit.Filter = "0123456789."
   input3LineEdit.PluginComponent = myHandle
   input3LineEdit.TextChanged = "OnInput3TextChanged"
-  input3LineEdit.Font = "3"
+  input3LineEdit.Font = "2"
   input3LineEdit.BackColor = colorSequences
 
   local input3Sujestion = inputsGrid:Append("Button")
@@ -375,7 +376,7 @@ function CreateInputDialog(displayHandle)
   input4Label.Padding = "5,5"
   input4Label.Margin = { left = 2, right = 2, top = 3, bottom = 2 }
   input4Label.HasHover = "No";
-  input4Label.Font = "3"
+  input4Label.Font = "2"
   input4Label.BackColor = colorMacro
 
   local input4LineEdit = inputsGrid:Append("LineEdit")
@@ -391,7 +392,7 @@ function CreateInputDialog(displayHandle)
   input4LineEdit.HideFocusFrame = "Yes"
   input4LineEdit.PluginComponent = myHandle
   input4LineEdit.TextChanged = "OnInput4TextChanged"
-  input4LineEdit.Font = "3"
+  input4LineEdit.Font = "2"
   input4LineEdit.BackColor = colorMacro
 
   local input4Sujestion = inputsGrid:Append("Button")
@@ -421,7 +422,7 @@ function CreateInputDialog(displayHandle)
   input5Label.Padding = "5,5"
   input5Label.Margin = { left = 2, right = 2, top = 4, bottom = 2 }
   input5Label.HasHover = "No";
-  input5Label.Font = "3"
+  input5Label.Font = "2"
   input5Label.BackColor = colorAppearances
 
   local input5LineEdit = inputsGrid:Append("LineEdit")
@@ -437,7 +438,7 @@ function CreateInputDialog(displayHandle)
   input5LineEdit.HideFocusFrame = "Yes"
   input5LineEdit.PluginComponent = myHandle
   input5LineEdit.TextChanged = "OnInput5TextChanged"
-  input5LineEdit.Font = "3"
+  input5LineEdit.Font = "2"
   input5LineEdit.BackColor = colorAppearances
 
   local input5Sujestion = inputsGrid:Append("Button")
@@ -467,7 +468,7 @@ function CreateInputDialog(displayHandle)
   input6Label.Padding = "5,5"
   input6Label.Margin = { left = 2, right = 2, top = 5, bottom = 2 }
   input6Label.HasHover = "No";
-  input6Label.Font = "3"
+  input6Label.Font = "2"
   input6Label.BackColor = colorPresets
 
   local input6LineEdit = inputsGrid:Append("LineEdit")
@@ -483,7 +484,7 @@ function CreateInputDialog(displayHandle)
   input6LineEdit.HideFocusFrame = "Yes"
   input6LineEdit.PluginComponent = myHandle
   input6LineEdit.TextChanged = "OnInput6TextChanged"
-  input6LineEdit.Font = "3"
+  input6LineEdit.Font = "2"
   input6LineEdit.BackColor = colorPresets
 
   local input6Sujestion = inputsGrid:Append("Button")
@@ -513,7 +514,7 @@ function CreateInputDialog(displayHandle)
   input7Label.Padding = "5,5"
   input7Label.Margin = { left = 2, right = 2, top = 6, bottom = 2 }
   input7Label.HasHover = "No";
-  input7Label.Font = "3"
+  input7Label.Font = "2"
   input7Label.BackColor = colorMatricks
 
   local input7LineEdit = inputsGrid:Append("LineEdit")
@@ -529,7 +530,7 @@ function CreateInputDialog(displayHandle)
   input7LineEdit.HideFocusFrame = "Yes"
   input7LineEdit.PluginComponent = myHandle
   input7LineEdit.TextChanged = "OnInput7TextChanged"
-  input7LineEdit.Font = "3"
+  input7LineEdit.Font = "2"
   input7LineEdit.BackColor = colorMatricks
 
   local input7Sujestion = inputsGrid:Append("Button")
@@ -559,7 +560,7 @@ function CreateInputDialog(displayHandle)
   input8Label.Padding = "5,5"
   input8Label.Margin = { left = 2, right = 2, top = 7, bottom = 2 }
   input8Label.HasHover = "No";
-  input8Label.Font = "3"
+  input8Label.Font = "2"
   input8Label.BackColor = colorPartlySelected
 
   local input8LineEdit = inputsGrid:Append("LineEdit")
@@ -575,7 +576,7 @@ function CreateInputDialog(displayHandle)
   input8LineEdit.HideFocusFrame = "Yes"
   input8LineEdit.PluginComponent = myHandle
   input8LineEdit.TextChanged = "OnInput8TextChanged"
-  input8LineEdit.Font = "3"
+  input8LineEdit.Font = "2"
   input8LineEdit.BackColor = colorPartlySelected
 
 
@@ -587,7 +588,7 @@ function CreateInputDialog(displayHandle)
   input9Icon.Margin = { left = 0, right = 2, top = 8, bottom = 2 }
   input9Icon.HasHover = "No";
   input9Icon.BackColor = colorPartlySelectedPreset
-  input9Icon.Font = "3"
+  input9Icon.Font = "2"
 
   local input9Label = inputsGrid:Append("UIObject")
   input9Label.Text = "Gel  "
@@ -596,7 +597,7 @@ function CreateInputDialog(displayHandle)
   input9Label.Padding = "5,5"
   input9Label.Margin = { left = 2, right = 2, top = 8, bottom = 2 }
   input9Label.HasHover = "No";
-  input9Label.Font = "3"
+  input9Label.Font = "2"
   input9Label.BackColor = colorPartlySelectedPreset
 
   local input9Button = inputsGrid:Append('Button')
@@ -604,12 +605,12 @@ function CreateInputDialog(displayHandle)
   input9Button.Padding = "5,5"
   input9Button.Margin = { left = 2, right = 0, top = 8, bottom = 2 }
   input9Button.Name = 'Gel_Select'
-  input9Button.Text = ""
+  input9Button.Text = "Please select Gel"
   -- input9Button.Text = "'Custom'"
   input9Button.PluginComponent = thiscomponent
   input9Button.Clicked = 'mypopup'
   input9Button.BackColor = colorPartlySelectedPreset
-  input9Button.Font = "3"
+  input9Button.Font = "2"
 
   -- Create the UI elements for the 10 input button.
   local input10Icon = inputsGrid:Append("Button")
@@ -619,7 +620,7 @@ function CreateInputDialog(displayHandle)
   input10Icon.Margin = { left = 0, right = 2, top = 9, bottom = 2 }
   input10Icon.HasHover = "No";
   input10Icon.BackColor = colorGroups
-  input10Icon.Font = "3"
+  input10Icon.Font = "2"
 
   local input10Button = inputsGrid:Append('Button')
   input10Button.Anchors = { left = 1, right = 9, top = 9, bottom = 9 }
@@ -630,7 +631,7 @@ function CreateInputDialog(displayHandle)
   input10Button.PluginComponent = thiscomponent
   input10Button.Clicked = 'mypopup'
   input10Button.BackColor = colorGroups
-  input10Button.Font = "3"
+  input10Button.Font = "2"
 
   -- Create the button grid.
   -- This is row 3 of the dlgFrame.
@@ -644,7 +645,7 @@ function CreateInputDialog(displayHandle)
   OkButton.Textshadow = 1
   OkButton.HasHover = "Yes"
   OkButton.Text = "OK Let's GO"
-  OkButton.Font = "3"
+  OkButton.Font = "2"
   OkButton.TextalignmentH = "Centre"
   OkButton.PluginComponent = myHandle
   OkButton.Clicked = "OkButtonClicked"
@@ -655,7 +656,7 @@ function CreateInputDialog(displayHandle)
   cancelButton.Textshadow = 1
   cancelButton.HasHover = "Yes"
   cancelButton.Text = "Cancel"
-  cancelButton.Font = "3"
+  cancelButton.Font = "2"
   cancelButton.TextalignmentH = "Centre"
   cancelButton.PluginComponent = myHandle
   cancelButton.Clicked = "CancelButtonClicked"
