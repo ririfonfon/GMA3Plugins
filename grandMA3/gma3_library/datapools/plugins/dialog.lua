@@ -15,6 +15,8 @@ function CreateInputDialog(displayHandle)
   local ColGels = ColPath:Children()
   local SelectedGelNr
   local NGel
+  local MaxColLgn
+  local check_gel = false
   local TLay = Root().ShowData.DataPools.Default.Layouts:Children()
   local TLayNr
   local Nalay
@@ -28,14 +30,16 @@ function CreateInputDialog(displayHandle)
   local AppNr
   local AppNrRange
   local All_5_Nr = Root().ShowData.DataPools.Default.PresetPools[25]:Children()
-  local All_5_Nr_Nr
+  local All_5_NrStart
+  local All_5_NrRange
   local MatrickNr = Root().ShowData.DataPools.Default.MAtricks:Children()
-  local MatrickNr_Nr
+  local MatrickNrStart
+  local MatrickNrRange
 
   local popuplists = {
-    Grp_Select = {},
-    Gel_Select = {},
-    Name_Select = { 'Color', 'Kolor' },
+    Grp_Select     = {},
+    Gel_Select     = {},
+    Name_Select    = { 'Color', 'Kolor' },
     Lay_Select     = { 1, 11, 101, 201, 301, 401, 501, 601, 701, 801, 901, 1001, 2001 },
     Seq_Select     = { 1, 11, 101, 201, 301, 401, 501, 601, 701, 801, 901, 1001, 2001 },
     Macro_Select   = { 1, 11, 101, 201, 301, 401, 501, 601, 701, 801, 901, 1001, 2001 },
@@ -90,7 +94,10 @@ function CreateInputDialog(displayHandle)
           table.remove(popuplists.Preset_Select, i)
         end
       end
-      All_5_Nr_Nr = All_5_Nr[k].NO + 1
+      All_5_NrStart = All_5_Nr[k].NO + 1
+    end
+    if All_5_NrStart == nil then
+      All_5_NrStart = 1
     end
     for k in ipairs(MatrickNr) do
       for i in ipairs(popuplists.Matrick_Select) do
@@ -98,7 +105,7 @@ function CreateInputDialog(displayHandle)
           table.remove(popuplists.Matrick_Select, i)
         end
       end
-      MatrickNr_Nr = MatrickNr[k].NO + 1
+      MatrickNrStart = MatrickNr[k].NO + 1
     end
     list = true
   end
@@ -179,11 +186,11 @@ function CreateInputDialog(displayHandle)
   dlgFrame.Rows = 3
   dlgFrame.Anchors = { left = 0, right = 0, top = 1, bottom = 1 }
   dlgFrame[1][1].SizePolicy = "Fixed"
-  dlgFrame[1][1].Size = "200"
+  dlgFrame[1][1].Size = "150"
   --   dlgFrame[1][1].Size = "60"
   dlgFrame[1][2].SizePolicy = "Fixed"
-  dlgFrame[1][2].Size = "500"
-  --   dlgFrame[1][2].Size = "200"
+  dlgFrame[1][2].Size = "700"
+  -- dlgFrame[1][2].Size = "Stretch"
   dlgFrame[1][3].SizePolicy = "Fixed"
   dlgFrame[1][3].Size = "50"
   --   dlgFrame[1][3].Size = "80"
@@ -471,7 +478,7 @@ function CreateInputDialog(displayHandle)
   input6LineEdit.Margin = { left = 2, right = 0, top = 5, bottom = 2 }
   input6LineEdit.Filter = "0123456789"
   input6LineEdit.VkPluginName = "TextInputNumOnly"
-  input6LineEdit.Content = All_5_Nr_Nr
+  input6LineEdit.Content = All_5_NrStart
   input6LineEdit.MaxTextLength = 6
   input6LineEdit.HideFocusFrame = "Yes"
   input6LineEdit.PluginComponent = myHandle
@@ -517,7 +524,7 @@ function CreateInputDialog(displayHandle)
   input7LineEdit.Margin = { left = 2, right = 0, top = 6, bottom = 2 }
   input7LineEdit.Filter = "0123456789"
   input7LineEdit.VkPluginName = "TextInputNumOnly"
-  input7LineEdit.Content = MatrickNr_Nr
+  input7LineEdit.Content = MatrickNrStart
   input7LineEdit.MaxTextLength = 6
   input7LineEdit.HideFocusFrame = "Yes"
   input7LineEdit.PluginComponent = myHandle
@@ -678,7 +685,9 @@ function CreateInputDialog(displayHandle)
   signalTable.OnInput2TextChanged = function(caller)
     Echo("Input2 changed: '" .. caller.Content .. "'")
     local check = false
-    if caller.Content == "" then
+    if caller.Content == "" or caller.Content == "0" then
+      OkButton.Visible = "No"
+      input2LineEdit.TextColor = colorAlertText
       check = true
     end
     TLayNr = caller.Content:gsub("'", "")
@@ -692,7 +701,7 @@ function CreateInputDialog(displayHandle)
     end
     if check == false then
       input2LineEdit.TextColor = colorText
-      if check_grp == true then
+      if check_grp == true and check_gel == true then
         OkButton.Visible = "Yes"
       end
     end
@@ -701,12 +710,14 @@ function CreateInputDialog(displayHandle)
   signalTable.OnInput3TextChanged = function(caller)
     Echo("Input3 changed: '" .. caller.Content .. "'")
     local checks = false
-    if caller.Content == "" then
+    if caller.Content == "" or caller.Content == "0" then
+      OkButton.Visible = "No"
+      input3LineEdit.TextColor = colorAlertText
       checks = true
     end
     SeqNrStart = caller.Content:gsub("'", "")
     SeqNrStart = tonumber(SeqNrStart)
-    SeqNrRange = SeqNrStart + tonumber((Nr_SelectedGrp*(NGel+2))+NGel+100)
+    SeqNrRange = SeqNrStart + tonumber((Nr_SelectedGrp * (NGel + 2)) + NGel + 100)
     for k in ipairs(SeqNr) do
       if SeqNrStart <= tonumber(SeqNr[k].NO) then
         if SeqNrRange >= tonumber(SeqNr[k].NO) then
@@ -718,7 +729,7 @@ function CreateInputDialog(displayHandle)
     end
     if checks == false then
       input3LineEdit.TextColor = colorText
-      if check_grp == true then
+      if check_grp == true and check_gel == true then
         OkButton.Visible = "Yes"
       end
     end
@@ -727,7 +738,9 @@ function CreateInputDialog(displayHandle)
   signalTable.OnInput4TextChanged = function(caller)
     Echo("Input4 changed: '" .. caller.Content .. "'")
     local checks = false
-    if caller.Content == "" then
+    if caller.Content == "" or caller.Content == "0" then
+      OkButton.Visible = "No"
+      input4LineEdit.TextColor = colorAlertText
       checks = true
     end
     MacroNrStart = caller.Content:gsub("'", "")
@@ -744,7 +757,7 @@ function CreateInputDialog(displayHandle)
     end
     if checks == false then
       input4LineEdit.TextColor = colorText
-      if check_grp == true then
+      if check_grp == true and check_gel == true then
         OkButton.Visible = "Yes"
       end
     end
@@ -753,7 +766,9 @@ function CreateInputDialog(displayHandle)
   signalTable.OnInput5TextChanged = function(caller)
     Echo("Input5 changed: '" .. caller.Content .. "'")
     local checks = false
-    if caller.Content == "" then
+    if caller.Content == "" or caller.Content == "0" then
+      OkButton.Visible = "No"
+      input5LineEdit.TextColor = colorAlertText
       checks = true
     end
     AppNr = caller.Content:gsub("'", "")
@@ -770,7 +785,7 @@ function CreateInputDialog(displayHandle)
     end
     if checks == false then
       input5LineEdit.TextColor = colorText
-      if check_grp == true then
+      if check_grp == true and check_gel == true then
         OkButton.Visible = "Yes"
       end
     end
@@ -778,14 +793,79 @@ function CreateInputDialog(displayHandle)
 
   signalTable.OnInput6TextChanged = function(caller)
     Echo("Input6 changed: '" .. caller.Content .. "'")
+    local checks = false
+    if caller.Content == "" or caller.Content == "0" then
+      OkButton.Visible = "No"
+      input6LineEdit.TextColor = colorAlertText
+      checks = true
+    end
+    All_5_NrStart = caller.Content:gsub("'", "")
+    All_5_NrStart = tonumber(All_5_NrStart)
+    All_5_NrRange = All_5_NrStart + NGel
+    for k in ipairs(All_5_Nr) do
+      if All_5_NrStart <= tonumber(All_5_Nr[k].NO) then
+        if All_5_NrRange >= tonumber(All_5_Nr[k].NO) then
+          OkButton.Visible = "No"
+          input6LineEdit.TextColor = colorAlertText
+          checks = true
+        end
+      end
+    end
+    if checks == false then
+      input6LineEdit.TextColor = colorText
+      if check_grp == true and check_gel == true then
+        OkButton.Visible = "Yes"
+      end
+    end
   end
 
   signalTable.OnInput7TextChanged = function(caller)
     Echo("Input7 changed: '" .. caller.Content .. "'")
+    local checks = false
+    if caller.Content == "" or caller.Content == "0" then
+      OkButton.Visible = "No"
+      input7LineEdit.TextColor = colorAlertText
+      checks = true
+    end
+    MatrickNrStart = caller.Content:gsub("'", "")
+    MatrickNrStart = tonumber(MatrickNrStart)
+    MatrickNrRange = MatrickNrStart + Nr_SelectedGrp + 1
+    for k in ipairs(MatrickNr) do
+      if MatrickNrStart <= tonumber(MatrickNr[k].NO) then
+        if MatrickNrRange >= tonumber(MatrickNr[k].NO) then
+          OkButton.Visible = "No"
+          input7LineEdit.TextColor = colorAlertText
+          checks = true
+        end
+      end
+    end
+    if checks == false then
+      input7LineEdit.TextColor = colorText
+      if check_grp == true and check_gel == true then
+        OkButton.Visible = "Yes"
+      end
+    end
   end
 
   signalTable.OnInput8TextChanged = function(caller)
     Echo("Input8 changed: '" .. caller.Content .. "'")
+    local checks = false
+    if caller.Content == "" or caller.Content == "0" then
+      checks = true
+    end
+    MaxColLgn = caller.Content:gsub("'", "")
+    MaxColLgn = tonumber(MaxColLgn)
+
+    if checks == true then
+      OkButton.Visible = "No"
+      input8LineEdit.TextColor = colorAlertText
+    end
+    if checks == false then
+      input8LineEdit.TextColor = colorText
+      if check_grp == true and check_gel == true then
+        OkButton.Visible = "Yes"
+      end
+    end
   end
 
   function signalTable.mypopup(caller)
@@ -803,7 +883,11 @@ function CreateInputDialog(displayHandle)
       for k in ipairs(TCol) do
         NGel = k
       end
-      Echo (NGel)
+      Echo(NGel)
+      check_gel = true
+      if check_grp == true then
+        OkButton.Visible = "Yes"
+      end
     elseif caller.Name == "Grp_Select" then
       for k in ipairs(popuplists.Grp_Select) do
         Echo(popuplists.Grp_Select[k])
@@ -825,8 +909,10 @@ function CreateInputDialog(displayHandle)
       end
       subTitle.Text = subTitle.Text .. Nr_SelectedGrp .. "." .. FixtureGroups[SelGrp].name .. " "
       Echo("Select Group " .. FixtureGroups[SelGrp].name)
-      OkButton.Visible = "Yes"
       check_grp = true
+      if check_gel == true then
+        OkButton.Visible = "Yes"
+      end
     elseif caller.Name == "Name_Select" then
       input1LineEdit.Content = choice
     elseif caller.Name == "Lay_Select" then
