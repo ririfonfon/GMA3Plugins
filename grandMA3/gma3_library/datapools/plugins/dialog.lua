@@ -1,3 +1,10 @@
+--[[
+Releases:
+* 1.1.8.0
+
+Created by Richard Fontaine "RIRI", January 2024.
+--]]
+
 local pluginName = select(1, ...)
 local componentName = select(2, ...)
 local signalTable, thiscomponent = select(3, ...)
