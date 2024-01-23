@@ -39,7 +39,7 @@ function CreateInputDialog(displayHandle)
   local popuplists = {
     Grp_Select     = {},
     Gel_Select     = {},
-    Name_Select    = { 'Color', 'Kolor' },
+    Name_Select    = { 'Layout Color', 'Layout Kolor', 'L Co', 'L Ko', 'Color', 'Kolor' },
     Lay_Select     = { 1, 11, 101, 201, 301, 401, 501, 601, 701, 801, 901, 1001, 2001 },
     Seq_Select     = { 1, 11, 101, 201, 301, 401, 501, 601, 701, 801, 901, 1001, 2001 },
     Macro_Select   = { 1, 11, 101, 201, 301, 401, 501, 601, 701, 801, 901, 1001, 2001 },
@@ -254,6 +254,7 @@ function CreateInputDialog(displayHandle)
   input1LineEdit.TextChanged = "OnInput1TextChanged"
   input1LineEdit.BackColor = colorLayouts
   input1LineEdit.Font = "2"
+  input1LineEdit.Visible = "No"
 
   local input1Sujestion = inputsGrid:Append("Button")
   input1Sujestion.Text = ""
@@ -265,6 +266,7 @@ function CreateInputDialog(displayHandle)
   input1Sujestion.Clicked = 'mypopup'
   input1Sujestion.HasHover = "yes"
   input1Sujestion.backColor = colorLayouts
+  input1Sujestion.Visible = "No"
 
   -- Create the UI elements for the 2 input.
   local input2Icon = inputsGrid:Append("Button")
@@ -299,8 +301,8 @@ function CreateInputDialog(displayHandle)
   input2LineEdit.PluginComponent = myHandle
   input2LineEdit.TextChanged = "OnInput2TextChanged"
   input2LineEdit.BackColor = colorLayouts
-  -- input2LineEdit.TextColor = colorAlertText
   input2LineEdit.Font = "2"
+  input2LineEdit.Visible = "No"
 
   local input2Sujestion = inputsGrid:Append("Button")
   input2Sujestion.Text = ""
@@ -312,6 +314,7 @@ function CreateInputDialog(displayHandle)
   input2Sujestion.Clicked = 'mypopup'
   input2Sujestion.HasHover = "yes"
   input2Sujestion.backColor = colorLayouts
+  input2Sujestion.Visible = "No"
 
   -- Create the UI elements for the 3 input.
   local input3Icon = inputsGrid:Append("Button")
@@ -348,6 +351,7 @@ function CreateInputDialog(displayHandle)
   input3LineEdit.TextChanged = "OnInput3TextChanged"
   input3LineEdit.Font = "2"
   input3LineEdit.BackColor = colorSequences
+  input3LineEdit.Visible = "No"
 
   local input3Sujestion = inputsGrid:Append("Button")
   input3Sujestion.Text = ""
@@ -359,6 +363,7 @@ function CreateInputDialog(displayHandle)
   input3Sujestion.Clicked = 'mypopup'
   input3Sujestion.HasHover = "yes"
   input3Sujestion.backColor = colorSequences
+  input3Sujestion.Visible = "No"
 
   -- Create the UI elements for the 4 input.
   local input4Icon = inputsGrid:Append("Button")
@@ -394,6 +399,7 @@ function CreateInputDialog(displayHandle)
   input4LineEdit.TextChanged = "OnInput4TextChanged"
   input4LineEdit.Font = "2"
   input4LineEdit.BackColor = colorMacro
+  input4LineEdit.Visible = "No"
 
   local input4Sujestion = inputsGrid:Append("Button")
   input4Sujestion.Text = ""
@@ -405,6 +411,7 @@ function CreateInputDialog(displayHandle)
   input4Sujestion.Clicked = 'mypopup'
   input4Sujestion.HasHover = "yes"
   input4Sujestion.backColor = colorMacro
+  input4Sujestion.Visible = "No"
 
   -- Create the UI elements for the 5 input.
   local input5Icon = inputsGrid:Append("Button")
@@ -440,6 +447,7 @@ function CreateInputDialog(displayHandle)
   input5LineEdit.TextChanged = "OnInput5TextChanged"
   input5LineEdit.Font = "2"
   input5LineEdit.BackColor = colorAppearances
+  input5LineEdit.Visible = "No"
 
   local input5Sujestion = inputsGrid:Append("Button")
   input5Sujestion.Text = ""
@@ -451,6 +459,7 @@ function CreateInputDialog(displayHandle)
   input5Sujestion.Clicked = 'mypopup'
   input5Sujestion.HasHover = "yes"
   input5Sujestion.backColor = colorAppearances
+  input5Sujestion.Visible = "No"
 
   -- Create the UI elements for the 6 input.
   local input6Icon = inputsGrid:Append("Button")
@@ -486,6 +495,7 @@ function CreateInputDialog(displayHandle)
   input6LineEdit.TextChanged = "OnInput6TextChanged"
   input6LineEdit.Font = "2"
   input6LineEdit.BackColor = colorPresets
+  input6LineEdit.Visible = "No"
 
   local input6Sujestion = inputsGrid:Append("Button")
   input6Sujestion.Text = ""
@@ -497,6 +507,7 @@ function CreateInputDialog(displayHandle)
   input6Sujestion.Clicked = 'mypopup'
   input6Sujestion.HasHover = "yes"
   input6Sujestion.backColor = colorPresets
+  input6Sujestion.Visible = "No"
 
   -- Create the UI elements for the 7 input.
   local input7Icon = inputsGrid:Append("Button")
@@ -532,6 +543,7 @@ function CreateInputDialog(displayHandle)
   input7LineEdit.TextChanged = "OnInput7TextChanged"
   input7LineEdit.Font = "2"
   input7LineEdit.BackColor = colorMatricks
+  input7LineEdit.Visible = "No"
 
   local input7Sujestion = inputsGrid:Append("Button")
   input7Sujestion.Text = ""
@@ -543,6 +555,7 @@ function CreateInputDialog(displayHandle)
   input7Sujestion.Clicked = 'mypopup'
   input7Sujestion.HasHover = "yes"
   input7Sujestion.backColor = colorMatricks
+  input7Sujestion.Visible = "No"
 
   -- Create the UI elements for the 8 input.
   local input8Icon = inputsGrid:Append("Button")
@@ -578,7 +591,7 @@ function CreateInputDialog(displayHandle)
   input8LineEdit.TextChanged = "OnInput8TextChanged"
   input8LineEdit.Font = "2"
   input8LineEdit.BackColor = colorPartlySelected
-
+  input8LineEdit.Visible = "No"
 
   -- Create the UI elements for the 9 input button.
   local input9Icon = inputsGrid:Append("Button")
@@ -632,6 +645,7 @@ function CreateInputDialog(displayHandle)
   input10Button.Clicked = 'mypopup'
   input10Button.BackColor = colorGroups
   input10Button.Font = "2"
+  input10Button.Visible = "No"
 
   -- Create the button grid.
   -- This is row 3 of the dlgFrame.
@@ -725,6 +739,13 @@ function CreateInputDialog(displayHandle)
           OkButton.Visible = "No"
           input3LineEdit.TextColor = colorAlertText
           checks = true
+          for i in ipairs(popuplists.Seq_Select) do
+            if SeqNrStart <= tonumber(popuplists.Seq_Select[i]) then
+              if SeqNrRange >= tonumber(popuplists.Seq_Select[i]) then
+                table.remove(popuplists.Seq_Select, i)
+              end
+            end
+          end
         end
       end
     end
@@ -781,6 +802,13 @@ function CreateInputDialog(displayHandle)
           OkButton.Visible = "No"
           input5LineEdit.TextColor = colorAlertText
           checks = true
+          for i in ipairs(popuplists.Appear_Select) do
+            if AppNr <= tonumber(popuplists.Appear_Select[i]) then
+              if AppNrRange >= tonumber(popuplists.Appear_Select[i]) then
+                table.remove(popuplists.Appear_Select, i)
+              end
+            end
+          end
         end
       end
     end
@@ -809,6 +837,13 @@ function CreateInputDialog(displayHandle)
           OkButton.Visible = "No"
           input6LineEdit.TextColor = colorAlertText
           checks = true
+          for i in ipairs(popuplists.Preset_Select) do
+            if All_5_NrStart <= tonumber(popuplists.Preset_Select[i]) then
+              if All_5_NrRange >= tonumber(popuplists.Preset_Select[i]) then
+                table.remove(popuplists.Preset_Select, i)
+              end
+            end
+          end
         end
       end
     end
@@ -837,6 +872,13 @@ function CreateInputDialog(displayHandle)
           OkButton.Visible = "No"
           input7LineEdit.TextColor = colorAlertText
           checks = true
+          for i in ipairs(popuplists.Matrick_Select) do
+            if MatrickNrStart <= tonumber(popuplists.Matrick_Select[i]) then
+              if MatrickNrRange >= tonumber(popuplists.Matrick_Select[i]) then
+                table.remove(popuplists.Matrick_Select, i)
+              end
+            end
+          end
         end
       end
     end
@@ -872,6 +914,7 @@ function CreateInputDialog(displayHandle)
   function signalTable.mypopup(caller)
     local itemlist = popuplists[caller.Name]
     local _, choice = PopupInput { title = caller.Name, caller = caller:GetDisplay(), items = itemlist, selectedValue = caller.Text }
+
     if caller.Name == "Gel_Select" then
       caller.Text = choice or caller.Text
       Echo("Gelchanged: " .. caller.Text .. "'")
@@ -886,9 +929,8 @@ function CreateInputDialog(displayHandle)
       end
       Echo(NGel)
       check_gel = true
-      if check_grp == true then
-        OkButton.Visible = "Yes"
-      end
+      input10Button.Visible = "Yes"
+
     elseif caller.Name == "Grp_Select" then
       for k in ipairs(popuplists.Grp_Select) do
         Echo(popuplists.Grp_Select[k])
@@ -913,7 +955,23 @@ function CreateInputDialog(displayHandle)
       check_grp = true
       if check_gel == true then
         OkButton.Visible = "Yes"
+        input1LineEdit.Visible = "Yes"
+        input2LineEdit.Visible = "Yes"
+        input3LineEdit.Visible = "Yes"
+        input4LineEdit.Visible = "Yes"
+        input5LineEdit.Visible = "Yes"
+        input6LineEdit.Visible = "Yes"
+        input7LineEdit.Visible = "Yes"
+        input8LineEdit.Visible = "Yes"
+        input1Sujestion.Visible = "Yes"
+        input2Sujestion.Visible = "Yes"
+        input3Sujestion.Visible = "Yes"
+        input4Sujestion.Visible = "Yes"
+        input5Sujestion.Visible = "Yes"
+        input6Sujestion.Visible = "Yes"
+        input7Sujestion.Visible = "Yes"
       end
+
     elseif caller.Name == "Name_Select" then
       input1LineEdit.Content = choice
     elseif caller.Name == "Lay_Select" then
