@@ -1,9 +1,14 @@
 --[[
 Releases:
-* 1.1.7.3
+* 1.1.8.0
 
 Created by Richard Fontaine "RIRI", January 2024.
 --]]
+
+local pluginName = select(1, ...)
+local componentName = select(2, ...)
+local signalTable, thiscomponent = select(3, ...)
+local myHandle = select(4, ...)
 
 local function Main(display_Handle)
     local root = Root();
@@ -401,7 +406,8 @@ local function Main(display_Handle)
     local Block_Element
     local Wings_Element  
 
-    local Return_Main_Call ={Mainbox_Call(display_Handle,TLayNr,NaLay,SeqNrStart,MacroNrStart,AppNr,MaxColLgn,MatrickNrStart,ColGels,FixtureGroups,SelectedGelNr,SelectedGrp,SelectedGrpNo,All_5_NrStart)}
+    -- local Return_Main_Call ={Mainbox_Call(display_Handle,signalTable,thiscomponent,myHandle,TLayNr,NaLay,SeqNrStart,MacroNrStart,AppNr,MaxColLgn,MatrickNrStart,ColGels,FixtureGroups,SelectedGelNr,SelectedGrp,SelectedGrpNo,All_5_NrStart,ColPath,TLay,SeqNr, MacroNr,App,All_5_Nr,MatrickNr)}
+    local Return_Main_Call ={Mainbox_Call(display_Handle,signalTable,thiscomponent,myHandle,TLayNr,NaLay,SeqNrStart,MacroNrStart,AppNr,MaxColLgn,MatrickNrStart,ColGels,FixtureGroups,SelectedGelNr,SelectedGrp,SelectedGrpNo,All_5_NrStart)}
     if Return_Main_Call[1] then
         SeqNrStart = Return_Main_Call[2]
         MacroNrStart = Return_Main_Call[3]
