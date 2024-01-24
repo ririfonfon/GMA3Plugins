@@ -132,9 +132,6 @@ function CheckSymbols(display_Handle,Img,ImgImp,check,add_check,long_imgimp,ImgN
 end -- end function CheckSymbols(...)
 
 function Mainbox_Call(display_Handle,TLayNr,NaLay,SeqNrStart,MacroNrStart,AppNr,MaxColLgn,MatrickNrStart,ColGels,FixtureGroups,SelectedGelNr,SelectedGrp,SelectedGrpNo,All_5_NrStart)
-    local colorPartlySelectedMacro = Root().ColorTheme.ColorGroups.PoolWindow.Macros
-
-
     local ChoGel = {}
     for k in ipairs(ColGels) do
         table.insert(ChoGel, "'" .. ColGels[k].name .. "'")
@@ -195,7 +192,6 @@ function Mainbox_Call(display_Handle,TLayNr,NaLay,SeqNrStart,MacroNrStart,AppNr,
                 {
                 name = 'd_Macro_Start_Nr',
                 blackFilter = "*",
-                backColor = colorPartlySelectedMacro,
                 value = MacroNrStart,
                 maxTextLength = 4,
                 vkPlugin = "TextInputNumOnly"},
