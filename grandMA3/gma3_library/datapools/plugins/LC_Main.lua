@@ -27,7 +27,7 @@ local function Main(displayHandle)
     local TLay = Root().ShowData.DataPools.Default.Layouts:Children()
     local TLayNr
     local TLayNrRef
-    local Nalay
+    local NaLay = "Colors"
     local SeqNr = Root().ShowData.DataPools.Default.Sequences:Children()
     local SeqNrStart
     local SeqNrRange
@@ -134,7 +134,7 @@ local function Main(displayHandle)
         if MatrickNrStart == nil then
             MatrickNrStart = 1
         end
-        MatrickNr = MatrickNrStart
+        -- MatrickNr = MatrickNrStart
         list = true
     end
 
@@ -720,12 +720,12 @@ local function Main(displayHandle)
         Echo("OK button clicked.")
         Obj.Delete(screenOverlay, Obj.Index(baseInput))
         Construct_Layout(displayHandle, TLay, SeqNrStart, MacroNrStart, MatrickNrStart, MatrickNr, TLayNr, AppNr,
-            All_5_Current, All_5_NrStart, ColPath, SelectedGelNr, SelectedGrp, SelectedGrpNo)
+            All_5_Current, All_5_NrStart, ColPath, SelectedGelNr, SelectedGrp, SelectedGrpNo, TLayNrRef, NaLay)
     end
 
     signalTable.OnInput1TextChanged = function(caller)
         Echo("Input1 changed: '" .. caller.Content .. "'")
-        Nalay = caller.Content:gsub("'", "")
+        NaLay = caller.Content:gsub("'", "")
     end
 
     signalTable.OnInput2TextChanged = function(caller)
@@ -861,6 +861,7 @@ local function Main(displayHandle)
         end
         All_5_NrStart = caller.Content:gsub("'", "")
         All_5_NrStart = tonumber(All_5_NrStart)
+        All_5_Current = All_5_NrStart
         All_5_NrRange = All_5_NrStart + NGel
         for k in ipairs(All_5_Nr) do
             if All_5_NrStart <= tonumber(All_5_Nr[k].NO) then
