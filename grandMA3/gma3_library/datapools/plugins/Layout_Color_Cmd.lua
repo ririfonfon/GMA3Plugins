@@ -131,204 +131,204 @@ function CheckSymbols(display_Handle,Img,ImgImp,check,add_check,long_imgimp,ImgN
     end
 end -- end function CheckSymbols(...)
 
-function Mainbox_Call(display_Handle,TLayNr,NaLay,SeqNrStart,MacroNrStart,AppNr,MaxColLgn,MatrickNrStart,ColGels,FixtureGroups,SelectedGelNr,SelectedGrp,SelectedGrpNo,All_5_NrStart)
-    local ChoGel = {}
-    for k in ipairs(ColGels) do
-        table.insert(ChoGel, "'" .. ColGels[k].name .. "'")
-    end
-    local count = 0
-    local OkBtn = ""
-    local ValOkBtn = 12
-    local Message = "Add Fixture Group and ColorGel\n * set beginning Appearance & Sequence Number\n\n Selected Group(s) are: \n"
-    local PopTableGrp = {}
-    local SelGrp
-    local TGrpChoise
-    local Swipe_Color = {
-        {name ="____GELS__CHOOSE____GELS__CHOOSE____GELS__CHOOSE____GELS__CHOOSE____GELS__CHOOSE____", selectedValue=11,
-            values={
-                ["'" .. ColGels[1].name .. "'"]=1,["'" .. ColGels[2].name .. "'"]=2,["'" .. ColGels[3].name .. "'"]=3,["'" .. ColGels[4].name .. "'"]=4,["'" .. ColGels[5].name .. "'"]=5,
-                ["'" .. ColGels[6].name .. "'"]=6,["'" .. ColGels[7].name .. "'"]=7,["'" .. ColGels[8].name .. "'"]=8,["'" .. ColGels[9].name .. "'"]=9,["'" .. ColGels[10].name .. "'"]=10,
-                ["'" .. ColGels[11].name .. "'"]=11
-            },type=0
-        }
-    }
+-- function Mainbox_Call(display_Handle,TLayNr,NaLay,SeqNrStart,MacroNrStart,AppNr,MaxColLgn,MatrickNrStart,ColGels,FixtureGroups,SelectedGelNr,SelectedGrp,SelectedGrpNo,All_5_NrStart)
+--     local ChoGel = {}
+--     for k in ipairs(ColGels) do
+--         table.insert(ChoGel, "'" .. ColGels[k].name .. "'")
+--     end
+--     local count = 0
+--     local OkBtn = ""
+--     local ValOkBtn = 12
+--     local Message = "Add Fixture Group and ColorGel\n * set beginning Appearance & Sequence Number\n\n Selected Group(s) are: \n"
+--     local PopTableGrp = {}
+--     local SelGrp
+--     local TGrpChoise
+--     local Swipe_Color = {
+--         {name ="____GELS__CHOOSE____GELS__CHOOSE____GELS__CHOOSE____GELS__CHOOSE____GELS__CHOOSE____", selectedValue=11,
+--             values={
+--                 ["'" .. ColGels[1].name .. "'"]=1,["'" .. ColGels[2].name .. "'"]=2,["'" .. ColGels[3].name .. "'"]=3,["'" .. ColGels[4].name .. "'"]=4,["'" .. ColGels[5].name .. "'"]=5,
+--                 ["'" .. ColGels[6].name .. "'"]=6,["'" .. ColGels[7].name .. "'"]=7,["'" .. ColGels[8].name .. "'"]=8,["'" .. ColGels[9].name .. "'"]=9,["'" .. ColGels[10].name .. "'"]=10,
+--                 ["'" .. ColGels[11].name .. "'"]=11
+--             },type=0
+--         }
+--     }
 
-    -- Main Box
-    ::MainBox:: do
-        local box = MessageBox({
-            title = 'Layout_Color_By_RIRI',
-            display = display_Handle,
-            backColor = "1.7",
-            message = Message,
-            icon = 10,
-            commands = { {
-                name = 'Add Group',
-                value = 11
-            }, {
-                name = OkBtn,
-                value = ValOkBtn
-            }, {
-                name = 'Cancel',
-                value = 0
-            } },
-            inputs = {
-                {
-                name = 'a_Layout_Name',
-                TextalignmentH = "Left",
-                value = NaLay,
-                maxTextLength = 16,
-                vkPlugin = "TextInput"},
-                {
-                name = 'b_Layout_Nr',
-                value = TLayNr,
-                maxTextLength = 4,
-                vkPlugin = "TextInputNumOnly"},
-                {
-                name = 'c_Sequence_Start_Nr',
-                blackFilter = "*",
-                value = SeqNrStart,
-                maxTextLength = 4,
-                vkPlugin = "TextInputNumOnly"},
-                {
-                name = 'd_Macro_Start_Nr',
-                blackFilter = "*",
-                value = MacroNrStart,
-                maxTextLength = 4,
-                vkPlugin = "TextInputNumOnly"},
-                {
-                name = 'e_Appearance_Start_Nr',
-                blackFilter = "*",
-                value = AppNr,
-                maxTextLength = 4,
-                vkPlugin = "TextInputNumOnly"},
-                {
-                name = 'f_Preset_All_5_Start_Nr',
-                value = All_5_NrStart,
-                maxTextLength = 4,
-                vkPlugin = "TextInputNumOnly"},
-                {
-                name = 'g_Matrick_Start_Nr',
-                value = MatrickNrStart,
-                maxTextLength = 4,
-                vkPlugin = "TextInputNumOnly"},
-                {
-                name = 'h_Max_Color_By_Line',
-                value = MaxColLgn,
-                maxTextLength = 2,
-                vkPlugin = "TextInputNumOnly"}
-            },
-            selectors = Swipe_Color
+--     -- Main Box
+--     ::MainBox:: do
+--         local box = MessageBox({
+--             title = 'Layout_Color_By_RIRI',
+--             display = display_Handle,
+--             backColor = "1.7",
+--             message = Message,
+--             icon = 10,
+--             commands = { {
+--                 name = 'Add Group',
+--                 value = 11
+--             }, {
+--                 name = OkBtn,
+--                 value = ValOkBtn
+--             }, {
+--                 name = 'Cancel',
+--                 value = 0
+--             } },
+--             inputs = {
+--                 {
+--                 name = 'a_Layout_Name',
+--                 TextalignmentH = "Left",
+--                 value = NaLay,
+--                 maxTextLength = 16,
+--                 vkPlugin = "TextInput"},
+--                 {
+--                 name = 'b_Layout_Nr',
+--                 value = TLayNr,
+--                 maxTextLength = 4,
+--                 vkPlugin = "TextInputNumOnly"},
+--                 {
+--                 name = 'c_Sequence_Start_Nr',
+--                 blackFilter = "*",
+--                 value = SeqNrStart,
+--                 maxTextLength = 4,
+--                 vkPlugin = "TextInputNumOnly"},
+--                 {
+--                 name = 'd_Macro_Start_Nr',
+--                 blackFilter = "*",
+--                 value = MacroNrStart,
+--                 maxTextLength = 4,
+--                 vkPlugin = "TextInputNumOnly"},
+--                 {
+--                 name = 'e_Appearance_Start_Nr',
+--                 blackFilter = "*",
+--                 value = AppNr,
+--                 maxTextLength = 4,
+--                 vkPlugin = "TextInputNumOnly"},
+--                 {
+--                 name = 'f_Preset_All_5_Start_Nr',
+--                 value = All_5_NrStart,
+--                 maxTextLength = 4,
+--                 vkPlugin = "TextInputNumOnly"},
+--                 {
+--                 name = 'g_Matrick_Start_Nr',
+--                 value = MatrickNrStart,
+--                 maxTextLength = 4,
+--                 vkPlugin = "TextInputNumOnly"},
+--                 {
+--                 name = 'h_Max_Color_By_Line',
+--                 value = MaxColLgn,
+--                 maxTextLength = 2,
+--                 vkPlugin = "TextInputNumOnly"}
+--             },
+--             selectors = Swipe_Color
 
-        })
+--         })
 
-        if (box.result == 11 or box.result == 100 or box.result == 10) then
-            if (count == 0 or ValOkBtn == 100) then
-                ValOkBtn = math.floor(ValOkBtn / 10)
-                if (ValOkBtn < 10) then
-                    ValOkBtn = 1
-                end
-            end
+--         if (box.result == 11 or box.result == 100 or box.result == 10) then
+--             if (count == 0 or ValOkBtn == 100) then
+--                 ValOkBtn = math.floor(ValOkBtn / 10)
+--                 if (ValOkBtn < 10) then
+--                     ValOkBtn = 1
+--                 end
+--             end
 
-            if (ValOkBtn == 1) then
-                OkBtn = "OK Let's GO :)"
-            end
+--             if (ValOkBtn == 1) then
+--                 OkBtn = "OK Let's GO :)"
+--             end
 
-            for k in pairs(FixtureGroups) do
-                count = count + 1
-            end
+--             for k in pairs(FixtureGroups) do
+--                 count = count + 1
+--             end
 
-            if (count == 0) then
-                Echo("all Groups are added")
-                Confirm("all Groups are added")
-                SeqNrStart = box.inputs.c_Sequence_Start_Nr
-                MacroNrStart = box.inputs.d_Macro_Start_Nr
-                AppNr = box.inputs.e_Appearance_Start_Nr
-                TLayNr = box.inputs.b_Layout_Nr
-                NaLay = box.inputs.a_Layout_Name
-                MaxColLgn = box.inputs.h_Max_Color_By_Line
-                MatrickNrStart = box.inputs.g_Matrick_Start_Nr
-                All_5_NrStart = box.inputs.f_Preset_All_5_Start_Nr
-                SelectedGelNr = box.selectors
-                    .____GELS__CHOOSE____GELS__CHOOSE____GELS__CHOOSE____GELS__CHOOSE____GELS__CHOOSE____
-                goto MainBox
-            else
-                Echo("add Group")
-                SeqNrStart = box.inputs.c_Sequence_Start_Nr
-                MacroNrStart = box.inputs.d_Macro_Start_Nr
-                AppNr = box.inputs.e_Appearance_Start_Nr
-                TLayNr = box.inputs.b_Layout_Nr
-                NaLay = box.inputs.a_Layout_Name
-                MaxColLgn = box.inputs.h_Max_Color_By_Line
-                MatrickNrStart = box.inputs.g_Matrick_Start_Nr
-                All_5_NrStart = box.inputs.f_Preset_All_5_Start_Nr
-                SelectedGelNr = box.selectors
-                    .____GELS__CHOOSE____GELS__CHOOSE____GELS__CHOOSE____GELS__CHOOSE____GELS__CHOOSE____
-                goto addGroup
-            end
-        elseif (box.result == 1) then
-            if next(SelectedGrp) == nil then
-                Confirm("no Group are added!")
-                SeqNrStart = box.inputs.c_Sequence_Start_Nr
-                MacroNrStart = box.inputs.d_Macro_Start_Nr
-                AppNr = box.inputs.e_Appearance_Start_Nr
-                TLayNr = box.inputs.b_Layout_Nr
-                NaLay = box.inputs.a_Layout_Name
-                MaxColLgn = box.inputs.h_Max_Color_By_Line
-                MatrickNrStart = box.inputs.g_Matrick_Start_Nr
-                All_5_NrStart = box.inputs.f_Preset_All_5_Start_Nr
-                SelectedGelNr = box.selectors
-                    .____GELS__CHOOSE____GELS__CHOOSE____GELS__CHOOSE____GELS__CHOOSE____GELS__CHOOSE____
-                goto addGroup
-            else
-                SeqNrStart = box.inputs.c_Sequence_Start_Nr
-                MacroNrStart = box.inputs.d_Macro_Start_Nr
-                AppNr = box.inputs.e_Appearance_Start_Nr
-                TLayNr = box.inputs.b_Layout_Nr
-                NaLay = box.inputs.a_Layout_Name
-                MaxColLgn = box.inputs.h_Max_Color_By_Line
-                MatrickNrStart = box.inputs.g_Matrick_Start_Nr
-                All_5_NrStart = box.inputs.f_Preset_All_5_Start_Nr
-                SelectedGelNr = box.selectors
-                    .____GELS__CHOOSE____GELS__CHOOSE____GELS__CHOOSE____GELS__CHOOSE____GELS__CHOOSE____
-                Echo("Construction du Layout...")
-                do return 1,SeqNrStart,MacroNrStart,AppNr,TLayNr,NaLay,MaxColLgn,MatrickNrStart,SelectedGelNr,All_5_NrStart,SelectedGrp end
-            end
-        elseif (box.result == 0) then
-            Echo("User Canceled")
-            do return end
-        end
-    end -- End Main Box
+--             if (count == 0) then
+--                 Echo("all Groups are added")
+--                 Confirm("all Groups are added")
+--                 SeqNrStart = box.inputs.c_Sequence_Start_Nr
+--                 MacroNrStart = box.inputs.d_Macro_Start_Nr
+--                 AppNr = box.inputs.e_Appearance_Start_Nr
+--                 TLayNr = box.inputs.b_Layout_Nr
+--                 NaLay = box.inputs.a_Layout_Name
+--                 MaxColLgn = box.inputs.h_Max_Color_By_Line
+--                 MatrickNrStart = box.inputs.g_Matrick_Start_Nr
+--                 All_5_NrStart = box.inputs.f_Preset_All_5_Start_Nr
+--                 SelectedGelNr = box.selectors
+--                     .____GELS__CHOOSE____GELS__CHOOSE____GELS__CHOOSE____GELS__CHOOSE____GELS__CHOOSE____
+--                 goto MainBox
+--             else
+--                 Echo("add Group")
+--                 SeqNrStart = box.inputs.c_Sequence_Start_Nr
+--                 MacroNrStart = box.inputs.d_Macro_Start_Nr
+--                 AppNr = box.inputs.e_Appearance_Start_Nr
+--                 TLayNr = box.inputs.b_Layout_Nr
+--                 NaLay = box.inputs.a_Layout_Name
+--                 MaxColLgn = box.inputs.h_Max_Color_By_Line
+--                 MatrickNrStart = box.inputs.g_Matrick_Start_Nr
+--                 All_5_NrStart = box.inputs.f_Preset_All_5_Start_Nr
+--                 SelectedGelNr = box.selectors
+--                     .____GELS__CHOOSE____GELS__CHOOSE____GELS__CHOOSE____GELS__CHOOSE____GELS__CHOOSE____
+--                 goto addGroup
+--             end
+--         elseif (box.result == 1) then
+--             if next(SelectedGrp) == nil then
+--                 Confirm("no Group are added!")
+--                 SeqNrStart = box.inputs.c_Sequence_Start_Nr
+--                 MacroNrStart = box.inputs.d_Macro_Start_Nr
+--                 AppNr = box.inputs.e_Appearance_Start_Nr
+--                 TLayNr = box.inputs.b_Layout_Nr
+--                 NaLay = box.inputs.a_Layout_Name
+--                 MaxColLgn = box.inputs.h_Max_Color_By_Line
+--                 MatrickNrStart = box.inputs.g_Matrick_Start_Nr
+--                 All_5_NrStart = box.inputs.f_Preset_All_5_Start_Nr
+--                 SelectedGelNr = box.selectors
+--                     .____GELS__CHOOSE____GELS__CHOOSE____GELS__CHOOSE____GELS__CHOOSE____GELS__CHOOSE____
+--                 goto addGroup
+--             else
+--                 SeqNrStart = box.inputs.c_Sequence_Start_Nr
+--                 MacroNrStart = box.inputs.d_Macro_Start_Nr
+--                 AppNr = box.inputs.e_Appearance_Start_Nr
+--                 TLayNr = box.inputs.b_Layout_Nr
+--                 NaLay = box.inputs.a_Layout_Name
+--                 MaxColLgn = box.inputs.h_Max_Color_By_Line
+--                 MatrickNrStart = box.inputs.g_Matrick_Start_Nr
+--                 All_5_NrStart = box.inputs.f_Preset_All_5_Start_Nr
+--                 SelectedGelNr = box.selectors
+--                     .____GELS__CHOOSE____GELS__CHOOSE____GELS__CHOOSE____GELS__CHOOSE____GELS__CHOOSE____
+--                 Echo("Construction du Layout...")
+--                 do return 1,SeqNrStart,MacroNrStart,AppNr,TLayNr,NaLay,MaxColLgn,MatrickNrStart,SelectedGelNr,All_5_NrStart,SelectedGrp end
+--             end
+--         elseif (box.result == 0) then
+--             Echo("User Canceled")
+--             do return end
+--         end
+--     end -- End Main Box
 
-    ::addGroup:: do
+--     ::addGroup:: do
 
-        TGrpChoise = {}
-        for k in ipairs(FixtureGroups) do
-            table.insert(TGrpChoise, "'" .. FixtureGroups[k].name .. "'")
-            Echo(FixtureGroups[k].name)
-        end
+--         TGrpChoise = {}
+--         for k in ipairs(FixtureGroups) do
+--             table.insert(TGrpChoise, "'" .. FixtureGroups[k].name .. "'")
+--             Echo(FixtureGroups[k].name)
+--         end
 
-        -- Setup the Messagebox
-        PopTableGrp = {
-            title = "Fixture Group",
-            caller = display_Handle,
-            items = TGrpChoise,
-            selectedValue = "",
-            add_args = {
-                FilterSupport = "Yes"
-            }
-        }
-        SelGrp = PopupInput(PopTableGrp)
+--         -- Setup the Messagebox
+--         PopTableGrp = {
+--             title = "Fixture Group",
+--             caller = display_Handle,
+--             items = TGrpChoise,
+--             selectedValue = "",
+--             add_args = {
+--                 FilterSupport = "Yes"
+--             }
+--         }
+--         SelGrp = PopupInput(PopTableGrp)
 
-        table.insert(SelectedGrp, "'" .. FixtureGroups[SelGrp + 1].name .. "'")
-        table.insert(SelectedGrpNo, "'" .. FixtureGroups[SelGrp + 1].NO .. "'")
-        Echo("A")
-        Message = Message .. FixtureGroups[SelGrp + 1].name .. "\n"
-        Echo("Select Group " .. FixtureGroups[SelGrp + 1].name)
-        table.remove(FixtureGroups, SelGrp + 1)
-        goto MainBox
-    end -- end ::addGroup:: do
+--         table.insert(SelectedGrp, "'" .. FixtureGroups[SelGrp + 1].name .. "'")
+--         table.insert(SelectedGrpNo, "'" .. FixtureGroups[SelGrp + 1].NO .. "'")
+--         Echo("A")
+--         Message = Message .. FixtureGroups[SelGrp + 1].name .. "\n"
+--         Echo("Select Group " .. FixtureGroups[SelGrp + 1].name)
+--         table.remove(FixtureGroups, SelGrp + 1)
+--         goto MainBox
+--     end -- end ::addGroup:: do
 
-end -- end function Mainbox_Call(...)
+-- end -- end function Mainbox_Call(...)
 
 function Make_Macro_Reset(CurrentMacroNr,prefix,surfix,MatrickNrStart,a,CurrentSeqNr,First_Id_Lay,TLayNr,Fade_Element,Delay_F_Element,Delay_T_Element,Phase_Element,Group_Element,Block_Element,Wings_Element)
 
