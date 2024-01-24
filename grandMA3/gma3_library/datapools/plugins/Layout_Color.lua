@@ -407,7 +407,7 @@ local function Main(display_Handle)
     local Wings_Element  
 
     -- local Return_Main_Call ={Mainbox_Call(display_Handle,signalTable,thiscomponent,myHandle,TLayNr,NaLay,SeqNrStart,MacroNrStart,AppNr,MaxColLgn,MatrickNrStart,ColGels,FixtureGroups,SelectedGelNr,SelectedGrp,SelectedGrpNo,All_5_NrStart,ColPath,TLay,SeqNr, MacroNr,App,All_5_Nr,MatrickNr)}
-    local Return_Main_Call ={Mainbox_Call(display_Handle,signalTable,thiscomponent,myHandle,TLayNr,NaLay,SeqNrStart,MacroNrStart,AppNr,MaxColLgn,MatrickNrStart,ColGels,FixtureGroups,SelectedGelNr,SelectedGrp,SelectedGrpNo,All_5_NrStart)}
+    local Return_Main_Call ={Mainbox_Call(display_Handle,TLayNr,NaLay,SeqNrStart,MacroNrStart,AppNr,MaxColLgn,MatrickNrStart,ColGels,FixtureGroups,SelectedGelNr,SelectedGrp,SelectedGrpNo,All_5_NrStart)}
     if Return_Main_Call[1] then
         SeqNrStart = Return_Main_Call[2]
         MacroNrStart = Return_Main_Call[3]
