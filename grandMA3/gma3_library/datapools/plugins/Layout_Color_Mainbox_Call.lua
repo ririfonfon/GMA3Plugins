@@ -5,37 +5,38 @@ Releases:
 Created by Richard Fontaine "RIRI", January 2024.
 --]]
 
-function Mainbox_Call(displayHandle,signalTable,thiscomponent,myHandle,TLayNr,NaLay,SeqNrStart,MacroNrStart,AppNr,MaxColLgn,MatrickNrStart,ColGels,FixtureGroups,SelectedGelNr,SelectedGrp,SelectedGrpNo,All_5_NrStart,ColPath,TLay,SeqNr, MacroNr,App,All_5_Nr,MatrickNr)
+function Mainbox_Call(displayHandle, signalTable, thiscomponent, myHandle)
+    -- function Mainbox_Call(displayHandle,signalTable,thiscomponent,myHandle,TLayNr,NaLay,SeqNrStart,MacroNrStart,AppNr,MaxColLgn,MatrickNrStart,ColGels,FixtureGroups,SelectedGelNr,SelectedGrp,SelectedGrpNo,All_5_NrStart,ColPath,TLay,SeqNr, MacroNr,App,All_5_Nr,MatrickNr)
     local list = false
-    --   local FixtureGroups = Root().ShowData.DataPools.Default.Groups:Children()
-    --   local SelectedGrp = {}
-    --   local SelectedGrpNo = {}
+      local FixtureGroups = Root().ShowData.DataPools.Default.Groups:Children()
+      local SelectedGrp = {}
+      local SelectedGrpNo = {}
     local SelGrp
     local Nr_SelectedGrp
     local check_grp = false
-    -- local ColPath = Root().ShowData.GelPools
-    --   local ColGels = ColPath:Children()
-    --   local SelectedGelNr
+    local ColPath = Root().ShowData.GelPools
+      local ColGels = ColPath:Children()
+      local SelectedGelNr
     local NGel
-    --   local MaxColLgn
+      local MaxColLgn
     local check_gel = false
-    -- local TLay = Root().ShowData.DataPools.Default.Layouts:Children()
-    --   local TLayNr
+    local TLay = Root().ShowData.DataPools.Default.Layouts:Children()
+      local TLayNr
     local Nalay
-    -- local SeqNr = Root().ShowData.DataPools.Default.Sequences:Children()
-    --   local SeqNrStart
+    local SeqNr = Root().ShowData.DataPools.Default.Sequences:Children()
+      local SeqNrStart
     local SeqNrRange
-    -- local MacroNr = Root().ShowData.DataPools.Default.Macros:Children()
-    --   local MacroNrStart
+    local MacroNr = Root().ShowData.DataPools.Default.Macros:Children()
+      local MacroNrStart
     local MacroNrRange
-    -- local App = Root().ShowData.Appearances:Children()
-    --   local AppNr
+    local App = Root().ShowData.Appearances:Children()
+      local AppNr
     local AppNrRange
-    -- local All_5_Nr = Root().ShowData.DataPools.Default.PresetPools[25]:Children()
-    --   local All_5_NrStart
+    local All_5_Nr = Root().ShowData.DataPools.Default.PresetPools[25]:Children()
+      local All_5_NrStart
     local All_5_NrRange
-    -- local MatrickNr = Root().ShowData.DataPools.Default.MAtricks:Children()
-    --   local MatrickNrStart
+    local MatrickNr = Root().ShowData.DataPools.Default.MAtricks:Children()
+      local MatrickNrStart
     local MatrickNrRange
 
     local popuplists = {
@@ -692,10 +693,11 @@ function Mainbox_Call(displayHandle,signalTable,thiscomponent,myHandle,TLayNr,Na
         end
         Echo("OK button clicked.")
         Obj.Delete(screenOverlay, Obj.Index(baseInput))
-        do
-            return 1, SeqNrStart, MacroNrStart, AppNr, TLayNr, NaLay, MaxColLgn, MatrickNrStart, SelectedGelNr,
-                All_5_NrStart, SelectedGrp
-        end
+        doMagicStuff()
+        -- do
+        --     return 1, SeqNrStart, MacroNrStart, AppNr, TLayNr, NaLay, MaxColLgn, MatrickNrStart, SelectedGelNr,
+        --         All_5_NrStart, SelectedGrp
+        -- end
     end
 
     signalTable.OnInput1TextChanged = function(caller)
