@@ -1,5 +1,6 @@
 function Construct_Layout(displayHandle, TLay, SeqNrStart, MacroNrStart, MatrickNrStart, MatrickNr, TLayNr, AppNr,
-                      All_5_Current, All_5_NrStart, ColPath, SelectedGelNr, SelectedGrp, SelectedGrpNo)
+                          All_5_Current, All_5_NrStart, ColPath, SelectedGelNr, SelectedGrp, SelectedGrpNo, TLayNrRef,
+                          NaLay)
     local Macro_Pool = Root().ShowData.DataPools.Default.Macros
     local All_5_NrEnd
     local Img = Root().ShowData.MediaPools.Symbols:Children()
@@ -220,7 +221,6 @@ function Construct_Layout(displayHandle, TLay, SeqNrStart, MacroNrStart, Matrick
     local GrpNo
     local col_count
     local check = {}
-    local NaLay = "Colors"
     local FirstSeqTime
     local LastSeqTime
     local FirstSeqDelayFrom
@@ -305,8 +305,6 @@ function Construct_Layout(displayHandle, TLay, SeqNrStart, MacroNrStart, Matrick
     if Return_Create_Appear_Tricks[1] then
         AppNr = Return_Create_Appear_Tricks[2]
         AppTricks = Return_Create_Appear_Tricks[3]
-        Echo("************************************************************************************")
-        Echo(AppNr)
     end
     -- end Appearances Tricks Ref
     -- Create Appearances
@@ -314,8 +312,6 @@ function Construct_Layout(displayHandle, TLay, SeqNrStart, MacroNrStart, Matrick
         StColName, StringColName) }
     if Return_Create_Appearances[1] then
         NrAppear = Return_Create_Appearances[2]
-        Echo("************************************************************************************")
-        Echo(NrAppear)
     end
     -- end Appearances
     -- Create Preset 25
