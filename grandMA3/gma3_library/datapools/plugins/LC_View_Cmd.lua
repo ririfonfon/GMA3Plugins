@@ -31,8 +31,6 @@ function Fade(axes, layout, element, matrick_call)
         fx = tonumber(MATricks[matrick]:Get('FadeFromZ', Enums.Roles.Display)) or 'None'
         tx = tonumber(MATricks[matrick]:Get('FadeToZ', Enums.Roles.Display)) or 'None'
     end
-    Echo(fx)
-    Echo(tx)
     local text
     if (fx ~= "None") then
         if (tx ~= "None") then
@@ -74,7 +72,6 @@ function Delay_From(axes, layout, element, matrick_call, matrickthru)
         fx = tonumber(MATricks[matrick]:Get('DelayFromZ', Enums.Roles.Display)) or 'None'
         Cmd('Set Matricks ' .. matrick + 1 .. ' Thru ' .. matrickthru .. ' Property "DelayFromz" ' .. fx)
     end
-    Echo(fx)
     local text
     if (fx ~= "None") then
         text = string.format('"%.2f"', fx)
@@ -108,7 +105,6 @@ function Delay_To(axes, layout, element, matrick_call, matrickthru)
         tx = tonumber(MATricks[matrick]:Get('DelayToZ', Enums.Roles.Display)) or 'None'
         Cmd('Set Matricks ' .. matrick + 1 .. ' Thru ' .. matrickthru .. ' Property "DelayToz" ' .. tx)
     end
-    Echo(tx)
     local text
     if (tx ~= "None") then
         text = string.format('"%.2f"', tx)
@@ -148,8 +144,6 @@ function Phase(axes, layout, element, matrick_call, matrickthru)
         Cmd('Set Matricks ' .. matrick + 1 .. ' Thru ' .. matrickthru .. ' Property "PhaseFromz" ' .. fx)
         Cmd('Set Matricks ' .. matrick + 1 .. ' Thru ' .. matrickthru .. ' Property "PhaseToz" ' .. tx)
     end
-    Echo(fx)
-    Echo(tx)
     local text
     if (fx ~= "None" and fx ~= "90°" and fx ~= "180°" and fx ~= "270°" and fx ~= "360°") then
         if (tx ~= "None" and tx ~= "90°" and tx ~= "180°" and tx ~= "270°" and tx ~= "360°") then
@@ -191,7 +185,6 @@ function Group(axes, layout, element, matrick_call, matrickthru)
         fx = tonumber(MATricks[matrick]:Get('zGroup', Enums.Roles.Display)) or 'None'
         Cmd('Set Matricks ' .. matrick + 1 .. ' Thru ' .. matrickthru .. ' Property "zGroup" ' .. fx)
     end
-    Echo(fx)
     local text
     if (fx ~= "None") then
         text = string.format('"%d"', fx)
@@ -225,7 +218,6 @@ function Block(axes, layout, element, matrick_call, matrickthru)
         fx = tonumber(MATricks[matrick]:Get('zBlock', Enums.Roles.Display)) or 'None'
         Cmd('Set Matricks ' .. matrick + 1 .. ' Thru ' .. matrickthru .. ' Property "zBlock" ' .. fx)
     end
-    Echo(fx)
     local text
     if (fx ~= "None") then
         text = string.format('"%d"', fx)
@@ -259,7 +251,6 @@ function Wings(axes, layout, element, matrick_call, matrickthru)
         fx = tonumber(MATricks[matrick]:Get('zWings', Enums.Roles.Display)) or 'None'
         Cmd('Set Matricks ' .. matrick + 1 .. ' Thru ' .. matrickthru .. ' Property "zWings" ' .. fx)
     end
-    Echo(fx)
     local text
     if (fx ~= "None") then
         text = string.format('"%d"', fx)
@@ -276,18 +267,14 @@ function Priority(layout, element, seq_call)
     local seq_check
     local seq
     local prio
-    Echo(seq_call)
     for k in ipairs(SEQ_Root) do
         seq_check = SEQ_Root[k].name
         if seq_check == seq_call then
-            Echo("good")
             seq = k
         end
     end
     seq = tonumber(seq)
-    Echo(seq)
     prio = SEQ_Root[seq]:Get('Priority', Enums.Roles.Display) or 'None'
-    Echo(prio)
     if prio == "Super" then
         Cmd('Set Layout ' .. layout .. "." .. element .. ' Property "Appearance" "p_super_png" ')
     elseif prio == "Swap" then
