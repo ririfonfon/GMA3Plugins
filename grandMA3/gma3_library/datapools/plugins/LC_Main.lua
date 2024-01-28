@@ -58,7 +58,6 @@ local function Main(displayHandle)
     }
 
     if list == false then
-        Echo("list")
         for k in ipairs(FixtureGroups) do
             table.insert(popuplists.Grp_Select, "'" .. FixtureGroups[k].name .. "'")
         end
@@ -706,7 +705,6 @@ local function Main(displayHandle)
 
     -- Handlers.
     signalTable.CancelButtonClicked = function(caller)
-        Echo("Cancel button clicked.")
         Cmd("ClearAll /nu")
         Obj.Delete(screenOverlay, Obj.Index(baseInput))
     end
@@ -717,19 +715,16 @@ local function Main(displayHandle)
         else
             OkButton.BackColor = colorBackground
         end
-        Echo("OK button clicked.")
         Obj.Delete(screenOverlay, Obj.Index(baseInput))
         Construct_Layout(displayHandle, TLay, SeqNrStart, MacroNrStart, MatrickNrStart, MatrickNr, TLayNr, AppNr,
             All_5_Current, All_5_NrStart, ColPath, SelectedGelNr, SelectedGrp, SelectedGrpNo, TLayNrRef, NaLay)
     end
 
     signalTable.OnInput1TextChanged = function(caller)
-        Echo("Input1 changed: '" .. caller.Content .. "'")
         NaLay = caller.Content:gsub("'", "")
     end
 
     signalTable.OnInput2TextChanged = function(caller)
-        Echo("Input2 changed: '" .. caller.Content .. "'")
         local check = false
         if caller.Content == "" or caller.Content == "0" then
             OkButton.Visible = "No"
@@ -754,7 +749,6 @@ local function Main(displayHandle)
     end
 
     signalTable.OnInput3TextChanged = function(caller)
-        Echo("Input3 changed: '" .. caller.Content .. "'")
         local checks = false
         if caller.Content == "" or caller.Content == "0" then
             OkButton.Visible = "No"
@@ -789,7 +783,6 @@ local function Main(displayHandle)
     end
 
     signalTable.OnInput4TextChanged = function(caller)
-        Echo("Input4 changed: '" .. caller.Content .. "'")
         local checks = false
         if caller.Content == "" or caller.Content == "0" then
             OkButton.Visible = "No"
@@ -817,7 +810,6 @@ local function Main(displayHandle)
     end
 
     signalTable.OnInput5TextChanged = function(caller)
-        Echo("Input5 changed: '" .. caller.Content .. "'")
         local checks = false
         if caller.Content == "" or caller.Content == "0" then
             OkButton.Visible = "No"
@@ -852,7 +844,6 @@ local function Main(displayHandle)
     end
 
     signalTable.OnInput6TextChanged = function(caller)
-        Echo("Input6 changed: '" .. caller.Content .. "'")
         local checks = false
         if caller.Content == "" or caller.Content == "0" then
             OkButton.Visible = "No"
@@ -888,7 +879,6 @@ local function Main(displayHandle)
     end
 
     signalTable.OnInput7TextChanged = function(caller)
-        Echo("Input7 changed: '" .. caller.Content .. "'")
         local checks = false
         if caller.Content == "" or caller.Content == "0" then
             OkButton.Visible = "No"
@@ -923,7 +913,6 @@ local function Main(displayHandle)
     end
 
     signalTable.OnInput8TextChanged = function(caller)
-        Echo("Input8 changed: '" .. caller.Content .. "'")
         local checks = false
         if caller.Content == "" or caller.Content == "0" then
             checks = true
@@ -949,7 +938,6 @@ local function Main(displayHandle)
 
         if caller.Name == "Gel_Select" then
             caller.Text = choice or caller.Text
-            Echo("Gelchanged: " .. caller.Text .. "'")
             for k in ipairs(ColGels) do
                 if ColGels[k].name == caller.Text:gsub("'", "") then
                     SelectedGelNr = k
@@ -959,18 +947,15 @@ local function Main(displayHandle)
             for k in ipairs(TCol) do
                 NGel = k
             end
-            Echo(NGel)
             check_gel = true
             input10Button.Visible = "Yes"
         elseif caller.Name == "Grp_Select" then
             for k in ipairs(popuplists.Grp_Select) do
-                Echo(popuplists.Grp_Select[k])
                 if popuplists.Grp_Select[k] == choice then
                     table.remove(popuplists.Grp_Select, k)
                 end
             end
             choice = choice:gsub("'", "")
-            Echo("Grp add : " .. choice)
             for k in ipairs(FixtureGroups) do
                 if choice == FixtureGroups[k].name then
                     SelGrp = k
@@ -982,7 +967,6 @@ local function Main(displayHandle)
                 Nr_SelectedGrp = k
             end
             subTitle.Text = subTitle.Text .. Nr_SelectedGrp .. "." .. FixtureGroups[SelGrp].name .. " "
-            Echo("Select Group " .. FixtureGroups[SelGrp].name)
             check_grp = true
             if check_gel == true then
                 OkButton.Visible = "Yes"
@@ -1005,7 +989,6 @@ local function Main(displayHandle)
         elseif caller.Name == "Name_Select" then
             input1LineEdit.Content = choice
         elseif caller.Name == "Lay_Select" then
-            Echo(("lay call"))
             input2LineEdit.Content = choice
         elseif caller.Name == "Seq_Select" then
             input3LineEdit.Content = choice
