@@ -105,7 +105,6 @@ function CheckSymbols(displayHandle, Img, ImgImp, check, add_check, long_imgimp,
     if (long_imgimp == add_check) then
         Echo("file exist")
     else
-        Echo("file NOT exist")
         -- Select a disk
         local drives = Root().Temp.DriveCollect
         local selectedDrive     -- users selected drive
@@ -134,15 +133,12 @@ function CheckSymbols(displayHandle, Img, ImgImp, check, add_check, long_imgimp,
         end
 
         -- grab the export path for the selected drive and append the file name
-        Echo("selectedDrive = %s", tostring(selectedDrive))
         Cmd("select Drive " .. selectedDrive .. "")
 
         -- Import Symbols
         for k in pairs(ImgImp) do
             if (check[k] == nil) then
                 ImgNr = math.floor(ImgNr + 1);
-                Echo(ImgNr)
-                Echo(k)
                 Cmd("Store Image 2." ..
                     ImgNr ..
                     " " ..
@@ -151,205 +147,6 @@ function CheckSymbols(displayHandle, Img, ImgImp, check, add_check, long_imgimp,
         end
     end
 end -- end function CheckSymbols(...)
-
--- function Mainbox_Call(displayHandle,TLayNr,NaLay,SeqNrStart,MacroNrStart,AppNr,MaxColLgn,MatrickNrStart,ColGels,FixtureGroups,SelectedGelNr,SelectedGrp,SelectedGrpNo,All_5_NrStart)
---     local ChoGel = {}
---     for k in ipairs(ColGels) do
---         table.insert(ChoGel, "'" .. ColGels[k].name .. "'")
---     end
---     local count = 0
---     local OkBtn = ""
---     local ValOkBtn = 12
---     local Message = "Add Fixture Group and ColorGel\n * set beginning Appearance & Sequence Number\n\n Selected Group(s) are: \n"
---     local PopTableGrp = {}
---     local SelGrp
---     local TGrpChoise
---     local Swipe_Color = {
---         {name ="____GELS__CHOOSE____GELS__CHOOSE____GELS__CHOOSE____GELS__CHOOSE____GELS__CHOOSE____", selectedValue=11,
---             values={
---                 ["'" .. ColGels[1].name .. "'"]=1,["'" .. ColGels[2].name .. "'"]=2,["'" .. ColGels[3].name .. "'"]=3,["'" .. ColGels[4].name .. "'"]=4,["'" .. ColGels[5].name .. "'"]=5,
---                 ["'" .. ColGels[6].name .. "'"]=6,["'" .. ColGels[7].name .. "'"]=7,["'" .. ColGels[8].name .. "'"]=8,["'" .. ColGels[9].name .. "'"]=9,["'" .. ColGels[10].name .. "'"]=10,
---                 ["'" .. ColGels[11].name .. "'"]=11
---             },type=0
---         }
---     }
-
---     -- Main Box
---     ::MainBox:: do
---         local box = MessageBox({
---             title = 'Layout_Color_By_RIRI',
---             display = displayHandle,
---             backColor = "1.7",
---             message = Message,
---             icon = 10,
---             commands = { {
---                 name = 'Add Group',
---                 value = 11
---             }, {
---                 name = OkBtn,
---                 value = ValOkBtn
---             }, {
---                 name = 'Cancel',
---                 value = 0
---             } },
---             inputs = {
---                 {
---                 name = 'a_Layout_Name',
---                 TextalignmentH = "Left",
---                 value = NaLay,
---                 maxTextLength = 16,
---                 vkPlugin = "TextInput"},
---                 {
---                 name = 'b_Layout_Nr',
---                 value = TLayNr,
---                 maxTextLength = 4,
---                 vkPlugin = "TextInputNumOnly"},
---                 {
---                 name = 'c_Sequence_Start_Nr',
---                 blackFilter = "*",
---                 value = SeqNrStart,
---                 maxTextLength = 4,
---                 vkPlugin = "TextInputNumOnly"},
---                 {
---                 name = 'd_Macro_Start_Nr',
---                 blackFilter = "*",
---                 value = MacroNrStart,
---                 maxTextLength = 4,
---                 vkPlugin = "TextInputNumOnly"},
---                 {
---                 name = 'e_Appearance_Start_Nr',
---                 blackFilter = "*",
---                 value = AppNr,
---                 maxTextLength = 4,
---                 vkPlugin = "TextInputNumOnly"},
---                 {
---                 name = 'f_Preset_All_5_Start_Nr',
---                 value = All_5_NrStart,
---                 maxTextLength = 4,
---                 vkPlugin = "TextInputNumOnly"},
---                 {
---                 name = 'g_Matrick_Start_Nr',
---                 value = MatrickNrStart,
---                 maxTextLength = 4,
---                 vkPlugin = "TextInputNumOnly"},
---                 {
---                 name = 'h_Max_Color_By_Line',
---                 value = MaxColLgn,
---                 maxTextLength = 2,
---                 vkPlugin = "TextInputNumOnly"}
---             },
---             selectors = Swipe_Color
-
---         })
-
---         if (box.result == 11 or box.result == 100 or box.result == 10) then
---             if (count == 0 or ValOkBtn == 100) then
---                 ValOkBtn = math.floor(ValOkBtn / 10)
---                 if (ValOkBtn < 10) then
---                     ValOkBtn = 1
---                 end
---             end
-
---             if (ValOkBtn == 1) then
---                 OkBtn = "OK Let's GO :)"
---             end
-
---             for k in pairs(FixtureGroups) do
---                 count = count + 1
---             end
-
---             if (count == 0) then
---                 Echo("all Groups are added")
---                 Confirm("all Groups are added")
---                 SeqNrStart = box.inputs.c_Sequence_Start_Nr
---                 MacroNrStart = box.inputs.d_Macro_Start_Nr
---                 AppNr = box.inputs.e_Appearance_Start_Nr
---                 TLayNr = box.inputs.b_Layout_Nr
---                 NaLay = box.inputs.a_Layout_Name
---                 MaxColLgn = box.inputs.h_Max_Color_By_Line
---                 MatrickNrStart = box.inputs.g_Matrick_Start_Nr
---                 All_5_NrStart = box.inputs.f_Preset_All_5_Start_Nr
---                 SelectedGelNr = box.selectors
---                     .____GELS__CHOOSE____GELS__CHOOSE____GELS__CHOOSE____GELS__CHOOSE____GELS__CHOOSE____
---                 goto MainBox
---             else
---                 Echo("add Group")
---                 SeqNrStart = box.inputs.c_Sequence_Start_Nr
---                 MacroNrStart = box.inputs.d_Macro_Start_Nr
---                 AppNr = box.inputs.e_Appearance_Start_Nr
---                 TLayNr = box.inputs.b_Layout_Nr
---                 NaLay = box.inputs.a_Layout_Name
---                 MaxColLgn = box.inputs.h_Max_Color_By_Line
---                 MatrickNrStart = box.inputs.g_Matrick_Start_Nr
---                 All_5_NrStart = box.inputs.f_Preset_All_5_Start_Nr
---                 SelectedGelNr = box.selectors
---                     .____GELS__CHOOSE____GELS__CHOOSE____GELS__CHOOSE____GELS__CHOOSE____GELS__CHOOSE____
---                 goto addGroup
---             end
---         elseif (box.result == 1) then
---             if next(SelectedGrp) == nil then
---                 Confirm("no Group are added!")
---                 SeqNrStart = box.inputs.c_Sequence_Start_Nr
---                 MacroNrStart = box.inputs.d_Macro_Start_Nr
---                 AppNr = box.inputs.e_Appearance_Start_Nr
---                 TLayNr = box.inputs.b_Layout_Nr
---                 NaLay = box.inputs.a_Layout_Name
---                 MaxColLgn = box.inputs.h_Max_Color_By_Line
---                 MatrickNrStart = box.inputs.g_Matrick_Start_Nr
---                 All_5_NrStart = box.inputs.f_Preset_All_5_Start_Nr
---                 SelectedGelNr = box.selectors
---                     .____GELS__CHOOSE____GELS__CHOOSE____GELS__CHOOSE____GELS__CHOOSE____GELS__CHOOSE____
---                 goto addGroup
---             else
---                 SeqNrStart = box.inputs.c_Sequence_Start_Nr
---                 MacroNrStart = box.inputs.d_Macro_Start_Nr
---                 AppNr = box.inputs.e_Appearance_Start_Nr
---                 TLayNr = box.inputs.b_Layout_Nr
---                 NaLay = box.inputs.a_Layout_Name
---                 MaxColLgn = box.inputs.h_Max_Color_By_Line
---                 MatrickNrStart = box.inputs.g_Matrick_Start_Nr
---                 All_5_NrStart = box.inputs.f_Preset_All_5_Start_Nr
---                 SelectedGelNr = box.selectors
---                     .____GELS__CHOOSE____GELS__CHOOSE____GELS__CHOOSE____GELS__CHOOSE____GELS__CHOOSE____
---                 Echo("Construction du Layout...")
---                 do return 1,SeqNrStart,MacroNrStart,AppNr,TLayNr,NaLay,MaxColLgn,MatrickNrStart,SelectedGelNr,All_5_NrStart,SelectedGrp end
---             end
---         elseif (box.result == 0) then
---             Echo("User Canceled")
---             do return end
---         end
---     end -- End Main Box
-
---     ::addGroup:: do
-
---         TGrpChoise = {}
---         for k in ipairs(FixtureGroups) do
---             table.insert(TGrpChoise, "'" .. FixtureGroups[k].name .. "'")
---             Echo(FixtureGroups[k].name)
---         end
-
---         -- Setup the Messagebox
---         PopTableGrp = {
---             title = "Fixture Group",
---             caller = displayHandle,
---             items = TGrpChoise,
---             selectedValue = "",
---             add_args = {
---                 FilterSupport = "Yes"
---             }
---         }
---         SelGrp = PopupInput(PopTableGrp)
-
---         table.insert(SelectedGrp, "'" .. FixtureGroups[SelGrp + 1].name .. "'")
---         table.insert(SelectedGrpNo, "'" .. FixtureGroups[SelGrp + 1].NO .. "'")
---         Echo("A")
---         Message = Message .. FixtureGroups[SelGrp + 1].name .. "\n"
---         Echo("Select Group " .. FixtureGroups[SelGrp + 1].name)
---         table.remove(FixtureGroups, SelGrp + 1)
---         goto MainBox
---     end -- end ::addGroup:: do
-
--- end -- end function Mainbox_Call(...)
 
 function Make_Macro_Reset(CurrentMacroNr, prefix, surfix, MatrickNrStart, a, CurrentSeqNr, First_Id_Lay, TLayNr,
                           Fade_Element, Delay_F_Element, Delay_T_Element, Phase_Element, Group_Element, Block_Element,
@@ -640,7 +437,6 @@ end
 
 function Create_Macro_Fade_E(CurrentMacroNr, prefix, Argument_Fade, i, surfix, a, FirstSeqTime, LastSeqTime, CurrentSeqNr,
                              SeqNrStart, SeqNrEnd, MatrickNrStart, TLayNr, Fade_Element)
-    Echo(CurrentMacroNr + i - 1)
     Cmd('Store Macro ' .. CurrentMacroNr + i - 1 .. ' \'' .. prefix .. Argument_Fade[i].name .. surfix[a] .. '')
     Cmd('ChangeDestination Macro ' .. CurrentMacroNr + i - 1 .. '')
     Cmd('Insert')
@@ -758,7 +554,6 @@ function Add_Macro_Call(a, TLayNr, Fade_Element, MatrickNrStart, Delay_F_Element
 end
 
 function Create_Appear_Tricks(AppTricks, AppNr, prefix)
-    Echo('Create Appear. Tricks Ref')
     for q in pairs(AppTricks) do
         AppTricks[q].Nr = math.floor(AppNr)
         Cmd('Store App ' ..
@@ -821,7 +616,6 @@ function Create_Appearances_Sequences(CurrentMacroNr, SelectedGelNr, SelectedGrp
         local col_count = 0
         LayY = math.floor(LayY - LayH) -- Max Y Position minus hight from element. 0 are at the Bottom!
         NrAppear = math.floor(AppNr + 1)
-        Echo(AppNr)
         NrNeed = math.floor(AppNr + 1)
         Cmd("Assign Group " .. SelectedGrp[g] .. " at Layout " .. TLayNr)
         Cmd("Set Layout " ..
@@ -847,17 +641,13 @@ function Create_Appearances_Sequences(CurrentMacroNr, SelectedGelNr, SelectedGrp
             col_count = col_count + 1
             local StColCode = "\"" .. TCol[col].r .. "," .. TCol[col].g .. "," .. TCol[col].b .. ",1\""
             local StColName = TCol[col].name
-            Echo("))))))))))1")
             local StringColName = string.gsub(StColName, " ", "_")
             local ColNr = SelectedGelNr .. "." .. TCol[col].no
             -- Create Sequences
             local GrpNo = SelectedGrpNo[g]
-            Echo("))))))))))2")
-            Echo(g)
             GrpNo = string.gsub(GrpNo, "'", "")
             Cmd("ClearAll /nu")
             -- Cmd("Group " .. SelectedGrp[g] .. " at Gel " .. ColNr .. "")
-            Echo("))))))))))3")
             Cmd("Store Sequence " ..
                 CurrentSeqNr .. " \"" .. prefix .. StringColName .. " " .. SelectedGrp[g]:gsub('\'', '') .. "\"")
             Cmd("Store Sequence " .. CurrentSeqNr .. " Cue 1 Part 0.1")
@@ -897,7 +687,6 @@ function Create_Appearances_Sequences(CurrentMacroNr, SelectedGelNr, SelectedGrp
         end -- end COLOR SEQ
         -- add matrick group
         Cmd('ClearAll /nu')
-        Echo("))))))))))4")
         Cmd('Store Sequence ' .. CurrentSeqNr .. ' \'' .. prefix .. "Tricks" .. SelectedGrpName[g]:gsub('\'', ''))
         Cmd('set seq ' ..
             CurrentSeqNr ..
@@ -927,7 +716,6 @@ function Create_Appearances_Sequences(CurrentMacroNr, SelectedGelNr, SelectedGrp
             LayW - 35 .. " PositionH " .. LayH - 35 .. " VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0")
         CurrentSeqNr = math.floor(CurrentSeqNr + 1)
         Cmd('ClearAll /nu')
-        Echo("))))))))))5")
         Cmd('Store Sequence ' .. CurrentSeqNr .. ' \'' .. prefix .. "Tricksh" .. SelectedGrpName[g]:gsub('\'', '') ..
             '\'')
         Cmd('set seq ' ..
@@ -946,11 +734,9 @@ function Create_Appearances_Sequences(CurrentMacroNr, SelectedGelNr, SelectedGrp
         Cmd('set seq ' .. CurrentSeqNr .. ' Property Appearance=' .. AppTricks[1].Nr)
         LayNr = math.floor(LayNr + 1)
         LayX = math.floor(LayX + LayW - 35 + 20)
-        Echo("))))))))))6")
         Cmd('Store Macro ' .. CurrentMacroNr .. ' \'' .. prefix .. SelectedGrpName[g]:gsub('\'', ''))
         Cmd('ChangeDestination Macro ' .. CurrentMacroNr .. '')
         Cmd('Insert')
-        Echo("))))))))))7")
         Cmd('set 1 Command=\'Edit Matrick ' .. prefix .. SelectedGrpName[g]:gsub('\'', ''))
         Cmd('ChangeDestination Root')
         Cmd('Assign Macro ' .. CurrentMacroNr .. " at layout " .. TLayNr)
