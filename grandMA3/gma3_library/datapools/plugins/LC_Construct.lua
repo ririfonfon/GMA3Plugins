@@ -274,7 +274,6 @@ function Construct_Layout(displayHandle, TLay, SeqNrStart, MacroNrStart, Matrick
         old_prefix_index = prefix_index
         for k in pairs(TLay) do
             if string.match(TLay[k].name, prefix) then
-                Echo("LC found %s", tostring(TLay[k].name))
                 prefix_index = math.floor(prefix_index + 1)
             end
         end
@@ -348,37 +347,7 @@ function Construct_Layout(displayHandle, TLay, SeqNrStart, MacroNrStart, Matrick
         CurrentMacroNr = Return_Create_Appearances_Sequences[6]
     end
     -- end Appearances/Sequences
-    -- check Appear. time .... TODO trouver procedure
-    -- Echo("check Appear.")
-    -- local appcheck = {}
-    -- for k in pairs(AppImp) do
-    --     appcheck[k] = setmetatable({
-    --         value = ''
-    --     }, {
-    --         ref = ''
-    --     })
-    -- end
-    -- add_check = 0
-    -- for k in pairs(App) do
-    --     for q in pairs(AppImp) do
-    --         if ('"' .. App[k].name .. '"' == AppImp[q].Name) then
-    --             add_check = math.floor(add_check + 1)
-    --             appcheck[q].value = 1
-    --             appcheck[q].ref = k
-    --             -- table.insert(appcheck.value, q, 1)
-    --             -- table.insert(appcheck.ref, q, k)
-    --             Echo(appcheck[q].value)
-    --             Echo(appcheck[q].ref)
-    --         end
-    --         long_imgimp = q
-    --     end
-    -- end"clearall /nu"
-    -- if (long_imgimp == add_check) then
-    --     Echo("Appear. exist")
-    -- else
-    --     Echo("Appear. NOT exist")
-    Echo('Create Appear. Time Ref')
-    Echo(NrNeed)
+   
     for q in pairs(AppImp) do
         AppImp[q].Nr = math.floor(NrNeed)
         Cmd('Store App ' ..
@@ -1201,7 +1170,6 @@ function Construct_Layout(displayHandle, TLay, SeqNrStart, MacroNrStart, Matrick
         CurrentSeqNr = math.floor(CurrentSeqNr + 2)
         CurrentMacroNr = math.floor(CurrentMacroNr + 2)
         MakeX = false
-        Echo("****************************************************************************************")
     end
     -- end Sequences X Y Z call
 
