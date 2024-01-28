@@ -1,3 +1,10 @@
+--[[
+Releases:
+* 1.1.8.1
+
+Created by Richard Fontaine "RIRI", January 2024.
+--]]
+
 function Construct_Layout(displayHandle, TLay, SeqNrStart, MacroNrStart, MatrickNrStart, MatrickNr, TLayNr, AppNr,
                           All_5_Current, All_5_NrStart, ColPath, SelectedGelNr, SelectedGrp, SelectedGrpNo, TLayNrRef,
                           NaLay)
@@ -292,6 +299,12 @@ function Construct_Layout(displayHandle, TLay, SeqNrStart, MacroNrStart, Matrick
     for g in pairs(SelectedGrp) do
         Cmd('Store MAtricks ' .. MatrickNr .. ' /nu')
         Cmd('Set Matricks ' .. MatrickNr .. ' name = ' .. prefix .. SelectedGrpName[g]:gsub('\'', '') .. ' /nu')
+        Cmd('Set Matricks ' .. MatrickNr .. ' Property "FadeFromx" 0')
+        Cmd('Set Matricks ' .. MatrickNr .. ' Property "FadeFromy" 0')
+        Cmd('Set Matricks ' .. MatrickNr .. ' Property "FadeFromz" 0')
+        Cmd('Set Matricks ' .. MatrickNr .. ' Property "FadeTox" 0')
+        Cmd('Set Matricks ' .. MatrickNr .. ' Property "FadeToy" 0')
+        Cmd('Set Matricks ' .. MatrickNr .. ' Property "FadeToz" 0')
         MatrickNr = math.floor(MatrickNr + 1)
     end
     -- Create new Layout View
@@ -528,7 +541,7 @@ function Construct_Layout(displayHandle, TLay, SeqNrStart, MacroNrStart, Matrick
         LastSeqDelayFrom = math.floor(CurrentSeqNr + 4)
         -- Create Macro DelayFrom Input
         Create_Macro_Delay_From(CurrentMacroNr, prefix, surfix, a, FirstSeqDelayFrom, LastSeqDelayFrom,
-            MatrickNrStart, 2, TLayNr, Delay_F_Element)
+            MatrickNrStart, 2, TLayNr, Delay_F_Element, MatrickNr)
 
         if MakeX then
             Command_Title('DELAY FROM', LayNr, TLayNr, LayX, LayY, 580, 140, 2)
@@ -587,7 +600,11 @@ function Construct_Layout(displayHandle, TLay, SeqNrStart, MacroNrStart, Matrick
                     TLayNr ..
                     ' ; SetUserVariable "LC_Element" ' ..
                     Delay_F_Element ..
-                    ' ; SetUserVariable "LC_Matrick" ' .. MatrickNrStart .. ' ; Call Plugin "LC_View" ')
+                    ' ; SetUserVariable "LC_Matrick" ' ..
+                    MatrickNrStart ..
+                    ' ; SetUserVariable "LC_Matrick_Thru" ' ..
+                    MatrickNr ..
+                    ' ; Call Plugin "LC_View" ')
             end
             Cmd('set seq ' .. CurrentSeqNr .. ' Property Appearance=' .. AppImp[ib].Nr)
             Command_Ext_Suite(CurrentSeqNr)
@@ -618,7 +635,7 @@ function Construct_Layout(displayHandle, TLay, SeqNrStart, MacroNrStart, Matrick
         LastSeqDelayTo = math.floor(CurrentSeqNr + 4)
         -- Create Macro DelayTo Input
         Create_Macro_Delay_To(CurrentMacroNr, prefix, surfix, a, FirstSeqDelayTo, LastSeqDelayTo, MatrickNrStart,
-            3, TLayNr, Delay_T_Element)
+            3, TLayNr, Delay_T_Element, MatrickNr)
 
         if MakeX then
             Command_Title('DELAY TO', LayNr, TLayNr, LayX, LayY, 580, 140, 2)
@@ -678,7 +695,11 @@ function Construct_Layout(displayHandle, TLay, SeqNrStart, MacroNrStart, Matrick
                     TLayNr ..
                     ' ; SetUserVariable "LC_Element" ' ..
                     Delay_T_Element ..
-                    ' ; SetUserVariable "LC_Matrick" ' .. MatrickNrStart .. ' ; Call Plugin "LC_View" ')
+                    ' ; SetUserVariable "LC_Matrick" ' ..
+                    MatrickNrStart ..
+                    ' ; SetUserVariable "LC_Matrick_Thru" ' ..
+                    MatrickNr ..
+                    ' ; Call Plugin "LC_View" ')
             end
             Cmd('set seq ' .. CurrentSeqNr .. ' Property Appearance=' .. AppImp[ib].Nr)
             Command_Ext_Suite(CurrentSeqNr)
@@ -720,7 +741,7 @@ function Construct_Layout(displayHandle, TLay, SeqNrStart, MacroNrStart, Matrick
         end
         Current_Id_Lay = First_Id_Lay[13]
         CurrentMacroNr = math.floor(CurrentMacroNr + 1)
-        Create_Macro_Phase(CurrentMacroNr, prefix, surfix, a, MatrickNrStart, 4, TLayNr, Phase_Element)
+        Create_Macro_Phase(CurrentMacroNr, prefix, surfix, a, MatrickNrStart, 4, TLayNr, Phase_Element, MatrickNr)
 
         -- Create Sequences
         Cmd('ClearAll /nu')
@@ -763,7 +784,7 @@ function Construct_Layout(displayHandle, TLay, SeqNrStart, MacroNrStart, Matrick
         LastSeqGrp = math.floor(CurrentSeqNr + 4)
         -- Create Macro Group Input
         Create_Macro_Group(CurrentMacroNr, prefix, surfix, a, FirstSeqGrp, LastSeqGrp, MatrickNrStart, 5, TLayNr,
-            Group_Element)
+            Group_Element, MatrickNr)
 
         if MakeX then
             Command_Title('GROUP', LayNr, TLayNr, LayX - 120, LayY - 30, 700, 170, 2)
@@ -822,7 +843,11 @@ function Construct_Layout(displayHandle, TLay, SeqNrStart, MacroNrStart, Matrick
                     TLayNr ..
                     ' ; SetUserVariable "LC_Element" ' ..
                     Group_Element ..
-                    ' ; SetUserVariable "LC_Matrick" ' .. MatrickNrStart .. ' ; Call Plugin "LC_View" ')
+                    ' ; SetUserVariable "LC_Matrick" ' ..
+                    MatrickNrStart ..
+                    ' ; SetUserVariable "LC_Matrick_Thru" ' ..
+                    MatrickNr ..
+                    ' ; Call Plugin "LC_View" ')
             end
             Cmd('set seq ' .. CurrentSeqNr .. ' Property Appearance=' .. AppImp[ib].Nr)
             Command_Ext_Suite(CurrentSeqNr)
@@ -854,7 +879,7 @@ function Construct_Layout(displayHandle, TLay, SeqNrStart, MacroNrStart, Matrick
         LastSeqBlock = math.floor(CurrentSeqNr + 4)
         -- Create Macro Block Input
         Create_Macro_Block(CurrentMacroNr, prefix, surfix, a, FirstSeqBlock, LastSeqBlock, MatrickNrStart, 6,
-            TLayNr, Block_Element)
+            TLayNr, Block_Element, MatrickNr)
 
         if MakeX then
             Command_Title('BLOCK', LayNr, TLayNr, LayX, LayY, 580, 140, 2)
@@ -913,7 +938,11 @@ function Construct_Layout(displayHandle, TLay, SeqNrStart, MacroNrStart, Matrick
                     TLayNr ..
                     ' ; SetUserVariable "LC_Element" ' ..
                     Block_Element ..
-                    ' ; SetUserVariable "LC_Matrick" ' .. MatrickNrStart .. ' ; Call Plugin "LC_View" ')
+                    ' ; SetUserVariable "LC_Matrick" ' ..
+                    MatrickNrStart ..
+                    ' ; SetUserVariable "LC_Matrick_Thru" ' ..
+                    MatrickNr ..
+                    ' ; Call Plugin "LC_View" ')
             end
             Cmd('set seq ' .. CurrentSeqNr .. ' Property Appearance=' .. AppImp[ib].Nr)
             Command_Ext_Suite(CurrentSeqNr)
@@ -945,7 +974,7 @@ function Construct_Layout(displayHandle, TLay, SeqNrStart, MacroNrStart, Matrick
         LastSeqWings = math.floor(CurrentSeqNr + 4)
         -- Create Macro Wings Input
         Create_Macro_Wings(CurrentMacroNr, prefix, surfix, a, FirstSeqWings, LastSeqWings, MatrickNrStart, 7,
-            TLayNr, Wings_Element)
+            TLayNr, Wings_Element, MatrickNr)
 
         if MakeX then
             Command_Title('WINGS', LayNr, TLayNr, LayX, LayY, 580, 140, 2)
@@ -1004,7 +1033,11 @@ function Construct_Layout(displayHandle, TLay, SeqNrStart, MacroNrStart, Matrick
                     TLayNr ..
                     ' ; SetUserVariable "LC_Element" ' ..
                     Wings_Element ..
-                    ' ; SetUserVariable "LC_Matrick" ' .. MatrickNrStart .. ' ; Call Plugin "LC_View" ')
+                    ' ; SetUserVariable "LC_Matrick" ' ..
+                    MatrickNrStart ..
+                    ' ; SetUserVariable "LC_Matrick_Thru" ' ..
+                    MatrickNr ..
+                    ' ; Call Plugin "LC_View" ')
             end
             Cmd('set seq ' .. CurrentSeqNr .. ' Property Appearance=' .. AppImp[ib].Nr)
             Command_Ext_Suite(CurrentSeqNr)
@@ -1065,7 +1098,7 @@ function Construct_Layout(displayHandle, TLay, SeqNrStart, MacroNrStart, Matrick
         Cmd('ChangeDestination Root')
         Make_Macro_Reset(CurrentMacroNr, prefix, surfix, MatrickNrStart, a, CurrentSeqNr, First_Id_Lay, TLayNr,
             Fade_Element, Delay_F_Element, Delay_T_Element, Phase_Element, Group_Element, Block_Element,
-            Wings_Element)
+            Wings_Element, MatrickNr)
         First_Id_Lay[28 + a] = CurrentSeqNr
         Cmd('ClearAll /nu')
         Cmd('Store Sequence ' .. CurrentSeqNr .. ' \'' .. prefix .. surfix[a] .. '_Call\'')
@@ -1294,4 +1327,4 @@ function Construct_Layout(displayHandle, TLay, SeqNrStart, MacroNrStart, Matrick
     UsedH = Root().ShowData.DataPools.Default.Layouts:Children()[TLayNrRef].UsedH / 2
     Cmd("Set Layout " .. TLayNr .. " DimensionW " .. UsedW .. " DimensionH " .. UsedH)
     Cmd('Select Layout ' .. TLayNr)
-end -- end MagicStuff
+end -- end Construct_Layout
