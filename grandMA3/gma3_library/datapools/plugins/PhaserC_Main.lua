@@ -1,6 +1,6 @@
 --[[
 Releases:
-* 1.1.8.1
+* 1.0.0.0
 
 Created by Richard Fontaine "RIRI", February 2024.
 --]]
@@ -46,7 +46,7 @@ local function Main(displayHandle)
     local MatrickNrRange
 
     local popuplists = {
-        -- Grp_Select     = {},
+        Grp_Select     = {},
         Gel_Select     = {},
         Name_Select    = { 'Phaser 1234 Color', 'Phaser 1234 Kolor', 'Phaser 1234 Co', '1234 Ko', 'OneToFour', 'OTF Kolor' },
         Lay_Select     = { 1, 11, 101, 201, 301, 401, 501, 601, 701, 801, 901, 1001, 2001 },
