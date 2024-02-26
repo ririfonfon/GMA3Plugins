@@ -12,8 +12,8 @@ local myHandle = select(4, ...)
 
 local function Main(displayHandle)
     local list = false
-    -- local FixtureGroups = Root().ShowData.DataPools.Default.Groups:Children()
-    local SelectedGrp = {"COLOR_1", "COLOR_2", "COLOR_3", "COLOR_4"}
+    local FixtureGroups = Root().ShowData.DataPools.Default.Groups:Children()
+    local SelectedGrp = {}
     local SelectedGrpNo = {}
     local SelGrp
     local Nr_SelectedGrp
@@ -58,9 +58,9 @@ local function Main(displayHandle)
     }
 
     if list == false then
-        -- for k in ipairs(FixtureGroups) do
-        --     table.insert(popuplists.Grp_Select, "'" .. FixtureGroups[k].name .. "'")
-        -- end
+        for k in ipairs(FixtureGroups) do
+            table.insert(popuplists.Grp_Select, "'" .. FixtureGroups[k].name .. "'")
+        end
         for k in ipairs(ColGels) do
             table.insert(popuplists.Gel_Select, "'" .. ColGels[k].name .. "'")
         end
@@ -215,13 +215,10 @@ local function Main(displayHandle)
     dlgFrame.Anchors = { left = 0, right = 0, top = 1, bottom = 1 }
     dlgFrame[1][1].SizePolicy = "Fixed"
     dlgFrame[1][1].Size = "150"
-    --   dlgFrame[1][1].Size = "60"
     dlgFrame[1][2].SizePolicy = "Fixed"
     dlgFrame[1][2].Size = "700"
-    -- dlgFrame[1][2].Size = "Stretch"
     dlgFrame[1][3].SizePolicy = "Fixed"
     dlgFrame[1][3].Size = "50"
-    --   dlgFrame[1][3].Size = "80"
 
     -- Create the sub title.
     -- This is row 1 of the dlgFrame.
@@ -236,7 +233,6 @@ local function Main(displayHandle)
     subTitle.Anchors = { left = 0, right = 0, top = 0, bottom = 0 }
     subTitle.Padding = { left = 0, right = 0, top = 5, bottom = 5 }
     subTitle.Font = "2"
-    -- subTitle.Font = "Medium20"
     subTitle.HasHover = "No"
     subTitle.BackColor = colorTransparent
 
@@ -646,33 +642,32 @@ local function Main(displayHandle)
     input9Button.Margin = { left = 2, right = 0, top = 8, bottom = 2 }
     input9Button.Name = 'Gel_Select'
     input9Button.Text = "Please select Gel"
-    -- input9Button.Text = "'Custom'"
     input9Button.PluginComponent = thiscomponent
     input9Button.Clicked = 'mypopup'
     input9Button.BackColor = colorPartlySelectedPreset
     input9Button.Font = "2"
 
     -- Create the UI elements for the 10 input button.
-    -- local input10Icon = inputsGrid:Append("Button")
-    -- input10Icon.Text = ""
-    -- input10Icon.Anchors = { left = 0, right = 0, top = 9, bottom = 9 }
-    -- input10Icon.Icon = "object_group2"
-    -- input10Icon.Margin = { left = 0, right = 2, top = 9, bottom = 2 }
-    -- input10Icon.HasHover = "No";
-    -- input10Icon.BackColor = colorGroups
-    -- input10Icon.Font = "2"
+    local input10Icon = inputsGrid:Append("Button")
+    input10Icon.Text = ""
+    input10Icon.Anchors = { left = 0, right = 0, top = 9, bottom = 9 }
+    input10Icon.Icon = "object_group2"
+    input10Icon.Margin = { left = 0, right = 2, top = 9, bottom = 2 }
+    input10Icon.HasHover = "No";
+    input10Icon.BackColor = colorGroups
+    input10Icon.Font = "2"
 
-    -- local input10Button = inputsGrid:Append('Button')
-    -- input10Button.Anchors = { left = 1, right = 9, top = 9, bottom = 9 }
-    -- input10Button.Padding = "5,5"
-    -- input10Button.Margin = { left = 2, right = 0, top = 9, bottom = 2 }
-    -- input10Button.Name = 'Grp_Select'
-    -- input10Button.Text = 'Please add Group'
-    -- input10Button.PluginComponent = thiscomponent
-    -- input10Button.Clicked = 'mypopup'
-    -- input10Button.BackColor = colorGroups
-    -- input10Button.Font = "2"
-    -- input10Button.Visible = "No"
+    local input10Button = inputsGrid:Append('Button')
+    input10Button.Anchors = { left = 1, right = 9, top = 9, bottom = 9 }
+    input10Button.Padding = "5,5"
+    input10Button.Margin = { left = 2, right = 0, top = 9, bottom = 2 }
+    input10Button.Name = 'Grp_Select'
+    input10Button.Text = 'Please add Group'
+    input10Button.PluginComponent = thiscomponent
+    input10Button.Clicked = 'mypopup'
+    input10Button.BackColor = colorGroups
+    input10Button.Font = "2"
+    input10Button.Visible = "No"
 
     -- Create the button grid.
     -- This is row 3 of the dlgFrame.
@@ -948,26 +943,26 @@ local function Main(displayHandle)
                 NGel = k
             end
             check_gel = true
-        --     input10Button.Visible = "Yes"
-        -- elseif caller.Name == "Grp_Select" then
-        --     for k in ipairs(popuplists.Grp_Select) do
-        --         if popuplists.Grp_Select[k] == choice then
-        --             table.remove(popuplists.Grp_Select, k)
-        --         end
-        --     end
-            -- choice = choice:gsub("'", "")
-            -- for k in ipairs(FixtureGroups) do
-            --     if choice == FixtureGroups[k].name then
-            --         SelGrp = k
-            --     end
-            -- end
-            -- table.insert(SelectedGrp, "'" .. FixtureGroups[SelGrp].name .. "'")
-            -- table.insert(SelectedGrpNo, "'" .. FixtureGroups[SelGrp].NO .. "'")
-            -- for k in ipairs(SelectedGrp) do
-            --     Nr_SelectedGrp = k
-            -- end
-            -- subTitle.Text = subTitle.Text .. Nr_SelectedGrp .. "." .. FixtureGroups[SelGrp].name .. " "
-            -- check_grp = true
+            input10Button.Visible = "Yes"
+        elseif caller.Name == "Grp_Select" then
+            for k in ipairs(popuplists.Grp_Select) do
+                if popuplists.Grp_Select[k] == choice then
+                    table.remove(popuplists.Grp_Select, k)
+                end
+            end
+            choice = choice:gsub("'", "")
+            for k in ipairs(FixtureGroups) do
+                if choice == FixtureGroups[k].name then
+                    SelGrp = k
+                end
+            end
+            table.insert(SelectedGrp, "'" .. FixtureGroups[SelGrp].name .. "'")
+            table.insert(SelectedGrpNo, "'" .. FixtureGroups[SelGrp].NO .. "'")
+            for k in ipairs(SelectedGrp) do
+                Nr_SelectedGrp = k
+            end
+            subTitle.Text = subTitle.Text .. Nr_SelectedGrp .. "." .. FixtureGroups[SelGrp].name .. " "
+            check_grp = true
             if check_gel == true then
                 OkButton.Visible = "Yes"
                 input1LineEdit.Visible = "Yes"
