@@ -2,7 +2,7 @@
 Releases:
 * 1.0.0.0
 
-Created by Richard Fontaine "RIRI", February 2024.
+Created by Richard Fontaine "RIRI", March 2024.
 --]]
 
 function Construct_Layout(displayHandle, TLay, SeqNrStart, MacroNrStart, MatrickNrStart, MatrickNr, TLayNr, AppNr,
@@ -139,6 +139,16 @@ function Construct_Layout(displayHandle, TLay, SeqNrStart, MacroNrStart, Matrick
         { Name = 'PANSYM',  phasefrom = '0', phaseto = '360', group = '2', wing = '2', block = '2', shuffle = '0', transform = 'Mirror' },
     }
 
+    local Argument_Ref = {
+        { Name = '1_2',     Step = 2,  Step1 = 0, Step2 = 1,  Step3 = 0,  Step4 = 0 },
+        { Name = '2_3',     Step = 2,  Step1 = 1, Step2 = 2,  Step3 = 0,  Step4 = 0 },
+        { Name = '3_4',     Step = 2,  Step1 = 2, Step2 = 3,  Step3 = 0,  Step4 = 0 },
+        { Name = '1_3',     Step = 2,  Step1 = 0, Step2 = 2,  Step3 = 0,  Step4 = 0 },
+        { Name = '2_4',     Step = 2,  Step1 = 1, Step2 = 3,  Step3 = 0,  Step4 = 0 },
+        { Name = '1_2_3',   Step = 3,  Step1 = 0, Step2 = 1,  Step3 = 2,  Step4 = 0 },
+        { Name = '2_3_4',   Step = 3,  Step1 = 1, Step2 = 2,  Step3 = 3,  Step4 = 0 },
+        { Name = '1_2_3_4', Step = 4,  Step1 = 0, Step2 = 1,  Step3 = 2,  Step4 = 3 },
+    }
     local First_Id_Lay = {}
     local Current_Id_Lay
     local SeqNrEnd
@@ -227,7 +237,7 @@ function Construct_Layout(displayHandle, TLay, SeqNrStart, MacroNrStart, Matrick
     -- CheckSymbols(displayHandle, Img, ImgImp, check, add_check, long_imgimp, ImgNr)
     -- Create MAtricks
     MatrickNr = math.floor(MatrickNrStart)
-    Create_Matrix(MatrickNr,Argument_Matricks,surfix,prefix)
+    Create_Matrix(MatrickNr, Argument_Matricks, surfix, prefix)
     -- Create new Layout View
     Cmd("Store Layout " .. TLayNr .. " \"" .. prefix .. NaLay .. "")
 
@@ -250,12 +260,14 @@ function Construct_Layout(displayHandle, TLay, SeqNrStart, MacroNrStart, Matrick
         All_5_Current = Return_Create_Preset_25[3]
     end
 
-    local Return_Create_Preset_Ref_1234 = { Create_Preset_Ref_1234(prefix,All_5_Current,SelectedGelNr)}
+    local Return_Create_Preset_Ref_1234 = { Create_Preset_Ref_1234(prefix, All_5_Current, SelectedGelNr) }
     if Return_Create_Preset_Ref_1234[1] then
         All_5_Current = Return_Create_Preset_Ref_1234[2]
         Preset_Ref = Return_Create_Preset_Ref_1234[3]
         Preset_Ref_End = Preset_Ref + 3
     end
+
+    local Return_Create_Phaser = { Create_Phaser(All_5_Current, Preset_Ref, prefix, Argument_Ref) }
     -- endCreate Preset 25
 
 
@@ -273,7 +285,7 @@ function Construct_Layout(displayHandle, TLay, SeqNrStart, MacroNrStart, Matrick
     -- LayX = RefX
     -- LayX = math.floor(LayX + LayW - 100)
     -- -- add Sequence FADE
-    
+
     Cmd("ClearAll /nu")
     -- Macro Del LC prefix
     CurrentMacroNr = math.floor(CurrentMacroNr + 2)
@@ -295,7 +307,8 @@ function Construct_Layout(displayHandle, TLay, SeqNrStart, MacroNrStart, Matrick
     Macro_Pool[CurrentMacroNr][4]:Set('Command', 'Delete Matricks ' .. prefix .. '*' .. ' /nc')
     Macro_Pool[CurrentMacroNr][5]:Set('Command', 'Delete Appearance ' .. prefix .. '*' .. ' /nc')
     Macro_Pool[CurrentMacroNr][6]:Set('Command', 'Delete Preset 25. ' .. prefix .. '*' .. ' /nc')
-    Macro_Pool[CurrentMacroNr][7]:Set('Command', 'Delete Preset 25. ' .. Preset_Ref ..'Thru Preset 25.' .. Preset_Ref_End .. ' /nc')
+    Macro_Pool[CurrentMacroNr][7]:Set('Command',
+        'Delete Preset 25. ' .. Preset_Ref .. 'Thru Preset 25.' .. Preset_Ref_End .. ' /nc')
     Macro_Pool[CurrentMacroNr][8]:Set('Command', 'Delete  Macro ' .. prefix .. '*' .. ' /nc')
     Macro_Pool[CurrentMacroNr][9]:Set('Command', 'Delete  Macro ' .. CurrentMacroNr .. ' /nc')
     -- end Macro Del LC prefix
