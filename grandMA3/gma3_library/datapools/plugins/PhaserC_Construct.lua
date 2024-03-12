@@ -194,6 +194,8 @@ function Construct_Layout(displayHandle, TLay, SeqNrStart, MacroNrStart, Matrick
     local MakeX = true
     local CallT
     local Call_inc = 0
+    local Preset_Ref
+    local Preset_Ref_End
 
 
 
@@ -227,27 +229,34 @@ function Construct_Layout(displayHandle, TLay, SeqNrStart, MacroNrStart, Matrick
     MatrickNr = math.floor(MatrickNrStart)
     Create_Matrix(MatrickNr,Argument_Matricks,surfix,prefix)
     -- Create new Layout View
-    -- Cmd("Store Layout " .. TLayNr .. " \"" .. prefix .. NaLay .. "")
+    Cmd("Store Layout " .. TLayNr .. " \"" .. prefix .. NaLay .. "")
 
-    -- SelectedGelNr = tonumber(SelectedGelNr)
-    -- TCol = ColPath:Children()[SelectedGelNr]
-    -- MaxColLgn = tonumber(MaxColLgn)
+    SelectedGelNr = tonumber(SelectedGelNr)
+    TCol = ColPath:Children()[SelectedGelNr]
+    MaxColLgn = tonumber(MaxColLgn)
 
-    -- -- Create Appearances
-    -- local Return_Create_Appearances = { Create_Appearances(SelectedGrp, AppNr, prefix, TCol, NrAppear, StColCode,
-    --     StColName, StringColName) }
-    -- if Return_Create_Appearances[1] then
-    --     NrAppear = Return_Create_Appearances[2]
-    -- end
-    -- -- end Appearances
-    -- -- Create Preset 25
-    -- local Return_Create_Preset_25 = { Create_Preset_25(TCol, StColName, StringColName, SelectedGelNr, prefix,
-    --     All_5_NrEnd, All_5_Current) }
-    -- if Return_Create_Preset_25[1] then
-    --     All_5_NrEnd = Return_Create_Preset_25[2]
-    --     All_5_Current = Return_Create_Preset_25[2]
-    -- end
-    -- -- endCreate Preset 25
+    -- Create Appearances
+    local Return_Create_Appearances = { Create_Appearances(SelectedGrp, AppNr, prefix, TCol, NrAppear, StColCode,
+        StColName, StringColName) }
+    if Return_Create_Appearances[1] then
+        NrAppear = Return_Create_Appearances[2]
+    end
+    -- end Appearances
+    -- Create Preset 25
+    local Return_Create_Preset_25 = { Create_Preset_25(TCol, StColName, StringColName, SelectedGelNr, prefix,
+        All_5_NrEnd, All_5_Current) }
+    if Return_Create_Preset_25[1] then
+        All_5_NrEnd = Return_Create_Preset_25[2]
+        All_5_Current = Return_Create_Preset_25[3]
+    end
+
+    local Return_Create_Preset_Ref_1234 = { Create_Preset_Ref_1234(prefix,All_5_Current,SelectedGelNr)}
+    if Return_Create_Preset_Ref_1234[1] then
+        All_5_Current = Return_Create_Preset_Ref_1234[2]
+        Preset_Ref = Return_Create_Preset_Ref_1234[3]
+        Preset_Ref_End = Preset_Ref + 3
+    end
+    -- endCreate Preset 25
 
 
 
@@ -265,7 +274,7 @@ function Construct_Layout(displayHandle, TLay, SeqNrStart, MacroNrStart, Matrick
     -- LayX = math.floor(LayX + LayW - 100)
     -- -- add Sequence FADE
     
-
+    Cmd("ClearAll /nu")
     -- Macro Del LC prefix
     CurrentMacroNr = math.floor(CurrentMacroNr + 2)
     condition_string = "Lua 'if Confirm(\"Delete Layout Phaser Color PC" ..
@@ -274,7 +283,7 @@ function Construct_Layout(displayHandle, TLay, SeqNrStart, MacroNrStart, Matrick
         CurrentMacroNr .. "\"); else Cmd(\"Off macro " .. CurrentMacroNr .. "\"); end'" .. ' /nu'
     Cmd('Store Macro ' .. CurrentMacroNr .. ' \'' .. 'ERASE\'')
     Cmd('ChangeDestination Macro ' .. CurrentMacroNr .. '')
-    for i = 1, 8 do
+    for i = 1, 9 do
         Cmd('Insert')
     end
     Cmd('ChangeDestination Root')
@@ -286,18 +295,19 @@ function Construct_Layout(displayHandle, TLay, SeqNrStart, MacroNrStart, Matrick
     Macro_Pool[CurrentMacroNr][4]:Set('Command', 'Delete Matricks ' .. prefix .. '*' .. ' /nc')
     Macro_Pool[CurrentMacroNr][5]:Set('Command', 'Delete Appearance ' .. prefix .. '*' .. ' /nc')
     Macro_Pool[CurrentMacroNr][6]:Set('Command', 'Delete Preset 25. ' .. prefix .. '*' .. ' /nc')
-    Macro_Pool[CurrentMacroNr][7]:Set('Command', 'Delete  Macro ' .. prefix .. '*' .. ' /nc')
-    Macro_Pool[CurrentMacroNr][8]:Set('Command', 'Delete  Macro ' .. CurrentMacroNr .. ' /nc')
+    Macro_Pool[CurrentMacroNr][7]:Set('Command', 'Delete Preset 25. ' .. Preset_Ref ..'Thru Preset 25.' .. Preset_Ref_End .. ' /nc')
+    Macro_Pool[CurrentMacroNr][8]:Set('Command', 'Delete  Macro ' .. prefix .. '*' .. ' /nc')
+    Macro_Pool[CurrentMacroNr][9]:Set('Command', 'Delete  Macro ' .. CurrentMacroNr .. ' /nc')
     -- end Macro Del LC prefix
 
     -- dimension of layout & scal it
-    -- for k in pairs(Root().ShowData.DataPools.Default.Layouts:Children()) do
-    --     if (math.floor(TLayNr) == math.floor(tonumber(Root().ShowData.DataPools.Default.Layouts:Children()[k].NO))) then
-    --         TLayNrRef = k
-    --     end
-    -- end
-    -- UsedW = Root().ShowData.DataPools.Default.Layouts:Children()[TLayNrRef].UsedW / 2
-    -- UsedH = Root().ShowData.DataPools.Default.Layouts:Children()[TLayNrRef].UsedH / 2
-    -- Cmd("Set Layout " .. TLayNr .. " DimensionW " .. UsedW .. " DimensionH " .. UsedH)
-    -- Cmd('Select Layout ' .. TLayNr)
+    for k in pairs(Root().ShowData.DataPools.Default.Layouts:Children()) do
+        if (math.floor(TLayNr) == math.floor(tonumber(Root().ShowData.DataPools.Default.Layouts:Children()[k].NO))) then
+            TLayNrRef = k
+        end
+    end
+    UsedW = Root().ShowData.DataPools.Default.Layouts:Children()[TLayNrRef].UsedW / 2
+    UsedH = Root().ShowData.DataPools.Default.Layouts:Children()[TLayNrRef].UsedH / 2
+    Cmd("Set Layout " .. TLayNr .. " DimensionW " .. UsedW .. " DimensionH " .. UsedH)
+    Cmd('Select Layout ' .. TLayNr)
 end -- end Construct_Layout

@@ -19,6 +19,7 @@ function CheckSymbols(displayHandle, Img, ImgImp, check, add_check, long_imgimp,
     if (long_imgimp == add_check) then
         Echo("file exist")
     else
+        Echo("file not exist")
         -- Select a disk
         local drives = Root().Temp.DriveCollect
         local selectedDrive     -- users selected drive
@@ -119,4 +120,16 @@ function Create_Matrix(MatrickNr, Argument_Matricks,surfix,prefix)
             MatrickNr = math.floor(MatrickNr + 1)
         end
     end
+end
+
+function Create_Preset_Ref_1234(prefix,All_5_Current,SelectedGelNr)
+    Cmd("ClearAll /nu")
+    Cmd('Fixture Thru')
+    for i = 1 , 4 do
+        Cmd('At Gel ' .. SelectedGelNr .. ".1")
+        Cmd('Store Preset 25.' .. All_5_Current .. '')
+        All_5_Current = math.floor(All_5_Current + 1)
+    end
+    local Preset_Ref = All_5_Current - 4
+    do return 1, All_5_Current, Preset_Ref end
 end
