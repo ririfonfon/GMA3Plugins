@@ -882,7 +882,7 @@ local function Main(displayHandle)
         end
         MatrickNrStart = caller.Content:gsub("'", "")
         MatrickNrStart = tonumber(MatrickNrStart)
-        MatrickNrRange = MatrickNrStart + Nr_SelectedGrp + 1
+        MatrickNrRange = MatrickNrStart + 31
         for k in ipairs(MatrickNr) do
             if MatrickNrStart <= tonumber(MatrickNr[k].NO) then
                 if MatrickNrRange >= tonumber(MatrickNr[k].NO) then

@@ -62,7 +62,6 @@ function CheckSymbols(displayHandle, Img, ImgImp, check, add_check, long_imgimp,
     end
 end -- end function CheckSymbols(...)
 
-
 function Create_Appearances(SelectedGrp, AppNr, prefix, TCol, NrAppear, StColCode, StColName, StringColName)
     local StAppNameOn
     local StAppNameOff
@@ -105,4 +104,19 @@ function Create_Preset_25(TCol, StColName, StringColName, SelectedGelNr, prefix,
     do return 1, All_5_NrEnd, All_5_Current end
 end
 
-
+function Create_Matrix(MatrickNr, Argument_Matricks,surfix,prefix)
+    for axes in pairs(surfix) do
+        for g in pairs(Argument_Matricks) do
+            Cmd('Store MAtricks ' .. MatrickNr .. ' /nu')
+            Cmd('Set Matricks ' .. MatrickNr .. ' name = ' .. prefix .. surfix[axes].. "_" .. Argument_Matricks[g].Name:gsub('\'', '') .. ' /nu')
+            Cmd('Set Matricks ' .. MatrickNr .. ' Property "PhaseFrom'.. surfix[axes] .. '" "' .. Argument_Matricks[g].phasefrom .. '')
+            Cmd('Set Matricks ' .. MatrickNr .. ' Property "PhaseTo'.. surfix[axes] .. '" "' .. Argument_Matricks[g].phaseto .. '')
+            Cmd('Set Matricks ' .. MatrickNr .. ' Property "'.. surfix[axes] .. 'Group" "' .. Argument_Matricks[g].group .. '')
+            Cmd('Set Matricks ' .. MatrickNr .. ' Property "'.. surfix[axes] .. 'Wings" "' .. Argument_Matricks[g].wing .. '')
+            Cmd('Set Matricks ' .. MatrickNr .. ' Property "'.. surfix[axes] .. 'Block" "' .. Argument_Matricks[g].block .. '')
+            Cmd('Set Matricks ' .. MatrickNr .. ' Property "'.. surfix[axes] .. 'Shuffle" "' .. Argument_Matricks[g].shuffle .. '')
+            Cmd('Set Matricks ' .. MatrickNr .. ' Property "PhaserTransform" '.. Argument_Matricks[g].transform .. '')
+            MatrickNr = math.floor(MatrickNr + 1)
+        end
+    end
+end

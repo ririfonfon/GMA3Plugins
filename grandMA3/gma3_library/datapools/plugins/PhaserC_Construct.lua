@@ -127,16 +127,16 @@ function Construct_Layout(displayHandle, TLay, SeqNrStart, MacroNrStart, Matrick
     }
 
     local Argument_Matricks = {
-        { Name = 'GRP',     phasefrom = 0, phaseto = 0,   group = 0, wing = 0, block = 0, shuffle = 0, transform = 'None' },
-        { Name = '>>>',     phasefrom = 0, phaseto = 360, group = 0, wing = 0, block = 0, shuffle = 0, transform = 'None' },
-        { Name = 'O/E',     phasefrom = 0, phaseto = 360, group = 2, wing = 0, block = 0, shuffle = 0, transform = 'None' },
-        { Name = '><',      phasefrom = 0, phaseto = 360, group = 0, wing = 2, block = 0, shuffle = 0, transform = 'None' },
-        { Name = 'SYM3',    phasefrom = 0, phaseto = 360, group = 3, wing = 2, block = 0, shuffle = 0, transform = 'None' },
-        { Name = 'SYM',     phasefrom = 0, phaseto = 360, group = 2, wing = 2, block = 0, shuffle = 0, transform = 'None' },
-        { Name = 'RND',     phasefrom = 0, phaseto = 360, group = 0, wing = 0, block = 0, shuffle = 9, transform = 'None' },
-        { Name = 'PAN><',   phasefrom = 0, phaseto = 360, group = 0, wing = 2, block = 0, shuffle = 0, transform = 'Mirror' },
-        { Name = 'PANSYM3', phasefrom = 0, phaseto = 360, group = 0, wing = 2, block = 2, shuffle = 0, transform = 'Mirror' },
-        { Name = 'PANSYM',  phasefrom = 0, phaseto = 360, group = 2, wing = 2, block = 2, shuffle = 0, transform = 'Mirror' },
+        { Name = 'GRP',     phasefrom = '0', phaseto = '0',   group = '0', wing = '0', block = '0', shuffle = '0', transform = 'None' },
+        { Name = '>>>',     phasefrom = '0', phaseto = '360', group = '0', wing = '0', block = '0', shuffle = '0', transform = 'None' },
+        { Name = 'O/E',     phasefrom = '0', phaseto = '360', group = '2', wing = '0', block = '0', shuffle = '0', transform = 'None' },
+        { Name = '><',      phasefrom = '0', phaseto = '360', group = '0', wing = '2', block = '0', shuffle = '0', transform = 'None' },
+        { Name = 'SYM3',    phasefrom = '0', phaseto = '360', group = '3', wing = '2', block = '0', shuffle = '0', transform = 'None' },
+        { Name = 'SYM',     phasefrom = '0', phaseto = '360', group = '2', wing = '2', block = '0', shuffle = '0', transform = 'None' },
+        { Name = 'RND',     phasefrom = '0', phaseto = '360', group = '0', wing = '0', block = '0', shuffle = '9', transform = 'None' },
+        { Name = 'PAN><',   phasefrom = '0', phaseto = '360', group = '0', wing = '2', block = '0', shuffle = '0', transform = 'Mirror' },
+        { Name = 'PANSYM3', phasefrom = '0', phaseto = '360', group = '0', wing = '2', block = '2', shuffle = '0', transform = 'Mirror' },
+        { Name = 'PANSYM',  phasefrom = '0', phaseto = '360', group = '2', wing = '2', block = '2', shuffle = '0', transform = 'Mirror' },
     }
 
     local First_Id_Lay = {}
@@ -222,65 +222,53 @@ function Construct_Layout(displayHandle, TLay, SeqNrStart, MacroNrStart, Matrick
     CurrentSeqNr = SeqNrStart
     CurrentMacroNr = MacroNrStart
     -- check Symbols
-    CheckSymbols(displayHandle, Img, ImgImp, check, add_check, long_imgimp, ImgNr)
+    -- CheckSymbols(displayHandle, Img, ImgImp, check, add_check, long_imgimp, ImgNr)
     -- Create MAtricks
-    Cmd('Store MAtricks ' .. MatrickNrStart .. ' /nu')
-    Cmd('Set Matricks ' .. MatrickNrStart .. ' name = ' .. prefix .. NaLay .. ' /nu')
-    MatrickNr = math.floor(MatrickNrStart + 1)
-    for g in pairs(SelectedGrp) do
-        Cmd('Store MAtricks ' .. MatrickNr .. ' /nu')
-        Cmd('Set Matricks ' .. MatrickNr .. ' name = ' .. prefix .. SelectedGrpName[g]:gsub('\'', '') .. ' /nu')
-        Cmd('Set Matricks ' .. MatrickNr .. ' Property "FadeFromx" 0')
-        Cmd('Set Matricks ' .. MatrickNr .. ' Property "FadeFromy" 0')
-        Cmd('Set Matricks ' .. MatrickNr .. ' Property "FadeFromz" 0')
-        Cmd('Set Matricks ' .. MatrickNr .. ' Property "FadeTox" 0')
-        Cmd('Set Matricks ' .. MatrickNr .. ' Property "FadeToy" 0')
-        Cmd('Set Matricks ' .. MatrickNr .. ' Property "FadeToz" 0')
-        MatrickNr = math.floor(MatrickNr + 1)
-    end
+    MatrickNr = math.floor(MatrickNrStart)
+    Create_Matrix(MatrickNr,Argument_Matricks,surfix,prefix)
     -- Create new Layout View
-    Cmd("Store Layout " .. TLayNr .. " \"" .. prefix .. NaLay .. "")
+    -- Cmd("Store Layout " .. TLayNr .. " \"" .. prefix .. NaLay .. "")
 
-    SelectedGelNr = tonumber(SelectedGelNr)
-    TCol = ColPath:Children()[SelectedGelNr]
-    MaxColLgn = tonumber(MaxColLgn)
+    -- SelectedGelNr = tonumber(SelectedGelNr)
+    -- TCol = ColPath:Children()[SelectedGelNr]
+    -- MaxColLgn = tonumber(MaxColLgn)
 
-    -- Create Appearances
-    local Return_Create_Appearances = { Create_Appearances(SelectedGrp, AppNr, prefix, TCol, NrAppear, StColCode,
-        StColName, StringColName) }
-    if Return_Create_Appearances[1] then
-        NrAppear = Return_Create_Appearances[2]
-    end
-    -- end Appearances
-    -- Create Preset 25
-    local Return_Create_Preset_25 = { Create_Preset_25(TCol, StColName, StringColName, SelectedGelNr, prefix,
-        All_5_NrEnd, All_5_Current) }
-    if Return_Create_Preset_25[1] then
-        All_5_NrEnd = Return_Create_Preset_25[2]
-        All_5_Current = Return_Create_Preset_25[2]
-    end
-    -- endCreate Preset 25
+    -- -- Create Appearances
+    -- local Return_Create_Appearances = { Create_Appearances(SelectedGrp, AppNr, prefix, TCol, NrAppear, StColCode,
+    --     StColName, StringColName) }
+    -- if Return_Create_Appearances[1] then
+    --     NrAppear = Return_Create_Appearances[2]
+    -- end
+    -- -- end Appearances
+    -- -- Create Preset 25
+    -- local Return_Create_Preset_25 = { Create_Preset_25(TCol, StColName, StringColName, SelectedGelNr, prefix,
+    --     All_5_NrEnd, All_5_Current) }
+    -- if Return_Create_Preset_25[1] then
+    --     All_5_NrEnd = Return_Create_Preset_25[2]
+    --     All_5_Current = Return_Create_Preset_25[2]
+    -- end
+    -- -- endCreate Preset 25
 
 
 
-    for q in pairs(AppImp) do
-        AppImp[q].Nr = math.floor(NrNeed)
-        Cmd('Store App ' ..
-            AppImp[q].Nr ..
-            ' "' .. prefix .. AppImp[q].Name .. '" "Appearance"=' .. AppImp[q].StApp .. '' .. AppImp[q].RGBref .. '')
-        NrNeed = math.floor(NrNeed + 1)
-    end
-    SeqNrEnd = CurrentSeqNr - 1
-    -- Add offset for Layout Element distance
-    LayY = math.floor(LayY - 150)
-    LayX = RefX
-    LayX = math.floor(LayX + LayW - 100)
-    -- add Sequence FADE
+    -- for q in pairs(AppImp) do
+    --     AppImp[q].Nr = math.floor(NrNeed)
+    --     Cmd('Store App ' ..
+    --         AppImp[q].Nr ..
+    --         ' "' .. prefix .. AppImp[q].Name .. '" "Appearance"=' .. AppImp[q].StApp .. '' .. AppImp[q].RGBref .. '')
+    --     NrNeed = math.floor(NrNeed + 1)
+    -- end
+    -- SeqNrEnd = CurrentSeqNr - 1
+    -- -- Add offset for Layout Element distance
+    -- LayY = math.floor(LayY - 150)
+    -- LayX = RefX
+    -- LayX = math.floor(LayX + LayW - 100)
+    -- -- add Sequence FADE
     
 
     -- Macro Del LC prefix
     CurrentMacroNr = math.floor(CurrentMacroNr + 2)
-    condition_string = "Lua 'if Confirm(\"Delete Layout Color LC" ..
+    condition_string = "Lua 'if Confirm(\"Delete Layout Phaser Color PC" ..
         prefix:gsub('%D*', '') ..
         "?\") then; Cmd(\"Go macro " ..
         CurrentMacroNr .. "\"); else Cmd(\"Off macro " .. CurrentMacroNr .. "\"); end'" .. ' /nu'
@@ -303,13 +291,13 @@ function Construct_Layout(displayHandle, TLay, SeqNrStart, MacroNrStart, Matrick
     -- end Macro Del LC prefix
 
     -- dimension of layout & scal it
-    for k in pairs(Root().ShowData.DataPools.Default.Layouts:Children()) do
-        if (math.floor(TLayNr) == math.floor(tonumber(Root().ShowData.DataPools.Default.Layouts:Children()[k].NO))) then
-            TLayNrRef = k
-        end
-    end
-    UsedW = Root().ShowData.DataPools.Default.Layouts:Children()[TLayNrRef].UsedW / 2
-    UsedH = Root().ShowData.DataPools.Default.Layouts:Children()[TLayNrRef].UsedH / 2
-    Cmd("Set Layout " .. TLayNr .. " DimensionW " .. UsedW .. " DimensionH " .. UsedH)
-    Cmd('Select Layout ' .. TLayNr)
+    -- for k in pairs(Root().ShowData.DataPools.Default.Layouts:Children()) do
+    --     if (math.floor(TLayNr) == math.floor(tonumber(Root().ShowData.DataPools.Default.Layouts:Children()[k].NO))) then
+    --         TLayNrRef = k
+    --     end
+    -- end
+    -- UsedW = Root().ShowData.DataPools.Default.Layouts:Children()[TLayNrRef].UsedW / 2
+    -- UsedH = Root().ShowData.DataPools.Default.Layouts:Children()[TLayNrRef].UsedH / 2
+    -- Cmd("Set Layout " .. TLayNr .. " DimensionW " .. UsedW .. " DimensionH " .. UsedH)
+    -- Cmd('Select Layout ' .. TLayNr)
 end -- end Construct_Layout
