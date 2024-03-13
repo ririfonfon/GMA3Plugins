@@ -142,15 +142,18 @@ function Create_Preset_Ref_1234(prefix, All_5_Current, SelectedGelNr)
     do return 1, All_5_Current, Preset_Ref end
 end
 
-function Create_Phaser(All_5_Current, Preset_Ref, prefix, Argument_Ref)
+function Create_Phaser(All_5_Current, Preset_Ref, prefix, Argument_Ref, Phaser_Off)
     local transition
     local Preset_cal
     Cmd("ClearAll /nu")
     Cmd('Fixture Thru')
     Cmd('Attribute "ColorRGB_R" At Relative 0')
+    Cmd('Attribute "ColorRGB_G" At Relative 0')
+    Cmd('Attribute "ColorRGB_B" At Relative 0')
+    Cmd('Attribute "ColorRGB_W" At Relative 0')
     Cmd('Store Preset 25.' .. All_5_Current .. '')
     Cmd('Label Preset 25.' .. All_5_Current .. " " .. prefix .. "ref_off")
-    local Phaser_Off = All_5_Current
+    Phaser_Off = All_5_Current
     All_5_Current = math.floor(All_5_Current + 1)
     for i = 1, 3 do
         if (i == 1) then
@@ -194,4 +197,16 @@ function Create_Phaser(All_5_Current, Preset_Ref, prefix, Argument_Ref)
             All_5_Current = math.floor(All_5_Current + 1)
         end
     end
+    do return 1, Phaser_Off, All_5_Current end
+end
+
+function Create_Active_Appearances(AppImp, NrAppear, prefix)
+    for q in pairs(AppImp) do
+        AppImp[q].Nr = math.floor(NrAppear)
+        Cmd('Store App ' ..
+            AppImp[q].Nr ..
+            ' "' .. prefix .. AppImp[q].Name .. '" "Appearance"=' .. AppImp[q].StApp .. '' .. AppImp[q].RGBref .. '')
+        NrAppear = math.floor(NrAppear + 1)
+    end
+    do return 1, NrAppear end
 end
