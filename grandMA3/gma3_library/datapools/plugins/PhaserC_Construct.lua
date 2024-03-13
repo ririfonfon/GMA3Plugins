@@ -94,36 +94,54 @@ function Construct_Layout(displayHandle, TLay, SeqNrStart, MacroNrStart, Matrick
     local SkullRef = ' color=\'0.6,0,0,1\''
     local NoRef = ' color=\'1,1,1,1\''
 
+    local color_ref = {
+        { RGBref = ' color=\'1,0,0,0.5\'' },
+        { RGBref = ' color=\'0,1,0,0.5\'' },
+        { RGBref = ' color=\'0,0,1,0.5\'' },
+        { RGBref = ' color=\'1,1,0,0.5\'' },
+        { RGBref = ' color=\'0,1,1,0.5\'' },
+        { RGBref = ' color=\'1,0,1,0.5\'' },
+        { RGBref = ' color=\'1,0.5,0,0.5\'' },
+        { RGBref = ' color=\'0,1,0.5,0.5\'' },
+        { RGBref = ' color=\'1,0,0.5,0.5\'' },
+        { RGBref = ' color=\'0.5,1,0,0.5\'' },
+        { RGBref = ' color=\'0,0.5,1,0.5\'' },
+        { RGBref = ' color=\'0.5,0,1,0.5\'' },
+        { RGBref = ' color=\'0.5,0.5,1,0.5\'' },
+        { RGBref = ' color=\'0.5,1,0.5,0.5\'' },
+        { RGBref = ' color=\'0.5,0.5,0.5,0.5\'' },
+    }
+
 
     local AppImp = {
-        { Name = '\'off\'',       StApp = StApp_off,       Nr = '', RGBref = NoRef },
-        { Name = '\'1_2\'',       StApp = StApp_1_2,       Nr = '', RGBref = NoRef },
-        { Name = '\'2_3\'',       StApp = StApp_2_3,       Nr = '', RGBref = NoRef },
-        { Name = '\'3_4\'',       StApp = StApp_3_4,       Nr = '', RGBref = NoRef },
-        { Name = '\'1_3\'',       StApp = StApp_1_3,       Nr = '', RGBref = NoRef },
-        { Name = '\'2_4\'',       StApp = StApp_2_4,       Nr = '', RGBref = NoRef },
-        { Name = '\'1_2_3\'',     StApp = StApp_1_2_3,     Nr = '', RGBref = NoRef },
-        { Name = '\'2_3_4\'',     StApp = StApp_2_3_4,     Nr = '', RGBref = NoRef },
-        { Name = '\'1_2_3_4\'',   StApp = StApp_1_2_3_4,   Nr = '', RGBref = NoRef },
-        { Name = '\'grp\'',       StApp = StApp_grp,       Nr = '', RGBref = NoRef },
-        { Name = '\'forward\'',   StApp = StApp_forward,   Nr = '', RGBref = NoRef },
-        { Name = '\'oe\'',        StApp = StApp_oe,        Nr = '', RGBref = NoRef },
-        { Name = '\'wing\'',      StApp = StApp_wing,      Nr = '', RGBref = NoRef },
-        { Name = '\'sym3\'',      StApp = StApp_sym3,      Nr = '', RGBref = NoRef },
-        { Name = '\'sym\'',       StApp = StApp_sym,       Nr = '', RGBref = NoRef },
-        { Name = '\'rnd\'',       StApp = StApp_rnd,       Nr = '', RGBref = NoRef },
-        { Name = '\'pwing\'',     StApp = StApp_pwing,     Nr = '', RGBref = NoRef },
-        { Name = '\'psym3\'',     StApp = StApp_psym3,     Nr = '', RGBref = NoRef },
-        { Name = '\'psym\'',      StApp = StApp_psym,      Nr = '', RGBref = NoRef },
-        { Name = '\'cent\'',      StApp = StApp_cent,      Nr = '', RGBref = NoRef },
-        { Name = '\'cinquante\'', StApp = StApp_cinquante, Nr = '', RGBref = NoRef },
-        { Name = '\'zero\'',      StApp = StApp_zero,      Nr = '', RGBref = NoRef },
-        { Name = '\'x_on\'',      StApp = StAppXOn,        Nr = '', RGBref = NoRef },
-        { Name = '\'x_off\'',     StApp = StAppXOff,       Nr = '', RGBref = NoRef },
-        { Name = '\'y_on\'',      StApp = StAppYOn,        Nr = '', RGBref = NoRef },
-        { Name = '\'y_off\'',     StApp = StAppYOff,       Nr = '', RGBref = NoRef },
-        { Name = '\'z_on\'',      StApp = StAppZOn,        Nr = '', RGBref = NoRef },
-        { Name = '\'z_off\'',     StApp = StAppZOff,       Nr = '', RGBref = NoRef },
+        { Name = 'off',       StApp = StApp_off,       Nr = '', RGBref = NoRef },
+        { Name = '1_2',       StApp = StApp_1_2,       Nr = '', RGBref = NoRef },
+        { Name = '2_3',       StApp = StApp_2_3,       Nr = '', RGBref = NoRef },
+        { Name = '3_4',       StApp = StApp_3_4,       Nr = '', RGBref = NoRef },
+        { Name = '1_3',       StApp = StApp_1_3,       Nr = '', RGBref = NoRef },
+        { Name = '2_4',       StApp = StApp_2_4,       Nr = '', RGBref = NoRef },
+        { Name = '1_2_3',     StApp = StApp_1_2_3,     Nr = '', RGBref = NoRef },
+        { Name = '2_3_4',     StApp = StApp_2_3_4,     Nr = '', RGBref = NoRef },
+        { Name = '1_2_3_4',   StApp = StApp_1_2_3_4,   Nr = '', RGBref = NoRef },
+        { Name = 'grp',       StApp = StApp_grp,       Nr = '', RGBref = NoRef },
+        { Name = 'forward',   StApp = StApp_forward,   Nr = '', RGBref = NoRef },
+        { Name = 'oe',        StApp = StApp_oe,        Nr = '', RGBref = NoRef },
+        { Name = 'wing',      StApp = StApp_wing,      Nr = '', RGBref = NoRef },
+        { Name = 'sym3',      StApp = StApp_sym3,      Nr = '', RGBref = NoRef },
+        { Name = 'sym',       StApp = StApp_sym,       Nr = '', RGBref = NoRef },
+        { Name = 'rnd',       StApp = StApp_rnd,       Nr = '', RGBref = NoRef },
+        { Name = 'pwing',     StApp = StApp_pwing,     Nr = '', RGBref = NoRef },
+        { Name = 'psym3',     StApp = StApp_psym3,     Nr = '', RGBref = NoRef },
+        { Name = 'psym',      StApp = StApp_psym,      Nr = '', RGBref = NoRef },
+        { Name = 'cent',      StApp = StApp_cent,      Nr = '', RGBref = NoRef },
+        { Name = 'cinquante', StApp = StApp_cinquante, Nr = '', RGBref = NoRef },
+        { Name = 'zero',      StApp = StApp_zero,      Nr = '', RGBref = NoRef },
+        { Name = 'x_on',      StApp = StAppXOn,        Nr = '', RGBref = NoRef },
+        { Name = 'x_off',     StApp = StAppXOff,       Nr = '', RGBref = NoRef },
+        { Name = 'y_on',      StApp = StAppYOn,        Nr = '', RGBref = NoRef },
+        { Name = 'y_off',     StApp = StAppYOff,       Nr = '', RGBref = NoRef },
+        { Name = 'z_on',      StApp = StAppZOn,        Nr = '', RGBref = NoRef },
+        { Name = 'z_off',     StApp = StAppZOff,       Nr = '', RGBref = NoRef },
     }
 
     local Argument_Matricks = {
@@ -229,6 +247,7 @@ function Construct_Layout(displayHandle, TLay, SeqNrStart, MacroNrStart, Matrick
     -- fix name SelectedGrp
     for g in pairs(SelectedGrp) do
         SelectedGrpName[g] = SelectedGrp[g]:gsub(' ', '_')
+        SelectedGrpName[g] = SelectedGrp[g]:gsub("'", '')
     end
     -- fix *NrStart & use Current*Nr
     CurrentSeqNr = SeqNrStart
@@ -282,6 +301,10 @@ function Construct_Layout(displayHandle, TLay, SeqNrStart, MacroNrStart, Matrick
         NrAppear = Return_Create_Active_Appearances[2]
     end
     -- end Create_Active_Appearances
+    local Return_Create_Group_Appearances = { Create_Group_Appearances(AppImp, NrAppear, prefix, SelectedGrp, SelectedGrpName, color_ref)}
+    if Return_Create_Group_Appearances[1] then
+        NrAppear = Return_Create_Group_Appearances[2]
+    end
 
 
 

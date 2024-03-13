@@ -203,10 +203,29 @@ end
 function Create_Active_Appearances(AppImp, NrAppear, prefix)
     for q in pairs(AppImp) do
         AppImp[q].Nr = math.floor(NrAppear)
-        Cmd('Store App ' ..
-            AppImp[q].Nr ..
-            ' "' .. prefix .. AppImp[q].Name .. '" "Appearance"=' .. AppImp[q].StApp .. '' .. AppImp[q].RGBref .. '')
+        Cmd('Store App ' .. AppImp[q].Nr .. ' ' .. prefix .. AppImp[q].Name .. ' "Appearance"=' .. AppImp[q].StApp .. '' .. AppImp[q].RGBref .. '')
         NrAppear = math.floor(NrAppear + 1)
+    end
+    do return 1, NrAppear end
+end
+
+function Create_Group_Appearances(AppImp, NrAppear, prefix, SelectedGrp, SelectedGrpName, color_ref)
+    local a = 1
+    for grp in pairs(SelectedGrp) do
+        for q in pairs(AppImp) do
+            AppImp[q].Nr = math.floor(NrAppear)
+            Cmd('Store App ' ..
+                AppImp[q].Nr ..
+                ' ' ..
+                prefix ..
+                AppImp[q].Name ..
+                SelectedGrpName[grp] .. ' "Appearance"=' .. AppImp[q].StApp .. '' .. color_ref[a].RGBref .. '')
+            NrAppear = math.floor(NrAppear + 1)
+        end
+        a = a + 1
+        if a > 15 then
+            a = 1
+        end
     end
     do return 1, NrAppear end
 end
