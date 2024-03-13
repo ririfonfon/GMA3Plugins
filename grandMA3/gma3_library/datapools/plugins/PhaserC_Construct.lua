@@ -140,14 +140,14 @@ function Construct_Layout(displayHandle, TLay, SeqNrStart, MacroNrStart, Matrick
     }
 
     local Argument_Ref = {
-        { Name = '1_2',     Step = 2,  Step1 = 0, Step2 = 1,  Step3 = 0,  Step4 = 0 },
-        { Name = '2_3',     Step = 2,  Step1 = 1, Step2 = 2,  Step3 = 0,  Step4 = 0 },
-        { Name = '3_4',     Step = 2,  Step1 = 2, Step2 = 3,  Step3 = 0,  Step4 = 0 },
-        { Name = '1_3',     Step = 2,  Step1 = 0, Step2 = 2,  Step3 = 0,  Step4 = 0 },
-        { Name = '2_4',     Step = 2,  Step1 = 1, Step2 = 3,  Step3 = 0,  Step4 = 0 },
-        { Name = '1_2_3',   Step = 3,  Step1 = 0, Step2 = 1,  Step3 = 2,  Step4 = 0 },
-        { Name = '2_3_4',   Step = 3,  Step1 = 1, Step2 = 2,  Step3 = 3,  Step4 = 0 },
-        { Name = '1_2_3_4', Step = 4,  Step1 = 0, Step2 = 1,  Step3 = 2,  Step4 = 3 },
+        { Name = '1_2',     Step = 2, Step1 = 0, Step2 = 1, Step3 = 0, Step4 = 0 },
+        { Name = '2_3',     Step = 2, Step1 = 1, Step2 = 2, Step3 = 0, Step4 = 0 },
+        { Name = '3_4',     Step = 2, Step1 = 2, Step2 = 3, Step3 = 0, Step4 = 0 },
+        { Name = '1_3',     Step = 2, Step1 = 0, Step2 = 2, Step3 = 0, Step4 = 0 },
+        { Name = '2_4',     Step = 2, Step1 = 1, Step2 = 3, Step3 = 0, Step4 = 0 },
+        { Name = '1_2_3',   Step = 3, Step1 = 0, Step2 = 1, Step3 = 2, Step4 = 0 },
+        { Name = '2_3_4',   Step = 3, Step1 = 1, Step2 = 2, Step3 = 3, Step4 = 0 },
+        { Name = '1_2_3_4', Step = 4, Step1 = 0, Step2 = 1, Step3 = 2, Step4 = 3 },
     }
     local First_Id_Lay = {}
     local Current_Id_Lay
@@ -206,7 +206,7 @@ function Construct_Layout(displayHandle, TLay, SeqNrStart, MacroNrStart, Matrick
     local Call_inc = 0
     local Preset_Ref
     local Preset_Ref_End
-
+    local Phaser_Off
 
 
     -- fix prefix
@@ -238,6 +238,7 @@ function Construct_Layout(displayHandle, TLay, SeqNrStart, MacroNrStart, Matrick
     -- Create MAtricks
     MatrickNr = math.floor(MatrickNrStart)
     Create_Matrix(MatrickNr, Argument_Matricks, surfix, prefix)
+    -- end Create MAtricks
     -- Create new Layout View
     Cmd("Store Layout " .. TLayNr .. " \"" .. prefix .. NaLay .. "")
 
@@ -259,32 +260,36 @@ function Construct_Layout(displayHandle, TLay, SeqNrStart, MacroNrStart, Matrick
         All_5_NrEnd = Return_Create_Preset_25[2]
         All_5_Current = Return_Create_Preset_25[3]
     end
-
+    -- endCreate Preset 25
+    -- Create_Preset_Ref_1234
     local Return_Create_Preset_Ref_1234 = { Create_Preset_Ref_1234(prefix, All_5_Current, SelectedGelNr) }
     if Return_Create_Preset_Ref_1234[1] then
         All_5_Current = Return_Create_Preset_Ref_1234[2]
         Preset_Ref = Return_Create_Preset_Ref_1234[3]
         Preset_Ref_End = Preset_Ref + 3
     end
+    -- end Create_Preset_Ref_1234
+    -- Create_Phaser
+    local Return_Create_Phaser = { Create_Phaser(All_5_Current, Preset_Ref, prefix, Argument_Ref, Phaser_Off) }
+    if Return_Create_Phaser[1] then
+        Phaser_Off = Return_Create_Phaser[2]
+        All_5_Current = Return_Create_Phaser[3]
+    end
+    -- end Create_Phaser
+    -- Create_Active_Appearances
+    local Return_Create_Active_Appearances = { Create_Active_Appearances(AppImp, NrAppear, prefix) }
+    if Return_Create_Active_Appearances[1] then
+        NrAppear = Return_Create_Active_Appearances[2]
+    end
+    -- end Create_Active_Appearances
 
-    local Return_Create_Phaser = { Create_Phaser(All_5_Current, Preset_Ref, prefix, Argument_Ref) }
-    -- endCreate Preset 25
 
 
-
-    -- for q in pairs(AppImp) do
-    --     AppImp[q].Nr = math.floor(NrNeed)
-    --     Cmd('Store App ' ..
-    --         AppImp[q].Nr ..
-    --         ' "' .. prefix .. AppImp[q].Name .. '" "Appearance"=' .. AppImp[q].StApp .. '' .. AppImp[q].RGBref .. '')
-    --     NrNeed = math.floor(NrNeed + 1)
-    -- end
     -- SeqNrEnd = CurrentSeqNr - 1
     -- -- Add offset for Layout Element distance
     -- LayY = math.floor(LayY - 150)
     -- LayX = RefX
     -- LayX = math.floor(LayX + LayW - 100)
-    -- -- add Sequence FADE
 
     Cmd("ClearAll /nu")
     -- Macro Del LC prefix
