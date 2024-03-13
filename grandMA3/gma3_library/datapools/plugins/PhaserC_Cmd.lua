@@ -110,20 +110,20 @@ function Create_Matrix(MatrickNr, Argument_Matricks, surfix, prefix)
         for g in pairs(Argument_Matricks) do
             Cmd('Store MAtricks ' .. MatrickNr .. ' /nu')
             Cmd('Set Matricks ' ..
-            MatrickNr .. ' name = ' .. prefix .. surfix[axes] ..
-            "_" .. Argument_Matricks[g].Name:gsub('\'', '') .. ' /nu')
+                MatrickNr .. ' name = ' .. prefix .. surfix[axes] ..
+                "_" .. Argument_Matricks[g].Name:gsub('\'', '') .. ' /nu')
             Cmd('Set Matricks ' ..
-            MatrickNr .. ' Property "PhaseFrom' .. surfix[axes] .. '" "' .. Argument_Matricks[g].phasefrom .. '')
+                MatrickNr .. ' Property "PhaseFrom' .. surfix[axes] .. '" "' .. Argument_Matricks[g].phasefrom .. '')
             Cmd('Set Matricks ' ..
-            MatrickNr .. ' Property "PhaseTo' .. surfix[axes] .. '" "' .. Argument_Matricks[g].phaseto .. '')
+                MatrickNr .. ' Property "PhaseTo' .. surfix[axes] .. '" "' .. Argument_Matricks[g].phaseto .. '')
             Cmd('Set Matricks ' ..
-            MatrickNr .. ' Property "' .. surfix[axes] .. 'Group" "' .. Argument_Matricks[g].group .. '')
+                MatrickNr .. ' Property "' .. surfix[axes] .. 'Group" "' .. Argument_Matricks[g].group .. '')
             Cmd('Set Matricks ' ..
-            MatrickNr .. ' Property "' .. surfix[axes] .. 'Wings" "' .. Argument_Matricks[g].wing .. '')
+                MatrickNr .. ' Property "' .. surfix[axes] .. 'Wings" "' .. Argument_Matricks[g].wing .. '')
             Cmd('Set Matricks ' ..
-            MatrickNr .. ' Property "' .. surfix[axes] .. 'Block" "' .. Argument_Matricks[g].block .. '')
+                MatrickNr .. ' Property "' .. surfix[axes] .. 'Block" "' .. Argument_Matricks[g].block .. '')
             Cmd('Set Matricks ' ..
-            MatrickNr .. ' Property "' .. surfix[axes] .. 'Shuffle" "' .. Argument_Matricks[g].shuffle .. '')
+                MatrickNr .. ' Property "' .. surfix[axes] .. 'Shuffle" "' .. Argument_Matricks[g].shuffle .. '')
             Cmd('Set Matricks ' .. MatrickNr .. ' Property "PhaserTransform" ' .. Argument_Matricks[g].transform .. '')
             MatrickNr = math.floor(MatrickNr + 1)
         end
@@ -149,10 +149,17 @@ function Create_Phaser(All_5_Current, Preset_Ref, prefix, Argument_Ref)
     Cmd('Store Preset 25.' .. All_5_Current .. '')
     Cmd('Label Preset 25.' .. All_5_Current .. " " .. prefix .. "ref_off")
     local Phaser_Off = All_5_Current
-    for i = 1, 3 do
-        All_5_Current = math.floor(All_5_Current + 1)
-        for g in ipairs(Argument_Ref) do
-            
-        end
-    end
+    All_5_Current = math.floor(All_5_Current + 1)
+    -- for i = 1, 3 do
+    --     for g in ipairs(Argument_Ref) do
+    --         Cmd("ClearAll /nu")
+    --         Cmd('Fixture Thru')
+    --         for st in pairs(tonumber(Argument_Ref[g].Step)) do
+    --             Echo(st)
+    --         end
+    --         Cmd('Attribute "ColorRGB_R" At Relative 0')
+    --         Cmd('Store Preset 25.' .. All_5_Current .. '')
+    --         Cmd('Label Preset 25.' .. All_5_Current .. " " .. prefix .. Argument_Ref[g].Name)
+    --     end
+    -- end
 end
