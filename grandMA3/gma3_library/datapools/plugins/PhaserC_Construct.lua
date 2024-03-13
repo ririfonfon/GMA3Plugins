@@ -225,6 +225,7 @@ function Construct_Layout(displayHandle, TLay, SeqNrStart, MacroNrStart, Matrick
     local Preset_Ref
     local Preset_Ref_End
     local Phaser_Off
+    local Phaser_Ref
 
 
     -- fix prefix
@@ -295,6 +296,13 @@ function Construct_Layout(displayHandle, TLay, SeqNrStart, MacroNrStart, Matrick
         All_5_Current = Return_Create_Phaser[3]
     end
     -- end Create_Phaser
+    -- Copy_Phaser_Ref
+    local Return_Copy_Phaser_Ref = { Copy_Phaser_Ref(Phaser_Off,All_5_Current,Phaser_Ref)}
+    if Return_Copy_Phaser_Ref[1] then
+        PhaseRef = Return_Copy_Phaser_Ref[2]
+        All_5_Current = Return_Copy_Phaser_Ref[3]
+    end
+    -- end Copy_Phaser_Ref
     -- Create_Active_Appearances
     local Return_Create_Active_Appearances = { Create_Active_Appearances(AppImp, NrAppear, prefix) }
     if Return_Create_Active_Appearances[1] then

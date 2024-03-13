@@ -200,10 +200,22 @@ function Create_Phaser(All_5_Current, Preset_Ref, prefix, Argument_Ref, Phaser_O
     do return 1, Phaser_Off, All_5_Current end
 end
 
+function Copy_Phaser_Ref(Phaser_Off, All_5_Current, Phaser_Ref)
+    Phaser_Ref = All_5_Current
+    for i = 1, 8 do
+        local cop = Phaser_Off + i
+        Cmd('Copy Preset 25.' .. cop .. ' At Preset 25.' .. All_5_Current .. '')
+        All_5_Current = math.floor(All_5_Current + 1)
+    end
+    do return 1, Phaser_Ref, All_5_Current end
+end
+
 function Create_Active_Appearances(AppImp, NrAppear, prefix)
     for q in pairs(AppImp) do
         AppImp[q].Nr = math.floor(NrAppear)
-        Cmd('Store App ' .. AppImp[q].Nr .. ' ' .. prefix .. AppImp[q].Name .. ' "Appearance"=' .. AppImp[q].StApp .. '' .. AppImp[q].RGBref .. '')
+        Cmd('Store App ' ..
+        AppImp[q].Nr ..
+        ' ' .. prefix .. AppImp[q].Name .. ' "Appearance"=' .. AppImp[q].StApp .. '' .. AppImp[q].RGBref .. '')
         NrAppear = math.floor(NrAppear + 1)
     end
     do return 1, NrAppear end
@@ -228,4 +240,10 @@ function Create_Group_Appearances(AppImp, NrAppear, prefix, SelectedGrp, Selecte
         end
     end
     do return 1, NrAppear end
+end
+
+function Create_Group_Sequence(SelectedGrp)
+    for g in ipairs(SelectedGrp) do
+
+    end
 end
