@@ -214,8 +214,8 @@ function Create_Active_Appearances(AppImp, NrAppear, prefix)
     for q in pairs(AppImp) do
         AppImp[q].Nr = math.floor(NrAppear)
         Cmd('Store App ' ..
-        AppImp[q].Nr ..
-        ' ' .. prefix .. AppImp[q].Name .. ' "Appearance"=' .. AppImp[q].StApp .. '' .. AppImp[q].RGBref .. '')
+            AppImp[q].Nr ..
+            ' ' .. prefix .. AppImp[q].Name .. ' "Appearance"=' .. AppImp[q].StApp .. '' .. AppImp[q].RGBref .. '')
         NrAppear = math.floor(NrAppear + 1)
     end
     do return 1, NrAppear end
@@ -242,8 +242,19 @@ function Create_Group_Appearances(AppImp, NrAppear, prefix, SelectedGrp, Selecte
     do return 1, NrAppear end
 end
 
-function Create_Group_Sequence(SelectedGrp)
+function Create_Group_Sequence(SelectedGrp, SelectedGrpName, Phaser_Off, CurrentSeqNr, SelectedGrpNo, prefix,
+                               Sequence_Ref)
+    Sequence_Ref = CurrentSeqNr
     for g in ipairs(SelectedGrp) do
-
+        local GrpNo = SelectedGrpNo[g]
+        Cmd("ClearAll /nu")
+        Cmd("Store Sequence " ..
+            CurrentSeqNr .. " \"" .. prefix .. " " .. SelectedGrpName[g] .. "\"")
+        Cmd("Store Sequence " .. CurrentSeqNr .. " Cue 1 Part 0.1")
+        Cmd("Assign Group " .. SelectedGrpName[g] .. " At Sequence " .. CurrentSeqNr .. " Cue 1 Part 0.1")
+        Cmd('Assign Values Preset 25.' ..
+            Phaser_Off .. "At Sequence " .. CurrentSeqNr .. 'cue 1 part 0.1')
+        CurrentSeqNr = math.floor(CurrentSeqNr + 1)
     end
+    do return 1, CurrentSeqNr, Sequence_Ref end
 end

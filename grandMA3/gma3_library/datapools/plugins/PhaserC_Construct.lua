@@ -226,6 +226,7 @@ function Construct_Layout(displayHandle, TLay, SeqNrStart, MacroNrStart, Matrick
     local Preset_Ref_End
     local Phaser_Off
     local Phaser_Ref
+    local Sequence_Ref
 
 
     -- fix prefix
@@ -297,7 +298,7 @@ function Construct_Layout(displayHandle, TLay, SeqNrStart, MacroNrStart, Matrick
     end
     -- end Create_Phaser
     -- Copy_Phaser_Ref
-    local Return_Copy_Phaser_Ref = { Copy_Phaser_Ref(Phaser_Off,All_5_Current,Phaser_Ref)}
+    local Return_Copy_Phaser_Ref = { Copy_Phaser_Ref(Phaser_Off, All_5_Current, Phaser_Ref) }
     if Return_Copy_Phaser_Ref[1] then
         PhaseRef = Return_Copy_Phaser_Ref[2]
         All_5_Current = Return_Copy_Phaser_Ref[3]
@@ -309,10 +310,21 @@ function Construct_Layout(displayHandle, TLay, SeqNrStart, MacroNrStart, Matrick
         NrAppear = Return_Create_Active_Appearances[2]
     end
     -- end Create_Active_Appearances
-    local Return_Create_Group_Appearances = { Create_Group_Appearances(AppImp, NrAppear, prefix, SelectedGrp, SelectedGrpName, color_ref)}
+    -- Create_Group_Appearances
+    local Return_Create_Group_Appearances = { Create_Group_Appearances(AppImp, NrAppear, prefix, SelectedGrp,
+        SelectedGrpName, color_ref) }
     if Return_Create_Group_Appearances[1] then
         NrAppear = Return_Create_Group_Appearances[2]
     end
+    -- end Create_Group_Appearances
+    -- Create_Group_Sequence
+    local Return_Create_Group_Sequence = { Create_Group_Sequence(SelectedGrp, SelectedGrpName, Phaser_Off, CurrentSeqNr,
+        SelectedGrpNo, prefix, Sequence_Ref) }
+        if Return_Create_Group_Sequence[1] then
+            CurrentSeqNr = Return_Create_Group_Sequence[2]
+            Sequence_Ref = Return_Create_Group_Sequence[3]
+        end
+    -- end Create_Group_Sequence
 
 
 
