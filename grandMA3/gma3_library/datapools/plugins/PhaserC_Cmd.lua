@@ -143,6 +143,8 @@ function Create_Preset_Ref_1234(prefix, All_5_Current, SelectedGelNr)
 end
 
 function Create_Phaser(All_5_Current, Preset_Ref, prefix, Argument_Ref)
+    local transition
+    local Preset_cal
     Cmd("ClearAll /nu")
     Cmd('Fixture Thru')
     Cmd('Attribute "ColorRGB_R" At Relative 0')
@@ -150,16 +152,46 @@ function Create_Phaser(All_5_Current, Preset_Ref, prefix, Argument_Ref)
     Cmd('Label Preset 25.' .. All_5_Current .. " " .. prefix .. "ref_off")
     local Phaser_Off = All_5_Current
     All_5_Current = math.floor(All_5_Current + 1)
-    -- for i = 1, 3 do
-    --     for g in ipairs(Argument_Ref) do
-    --         Cmd("ClearAll /nu")
-    --         Cmd('Fixture Thru')
-    --         for st in pairs(tonumber(Argument_Ref[g].Step)) do
-    --             Echo(st)
-    --         end
-    --         Cmd('Attribute "ColorRGB_R" At Relative 0')
-    --         Cmd('Store Preset 25.' .. All_5_Current .. '')
-    --         Cmd('Label Preset 25.' .. All_5_Current .. " " .. prefix .. Argument_Ref[g].Name)
-    --     end
-    -- end
+    for i = 1, 3 do
+        if (i == 1) then
+            transition = 100
+        elseif (i == 2) then
+            transition = 50
+        elseif (i == 3) then
+            transition = 0
+        end
+        for g in ipairs(Argument_Ref) do
+            Cmd("ClearAll /nu")
+            Cmd('Fixture Thru')
+            for st = 1, Argument_Ref[g].Step do
+                if (st == 1) then
+                    Preset_cal = Preset_Ref + Argument_Ref[g].Step1
+                elseif (st == 2) then
+                    Preset_cal = Preset_Ref + Argument_Ref[g].Step2
+                elseif (st == 3) then
+                    Preset_cal = Preset_Ref + Argument_Ref[g].Step3
+                elseif (st == 4) then
+                    Preset_cal = Preset_Ref + Argument_Ref[g].Step4
+                end
+                Cmd('Next Step')
+                Cmd('At Preset 25.' .. Preset_cal .. '')
+            end
+
+            for st = 1, Argument_Ref[g].Step do
+                Cmd('Attribute "ColorRGB_R"')
+                Cmd('At Transition Percent ' .. transition .. '')
+                Cmd('Attribute "ColorRGB_G"')
+                Cmd('At Transition Percent ' .. transition .. '')
+                Cmd('Attribute "ColorRGB_B"')
+                Cmd('At Transition Percent ' .. transition .. '')
+                Cmd('Attribute "ColorRGB_W"')
+                Cmd('At Transition Percent ' .. transition .. '')
+                Cmd('Previous Step')
+            end
+
+            Cmd('Store Preset 25.' .. All_5_Current .. '')
+            Cmd('Label Preset 25.' .. All_5_Current .. " " .. prefix .. Argument_Ref[g].Name)
+            All_5_Current = math.floor(All_5_Current + 1)
+        end
+    end
 end
