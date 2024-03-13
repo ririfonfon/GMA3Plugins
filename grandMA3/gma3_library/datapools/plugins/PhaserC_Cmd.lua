@@ -258,3 +258,155 @@ function Create_Group_Sequence(SelectedGrp, SelectedGrpName, Phaser_Off, Current
     end
     do return 1, CurrentSeqNr, Sequence_Ref end
 end
+
+function Create_Layout_Phaser(TLayNr, NaLay, SelectedGelNr, CurrentSeqNr, Preset_Ref, MaxColLgn, RefX, LayY,
+                              LayH, AppNr, LayW, StColName, CurrentMacroNr, ColPath, prefix)
+    local TCol
+    local LongGel
+    local Start_Seq_1
+    local End_Seq_1
+    local Start_Seq_2
+    local End_Seq_2
+    local Start_Seq_3
+    local End_Seq_3
+    local Start_Seq_4
+    local End_Seq_4
+    local LayNr = 1
+    local NrSeq
+    local NrNeed
+    local Grp1234 = { "COLOR_1", "COLOR_2", "COLOR_3", "COLOR_4" }
+
+
+
+    -- Create new Layout View
+    Cmd("Store Layout " .. TLayNr .. " \"" .. prefix .. NaLay .. "")
+    -- end
+    TCol = ColPath:Children()[SelectedGelNr]
+    -- check how long Gel
+
+    for k in ipairs(TCol) do LongGel = math.floor(TCol[k].no) end
+
+    Start_Seq_1 = CurrentSeqNr
+    End_Seq_1 = math.floor(Start_Seq_1 + LongGel - 1)
+    Start_Seq_2 = math.floor(End_Seq_1 + 1)
+    End_Seq_2 = math.floor(Start_Seq_2 + LongGel - 1)
+    Start_Seq_3 = math.floor(End_Seq_2 + 1)
+    End_Seq_3 = math.floor(Start_Seq_3 + LongGel - 1)
+    Start_Seq_4 = math.floor(End_Seq_3 + 1)
+    End_Seq_4 = math.floor(Start_Seq_4 + LongGel - 1)
+    Preset_Ref = math.floor(Preset_Ref)
+    MaxColLgn = tonumber(MaxColLgn)
+
+    for g in ipairs(Grp1234) do
+        local LayX = RefX
+        local col_count = 0
+        LayY = math.floor(LayY - LayH) -- Max Y Position minus hight from element. 0 are at the Bottom!
+
+        NrSeq = math.floor(AppNr + 1)
+        NrNeed = math.floor(AppNr + 1)
+        LayNr = math.floor(LayNr)
+
+        Cmd("Store Layout " .. TLayNr)
+
+        LayX = math.floor(LayX + LayW + 20)
+
+        for col in ipairs(TCol) do
+            col_count = col_count + 1
+            StColName = TCol[col].name
+
+
+            -- Create Sequences
+            Cmd("ClearAll /nu")
+            Cmd("Store Sequence " .. CurrentSeqNr .. " \"" .. prefix .. " " .. StColName ..
+                " " .. Grp1234[g] .. "\"")
+            -- Create Macros
+            for i = 1, 15 do
+                Cmd("Store Macro " .. CurrentMacroNr .. "." .. i .. "")
+            end
+
+            Cmd("Label Macro " .. CurrentMacroNr .. " \"" .. prefix .. " " .. StColName .. " " ..
+                Grp1234[g] .. "\"")
+            Cmd("CD Macro " .. CurrentMacroNr)
+            Cmd('Set 1 Property Command "Store Group 999/o" ')
+            Cmd('Set 2 Property Command "Store Preset 25.999/o" ')
+            Cmd('Set 3 Property Command "Group 999 At Preset 25.999" ')
+            Cmd('Set 4 Property Command "Delete Sequence 999 /o" ')
+            Cmd('Set 5 Property Command "Store Sequence 999 cue 1 /o" ')
+            Cmd('Set 6 Property Command "Go Sequence 999 cue 1" ')
+            Cmd('Set 7 Property Command "ClearAll" ')
+            Cmd('Set 8 Property Command "Blind On" ')
+            Cmd('Set 9 Property Command "Fixture Thru" ')
+            Cmd('Set 10 Property Command "Down; Down; Down" ')
+            Cmd('Set 11 Property Command "at Gel %d.%d" ', SelectedGelNr, TCol[col].no)
+            Cmd('Set 12 Property Command "Store preset 25. %d /o" ', Preset_Ref)
+            Cmd('Set 13 Property Command "ClearAll;  Preset 25.999; At Preset 25.999" ')
+            Cmd('Set 14 Property Command "Blind Off" ')
+            Cmd('Set 15 Property Command "Off Sequence 999" ')
+            Cmd('CD Root')
+
+            -- Add Cmd to Squence
+            if (g == 1) then
+                Echo("G 1")
+                Cmd("set seq " .. CurrentSeqNr .. " cue \"CueZero\" Property Command=\"Set Layout " .. TLayNr .. "." ..
+                    LayNr .. " Appearance=" .. NrNeed .. "; Macro " ..
+                    CurrentMacroNr .. "; Off Sequence " .. Start_Seq_1 ..
+                    " Thru " .. End_Seq_1 .. " - " .. CurrentSeqNr .. "\"")
+            elseif (g == 2) then
+                Echo("G 2")
+                Cmd("set seq " .. CurrentSeqNr .. " cue \"CueZero\" Property Command=\"Set Layout " .. TLayNr .. "." ..
+                    LayNr .. " Appearance=" .. NrNeed .. "; Macro " ..
+                    CurrentMacroNr .. "; Off Sequence " .. Start_Seq_2 ..
+                    " Thru " .. End_Seq_2 .. " - " .. CurrentSeqNr .. "\"")
+            elseif (g == 3) then
+                Echo("G 3")
+                Cmd("set seq " .. CurrentSeqNr .. " cue \"CueZero\" Property Command=\"Set Layout " .. TLayNr .. "." ..
+                    LayNr .. " Appearance=" .. NrNeed .. "; Macro " ..
+                    CurrentMacroNr .. "; Off Sequence " .. Start_Seq_3 ..
+                    " Thru " .. End_Seq_3 .. " - " .. CurrentSeqNr .. "\"")
+            elseif (g == 4) then
+                Echo("G 4")
+                Cmd("set seq " .. CurrentSeqNr .. " cue \"CueZero\" Property Command=\"Set Layout " .. TLayNr .. "." ..
+                    LayNr .. " Appearance=" .. NrNeed .. "; Macro " ..
+                    CurrentMacroNr .. "; Off Sequence " .. Start_Seq_4 ..
+                    " Thru " .. End_Seq_4 .. " - " .. CurrentSeqNr .. "\"")
+            end
+
+            Echo("set seq")
+            Cmd("set seq " .. CurrentSeqNr .. " cue \"OffCue\" Property Command=\"Set Layout " ..
+                TLayNr .. "." .. LayNr .. " Appearance=" .. NrNeed + 1 ..
+                "\"")
+
+            -- end Sequences
+
+            -- Add Sequences to Layout
+            Echo('add sequence to layout')
+            Cmd("Assign Seq " .. CurrentSeqNr .. " at Layout " .. TLayNr)
+            Cmd("Set Layout " .. TLayNr .. "." .. LayNr .. " Appearance=" ..
+                NrNeed + 1 .. " PosX " .. LayX .. " PosY " .. LayY ..
+                " PositionW " .. LayW .. " PositionH " .. LayH ..
+                " VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0 ")
+
+            NrNeed = math.floor(NrNeed + 2); -- Set App Nr to next color
+
+            if (col_count ~= MaxColLgn) then
+                LayX = math.floor(LayX + LayW + 20)
+            else
+                LayX = RefX
+                LayX = math.floor(LayX + LayW + 20)
+                LayY = math.floor(LayY - 20) -- Add offset for Layout Element distance
+                LayY = math.floor(LayY - LayH)
+                col_count = 0
+            end
+            LayNr = math.floor(LayNr + 1)
+
+            CurrentSeqNr = math.floor(CurrentSeqNr + 1)
+            CurrentMacroNr = math.floor(CurrentMacroNr + 1)
+        end
+        -- end Squences to Layout
+
+        AppCrea = 1
+        LayY = math.floor(LayY - 20) -- Add offset for Layout Element distance
+        Preset_Ref = math.floor(Preset_Ref + 1)
+    end
+    do return 1, CurrentMacroNr end
+end

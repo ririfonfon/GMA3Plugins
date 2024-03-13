@@ -27,7 +27,7 @@ local function Main(displayHandle)
     local TLay = Root().ShowData.DataPools.Default.Layouts:Children()
     local TLayNr
     local TLayNrRef
-    local NaLay = "Colors"
+    local NaLay = "Phaser_Color"
     local SeqNr = Root().ShowData.DataPools.Default.Sequences:Children()
     local SeqNrStart
     local SeqNrRange

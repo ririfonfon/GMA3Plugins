@@ -320,11 +320,16 @@ function Construct_Layout(displayHandle, TLay, SeqNrStart, MacroNrStart, Matrick
     -- Create_Group_Sequence
     local Return_Create_Group_Sequence = { Create_Group_Sequence(SelectedGrp, SelectedGrpName, Phaser_Off, CurrentSeqNr,
         SelectedGrpNo, prefix, Sequence_Ref) }
-        if Return_Create_Group_Sequence[1] then
-            CurrentSeqNr = Return_Create_Group_Sequence[2]
-            Sequence_Ref = Return_Create_Group_Sequence[3]
-        end
+    if Return_Create_Group_Sequence[1] then
+        CurrentSeqNr = Return_Create_Group_Sequence[2]
+        Sequence_Ref = Return_Create_Group_Sequence[3]
+    end
     -- end Create_Group_Sequence
+    local Return_Create_Layout_Phaser = { Create_Layout_Phaser(TLayNr, NaLay, SelectedGelNr, CurrentSeqNr, Preset_Ref,
+        MaxColLgn, RefX, LayY, LayH, AppNr, LayW, StColName, CurrentMacroNr, ColPath, prefix) }
+    if Return_Create_Layout_Phaser[1] then
+        CurrentMacroNr = Return_Create_Layout_Phaser[2]
+    end
 
 
 
