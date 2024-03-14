@@ -307,9 +307,19 @@ function Create_Layout_Phaser(TLayNr, NaLay, SelectedGelNr, CurrentSeqNr, Preset
         NrNeed = math.floor(AppNr + 1)
         LayNr = math.floor(LayNr)
 
-        Cmd("Store Layout " .. TLayNr)
+        Cmd("Store Layout " .. TLayNr .. "." .. LayNr .. "")
+        Cmd("Set Layout " .. TLayNr .. "." .. LayNr ..
+            " Action=0 Appearance=" .. AppNr ..
+            " PosX " .. LayX ..
+            " PosY " .. LayY ..
+            " PositionW " .. LayW ..
+            " PositionH " .. LayH ..
+            " VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0 VisibilityBorder=0 CustomTextSize=20 CustomTextText=".. Grp1234[g] .. "")
 
+        LayNr = math.floor(LayNr + 1)
         LayX = math.floor(LayX + LayW + 20)
+
+
 
         for col in ipairs(TCol) do
             col_count = col_count + 1
@@ -328,9 +338,10 @@ function Create_Layout_Phaser(TLayNr, NaLay, SelectedGelNr, CurrentSeqNr, Preset
             Cmd('Insert')
             Cmd('ChangeDestination Root')
             local add_all5 = tonumber(All_5_NrStart + TCol[col].no - 1)
-            Macro_Pool[CurrentMacroNr][1]:Set('Command', 'Copy Preset 25.' .. add_all5 ..' At Preset 25.' .. Preset_Ref .. ' /o /nu')
+            Macro_Pool[CurrentMacroNr][1]:Set('Command',
+                'Copy Preset 25.' .. add_all5 .. ' At Preset 25.' .. Preset_Ref .. ' /o /nu')
 
-            -- Add Cmd to Squence
+            -- Add Cmd to Sequences
             if (g == 1) then
                 Echo("G 1")
                 Cmd("set seq " .. CurrentSeqNr .. " cue \"CueZero\" Property Command=\"Set Layout " .. TLayNr .. "." ..
@@ -362,7 +373,7 @@ function Create_Layout_Phaser(TLayNr, NaLay, SelectedGelNr, CurrentSeqNr, Preset
                 TLayNr .. "." .. LayNr .. " Appearance=" .. NrNeed + 1 ..
                 "\"")
 
-            -- end Sequences
+            -- end Cmd to Sequences
 
             -- Add Sequences to Layout
             Echo('add sequence to layout')
@@ -371,6 +382,7 @@ function Create_Layout_Phaser(TLayNr, NaLay, SelectedGelNr, CurrentSeqNr, Preset
                 NrNeed + 1 .. " PosX " .. LayX .. " PosY " .. LayY ..
                 " PositionW " .. LayW .. " PositionH " .. LayH ..
                 " VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0 ")
+            -- end Sequences to Layout
 
             NrNeed = math.floor(NrNeed + 2); -- Set App Nr to next color
 
@@ -388,11 +400,10 @@ function Create_Layout_Phaser(TLayNr, NaLay, SelectedGelNr, CurrentSeqNr, Preset
             CurrentSeqNr = math.floor(CurrentSeqNr + 1)
             CurrentMacroNr = math.floor(CurrentMacroNr + 1)
         end
-        -- end Squences to Layout
 
-        -- AppCrea = 1
         LayY = math.floor(LayY - 20) -- Add offset for Layout Element distance
         Preset_Ref = math.floor(Preset_Ref + 1)
     end
+
     do return 1, CurrentMacroNr end
 end
