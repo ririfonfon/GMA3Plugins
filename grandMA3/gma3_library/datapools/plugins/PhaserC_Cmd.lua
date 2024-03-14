@@ -260,7 +260,8 @@ function Create_Group_Sequence(SelectedGrp, SelectedGrpName, Phaser_Off, Current
 end
 
 function Create_Layout_Phaser(TLayNr, NaLay, SelectedGelNr, CurrentSeqNr, Preset_Ref, MaxColLgn, RefX, LayY,
-                              LayH, AppNr, LayW, StColName, CurrentMacroNr, ColPath, prefix)
+                              LayH, AppNr, LayW, StColName, CurrentMacroNr, ColPath, prefix, All_5_NrStart)
+    local Macro_Pool = Root().ShowData.DataPools.Default.Macros
     local TCol
     local LongGel
     local Start_Seq_1
@@ -319,30 +320,15 @@ function Create_Layout_Phaser(TLayNr, NaLay, SelectedGelNr, CurrentSeqNr, Preset
             Cmd("ClearAll /nu")
             Cmd("Store Sequence " .. CurrentSeqNr .. " \"" .. prefix .. " " .. StColName ..
                 " " .. Grp1234[g] .. "\"")
-            -- Create Macros
-            for i = 1, 15 do
-                Cmd("Store Macro " .. CurrentMacroNr .. "." .. i .. "")
-            end
 
-            Cmd("Label Macro " .. CurrentMacroNr .. " \"" .. prefix .. " " .. StColName .. " " ..
-                Grp1234[g] .. "\"")
-            Cmd("CD Macro " .. CurrentMacroNr)
-            Cmd('Set 1 Property Command "Store Group 999/o" ')
-            Cmd('Set 2 Property Command "Store Preset 25.999/o" ')
-            Cmd('Set 3 Property Command "Group 999 At Preset 25.999" ')
-            Cmd('Set 4 Property Command "Delete Sequence 999 /o" ')
-            Cmd('Set 5 Property Command "Store Sequence 999 cue 1 /o" ')
-            Cmd('Set 6 Property Command "Go Sequence 999 cue 1" ')
-            Cmd('Set 7 Property Command "ClearAll" ')
-            Cmd('Set 8 Property Command "Blind On" ')
-            Cmd('Set 9 Property Command "Fixture Thru" ')
-            Cmd('Set 10 Property Command "Down; Down; Down" ')
-            Cmd('Set 11 Property Command "at Gel %d.%d" ', SelectedGelNr, TCol[col].no)
-            Cmd('Set 12 Property Command "Store preset 25. %d /o" ', Preset_Ref)
-            Cmd('Set 13 Property Command "ClearAll;  Preset 25.999; At Preset 25.999" ')
-            Cmd('Set 14 Property Command "Blind Off" ')
-            Cmd('Set 15 Property Command "Off Sequence 999" ')
-            Cmd('CD Root')
+            -- Create Macros
+            Cmd('Store Macro ' .. CurrentMacroNr .. ' \'' .. prefix .. ' ' .. StColName .. ' ' ..
+                Grp1234[g] .. '\'')
+            Cmd('ChangeDestination Macro ' .. CurrentMacroNr .. '')
+            Cmd('Insert')
+            Cmd('ChangeDestination Root')
+            local add_all5 = tonumber(All_5_NrStart + TCol[col].no - 1)
+            Macro_Pool[CurrentMacroNr][1]:Set('Command', 'Copy Preset 25.' .. add_all5 ..' At Preset 25.' .. Preset_Ref .. ' /o /nu')
 
             -- Add Cmd to Squence
             if (g == 1) then
@@ -404,7 +390,7 @@ function Create_Layout_Phaser(TLayNr, NaLay, SelectedGelNr, CurrentSeqNr, Preset
         end
         -- end Squences to Layout
 
-        AppCrea = 1
+        -- AppCrea = 1
         LayY = math.floor(LayY - 20) -- Add offset for Layout Element distance
         Preset_Ref = math.floor(Preset_Ref + 1)
     end

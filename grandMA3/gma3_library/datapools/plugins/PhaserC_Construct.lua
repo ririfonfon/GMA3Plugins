@@ -326,7 +326,7 @@ function Construct_Layout(displayHandle, TLay, SeqNrStart, MacroNrStart, Matrick
     end
     -- end Create_Group_Sequence
     local Return_Create_Layout_Phaser = { Create_Layout_Phaser(TLayNr, NaLay, SelectedGelNr, CurrentSeqNr, Preset_Ref,
-        MaxColLgn, RefX, LayY, LayH, AppNr, LayW, StColName, CurrentMacroNr, ColPath, prefix) }
+        MaxColLgn, RefX, LayY, LayH, AppNr, LayW, StColName, CurrentMacroNr, ColPath, prefix, All_5_NrStart) }
     if Return_Create_Layout_Phaser[1] then
         CurrentMacroNr = Return_Create_Layout_Phaser[2]
     end
