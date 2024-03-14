@@ -63,7 +63,8 @@ function CheckSymbols(displayHandle, Img, ImgImp, check, add_check, long_imgimp,
     end
 end -- end function CheckSymbols(...)
 
-function Create_Appearances(SelectedGrp, AppNr, prefix, TCol, NrAppear, StColCode, StColName, StringColName)
+function Create_Appearances(SelectedGrp, AppNr, prefix, TCol, NrAppear, StColCode, StColName, StringColName, AppRef)
+    AppRef = AppNr
     local StAppNameOn
     local StAppNameOff
     local StAppOn = '\"Showdata.MediaPools.Images.on\"'
@@ -86,7 +87,7 @@ function Create_Appearances(SelectedGrp, AppNr, prefix, TCol, NrAppear, StColCod
             NrAppear = math.floor(NrAppear + 1)
         end
     end
-    do return 1, NrAppear end
+    do return 1, NrAppear, AppRef end
 end
 
 function Create_Preset_25(TCol, StColName, StringColName, SelectedGelNr, prefix, All_5_NrEnd, All_5_Current)
@@ -110,8 +111,7 @@ function Create_Matrix(MatrickNr, Argument_Matricks, surfix, prefix)
         for g in pairs(Argument_Matricks) do
             Cmd('Store MAtricks ' .. MatrickNr .. ' /nu')
             Cmd('Set Matricks ' ..
-                MatrickNr .. ' name = ' .. prefix .. surfix[axes] ..
-                "_" .. Argument_Matricks[g].Name:gsub('\'', '') .. ' /nu')
+                MatrickNr .. ' name = ' .. prefix .. surfix[axes] .. Argument_Matricks[g].Name:gsub('\'', '') .. ' /nu')
             Cmd('Set Matricks ' ..
                 MatrickNr .. ' Property "PhaseFrom' .. surfix[axes] .. '" "' .. Argument_Matricks[g].phasefrom .. '')
             Cmd('Set Matricks ' ..
@@ -152,7 +152,7 @@ function Create_Phaser(All_5_Current, Preset_Ref, prefix, Argument_Ref, Phaser_O
     Cmd('Attribute "ColorRGB_B" At Relative 0')
     Cmd('Attribute "ColorRGB_W" At Relative 0')
     Cmd('Store Preset 25.' .. All_5_Current .. '')
-    Cmd('Label Preset 25.' .. All_5_Current .. " " .. prefix .. "ref_off")
+    Cmd('Label Preset 25.' .. All_5_Current .. " " .. prefix .. "off")
     Phaser_Off = All_5_Current
     All_5_Current = math.floor(All_5_Current + 1)
     for i = 1, 3 do
@@ -200,14 +200,16 @@ function Create_Phaser(All_5_Current, Preset_Ref, prefix, Argument_Ref, Phaser_O
     do return 1, Phaser_Off, All_5_Current end
 end
 
-function Copy_Phaser_Ref(Phaser_Off, All_5_Current, Phaser_Ref)
+function Copy_Phaser_Ref(Phaser_Off, All_5_Current, Phaser_Ref, Preset_25_Ref)
     Phaser_Ref = All_5_Current
+    Preset_25_Ref[1] = Phaser_Off
     for i = 1, 8 do
+        Preset_25_Ref[i + 1] = All_5_Current
         local cop = Phaser_Off + i
         Cmd('Copy Preset 25.' .. cop .. ' At Preset 25.' .. All_5_Current .. '')
         All_5_Current = math.floor(All_5_Current + 1)
     end
-    do return 1, Phaser_Ref, All_5_Current end
+    do return 1, Phaser_Ref, All_5_Current, Preset_25_Ref end
 end
 
 function Create_Active_Appearances(AppImp, NrAppear, prefix)
@@ -224,13 +226,9 @@ end
 function Create_Group_Appearances(AppImp, NrAppear, prefix, SelectedGrp, SelectedGrpName, color_ref)
     local a = 1
     for grp in pairs(SelectedGrp) do
-        for q in pairs(AppImp) do
+        for q = 1, 19 do
             AppImp[q].Nr = math.floor(NrAppear)
-            Cmd('Store App ' ..
-                AppImp[q].Nr ..
-                ' ' ..
-                prefix ..
-                AppImp[q].Name ..
+            Cmd('Store App ' .. AppImp[q].Nr .. ' ' .. prefix .. AppImp[q].Name ..
                 SelectedGrpName[grp] .. ' "Appearance"=' .. AppImp[q].StApp .. '' .. color_ref[a].RGBref .. '')
             NrAppear = math.floor(NrAppear + 1)
         end
@@ -249,11 +247,14 @@ function Create_Group_Sequence(SelectedGrp, SelectedGrpName, Phaser_Off, Current
         local GrpNo = SelectedGrpNo[g]
         Cmd("ClearAll /nu")
         Cmd("Store Sequence " ..
-            CurrentSeqNr .. " \"" .. prefix .. " " .. SelectedGrpName[g] .. "\"")
+            CurrentSeqNr .. " \"" .. prefix .. SelectedGrpName[g] .. "\"")
         Cmd("Store Sequence " .. CurrentSeqNr .. " Cue 1 Part 0.1")
         Cmd("Assign Group " .. SelectedGrpName[g] .. " At Sequence " .. CurrentSeqNr .. " Cue 1 Part 0.1")
-        Cmd('Assign Values Preset 25.' ..
-            Phaser_Off .. "At Sequence " .. CurrentSeqNr .. 'cue 1 part 0.1')
+        Cmd('Assign Preset 25.' .. Phaser_Off .. " At Sequence " .. CurrentSeqNr .. 'cue 1 part 0.1')
+        Cmd('Set Sequence ' .. CurrentSeqNr .. 'Property Priority HTP')
+        Cmd('Set Sequence ' .. CurrentSeqNr .. 'Property OffWhenOverridden=0')
+        Cmd('Set Sequence ' .. CurrentSeqNr .. 'Property SwapProtect=1')
+        Cmd('Set Sequence ' .. CurrentSeqNr .. 'Property KillProtect=1')
         CurrentSeqNr = math.floor(CurrentSeqNr + 1)
     end
     do return 1, CurrentSeqNr, Sequence_Ref end
@@ -298,6 +299,7 @@ function Create_Layout_Phaser(TLayNr, NaLay, SelectedGelNr, CurrentSeqNr, Preset
     Preset_Ref = math.floor(Preset_Ref)
     MaxColLgn = tonumber(MaxColLgn)
 
+    -- Group 1234
     for g in ipairs(Grp1234) do
         local LayX = RefX
         local col_count = 0
@@ -314,17 +316,17 @@ function Create_Layout_Phaser(TLayNr, NaLay, SelectedGelNr, CurrentSeqNr, Preset
             " PosY " .. LayY ..
             " PositionW " .. LayW ..
             " PositionH " .. LayH ..
-            " VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0 VisibilityBorder=0 CustomTextSize=20 CustomTextText=".. Grp1234[g] .. "")
+            " VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0 VisibilityBorder=0 CustomTextSize=20 CustomTextText=" ..
+            Grp1234[g] .. "")
 
         LayNr = math.floor(LayNr + 1)
         LayX = math.floor(LayX + LayW + 20)
 
 
-
+        -- create color 1234
         for col in ipairs(TCol) do
             col_count = col_count + 1
             StColName = TCol[col].name
-
 
             -- Create Sequences
             Cmd("ClearAll /nu")
@@ -400,10 +402,117 @@ function Create_Layout_Phaser(TLayNr, NaLay, SelectedGelNr, CurrentSeqNr, Preset
             CurrentSeqNr = math.floor(CurrentSeqNr + 1)
             CurrentMacroNr = math.floor(CurrentMacroNr + 1)
         end
+        -- end create color 1234
 
         LayY = math.floor(LayY - 20) -- Add offset for Layout Element distance
         Preset_Ref = math.floor(Preset_Ref + 1)
     end
+    -- end Group 1234
 
-    do return 1, CurrentMacroNr end
+    do return 1, CurrentMacroNr, CurrentSeqNr, LayNr, LayY end
+end
+
+function Create_Layout_FixGroup(CurrentMacroNr, CurrentSeqNr, LayNr, LayY, RefX, LayH, LayW, TLayNr, NaLay, SelectedGrp,
+                                SelectedGrpName, Argument_Matricks, surfix, prefix, AppImp, Argument_Ref, AppRef,
+                                Preset_25_Ref)
+    local Macro_Pool = Root().ShowData.DataPools.Default.Macros
+    LayY = math.floor(LayY - 20) -- Add offset for Layout Element distance
+    LayY = math.floor(LayY - LayH)
+    local LayX = RefX
+    for g in ipairs(SelectedGrp) do
+        Cmd("Assign Group " .. SelectedGrp[g] .. " at Layout " .. TLayNr)
+        Cmd("Set Layout " .. TLayNr .. "." .. LayNr ..
+            " Action=0 Appearance=" .. AppRef ..
+            " PosX " .. LayX ..
+            " PosY " .. LayY ..
+            " PositionW " .. LayW ..
+            " PositionH " .. LayH ..
+            " VisibilityObjectname=1 VisibilityBar=0 VisibilityIndicatorBar=0 VisibilitySelectionRelevance=1")
+        LayNr = math.floor(LayNr + 1)
+        LayX = math.floor(LayX + LayW + 20)
+        local Seq_Start = CurrentSeqNr
+        local Seq_End = Seq_Start + 8
+
+        for i = 1, 9 do
+            -- Create Seq
+            Cmd('Store Sequence ' .. CurrentSeqNr ..
+                ' \'' .. prefix .. ' ' .. SelectedGrpName[g] .. ' ' .. AppImp[i].Name .. '\'')
+            -- Create Macros
+            Cmd('Store Macro ' .. CurrentMacroNr ..
+                ' \'' .. prefix .. ' ' .. SelectedGrpName[g] .. ' ' .. AppImp[i].Name .. '\'')
+            Cmd('ChangeDestination Macro ' .. CurrentMacroNr .. '')
+            Cmd('Insert')
+            Cmd('ChangeDestination Root')
+            Macro_Pool[CurrentMacroNr][1]:Set('Command', 'Assign Preset 25.' .. Preset_25_Ref[i] ..
+                ' At Sequence ' .. prefix .. SelectedGrpName[g] .. ' Cue 1 Part 0.1')
+            -- end Create Macros
+
+            Cmd('Set Sequence ' .. CurrentSeqNr ..
+                ' Cue \'CueZero\' Property Command=\'Set Layout ' ..
+                TLayNr .. '.' .. LayNr .. ' Appearance=' .. prefix .. AppImp[i].Name ..
+                '; Macro ' .. CurrentMacroNr ..
+                '; Off Sequence ' .. Seq_Start .. ' Thru ' .. Seq_End .. ' - ' .. CurrentSeqNr .. '\'')
+            Cmd('Set Sequence ' .. CurrentSeqNr ..
+                ' Cue \'OffCue\' Property Command=\'Set Layout ' ..
+                TLayNr .. '.' .. LayNr .. ' Appearance=' .. prefix .. AppImp[i].Name .. SelectedGrpName[g] .. '')
+            -- end Create Seq
+            -- Assign Seq to Layout
+            Cmd('Assign Sequence ' .. CurrentSeqNr .. ' At Layout ' .. TLayNr)
+            Cmd('Set Layout ' .. TLayNr .. '.' .. LayNr ..
+                ' Appearance=' .. prefix .. AppImp[i].Name .. SelectedGrpName[g] ..
+                ' PosX ' .. LayX .. ' PosY ' .. LayY ..
+                ' PositionW ' .. LayW .. ' PositionH ' .. LayH ..
+                ' VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0')
+            -- end Assign Seq to Layout
+            LayX = math.floor(LayX + LayW + 20)
+            LayNr = math.floor(LayNr + 1)
+            CurrentSeqNr = math.floor(CurrentSeqNr + 1)
+            CurrentMacroNr = math.floor(CurrentMacroNr + 1)
+        end
+
+        Seq_Start = CurrentSeqNr
+        Seq_End = Seq_Start + 9
+
+        for i = 10, 19 do
+            -- Create Seq
+            Cmd('Store Sequence ' .. CurrentSeqNr ..
+                ' \'' .. prefix .. ' ' .. SelectedGrpName[g] .. ' ' .. AppImp[i].Name .. '\'')
+            -- Create Macros
+            Cmd('Store Macro ' .. CurrentMacroNr ..
+                ' \'' .. prefix .. ' ' .. SelectedGrpName[g] .. ' ' .. AppImp[i].Name .. '\'')
+            Cmd('ChangeDestination Macro ' .. CurrentMacroNr .. '')
+            Cmd('Insert')
+            Cmd('ChangeDestination Root')
+            Macro_Pool[CurrentMacroNr][1]:Set('Command',
+                'Assign MAtricks ' .. prefix .. surfix[1] .. Argument_Matricks[i - 9].Name ..
+                ' At Sequence ' .. prefix .. SelectedGrpName[g] .. ' Cue 1 Part 0.1')
+            -- end Create Macros
+
+            Cmd('Set Sequence ' .. CurrentSeqNr ..
+                ' Cue \'CueZero\' Property Command=\'Set Layout ' ..
+                TLayNr .. '.' .. LayNr .. ' Appearance=' .. prefix .. AppImp[i].Name ..
+                '; Macro ' .. CurrentMacroNr ..
+                '; Off Sequence ' .. Seq_Start .. ' Thru ' .. Seq_End .. ' - ' .. CurrentSeqNr .. '\'')
+            Cmd('Set Sequence ' .. CurrentSeqNr ..
+                ' Cue \'OffCue\' Property Command=\'Set Layout ' ..
+                TLayNr .. '.' .. LayNr .. ' Appearance=' .. prefix .. AppImp[i].Name .. SelectedGrpName[g] .. '')
+            -- end Create Seq
+            -- Assign Seq to Layout
+            Cmd('Assign Sequence ' .. CurrentSeqNr .. ' At Layout ' .. TLayNr)
+            Cmd('Set Layout ' .. TLayNr .. '.' .. LayNr ..
+                ' Appearance=' .. prefix .. AppImp[i].Name .. SelectedGrpName[g] ..
+                ' PosX ' .. LayX .. ' PosY ' .. LayY ..
+                ' PositionW ' .. LayW .. ' PositionH ' .. LayH ..
+                ' VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0')
+            -- end Assign Seq to Layout
+            LayX = math.floor(LayX + LayW + 20)
+            LayNr = math.floor(LayNr + 1)
+            CurrentSeqNr = math.floor(CurrentSeqNr + 1)
+            CurrentMacroNr = math.floor(CurrentMacroNr + 1)
+        end
+        LayY = math.floor(LayY - 20) -- Add offset for Layout Element distance
+        LayY = math.floor(LayY - LayH)
+        LayX = RefX
+    end
+    do return 1, CurrentSeqNr, CurrentMacroNr end
 end

@@ -167,6 +167,9 @@ function Construct_Layout(displayHandle, TLay, SeqNrStart, MacroNrStart, Matrick
         { Name = '2_3_4',   Step = 3, Step1 = 1, Step2 = 2, Step3 = 3, Step4 = 0 },
         { Name = '1_2_3_4', Step = 4, Step1 = 0, Step2 = 1, Step3 = 2, Step4 = 3 },
     }
+
+    local Preset_25_Ref = {}
+
     local First_Id_Lay = {}
     local Current_Id_Lay
     local SeqNrEnd
@@ -227,6 +230,7 @@ function Construct_Layout(displayHandle, TLay, SeqNrStart, MacroNrStart, Matrick
     local Phaser_Off
     local Phaser_Ref
     local Sequence_Ref
+    local AppRef
 
 
     -- fix prefix
@@ -269,9 +273,10 @@ function Construct_Layout(displayHandle, TLay, SeqNrStart, MacroNrStart, Matrick
 
     -- Create Appearances
     local Return_Create_Appearances = { Create_Appearances(SelectedGrp, AppNr, prefix, TCol, NrAppear, StColCode,
-        StColName, StringColName) }
+        StColName, StringColName, AppRef) }
     if Return_Create_Appearances[1] then
         NrAppear = Return_Create_Appearances[2]
+        AppRef = Return_Create_Appearances[3]
     end
     -- end Appearances
     -- Create Preset 25
@@ -298,10 +303,11 @@ function Construct_Layout(displayHandle, TLay, SeqNrStart, MacroNrStart, Matrick
     end
     -- end Create_Phaser
     -- Copy_Phaser_Ref
-    local Return_Copy_Phaser_Ref = { Copy_Phaser_Ref(Phaser_Off, All_5_Current, Phaser_Ref) }
+    local Return_Copy_Phaser_Ref = { Copy_Phaser_Ref(Phaser_Off, All_5_Current, Phaser_Ref, Preset_25_Ref) }
     if Return_Copy_Phaser_Ref[1] then
-        PhaseRef = Return_Copy_Phaser_Ref[2]
+        Phaser_Ref = Return_Copy_Phaser_Ref[2]
         All_5_Current = Return_Copy_Phaser_Ref[3]
+        Preset_25_Ref = Return_Copy_Phaser_Ref[4]
     end
     -- end Copy_Phaser_Ref
     -- Create_Active_Appearances
@@ -329,6 +335,17 @@ function Construct_Layout(displayHandle, TLay, SeqNrStart, MacroNrStart, Matrick
         MaxColLgn, RefX, LayY, LayH, AppNr, LayW, StColName, CurrentMacroNr, ColPath, prefix, All_5_NrStart) }
     if Return_Create_Layout_Phaser[1] then
         CurrentMacroNr = Return_Create_Layout_Phaser[2]
+        CurrentSeqNr = Return_Create_Layout_Phaser[3]
+        LayNr = Return_Create_Layout_Phaser[4]
+        LayY = Return_Create_Layout_Phaser[5]
+    end
+
+    local Return_Create_Layout_FixGroup = { Create_Layout_FixGroup(CurrentMacroNr, CurrentSeqNr, LayNr, LayY, RefX, LayH,
+        LayW, TLayNr, NaLay, SelectedGrp, SelectedGrpName, Argument_Matricks, surfix, prefix, AppImp, Argument_Ref,
+        AppRef, Preset_25_Ref) }
+    if Return_Create_Layout_FixGroup[1] then
+        CurrentSeqNr = Return_Create_Layout_FixGroup[2]
+        CurrentMacroNr = Return_Create_Layout_FixGroup[3]
     end
 
 

@@ -607,7 +607,7 @@ local function Main(displayHandle)
     input8LineEdit.Margin = { left = 2, right = 0, top = 7, bottom = 2 }
     input8LineEdit.Filter = "0123456789"
     input8LineEdit.VkPluginName = "TextInputNumOnly"
-    input8LineEdit.Content = "40"
+    input8LineEdit.Content = "15"
     input8LineEdit.MaxTextLength = 6
     input8LineEdit.HideFocusFrame = "Yes"
     input8LineEdit.PluginComponent = myHandle
