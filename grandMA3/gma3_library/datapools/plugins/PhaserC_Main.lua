@@ -752,7 +752,7 @@ local function Main(displayHandle)
         end
         SeqNrStart = caller.Content:gsub("'", "")
         SeqNrStart = tonumber(SeqNrStart)
-        SeqNrRange = SeqNrStart + tonumber((Nr_SelectedGrp * (NGel + 2)) + NGel + 100)
+        SeqNrRange = SeqNrStart + tonumber((4 * (NGel + 2)) + Nr_SelectedGrp)
         for k in ipairs(SeqNr) do
             if SeqNrStart <= tonumber(SeqNr[k].NO) then
                 if SeqNrRange >= tonumber(SeqNr[k].NO) then
@@ -786,7 +786,7 @@ local function Main(displayHandle)
         end
         MacroNrStart = caller.Content:gsub("'", "")
         MacroNrStart = tonumber(MacroNrStart)
-        MacroNrRange = MacroNrStart + 45
+        MacroNrRange = MacroNrStart + tonumber((4 * (NGel + 2)) + (Nr_SelectedGrp * 19) + 6)
         for k in ipairs(MacroNr) do
             if MacroNrStart <= tonumber(MacroNr[k].NO) then
                 if MacroNrRange >= tonumber(MacroNr[k].NO) then
@@ -813,7 +813,7 @@ local function Main(displayHandle)
         end
         AppNr = caller.Content:gsub("'", "")
         AppNr = tonumber(AppNr)
-        AppNrRange = AppNr + 75 + (NGel * 2)
+        AppNrRange = AppNr + (NGel * 2) + 29 + (Nr_SelectedGrp * 19)
         for k in ipairs(App) do
             if AppNr <= tonumber(App[k].NO) then
                 if AppNrRange >= tonumber(App[k].NO) then
@@ -848,7 +848,7 @@ local function Main(displayHandle)
         All_5_NrStart = caller.Content:gsub("'", "")
         All_5_NrStart = tonumber(All_5_NrStart)
         All_5_Current = All_5_NrStart
-        All_5_NrRange = All_5_NrStart + NGel
+        All_5_NrRange = All_5_NrStart + NGel + 37
         for k in ipairs(All_5_Nr) do
             if All_5_NrStart <= tonumber(All_5_Nr[k].NO) then
                 if All_5_NrRange >= tonumber(All_5_Nr[k].NO) then
@@ -882,7 +882,7 @@ local function Main(displayHandle)
         end
         MatrickNrStart = caller.Content:gsub("'", "")
         MatrickNrStart = tonumber(MatrickNrStart)
-        MatrickNrRange = MatrickNrStart + 31
+        MatrickNrRange = MatrickNrStart + 35
         for k in ipairs(MatrickNr) do
             if MatrickNrStart <= tonumber(MatrickNr[k].NO) then
                 if MatrickNrRange >= tonumber(MatrickNr[k].NO) then
@@ -1000,3 +1000,5 @@ local function Main(displayHandle)
 end
 -- Run the plugin.
 return Main
+
+-- end PhaserC_Main.lua
