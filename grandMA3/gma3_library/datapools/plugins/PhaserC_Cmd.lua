@@ -582,4 +582,6 @@ function Create_Layout_FixGroup(CurrentMacroNr, CurrentSeqNr, LayNr, LayY, RefX,
     CurrentMacroNr = math.floor(CurrentMacroNr + 1)
 
     do return 1, CurrentSeqNr, CurrentMacroNr end
-end
+end 
+
+-- end PhaserC_Cmd.lua
