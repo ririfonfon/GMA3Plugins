@@ -414,7 +414,7 @@ end
 
 function Create_Layout_FixGroup(CurrentMacroNr, CurrentSeqNr, LayNr, LayY, RefX, LayH, LayW, TLayNr, NaLay, SelectedGrp,
                                 SelectedGrpName, Argument_Matricks, surfix, prefix, AppImp, Argument_Ref, AppRef,
-                                Preset_25_Ref)
+                                Preset_25_Ref, Phaser_Off, Phaser_Ref)
     local Macro_Pool = Root().ShowData.DataPools.Default.Macros
     LayY = math.floor(LayY - 20) -- Add offset for Layout Element distance
     LayY = math.floor(LayY - LayH)
@@ -514,5 +514,72 @@ function Create_Layout_FixGroup(CurrentMacroNr, CurrentSeqNr, LayNr, LayY, RefX,
         LayY = math.floor(LayY - LayH)
         LayX = RefX
     end
+
+    -- Create Seq 100 50 0
+    Cmd('Store Sequence ' .. CurrentSeqNr ..
+        ' \'' .. prefix .. ' 100 50 0 \'')
+    Cmd('Store Sequence ' .. CurrentSeqNr ..
+        'Cue 2 Thru 3')
+    -- Create Macros
+    Cmd('Store Macro ' .. CurrentMacroNr ..
+        ' \'' .. prefix .. ' cent \'')
+    Cmd('ChangeDestination Macro ' .. CurrentMacroNr .. '')
+    for a = 1, 8 do
+        Cmd('Insert')
+    end
+    Cmd('ChangeDestination Root')
+    for a = 1, 8 do
+        Macro_Pool[CurrentMacroNr][a]:Set('Command',
+            'Copy Preset 25.' .. Phaser_Off + a .. ' At Preset 25.' .. Phaser_Ref + a - 1 .. '/Overwrite /NoOops')
+    end
+
+    CurrentMacroNr = math.floor(CurrentMacroNr + 1)
+    Cmd('Store Macro ' .. CurrentMacroNr ..
+        ' \'' .. prefix .. ' cinquante \'')
+    Cmd('ChangeDestination Macro ' .. CurrentMacroNr .. '')
+    for a = 1, 8 do
+        Cmd('Insert')
+    end
+    Cmd('ChangeDestination Root')
+    for a = 1, 8 do
+        Macro_Pool[CurrentMacroNr][a]:Set('Command',
+            'Copy Preset 25.' .. Phaser_Off + a + 8 .. ' At Preset 25.' .. Phaser_Ref + a - 1 .. '/Overwrite /NoOops')
+    end
+
+    CurrentMacroNr = math.floor(CurrentMacroNr + 1)
+    Cmd('Store Macro ' .. CurrentMacroNr ..
+        ' \'' .. prefix .. ' zero \'')
+    Cmd('ChangeDestination Macro ' .. CurrentMacroNr .. '')
+    for a = 1, 8 do
+        Cmd('Insert')
+    end
+    Cmd('ChangeDestination Root')
+    for a = 1, 8 do
+        Macro_Pool[CurrentMacroNr][a]:Set('Command',
+            'Copy Preset 25.' .. Phaser_Off + a + 16 .. ' At Preset 25.' .. Phaser_Ref + a - 1 .. '/Overwrite /NoOops')
+    end
+    -- end Create Macros
+
+    Cmd('Set Sequence ' .. CurrentSeqNr ..
+        ' Property  Appearance= ' .. prefix .. 'cent')
+    Cmd('Set Sequence ' .. CurrentSeqNr ..
+        ' Cue 1 Property Command=\'Macro ' .. CurrentMacroNr - 2 .. '\' Appearance= ' .. prefix .. 'cent')
+    Cmd('Set Sequence ' .. CurrentSeqNr ..
+        ' Cue 2 Property Command=\'Macro ' .. CurrentMacroNr - 1 .. '\' Appearance= ' .. prefix .. 'cinquante')
+    Cmd('Set Sequence ' .. CurrentSeqNr ..
+        ' Cue 3 Property Command=\'Macro ' .. CurrentMacroNr .. '\' Appearance= ' .. prefix .. 'zero')
+    -- end Create Seq 100 50 0
+    -- Assign Seq to Layout
+    Cmd('Assign Sequence ' .. CurrentSeqNr .. ' At Layout ' .. TLayNr)
+    Cmd('Set Layout ' .. TLayNr .. '.' .. LayNr ..
+        ' PosX ' .. LayX .. ' PosY ' .. LayY ..
+        ' PositionW ' .. LayW .. ' PositionH ' .. LayH ..
+        ' VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0')
+    -- end Assign Seq to Layout
+    LayX = math.floor(LayX + LayW + 20)
+    LayNr = math.floor(LayNr + 1)
+    CurrentSeqNr = math.floor(CurrentSeqNr + 1)
+    CurrentMacroNr = math.floor(CurrentMacroNr + 1)
+
     do return 1, CurrentSeqNr, CurrentMacroNr end
 end

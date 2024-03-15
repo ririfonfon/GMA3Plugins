@@ -342,7 +342,7 @@ function Construct_Layout(displayHandle, TLay, SeqNrStart, MacroNrStart, Matrick
 
     local Return_Create_Layout_FixGroup = { Create_Layout_FixGroup(CurrentMacroNr, CurrentSeqNr, LayNr, LayY, RefX, LayH,
         LayW, TLayNr, NaLay, SelectedGrp, SelectedGrpName, Argument_Matricks, surfix, prefix, AppImp, Argument_Ref,
-        AppRef, Preset_25_Ref) }
+        AppRef, Preset_25_Ref,  Phaser_Off, Phaser_Ref) }
     if Return_Create_Layout_FixGroup[1] then
         CurrentSeqNr = Return_Create_Layout_FixGroup[2]
         CurrentMacroNr = Return_Create_Layout_FixGroup[3]
