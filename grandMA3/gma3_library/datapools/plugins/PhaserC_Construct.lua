@@ -394,3 +394,5 @@ function Construct_Layout(displayHandle, TLay, SeqNrStart, MacroNrStart, Matrick
     Cmd("Set Layout " .. TLayNr .. " DimensionW " .. UsedW .. " DimensionH " .. UsedH)
     Cmd('Select Layout ' .. TLayNr)
 end -- end Construct_Layout
+
+-- end PhaserC_Construct.lua
