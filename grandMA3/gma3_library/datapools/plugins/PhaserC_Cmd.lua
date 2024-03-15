@@ -249,7 +249,7 @@ function Create_Group_Sequence(SelectedGrp, SelectedGrpName, Phaser_Off, Current
         Cmd("Store Sequence " ..
             CurrentSeqNr .. " \"" .. prefix .. SelectedGrpName[g] .. "\"")
         Cmd("Store Sequence " .. CurrentSeqNr .. " Cue 1 Part 0.1")
-        Cmd("Assign Group " .. SelectedGrpName[g] .. " At Sequence " .. CurrentSeqNr .. " Cue 1 Part 0.1")
+        Cmd("Assign Group " .. SelectedGrpNo[g] .. " At Sequence " .. CurrentSeqNr .. " Cue 1 Part 0.1")
         Cmd('Assign Preset 25.' .. Phaser_Off .. " At Sequence " .. CurrentSeqNr .. 'cue 1 part 0.1')
         Cmd('Set Sequence ' .. CurrentSeqNr .. 'Property Priority HTP')
         Cmd('Set Sequence ' .. CurrentSeqNr .. 'Property OffWhenOverridden=0')
@@ -414,13 +414,13 @@ end
 
 function Create_Layout_FixGroup(CurrentMacroNr, CurrentSeqNr, LayNr, LayY, RefX, LayH, LayW, TLayNr, NaLay, SelectedGrp,
                                 SelectedGrpName, Argument_Matricks, surfix, prefix, AppImp, Argument_Ref, AppRef,
-                                Preset_25_Ref, Phaser_Off, Phaser_Ref)
+                                Preset_25_Ref, Phaser_Off, Phaser_Ref, SelectedGrpNo)
     local Macro_Pool = Root().ShowData.DataPools.Default.Macros
     LayY = math.floor(LayY - 20) -- Add offset for Layout Element distance
     LayY = math.floor(LayY - LayH)
     local LayX = RefX
     for g in ipairs(SelectedGrp) do
-        Cmd("Assign Group " .. SelectedGrp[g] .. " at Layout " .. TLayNr)
+        Cmd('Assign Group ' .. SelectedGrpNo[g] .. ' at Layout ' .. TLayNr)
         Cmd("Set Layout " .. TLayNr .. "." .. LayNr ..
             " Action=0 Appearance=" .. AppRef ..
             " PosX " .. LayX ..

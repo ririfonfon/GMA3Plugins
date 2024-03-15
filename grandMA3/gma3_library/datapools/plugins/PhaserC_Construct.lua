@@ -7,7 +7,7 @@ Created by Richard Fontaine "RIRI", March 2024.
 
 function Construct_Layout(displayHandle, TLay, SeqNrStart, MacroNrStart, MatrickNrStart, MatrickNr, TLayNr, AppNr,
                           All_5_Current, All_5_NrStart, ColPath, SelectedGelNr, SelectedGrp, SelectedGrpNo, TLayNrRef,
-                          NaLay)
+                          NaLay, MaxColLgn)
     local Macro_Pool = Root().ShowData.DataPools.Default.Macros
     local All_5_NrEnd
     local Img = Root().ShowData.MediaPools.Images:Children()
@@ -217,7 +217,6 @@ function Construct_Layout(displayHandle, TLay, SeqNrStart, MacroNrStart, Matrick
     local CurrentMacroNr
     local UsedW
     local UsedH
-    local MaxColLgn = 40
     local ColLgnCount = 0
     local long_imgimp
     local add_check = 0
@@ -253,7 +252,8 @@ function Construct_Layout(displayHandle, TLay, SeqNrStart, MacroNrStart, Matrick
     -- fix name SelectedGrp
     for g in pairs(SelectedGrp) do
         SelectedGrpName[g] = SelectedGrp[g]:gsub(' ', '_')
-        SelectedGrpName[g] = SelectedGrp[g]:gsub("'", '')
+        SelectedGrpName[g] = SelectedGrpName[g]:gsub("'", '')
+        SelectedGrpNo[g] = SelectedGrpNo[g]:gsub("'", '')
     end
     -- fix *NrStart & use Current*Nr
     CurrentSeqNr = SeqNrStart
@@ -342,7 +342,7 @@ function Construct_Layout(displayHandle, TLay, SeqNrStart, MacroNrStart, Matrick
 
     local Return_Create_Layout_FixGroup = { Create_Layout_FixGroup(CurrentMacroNr, CurrentSeqNr, LayNr, LayY, RefX, LayH,
         LayW, TLayNr, NaLay, SelectedGrp, SelectedGrpName, Argument_Matricks, surfix, prefix, AppImp, Argument_Ref,
-        AppRef, Preset_25_Ref,  Phaser_Off, Phaser_Ref) }
+        AppRef, Preset_25_Ref,  Phaser_Off, Phaser_Ref, SelectedGrpNo) }
     if Return_Create_Layout_FixGroup[1] then
         CurrentSeqNr = Return_Create_Layout_FixGroup[2]
         CurrentMacroNr = Return_Create_Layout_FixGroup[3]

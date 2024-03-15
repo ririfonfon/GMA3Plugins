@@ -22,7 +22,7 @@ local function Main(displayHandle)
     local ColGels = ColPath:Children()
     local SelectedGelNr
     local NGel
-    local MaxColLgn
+    local MaxColLgn = 15
     local check_gel = false
     local TLay = Root().ShowData.DataPools.Default.Layouts:Children()
     local TLayNr
@@ -712,7 +712,7 @@ local function Main(displayHandle)
         end
         Obj.Delete(screenOverlay, Obj.Index(baseInput))
         Construct_Layout(displayHandle, TLay, SeqNrStart, MacroNrStart, MatrickNrStart, MatrickNr, TLayNr, AppNr,
-            All_5_Current, All_5_NrStart, ColPath, SelectedGelNr, SelectedGrp, SelectedGrpNo, TLayNrRef, NaLay)
+            All_5_Current, All_5_NrStart, ColPath, SelectedGelNr, SelectedGrp, SelectedGrpNo, TLayNrRef, NaLay, MaxColLgn)
     end
 
     signalTable.OnInput1TextChanged = function(caller)
