@@ -96,12 +96,12 @@ function Construct_Layout(displayHandle, TLay, SeqNrStart, MacroNrStart, Matrick
 
     local color_ref = {
         { RGBref = ' color=\'1,0,0,0.5\'' },
-        { RGBref = ' color=\'0,1,0,0.5\'' },
         { RGBref = ' color=\'0,0,1,0.5\'' },
-        { RGBref = ' color=\'1,1,0,0.5\'' },
-        { RGBref = ' color=\'0,1,1,0.5\'' },
-        { RGBref = ' color=\'1,0,1,0.5\'' },
         { RGBref = ' color=\'1,0.5,0,0.5\'' },
+        { RGBref = ' color=\'0,1,1,0.5\'' },
+        { RGBref = ' color=\'0,1,0,0.5\'' },
+        { RGBref = ' color=\'1,0,1,0.5\'' },
+        { RGBref = ' color=\'1,1,0,0.5\'' },
         { RGBref = ' color=\'0,1,0.5,0.5\'' },
         { RGBref = ' color=\'1,0,0.5,0.5\'' },
         { RGBref = ' color=\'0.5,1,0,0.5\'' },
