@@ -72,6 +72,8 @@ function Create_Appearances(SelectedGrp, AppNr, prefix, TCol, NrAppear, StColCod
     for g in ipairs(SelectedGrp) do
         AppNr = math.floor(AppNr);
         Cmd('Store App ' .. AppNr .. ' \'' .. prefix .. ' Label\' Appearance=' .. StAppOn .. ' color=\'0,0,0,1\'')
+        AppNr = math.floor(AppNr + 1);
+        Cmd('Store App ' .. AppNr .. ' \'' .. prefix .. ' Labelon\' Appearance=' .. StAppOn .. ' color=\'1,1,1,1\'')
         NrAppear = math.floor(AppNr + 1)
         for col in ipairs(TCol) do
             StColCode = "\"" .. TCol[col].r .. "," .. TCol[col].g .. "," .. TCol[col].b .. ",1\""
@@ -274,7 +276,6 @@ function Create_Layout_Phaser(TLayNr, NaLay, SelectedGelNr, CurrentSeqNr, Preset
     local Start_Seq_4
     local End_Seq_4
     local LayNr = 1
-    local NrSeq
     local NrNeed
     local Grp1234 = { "COLOR_1", "COLOR_2", "COLOR_3", "COLOR_4" }
 
@@ -305,8 +306,7 @@ function Create_Layout_Phaser(TLayNr, NaLay, SelectedGelNr, CurrentSeqNr, Preset
         local col_count = 0
         LayY = math.floor(LayY - LayH) -- Max Y Position minus hight from element. 0 are at the Bottom!
 
-        NrSeq = math.floor(AppNr + 1)
-        NrNeed = math.floor(AppNr + 1)
+        NrNeed = math.floor(AppNr + 2)
         LayNr = math.floor(LayNr)
 
         Cmd("Store Layout " .. TLayNr .. "." .. LayNr .. "")
@@ -412,24 +412,43 @@ function Create_Layout_Phaser(TLayNr, NaLay, SelectedGelNr, CurrentSeqNr, Preset
     do return 1, CurrentMacroNr, CurrentSeqNr, LayNr, LayY end
 end
 
-function Create_Layout_FixGroup(CurrentMacroNr, CurrentSeqNr, LayNr, LayY, RefX, LayH, LayW, TLayNr, NaLay, SelectedGrp,
-                                SelectedGrpName, Argument_Matricks, surfix, prefix, AppImp, Argument_Ref, AppRef,
-                                Preset_25_Ref, Phaser_Off, Phaser_Ref, SelectedGrpNo)
+function Create_All_Call_Layout(CurrentMacroNr, CurrentSeqNr, LayNr, LayY, RefX, LayH, LayW, TLayNr, SelectedGrp,
+                                SelectedGrpName, surfix, prefix, SelectedGrpNo)
     local Macro_Pool = Root().ShowData.DataPools.Default.Macros
     LayY = math.floor(LayY - 20) -- Add offset for Layout Element distance
     LayY = math.floor(LayY - LayH)
     local LayX = RefX
+end
+
+function Create_Layout_FixGroup(CurrentMacroNr, CurrentSeqNr, LayNr, LayY, RefX, LayH, LayW, TLayNr, NaLay, SelectedGrp,
+                                SelectedGrpName, Argument_Matricks, surfix, prefix, AppImp, Argument_Ref, AppRef,
+                                Preset_25_Ref, Phaser_Off, Phaser_Ref, SelectedGrpNo, All_Call_Ref, All_Call_Y)
+    local Macro_Pool = Root().ShowData.DataPools.Default.Macros
+    LayY = math.floor(LayY - 20) -- Add offset for Layout Element distance
+    LayY = math.floor(LayY - LayH)
+    All_Call_Y = LayY
+    LayY = math.floor(LayY - 20) -- Add offset for Layout Element distance
+    LayY = math.floor(LayY - LayH)
+    local LayX = RefX
     for g in ipairs(SelectedGrp) do
-        Cmd('Assign Group ' .. SelectedGrpNo[g] .. ' at Layout ' .. TLayNr)
+        All_Call_Ref[g] = CurrentSeqNr
+        Cmd('Store Sequence ' .. CurrentSeqNr ..
+            ' \'' .. prefix .. ' ' .. SelectedGrpName[g] .. '_Select\'')
+        Cmd('Store Sequence ' .. CurrentSeqNr .. ' Cue 2')
+        Cmd('Set Sequence ' .. CurrentSeqNr .. ' Cue 1 Property Appearance= ' .. AppRef .. '')
+        Cmd('Set Sequence ' .. CurrentSeqNr .. ' Cue 2 Property Appearance= ' .. AppRef + 1 .. '')
+
+        Cmd('Assign Sequence ' .. CurrentSeqNr .. ' at Layout ' .. TLayNr)
         Cmd("Set Layout " .. TLayNr .. "." .. LayNr ..
-            " Action=0 Appearance=" .. AppRef ..
-            " PosX " .. LayX ..
+            " Action=0  PosX " .. LayX ..
             " PosY " .. LayY ..
             " PositionW " .. LayW ..
             " PositionH " .. LayH ..
-            " VisibilityObjectname=1 VisibilityBar=0 VisibilityIndicatorBar=0 VisibilitySelectionRelevance=1")
+            " VisibilityObjectname=1 VisibilityBar=0 VisibilityIndicatorBar=0 ")
+
         LayNr = math.floor(LayNr + 1)
         LayX = math.floor(LayX + LayW + 20)
+        CurrentSeqNr = math.floor(CurrentSeqNr + 1)
         local Seq_Start = CurrentSeqNr
         local Seq_End = Seq_Start + 8
 
@@ -581,7 +600,7 @@ function Create_Layout_FixGroup(CurrentMacroNr, CurrentSeqNr, LayNr, LayY, RefX,
     CurrentSeqNr = math.floor(CurrentSeqNr + 1)
     CurrentMacroNr = math.floor(CurrentMacroNr + 1)
 
-    do return 1, CurrentSeqNr, CurrentMacroNr end
-end 
+    do return 1, CurrentSeqNr, CurrentMacroNr, All_Call_Ref, All_Call_Y end
+end
 
 -- end PhaserC_Cmd.lua

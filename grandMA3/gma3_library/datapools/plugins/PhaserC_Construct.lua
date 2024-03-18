@@ -152,7 +152,7 @@ function Construct_Layout(displayHandle, TLay, SeqNrStart, MacroNrStart, Matrick
         { Name = 'SYM3',    phasefrom = '0', phaseto = '360', group = '3', wing = '2', block = '0', shuffle = '0', transform = 'None' },
         { Name = 'SYM',     phasefrom = '0', phaseto = '360', group = '2', wing = '2', block = '0', shuffle = '0', transform = 'None' },
         { Name = 'RND',     phasefrom = '0', phaseto = '360', group = '0', wing = '0', block = '0', shuffle = '9', transform = 'None' },
-        { Name = 'PAN><',   phasefrom = '0', phaseto = '360', group = '0', wing = '2', block = '0', shuffle = '0', transform = 'Mirror' },
+        { Name = 'PAN><',   phasefrom = '0', phaseto = '360', group = '0', wing = '2', block = '2', shuffle = '0', transform = 'Mirror' },
         { Name = 'PANSYM3', phasefrom = '0', phaseto = '360', group = '0', wing = '2', block = '2', shuffle = '0', transform = 'Mirror' },
         { Name = 'PANSYM',  phasefrom = '0', phaseto = '360', group = '2', wing = '2', block = '2', shuffle = '0', transform = 'Mirror' },
     }
@@ -169,6 +169,8 @@ function Construct_Layout(displayHandle, TLay, SeqNrStart, MacroNrStart, Matrick
     }
 
     local Preset_25_Ref = {}
+    local All_Call_Ref ={}
+    local All_Call_Y
 
     local First_Id_Lay = {}
     local Current_Id_Lay
@@ -342,10 +344,12 @@ function Construct_Layout(displayHandle, TLay, SeqNrStart, MacroNrStart, Matrick
 
     local Return_Create_Layout_FixGroup = { Create_Layout_FixGroup(CurrentMacroNr, CurrentSeqNr, LayNr, LayY, RefX, LayH,
         LayW, TLayNr, NaLay, SelectedGrp, SelectedGrpName, Argument_Matricks, surfix, prefix, AppImp, Argument_Ref,
-        AppRef, Preset_25_Ref,  Phaser_Off, Phaser_Ref, SelectedGrpNo) }
+        AppRef, Preset_25_Ref,  Phaser_Off, Phaser_Ref, SelectedGrpNo, All_Call_Ref, All_Call_Y) }
     if Return_Create_Layout_FixGroup[1] then
         CurrentSeqNr = Return_Create_Layout_FixGroup[2]
         CurrentMacroNr = Return_Create_Layout_FixGroup[3]
+        All_Call_Ref =  Return_Create_Layout_FixGroup[4]
+        All_Call_Y =  Return_Create_Layout_FixGroup[5]
     end
 
 
