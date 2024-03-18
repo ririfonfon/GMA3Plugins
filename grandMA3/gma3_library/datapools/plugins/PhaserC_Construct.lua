@@ -169,7 +169,7 @@ function Construct_Layout(displayHandle, TLay, SeqNrStart, MacroNrStart, Matrick
     }
 
     local Preset_25_Ref = {}
-    local All_Call_Ref ={}
+    local All_Call_Ref = {}
     local All_Call_Y
 
     local First_Id_Lay = {}
@@ -344,14 +344,19 @@ function Construct_Layout(displayHandle, TLay, SeqNrStart, MacroNrStart, Matrick
 
     local Return_Create_Layout_FixGroup = { Create_Layout_FixGroup(CurrentMacroNr, CurrentSeqNr, LayNr, LayY, RefX, LayH,
         LayW, TLayNr, NaLay, SelectedGrp, SelectedGrpName, Argument_Matricks, surfix, prefix, AppImp, Argument_Ref,
-        AppRef, Preset_25_Ref,  Phaser_Off, Phaser_Ref, SelectedGrpNo, All_Call_Ref, All_Call_Y) }
+        AppRef, Preset_25_Ref, Phaser_Off, Phaser_Ref, SelectedGrpNo, All_Call_Ref, All_Call_Y) }
     if Return_Create_Layout_FixGroup[1] then
         CurrentSeqNr = Return_Create_Layout_FixGroup[2]
         CurrentMacroNr = Return_Create_Layout_FixGroup[3]
-        All_Call_Ref =  Return_Create_Layout_FixGroup[4]
-        All_Call_Y =  Return_Create_Layout_FixGroup[5]
+        All_Call_Ref = Return_Create_Layout_FixGroup[4]
+        All_Call_Y = Return_Create_Layout_FixGroup[5]
     end
 
+    -- local Return_Create_All_Call_Layout = { Create_All_Call_Layout(CurrentMacroNr, LayNr, LayY, RefX, LayH, LayW, TLayNr,
+    --     SelectedGrp, SelectedGrpName, prefix, All_Call_Ref, All_Call_Y, AppImp) }
+    -- if Return_Create_All_Call_Layout[1] then
+    --     CurrentMacroNr = Return_Create_All_Call_Layout[2]
+    -- end
 
 
     -- SeqNrEnd = CurrentSeqNr - 1

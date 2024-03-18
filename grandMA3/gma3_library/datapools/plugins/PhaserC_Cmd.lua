@@ -412,14 +412,6 @@ function Create_Layout_Phaser(TLayNr, NaLay, SelectedGelNr, CurrentSeqNr, Preset
     do return 1, CurrentMacroNr, CurrentSeqNr, LayNr, LayY end
 end
 
-function Create_All_Call_Layout(CurrentMacroNr, CurrentSeqNr, LayNr, LayY, RefX, LayH, LayW, TLayNr, SelectedGrp,
-                                SelectedGrpName, surfix, prefix, SelectedGrpNo)
-    local Macro_Pool = Root().ShowData.DataPools.Default.Macros
-    LayY = math.floor(LayY - 20) -- Add offset for Layout Element distance
-    LayY = math.floor(LayY - LayH)
-    local LayX = RefX
-end
-
 function Create_Layout_FixGroup(CurrentMacroNr, CurrentSeqNr, LayNr, LayY, RefX, LayH, LayW, TLayNr, NaLay, SelectedGrp,
                                 SelectedGrpName, Argument_Matricks, surfix, prefix, AppImp, Argument_Ref, AppRef,
                                 Preset_25_Ref, Phaser_Off, Phaser_Ref, SelectedGrpNo, All_Call_Ref, All_Call_Y)
@@ -431,7 +423,10 @@ function Create_Layout_FixGroup(CurrentMacroNr, CurrentSeqNr, LayNr, LayY, RefX,
     LayY = math.floor(LayY - LayH)
     local LayX = RefX
     for g in ipairs(SelectedGrp) do
-        All_Call_Ref[g] = CurrentSeqNr
+        All_Call_Ref[g] = {}
+    end
+    for g in ipairs(SelectedGrp) do
+        All_Call_Ref[g][1] = CurrentSeqNr
         Cmd('Store Sequence ' .. CurrentSeqNr ..
             ' \'' .. prefix .. ' ' .. SelectedGrpName[g] .. '_Select\'')
         Cmd('Store Sequence ' .. CurrentSeqNr .. ' Cue 2')
@@ -453,6 +448,7 @@ function Create_Layout_FixGroup(CurrentMacroNr, CurrentSeqNr, LayNr, LayY, RefX,
         local Seq_End = Seq_Start + 8
 
         for i = 1, 9 do
+            All_Call_Ref[g][i + 1] = CurrentSeqNr
             -- Create Seq
             Cmd('Store Sequence ' .. CurrentSeqNr ..
                 ' \'' .. prefix .. ' ' .. SelectedGrpName[g] .. ' ' .. AppImp[i].Name .. '\'')
@@ -493,6 +489,7 @@ function Create_Layout_FixGroup(CurrentMacroNr, CurrentSeqNr, LayNr, LayY, RefX,
         Seq_End = Seq_Start + 9
 
         for i = 10, 19 do
+            All_Call_Ref[g][i + 1] = CurrentSeqNr
             -- Create Seq
             Cmd('Store Sequence ' .. CurrentSeqNr ..
                 ' \'' .. prefix .. ' ' .. SelectedGrpName[g] .. ' ' .. AppImp[i].Name .. '\'')
@@ -601,6 +598,83 @@ function Create_Layout_FixGroup(CurrentMacroNr, CurrentSeqNr, LayNr, LayY, RefX,
     CurrentMacroNr = math.floor(CurrentMacroNr + 1)
 
     do return 1, CurrentSeqNr, CurrentMacroNr, All_Call_Ref, All_Call_Y end
+end
+
+function Create_All_Call_Layout(CurrentMacroNr, LayNr, LayY, RefX, LayH, LayW, TLayNr, SelectedGrp,
+                                SelectedGrpName, prefix, All_Call_Ref, All_Call_Y, AppImp)
+    local Macro_Pool = Root().ShowData.DataPools.Default.Macros
+    LayY = math.floor(All_Call_Y)
+    local LayX = RefX
+    LayX = math.floor(LayX + LayW + 20)
+    CurrentMacroNr = math.floor(CurrentMacroNr + 1)
+    local Ref_Macro_Call_off
+    local Ref_Macro_Call_on
+    local Ref_Macro_Call_Fonction = CurrentMacroNr
+
+    -- Create Macros
+    for i = 1, 19 do
+        Cmd('Store Macro ' .. CurrentMacroNr ..
+            ' \'' .. prefix .. 'All' .. AppImp[i].Name .. '\'')
+        Cmd('ChangeDestination Macro ' .. CurrentMacroNr .. '')
+        for g in pairs(SelectedGrp) do
+            Cmd('Insert')
+        end
+        Cmd('ChangeDestination Root')
+        for g in pairs(SelectedGrp) do
+            Macro_Pool[CurrentMacroNr][g]:Set('Command', 'Go+ Sequence ' .. All_Call_Ref[g][i + 1] .. '')
+            All_Call_Ref[g][20 + i] = CurrentMacroNr
+        end
+        CurrentMacroNr = math.floor(CurrentMacroNr + 1)
+    end
+    Ref_Macro_Call_off = CurrentMacroNr
+    for g in pairs(SelectedGrp) do
+        Cmd('Store Macro ' .. CurrentMacroNr ..
+            ' \'' .. prefix .. SelectedGrpName[g] .. 'Alloff\'')
+        Cmd('ChangeDestination Macro ' .. CurrentMacroNr .. '')
+        for i = 1, 19 do
+            Cmd('Insert')
+        end
+        Cmd('ChangeDestination Root')
+        for i = 1, 19 do
+            Macro_Pool[CurrentMacroNr][i]:Set('Command',
+                'Set Macro ' .. All_Call_Ref[g][20 + i] .. '.' .. i .. ' Enabled= Off')
+        end
+    end
+    CurrentMacroNr = math.floor(CurrentMacroNr + 1)
+    Ref_Macro_Call_on = CurrentMacroNr
+    for g in pairs(SelectedGrp) do
+        Cmd('Store Macro ' .. CurrentMacroNr ..
+            ' \'' .. prefix .. SelectedGrpName[g] .. 'Allon\'')
+        Cmd('ChangeDestination Macro ' .. CurrentMacroNr .. '')
+        for i = 1, 19 do
+            Cmd('Insert')
+        end
+        Cmd('ChangeDestination Root')
+        for i = 1, 19 do
+            Macro_Pool[CurrentMacroNr][i]:Set('Command',
+                'Set Macro ' .. All_Call_Ref[g][20 + i] .. '.' .. i .. ' Enabled= On')
+        end
+    end
+
+    for g in pairs(SelectedGrp) do
+        Cmd('Set Sequence ' ..
+            All_Call_Ref[g][1] .. ' Cue 1 Property Command=\'Macro ' .. Ref_Macro_Call_off + g - 1 .. '')
+        Cmd('Set Sequence ' .. All_Call_Ref[g][1] .. ' Cue 2 Property Command=\'Macro ' .. Ref_Macro_Call_on + g - 1 ..
+            '')
+    end
+
+    CurrentMacroNr = math.floor(CurrentMacroNr + 1)
+    for i = 1, 19 do
+        Cmd('Assign Macro ' .. Ref_Macro_Call_Fonction + i - 1 .. ' At Layout ' .. TLayNr)
+        Cmd('Set Layout ' .. TLayNr .. '.' .. LayNr ..
+            ' Appearance= arrow_down_png PosX ' .. LayX .. ' PosY ' .. LayY ..
+            ' PositionW ' .. LayW .. ' PositionH ' .. LayH ..
+            ' VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0')
+        -- end Assign Seq to Layout
+        LayX = math.floor(LayX + LayW + 20)
+        LayNr = math.floor(LayNr + 1)
+    end
+    do return 1, CurrentMacroNr end
 end
 
 -- end PhaserC_Cmd.lua
