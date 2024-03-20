@@ -1238,16 +1238,10 @@ function Construct_Layout(displayHandle, TLay, SeqNrStart, MacroNrStart, Matrick
         Cmd('Insert')
     end
     Cmd('Assign Macro ' .. CurrentMacroNr .. ' at Layout ' .. TLayNr)
-    Cmd('Set Layout ' ..
-        TLayNr ..
-        '.' ..
-        LayNr ..
-        ' property appearance <default> PosX ' ..
-        LayX ..
-        ' PosY ' ..
-        LayY ..
-        ' PositionW ' ..
-        LayW .. ' PositionH ' .. LayH .. ' VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0')
+    Cmd('Set Layout ' .. TLayNr .. '.' .. LayNr ..
+        ' property appearance <default> PosX ' .. LayX .. ' PosY ' .. LayY ..
+        ' PositionW ' .. LayW .. ' PositionH ' .. LayH .. 
+        ' VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0')
     Cmd('Set Layout ' .. TLayNr .. "." .. LayNr .. ' Property "Appearance" "p_super_png" ')
     Cmd('ChangeDestination Root')
     local Color_message = 'SetUserVariable "LC_Sequence" "' .. First_All_Color .. '"'
