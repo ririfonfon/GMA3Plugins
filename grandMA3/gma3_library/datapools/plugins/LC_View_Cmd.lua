@@ -295,22 +295,16 @@ function Priority(layout, element, seq_call)
 end
 
 function PriorityNumber(layout, element, seq_call)
-    seq_call = math.floor(seq_call)
-    Echo(seq_call)
-
     local root = Root();
     local SEQ_Root = root.ShowData.DataPools.Default.Sequences:Children()
     local seq_check
     local seq
+    seq_call = math.floor(seq_call)
     local prio
     for k in ipairs(SEQ_Root) do
         seq_check = math.floor(SEQ_Root[k].NO)
-        Echo('check ')
-        Echo(seq_check)
         if seq_check == seq_call then
             seq = k
-            Echo('ùùùù')
-            Echo(seq)
         end
     end
     seq = tonumber(seq)
