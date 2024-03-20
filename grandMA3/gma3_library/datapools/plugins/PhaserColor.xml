@@ -793,5 +793,18 @@
                 </Dependency>
             </DependencyExport>
         </ComponentLua>
+        <ComponentLua Guid="4C 37 BA CD AA E4 20 02 50 EB 53 53 84 B3 D1 F3" Appearance="arrow_down_png">
+            <DependencyExport Size="1">
+                <Dependency Address="&apos;ShowData&apos;.&apos;Appearances&apos;.&apos;arrow_down_png&apos;" AddressNum="13.4.1525">
+                    <Appearance Name="arrow_down_png" Guid="1F 27 40 BA 3E 6C 10 02 0C 3B 26 1E 52 C9 44 30" Color="1.000000,1.000000,1.000000,1.000000" MediaFileName="SYMBOL/symbols/arrow_down.png" CreatedBy="Unknown">
+                        <DependencyExport Size="1">
+                            <Dependency Address="&apos;ShowData&apos;.&apos;MediaPools&apos;.&apos;Symbols&apos;.&apos;[arrow_down_png]&apos;" AddressNum="13.2.2.301">
+                                <SymbolImage Name="[arrow_down_png]" Guid="1F 27 40 BA 6C 27 10 02 B5 66 B6 A1 BC D5 44 30" FileName="arrow_down.png" FilePath="symbols" ColorKeyLightFrom="FFFFFFFF" ColorKeyLightTo="FFFFFFFF" ColorKeySelectionFrom="FFFFFFFF" ColorKeySelectionTo="FFFFFFFF" />
+                            </Dependency>
+                        </DependencyExport>
+                    </Appearance>
+                </Dependency>
+            </DependencyExport>
+        </ComponentLua>
     </UserPlugin>
 </GMA3>
