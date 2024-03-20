@@ -1,8 +1,8 @@
 --[[
 Releases:
-* 1.1.8.1
+* 1.1.8.2
 
-Created by Richard Fontaine "RIRI", January 2024.
+Created by Richard Fontaine "RIRI", March 2024.
 --]]
 
 local function main()
@@ -45,6 +45,8 @@ local function main()
         Wings(axes,layout,element,matrick,matrickthru)
     elseif (sel == 8) then
         Priority(layout,element,seq_call)
+    elseif (sel == 9) then
+        PriorityNumber(layout,element,seq_call)
     end
 
     DelVar(Select, "LC_Fonction")
@@ -56,3 +58,5 @@ local function main()
     DelVar(Select, "LC_Sequence")
 end
 return main
+
+-- end LC_View.lua

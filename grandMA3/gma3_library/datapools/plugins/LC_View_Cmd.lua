@@ -1,8 +1,8 @@
 --[[
 Releases:
-* 1.1.8.1
+* 1.1.8.2
 
-Created by Richard Fontaine "RIRI", January 2024.
+Created by Richard Fontaine "RIRI", March 2024.
 --]]
 
 
@@ -293,3 +293,45 @@ function Priority(layout, element, seq_call)
         Cmd('Set Layout ' .. layout .. "." .. element .. ' Property "Appearance" "p_lowest_png" ')
     end
 end
+
+function PriorityNumber(layout, element, seq_call)
+    seq_call = math.floor(seq_call)
+    Echo(seq_call)
+
+    local root = Root();
+    local SEQ_Root = root.ShowData.DataPools.Default.Sequences:Children()
+    local seq_check
+    local seq
+    local prio
+    for k in ipairs(SEQ_Root) do
+        seq_check = math.floor(SEQ_Root[k].NO)
+        Echo('check ')
+        Echo(seq_check)
+        if seq_check == seq_call then
+            seq = k
+            Echo('ùùùù')
+            Echo(seq)
+        end
+    end
+    seq = tonumber(seq)
+    prio = SEQ_Root[seq]:Get('Priority', Enums.Roles.Display) or 'None'
+    if prio == "Super" then
+        Cmd('Set Layout ' .. layout .. "." .. element .. ' Property "Appearance" "p_super_png" ')
+    elseif prio == "Swap" then
+        Cmd('Set Layout ' .. layout .. "." .. element .. ' Property "Appearance" "p_swap_png" ')
+    elseif prio == "HTP" then
+        Cmd('Set Layout ' .. layout .. "." .. element .. ' Property "Appearance" "p_htp_png" ')
+    elseif prio == "Highest" then
+        Cmd('Set Layout ' .. layout .. "." .. element .. ' Property "Appearance" "p_highest_png" ')
+    elseif prio == "High" then
+        Cmd('Set Layout ' .. layout .. "." .. element .. ' Property "Appearance" "p_high_png" ')
+    elseif prio == "LTP" then
+        Cmd('Set Layout ' .. layout .. "." .. element .. ' Property "Appearance" "p_ltp_png" ')
+    elseif prio == "Low" then
+        Cmd('Set Layout ' .. layout .. "." .. element .. ' Property "Appearance" "p_low_png" ')
+    elseif prio == "Lowest" then
+        Cmd('Set Layout ' .. layout .. "." .. element .. ' Property "Appearance" "p_lowest_png" ')
+    end
+end
+
+-- end LC_View_Cmd.lua
