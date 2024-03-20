@@ -1,6 +1,6 @@
 --[[
 Releases:
-* 1.0.0.0
+* 1.0.0.8
 
 Created by Richard Fontaine "RIRI", March 2024.
 --]]
@@ -350,20 +350,21 @@ function Construct_Layout(displayHandle, TLay, SeqNrStart, MacroNrStart, Matrick
         CurrentMacroNr = Return_Create_Layout_FixGroup[3]
         All_Call_Ref = Return_Create_Layout_FixGroup[4]
         All_Call_Y = Return_Create_Layout_FixGroup[5]
+        LayNr = Return_Create_Layout_FixGroup[6]
     end
 
-    -- local Return_Create_All_Call_Layout = { Create_All_Call_Layout(CurrentMacroNr, LayNr, LayY, RefX, LayH, LayW, TLayNr,
-    --     SelectedGrp, SelectedGrpName, prefix, All_Call_Ref, All_Call_Y, AppImp) }
-    -- if Return_Create_All_Call_Layout[1] then
-    --     CurrentMacroNr = Return_Create_All_Call_Layout[2]
-    -- end
+    local Return_Create_All_Call_Layout = { Create_All_Call_Layout(CurrentMacroNr, LayNr, LayY, RefX, LayH, LayW, TLayNr,
+        SelectedGrp, SelectedGrpName, prefix, All_Call_Ref, All_Call_Y, AppImp) }
+    if Return_Create_All_Call_Layout[1] then
+        CurrentMacroNr = Return_Create_All_Call_Layout[2]
+    end
 
 
-    -- SeqNrEnd = CurrentSeqNr - 1
-    -- -- Add offset for Layout Element distance
-    -- LayY = math.floor(LayY - 150)
-    -- LayX = RefX
-    -- LayX = math.floor(LayX + LayW - 100)
+    SeqNrEnd = CurrentSeqNr - 1
+    -- Add offset for Layout Element distance
+    LayY = math.floor(LayY - 150)
+    LayX = RefX
+    LayX = math.floor(LayX + LayW - 100)
 
     Cmd("ClearAll /nu")
     -- Macro Del LC prefix

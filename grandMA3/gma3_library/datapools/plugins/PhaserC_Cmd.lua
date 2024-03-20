@@ -1,6 +1,6 @@
 --[[
 Releases:
-* 1.0.0.0
+* 1.0.0.8
 
 Created by Richard Fontaine "RIRI", March 2024.
 --]]
@@ -597,7 +597,7 @@ function Create_Layout_FixGroup(CurrentMacroNr, CurrentSeqNr, LayNr, LayY, RefX,
     CurrentSeqNr = math.floor(CurrentSeqNr + 1)
     CurrentMacroNr = math.floor(CurrentMacroNr + 1)
 
-    do return 1, CurrentSeqNr, CurrentMacroNr, All_Call_Ref, All_Call_Y end
+    do return 1, CurrentSeqNr, CurrentMacroNr, All_Call_Ref, All_Call_Y, LayNr end
 end
 
 function Create_All_Call_Layout(CurrentMacroNr, LayNr, LayY, RefX, LayH, LayW, TLayNr, SelectedGrp,
@@ -627,7 +627,7 @@ function Create_All_Call_Layout(CurrentMacroNr, LayNr, LayY, RefX, LayH, LayW, T
         CurrentMacroNr = math.floor(CurrentMacroNr + 1)
     end
     Ref_Macro_Call_off = CurrentMacroNr
-    for g in pairs(SelectedGrp) do
+    for g in ipairs(SelectedGrp) do
         Cmd('Store Macro ' .. CurrentMacroNr ..
             ' \'' .. prefix .. SelectedGrpName[g] .. 'Alloff\'')
         Cmd('ChangeDestination Macro ' .. CurrentMacroNr .. '')
@@ -637,12 +637,13 @@ function Create_All_Call_Layout(CurrentMacroNr, LayNr, LayY, RefX, LayH, LayW, T
         Cmd('ChangeDestination Root')
         for i = 1, 19 do
             Macro_Pool[CurrentMacroNr][i]:Set('Command',
-                'Set Macro ' .. All_Call_Ref[g][20 + i] .. '.' .. i .. ' Enabled= Off')
+                'Set Macro ' .. All_Call_Ref[g][20 + i] .. '.' .. g .. ' Enabled=off')
         end
+        CurrentMacroNr = math.floor(CurrentMacroNr + 1)
     end
     CurrentMacroNr = math.floor(CurrentMacroNr + 1)
     Ref_Macro_Call_on = CurrentMacroNr
-    for g in pairs(SelectedGrp) do
+    for g in ipairs(SelectedGrp) do
         Cmd('Store Macro ' .. CurrentMacroNr ..
             ' \'' .. prefix .. SelectedGrpName[g] .. 'Allon\'')
         Cmd('ChangeDestination Macro ' .. CurrentMacroNr .. '')
@@ -652,18 +653,18 @@ function Create_All_Call_Layout(CurrentMacroNr, LayNr, LayY, RefX, LayH, LayW, T
         Cmd('ChangeDestination Root')
         for i = 1, 19 do
             Macro_Pool[CurrentMacroNr][i]:Set('Command',
-                'Set Macro ' .. All_Call_Ref[g][20 + i] .. '.' .. i .. ' Enabled= On')
+                'Set Macro ' .. All_Call_Ref[g][20 + i] .. '.' .. g .. ' Enabled=on')
         end
+        CurrentMacroNr = math.floor(CurrentMacroNr + 1)
     end
 
-    for g in pairs(SelectedGrp) do
+    for g in ipairs(SelectedGrp) do
         Cmd('Set Sequence ' ..
             All_Call_Ref[g][1] .. ' Cue 1 Property Command=\'Macro ' .. Ref_Macro_Call_off + g - 1 .. '')
         Cmd('Set Sequence ' .. All_Call_Ref[g][1] .. ' Cue 2 Property Command=\'Macro ' .. Ref_Macro_Call_on + g - 1 ..
             '')
     end
 
-    CurrentMacroNr = math.floor(CurrentMacroNr + 1)
     for i = 1, 19 do
         Cmd('Assign Macro ' .. Ref_Macro_Call_Fonction + i - 1 .. ' At Layout ' .. TLayNr)
         Cmd('Set Layout ' .. TLayNr .. '.' .. LayNr ..
@@ -674,6 +675,7 @@ function Create_All_Call_Layout(CurrentMacroNr, LayNr, LayY, RefX, LayH, LayW, T
         LayX = math.floor(LayX + LayW + 20)
         LayNr = math.floor(LayNr + 1)
     end
+    CurrentMacroNr = math.floor(CurrentMacroNr + 1)
     do return 1, CurrentMacroNr end
 end
 
