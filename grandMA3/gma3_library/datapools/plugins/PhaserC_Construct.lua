@@ -1,6 +1,6 @@
 --[[
 Releases:
-* 1.0.0.8
+* 1.0.0.9
 
 Created by Richard Fontaine "RIRI", March 2024.
 --]]
@@ -18,41 +18,41 @@ function Construct_Layout(displayHandle, TLay, SeqNrStart, MacroNrStart, Matrick
     if ImgNr == nil then
         ImgNr = 1
     end
-    local ImgImp = {
-        { Name = "\"on\"",                        FileName = "\"on.png\"",                  Filepath = "" },
-        { Name = "\"off\"",                       FileName = "\"off.png\"",                 Filepath = "" },
-        { Name = "\"[off_active_png]\"",          FileName = "\"off_active.png\"",          Filepath = "" },
-        { Name = "\"[1_2_active_png]\"",          FileName = "\"1_2_active.png\"",          Filepath = "" },
-        { Name = "\"[2_3_active_png]\"",          FileName = "\"2_3_active.png\"",          Filepath = "" },
-        { Name = "\"[3_4_active_png]\"",          FileName = "\"3_4_active.png\"",          Filepath = "" },
-        { Name = "\"[1_3_active_png]\"",          FileName = "\"1_3_active.png\"",          Filepath = "" },
-        { Name = "\"[2_4_active_png]\"",          FileName = "\"2_4_active_png\"",          Filepath = "" },
-        { Name = "\"[1_2_3_active_png]\"",        FileName = "\"1_2_3_active_png\"",        Filepath = "" },
-        { Name = "\"[2_3_4_active_png]\"",        FileName = "\"2_3_4_active_png\"",        Filepath = "" },
-        { Name = "\"[1_2_3_4_active_png]\"",      FileName = "\"1_2_3_4_active_png\"",      Filepath = "" },
-        { Name = "\"[grp_active_png]\"",          FileName = "\"grp_active_png\"",          Filepath = "" },
-        { Name = "\"[forward_active_png]\"",      FileName = "\"forward_active_png\"",      Filepath = "" },
-        { Name = "\"[oe_active_png]\"",           FileName = "\"oe_active_png\"",           Filepath = "" },
-        { Name = "\"[wing_active_png]\"",         FileName = "\"wing_active_png\"",         Filepath = "" },
-        { Name = "\"[sym3_active_png]\"",         FileName = "\"sym3_active_png\"",         Filepath = "" },
-        { Name = "\"[sym_active_png]\"",          FileName = "\"sym_active_png\"",          Filepath = "" },
-        { Name = "\"[rnd_active_png]\"",          FileName = "\"rnd_active_png\"",          Filepath = "" },
-        { Name = "\"[pwing_active_png]\"",        FileName = "\"pwing_active_png\"",        Filepath = "" },
-        { Name = "\"[psym3_active_png]\"",        FileName = "\"psym3_active_png\"",        Filepath = "" },
-        { Name = "\"[psym_active_png]\"",         FileName = "\"psym_active_png\"",         Filepath = "" },
-        { Name = "\"[cent_pc_active_png]\"",      FileName = "\"cent_pc_active_png\"",      Filepath = "" },
-        { Name = "\"[cinquante_pc_active_png]\"", FileName = "\"cinquante_pc_active_png\"", Filepath = "" },
-        { Name = "\"[zero_pc_active_png]\"",      FileName = "\"zero_pc_active_png\"",      Filepath = "" },
-        { Name = "\"x_on\"",                      FileName = "\"x_on.png\"",                Filepath = "" },
-        { Name = "\"x_off\"",                     FileName = "\"x_off.png\"",               Filepath = "" },
-        { Name = "\"y_on\"",                      FileName = "\"y_on.png\"",                Filepath = "" },
-        { Name = "\"y_off\"",                     FileName = "\"y_off.png\"",               Filepath = "" },
-        { Name = "\"z_on\"",                      FileName = "\"z_on.png\"",                Filepath = "" },
-        { Name = "\"z_off\"",                     FileName = "\"z_off.png\"",               Filepath = "" },
-        -- { Name = "\"[]\"",  FileName = "\"\"",  Filepath = "" },
-    }
+    -- local ImgImp = {
+    --     { Name = "\"on\"",                        FileName = "\"on.png\"",                  Filepath = "" },
+    --     { Name = "\"off\"",                       FileName = "\"off.png\"",                 Filepath = "" },
+    --     { Name = "\"[off_active_png]\"",          FileName = "\"off_active.png\"",          Filepath = "" },
+    --     { Name = "\"[1_2_active_png]\"",          FileName = "\"1_2_active.png\"",          Filepath = "" },
+    --     { Name = "\"[2_3_active_png]\"",          FileName = "\"2_3_active.png\"",          Filepath = "" },
+    --     { Name = "\"[3_4_active_png]\"",          FileName = "\"3_4_active.png\"",          Filepath = "" },
+    --     { Name = "\"[1_3_active_png]\"",          FileName = "\"1_3_active.png\"",          Filepath = "" },
+    --     { Name = "\"[2_4_active_png]\"",          FileName = "\"2_4_active_png\"",          Filepath = "" },
+    --     { Name = "\"[1_2_3_active_png]\"",        FileName = "\"1_2_3_active_png\"",        Filepath = "" },
+    --     { Name = "\"[2_3_4_active_png]\"",        FileName = "\"2_3_4_active_png\"",        Filepath = "" },
+    --     { Name = "\"[1_2_3_4_active_png]\"",      FileName = "\"1_2_3_4_active_png\"",      Filepath = "" },
+    --     { Name = "\"[grp_active_png]\"",          FileName = "\"grp_active_png\"",          Filepath = "" },
+    --     { Name = "\"[forward_active_png]\"",      FileName = "\"forward_active_png\"",      Filepath = "" },
+    --     { Name = "\"[oe_active_png]\"",           FileName = "\"oe_active_png\"",           Filepath = "" },
+    --     { Name = "\"[wing_active_png]\"",         FileName = "\"wing_active_png\"",         Filepath = "" },
+    --     { Name = "\"[sym3_active_png]\"",         FileName = "\"sym3_active_png\"",         Filepath = "" },
+    --     { Name = "\"[sym_active_png]\"",          FileName = "\"sym_active_png\"",          Filepath = "" },
+    --     { Name = "\"[rnd_active_png]\"",          FileName = "\"rnd_active_png\"",          Filepath = "" },
+    --     { Name = "\"[pwing_active_png]\"",        FileName = "\"pwing_active_png\"",        Filepath = "" },
+    --     { Name = "\"[psym3_active_png]\"",        FileName = "\"psym3_active_png\"",        Filepath = "" },
+    --     { Name = "\"[psym_active_png]\"",         FileName = "\"psym_active_png\"",         Filepath = "" },
+    --     { Name = "\"[cent_pc_active_png]\"",      FileName = "\"cent_pc_active_png\"",      Filepath = "" },
+    --     { Name = "\"[cinquante_pc_active_png]\"", FileName = "\"cinquante_pc_active_png\"", Filepath = "" },
+    --     { Name = "\"[zero_pc_active_png]\"",      FileName = "\"zero_pc_active_png\"",      Filepath = "" },
+    --     { Name = "\"x_on\"",                      FileName = "\"x_on.png\"",                Filepath = "" },
+    --     { Name = "\"x_off\"",                     FileName = "\"x_off.png\"",               Filepath = "" },
+    --     { Name = "\"y_on\"",                      FileName = "\"y_on.png\"",                Filepath = "" },
+    --     { Name = "\"y_off\"",                     FileName = "\"y_off.png\"",               Filepath = "" },
+    --     { Name = "\"z_on\"",                      FileName = "\"z_on.png\"",                Filepath = "" },
+    --     { Name = "\"z_off\"",                     FileName = "\"z_off.png\"",               Filepath = "" },
+    --     -- { Name = "\"[]\"",  FileName = "\"\"",  Filepath = "" },
+    -- }
     local NrAppear
-    local NrNeed
+    -- local NrNeed
     local StApp_off = '\"Showdata.MediaPools.Images.[off_active_png]\"'
     local StApp_1_2 = '\"Showdata.MediaPools.Images.[1_2_active_png]\"'
     local StApp_2_3 = '\"Showdata.MediaPools.Images.[2_3_active_png]\"'
@@ -84,14 +84,14 @@ function Construct_Layout(displayHandle, TLay, SeqNrStart, MacroNrStart, Matrick
 
 
     local surfix = { 'x', 'y', 'z' }
-    local FadeRef = ' color=\'0,0.8,0,1\''
-    local DelayRef = ' color=\'0.8,0.8,0,1\''
-    local DelayToRef = ' color=\'0.8,0.3,0,1\''
-    local XgrpRef = ' color=\'0,0.8,0.8,1\''
-    local XblockRef = ' color=\'0.8,0,0.8,1\''
-    local XwingsRef = ' color=\'0.8,0,0.3,1\''
-    local PhaseRef = ' color=\'0.3,0,0.8,1\''
-    local SkullRef = ' color=\'0.6,0,0,1\''
+    -- local FadeRef = ' color=\'0,0.8,0,1\''
+    -- local DelayRef = ' color=\'0.8,0.8,0,1\''
+    -- local DelayToRef = ' color=\'0.8,0.3,0,1\''
+    -- local XgrpRef = ' color=\'0,0.8,0.8,1\''
+    -- local XblockRef = ' color=\'0.8,0,0.8,1\''
+    -- local XwingsRef = ' color=\'0.8,0,0.3,1\''
+    -- local PhaseRef = ' color=\'0.3,0,0.8,1\''
+    -- local SkullRef = ' color=\'0.6,0,0,1\''
     local NoRef = ' color=\'1,1,1,1\''
 
     local color_ref = {
@@ -172,9 +172,9 @@ function Construct_Layout(displayHandle, TLay, SeqNrStart, MacroNrStart, Matrick
     local All_Call_Ref = {}
     local All_Call_Y
 
-    local First_Id_Lay = {}
-    local Current_Id_Lay
-    local SeqNrEnd
+    -- local First_Id_Lay = {}
+    -- local Current_Id_Lay
+    -- local SeqNrEnd
 
     -- variables
     local LayX
@@ -194,44 +194,45 @@ function Construct_Layout(displayHandle, TLay, SeqNrStart, MacroNrStart, Matrick
     local StColCode
     local StColName
     local StringColName
-    local StColCodeFirstSeqTime
-    local ColNr = 0
     local SelectedGrpName = {}
-    local GrpNo
-    local col_count
-    local check = {}
-    local FirstSeqTime
-    local LastSeqTime
-    local FirstSeqDelayFrom
-    local LastSeqDelayFrom
-    local FirstSeqDelayTo
-    local LastSeqDelayTo
-    local FirstSeqGrp
-    local LastSeqGrp
-    local FirstSeqBlock
-    local LastSeqBlock
-    local FirstSeqWings
-    local LastSeqWings
-    local FirstSeqColor
-    local LastSeqColor
-    local First_All_Color
     local CurrentSeqNr
     local CurrentMacroNr
     local UsedW
     local UsedH
-    local ColLgnCount = 0
-    local long_imgimp
-    local add_check = 0
     local condition_string
-    local MakeX = true
-    local CallT
-    local Call_inc = 0
     local Preset_Ref
     local Preset_Ref_End
     local Phaser_Off
     local Phaser_Ref
     local Sequence_Ref
+    local Sequence_Ref_End
     local AppRef
+    -- local StColCodeFirstSeqTime
+    -- local ColNr = 0
+    -- local GrpNo
+    -- local col_count
+    -- local check = {}
+    -- local FirstSeqTime
+    -- local LastSeqTime
+    -- local FirstSeqDelayFrom
+    -- local LastSeqDelayFrom
+    -- local FirstSeqDelayTo
+    -- local LastSeqDelayTo
+    -- local FirstSeqGrp
+    -- local LastSeqGrp
+    -- local FirstSeqBlock
+    -- local LastSeqBlock
+    -- local FirstSeqWings
+    -- local LastSeqWings
+    -- local FirstSeqColor
+    -- local LastSeqColor
+    -- local First_All_Color
+    -- local ColLgnCount = 0
+    -- local long_imgimp
+    -- local add_check = 0
+    -- local MakeX = true
+    -- local CallT
+    -- local Call_inc = 0
 
 
     -- fix prefix
@@ -251,6 +252,7 @@ function Construct_Layout(displayHandle, TLay, SeqNrStart, MacroNrStart, Matrick
             exit = true
         end
     until exit == true
+
     -- fix name SelectedGrp
     for g in pairs(SelectedGrp) do
         SelectedGrpName[g] = SelectedGrp[g]:gsub(' ', '_')
@@ -260,12 +262,11 @@ function Construct_Layout(displayHandle, TLay, SeqNrStart, MacroNrStart, Matrick
     -- fix *NrStart & use Current*Nr
     CurrentSeqNr = SeqNrStart
     CurrentMacroNr = MacroNrStart
-    -- check Symbols
-    -- CheckSymbols(displayHandle, Img, ImgImp, check, add_check, long_imgimp, ImgNr)
+
     -- Create MAtricks
     MatrickNr = math.floor(MatrickNrStart)
     Create_Matrix(MatrickNr, Argument_Matricks, surfix, prefix)
-    -- end Create MAtricks
+
     -- Create new Layout View
     Cmd("Store Layout " .. TLayNr .. " \"" .. prefix .. NaLay .. "")
 
@@ -290,7 +291,7 @@ function Construct_Layout(displayHandle, TLay, SeqNrStart, MacroNrStart, Matrick
     end
     -- endCreate Preset 25
     -- Create_Preset_Ref_1234
-    local Return_Create_Preset_Ref_1234 = { Create_Preset_Ref_1234(prefix, All_5_Current, SelectedGelNr) }
+    local Return_Create_Preset_Ref_1234 = { Create_Preset_Ref_1234(All_5_Current, SelectedGelNr) }
     if Return_Create_Preset_Ref_1234[1] then
         All_5_Current = Return_Create_Preset_Ref_1234[2]
         Preset_Ref = Return_Create_Preset_Ref_1234[3]
@@ -327,10 +328,11 @@ function Construct_Layout(displayHandle, TLay, SeqNrStart, MacroNrStart, Matrick
     -- end Create_Group_Appearances
     -- Create_Group_Sequence
     local Return_Create_Group_Sequence = { Create_Group_Sequence(SelectedGrp, SelectedGrpName, Phaser_Off, CurrentSeqNr,
-        SelectedGrpNo, prefix, Sequence_Ref) }
+        SelectedGrpNo, prefix, Sequence_Ref, Sequence_Ref_End) }
     if Return_Create_Group_Sequence[1] then
         CurrentSeqNr = Return_Create_Group_Sequence[2]
         Sequence_Ref = Return_Create_Group_Sequence[3]
+        Sequence_Ref_End = Return_Create_Group_Sequence[4]
     end
     -- end Create_Group_Sequence
     local Return_Create_Layout_Phaser = { Create_Layout_Phaser(TLayNr, NaLay, SelectedGelNr, CurrentSeqNr, Preset_Ref,
@@ -344,7 +346,7 @@ function Construct_Layout(displayHandle, TLay, SeqNrStart, MacroNrStart, Matrick
 
     local Return_Create_Layout_FixGroup = { Create_Layout_FixGroup(CurrentMacroNr, CurrentSeqNr, LayNr, LayY, RefX, LayH,
         LayW, TLayNr, NaLay, SelectedGrp, SelectedGrpName, Argument_Matricks, surfix, prefix, AppImp, Argument_Ref,
-        AppRef, Preset_25_Ref, Phaser_Off, Phaser_Ref, SelectedGrpNo, All_Call_Ref, All_Call_Y) }
+        AppRef, Preset_25_Ref, Phaser_Off, Phaser_Ref, All_Call_Ref, All_Call_Y) }
     if Return_Create_Layout_FixGroup[1] then
         CurrentSeqNr = Return_Create_Layout_FixGroup[2]
         CurrentMacroNr = Return_Create_Layout_FixGroup[3]
@@ -357,17 +359,21 @@ function Construct_Layout(displayHandle, TLay, SeqNrStart, MacroNrStart, Matrick
         SelectedGrp, SelectedGrpName, prefix, All_Call_Ref, All_Call_Y, AppImp) }
     if Return_Create_All_Call_Layout[1] then
         CurrentMacroNr = Return_Create_All_Call_Layout[2]
+        LayX = Return_Create_All_Call_Layout[3]
+        LayNr = Return_Create_All_Call_Layout[4]
     end
 
+    Create_Macro_Priority(CurrentMacroNr, TLayNr, LayNr, LayX, LayY, LayW, LayH, prefix, Sequence_Ref, Sequence_Ref_End)
 
-    SeqNrEnd = CurrentSeqNr - 1
+    -- SeqNrEnd = CurrentSeqNr - 1
+    
     -- Add offset for Layout Element distance
     LayY = math.floor(LayY - 150)
     LayX = RefX
     LayX = math.floor(LayX + LayW - 100)
 
     Cmd("ClearAll /nu")
-    -- Macro Del LC prefix
+    -- Macro Del PC prefix
     CurrentMacroNr = math.floor(CurrentMacroNr + 2)
     condition_string = "Lua 'if Confirm(\"Delete Layout Phaser Color PC" ..
         prefix:gsub('%D*', '') ..
@@ -391,7 +397,7 @@ function Construct_Layout(displayHandle, TLay, SeqNrStart, MacroNrStart, Matrick
         'Delete Preset 25. ' .. Preset_Ref .. 'Thru Preset 25.' .. Preset_Ref_End .. ' /nc')
     Macro_Pool[CurrentMacroNr][8]:Set('Command', 'Delete  Macro ' .. prefix .. '*' .. ' /nc')
     Macro_Pool[CurrentMacroNr][9]:Set('Command', 'Delete  Macro ' .. CurrentMacroNr .. ' /nc')
-    -- end Macro Del LC prefix
+    -- end Macro Del PC prefix
 
     -- dimension of layout & scal it
     for k in pairs(Root().ShowData.DataPools.Default.Layouts:Children()) do

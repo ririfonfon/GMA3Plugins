@@ -1,67 +1,9 @@
 --[[
 Releases:
-* 1.0.0.8
+* 1.0.0.9
 
 Created by Richard Fontaine "RIRI", March 2024.
 --]]
-
-function CheckSymbols(displayHandle, Img, ImgImp, check, add_check, long_imgimp, ImgNr)
-    for k in pairs(Img) do
-        for q in pairs(ImgImp) do
-            if ('"' .. Img[k].name .. '"' == ImgImp[q].Name) then
-                check[q] = 1
-                add_check = math.floor(add_check + 1)
-            end
-            long_imgimp = q
-        end
-    end
-
-    if (long_imgimp == add_check) then
-        Echo("file exist")
-    else
-        Echo("file not exist")
-        -- Select a disk
-        local drives = Root().Temp.DriveCollect
-        local selectedDrive     -- users selected drive
-        local options = {}      -- popup options
-        local PopTableDisk = {} --
-        -- grab a list of connected drives
-        for i = 1, drives.count, 1 do
-            table.insert(options, string.format("%s (%s)", drives[i].name, drives[i].DriveType))
-        end
-        -- present a popup for the user choose (Internal may not work)
-        PopTableDisk = {
-            title = "Select a disk to import on & off symbols",
-            caller = displayHandle,
-            items = options,
-            selectedValue = "",
-            add_args = {
-                FilterSupport = "Yes"
-            }
-        }
-        selectedDrive = PopupInput(PopTableDisk)
-        selectedDrive = selectedDrive + 1
-
-        -- if the user cancled then exit the plugin
-        if selectedDrive == nil then
-            return
-        end
-
-        -- grab the export path for the selected drive and append the file name
-        Cmd("select Drive " .. selectedDrive .. "")
-
-        -- Import Symbols
-        for k in pairs(ImgImp) do
-            if (check[k] == nil) then
-                ImgNr = math.floor(ImgNr + 1);
-                Cmd("Store Image 2." ..
-                    ImgNr ..
-                    " " ..
-                    ImgImp[k].Name .. " Filename=" .. ImgImp[k].FileName .. " filepath=" .. ImgImp[k].Filepath .. "")
-            end
-        end
-    end
-end -- end function CheckSymbols(...)
 
 function Create_Appearances(SelectedGrp, AppNr, prefix, TCol, NrAppear, StColCode, StColName, StringColName, AppRef)
     AppRef = AppNr
@@ -132,7 +74,7 @@ function Create_Matrix(MatrickNr, Argument_Matricks, surfix, prefix)
     end
 end
 
-function Create_Preset_Ref_1234(prefix, All_5_Current, SelectedGelNr)
+function Create_Preset_Ref_1234(All_5_Current, SelectedGelNr)
     Cmd("ClearAll /nu")
     Cmd('Fixture Thru')
     for i = 1, 4 do
@@ -243,10 +185,9 @@ function Create_Group_Appearances(AppImp, NrAppear, prefix, SelectedGrp, Selecte
 end
 
 function Create_Group_Sequence(SelectedGrp, SelectedGrpName, Phaser_Off, CurrentSeqNr, SelectedGrpNo, prefix,
-                               Sequence_Ref)
+                               Sequence_Ref, Sequence_Ref_End)
     Sequence_Ref = CurrentSeqNr
     for g in ipairs(SelectedGrp) do
-        local GrpNo = SelectedGrpNo[g]
         Cmd("ClearAll /nu")
         Cmd("Store Sequence " ..
             CurrentSeqNr .. " \"" .. prefix .. SelectedGrpName[g] .. "\"")
@@ -259,7 +200,8 @@ function Create_Group_Sequence(SelectedGrp, SelectedGrpName, Phaser_Off, Current
         Cmd('Set Sequence ' .. CurrentSeqNr .. 'Property KillProtect=1')
         CurrentSeqNr = math.floor(CurrentSeqNr + 1)
     end
-    do return 1, CurrentSeqNr, Sequence_Ref end
+    Sequence_Ref_End = math.floor(CurrentSeqNr - 1)
+    do return 1, CurrentSeqNr, Sequence_Ref, Sequence_Ref_End end
 end
 
 function Create_Layout_Phaser(TLayNr, NaLay, SelectedGelNr, CurrentSeqNr, Preset_Ref, MaxColLgn, RefX, LayY,
@@ -414,7 +356,7 @@ end
 
 function Create_Layout_FixGroup(CurrentMacroNr, CurrentSeqNr, LayNr, LayY, RefX, LayH, LayW, TLayNr, NaLay, SelectedGrp,
                                 SelectedGrpName, Argument_Matricks, surfix, prefix, AppImp, Argument_Ref, AppRef,
-                                Preset_25_Ref, Phaser_Off, Phaser_Ref, SelectedGrpNo, All_Call_Ref, All_Call_Y)
+                                Preset_25_Ref, Phaser_Off, Phaser_Ref, All_Call_Ref, All_Call_Y)
     local Macro_Pool = Root().ShowData.DataPools.Default.Macros
     LayY = math.floor(LayY - 20) -- Add offset for Layout Element distance
     LayY = math.floor(LayY - LayH)
@@ -676,7 +618,33 @@ function Create_All_Call_Layout(CurrentMacroNr, LayNr, LayY, RefX, LayH, LayW, T
         LayNr = math.floor(LayNr + 1)
     end
     CurrentMacroNr = math.floor(CurrentMacroNr + 1)
-    do return 1, CurrentMacroNr end
+    do return 1, CurrentMacroNr, LayX, LayNr end
+end
+
+function Create_Macro_Priority(CurrentMacroNr, TLayNr, LayNr, LayX, LayY, LayW, LayH, prefix, Sequence_Ref, Sequence_Ref_End)
+    local Macro_Pool = Root().ShowData.DataPools.Default.Macros
+    CurrentMacroNr = math.floor(CurrentMacroNr)
+    Cmd('Store Macro ' .. CurrentMacroNr .. ' \'' .. 'Priority\'')
+    Cmd('ChangeDestination Macro ' .. CurrentMacroNr .. '')
+    for i = 1, 6 do
+        Cmd('Insert')
+    end
+    Cmd('Assign Macro ' .. CurrentMacroNr .. ' at Layout ' .. TLayNr)
+    Cmd('Set Layout ' .. TLayNr .. '.' .. LayNr ..
+        ' property appearance <default> PosX ' .. LayX .. ' PosY ' .. LayY ..
+        ' PositionW ' .. LayW .. ' PositionH ' .. LayH .. 
+        ' VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0')
+    Cmd('Set Layout ' .. TLayNr .. "." .. LayNr .. ' Property "Appearance" "p_super_png" ')
+    Cmd('ChangeDestination Root')
+    local Color_message = 'SetUserVariable "LC_Sequence" "' .. Sequence_Ref .. '"'
+    Color_message = string.gsub(Color_message, "'", "")
+    Macro_Pool[CurrentMacroNr]:Set('name', '' .. prefix .. 'Priority')
+    Macro_Pool[CurrentMacroNr][1]:Set('Command', 'Edit Sequence ' .. Sequence_Ref .. " Thru " .. Sequence_Ref_End .. ' Property "priority"')
+    Macro_Pool[CurrentMacroNr][2]:Set('Command', 'SetUserVariable "LC_Fonction" 9')
+    Macro_Pool[CurrentMacroNr][3]:Set('Command', 'SetUserVariable "LC_Layout" ' .. TLayNr)
+    Macro_Pool[CurrentMacroNr][4]:Set('Command', 'SetUserVariable "LC_Element" ' .. LayNr)
+    Macro_Pool[CurrentMacroNr][5]:Set('Command', Color_message)
+    Macro_Pool[CurrentMacroNr][6]:Set('Command', 'Call Plugin "LC_View"')
 end
 
 -- end PhaserC_Cmd.lua
