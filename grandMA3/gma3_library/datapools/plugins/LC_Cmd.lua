@@ -358,11 +358,64 @@ function Create_Fade_Sequences(MakeX, FirstSeqTime, LastSeqTime, CurrentSeqNr, C
             Delay_F_Element = math.floor(LayNr + 1)
         end
         CurrentSeqNr = math.floor(CurrentSeqNr + 1)
-        -- end Sequences
-    end     -- end Sequences FADE
-
+    end -- end Sequences FADE
     do return 1, CurrentSeqNr, Delay_F_Element, LayNr, LayX, Current_Id_Lay, Fade_Element end
-end -- end Create_Fade_Sequences
+end     -- end Create_Fade_Sequences
+
+function Create_Delay_From_Sequences(First_Id_Lay, LayNr, CurrentSeqNr, Current_Id_Lay, prefix, surfix, Argument_Delay,
+                                     AppImp, CurrentMacroNr, FirstSeqDelayFrom, LastSeqDelayFrom, a, MatrickNrStart,
+                                     TLayNr, Delay_F_Element, MatrickNr, MakeX, LayX, LayY, LayW, LayH, Delay_T_Element)
+    for i = 1, 5 do
+        local ia = tonumber(i * 2 + 11)
+        local ib = tonumber(i * 2 + 12)
+        if i == 1 then
+            if a == 1 then
+                First_Id_Lay[5] = math.floor(LayNr)
+                First_Id_Lay[6] = CurrentSeqNr
+            elseif a == 2 then
+                First_Id_Lay[7] = CurrentSeqNr
+            elseif a == 3 then
+                First_Id_Lay[8] = CurrentSeqNr
+            end
+            Current_Id_Lay = First_Id_Lay[5]
+        end
+        Cmd('ClearAll /nu')
+        Cmd('Store Sequence ' .. CurrentSeqNr .. ' \'' .. prefix .. Argument_Delay[i].name .. surfix[a] .. '\'')
+        -- Add Cmd to Squence
+        Cmd('set seq ' .. CurrentSeqNr .. ' cue 1 Property Appearance=' .. AppImp[ia].Nr)
+        if i == 5 then
+            Cmd('set seq ' .. CurrentSeqNr .. ' cue \'' .. prefix .. Argument_Delay[i].name .. surfix[a] ..
+                '\' Property Command=\'Go Macro ' .. CurrentMacroNr .. '')
+        else
+            Cmd('set seq ' .. CurrentSeqNr .. ' cue \'' .. prefix .. Argument_Delay[i].name .. surfix[a] ..
+                '\' Property Command=\'off seq ' ..
+                FirstSeqDelayFrom .. ' thru ' .. LastSeqDelayFrom .. ' - ' .. CurrentSeqNr ..
+                ' ; Set Matricks ' ..
+                MatrickNrStart .. ' Property "DelayFrom' .. surfix[a] .. '" ' .. Argument_Delay[i].Time ..
+                '  ; SetUserVariable "LC_Fonction" 2 ; SetUserVariable "LC_Axes" "' .. a ..
+                '" ; SetUserVariable "LC_Layout" ' .. TLayNr ..
+                ' ; SetUserVariable "LC_Element" ' .. Delay_F_Element ..
+                ' ; SetUserVariable "LC_Matrick" ' .. MatrickNrStart ..
+                ' ; SetUserVariable "LC_Matrick_Thru" ' .. MatrickNr ..
+                ' ; Call Plugin "LC_View" ')
+        end
+        Cmd('set seq ' .. CurrentSeqNr .. ' Property Appearance=' .. AppImp[ib].Nr)
+        Command_Ext_Suite(CurrentSeqNr)
+        -- Add Squences to Layout
+        if MakeX then
+            Cmd("Assign Seq " .. CurrentSeqNr .. " at Layout " .. TLayNr)
+            Cmd("Set Layout " .. TLayNr .. "." .. LayNr ..
+                " property appearance <default> PosX " .. LayX .. " PosY " .. LayY ..
+                " PositionW " .. LayW .. " PositionH " .. LayH ..
+                " VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0")
+            LayX = math.floor(LayX + LayW + 20)
+            LayNr = math.floor(LayNr + 1)
+            Delay_T_Element = math.floor(LayNr + 1)
+        end
+        CurrentSeqNr = math.floor(CurrentSeqNr + 1)
+    end -- end Sequences DelayFrom
+    do return 1, Current_Id_Lay, First_Id_Lay, LayX, LayNr, Delay_T_Element, CurrentSeqNr end
+end     --Create_Delay_From_Sequences
 
 function Command_Title(title, LayNr, TLayNr, LayX, LayY, Pw, Ph, align)
     Cmd('Store Layout ' .. TLayNr .. '.' .. LayNr .. ' Property CustomTextText=\' ' .. title .. ' \'')
