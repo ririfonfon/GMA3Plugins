@@ -1,6 +1,6 @@
 --[[
 Releases:
-* 1.0.0.9
+* 2.0.0.4
 
 Created by Richard Fontaine "RIRI", March 2024.
 --]]
@@ -84,6 +84,7 @@ function Construct_Layout(displayHandle, TLay, SeqNrStart, MacroNrStart, Matrick
 
 
     local surfix = { 'x', 'y', 'z' }
+    local NoRef = ' color=\'1,1,1,1\''
     -- local FadeRef = ' color=\'0,0.8,0,1\''
     -- local DelayRef = ' color=\'0.8,0.8,0,1\''
     -- local DelayToRef = ' color=\'0.8,0.3,0,1\''
@@ -92,7 +93,6 @@ function Construct_Layout(displayHandle, TLay, SeqNrStart, MacroNrStart, Matrick
     -- local XwingsRef = ' color=\'0.8,0,0.3,1\''
     -- local PhaseRef = ' color=\'0.3,0,0.8,1\''
     -- local SkullRef = ' color=\'0.6,0,0,1\''
-    local NoRef = ' color=\'1,1,1,1\''
 
     local color_ref = {
         { RGBref = ' color=\'1,0,0,0.5\'' },

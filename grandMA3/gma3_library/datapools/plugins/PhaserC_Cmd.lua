@@ -1,6 +1,6 @@
 --[[
 Releases:
-* 1.0.0.9
+* 2.0.0.4
 
 Created by Richard Fontaine "RIRI", March 2024.
 --]]
@@ -253,12 +253,12 @@ function Create_Layout_Phaser(TLayNr, NaLay, SelectedGelNr, CurrentSeqNr, Preset
 
         Cmd("Store Layout " .. TLayNr .. "." .. LayNr .. "")
         Cmd("Set Layout " .. TLayNr .. "." .. LayNr ..
-            " Action=0 Appearance=" .. AppNr ..
+            " Property Appearance " .. AppNr ..
             " PosX " .. LayX ..
             " PosY " .. LayY ..
             " PositionW " .. LayW ..
             " PositionH " .. LayH ..
-            " VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0 VisibilityBorder=0 CustomTextSize=20 CustomTextText=" ..
+            " Action=0 VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0 VisibilityBorder=0 CustomTextSize=20 CustomTextText=" ..
             Grp1234[g] .. "")
 
         LayNr = math.floor(LayNr + 1)
@@ -288,33 +288,33 @@ function Create_Layout_Phaser(TLayNr, NaLay, SelectedGelNr, CurrentSeqNr, Preset
             -- Add Cmd to Sequences
             if (g == 1) then
                 Echo("G 1")
-                Cmd("set seq " .. CurrentSeqNr .. " cue \"CueZero\" Property Command=\"Set Layout " .. TLayNr .. "." ..
-                    LayNr .. " Appearance=" .. NrNeed .. "; Macro " ..
+                Cmd("Set seq " .. CurrentSeqNr .. " cue \"CueZero\" Property Command=\"Set Layout " .. TLayNr .. "." ..
+                    LayNr .. " Property Appearance " .. NrNeed .. "; Macro " ..
                     CurrentMacroNr .. "; Off Sequence " .. Start_Seq_1 ..
                     " Thru " .. End_Seq_1 .. " - " .. CurrentSeqNr .. "\"")
             elseif (g == 2) then
                 Echo("G 2")
-                Cmd("set seq " .. CurrentSeqNr .. " cue \"CueZero\" Property Command=\"Set Layout " .. TLayNr .. "." ..
-                    LayNr .. " Appearance=" .. NrNeed .. "; Macro " ..
+                Cmd("Set seq " .. CurrentSeqNr .. " cue \"CueZero\" Property Command=\"Set Layout " .. TLayNr .. "." ..
+                    LayNr .. " Property Appearance " .. NrNeed .. "; Macro " ..
                     CurrentMacroNr .. "; Off Sequence " .. Start_Seq_2 ..
                     " Thru " .. End_Seq_2 .. " - " .. CurrentSeqNr .. "\"")
             elseif (g == 3) then
                 Echo("G 3")
-                Cmd("set seq " .. CurrentSeqNr .. " cue \"CueZero\" Property Command=\"Set Layout " .. TLayNr .. "." ..
-                    LayNr .. " Appearance=" .. NrNeed .. "; Macro " ..
+                Cmd("Set seq " .. CurrentSeqNr .. " cue \"CueZero\" Property Command=\"Set Layout " .. TLayNr .. "." ..
+                    LayNr .. " Property Appearance " .. NrNeed .. "; Macro " ..
                     CurrentMacroNr .. "; Off Sequence " .. Start_Seq_3 ..
                     " Thru " .. End_Seq_3 .. " - " .. CurrentSeqNr .. "\"")
             elseif (g == 4) then
                 Echo("G 4")
-                Cmd("set seq " .. CurrentSeqNr .. " cue \"CueZero\" Property Command=\"Set Layout " .. TLayNr .. "." ..
-                    LayNr .. " Appearance=" .. NrNeed .. "; Macro " ..
+                Cmd("Set seq " .. CurrentSeqNr .. " cue \"CueZero\" Property Command=\"Set Layout " .. TLayNr .. "." ..
+                    LayNr .. " Property Appearance " .. NrNeed .. "; Macro " ..
                     CurrentMacroNr .. "; Off Sequence " .. Start_Seq_4 ..
                     " Thru " .. End_Seq_4 .. " - " .. CurrentSeqNr .. "\"")
             end
 
-            Echo("set seq")
-            Cmd("set seq " .. CurrentSeqNr .. " cue \"OffCue\" Property Command=\"Set Layout " ..
-                TLayNr .. "." .. LayNr .. " Appearance=" .. NrNeed + 1 ..
+            Echo("Set seq")
+            Cmd("Set seq " .. CurrentSeqNr .. " cue \"OffCue\" Property Command=\"Set Layout " ..
+                TLayNr .. "." .. LayNr .. " Property Appearance " .. NrNeed + 1 ..
                 "\"")
 
             -- end Cmd to Sequences
@@ -322,7 +322,7 @@ function Create_Layout_Phaser(TLayNr, NaLay, SelectedGelNr, CurrentSeqNr, Preset
             -- Add Sequences to Layout
             Echo('add sequence to layout')
             Cmd("Assign Seq " .. CurrentSeqNr .. " at Layout " .. TLayNr)
-            Cmd("Set Layout " .. TLayNr .. "." .. LayNr .. " Appearance=" ..
+            Cmd("Set Layout " .. TLayNr .. "." .. LayNr .. " Property Appearance " ..
                 NrNeed + 1 .. " PosX " .. LayX .. " PosY " .. LayY ..
                 " PositionW " .. LayW .. " PositionH " .. LayH ..
                 " VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0 ")
@@ -372,8 +372,8 @@ function Create_Layout_FixGroup(CurrentMacroNr, CurrentSeqNr, LayNr, LayY, RefX,
         Cmd('Store Sequence ' .. CurrentSeqNr ..
             ' \'' .. prefix .. ' ' .. SelectedGrpName[g] .. '_Select\'')
         Cmd('Store Sequence ' .. CurrentSeqNr .. ' Cue 2')
-        Cmd('Set Sequence ' .. CurrentSeqNr .. ' Cue 1 Property Appearance= ' .. AppRef .. '')
-        Cmd('Set Sequence ' .. CurrentSeqNr .. ' Cue 2 Property Appearance= ' .. AppRef + 1 .. '')
+        Cmd('Set Sequence ' .. CurrentSeqNr .. ' Cue 1 Property Appearance  ' .. AppRef .. '')
+        Cmd('Set Sequence ' .. CurrentSeqNr .. ' Cue 2 Property Appearance  ' .. AppRef + 1 .. '')
 
         Cmd('Assign Sequence ' .. CurrentSeqNr .. ' at Layout ' .. TLayNr)
         Cmd("Set Layout " .. TLayNr .. "." .. LayNr ..
@@ -406,17 +406,17 @@ function Create_Layout_FixGroup(CurrentMacroNr, CurrentSeqNr, LayNr, LayY, RefX,
 
             Cmd('Set Sequence ' .. CurrentSeqNr ..
                 ' Cue \'CueZero\' Property Command=\'Set Layout ' ..
-                TLayNr .. '.' .. LayNr .. ' Appearance=' .. prefix .. AppImp[i].Name ..
+                TLayNr .. '.' .. LayNr .. ' Property Appearance ' .. prefix .. AppImp[i].Name ..
                 '; Macro ' .. CurrentMacroNr ..
                 '; Off Sequence ' .. Seq_Start .. ' Thru ' .. Seq_End .. ' - ' .. CurrentSeqNr .. '\'')
             Cmd('Set Sequence ' .. CurrentSeqNr ..
                 ' Cue \'OffCue\' Property Command=\'Set Layout ' ..
-                TLayNr .. '.' .. LayNr .. ' Appearance=' .. prefix .. AppImp[i].Name .. SelectedGrpName[g] .. '')
+                TLayNr .. '.' .. LayNr .. ' Property Appearance ' .. prefix .. AppImp[i].Name .. SelectedGrpName[g] .. '')
             -- end Create Seq
             -- Assign Seq to Layout
             Cmd('Assign Sequence ' .. CurrentSeqNr .. ' At Layout ' .. TLayNr)
             Cmd('Set Layout ' .. TLayNr .. '.' .. LayNr ..
-                ' Appearance=' .. prefix .. AppImp[i].Name .. SelectedGrpName[g] ..
+                ' Property Appearance ' .. prefix .. AppImp[i].Name .. SelectedGrpName[g] ..
                 ' PosX ' .. LayX .. ' PosY ' .. LayY ..
                 ' PositionW ' .. LayW .. ' PositionH ' .. LayH ..
                 ' VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0')
@@ -448,17 +448,17 @@ function Create_Layout_FixGroup(CurrentMacroNr, CurrentSeqNr, LayNr, LayY, RefX,
 
             Cmd('Set Sequence ' .. CurrentSeqNr ..
                 ' Cue \'CueZero\' Property Command=\'Set Layout ' ..
-                TLayNr .. '.' .. LayNr .. ' Appearance=' .. prefix .. AppImp[i].Name ..
+                TLayNr .. '.' .. LayNr .. ' Property Appearance ' .. prefix .. AppImp[i].Name ..
                 '; Macro ' .. CurrentMacroNr ..
                 '; Off Sequence ' .. Seq_Start .. ' Thru ' .. Seq_End .. ' - ' .. CurrentSeqNr .. '\'')
             Cmd('Set Sequence ' .. CurrentSeqNr ..
                 ' Cue \'OffCue\' Property Command=\'Set Layout ' ..
-                TLayNr .. '.' .. LayNr .. ' Appearance=' .. prefix .. AppImp[i].Name .. SelectedGrpName[g] .. '')
+                TLayNr .. '.' .. LayNr .. ' Property Appearance ' .. prefix .. AppImp[i].Name .. SelectedGrpName[g] .. '')
             -- end Create Seq
             -- Assign Seq to Layout
             Cmd('Assign Sequence ' .. CurrentSeqNr .. ' At Layout ' .. TLayNr)
             Cmd('Set Layout ' .. TLayNr .. '.' .. LayNr ..
-                ' Appearance=' .. prefix .. AppImp[i].Name .. SelectedGrpName[g] ..
+                ' Property Appearance ' .. prefix .. AppImp[i].Name .. SelectedGrpName[g] ..
                 ' PosX ' .. LayX .. ' PosY ' .. LayY ..
                 ' PositionW ' .. LayW .. ' PositionH ' .. LayH ..
                 ' VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0')
@@ -519,13 +519,13 @@ function Create_Layout_FixGroup(CurrentMacroNr, CurrentSeqNr, LayNr, LayY, RefX,
     -- end Create Macros
 
     Cmd('Set Sequence ' .. CurrentSeqNr ..
-        ' Property  Appearance= ' .. prefix .. 'cent')
+        ' Property  Appearance  ' .. prefix .. 'cent')
     Cmd('Set Sequence ' .. CurrentSeqNr ..
-        ' Cue 1 Property Command=\'Macro ' .. CurrentMacroNr - 2 .. '\' Appearance= ' .. prefix .. 'cent')
+        ' Cue 1 Property Command=\'Macro ' .. CurrentMacroNr - 2 .. '\' Property Appearance  ' .. prefix .. 'cent')
     Cmd('Set Sequence ' .. CurrentSeqNr ..
-        ' Cue 2 Property Command=\'Macro ' .. CurrentMacroNr - 1 .. '\' Appearance= ' .. prefix .. 'cinquante')
+        ' Cue 2 Property Command=\'Macro ' .. CurrentMacroNr - 1 .. '\' Property Appearance  ' .. prefix .. 'cinquante')
     Cmd('Set Sequence ' .. CurrentSeqNr ..
-        ' Cue 3 Property Command=\'Macro ' .. CurrentMacroNr .. '\' Appearance= ' .. prefix .. 'zero')
+        ' Cue 3 Property Command=\'Macro ' .. CurrentMacroNr .. '\' Property Appearance  ' .. prefix .. 'zero')
     -- end Create Seq 100 50 0
     -- Assign Seq to Layout
     Cmd('Assign Sequence ' .. CurrentSeqNr .. ' At Layout ' .. TLayNr)
@@ -579,7 +579,7 @@ function Create_All_Call_Layout(CurrentMacroNr, LayNr, LayY, RefX, LayH, LayW, T
         Cmd('ChangeDestination Root')
         for i = 1, 19 do
             Macro_Pool[CurrentMacroNr][i]:Set('Command',
-                'Set Macro ' .. All_Call_Ref[g][20 + i] .. '.' .. g .. ' Enabled=off')
+                'Set Macro ' .. All_Call_Ref[g][20 + i] .. '.' .. g .. ' Property Enabled off')
         end
         CurrentMacroNr = math.floor(CurrentMacroNr + 1)
     end
@@ -595,7 +595,7 @@ function Create_All_Call_Layout(CurrentMacroNr, LayNr, LayY, RefX, LayH, LayW, T
         Cmd('ChangeDestination Root')
         for i = 1, 19 do
             Macro_Pool[CurrentMacroNr][i]:Set('Command',
-                'Set Macro ' .. All_Call_Ref[g][20 + i] .. '.' .. g .. ' Enabled=on')
+                'Set Macro ' .. All_Call_Ref[g][20 + i] .. '.' .. g .. ' Property Enabled on')
         end
         CurrentMacroNr = math.floor(CurrentMacroNr + 1)
     end
@@ -610,7 +610,7 @@ function Create_All_Call_Layout(CurrentMacroNr, LayNr, LayY, RefX, LayH, LayW, T
     for i = 1, 19 do
         Cmd('Assign Macro ' .. Ref_Macro_Call_Fonction + i - 1 .. ' At Layout ' .. TLayNr)
         Cmd('Set Layout ' .. TLayNr .. '.' .. LayNr ..
-            ' Appearance= arrow_down_png PosX ' .. LayX .. ' PosY ' .. LayY ..
+            ' Property Appearance  arrow_down_png PosX ' .. LayX .. ' PosY ' .. LayY ..
             ' PositionW ' .. LayW .. ' PositionH ' .. LayH ..
             ' VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0')
         -- end Assign Seq to Layout
