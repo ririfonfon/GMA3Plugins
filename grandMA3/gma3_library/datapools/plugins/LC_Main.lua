@@ -1,8 +1,8 @@
 --[[
 Releases:
-* 1.1.8.1
+* 1.1.9.0
 
-Created by Richard Fontaine "RIRI", January 2024.
+Created by Richard Fontaine "RIRI", March 2024.
 --]]
 
 local pluginName = select(1, ...)
@@ -22,7 +22,7 @@ local function Main(displayHandle)
     local ColGels = ColPath:Children()
     local SelectedGelNr
     local NGel
-    local MaxColLgn
+    local MaxColLgn = 15
     local check_gel = false
     local TLay = Root().ShowData.DataPools.Default.Layouts:Children()
     local TLayNr
@@ -611,7 +611,7 @@ local function Main(displayHandle)
     input8LineEdit.Margin = { left = 2, right = 0, top = 7, bottom = 2 }
     input8LineEdit.Filter = "0123456789"
     input8LineEdit.VkPluginName = "TextInputNumOnly"
-    input8LineEdit.Content = "40"
+    input8LineEdit.Content = MaxColLgn
     input8LineEdit.MaxTextLength = 6
     input8LineEdit.HideFocusFrame = "Yes"
     input8LineEdit.PluginComponent = myHandle
@@ -717,7 +717,7 @@ local function Main(displayHandle)
         end
         Obj.Delete(screenOverlay, Obj.Index(baseInput))
         Construct_Layout(displayHandle, TLay, SeqNrStart, MacroNrStart, MatrickNrStart, MatrickNr, TLayNr, AppNr,
-            All_5_Current, All_5_NrStart, ColPath, SelectedGelNr, SelectedGrp, SelectedGrpNo, TLayNrRef, NaLay)
+            All_5_Current, All_5_NrStart, ColPath, SelectedGelNr, SelectedGrp, SelectedGrpNo, TLayNrRef, NaLay, MaxColLgn)
     end
 
     signalTable.OnInput1TextChanged = function(caller)
@@ -1005,3 +1005,5 @@ local function Main(displayHandle)
 end
 -- Run the plugin.
 return Main
+
+--end LC_Main.lua
