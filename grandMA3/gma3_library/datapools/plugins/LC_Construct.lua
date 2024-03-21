@@ -1,13 +1,13 @@
 --[[
 Releases:
-* 1.1.8.1
+* 1.1.9.0
 
-Created by Richard Fontaine "RIRI", January 2024.
+Created by Richard Fontaine "RIRI", March 2024.
 --]]
 
 function Construct_Layout(displayHandle, TLay, SeqNrStart, MacroNrStart, MatrickNrStart, MatrickNr, TLayNr, AppNr,
                           All_5_Current, All_5_NrStart, ColPath, SelectedGelNr, SelectedGrp, SelectedGrpNo, TLayNrRef,
-                          NaLay)
+                          NaLay, MaxColLgn)
     local Macro_Pool = Root().ShowData.DataPools.Default.Macros
     local All_5_NrEnd
     local Img = Root().ShowData.MediaPools.Symbols:Children()
@@ -201,7 +201,6 @@ function Construct_Layout(displayHandle, TLay, SeqNrStart, MacroNrStart, Matrick
     }
 
     local First_Id_Lay = {}
-    local Current_Id_Lay
     local SeqNrEnd
 
     -- variables
@@ -222,11 +221,7 @@ function Construct_Layout(displayHandle, TLay, SeqNrStart, MacroNrStart, Matrick
     local StColCode
     local StColName
     local StringColName
-    local StColCodeFirstSeqTime
-    local ColNr = 0
     local SelectedGrpName = {}
-    local GrpNo
-    local col_count
     local check = {}
     local FirstSeqTime
     local LastSeqTime
@@ -240,14 +235,11 @@ function Construct_Layout(displayHandle, TLay, SeqNrStart, MacroNrStart, Matrick
     local LastSeqBlock
     local FirstSeqWings
     local LastSeqWings
-    local FirstSeqColor
-    local LastSeqColor
     local First_All_Color
     local CurrentSeqNr
     local CurrentMacroNr
     local UsedW
     local UsedH
-    local MaxColLgn = 40
     local ColLgnCount = 0
     local long_imgimp
     local add_check = 0
@@ -255,6 +247,7 @@ function Construct_Layout(displayHandle, TLay, SeqNrStart, MacroNrStart, Matrick
     local MakeX = true
     local CallT
     local Call_inc = 0
+    local Current_Id_Lay
 
     local Fade_Element
     local Delay_F_Element
@@ -286,32 +279,28 @@ function Construct_Layout(displayHandle, TLay, SeqNrStart, MacroNrStart, Matrick
     for g in pairs(SelectedGrp) do
         SelectedGrpName[g] = SelectedGrp[g]:gsub(' ', '_')
     end
+
     -- fix *NrStart & use Current*Nr
     CurrentSeqNr = SeqNrStart
     CurrentMacroNr = MacroNrStart
+
     -- check Symbols
     CheckSymbols(displayHandle, Img, ImgImp, check, add_check, long_imgimp, ImgNr)
+
     -- Create MAtricks
-    Cmd('Store MAtricks ' .. MatrickNrStart .. ' /nu')
-    Cmd('Set Matricks ' .. MatrickNrStart .. ' name = ' .. prefix .. NaLay .. ' /nu')
-    MatrickNr = math.floor(MatrickNrStart + 1)
-    for g in pairs(SelectedGrp) do
-        Cmd('Store MAtricks ' .. MatrickNr .. ' /nu')
-        Cmd('Set Matricks ' .. MatrickNr .. ' name = ' .. prefix .. SelectedGrpName[g]:gsub('\'', '') .. ' /nu')
-        Cmd('Set Matricks ' .. MatrickNr .. ' Property "FadeFromx" 0')
-        Cmd('Set Matricks ' .. MatrickNr .. ' Property "FadeFromy" 0')
-        Cmd('Set Matricks ' .. MatrickNr .. ' Property "FadeFromz" 0')
-        Cmd('Set Matricks ' .. MatrickNr .. ' Property "FadeTox" 0')
-        Cmd('Set Matricks ' .. MatrickNr .. ' Property "FadeToy" 0')
-        Cmd('Set Matricks ' .. MatrickNr .. ' Property "FadeToz" 0')
-        MatrickNr = math.floor(MatrickNr + 1)
+    local Return_Create_Matricks = { Create_Matricks(MatrickNrStart, prefix, NaLay, SelectedGrp, SelectedGrpName,
+        MatrickNr) }
+    if Return_Create_Matricks[1] then
+        MatrickNr = Return_Create_Matricks[2]
     end
+
     -- Create new Layout View
     Cmd("Store Layout " .. TLayNr .. " \"" .. prefix .. NaLay .. "")
 
     SelectedGelNr = tonumber(SelectedGelNr)
     TCol = ColPath:Children()[SelectedGelNr]
     MaxColLgn = tonumber(MaxColLgn)
+
     -- Create Appearances Tricks Ref
     local Return_Create_Appear_Tricks = { Create_Appear_Tricks(AppTricks, AppNr, prefix) }
     if Return_Create_Appear_Tricks[1] then
@@ -319,6 +308,7 @@ function Construct_Layout(displayHandle, TLay, SeqNrStart, MacroNrStart, Matrick
         AppTricks = Return_Create_Appear_Tricks[3]
     end
     -- end Appearances Tricks Ref
+
     -- Create Appearances
     local Return_Create_Appearances = { Create_Appearances(SelectedGrp, AppNr, prefix, TCol, NrAppear, StColCode,
         StColName, StringColName) }
@@ -326,6 +316,7 @@ function Construct_Layout(displayHandle, TLay, SeqNrStart, MacroNrStart, Matrick
         NrAppear = Return_Create_Appearances[2]
     end
     -- end Appearances
+
     -- Create Preset 25
     local Return_Create_Preset_25 = { Create_Preset_25(TCol, StColName, StringColName, SelectedGelNr, prefix,
         All_5_NrEnd, All_5_Current) }
@@ -345,169 +336,46 @@ function Construct_Layout(displayHandle, TLay, SeqNrStart, MacroNrStart, Matrick
         LayNr = Return_Create_Appearances_Sequences[4]
         CurrentSeqNr = Return_Create_Appearances_Sequences[5]
         CurrentMacroNr = Return_Create_Appearances_Sequences[6]
+        ColLgnCount = Return_Create_Appearances_Sequences[7]
     end
     -- end Appearances/Sequences
-   
+
+    -- Create Appearances/Function
     for q in pairs(AppImp) do
         AppImp[q].Nr = math.floor(NrNeed)
-        Cmd('Store App ' ..
-            AppImp[q].Nr ..
-            ' "' .. prefix .. AppImp[q].Name .. '" "Appearance"=' .. AppImp[q].StApp .. '' .. AppImp[q].RGBref .. '')
+        Cmd('Store App ' .. AppImp[q].Nr .. ' "' .. prefix .. AppImp[q].Name ..
+            '" "Appearance"=' .. AppImp[q].StApp .. '' .. AppImp[q].RGBref .. '')
         NrNeed = math.floor(NrNeed + 1)
     end
+    -- end Create Appearances/Function
+
     SeqNrEnd = CurrentSeqNr - 1
     -- Add offset for Layout Element distance
     LayY = math.floor(LayY - 150)
     LayX = RefX
     LayX = math.floor(LayX + LayW - 100)
-    -- add Sequence FADE
-    for a = 1, 3 do
-        -- Setup Fade seq
-        if MakeX then
-            FirstSeqTime = CurrentSeqNr
-            First_Id_Lay[37] = CurrentSeqNr
-            LastSeqTime = math.floor(CurrentSeqNr + 5)
-        else
-            FirstSeqTime = CurrentSeqNr
-            LastSeqTime = math.floor(CurrentSeqNr + 4)
-        end
-        -- Create Macro Time Input
-        Cmd('Store Macro ' .. CurrentMacroNr .. ' \'' .. prefix .. 'Time Input' .. surfix[a] .. '')
-        Cmd('ChangeDestination Macro ' .. CurrentMacroNr .. '')
-        Cmd('Insert')
-        if MakeX then
-            Cmd('set 1 Command=\'off seq ' ..
-                FirstSeqTime .. ' thru ' .. LastSeqTime .. ' - ' .. LastSeqTime .. '')
-            Fade_Element = math.floor(LayNr + 3)
-        else
-            Cmd('set 1 Command=\'off seq ' ..
-                First_Id_Lay[37] .. ' + ' .. FirstSeqTime .. ' thru ' .. LastSeqTime .. ' - ' .. LastSeqTime .. '')
-        end
-        Cmd('Insert')
-        Cmd('set 2 Command=\'Edit Matricks ' .. MatrickNrStart .. ' Property "FadeFrom' .. surfix[a] .. '"')
-        Cmd("Insert")
-        Cmd('set 3 Command=\'Edit Matricks ' .. MatrickNrStart .. ' Property "FadeTo' .. surfix[a] .. '"')
-        Cmd("Insert")
-        Cmd('set 4 Command=\'SetUserVariable "LC_Fonction" 1')
-        Cmd("Insert")
-        Cmd('set 5 Command=\'SetUserVariable "LC_Axes" "' .. a .. '"')
-        Cmd("Insert")
-        Cmd('set 6 Command=\'SetUserVariable "LC_Layout" ' .. TLayNr .. '')
-        Cmd("Insert")
-        Cmd('set 7 Command=\'SetUserVariable "LC_Element" ' .. Fade_Element .. '')
-        Cmd("Insert")
-        Cmd('set 8 Command=\'SetUserVariable "LC_Matrick" ' .. MatrickNrStart .. '')
-        Cmd("Insert")
-        Cmd('set 9 Command=\'Call Plugin "LC_View"')
-        Cmd('ChangeDestination Root')
-        if a == 1 then
-            Cmd('ClearAll /nu')
-            Cmd('Store Sequence ' ..
-                CurrentSeqNr .. ' \'' .. prefix .. Argument_Fade[1].name .. surfix[a] .. '\'')
-            Cmd('set seq ' .. CurrentSeqNr .. ' cue 1 Property Appearance=' .. AppImp[1].Nr)
-            Cmd('set seq ' ..
-                CurrentSeqNr ..
-                ' cue \'' ..
-                prefix ..
-                Argument_Fade[1].name ..
-                surfix[a] ..
-                '\' Property Command=\'off seq ' ..
-                FirstSeqTime ..
-                ' thru ' ..
-                LastSeqTime ..
-                ' - ' ..
-                CurrentSeqNr ..
-                ' ; set seq ' ..
-                SeqNrStart .. ' thru ' .. SeqNrEnd .. ' UseExecutorTime=' .. Argument_Fade[1].UseExTime .. '')
-            Cmd('set seq ' .. CurrentSeqNr .. ' Property Appearance=' .. AppImp[2].Nr)
-            Command_Ext_Suite(CurrentSeqNr)
-            Cmd('Assign Seq ' .. CurrentSeqNr .. ' at Layout ' .. TLayNr)
-            Cmd('Set Layout ' ..
-                TLayNr ..
-                '.' ..
-                LayNr ..
-                ' property appearance <default> PosX ' ..
-                LayX ..
-                ' PosY ' ..
-                LayY ..
-                ' PositionW ' ..
-                LayW .. ' PositionH ' .. LayH .. ' VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0')
-            LayNr = math.floor(LayNr + 1)
-            Command_Title('Ex.Time', LayNr, TLayNr, LayX, LayY, 700, 140, 1)
-            LayNr = math.floor(LayNr + 1)
-            Command_Title('FADE', LayNr, TLayNr, LayX, LayY, 700, 140, 2)
-            LayNr = math.floor(LayNr + 1)
-            Command_Title('none > none', LayNr, TLayNr, LayX, LayY, 700, 140, 3)
-            LayX = math.floor(LayX + LayW + 20)
-            LayNr = math.floor(LayNr + 1)
-            CurrentSeqNr = math.floor(CurrentSeqNr + 1)
-        end
 
-        for i = 2, 6 do
-            local ia = tonumber(i * 2 - 1)
-            local ib = tonumber(i * 2)
-            if i == 2 then
-                if a == 1 then
-                    First_Id_Lay[1] = math.floor(LayNr)
-                    First_Id_Lay[2] = CurrentSeqNr
-                elseif a == 2 then
-                    First_Id_Lay[3] = CurrentSeqNr
-                elseif a == 3 then
-                    First_Id_Lay[4] = CurrentSeqNr
-                end
-                Current_Id_Lay = First_Id_Lay[1]
-            end
-            -- Create Sequences
-            Cmd('ClearAll /nu')
-            Cmd('Store Sequence ' ..
-                CurrentSeqNr .. ' \'' .. prefix .. Argument_Fade[i].name .. surfix[a] .. '\'')
-            -- Add Cmd to Squence
-            Cmd('set seq ' .. CurrentSeqNr .. ' cue 1 Property Appearance=' .. AppImp[ia].Nr)
-            if i == 6 then
-                Cmd('set seq ' ..
-                    CurrentSeqNr ..
-                    ' cue \'' ..
-                    prefix ..
-                    Argument_Fade[i].name .. surfix[a] .. '\' Property Command=\'Go Macro ' .. CurrentMacroNr .. '')
-            else
-                Create_Macro_Fade_E(CurrentMacroNr, prefix, Argument_Fade, i, surfix, a, FirstSeqTime,
-                    LastSeqTime, CurrentSeqNr, SeqNrStart, SeqNrEnd, MatrickNrStart, TLayNr, Fade_Element)
-                Cmd('set seq ' ..
-                    CurrentSeqNr ..
-                    ' cue \'' ..
-                    prefix ..
-                    Argument_Fade[i].name ..
-                    surfix[a] .. '\' Property Command=\'Go Macro ' .. CurrentMacroNr + i - 1 .. '')
-            end
-            Cmd('set seq ' .. CurrentSeqNr .. ' Property Appearance=' .. AppImp[ib].Nr)
-            Command_Ext_Suite(CurrentSeqNr)
-            -- end Sequences
-            -- Add Squences to Layout
-            if MakeX then
-                Cmd('Assign Seq ' .. CurrentSeqNr .. ' at Layout ' .. TLayNr)
-                Cmd('Set Layout ' ..
-                    TLayNr ..
-                    '.' ..
-                    LayNr ..
-                    ' property appearance <default> PosX ' ..
-                    LayX ..
-                    ' PosY ' ..
-                    LayY ..
-                    ' PositionW ' ..
-                    LayW ..
-                    ' PositionH ' .. LayH .. ' VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0')
-                LayX = math.floor(LayX + LayW + 20)
-                LayNr = math.floor(LayNr + 1)
-                Delay_F_Element = math.floor(LayNr + 1)
-            end
-            CurrentSeqNr = math.floor(CurrentSeqNr + 1)
-            -- end Sequences
-        end -- end Sequences FADE
+    for a = 1, 3 do
+        -- add Sequence FADE
+        local Return_Create_Fade_Sequence = { Create_Fade_Sequences(MakeX, FirstSeqTime, LastSeqTime, CurrentSeqNr,
+            CurrentMacroNr, prefix, surfix, First_Id_Lay, LayNr, MatrickNrStart, TLayNr, Fade_Element, Argument_Fade,
+            AppImp, LayX, LayY, LayW, LayH, SeqNrStart, SeqNrEnd, Current_Id_Lay, Delay_F_Element, a) }
+        if Return_Create_Fade_Sequence[1] then
+            CurrentSeqNr = Return_Create_Fade_Sequence[2]
+            Delay_F_Element = Return_Create_Fade_Sequence[3]
+            LayNr = Return_Create_Fade_Sequence[4]
+            LayX = Return_Create_Fade_Sequence[5]
+            Current_Id_Lay = Return_Create_Fade_Sequence[6]
+            Fade_Element = Return_Create_Fade_Sequence[7]
+        end
+        -- end add Sequence FADE
+
 
         -- Setup DelayFrom seq
         CurrentMacroNr = math.floor(CurrentMacroNr + 5)
         FirstSeqDelayFrom = CurrentSeqNr
         LastSeqDelayFrom = math.floor(CurrentSeqNr + 4)
+
         -- Create Macro DelayFrom Input
         Create_Macro_Delay_From(CurrentMacroNr, prefix, surfix, a, FirstSeqDelayFrom, LastSeqDelayFrom,
             MatrickNrStart, 2, TLayNr, Delay_F_Element, MatrickNr)
@@ -1065,9 +933,10 @@ function Construct_Layout(displayHandle, TLay, SeqNrStart, MacroNrStart, Matrick
             Call_inc = math.floor(Call_inc + 1)
         end
         Cmd('ChangeDestination Root')
-        Make_Macro_Reset(CurrentMacroNr, prefix, surfix, MatrickNrStart, a, CurrentSeqNr, First_Id_Lay, TLayNr,
+        Create_Macro_Reset(CurrentMacroNr, prefix, surfix, MatrickNrStart, a, CurrentSeqNr, First_Id_Lay, TLayNr,
             Fade_Element, Delay_F_Element, Delay_T_Element, Phase_Element, Group_Element, Block_Element,
             Wings_Element, MatrickNr)
+
         First_Id_Lay[28 + a] = CurrentSeqNr
         Cmd('ClearAll /nu')
         Cmd('Store Sequence ' .. CurrentSeqNr .. ' \'' .. prefix .. surfix[a] .. '_Call\'')
@@ -1170,8 +1039,7 @@ function Construct_Layout(displayHandle, TLay, SeqNrStart, MacroNrStart, Matrick
         CurrentSeqNr = math.floor(CurrentSeqNr + 2)
         CurrentMacroNr = math.floor(CurrentMacroNr + 2)
         MakeX = false
-    end
-    -- end Sequences X Y Z call
+    end -- end Sequences X Y Z call
 
     -- add line macro X Y Z Call
     for i = 1, 3 do
@@ -1192,6 +1060,7 @@ function Construct_Layout(displayHandle, TLay, SeqNrStart, MacroNrStart, Matrick
     else
         LayY = 540
     end
+
     LayY = math.floor(LayY + 20) -- Add offset for Layout Element distance
     LayY = math.floor(LayY + (120 * ColLgnCount))
     LayX = RefX
@@ -1221,6 +1090,7 @@ function Construct_Layout(displayHandle, TLay, SeqNrStart, MacroNrStart, Matrick
     CurrentSeqNr = math.floor(CurrentSeqNr + 1)
     LayX = math.floor(LayX + LayW + 20)
     NrNeed = math.floor(AppNr + 1)
+
     local Return_AddAllColor = { AddAllColor(TCol, CurrentSeqNr, prefix, TLayNr, LayNr, NrNeed, LayX, LayY, LayW,
         LayH, SelectedGelNr, MaxColLgn, RefX) }
     if Return_AddAllColor[1] then
@@ -1228,6 +1098,8 @@ function Construct_Layout(displayHandle, TLay, SeqNrStart, MacroNrStart, Matrick
         LayX = Return_AddAllColor[3]
         First_All_Color = Return_AddAllColor[4]
     end
+
+    LayX = math.floor(LayX + LayW + 20)
     -- end All Color
 
     -- add Macro priority
@@ -1240,7 +1112,7 @@ function Construct_Layout(displayHandle, TLay, SeqNrStart, MacroNrStart, Matrick
     Cmd('Assign Macro ' .. CurrentMacroNr .. ' at Layout ' .. TLayNr)
     Cmd('Set Layout ' .. TLayNr .. '.' .. LayNr ..
         ' property appearance <default> PosX ' .. LayX .. ' PosY ' .. LayY ..
-        ' PositionW ' .. LayW .. ' PositionH ' .. LayH .. 
+        ' PositionW ' .. LayW .. ' PositionH ' .. LayH ..
         ' VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0')
     Cmd('Set Layout ' .. TLayNr .. "." .. LayNr .. ' Property "Appearance" "p_super_png" ')
     Cmd('ChangeDestination Root')
@@ -1290,3 +1162,5 @@ function Construct_Layout(displayHandle, TLay, SeqNrStart, MacroNrStart, Matrick
     Cmd("Set Layout " .. TLayNr .. " DimensionW " .. UsedW .. " DimensionH " .. UsedH)
     Cmd('Select Layout ' .. TLayNr)
 end -- end Construct_Layout
+
+--end LC_Construct.lua
