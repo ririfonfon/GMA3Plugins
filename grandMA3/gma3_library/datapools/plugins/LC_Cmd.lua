@@ -365,6 +365,22 @@ end     -- end Create_Fade_Sequences
 function Create_Delay_From_Sequences(First_Id_Lay, LayNr, CurrentSeqNr, Current_Id_Lay, prefix, surfix, Argument_Delay,
                                      AppImp, CurrentMacroNr, FirstSeqDelayFrom, LastSeqDelayFrom, a, MatrickNrStart,
                                      TLayNr, Delay_F_Element, MatrickNr, MakeX, LayX, LayY, LayW, LayH, Delay_T_Element)
+    -- Setup DelayFrom seq
+    CurrentMacroNr = math.floor(CurrentMacroNr + 5)
+    FirstSeqDelayFrom = CurrentSeqNr
+    LastSeqDelayFrom = math.floor(CurrentSeqNr + 4)
+
+    -- Create Macro DelayFrom Input
+    Create_Macro_Delay_From(CurrentMacroNr, prefix, surfix, a, FirstSeqDelayFrom, LastSeqDelayFrom,
+        MatrickNrStart, 2, TLayNr, Delay_F_Element, MatrickNr)
+
+    if MakeX then
+        Command_Title('DELAY FROM', LayNr, TLayNr, LayX, LayY, 580, 140, 2)
+        LayNr = math.floor(LayNr + 1)
+        Command_Title('none', LayNr, TLayNr, LayX, LayY, 580, 140, 3)
+        LayNr = math.floor(LayNr + 1)
+    end
+
     for i = 1, 5 do
         local ia = tonumber(i * 2 + 11)
         local ib = tonumber(i * 2 + 12)
@@ -473,7 +489,7 @@ function Create_Delay_To_Sequences(a, First_Id_Lay, LayNr, CurrentSeqNr, Current
         CurrentSeqNr = math.floor(CurrentSeqNr + 1)
     end -- end Sequences DelayTo
     do return 1, First_Id_Lay, Current_Id_Lay, LayX, LayNr, Phase_Element, CurrentSeqNr end
-end -- end Create_Delay_To_Sequences
+end     -- end Create_Delay_To_Sequences
 
 function Command_Title(title, LayNr, TLayNr, LayX, LayY, Pw, Ph, align)
     Cmd('Store Layout ' .. TLayNr .. '.' .. LayNr .. ' Property CustomTextText=\' ' .. title .. ' \'')
