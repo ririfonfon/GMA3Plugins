@@ -225,10 +225,6 @@ function Construct_Layout(displayHandle, TLay, SeqNrStart, MacroNrStart, Matrick
     local check = {}
     local FirstSeqTime
     local LastSeqTime
-    local FirstSeqDelayFrom
-    local LastSeqDelayFrom
-    local FirstSeqDelayTo
-    local LastSeqDelayTo
     local FirstSeqGrp
     local LastSeqGrp
     local FirstSeqBlock
@@ -369,12 +365,10 @@ function Construct_Layout(displayHandle, TLay, SeqNrStart, MacroNrStart, Matrick
             Fade_Element = Return_Create_Fade_Sequence[7]
         end -- end Create Sequence FADE
 
-
-
         -- Create Sequences Delayfrom
         local Return_Create_Delay_From_Sequences = { Create_Delay_From_Sequences(First_Id_Lay, LayNr, CurrentSeqNr,
-            Current_Id_Lay, prefix, surfix, Argument_Delay, AppImp, CurrentMacroNr, FirstSeqDelayFrom, LastSeqDelayFrom,
-            a, MatrickNrStart, TLayNr, Delay_F_Element, MatrickNr, MakeX, LayX, LayY, LayW, LayH, Delay_T_Element) }
+            Current_Id_Lay, prefix, surfix, Argument_Delay, AppImp, CurrentMacroNr, a, MatrickNrStart, TLayNr,
+            Delay_F_Element, MatrickNr, MakeX, LayX, LayY, LayW, LayH, Delay_T_Element) }
         if Return_Create_Delay_From_Sequences[1] then
             Current_Id_Lay = Return_Create_Delay_From_Sequences[2]
             First_Id_Lay = Return_Create_Delay_From_Sequences[3]
@@ -382,26 +376,13 @@ function Construct_Layout(displayHandle, TLay, SeqNrStart, MacroNrStart, Matrick
             LayNr = Return_Create_Delay_From_Sequences[5]
             Delay_T_Element = Return_Create_Delay_From_Sequences[6]
             CurrentSeqNr = Return_Create_Delay_From_Sequences[7]
+            CurrentMacroNr = Return_Create_Delay_From_Sequences[8]
         end -- end Create Sequences Delayfrom
 
-        -- Setup DelayTo seq
-        CurrentMacroNr = math.floor(CurrentMacroNr + 1)
-        FirstSeqDelayTo = CurrentSeqNr
-        LastSeqDelayTo = math.floor(CurrentSeqNr + 4)
-        -- Create Macro DelayTo Input
-        Create_Macro_Delay_To(CurrentMacroNr, prefix, surfix, a, FirstSeqDelayTo, LastSeqDelayTo, MatrickNrStart,
-            3, TLayNr, Delay_T_Element, MatrickNr)
-
-        if MakeX then
-            Command_Title('DELAY TO', LayNr, TLayNr, LayX, LayY, 580, 140, 2)
-            LayNr = math.floor(LayNr + 1)
-            Command_Title('none', LayNr, TLayNr, LayX, LayY, 580, 140, 3)
-            LayNr = math.floor(LayNr + 1)
-        end
         -- Create Sequences DelayTo
         local Return_Create_Delay_To_Sequences = { Create_Delay_To_Sequences(a, First_Id_Lay, LayNr, CurrentSeqNr,
-            Current_Id_Lay, prefix, Argument_DelayTo, surfix, FirstSeqDelayTo, LastSeqDelayTo, MatrickNrStart, TLayNr,
-            Delay_T_Element, MatrickNr, AppImp, LayX, LayY, LayW, LayH, Phase_Element, CurrentMacroNr, MakeX) }
+            Current_Id_Lay, prefix, Argument_DelayTo, surfix, MatrickNrStart, TLayNr, Delay_T_Element, MatrickNr, AppImp,
+            LayX, LayY, LayW, LayH, Phase_Element, CurrentMacroNr, MakeX) }
         if Return_Create_Delay_To_Sequences[1] then
             First_Id_Lay = Return_Create_Delay_To_Sequences[2]
             Current_Id_Lay = Return_Create_Delay_To_Sequences[3]
@@ -409,7 +390,8 @@ function Construct_Layout(displayHandle, TLay, SeqNrStart, MacroNrStart, Matrick
             LayNr = Return_Create_Delay_To_Sequences[5]
             Phase_Element = Return_Create_Delay_To_Sequences[6]
             CurrentSeqNr = Return_Create_Delay_To_Sequences[7]
-        end
+            CurrentMacroNr = Return_Create_Delay_To_Sequences[8]
+        end -- end Create Sequences DelayTo
 
         -- Add offset for Layout Element distance
         LayY = math.floor(LayY - 150)
