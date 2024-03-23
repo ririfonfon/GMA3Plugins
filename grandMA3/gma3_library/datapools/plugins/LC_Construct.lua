@@ -356,7 +356,7 @@ function Construct_Layout(displayHandle, TLay, SeqNrStart, MacroNrStart, Matrick
     LayX = math.floor(LayX + LayW - 100)
 
     for a = 1, 3 do
-        -- add Sequence FADE
+        -- Create Sequence FADE
         local Return_Create_Fade_Sequence = { Create_Fade_Sequences(MakeX, FirstSeqTime, LastSeqTime, CurrentSeqNr,
             CurrentMacroNr, prefix, surfix, First_Id_Lay, LayNr, MatrickNrStart, TLayNr, Fade_Element, Argument_Fade,
             AppImp, LayX, LayY, LayW, LayH, SeqNrStart, SeqNrEnd, Current_Id_Lay, Delay_F_Element, a) }
@@ -367,25 +367,10 @@ function Construct_Layout(displayHandle, TLay, SeqNrStart, MacroNrStart, Matrick
             LayX = Return_Create_Fade_Sequence[5]
             Current_Id_Lay = Return_Create_Fade_Sequence[6]
             Fade_Element = Return_Create_Fade_Sequence[7]
-        end
-        -- end add Sequence FADE
+        end -- end Create Sequence FADE
 
 
-        -- Setup DelayFrom seq
-        CurrentMacroNr = math.floor(CurrentMacroNr + 5)
-        FirstSeqDelayFrom = CurrentSeqNr
-        LastSeqDelayFrom = math.floor(CurrentSeqNr + 4)
 
-        -- Create Macro DelayFrom Input
-        Create_Macro_Delay_From(CurrentMacroNr, prefix, surfix, a, FirstSeqDelayFrom, LastSeqDelayFrom,
-            MatrickNrStart, 2, TLayNr, Delay_F_Element, MatrickNr)
-
-        if MakeX then
-            Command_Title('DELAY FROM', LayNr, TLayNr, LayX, LayY, 580, 140, 2)
-            LayNr = math.floor(LayNr + 1)
-            Command_Title('none', LayNr, TLayNr, LayX, LayY, 580, 140, 3)
-            LayNr = math.floor(LayNr + 1)
-        end
         -- Create Sequences Delayfrom
         local Return_Create_Delay_From_Sequences = { Create_Delay_From_Sequences(First_Id_Lay, LayNr, CurrentSeqNr,
             Current_Id_Lay, prefix, surfix, Argument_Delay, AppImp, CurrentMacroNr, FirstSeqDelayFrom, LastSeqDelayFrom,
@@ -397,7 +382,7 @@ function Construct_Layout(displayHandle, TLay, SeqNrStart, MacroNrStart, Matrick
             LayNr = Return_Create_Delay_From_Sequences[5]
             Delay_T_Element = Return_Create_Delay_From_Sequences[6]
             CurrentSeqNr = Return_Create_Delay_From_Sequences[7]
-        end
+        end -- end Create Sequences Delayfrom
 
         -- Setup DelayTo seq
         CurrentMacroNr = math.floor(CurrentMacroNr + 1)
@@ -444,7 +429,7 @@ function Construct_Layout(displayHandle, TLay, SeqNrStart, MacroNrStart, Matrick
         CurrentMacroNr = math.floor(CurrentMacroNr + 1)
         Create_Macro_Phase(CurrentMacroNr, prefix, surfix, a, MatrickNrStart, 4, TLayNr, LayNr, MatrickNr)
 
-        -- Create Sequences
+        -- Create Sequences Phase
         Cmd('ClearAll /nu')
         Cmd('Store Sequence ' .. CurrentSeqNr .. ' \'' .. prefix .. 'Phase Input' .. surfix[a] .. '\'')
         -- Add Cmd to Squence
@@ -459,16 +444,10 @@ function Construct_Layout(displayHandle, TLay, SeqNrStart, MacroNrStart, Matrick
         -- Add Squences to Layout
         if MakeX then
             Cmd('Assign Seq ' .. CurrentSeqNr .. ' at Layout ' .. TLayNr)
-            Cmd('Set Layout ' ..
-                TLayNr ..
-                '.' ..
-                LayNr ..
-                ' property appearance <default> PosX ' ..
-                LayX ..
-                ' PosY ' ..
-                LayY ..
-                ' PositionW ' ..
-                LayW .. ' PositionH ' .. LayH .. ' VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0')
+            Cmd('Set Layout ' .. TLayNr .. '.' .. LayNr ..
+                ' Property Appearance <default> PosX ' .. LayX .. ' PosY ' .. LayY ..
+                ' PositionW ' .. LayW .. ' PositionH ' .. LayH ..
+                ' VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0')
             LayX = math.floor(LayX + LayW + 20)
             LayNr = math.floor(LayNr + 1)
             Command_Title('PHASE', LayNr, TLayNr, LayX - 120, LayY - 30, 700, 170, 4)
@@ -479,6 +458,7 @@ function Construct_Layout(displayHandle, TLay, SeqNrStart, MacroNrStart, Matrick
         end
         CurrentSeqNr = math.floor(CurrentSeqNr + 1)
         -- end Sequences Phase
+
         -- Setup XGroup seq
         CurrentMacroNr = math.floor(CurrentMacroNr + 1)
         FirstSeqGrp = CurrentSeqNr
