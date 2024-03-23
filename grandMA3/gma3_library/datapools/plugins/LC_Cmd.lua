@@ -60,7 +60,7 @@ function CheckSymbols(displayHandle, Img, ImgImp, check, add_check, long_imgimp,
             end
         end
     end
-end -- end function CheckSymbols(...)
+end -- end CheckSymbols
 
 function Create_Matricks(MatrickNrStart, prefix, NaLay, SelectedGrp, SelectedGrpName, MatrickNr)
     Cmd('Store MAtricks ' .. MatrickNrStart .. ' /nu')
@@ -78,7 +78,7 @@ function Create_Matricks(MatrickNrStart, prefix, NaLay, SelectedGrp, SelectedGrp
         MatrickNr = math.floor(MatrickNr + 1)
     end
     do return 1, MatrickNr end
-end
+end -- end Create_Matricks
 
 function Create_Appear_Tricks(AppTricks, AppNr, prefix)
     for q in pairs(AppTricks) do
@@ -90,7 +90,7 @@ function Create_Appear_Tricks(AppTricks, AppNr, prefix)
         AppNr = math.floor(AppNr + 1)
     end
     do return 1, AppNr, AppTricks end
-end
+end -- end Create_Appear_Tricks
 
 function Create_Appearances(SelectedGrp, AppNr, prefix, TCol, NrAppear, StColCode, StColName, StringColName)
     local StAppNameOn
@@ -116,7 +116,7 @@ function Create_Appearances(SelectedGrp, AppNr, prefix, TCol, NrAppear, StColCod
         end
     end
     do return 1, NrAppear end
-end
+end -- end Create_Appearances
 
 function Create_Preset_25(TCol, StColName, StringColName, SelectedGelNr, prefix, All_5_NrEnd, All_5_Current)
     Cmd("ClearAll /nu")
@@ -132,7 +132,7 @@ function Create_Preset_25(TCol, StColName, StringColName, SelectedGelNr, prefix,
         All_5_Current = math.floor(All_5_Current + 1)
     end
     do return 1, All_5_NrEnd, All_5_Current end
-end
+end -- end Create_Preset_25
 
 function Create_Appearances_Sequences(CurrentMacroNr, SelectedGelNr, SelectedGrp, RefX, LayY, LayH, NrAppear, AppNr,
                                       NrNeed, TLayNr, LayW, LayNr, CurrentSeqNr, MaxColLgn, TCol, SelectedGrpNo, prefix,
@@ -363,12 +363,12 @@ function Create_Fade_Sequences(MakeX, FirstSeqTime, LastSeqTime, CurrentSeqNr, C
 end     -- end Create_Fade_Sequences
 
 function Create_Delay_From_Sequences(First_Id_Lay, LayNr, CurrentSeqNr, Current_Id_Lay, prefix, surfix, Argument_Delay,
-                                     AppImp, CurrentMacroNr, FirstSeqDelayFrom, LastSeqDelayFrom, a, MatrickNrStart,
-                                     TLayNr, Delay_F_Element, MatrickNr, MakeX, LayX, LayY, LayW, LayH, Delay_T_Element)
+                                     AppImp, CurrentMacroNr, a, MatrickNrStart, TLayNr, Delay_F_Element, MatrickNr, MakeX,
+                                     LayX, LayY, LayW, LayH, Delay_T_Element)
     -- Setup DelayFrom seq
     CurrentMacroNr = math.floor(CurrentMacroNr + 5)
-    FirstSeqDelayFrom = CurrentSeqNr
-    LastSeqDelayFrom = math.floor(CurrentSeqNr + 4)
+    local FirstSeqDelayFrom = CurrentSeqNr
+    local LastSeqDelayFrom = math.floor(CurrentSeqNr + 4)
 
     -- Create Macro DelayFrom Input
     Create_Macro_Delay_From(CurrentMacroNr, prefix, surfix, a, FirstSeqDelayFrom, LastSeqDelayFrom,
@@ -430,13 +430,28 @@ function Create_Delay_From_Sequences(First_Id_Lay, LayNr, CurrentSeqNr, Current_
         end
         CurrentSeqNr = math.floor(CurrentSeqNr + 1)
     end -- end Sequences DelayFrom
-    do return 1, Current_Id_Lay, First_Id_Lay, LayX, LayNr, Delay_T_Element, CurrentSeqNr end
+    do return 1, Current_Id_Lay, First_Id_Lay, LayX, LayNr, Delay_T_Element, CurrentSeqNr, CurrentMacroNr end
 end     --Create_Delay_From_Sequences
 
 function Create_Delay_To_Sequences(a, First_Id_Lay, LayNr, CurrentSeqNr, Current_Id_Lay, prefix, Argument_DelayTo, surfix,
-                                   FirstSeqDelayTo, LastSeqDelayTo, MatrickNrStart, TLayNr,
+                                   MatrickNrStart, TLayNr,
                                    Delay_T_Element, MatrickNr, AppImp, LayX, LayY, LayW, LayH, Phase_Element,
                                    CurrentMacroNr, MakeX)
+    -- Setup DelayTo seq
+    CurrentMacroNr = math.floor(CurrentMacroNr + 1)
+    local FirstSeqDelayTo = CurrentSeqNr
+    local LastSeqDelayTo = math.floor(CurrentSeqNr + 4)
+    -- Create Macro DelayTo Input
+    Create_Macro_Delay_To(CurrentMacroNr, prefix, surfix, a, FirstSeqDelayTo, LastSeqDelayTo, MatrickNrStart,
+        3, TLayNr, Delay_T_Element, MatrickNr)
+
+    if MakeX then
+        Command_Title('DELAY TO', LayNr, TLayNr, LayX, LayY, 580, 140, 2)
+        LayNr = math.floor(LayNr + 1)
+        Command_Title('none', LayNr, TLayNr, LayX, LayY, 580, 140, 3)
+        LayNr = math.floor(LayNr + 1)
+    end
+
     for i = 1, 5 do
         local ia = tonumber(i * 2 + 21)
         local ib = tonumber(i * 2 + 22)
@@ -488,7 +503,7 @@ function Create_Delay_To_Sequences(a, First_Id_Lay, LayNr, CurrentSeqNr, Current
         end
         CurrentSeqNr = math.floor(CurrentSeqNr + 1)
     end -- end Sequences DelayTo
-    do return 1, First_Id_Lay, Current_Id_Lay, LayX, LayNr, Phase_Element, CurrentSeqNr end
+    do return 1, First_Id_Lay, Current_Id_Lay, LayX, LayNr, Phase_Element, CurrentSeqNr, CurrentMacroNr end
 end     -- end Create_Delay_To_Sequences
 
 function Command_Title(title, LayNr, TLayNr, LayX, LayY, Pw, Ph, align)
