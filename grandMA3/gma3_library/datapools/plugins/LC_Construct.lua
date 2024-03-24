@@ -408,90 +408,37 @@ function Construct_Layout(displayHandle, TLay, SeqNrStart, MacroNrStart, Matrick
         end -- end Sequences Phase
 
         -- Create_sequence_xgroup
-        local Return_Create_XGroup_Sequence = { Create_XGroup_Sequence(CurrentMacroNr, FirstSeqGrp, CurrentSeqNr,
+        local Return_Create_Group_Sequence = { Create_Group_Sequence(CurrentMacroNr, FirstSeqGrp, CurrentSeqNr,
             LastSeqGrp, prefix, surfix, a, MatrickNrStart, TLayNr, Group_Element, MatrickNr, LayNr, LayX, LayY,
             CurrentSeqNr, First_Id_Lay, Current_Id_Lay, Argument_Xgrp, AppImp, LayW, LayH, Block_Element, MakeX) }
-        if Return_Create_XGroup_Sequence[1] then
-            CurrentSeqNr = Return_Create_XGroup_Sequence[2]
-            Block_Element = Return_Create_XGroup_Sequence[3]
-            LayNr = Return_Create_XGroup_Sequence[4]
-            LayX = Return_Create_XGroup_Sequence[5]
-            Current_Id_Lay = Return_Create_XGroup_Sequence[6]
-            First_Id_Lay = Return_Create_XGroup_Sequence[7]
-            CurrentMacroNr = Return_Create_XGroup_Sequence[8]
-            LastSeqGrp = Return_Create_XGroup_Sequence[9]
-            FirstSeqGrp = Return_Create_XGroup_Sequence[10]
+        if Return_Create_Group_Sequence[1] then
+            CurrentSeqNr = Return_Create_Group_Sequence[2]
+            Block_Element = Return_Create_Group_Sequence[3]
+            LayNr = Return_Create_Group_Sequence[4]
+            LayX = Return_Create_Group_Sequence[5]
+            Current_Id_Lay = Return_Create_Group_Sequence[6]
+            First_Id_Lay = Return_Create_Group_Sequence[7]
+            CurrentMacroNr = Return_Create_Group_Sequence[8]
+            LastSeqGrp = Return_Create_Group_Sequence[9]
+            FirstSeqGrp = Return_Create_Group_Sequence[10]
         end -- end Sequences XGroup
 
-        -- Setup  seq
-        CurrentMacroNr = math.floor(CurrentMacroNr + 1)
-        FirstSeqBlock = CurrentSeqNr
-        LastSeqBlock = math.floor(CurrentSeqNr + 4)
-        -- Create Macro Block Input
-        Create_Macro_Block(CurrentMacroNr, prefix, surfix, a, FirstSeqBlock, LastSeqBlock, MatrickNrStart, 6,
-            TLayNr, Block_Element, MatrickNr)
+        -- Create_Block_Sequence
+        local Return_Create_Block_Sequence = { Create_Block_Sequence(CurrentMacroNr, FirstSeqBlock, CurrentSeqNr,
+            LastSeqBlock, prefix, surfix, a, MatrickNrStart, TLayNr, Block_Element, MatrickNr, MakeX, LayNr, LayX, LayY,
+            First_Id_Lay, Current_Id_Lay, Argument_Xblock, AppImp, Wings_Element, LayW, LayH) }
+        if Return_Create_Block_Sequence[1] then
+            CurrentSeqNr = Return_Create_Block_Sequence[2]
+            Wings_Element = Return_Create_Block_Sequence[3]
+            LayNr = Return_Create_Block_Sequence[4]
+            LayX = Return_Create_Block_Sequence[5]
+            Current_Id_Lay = Return_Create_Block_Sequence[6]
+            First_Id_Lay = Return_Create_Block_Sequence[7]
+            CurrentMacroNr = Return_Create_Block_Sequence[8]
+            FirstSeqBlock = Return_Create_Block_Sequence[9]
+            LastSeqBlock = Return_Create_Block_Sequence[10]
+        end -- end Create_Block_Sequence
 
-        if MakeX then
-            Command_Title('BLOCK', TLayNr, LayNr, LayX, LayY, 580, 140, 2)
-            LayNr = math.floor(LayNr + 1)
-            Command_Title('none', TLayNr, LayNr, LayX, LayY, 580, 140, 3)
-            LayNr = math.floor(LayNr + 1)
-        end
-        -- Create Sequences XBlock
-        for i = 1, 5 do
-            local ia = tonumber(i * 2 + 41)
-            local ib = tonumber(i * 2 + 42)
-            if i == 1 then
-                if a == 1 then
-                    First_Id_Lay[21] = math.floor(LayNr)
-                    First_Id_Lay[22] = CurrentSeqNr
-                elseif a == 2 then
-                    First_Id_Lay[23] = CurrentSeqNr
-                elseif a == 3 then
-                    First_Id_Lay[24] = CurrentSeqNr
-                end
-                Current_Id_Lay = First_Id_Lay[21]
-            end
-            Cmd('ClearAll /nu')
-            Cmd('Store Sequence ' ..
-                CurrentSeqNr .. ' \'' .. prefix .. Argument_Xblock[i].name .. surfix[a] .. '\'')
-            -- Add Cmd to Squence
-            Cmd('set seq ' .. CurrentSeqNr .. ' cue 1 Property Appearance=' .. AppImp[ia].Nr)
-            if i == 5 then
-                Cmd('set seq ' ..
-                    CurrentSeqNr .. ' cue \'' .. prefix .. Argument_Xblock[i].name .. surfix[a] ..
-                    '\' Property Command=\'Go Macro ' .. CurrentMacroNr .. '')
-            else
-                Cmd('set seq ' ..
-                    CurrentSeqNr .. ' cue \'' .. prefix .. Argument_Xblock[i].name .. surfix[a] ..
-                    '\' Property Command=\'off seq ' ..
-                    FirstSeqBlock .. ' thru ' .. LastSeqBlock .. ' - ' .. CurrentSeqNr ..
-                    ' ; Set Matricks ' .. MatrickNrStart ..
-                    ' Property "' .. surfix[a] .. 'Block" ' .. Argument_Xblock[i].Time ..
-                    ' ; SetUserVariable "LC_Fonction" 6 ; SetUserVariable "LC_Axes" "' .. a ..
-                    '" ; SetUserVariable "LC_Layout" ' .. TLayNr ..
-                    ' ; SetUserVariable "LC_Element" ' .. Block_Element ..
-                    ' ; SetUserVariable "LC_Matrick" ' .. MatrickNrStart ..
-                    ' ; SetUserVariable "LC_Matrick_Thru" ' .. MatrickNr ..
-                    ' ; Call Plugin "LC_View" ')
-            end
-            Cmd('set seq ' .. CurrentSeqNr .. ' Property Appearance=' .. AppImp[ib].Nr)
-            Command_Ext_Suite(CurrentSeqNr)
-            -- end Sequences
-            -- Add Squences to Layout
-            if MakeX then
-                Cmd('Assign Seq ' .. CurrentSeqNr .. ' at Layout ' .. TLayNr)
-                Cmd('Set Layout ' .. TLayNr .. '.' .. LayNr ..
-                    ' Property Appearance <default> PosX ' .. LayX .. ' PosY ' .. LayY ..
-                    ' PositionW ' .. LayW .. ' PositionH ' .. LayH ..
-                    ' VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0')
-                LayX = math.floor(LayX + LayW + 20)
-                LayNr = math.floor(LayNr + 1)
-                Wings_Element = math.floor(LayNr + 1)
-            end
-            CurrentSeqNr = math.floor(CurrentSeqNr + 1)
-        end
-        -- end Sequences XBlock
         -- Setup XWings seq
         CurrentMacroNr = math.floor(CurrentMacroNr + 1)
         FirstSeqWings = CurrentSeqNr

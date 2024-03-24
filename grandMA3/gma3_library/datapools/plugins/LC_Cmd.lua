@@ -555,7 +555,7 @@ function Create_Phase_Sequence(LayY, LayX, LayW, a, First_Id_Lay, LayNr, Current
     do return 1, Current_Id_Lay, CurrentMacroNr, LayY, LayX, LayNr, CurrentSeqNr, Group_Element end
 end -- end Create_Phase_Sequence
 
-function Create_XGroup_Sequence(CurrentMacroNr, FirstSeqGrp, CurrentSeqNr, LastSeqGrp, prefix, surfix, a, MatrickNrStart,
+function Create_Group_Sequence(CurrentMacroNr, FirstSeqGrp, CurrentSeqNr, LastSeqGrp, prefix, surfix, a, MatrickNrStart,
                                 TLayNr, Group_Element, MatrickNr, LayNr, LayX, LayY, CurrentSeqNr, First_Id_Lay,
                                 Current_Id_Lay, Argument_Xgrp, AppImp, LayW, LayH, Block_Element, MakeX)
     -- Setup XGroup seq
@@ -626,7 +626,81 @@ function Create_XGroup_Sequence(CurrentMacroNr, FirstSeqGrp, CurrentSeqNr, LastS
         return 1, CurrentSeqNr, Block_Element, LayNr, LayX, Current_Id_Lay, First_Id_Lay, CurrentMacroNr, LastSeqGrp,
             FirstSeqGrp
     end
-end -- end Create_XGroup_Sequence
+end -- end Create_Group_Sequence
+
+function Create_Block_Sequence(CurrentMacroNr, FirstSeqBlock, CurrentSeqNr, LastSeqBlock, prefix, surfix, a,
+                               MatrickNrStart, TLayNr, Block_Element, MatrickNr, MakeX, LayNr, LayX, LayY, First_Id_Lay,
+                               Current_Id_Lay, Argument_Xblock, AppImp, Wings_Element, LayW, LayH)
+    CurrentMacroNr = math.floor(CurrentMacroNr + 1)
+    FirstSeqBlock = CurrentSeqNr
+    LastSeqBlock = math.floor(CurrentSeqNr + 4)
+    -- Create Macro Block Input
+    Create_Macro_Block(CurrentMacroNr, prefix, surfix, a, FirstSeqBlock, LastSeqBlock, MatrickNrStart, 6,
+        TLayNr, Block_Element, MatrickNr)
+
+    if MakeX then
+        Command_Title('BLOCK', TLayNr, LayNr, LayX, LayY, 580, 140, 2)
+        LayNr = math.floor(LayNr + 1)
+        Command_Title('none', TLayNr, LayNr, LayX, LayY, 580, 140, 3)
+        LayNr = math.floor(LayNr + 1)
+    end
+    -- Create Sequences XBlock
+    for i = 1, 5 do
+        local ia = tonumber(i * 2 + 41)
+        local ib = tonumber(i * 2 + 42)
+        if i == 1 then
+            if a == 1 then
+                First_Id_Lay[21] = math.floor(LayNr)
+                First_Id_Lay[22] = CurrentSeqNr
+            elseif a == 2 then
+                First_Id_Lay[23] = CurrentSeqNr
+            elseif a == 3 then
+                First_Id_Lay[24] = CurrentSeqNr
+            end
+            Current_Id_Lay = First_Id_Lay[21]
+        end
+        Cmd('ClearAll /nu')
+        Cmd('Store Sequence ' ..
+            CurrentSeqNr .. ' \'' .. prefix .. Argument_Xblock[i].name .. surfix[a] .. '\'')
+        -- Add Cmd to Squence
+        Cmd('set seq ' .. CurrentSeqNr .. ' cue 1 Property Appearance=' .. AppImp[ia].Nr)
+        if i == 5 then
+            Cmd('set seq ' ..
+                CurrentSeqNr .. ' cue \'' .. prefix .. Argument_Xblock[i].name .. surfix[a] ..
+                '\' Property Command=\'Go Macro ' .. CurrentMacroNr .. '')
+        else
+            Cmd('set seq ' ..
+                CurrentSeqNr .. ' cue \'' .. prefix .. Argument_Xblock[i].name .. surfix[a] ..
+                '\' Property Command=\'off seq ' ..
+                FirstSeqBlock .. ' thru ' .. LastSeqBlock .. ' - ' .. CurrentSeqNr ..
+                ' ; Set Matricks ' .. MatrickNrStart ..
+                ' Property "' .. surfix[a] .. 'Block" ' .. Argument_Xblock[i].Time ..
+                ' ; SetUserVariable "LC_Fonction" 6 ; SetUserVariable "LC_Axes" "' .. a ..
+                '" ; SetUserVariable "LC_Layout" ' .. TLayNr ..
+                ' ; SetUserVariable "LC_Element" ' .. Block_Element ..
+                ' ; SetUserVariable "LC_Matrick" ' .. MatrickNrStart ..
+                ' ; SetUserVariable "LC_Matrick_Thru" ' .. MatrickNr ..
+                ' ; Call Plugin "LC_View" ')
+        end
+        Cmd('set seq ' .. CurrentSeqNr .. ' Property Appearance=' .. AppImp[ib].Nr)
+        Command_Ext_Suite(CurrentSeqNr)
+        -- end Sequences
+        -- Add Squences to Layout
+        if MakeX then
+            Cmd('Assign Seq ' .. CurrentSeqNr .. ' at Layout ' .. TLayNr)
+            Cmd('Set Layout ' .. TLayNr .. '.' .. LayNr ..
+                ' Property Appearance <default> PosX ' .. LayX .. ' PosY ' .. LayY ..
+                ' PositionW ' .. LayW .. ' PositionH ' .. LayH ..
+                ' VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0')
+            LayX = math.floor(LayX + LayW + 20)
+            LayNr = math.floor(LayNr + 1)
+            Wings_Element = math.floor(LayNr + 1)
+        end
+        CurrentSeqNr = math.floor(CurrentSeqNr + 1)
+    end
+    do return 1, CurrentSeqNr, Wings_Element, LayNr, LayX, Current_Id_Lay, First_Id_Lay, CurrentMacroNr, FirstSeqBlock,
+            LastSeqBlock end
+end -- end Create_Block_Sequence
 
 function Command_Title(title, TLayNr, LayNr, LayX, LayY, Pw, Ph, align)
     Cmd('Store Layout ' .. TLayNr .. '.' .. LayNr .. ' Property CustomTextText=\' ' .. title .. ' \'')
