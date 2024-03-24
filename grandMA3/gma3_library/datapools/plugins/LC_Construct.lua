@@ -407,99 +407,20 @@ function Construct_Layout(displayHandle, TLay, SeqNrStart, MacroNrStart, Matrick
             Group_Element = Return_Create_Phase_Sequence[8]
         end -- end Sequences Phase
 
-        -- Setup XGroup seq
-        CurrentMacroNr = math.floor(CurrentMacroNr + 1)
-        FirstSeqGrp = CurrentSeqNr
-        LastSeqGrp = math.floor(CurrentSeqNr + 4)
-        -- Create Macro Group Input
-        Create_Macro_Group(CurrentMacroNr, prefix, surfix, a, FirstSeqGrp, LastSeqGrp, MatrickNrStart, 5, TLayNr,
-            Group_Element, MatrickNr)
-
-        if MakeX then
-            Command_Title('GROUP', TLayNr, LayNr, LayX - 120, LayY - 30, 700, 170, 2)
-            LayNr = math.floor(LayNr + 1)
-            Command_Title('None', TLayNr, LayNr, LayX - 120, LayY - 30, 700, 170, 3)
-            LayNr = math.floor(LayNr + 1)
-        end
-        -- Create Sequences XGroup
-        for i = 1, 5 do
-            local ia = tonumber(i * 2 + 31)
-            local ib = tonumber(i * 2 + 32)
-            if i == 1 then
-                if a == 1 then
-                    First_Id_Lay[17] = math.floor(LayNr)
-                    First_Id_Lay[18] = CurrentSeqNr
-                elseif a == 2 then
-                    First_Id_Lay[19] = CurrentSeqNr
-                elseif a == 3 then
-                    First_Id_Lay[20] = CurrentSeqNr
-                end
-                Current_Id_Lay = First_Id_Lay[17]
-            end
-            Cmd('ClearAll /nu')
-            Cmd('Store Sequence ' ..
-                CurrentSeqNr .. ' \'' .. prefix .. Argument_Xgrp[i].name .. surfix[a] .. '\'')
-            -- Add Cmd to Squence
-            Cmd('set seq ' .. CurrentSeqNr .. ' cue 1 Property Appearance=' .. AppImp[ia].Nr)
-            if i == 5 then
-                Cmd('set seq ' ..
-                    CurrentSeqNr ..
-                    ' cue \'' ..
-                    prefix ..
-                    Argument_Xgrp[i].name .. surfix[a] .. '\' Property Command=\'Go Macro ' .. CurrentMacroNr .. '')
-            else
-                Cmd('set seq ' ..
-                    CurrentSeqNr ..
-                    ' cue \'' ..
-                    prefix ..
-                    Argument_Xgrp[i].name ..
-                    surfix[a] ..
-                    '\' Property Command=\'off seq ' ..
-                    FirstSeqGrp ..
-                    ' thru ' ..
-                    LastSeqGrp ..
-                    ' - ' ..
-                    CurrentSeqNr ..
-                    ' ; Set Matricks ' ..
-                    MatrickNrStart ..
-                    ' Property "' ..
-                    surfix[a] ..
-                    'Group" ' ..
-                    Argument_Xgrp[i].Time ..
-                    '  ; SetUserVariable "LC_Fonction" 5 ; SetUserVariable "LC_Axes" "' ..
-                    a ..
-                    '" ; SetUserVariable "LC_Layout" ' ..
-                    TLayNr ..
-                    ' ; SetUserVariable "LC_Element" ' ..
-                    Group_Element ..
-                    ' ; SetUserVariable "LC_Matrick" ' ..
-                    MatrickNrStart ..
-                    ' ; SetUserVariable "LC_Matrick_Thru" ' ..
-                    MatrickNr ..
-                    ' ; Call Plugin "LC_View" ')
-            end
-            Cmd('set seq ' .. CurrentSeqNr .. ' Property Appearance=' .. AppImp[ib].Nr)
-            Command_Ext_Suite(CurrentSeqNr)
-            -- end Sequences
-            -- Add Squences to Layout
-            if MakeX then
-                Cmd('Assign Seq ' .. CurrentSeqNr .. ' at Layout ' .. TLayNr)
-                Cmd('Set Layout ' ..
-                    TLayNr ..
-                    '.' ..
-                    LayNr ..
-                    ' property appearance <default> PosX ' ..
-                    LayX ..
-                    ' PosY ' ..
-                    LayY ..
-                    ' PositionW ' ..
-                    LayW ..
-                    ' PositionH ' .. LayH .. ' VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0')
-                LayX = math.floor(LayX + LayW + 20)
-                LayNr = math.floor(LayNr + 1)
-                Block_Element = math.floor(LayNr + 1)
-            end
-            CurrentSeqNr = math.floor(CurrentSeqNr + 1)
+        -- Create_sequence_xgroup
+        local Return_Create_XGroup_Sequence = { Create_XGroup_Sequence(CurrentMacroNr, FirstSeqGrp, CurrentSeqNr,
+            LastSeqGrp, prefix, surfix, a, MatrickNrStart, TLayNr, Group_Element, MatrickNr, LayNr, LayX, LayY,
+            CurrentSeqNr, First_Id_Lay, Current_Id_Lay, Argument_Xgrp, AppImp, LayW, LayH, Block_Element, MakeX) }
+        if Return_Create_XGroup_Sequence[1] then
+            CurrentSeqNr = Return_Create_XGroup_Sequence[2]
+            Block_Element = Return_Create_XGroup_Sequence[3]
+            LayNr = Return_Create_XGroup_Sequence[4]
+            LayX = Return_Create_XGroup_Sequence[5]
+            Current_Id_Lay = Return_Create_XGroup_Sequence[6]
+            First_Id_Lay = Return_Create_XGroup_Sequence[7]
+            CurrentMacroNr = Return_Create_XGroup_Sequence[8]
+            LastSeqGrp = Return_Create_XGroup_Sequence[9]
+            FirstSeqGrp = Return_Create_XGroup_Sequence[10]
         end
         -- end Sequences XGroup
         -- Setup XBlock seq
