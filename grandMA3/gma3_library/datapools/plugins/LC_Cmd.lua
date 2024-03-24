@@ -505,6 +505,55 @@ function Create_Delay_To_Sequences(a, First_Id_Lay, LayNr, CurrentSeqNr, Current
     do return 1, First_Id_Lay, Current_Id_Lay, LayX, LayNr, Phase_Element, CurrentSeqNr, CurrentMacroNr end
 end     -- end Create_Delay_To_Sequences
 
+function Create_Phase_Sequence(LayY, LayX, LayW, a, First_Id_Lay, LayNr, CurrentSeqNr, Current_Id_Lay, CurrentMacroNr,
+                               prefix, surfix, MatrickNrStart, TLayNr, Phase_Element, MatrickNr, AppImp, MakeX, LayH, RefX, Group_Element)
+    -- Add offset for Layout Element distance
+    LayY = math.floor(LayY - 150)
+    LayX = RefX
+    LayX = math.floor(LayX + LayW - 100)
+
+    -- Create Macro Phase Input
+    if a == 1 then
+        First_Id_Lay[13] = math.floor(LayNr)
+        First_Id_Lay[14] = CurrentSeqNr
+    elseif a == 2 then
+        First_Id_Lay[15] = CurrentSeqNr
+    elseif a == 3 then
+        First_Id_Lay[16] = CurrentSeqNr
+    end
+    Current_Id_Lay = First_Id_Lay[13]
+    CurrentMacroNr = math.floor(CurrentMacroNr + 1)
+    Create_Macro_Phase(CurrentMacroNr, prefix, surfix, a, MatrickNrStart, 4, TLayNr, Phase_Element, MatrickNr)
+
+    -- Create Sequences Phase
+    Cmd('ClearAll /nu')
+    Cmd('Store Sequence ' .. CurrentSeqNr .. ' \'' .. prefix .. 'Phase Input' .. surfix[a] .. '\'')
+    -- Add Cmd to Squence
+    Cmd('set seq ' .. CurrentSeqNr .. ' cue 1 Property Appearance=' .. AppImp[63].Nr)
+    Cmd('set seq ' .. CurrentSeqNr .. ' cue \'' .. prefix .. 'Phase Input' .. surfix[a] ..
+        '\' Property Command=\'Go Macro ' .. CurrentMacroNr .. '')
+    Cmd('set seq ' .. CurrentSeqNr .. ' Property Appearance=' .. AppImp[64].Nr)
+    Command_Ext_Suite(CurrentSeqNr)
+
+    -- Add Squences to Layout
+    if MakeX then
+        Cmd('Assign Seq ' .. CurrentSeqNr .. ' at Layout ' .. TLayNr)
+        Cmd('Set Layout ' .. TLayNr .. '.' .. LayNr ..
+            ' Property Appearance <default> PosX ' .. LayX .. ' PosY ' .. LayY ..
+            ' PositionW ' .. LayW .. ' PositionH ' .. LayH ..
+            ' VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0')
+        LayX = math.floor(LayX + LayW + 20)
+        LayNr = math.floor(LayNr + 1)
+        Command_Title('PHASE', TLayNr, LayNr, LayX - 120, LayY - 30, 700, 170, 4)
+        LayNr = math.floor(LayNr + 1)
+        Command_Title('none > none', TLayNr, LayNr, LayX - 120, LayY - 30, 700, 170, 1)
+        LayNr = math.floor(LayNr + 1)
+        Group_Element = math.floor(LayNr + 1)
+    end
+    CurrentSeqNr = math.floor(CurrentSeqNr + 1)
+    do return 1, Current_Id_Lay, CurrentMacroNr, LayY, LayX, LayNr, CurrentSeqNr, Group_Element end
+end -- end Create_Phase_Sequence
+
 function Command_Title(title, TLayNr, LayNr, LayX, LayY, Pw, Ph, align)
     Cmd('Store Layout ' .. TLayNr .. '.' .. LayNr .. ' Property CustomTextText=\' ' .. title .. ' \'')
     Cmd('Set Layout ' .. TLayNr .. '.' .. LayNr .. ' Property CustomTextSize \'24')
