@@ -421,9 +421,9 @@ function Construct_Layout(displayHandle, TLay, SeqNrStart, MacroNrStart, Matrick
             CurrentMacroNr = Return_Create_XGroup_Sequence[8]
             LastSeqGrp = Return_Create_XGroup_Sequence[9]
             FirstSeqGrp = Return_Create_XGroup_Sequence[10]
-        end
-        -- end Sequences XGroup
-        -- Setup XBlock seq
+        end -- end Sequences XGroup
+
+        -- Setup  seq
         CurrentMacroNr = math.floor(CurrentMacroNr + 1)
         FirstSeqBlock = CurrentSeqNr
         LastSeqBlock = math.floor(CurrentSeqNr + 4)
@@ -459,39 +459,20 @@ function Construct_Layout(displayHandle, TLay, SeqNrStart, MacroNrStart, Matrick
             Cmd('set seq ' .. CurrentSeqNr .. ' cue 1 Property Appearance=' .. AppImp[ia].Nr)
             if i == 5 then
                 Cmd('set seq ' ..
-                    CurrentSeqNr ..
-                    ' cue \'' ..
-                    prefix ..
-                    Argument_Xblock[i].name .. surfix[a] .. '\' Property Command=\'Go Macro ' .. CurrentMacroNr .. '')
+                    CurrentSeqNr .. ' cue \'' .. prefix .. Argument_Xblock[i].name .. surfix[a] ..
+                    '\' Property Command=\'Go Macro ' .. CurrentMacroNr .. '')
             else
                 Cmd('set seq ' ..
-                    CurrentSeqNr ..
-                    ' cue \'' ..
-                    prefix ..
-                    Argument_Xblock[i].name ..
-                    surfix[a] ..
+                    CurrentSeqNr .. ' cue \'' .. prefix .. Argument_Xblock[i].name .. surfix[a] ..
                     '\' Property Command=\'off seq ' ..
-                    FirstSeqBlock ..
-                    ' thru ' ..
-                    LastSeqBlock ..
-                    ' - ' ..
-                    CurrentSeqNr ..
-                    ' ; Set Matricks ' ..
-                    MatrickNrStart ..
-                    ' Property "' ..
-                    surfix[a] ..
-                    'Block" ' ..
-                    Argument_Xblock[i].Time ..
-                    '  ; SetUserVariable "LC_Fonction" 6 ; SetUserVariable "LC_Axes" "' ..
-                    a ..
-                    '" ; SetUserVariable "LC_Layout" ' ..
-                    TLayNr ..
-                    ' ; SetUserVariable "LC_Element" ' ..
-                    Block_Element ..
-                    ' ; SetUserVariable "LC_Matrick" ' ..
-                    MatrickNrStart ..
-                    ' ; SetUserVariable "LC_Matrick_Thru" ' ..
-                    MatrickNr ..
+                    FirstSeqBlock .. ' thru ' .. LastSeqBlock .. ' - ' .. CurrentSeqNr ..
+                    ' ; Set Matricks ' .. MatrickNrStart ..
+                    ' Property "' .. surfix[a] .. 'Block" ' .. Argument_Xblock[i].Time ..
+                    ' ; SetUserVariable "LC_Fonction" 6 ; SetUserVariable "LC_Axes" "' .. a ..
+                    '" ; SetUserVariable "LC_Layout" ' .. TLayNr ..
+                    ' ; SetUserVariable "LC_Element" ' .. Block_Element ..
+                    ' ; SetUserVariable "LC_Matrick" ' .. MatrickNrStart ..
+                    ' ; SetUserVariable "LC_Matrick_Thru" ' .. MatrickNr ..
                     ' ; Call Plugin "LC_View" ')
             end
             Cmd('set seq ' .. CurrentSeqNr .. ' Property Appearance=' .. AppImp[ib].Nr)
@@ -500,17 +481,10 @@ function Construct_Layout(displayHandle, TLay, SeqNrStart, MacroNrStart, Matrick
             -- Add Squences to Layout
             if MakeX then
                 Cmd('Assign Seq ' .. CurrentSeqNr .. ' at Layout ' .. TLayNr)
-                Cmd('Set Layout ' ..
-                    TLayNr ..
-                    '.' ..
-                    LayNr ..
-                    ' property appearance <default> PosX ' ..
-                    LayX ..
-                    ' PosY ' ..
-                    LayY ..
-                    ' PositionW ' ..
-                    LayW ..
-                    ' PositionH ' .. LayH .. ' VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0')
+                Cmd('Set Layout ' .. TLayNr .. '.' .. LayNr ..
+                    ' Property Appearance <default> PosX ' .. LayX .. ' PosY ' .. LayY ..
+                    ' PositionW ' .. LayW .. ' PositionH ' .. LayH ..
+                    ' VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0')
                 LayX = math.floor(LayX + LayW + 20)
                 LayNr = math.floor(LayNr + 1)
                 Wings_Element = math.floor(LayNr + 1)
@@ -553,40 +527,19 @@ function Construct_Layout(displayHandle, TLay, SeqNrStart, MacroNrStart, Matrick
             -- Add Cmd to Squence
             Cmd('set seq ' .. CurrentSeqNr .. ' cue 1 Property Appearance=' .. AppImp[ia].Nr)
             if i == 5 then
-                Cmd('set seq ' ..
-                    CurrentSeqNr ..
-                    ' cue \'' ..
-                    prefix ..
-                    Argument_Xwings[i].name .. surfix[a] .. '\' Property Command=\'Go Macro ' .. CurrentMacroNr .. '')
+                Cmd('set seq ' .. CurrentSeqNr .. ' cue \'' .. prefix .. Argument_Xwings[i].name .. surfix[a] ..
+                    '\' Property Command=\'Go Macro ' .. CurrentMacroNr .. '')
             else
-                Cmd('set seq ' ..
-                    CurrentSeqNr ..
-                    ' cue \'' ..
-                    prefix ..
-                    Argument_Xwings[i].name ..
-                    surfix[a] ..
+                Cmd('set seq ' .. CurrentSeqNr .. ' cue \'' .. prefix .. Argument_Xwings[i].name .. surfix[a] ..
                     '\' Property Command=\'off seq ' ..
-                    FirstSeqWings ..
-                    ' thru ' ..
-                    LastSeqWings ..
-                    ' - ' ..
-                    CurrentSeqNr ..
-                    ' ; Set Matricks ' ..
-                    MatrickNrStart ..
-                    ' Property "' ..
-                    surfix[a] ..
-                    'Wings" ' ..
-                    Argument_Xwings[i].Time ..
-                    '  ; SetUserVariable "LC_Fonction" 7 ; SetUserVariable "LC_Axes" "' ..
-                    a ..
-                    '" ; SetUserVariable "LC_Layout" ' ..
-                    TLayNr ..
-                    ' ; SetUserVariable "LC_Element" ' ..
-                    Wings_Element ..
-                    ' ; SetUserVariable "LC_Matrick" ' ..
-                    MatrickNrStart ..
-                    ' ; SetUserVariable "LC_Matrick_Thru" ' ..
-                    MatrickNr ..
+                    FirstSeqWings .. ' thru ' .. LastSeqWings .. ' - ' .. CurrentSeqNr ..
+                    ' ; Set Matricks ' .. MatrickNrStart ..
+                    ' Property "' .. surfix[a] .. 'Wings" ' .. Argument_Xwings[i].Time ..
+                    '  ; SetUserVariable "LC_Fonction" 7 ; SetUserVariable "LC_Axes" "' .. a ..
+                    '" ; SetUserVariable "LC_Layout" ' .. TLayNr ..
+                    ' ; SetUserVariable "LC_Element" ' .. Wings_Element ..
+                    ' ; SetUserVariable "LC_Matrick" ' .. MatrickNrStart ..
+                    ' ; SetUserVariable "LC_Matrick_Thru" ' .. MatrickNr ..
                     ' ; Call Plugin "LC_View" ')
             end
             Cmd('set seq ' .. CurrentSeqNr .. ' Property Appearance=' .. AppImp[ib].Nr)
@@ -595,17 +548,10 @@ function Construct_Layout(displayHandle, TLay, SeqNrStart, MacroNrStart, Matrick
             -- Add Squences to Layout
             if MakeX then
                 Cmd('Assign Seq ' .. CurrentSeqNr .. ' at Layout ' .. TLayNr)
-                Cmd('Set Layout ' ..
-                    TLayNr ..
-                    '.' ..
-                    LayNr ..
-                    ' property appearance <default> PosX ' ..
-                    LayX ..
-                    ' PosY ' ..
-                    LayY ..
-                    ' PositionW ' ..
-                    LayW ..
-                    ' PositionH ' .. LayH .. ' VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0')
+                Cmd('Set Layout ' .. TLayNr .. '.' .. LayNr ..
+                    ' Property Appearance <default> PosX ' .. LayX .. ' PosY ' .. LayY ..
+                    ' PositionW ' .. LayW .. ' PositionH ' .. LayH ..
+                    ' VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0')
                 LayX = math.floor(LayX + LayW + 20)
                 LayNr = math.floor(LayNr + 1)
             end
@@ -674,79 +620,38 @@ function Construct_Layout(displayHandle, TLay, SeqNrStart, MacroNrStart, Matrick
             First_Id_Lay[32] = LayX
             First_Id_Lay[33] = LayY
             Cmd('Assign Seq ' .. CurrentSeqNr .. ' at Layout ' .. TLayNr)
-            Cmd('Set Layout ' ..
-                TLayNr ..
-                '.' ..
-                LayNr ..
-                ' property appearance <default> PosX ' ..
-                First_Id_Lay[32] ..
-                ' PosY ' ..
-                First_Id_Lay[33] + 170 ..
-                ' PositionW ' ..
-                LayW - 35 ..
+            Cmd('Set Layout ' .. TLayNr .. '.' .. LayNr ..
+                ' Property Appearance <default> PosX ' .. First_Id_Lay[32] ..
+                ' PosY ' .. First_Id_Lay[33] + 170 .. ' PositionW ' .. LayW - 35 ..
                 ' PositionH ' .. LayH - 35 .. ' VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0')
             Cmd('Assign Seq ' .. CurrentSeqNr + 1 .. ' at Layout ' .. TLayNr)
-            Cmd('Set Layout ' ..
-                TLayNr ..
-                '.' ..
-                LayNr + 1 ..
-                ' property appearance <default> PosX ' ..
-                First_Id_Lay[32] + 85 ..
-                ' PosY ' ..
-                First_Id_Lay[33] + 170 ..
-                ' PositionW ' ..
-                LayW - 35 ..
-                ' PositionH ' .. LayH - 35 .. ' VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0')
+            Cmd('Set Layout ' .. TLayNr .. '.' .. LayNr + 1 ..
+                ' Property Appearance <default> PosX ' ..
+                First_Id_Lay[32] + 85 .. ' PosY ' .. First_Id_Lay[33] + 170 ..
+                ' PositionW ' .. LayW - 35 .. ' PositionH ' .. LayH - 35 ..
+                ' VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0')
         elseif a == 2 then
             Cmd('Assign Seq ' .. CurrentSeqNr .. ' at Layout ' .. TLayNr)
-            Cmd('Set Layout ' ..
-                TLayNr ..
-                '.' ..
-                LayNr ..
-                ' property appearance <default> PosX ' ..
-                First_Id_Lay[32] ..
-                ' PosY ' ..
-                First_Id_Lay[33] + 90 ..
-                ' PositionW ' ..
-                LayW - 35 ..
-                ' PositionH ' .. LayH - 35 .. ' VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0')
+            Cmd('Set Layout ' .. TLayNr .. '.' .. LayNr ..
+                ' Property Appearance <default> PosX ' .. First_Id_Lay[32] .. ' PosY ' .. First_Id_Lay[33] + 90 ..
+                ' PositionW ' .. LayW - 35 .. ' PositionH ' .. LayH - 35 ..
+                ' VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0')
             Cmd('Assign Seq ' .. CurrentSeqNr + 1 .. ' at Layout ' .. TLayNr)
-            Cmd('Set Layout ' ..
-                TLayNr ..
-                '.' ..
-                LayNr + 1 ..
-                ' property appearance <default> PosX ' ..
-                First_Id_Lay[32] + 85 ..
-                ' PosY ' ..
-                First_Id_Lay[33] + 90 ..
-                ' PositionW ' ..
-                LayW - 35 ..
-                ' PositionH ' .. LayH - 35 .. ' VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0')
+            Cmd('Set Layout ' .. TLayNr .. '.' .. LayNr + 1 ..
+                ' Property Appearance <default> PosX ' .. First_Id_Lay[32] + 85 .. ' PosY ' .. First_Id_Lay[33] + 90 ..
+                ' PositionW ' .. LayW - 35 .. ' PositionH ' .. LayH - 35 ..
+                ' VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0')
         elseif a == 3 then
             Cmd('Assign Seq ' .. CurrentSeqNr .. ' at Layout ' .. TLayNr)
-            Cmd('Set Layout ' ..
-                TLayNr ..
-                '.' ..
-                LayNr ..
-                ' property appearance <default> PosX ' ..
-                First_Id_Lay[32] ..
-                ' PosY ' ..
-                First_Id_Lay[33] + 10 ..
-                ' PositionW ' ..
-                LayW - 35 ..
-                ' PositionH ' .. LayH - 35 .. ' VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0')
+            Cmd('Set Layout ' .. TLayNr .. '.' .. LayNr ..
+                ' Property Appearance <default> PosX ' .. First_Id_Lay[32] .. ' PosY ' .. First_Id_Lay[33] + 10 ..
+                ' PositionW ' .. LayW - 35 .. ' PositionH ' .. LayH - 35 ..
+                ' VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0')
             Cmd('Assign Seq ' .. CurrentSeqNr + 1 .. ' at Layout ' .. TLayNr)
-            Cmd('Set Layout ' ..
-                TLayNr ..
-                '.' ..
-                LayNr + 1 ..
-                ' property appearance <default> PosX ' ..
-                First_Id_Lay[32] + 85 ..
-                ' PosY ' ..
-                First_Id_Lay[33] + 10 ..
-                ' PositionW ' ..
-                LayW - 35 ..
-                ' PositionH ' .. LayH - 35 .. ' VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0')
+            Cmd('Set Layout ' .. TLayNr .. '.' .. LayNr + 1 ..
+                ' Property Appearance <default> PosX ' .. First_Id_Lay[32] + 85 .. ' PosY ' .. First_Id_Lay[33] + 10 ..
+                ' PositionW ' .. LayW - 35 .. ' PositionH ' .. LayH - 35 ..
+                ' VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0')
         end
         LayNr = math.floor(LayNr + 1)
         CurrentSeqNr = math.floor(CurrentSeqNr + 2)
@@ -786,16 +691,10 @@ function Construct_Layout(displayHandle, TLay, SeqNrStart, MacroNrStart, Matrick
     Cmd("set seq " .. CurrentSeqNr .. " Property Appearance=" .. prefix .. "'skull_off'")
     Command_Ext_Suite(CurrentSeqNr)
     Cmd("Assign Seq " .. CurrentSeqNr .. " at Layout " .. TLayNr)
-    Cmd('Set Layout ' ..
-        TLayNr ..
-        '.' ..
-        LayNr ..
-        ' property appearance <default> PosX ' ..
-        LayX ..
-        ' PosY ' ..
-        LayY ..
-        ' PositionW ' ..
-        LayW .. ' PositionH ' .. LayH .. ' VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0')
+    Cmd('Set Layout ' .. TLayNr .. '.' .. LayNr ..
+        ' Property Appearance <default> PosX ' .. LayX .. ' PosY ' .. LayY ..
+        ' PositionW ' .. LayW .. ' PositionH ' .. LayH ..
+        ' VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0')
     -- end Kill all LCx_
 
     -- add All Color
@@ -824,7 +723,7 @@ function Construct_Layout(displayHandle, TLay, SeqNrStart, MacroNrStart, Matrick
     end
     Cmd('Assign Macro ' .. CurrentMacroNr .. ' at Layout ' .. TLayNr)
     Cmd('Set Layout ' .. TLayNr .. '.' .. LayNr ..
-        ' property appearance <default> PosX ' .. LayX .. ' PosY ' .. LayY ..
+        ' Property Appearance <default> PosX ' .. LayX .. ' PosY ' .. LayY ..
         ' PositionW ' .. LayW .. ' PositionH ' .. LayH ..
         ' VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0')
     Cmd('Set Layout ' .. TLayNr .. "." .. LayNr .. ' Property "Appearance" "p_super_png" ')
