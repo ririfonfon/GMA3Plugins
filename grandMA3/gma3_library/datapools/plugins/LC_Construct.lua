@@ -409,17 +409,15 @@ function Construct_Layout(displayHandle, TLay, SeqNrStart, MacroNrStart, Matrick
         end
         Current_Id_Lay = First_Id_Lay[13]
         CurrentMacroNr = math.floor(CurrentMacroNr + 1)
-        Create_Macro_Phase(CurrentMacroNr, prefix, surfix, a, MatrickNrStart, 4, TLayNr, LayNr, MatrickNr)
+        Create_Macro_Phase(CurrentMacroNr, prefix, surfix, a, MatrickNrStart, 4, TLayNr, Phase_Element, MatrickNr)
 
         -- Create Sequences Phase
         Cmd('ClearAll /nu')
         Cmd('Store Sequence ' .. CurrentSeqNr .. ' \'' .. prefix .. 'Phase Input' .. surfix[a] .. '\'')
         -- Add Cmd to Squence
         Cmd('set seq ' .. CurrentSeqNr .. ' cue 1 Property Appearance=' .. AppImp[63].Nr)
-        Cmd('set seq ' ..
-            CurrentSeqNr ..
-            ' cue \'' ..
-            prefix .. 'Phase Input' .. surfix[a] .. '\' Property Command=\'Go Macro ' .. CurrentMacroNr .. '')
+        Cmd('set seq ' .. CurrentSeqNr .. ' cue \'' .. prefix .. 'Phase Input' .. surfix[a] ..
+            '\' Property Command=\'Go Macro ' .. CurrentMacroNr .. '')
         Cmd('set seq ' .. CurrentSeqNr .. ' Property Appearance=' .. AppImp[64].Nr)
         Command_Ext_Suite(CurrentSeqNr)
 
@@ -432,9 +430,9 @@ function Construct_Layout(displayHandle, TLay, SeqNrStart, MacroNrStart, Matrick
                 ' VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0')
             LayX = math.floor(LayX + LayW + 20)
             LayNr = math.floor(LayNr + 1)
-            Command_Title('PHASE', LayNr, TLayNr, LayX - 120, LayY - 30, 700, 170, 4)
+            Command_Title('PHASE', TLayNr, LayNr, LayX - 120, LayY - 30, 700, 170, 4)
             LayNr = math.floor(LayNr + 1)
-            Command_Title('none > none', LayNr, TLayNr, LayX - 120, LayY - 30, 700, 170, 1)
+            Command_Title('none > none', TLayNr, LayNr, LayX - 120, LayY - 30, 700, 170, 1)
             LayNr = math.floor(LayNr + 1)
             Group_Element = math.floor(LayNr + 1)
         end
@@ -450,9 +448,9 @@ function Construct_Layout(displayHandle, TLay, SeqNrStart, MacroNrStart, Matrick
             Group_Element, MatrickNr)
 
         if MakeX then
-            Command_Title('GROUP', LayNr, TLayNr, LayX - 120, LayY - 30, 700, 170, 2)
+            Command_Title('GROUP', TLayNr, LayNr, LayX - 120, LayY - 30, 700, 170, 2)
             LayNr = math.floor(LayNr + 1)
-            Command_Title('None', LayNr, TLayNr, LayX - 120, LayY - 30, 700, 170, 3)
+            Command_Title('None', TLayNr, LayNr, LayX - 120, LayY - 30, 700, 170, 3)
             LayNr = math.floor(LayNr + 1)
         end
         -- Create Sequences XGroup
@@ -545,9 +543,9 @@ function Construct_Layout(displayHandle, TLay, SeqNrStart, MacroNrStart, Matrick
             TLayNr, Block_Element, MatrickNr)
 
         if MakeX then
-            Command_Title('BLOCK', LayNr, TLayNr, LayX, LayY, 580, 140, 2)
+            Command_Title('BLOCK', TLayNr, LayNr, LayX, LayY, 580, 140, 2)
             LayNr = math.floor(LayNr + 1)
-            Command_Title('none', LayNr, TLayNr, LayX, LayY, 580, 140, 3)
+            Command_Title('none', TLayNr, LayNr, LayX, LayY, 580, 140, 3)
             LayNr = math.floor(LayNr + 1)
         end
         -- Create Sequences XBlock
@@ -640,9 +638,9 @@ function Construct_Layout(displayHandle, TLay, SeqNrStart, MacroNrStart, Matrick
             TLayNr, Wings_Element, MatrickNr)
 
         if MakeX then
-            Command_Title('WINGS', LayNr, TLayNr, LayX, LayY, 580, 140, 2)
+            Command_Title('WINGS', TLayNr, LayNr, LayX, LayY, 580, 140, 2)
             LayNr = math.floor(LayNr + 1)
-            Command_Title('none', LayNr, TLayNr, LayX, LayY, 580, 140, 3)
+            Command_Title('none', TLayNr, LayNr, LayX, LayY, 580, 140, 3)
             LayNr = math.floor(LayNr + 1)
         end
         -- Create Sequences XWings

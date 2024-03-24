@@ -181,7 +181,7 @@ function Create_Appearances_Sequences(CurrentMacroNr, SelectedGelNr, SelectedGrp
             -- Add Squences to Layout
             Cmd("Assign Seq " .. CurrentSeqNr .. " at Layout " .. TLayNr)
             Cmd("Set Layout " .. TLayNr .. "." .. LayNr ..
-                " property appearance <Default> PosX " .. LayX .. " PosY " .. LayY ..
+                " Property appearance <Default> PosX " .. LayX .. " PosY " .. LayY ..
                 " PositionW " .. LayW .. " PositionH " .. LayH ..
                 " VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0")
             NrNeed = math.floor(NrNeed + 2); -- Set App Nr to next color
@@ -298,16 +298,16 @@ function Create_Fade_Sequences(MakeX, FirstSeqTime, LastSeqTime, CurrentSeqNr, C
         Command_Ext_Suite(CurrentSeqNr)
         Cmd('Assign Seq ' .. CurrentSeqNr .. ' at Layout ' .. TLayNr)
         Cmd('Set Layout ' .. TLayNr .. '.' .. LayNr ..
-            ' property appearance <default> PosX ' .. LayX .. ' PosY ' .. LayY ..
+            ' Property appearance <default> PosX ' .. LayX .. ' PosY ' .. LayY ..
             ' PositionW ' .. LayW .. ' PositionH ' .. LayH ..
             ' VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0')
 
         LayNr = math.floor(LayNr + 1)
-        Command_Title('Ex.Time', LayNr, TLayNr, LayX, LayY, 700, 140, 1)
+        Command_Title('Ex.Time', TLayNr, LayNr, LayX, LayY, 700, 140, 1)
         LayNr = math.floor(LayNr + 1)
-        Command_Title('FADE', LayNr, TLayNr, LayX, LayY, 700, 140, 2)
+        Command_Title('FADE', TLayNr, LayNr, LayX, LayY, 700, 140, 2)
         LayNr = math.floor(LayNr + 1)
-        Command_Title('none > none', LayNr, TLayNr, LayX, LayY, 700, 140, 3)
+        Command_Title('none > none', TLayNr, LayNr, LayX, LayY, 700, 140, 3)
         LayX = math.floor(LayX + LayW + 20)
         LayNr = math.floor(LayNr + 1)
         CurrentSeqNr = math.floor(CurrentSeqNr + 1)
@@ -350,7 +350,7 @@ function Create_Fade_Sequences(MakeX, FirstSeqTime, LastSeqTime, CurrentSeqNr, C
         if MakeX then
             Cmd('Assign Seq ' .. CurrentSeqNr .. ' at Layout ' .. TLayNr)
             Cmd('Set Layout ' .. TLayNr .. '.' .. LayNr ..
-                ' property appearance <default> PosX ' .. LayX .. ' PosY ' .. LayY ..
+                ' Property appearance <default> PosX ' .. LayX .. ' PosY ' .. LayY ..
                 ' PositionW ' .. LayW .. ' PositionH ' .. LayH ..
                 ' VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0')
             LayX = math.floor(LayX + LayW + 20)
@@ -375,9 +375,9 @@ function Create_Delay_From_Sequences(First_Id_Lay, LayNr, CurrentSeqNr, Current_
         MatrickNrStart, 2, TLayNr, Delay_F_Element, MatrickNr)
 
     if MakeX then
-        Command_Title('DELAY FROM', LayNr, TLayNr, LayX, LayY, 580, 140, 2)
+        Command_Title('DELAY FROM', TLayNr, LayNr, LayX, LayY, 580, 140, 2)
         LayNr = math.floor(LayNr + 1)
-        Command_Title('none', LayNr, TLayNr, LayX, LayY, 580, 140, 3)
+        Command_Title('none', TLayNr, LayNr, LayX, LayY, 580, 140, 3)
         LayNr = math.floor(LayNr + 1)
     end
 
@@ -421,7 +421,7 @@ function Create_Delay_From_Sequences(First_Id_Lay, LayNr, CurrentSeqNr, Current_
         if MakeX then
             Cmd("Assign Seq " .. CurrentSeqNr .. " at Layout " .. TLayNr)
             Cmd("Set Layout " .. TLayNr .. "." .. LayNr ..
-                " property appearance <default> PosX " .. LayX .. " PosY " .. LayY ..
+                " Property appearance <default> PosX " .. LayX .. " PosY " .. LayY ..
                 " PositionW " .. LayW .. " PositionH " .. LayH ..
                 " VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0")
             LayX = math.floor(LayX + LayW + 20)
@@ -434,9 +434,8 @@ function Create_Delay_From_Sequences(First_Id_Lay, LayNr, CurrentSeqNr, Current_
 end     --Create_Delay_From_Sequences
 
 function Create_Delay_To_Sequences(a, First_Id_Lay, LayNr, CurrentSeqNr, Current_Id_Lay, prefix, Argument_DelayTo, surfix,
-                                   MatrickNrStart, TLayNr,
-                                   Delay_T_Element, MatrickNr, AppImp, LayX, LayY, LayW, LayH, Phase_Element,
-                                   CurrentMacroNr, MakeX)
+                                   MatrickNrStart, TLayNr, Delay_T_Element, MatrickNr, AppImp, LayX, LayY, LayW, LayH,
+                                   Phase_Element, CurrentMacroNr, MakeX)
     -- Setup DelayTo seq
     CurrentMacroNr = math.floor(CurrentMacroNr + 1)
     local FirstSeqDelayTo = CurrentSeqNr
@@ -446,9 +445,9 @@ function Create_Delay_To_Sequences(a, First_Id_Lay, LayNr, CurrentSeqNr, Current
         3, TLayNr, Delay_T_Element, MatrickNr)
 
     if MakeX then
-        Command_Title('DELAY TO', LayNr, TLayNr, LayX, LayY, 580, 140, 2)
+        Command_Title('DELAY TO', TLayNr, LayNr, LayX, LayY, 580, 140, 2)
         LayNr = math.floor(LayNr + 1)
-        Command_Title('none', LayNr, TLayNr, LayX, LayY, 580, 140, 3)
+        Command_Title('none', TLayNr, LayNr, LayX, LayY, 580, 140, 3)
         LayNr = math.floor(LayNr + 1)
     end
 
@@ -494,7 +493,7 @@ function Create_Delay_To_Sequences(a, First_Id_Lay, LayNr, CurrentSeqNr, Current
         if MakeX then
             Cmd('Assign Seq ' .. CurrentSeqNr .. ' at Layout ' .. TLayNr)
             Cmd('Set Layout ' .. TLayNr .. '.' .. LayNr ..
-                ' property appearance <default> PosX ' .. LayX .. ' PosY ' .. LayY ..
+                ' Property appearance <default> PosX ' .. LayX .. ' PosY ' .. LayY ..
                 ' PositionW ' .. LayW .. ' PositionH ' .. LayH ..
                 ' VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0')
             LayX = math.floor(LayX + LayW + 20)
@@ -506,7 +505,7 @@ function Create_Delay_To_Sequences(a, First_Id_Lay, LayNr, CurrentSeqNr, Current
     do return 1, First_Id_Lay, Current_Id_Lay, LayX, LayNr, Phase_Element, CurrentSeqNr, CurrentMacroNr end
 end     -- end Create_Delay_To_Sequences
 
-function Command_Title(title, LayNr, TLayNr, LayX, LayY, Pw, Ph, align)
+function Command_Title(title, TLayNr, LayNr, LayX, LayY, Pw, Ph, align)
     Cmd('Store Layout ' .. TLayNr .. '.' .. LayNr .. ' Property CustomTextText=\' ' .. title .. ' \'')
     Cmd('Set Layout ' .. TLayNr .. '.' .. LayNr .. ' Property CustomTextSize \'24')
     Cmd('Set Layout ' .. TLayNr .. '.' .. LayNr .. ' Property CustomTextAlignmentV \'Top')
@@ -527,14 +526,13 @@ function Command_Title(title, LayNr, TLayNr, LayX, LayY, Pw, Ph, align)
 end -- end function Command_Title(...)
 
 function Command_Ext_Suite(CurrentSeqNr)
-    Cmd('set seq ' .. CurrentSeqNr .. ' property prefercueappearance=on')
+    Cmd('set seq ' .. CurrentSeqNr .. ' Property prefercueappearance=on')
     Cmd('set seq ' .. CurrentSeqNr .. ' AutoStart=1 AutoStop=1 MasterGoMode=None AutoFix=0 AutoStomp=0')
-    Cmd('set seq ' ..
-        CurrentSeqNr .. ' Tracking=0 WrapAround=1 ReleaseFirstCue=0 RestartMode=1 CommandEnable=1 XFadeReload=0')
+    Cmd('set seq ' .. CurrentSeqNr ..
+        ' Tracking=0 WrapAround=1 ReleaseFirstCue=0 RestartMode=1 CommandEnable=1 XFadeReload=0')
     Cmd('set seq ' .. CurrentSeqNr .. ' OutputFilter="" Priority=0 SoftLTP=1 PlaybackMaster="" XfadeMode=0')
     Cmd('set seq ' .. CurrentSeqNr .. ' RateMaster="" RateScale=0 SpeedMaster="" SpeedScale=0 SpeedfromRate=0')
-    Cmd('set seq ' ..
-        CurrentSeqNr ..
+    Cmd('set seq ' .. CurrentSeqNr ..
         ' InputFilter="" SwapProtect=0 KillProtect=0 IncludeLinkLastGo=1 UseExecutorTime=0 OffwhenOverridden=1 Lock=0')
     Cmd('set seq ' .. CurrentSeqNr .. ' SequMIB=0 SequMIBMode=1')
 end -- end function Command_Ext_Suite(...)
@@ -562,7 +560,7 @@ function AddAllColor(TCol, CurrentSeqNr, prefix, TLayNr, LayNr, NrNeed, LayX, La
         Command_Ext_Suite(CurrentSeqNr)
         Cmd("Assign Seq " .. CurrentSeqNr .. " at Layout " .. TLayNr)
         Cmd("Set Layout " .. TLayNr .. "." .. LayNr ..
-            " property appearance <default> PosX " .. LayX .. " PosY " .. LayY ..
+            " Property appearance <default> PosX " .. LayX .. " PosY " .. LayY ..
             " PositionW " .. LayW .. " PositionH " .. LayH ..
             " VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0")
 
