@@ -12,6 +12,7 @@ local myHandle = select(4, ...)
 
 local function Main(displayHandle)
     local list = false
+    local DataPools_List = Root().ShowData.DataPools:Children()
     local FixtureGroups = Root().ShowData.DataPools.Default.Groups:Children()
     local SelectedGrp = {}
     local SelectedGrpNo = {}
@@ -44,20 +45,25 @@ local function Main(displayHandle)
     local MatrickNr = Root().ShowData.DataPools.Default.MAtricks:Children()
     local MatrickNrStart
     local MatrickNrRange
+    local DataPools_Grp = 'Default'
 
     local popuplists = {
-        Grp_Select     = {},
-        Gel_Select     = {},
-        Name_Select    = { 'Layout Color', 'Layout Kolor', 'L Co', 'L Ko', 'Color', 'Kolor' },
-        Lay_Select     = { 1, 11, 101, 201, 301, 401, 501, 601, 701, 801, 901, 1001, 2001 },
-        Seq_Select     = { 1, 11, 101, 201, 301, 401, 501, 601, 701, 801, 901, 1001, 2001 },
-        Macro_Select   = { 1, 11, 101, 201, 301, 401, 501, 601, 701, 801, 901, 1001, 2001 },
-        Appear_Select  = { 1, 11, 101, 201, 301, 401, 501, 601, 701, 801, 901, 1001, 2001 },
-        Preset_Select  = { 1, 11, 101, 201, 301, 401, 501, 601, 701, 801, 901, 1001, 2001 },
-        Matrick_Select = { 1, 11, 101, 201, 301, 401, 501, 601, 701, 801, 901, 1001, 2001 }
+        DataPools_Select = {},
+        Grp_Select       = {},
+        Gel_Select       = {},
+        Name_Select      = { 'Layout Color', 'Layout Kolor', 'L Co', 'L Ko', 'Color', 'Kolor' },
+        Lay_Select       = { 1, 11, 101, 201, 301, 401, 501, 601, 701, 801, 901, 1001, 2001 },
+        Seq_Select       = { 1, 11, 101, 201, 301, 401, 501, 601, 701, 801, 901, 1001, 2001 },
+        Macro_Select     = { 1, 11, 101, 201, 301, 401, 501, 601, 701, 801, 901, 1001, 2001 },
+        Appear_Select    = { 1, 11, 101, 201, 301, 401, 501, 601, 701, 801, 901, 1001, 2001 },
+        Preset_Select    = { 1, 11, 101, 201, 301, 401, 501, 601, 701, 801, 901, 1001, 2001 },
+        Matrick_Select   = { 1, 11, 101, 201, 301, 401, 501, 601, 701, 801, 901, 1001, 2001 }
     }
 
     if list == false then
+        for k in ipairs(DataPools_List) do
+            table.insert(popuplists.DataPools_Select, "'" .. DataPools_List[k].name .. "'")
+        end
         for k in ipairs(FixtureGroups) do
             table.insert(popuplists.Grp_Select, "'" .. FixtureGroups[k].name .. "'")
         end
@@ -663,7 +669,7 @@ local function Main(displayHandle)
     input10Icon.Font = "2"
 
     local input10Button = inputsGrid:Append('Button')
-    input10Button.Anchors = { left = 1, right = 9, top = 9, bottom = 9 }
+    input10Button.Anchors = { left = 4, right = 9, top = 9, bottom = 9 }
     input10Button.Padding = "5,5"
     input10Button.Margin = { left = 2, right = 0, top = 9, bottom = 2 }
     input10Button.Name = 'Grp_Select'
@@ -673,6 +679,29 @@ local function Main(displayHandle)
     input10Button.BackColor = colorGroups
     input10Button.Font = "2"
     input10Button.Visible = "No"
+
+    local input10Sujestion = inputsGrid:Append("Button")
+    input10Sujestion.Anchors = { left = 1, right = 1, top = 9, bottom = 9 }
+    input10Sujestion.Padding = "5.5"
+    input10Sujestion.Margin = { left = 0, right = 2, top = 9, bottom = 2 }
+    input10Sujestion.Icon = "object_datapool"
+    input10Sujestion.Name = 'DataPools_Select'
+    input10Sujestion.PluginComponent = thiscomponent
+    input10Sujestion.Clicked = 'mypopup'
+    input10Sujestion.HasHover = "yes"
+    input10Sujestion.backColor = colorGroups
+    input10Sujestion.Visible = "No"
+
+    local input11Sujestion = inputsGrid:Append("Button")
+    input11Sujestion.Anchors = { left = 2, right = 3, top = 9, bottom = 9 }
+    input11Sujestion.Padding = "5.5"
+    input11Sujestion.Margin = { left = 1, right = 3, top = 9, bottom = 2 }
+    input11Sujestion.Text = DataPools_Grp
+    input11Sujestion.Name = 'DataPools_Select'
+    input11Sujestion.Clicked = 'mypopup'
+    input11Sujestion.HasHover = "yes"
+    input11Sujestion.backColor = colorGroups
+    input11Sujestion.Visible = "No"
 
     -- Create the button grid.
     -- This is row 3 of the dlgFrame.
@@ -949,6 +978,8 @@ local function Main(displayHandle)
             end
             check_gel = true
             input10Button.Visible = "Yes"
+            input10Sujestion.Visible = "Yes"
+            input11Sujestion.Visible = "Yes"
         elseif caller.Name == "Grp_Select" then
             for k in ipairs(popuplists.Grp_Select) do
                 if popuplists.Grp_Select[k] == choice then
