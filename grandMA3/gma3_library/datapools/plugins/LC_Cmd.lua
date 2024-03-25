@@ -156,7 +156,7 @@ function Create_Appearances_Sequences(CurrentMacroNr, SelectedGelNr, SelectedGrp
         LayX = math.floor(LayX + LayW + 20)
         local FirstSeqColor = CurrentSeqNr
 
-        -- COLOR SEQ  /// Assign Values Preset 21.2 At Sequence 22 cue 1 part 0.1 /// Set Preset 25 Property'PresetMode' "Universal"
+        -- COLOR SEQ  /// Assign Values Preset 21.2 At Sequence 22 Cue 1 part 0.1 /// Set Preset 25 Property'PresetMode' "Universal"
         for col in ipairs(TCol) do
             col_count = col_count + 1
             local StColCode = "\"" .. TCol[col].r .. "," .. TCol[col].g .. "," .. TCol[col].b .. ",1\""
@@ -173,10 +173,10 @@ function Create_Appearances_Sequences(CurrentMacroNr, SelectedGelNr, SelectedGrp
             Cmd("Store Sequence " .. CurrentSeqNr .. " Cue 1 Part 0.1")
             Cmd("Assign Group " .. GrpNo .. " At Sequence " .. CurrentSeqNr .. " Cue 1 Part 0.1")
             Cmd('Assign Values Preset 25.' ..
-                All_5_NrStart + col - 1 .. "At Sequence " .. CurrentSeqNr .. 'cue 1 part 0.1')
+                All_5_NrStart + col - 1 .. "At Sequence " .. CurrentSeqNr .. 'Cue 1 part 0.1')
             Cmd('Assign MAtricks ' .. MatrickNrStart .. ' At Sequence ' .. CurrentSeqNr .. ' Cue 1 Part 0.1 /nu')
-            Cmd('set seq ' .. CurrentSeqNr .. ' cue 1 Property Appearance=' .. NrNeed)
-            Cmd('set seq ' .. CurrentSeqNr .. ' Property Appearance=' .. NrNeed + 1)
+            Cmd('Set Seq ' .. CurrentSeqNr .. ' Cue 1 Property Appearance=' .. NrNeed)
+            Cmd('Set Seq ' .. CurrentSeqNr .. ' Property Appearance=' .. NrNeed + 1)
             Command_Ext_Suite(CurrentSeqNr)
             -- Add Squences to Layout
             Cmd("Assign Seq " .. CurrentSeqNr .. " at Layout " .. TLayNr)
@@ -202,11 +202,11 @@ function Create_Appearances_Sequences(CurrentMacroNr, SelectedGelNr, SelectedGrp
         -- add matrick group
         Cmd('ClearAll /nu')
         Cmd('Store Sequence ' .. CurrentSeqNr .. ' \'' .. prefix .. "Tricks" .. SelectedGrpName[g]:gsub('\'', ''))
-        Cmd('set seq ' .. CurrentSeqNr .. ' cue \'' .. prefix .. "Tricks" .. SelectedGrpName[g]:gsub('\'', '') ..
+        Cmd('Set Seq ' .. CurrentSeqNr .. ' Cue \'' .. prefix .. "Tricks" .. SelectedGrpName[g]:gsub('\'', '') ..
             '\' Property Command=\'Assign MaTricks ' .. prefix .. SelectedGrpName[g]:gsub('\'', '') ..
             ' At Sequence ' .. FirstSeqColor .. ' Thru ' .. LastSeqColor ..
-            ' cue 1 part 0.1 ;  Assign Sequence ' .. CurrentSeqNr + 1 .. ' At Layout ' .. TLayNr .. '.' .. LayNr)
-        Cmd('set seq ' .. CurrentSeqNr .. ' Property Appearance=' .. AppTricks[2].Nr)
+            ' Cue 1 part 0.1 ;  Assign Sequence ' .. CurrentSeqNr + 1 .. ' At Layout ' .. TLayNr .. '.' .. LayNr)
+        Cmd('Set Seq ' .. CurrentSeqNr .. ' Property Appearance=' .. AppTricks[2].Nr)
         Cmd("Assign Seq " .. CurrentSeqNr .. " at Layout " .. TLayNr)
         Cmd("Set Layout " .. TLayNr .. "." .. LayNr ..
             " PosX " .. LayX .. " PosY " .. LayY ..
@@ -216,12 +216,12 @@ function Create_Appearances_Sequences(CurrentMacroNr, SelectedGelNr, SelectedGrp
         Cmd('ClearAll /nu')
         Cmd('Store Sequence ' .. CurrentSeqNr .. ' \'' .. prefix .. "Tricksh" .. SelectedGrpName[g]:gsub('\'', '') ..
             '\'')
-        Cmd('set seq ' .. CurrentSeqNr .. ' cue \'' .. prefix .. "Tricksh" ..
+        Cmd('Set Seq ' .. CurrentSeqNr .. ' Cue \'' .. prefix .. "Tricksh" ..
             SelectedGrpName[g]:gsub('\'', '') ..
             '\' Property Command=\'Assign MaTricks ' .. MatrickNrStart ..
             ' At Sequence ' .. FirstSeqColor .. ' Thru ' .. LastSeqColor ..
-            ' cue 1 part 0.1 ; Assign Sequence ' .. CurrentSeqNr - 1 .. ' At Layout ' .. TLayNr .. '.' .. LayNr)
-        Cmd('set seq ' .. CurrentSeqNr .. ' Property Appearance=' .. AppTricks[1].Nr)
+            ' Cue 1 part 0.1 ; Assign Sequence ' .. CurrentSeqNr - 1 .. ' At Layout ' .. TLayNr .. '.' .. LayNr)
+        Cmd('Set Seq ' .. CurrentSeqNr .. ' Property Appearance=' .. AppTricks[1].Nr)
         LayNr = math.floor(LayNr + 1)
         LayX = math.floor(LayX + LayW - 35 + 20)
         Cmd('Store Macro ' .. CurrentMacroNr .. ' \'' .. prefix .. SelectedGrpName[g]:gsub('\'', ''))
@@ -262,11 +262,11 @@ function Create_Fade_Sequences(MakeX, FirstSeqTime, LastSeqTime, CurrentSeqNr, C
     Cmd('Insert')
     if MakeX then
         Cmd('set 1 Command=\'off seq ' ..
-            FirstSeqTime .. ' thru ' .. LastSeqTime .. ' - ' .. LastSeqTime .. '')
+            FirstSeqTime .. ' Thru ' .. LastSeqTime .. ' - ' .. LastSeqTime .. '')
         Fade_Element = math.floor(LayNr + 3)
     else
         Cmd('set 1 Command=\'off seq ' ..
-            First_Id_Lay[37] .. ' + ' .. FirstSeqTime .. ' thru ' .. LastSeqTime .. ' - ' .. LastSeqTime .. '')
+            First_Id_Lay[37] .. ' + ' .. FirstSeqTime .. ' Thru ' .. LastSeqTime .. ' - ' .. LastSeqTime .. '')
     end
     Cmd('Insert')
     Cmd('set 2 Command=\'Edit Matricks ' .. MatrickNrStart .. ' Property "FadeFrom' .. surfix[a] .. '"')
@@ -289,12 +289,12 @@ function Create_Fade_Sequences(MakeX, FirstSeqTime, LastSeqTime, CurrentSeqNr, C
         Cmd('ClearAll /nu')
         Cmd('Store Sequence ' ..
             CurrentSeqNr .. ' \'' .. prefix .. Argument_Fade[1].name .. surfix[a] .. '\'')
-        Cmd('set seq ' .. CurrentSeqNr .. ' cue 1 Property Appearance=' .. AppImp[1].Nr)
-        Cmd('set seq ' .. CurrentSeqNr .. ' cue \'' .. prefix .. Argument_Fade[1].name .. surfix[a] ..
-            '\' Property Command=\'off seq ' .. FirstSeqTime .. ' thru ' .. LastSeqTime .. ' - ' .. CurrentSeqNr ..
-            ' ; set seq ' ..
-            SeqNrStart .. ' thru ' .. SeqNrEnd .. ' UseExecutorTime=' .. Argument_Fade[1].UseExTime .. '')
-        Cmd('set seq ' .. CurrentSeqNr .. ' Property Appearance=' .. AppImp[2].Nr)
+        Cmd('Set Seq ' .. CurrentSeqNr .. ' Cue 1 Property Appearance=' .. AppImp[1].Nr)
+        Cmd('Set Seq ' .. CurrentSeqNr .. ' Cue \'' .. prefix .. Argument_Fade[1].name .. surfix[a] ..
+            '\' Property Command=\'off seq ' .. FirstSeqTime .. ' Thru ' .. LastSeqTime .. ' - ' .. CurrentSeqNr ..
+            ' ; Set Seq ' ..
+            SeqNrStart .. ' Thru ' .. SeqNrEnd .. ' UseExecutorTime=' .. Argument_Fade[1].UseExTime .. '')
+        Cmd('Set Seq ' .. CurrentSeqNr .. ' Property Appearance=' .. AppImp[2].Nr)
         Command_Ext_Suite(CurrentSeqNr)
         Cmd('Assign Seq ' .. CurrentSeqNr .. ' at Layout ' .. TLayNr)
         Cmd('Set Layout ' .. TLayNr .. '.' .. LayNr ..
@@ -332,17 +332,17 @@ function Create_Fade_Sequences(MakeX, FirstSeqTime, LastSeqTime, CurrentSeqNr, C
         Cmd('Store Sequence ' ..
             CurrentSeqNr .. ' \'' .. prefix .. Argument_Fade[i].name .. surfix[a] .. '\'')
         -- Add Cmd to Squence
-        Cmd('set seq ' .. CurrentSeqNr .. ' cue 1 Property Appearance=' .. AppImp[ia].Nr)
+        Cmd('Set Seq ' .. CurrentSeqNr .. ' Cue 1 Property Appearance=' .. AppImp[ia].Nr)
         if i == 6 then
-            Cmd('set seq ' .. CurrentSeqNr .. ' cue \'' .. prefix .. Argument_Fade[i].name .. surfix[a] ..
+            Cmd('Set Seq ' .. CurrentSeqNr .. ' Cue \'' .. prefix .. Argument_Fade[i].name .. surfix[a] ..
                 '\' Property Command=\'Go Macro ' .. CurrentMacroNr .. '')
         else
             Create_Macro_Fade_E(CurrentMacroNr, prefix, Argument_Fade, i, surfix, a, FirstSeqTime,
                 LastSeqTime, CurrentSeqNr, SeqNrStart, SeqNrEnd, MatrickNrStart, TLayNr, Fade_Element)
-            Cmd('set seq ' .. CurrentSeqNr .. ' cue \'' .. prefix .. Argument_Fade[i].name .. surfix[a] ..
+            Cmd('Set Seq ' .. CurrentSeqNr .. ' Cue \'' .. prefix .. Argument_Fade[i].name .. surfix[a] ..
                 '\' Property Command=\'Go Macro ' .. CurrentMacroNr + i - 1 .. '')
         end
-        Cmd('set seq ' .. CurrentSeqNr .. ' Property Appearance=' .. AppImp[ib].Nr)
+        Cmd('Set Seq ' .. CurrentSeqNr .. ' Property Appearance=' .. AppImp[ib].Nr)
         Command_Ext_Suite(CurrentSeqNr)
         -- end Sequences
 
@@ -398,14 +398,14 @@ function Create_Delay_From_Sequences(First_Id_Lay, LayNr, CurrentSeqNr, Current_
         Cmd('ClearAll /nu')
         Cmd('Store Sequence ' .. CurrentSeqNr .. ' \'' .. prefix .. Argument_Delay[i].name .. surfix[a] .. '\'')
         -- Add Cmd to Squence
-        Cmd('set seq ' .. CurrentSeqNr .. ' cue 1 Property Appearance=' .. AppImp[ia].Nr)
+        Cmd('Set Seq ' .. CurrentSeqNr .. ' Cue 1 Property Appearance=' .. AppImp[ia].Nr)
         if i == 5 then
-            Cmd('set seq ' .. CurrentSeqNr .. ' cue \'' .. prefix .. Argument_Delay[i].name .. surfix[a] ..
+            Cmd('Set Seq ' .. CurrentSeqNr .. ' Cue \'' .. prefix .. Argument_Delay[i].name .. surfix[a] ..
                 '\' Property Command=\'Go Macro ' .. CurrentMacroNr .. '')
         else
-            Cmd('set seq ' .. CurrentSeqNr .. ' cue \'' .. prefix .. Argument_Delay[i].name .. surfix[a] ..
+            Cmd('Set Seq ' .. CurrentSeqNr .. ' Cue \'' .. prefix .. Argument_Delay[i].name .. surfix[a] ..
                 '\' Property Command=\'off seq ' ..
-                FirstSeqDelayFrom .. ' thru ' .. LastSeqDelayFrom .. ' - ' .. CurrentSeqNr ..
+                FirstSeqDelayFrom .. ' Thru ' .. LastSeqDelayFrom .. ' - ' .. CurrentSeqNr ..
                 ' ; Set Matricks ' ..
                 MatrickNrStart .. ' Property "DelayFrom' .. surfix[a] .. '" ' .. Argument_Delay[i].Time ..
                 '  ; SetUserVariable "LC_Fonction" 2 ; SetUserVariable "LC_Axes" "' .. a ..
@@ -415,7 +415,7 @@ function Create_Delay_From_Sequences(First_Id_Lay, LayNr, CurrentSeqNr, Current_
                 ' ; SetUserVariable "LC_Matrick_Thru" ' .. MatrickNr ..
                 ' ; Call Plugin "LC_View" ')
         end
-        Cmd('set seq ' .. CurrentSeqNr .. ' Property Appearance=' .. AppImp[ib].Nr)
+        Cmd('Set Seq ' .. CurrentSeqNr .. ' Property Appearance=' .. AppImp[ib].Nr)
         Command_Ext_Suite(CurrentSeqNr)
         -- Add Squences to Layout
         if MakeX then
@@ -469,14 +469,14 @@ function Create_Delay_To_Sequences(a, First_Id_Lay, LayNr, CurrentSeqNr, Current
         Cmd('Store Sequence ' ..
             CurrentSeqNr .. ' \'' .. prefix .. Argument_DelayTo[i].name .. surfix[a] .. '\'')
         -- Add Cmd to Squence
-        Cmd('set seq ' .. CurrentSeqNr .. ' cue 1 Property Appearance=' .. AppImp[ia].Nr)
+        Cmd('Set Seq ' .. CurrentSeqNr .. ' Cue 1 Property Appearance=' .. AppImp[ia].Nr)
         if i == 5 then
-            Cmd('set seq ' .. CurrentSeqNr .. ' cue \'' .. prefix .. Argument_DelayTo[i].name .. surfix[a] ..
+            Cmd('Set Seq ' .. CurrentSeqNr .. ' Cue \'' .. prefix .. Argument_DelayTo[i].name .. surfix[a] ..
                 '\' Property Command=\'Go Macro ' .. CurrentMacroNr .. '')
         else
-            Cmd('set seq ' .. CurrentSeqNr .. ' cue \'' .. prefix .. Argument_DelayTo[i].name .. surfix[a] ..
+            Cmd('Set Seq ' .. CurrentSeqNr .. ' Cue \'' .. prefix .. Argument_DelayTo[i].name .. surfix[a] ..
                 '\' Property Command=\'off seq ' ..
-                FirstSeqDelayTo .. ' thru ' .. LastSeqDelayTo .. ' - ' .. CurrentSeqNr ..
+                FirstSeqDelayTo .. ' Thru ' .. LastSeqDelayTo .. ' - ' .. CurrentSeqNr ..
                 ' ; Set Matricks ' ..
                 MatrickNrStart .. ' Property "DelayTo' .. surfix[a] .. '" ' .. Argument_DelayTo[i].Time ..
                 ' ; SetUserVariable "LC_Fonction" 3 ; SetUserVariable "LC_Axes" "' .. a ..
@@ -486,7 +486,7 @@ function Create_Delay_To_Sequences(a, First_Id_Lay, LayNr, CurrentSeqNr, Current
                 ' ; SetUserVariable "LC_Matrick_Thru" ' .. MatrickNr ..
                 ' ; Call Plugin "LC_View" ')
         end
-        Cmd('set seq ' .. CurrentSeqNr .. ' Property Appearance=' .. AppImp[ib].Nr)
+        Cmd('Set Seq ' .. CurrentSeqNr .. ' Property Appearance=' .. AppImp[ib].Nr)
         Command_Ext_Suite(CurrentSeqNr)
         -- end Sequences
         -- Add Squences to Layout
@@ -530,10 +530,10 @@ function Create_Phase_Sequence(LayY, LayX, LayW, a, First_Id_Lay, LayNr, Current
     Cmd('ClearAll /nu')
     Cmd('Store Sequence ' .. CurrentSeqNr .. ' \'' .. prefix .. 'Phase Input' .. surfix[a] .. '\'')
     -- Add Cmd to Squence
-    Cmd('set seq ' .. CurrentSeqNr .. ' cue 1 Property Appearance=' .. AppImp[63].Nr)
-    Cmd('set seq ' .. CurrentSeqNr .. ' cue \'' .. prefix .. 'Phase Input' .. surfix[a] ..
+    Cmd('Set Seq ' .. CurrentSeqNr .. ' Cue 1 Property Appearance=' .. AppImp[63].Nr)
+    Cmd('Set Seq ' .. CurrentSeqNr .. ' Cue \'' .. prefix .. 'Phase Input' .. surfix[a] ..
         '\' Property Command=\'Go Macro ' .. CurrentMacroNr .. '')
-    Cmd('set seq ' .. CurrentSeqNr .. ' Property Appearance=' .. AppImp[64].Nr)
+    Cmd('Set Seq ' .. CurrentSeqNr .. ' Property Appearance=' .. AppImp[64].Nr)
     Command_Ext_Suite(CurrentSeqNr)
 
     -- Add Squences to Layout
@@ -556,8 +556,8 @@ function Create_Phase_Sequence(LayY, LayX, LayW, a, First_Id_Lay, LayNr, Current
 end -- end Create_Phase_Sequence
 
 function Create_Group_Sequence(CurrentMacroNr, FirstSeqGrp, CurrentSeqNr, LastSeqGrp, prefix, surfix, a, MatrickNrStart,
-                                TLayNr, Group_Element, MatrickNr, LayNr, LayX, LayY, CurrentSeqNr, First_Id_Lay,
-                                Current_Id_Lay, Argument_Xgrp, AppImp, LayW, LayH, Block_Element, MakeX)
+                               TLayNr, Group_Element, MatrickNr, LayNr, LayX, LayY, CurrentSeqNr, First_Id_Lay,
+                               Current_Id_Lay, Argument_Xgrp, AppImp, LayW, LayH, Block_Element, MakeX)
     -- Setup XGroup seq
     CurrentMacroNr = math.floor(CurrentMacroNr + 1)
     FirstSeqGrp = CurrentSeqNr
@@ -590,13 +590,13 @@ function Create_Group_Sequence(CurrentMacroNr, FirstSeqGrp, CurrentSeqNr, LastSe
         Cmd('ClearAll /nu')
         Cmd('Store Sequence ' .. CurrentSeqNr .. ' \'' .. prefix .. Argument_Xgrp[i].name .. surfix[a] .. '\'')
         -- Add Cmd to Squence
-        Cmd('set seq ' .. CurrentSeqNr .. ' cue 1 Property Appearance=' .. AppImp[ia].Nr)
+        Cmd('Set Seq ' .. CurrentSeqNr .. ' Cue 1 Property Appearance=' .. AppImp[ia].Nr)
         if i == 5 then
-            Cmd('set seq ' .. CurrentSeqNr .. ' cue \'' .. prefix .. Argument_Xgrp[i].name .. surfix[a] ..
+            Cmd('Set Seq ' .. CurrentSeqNr .. ' Cue \'' .. prefix .. Argument_Xgrp[i].name .. surfix[a] ..
                 '\' Property Command=\'Go Macro ' .. CurrentMacroNr .. '')
         else
-            Cmd('set seq ' .. CurrentSeqNr .. ' cue \'' .. prefix .. Argument_Xgrp[i].name .. surfix[a] ..
-                '\' Property Command=\'off seq ' .. FirstSeqGrp .. ' thru ' .. LastSeqGrp .. ' - ' .. CurrentSeqNr ..
+            Cmd('Set Seq ' .. CurrentSeqNr .. ' Cue \'' .. prefix .. Argument_Xgrp[i].name .. surfix[a] ..
+                '\' Property Command=\'off seq ' .. FirstSeqGrp .. ' Thru ' .. LastSeqGrp .. ' - ' .. CurrentSeqNr ..
                 ' ; Set Matricks ' .. MatrickNrStart .. ' Property "' .. surfix[a] ..
                 'Group" ' .. Argument_Xgrp[i].Time ..
                 ' ; SetUserVariable "LC_Fonction" 5 ; SetUserVariable "LC_Axes" "' .. a ..
@@ -606,7 +606,7 @@ function Create_Group_Sequence(CurrentMacroNr, FirstSeqGrp, CurrentSeqNr, LastSe
                 ' ; SetUserVariable "LC_Matrick_Thru" ' .. MatrickNr ..
                 ' ; Call Plugin "LC_View" ')
         end
-        Cmd('set seq ' .. CurrentSeqNr .. ' Property Appearance=' .. AppImp[ib].Nr)
+        Cmd('Set Seq ' .. CurrentSeqNr .. ' Property Appearance=' .. AppImp[ib].Nr)
         Command_Ext_Suite(CurrentSeqNr)
         -- end Sequences
         -- Add Squences to Layout
@@ -663,16 +663,16 @@ function Create_Block_Sequence(CurrentMacroNr, FirstSeqBlock, CurrentSeqNr, Last
         Cmd('Store Sequence ' ..
             CurrentSeqNr .. ' \'' .. prefix .. Argument_Xblock[i].name .. surfix[a] .. '\'')
         -- Add Cmd to Squence
-        Cmd('set seq ' .. CurrentSeqNr .. ' cue 1 Property Appearance=' .. AppImp[ia].Nr)
+        Cmd('Set Seq ' .. CurrentSeqNr .. ' Cue 1 Property Appearance=' .. AppImp[ia].Nr)
         if i == 5 then
-            Cmd('set seq ' ..
-                CurrentSeqNr .. ' cue \'' .. prefix .. Argument_Xblock[i].name .. surfix[a] ..
+            Cmd('Set Seq ' ..
+                CurrentSeqNr .. ' Cue \'' .. prefix .. Argument_Xblock[i].name .. surfix[a] ..
                 '\' Property Command=\'Go Macro ' .. CurrentMacroNr .. '')
         else
-            Cmd('set seq ' ..
-                CurrentSeqNr .. ' cue \'' .. prefix .. Argument_Xblock[i].name .. surfix[a] ..
+            Cmd('Set Seq ' ..
+                CurrentSeqNr .. ' Cue \'' .. prefix .. Argument_Xblock[i].name .. surfix[a] ..
                 '\' Property Command=\'off seq ' ..
-                FirstSeqBlock .. ' thru ' .. LastSeqBlock .. ' - ' .. CurrentSeqNr ..
+                FirstSeqBlock .. ' Thru ' .. LastSeqBlock .. ' - ' .. CurrentSeqNr ..
                 ' ; Set Matricks ' .. MatrickNrStart ..
                 ' Property "' .. surfix[a] .. 'Block" ' .. Argument_Xblock[i].Time ..
                 ' ; SetUserVariable "LC_Fonction" 6 ; SetUserVariable "LC_Axes" "' .. a ..
@@ -682,7 +682,7 @@ function Create_Block_Sequence(CurrentMacroNr, FirstSeqBlock, CurrentSeqNr, Last
                 ' ; SetUserVariable "LC_Matrick_Thru" ' .. MatrickNr ..
                 ' ; Call Plugin "LC_View" ')
         end
-        Cmd('set seq ' .. CurrentSeqNr .. ' Property Appearance=' .. AppImp[ib].Nr)
+        Cmd('Set Seq ' .. CurrentSeqNr .. ' Property Appearance=' .. AppImp[ib].Nr)
         Command_Ext_Suite(CurrentSeqNr)
         -- end Sequences
         -- Add Squences to Layout
@@ -698,9 +698,78 @@ function Create_Block_Sequence(CurrentMacroNr, FirstSeqBlock, CurrentSeqNr, Last
         end
         CurrentSeqNr = math.floor(CurrentSeqNr + 1)
     end
-    do return 1, CurrentSeqNr, Wings_Element, LayNr, LayX, Current_Id_Lay, First_Id_Lay, CurrentMacroNr, FirstSeqBlock,
-            LastSeqBlock end
+    do
+        return 1, CurrentSeqNr, Wings_Element, LayNr, LayX, Current_Id_Lay, First_Id_Lay, CurrentMacroNr, FirstSeqBlock,
+            LastSeqBlock
+    end
 end -- end Create_Block_Sequence
+
+function Create_Wings_Sequence(CurrentMacroNr, FirstSeqWings, CurrentSeqNr, LastSeqWings, prefix, surfix, a,
+                               MatrickNrStart, TLayNr, Wings_Element, MatrickNr, MakeX, LayNr, LayX, LayY, First_Id_Lay,
+                               Current_Id_Lay, Argument_Xwings, AppImp, LayW, LayH)
+    CurrentMacroNr = math.floor(CurrentMacroNr + 1)
+    FirstSeqWings = CurrentSeqNr
+    LastSeqWings = math.floor(CurrentSeqNr + 4)
+    -- Create Macro Wings Input
+    Create_Macro_Wings(CurrentMacroNr, prefix, surfix, a, FirstSeqWings, LastSeqWings, MatrickNrStart, 7,
+        TLayNr, Wings_Element, MatrickNr)
+
+    if MakeX then
+        Command_Title('WINGS', TLayNr, LayNr, LayX, LayY, 580, 140, 2)
+        LayNr = math.floor(LayNr + 1)
+        Command_Title('none', TLayNr, LayNr, LayX, LayY, 580, 140, 3)
+        LayNr = math.floor(LayNr + 1)
+    end
+    -- Create Sequences Wings
+    for i = 1, 5 do
+        local ia = tonumber(i * 2 + 51)
+        local ib = tonumber(i * 2 + 52)
+        if i == 1 then
+            if a == 1 then
+                First_Id_Lay[25] = math.floor(LayNr)
+                First_Id_Lay[26] = CurrentSeqNr
+            elseif a == 2 then
+                First_Id_Lay[27] = CurrentSeqNr
+            elseif a == 3 then
+                First_Id_Lay[28] = CurrentSeqNr
+            end
+            Current_Id_Lay = First_Id_Lay[25]
+        end
+        Cmd('ClearAll /nu')
+        Cmd('Store Sequence ' ..
+            CurrentSeqNr .. ' \'' .. prefix .. Argument_Xwings[i].name .. surfix[a] .. '\'')
+        Cmd('Set Seq ' .. CurrentSeqNr .. ' Cue 1 Property Appearance=' .. AppImp[ia].Nr)
+        if i == 5 then
+            Cmd('Set Seq ' .. CurrentSeqNr .. ' Cue \'' .. prefix .. Argument_Xwings[i].name .. surfix[a] ..
+                '\' Property Command=\'Go Macro ' .. CurrentMacroNr .. '')
+        else
+            Cmd('Set Seq ' .. CurrentSeqNr .. ' Cue \'' .. prefix .. Argument_Xwings[i].name .. surfix[a] ..
+                '\' Property Command=\'off seq ' .. FirstSeqWings .. ' Thru ' .. LastSeqWings .. ' - ' .. CurrentSeqNr ..
+                ' ; Set Matricks ' .. MatrickNrStart .. ' Property "' .. surfix[a] ..
+                'Wings" ' .. Argument_Xwings[i].Time ..
+                '  ; SetUserVariable "LC_Fonction" 7 ; SetUserVariable "LC_Axes" "' .. a ..
+                '" ; SetUserVariable "LC_Layout" ' .. TLayNr ..
+                ' ; SetUserVariable "LC_Element" ' .. Wings_Element ..
+                ' ; SetUserVariable "LC_Matrick" ' .. MatrickNrStart ..
+                ' ; SetUserVariable "LC_Matrick_Thru" ' .. MatrickNr ..
+                ' ; Call Plugin "LC_View" ')
+        end -- end Sequences
+        Cmd('Set Seq ' .. CurrentSeqNr .. ' Property Appearance=' .. AppImp[ib].Nr)
+        Command_Ext_Suite(CurrentSeqNr)
+        -- Add Squences to Layout
+        if MakeX then
+            Cmd('Assign Seq ' .. CurrentSeqNr .. ' at Layout ' .. TLayNr)
+            Cmd('Set Layout ' .. TLayNr .. '.' .. LayNr ..
+                ' Property Appearance <default> PosX ' .. LayX .. ' PosY ' .. LayY ..
+                ' PositionW ' .. LayW .. ' PositionH ' .. LayH ..
+                ' VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0')
+            LayX = math.floor(LayX + LayW + 20)
+            LayNr = math.floor(LayNr + 1)
+        end
+        CurrentSeqNr = math.floor(CurrentSeqNr + 1)
+    end
+    do return 1, CurrentSeqNr, LayNr, LayX, Current_Id_Lay, First_Id_Lay, LastSeqWings, FirstSeqWings, CurrentMacroNr end
+end -- end Create_Wings_Sequence
 
 function Command_Title(title, TLayNr, LayNr, LayX, LayY, Pw, Ph, align)
     Cmd('Store Layout ' .. TLayNr .. '.' .. LayNr .. ' Property CustomTextText=\' ' .. title .. ' \'')
@@ -723,15 +792,15 @@ function Command_Title(title, TLayNr, LayNr, LayX, LayY, Pw, Ph, align)
 end -- end function Command_Title(...)
 
 function Command_Ext_Suite(CurrentSeqNr)
-    Cmd('set seq ' .. CurrentSeqNr .. ' Property prefercueappearance=on')
-    Cmd('set seq ' .. CurrentSeqNr .. ' AutoStart=1 AutoStop=1 MasterGoMode=None AutoFix=0 AutoStomp=0')
-    Cmd('set seq ' .. CurrentSeqNr ..
+    Cmd('Set Seq ' .. CurrentSeqNr .. ' Property prefercueappearance=on')
+    Cmd('Set Seq ' .. CurrentSeqNr .. ' AutoStart=1 AutoStop=1 MasterGoMode=None AutoFix=0 AutoStomp=0')
+    Cmd('Set Seq ' .. CurrentSeqNr ..
         ' Tracking=0 WrapAround=1 ReleaseFirstCue=0 RestartMode=1 CommandEnable=1 XFadeReload=0')
-    Cmd('set seq ' .. CurrentSeqNr .. ' OutputFilter="" Priority=0 SoftLTP=1 PlaybackMaster="" XfadeMode=0')
-    Cmd('set seq ' .. CurrentSeqNr .. ' RateMaster="" RateScale=0 SpeedMaster="" SpeedScale=0 SpeedfromRate=0')
-    Cmd('set seq ' .. CurrentSeqNr ..
+    Cmd('Set Seq ' .. CurrentSeqNr .. ' OutputFilter="" Priority=0 SoftLTP=1 PlaybackMaster="" XfadeMode=0')
+    Cmd('Set Seq ' .. CurrentSeqNr .. ' RateMaster="" RateScale=0 SpeedMaster="" SpeedScale=0 SpeedfromRate=0')
+    Cmd('Set Seq ' .. CurrentSeqNr ..
         ' InputFilter="" SwapProtect=0 KillProtect=0 IncludeLinkLastGo=1 UseExecutorTime=0 OffwhenOverridden=1 Lock=0')
-    Cmd('set seq ' .. CurrentSeqNr .. ' SequMIB=0 SequMIBMode=1')
+    Cmd('Set Seq ' .. CurrentSeqNr .. ' SequMIB=0 SequMIBMode=1')
 end -- end function Command_Ext_Suite(...)
 
 function AddAllColor(TCol, CurrentSeqNr, prefix, TLayNr, LayNr, NrNeed, LayX, LayY, LayW, LayH, SelectedGelNr, MaxColLgn,
@@ -750,10 +819,10 @@ function AddAllColor(TCol, CurrentSeqNr, prefix, TLayNr, LayNr, NrNeed, LayX, La
         end
         Cmd("ClearAll /nu")
         Cmd('Store Sequence ' .. CurrentSeqNr .. ' \'' .. prefix .. 'ALL' .. StringColName .. 'ALL\'')
-        Cmd('set seq ' .. CurrentSeqNr .. ' cue 1 Property Appearance=' .. NrNeed + 1)
-        Cmd('set seq ' .. CurrentSeqNr .. ' cue \'' .. prefix .. 'ALL' .. StringColName .. '' ..
+        Cmd('Set Seq ' .. CurrentSeqNr .. ' Cue 1 Property Appearance=' .. NrNeed + 1)
+        Cmd('Set Seq ' .. CurrentSeqNr .. ' Cue \'' .. prefix .. 'ALL' .. StringColName .. '' ..
             'ALL\' Property Command=\'Go+ Sequence \'' .. prefix .. StringColName .. '*')
-        Cmd('set seq ' .. CurrentSeqNr .. ' Property Appearance=' .. NrNeed + 1)
+        Cmd('Set Seq ' .. CurrentSeqNr .. ' Property Appearance=' .. NrNeed + 1)
         Command_Ext_Suite(CurrentSeqNr)
         Cmd("Assign Seq " .. CurrentSeqNr .. " at Layout " .. TLayNr)
         Cmd("Set Layout " .. TLayNr .. "." .. LayNr ..
