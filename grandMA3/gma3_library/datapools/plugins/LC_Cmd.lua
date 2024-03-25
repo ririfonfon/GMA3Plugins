@@ -771,6 +771,101 @@ function Create_Wings_Sequence(CurrentMacroNr, FirstSeqWings, CurrentSeqNr, Last
     do return 1, CurrentSeqNr, LayNr, LayX, Current_Id_Lay, First_Id_Lay, LastSeqWings, FirstSeqWings, CurrentMacroNr end
 end -- end Create_Wings_Sequence
 
+function Create_XYZ_Sequence(CurrentMacroNr, First_Id_Lay, prefix, surfix, Call_inc, CallT, MatrickNrStart, a,
+                             CurrentSeqNr, TLayNr, Fade_Element, Delay_F_Element, Delay_T_Element, Phase_Element,
+                             Group_Element, Block_Element, Wings_Element, MatrickNr, AppImp, MakeX, LayNr, LayX, LayY,
+                             LayW, LayH)
+    CurrentMacroNr = math.floor(CurrentMacroNr + 1)
+    First_Id_Lay[33 + a] = CurrentMacroNr
+    Cmd('Store Macro ' .. CurrentMacroNr .. ' \'' .. prefix .. surfix[a] .. '_Call\'')
+    Cmd('ChangeDestination Macro ' .. CurrentMacroNr .. '')
+    for m = 1, 31 do
+        if m == 1 or m == 6 or m == 11 or m == 16 or m == 17 or m == 22 or m == 27 then
+            Call_inc = 0
+        end
+        if m < 6 then
+            CallT = 1
+        elseif m < 11 then
+            CallT = 5
+        elseif m < 16 then
+            CallT = 9
+        elseif m < 17 then
+            CallT = 13
+        elseif m < 22 then
+            CallT = 17
+        elseif m < 27 then
+            CallT = 21
+        elseif m <= 31 then
+            CallT = 25
+        end
+        Cmd('Insert')
+        Cmd('Set ' .. m .. ' Command=\'Assign Sequence ' ..
+            First_Id_Lay[CallT + a] + Call_inc .. ' At Layout ' ..
+            TLayNr .. '.' .. First_Id_Lay[CallT] + Call_inc)
+        Call_inc = math.floor(Call_inc + 1)
+    end
+    Cmd('ChangeDestination Root')
+    Create_Macro_Reset(CurrentMacroNr, prefix, surfix, MatrickNrStart, a, CurrentSeqNr, First_Id_Lay, TLayNr,
+        Fade_Element, Delay_F_Element, Delay_T_Element, Phase_Element, Group_Element, Block_Element,
+        Wings_Element, MatrickNr)
+
+    First_Id_Lay[28 + a] = CurrentSeqNr
+    Cmd('ClearAll /nu')
+    Cmd('Store Sequence ' .. CurrentSeqNr .. ' \'' .. prefix .. surfix[a] .. '_Call\'')
+    Cmd('Set Seq ' .. CurrentSeqNr .. ' Cue 1 Property Appearance=' .. AppImp[66 + tonumber(a * 2 - 1)].Nr)
+    Cmd('Set Seq ' .. CurrentSeqNr .. ' Cue \'' .. prefix .. surfix[a] ..
+        '_Call\' Property Command=\'Go Macro ' .. CurrentMacroNr .. '')
+    Cmd('Set Seq ' .. CurrentSeqNr .. ' Property Appearance=' .. AppImp[67 + tonumber(a * 2 - 1)].Nr)
+    Command_Ext_Suite(CurrentSeqNr)
+    Cmd('ClearAll /nu')
+    Cmd('Store Sequence ' .. CurrentSeqNr + 1 .. ' \'' .. prefix .. surfix[a] .. '_Reset\'')
+    Cmd("Set Seq " .. CurrentSeqNr + 1 .. " Cue 1 Property Appearance=" .. prefix .. "'skull_on'")
+    Cmd('Set Seq ' .. CurrentSeqNr + 1 .. ' Cue \'' .. prefix .. surfix[a] ..
+        '_Reset\' Property Command=\'Go Macro ' .. CurrentMacroNr + 1 .. '')
+    Cmd("Set Seq " .. CurrentSeqNr + 1 .. " Property Appearance=" .. prefix .. "'skull_off'")
+    Command_Ext_Suite(CurrentSeqNr + 1)
+    if MakeX == false then
+        LayNr = math.floor(LayNr + 1)
+    end
+    if a == 1 then
+        First_Id_Lay[32] = LayX
+        First_Id_Lay[33] = LayY
+        Cmd('Assign Seq ' .. CurrentSeqNr .. ' at Layout ' .. TLayNr)
+        Cmd('Set Layout ' .. TLayNr .. '.' .. LayNr ..
+            ' Property Appearance <default> PosX ' .. First_Id_Lay[32] .. ' PosY ' .. First_Id_Lay[33] + 170 ..
+            ' PositionW ' .. LayW - 35 .. ' PositionH ' .. LayH - 35 ..
+            ' VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0')
+        Cmd('Assign Seq ' .. CurrentSeqNr + 1 .. ' at Layout ' .. TLayNr)
+        Cmd('Set Layout ' .. TLayNr .. '.' .. LayNr + 1 ..
+            ' Property Appearance <default> PosX ' .. First_Id_Lay[32] + 85 .. ' PosY ' .. First_Id_Lay[33] + 170 ..
+            ' PositionW ' .. LayW - 35 .. ' PositionH ' .. LayH - 35 ..
+            ' VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0')
+    elseif a == 2 then
+        Cmd('Assign Seq ' .. CurrentSeqNr .. ' at Layout ' .. TLayNr)
+        Cmd('Set Layout ' .. TLayNr .. '.' .. LayNr ..
+            ' Property Appearance <default> PosX ' .. First_Id_Lay[32] .. ' PosY ' .. First_Id_Lay[33] + 90 ..
+            ' PositionW ' .. LayW - 35 .. ' PositionH ' .. LayH - 35 ..
+            ' VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0')
+        Cmd('Assign Seq ' .. CurrentSeqNr + 1 .. ' at Layout ' .. TLayNr)
+        Cmd('Set Layout ' .. TLayNr .. '.' .. LayNr + 1 ..
+            ' Property Appearance <default> PosX ' .. First_Id_Lay[32] + 85 .. ' PosY ' .. First_Id_Lay[33] + 90 ..
+            ' PositionW ' .. LayW - 35 .. ' PositionH ' .. LayH - 35 ..
+            ' VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0')
+    elseif a == 3 then
+        Cmd('Assign Seq ' .. CurrentSeqNr .. ' at Layout ' .. TLayNr)
+        Cmd('Set Layout ' .. TLayNr .. '.' .. LayNr ..
+            ' Property Appearance <default> PosX ' .. First_Id_Lay[32] .. ' PosY ' .. First_Id_Lay[33] + 10 ..
+            ' PositionW ' .. LayW - 35 .. ' PositionH ' .. LayH - 35 ..
+            ' VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0')
+        Cmd('Assign Seq ' .. CurrentSeqNr + 1 .. ' at Layout ' .. TLayNr)
+        Cmd('Set Layout ' .. TLayNr .. '.' .. LayNr + 1 ..
+            ' Property Appearance <default> PosX ' .. First_Id_Lay[32] + 85 .. ' PosY ' .. First_Id_Lay[33] + 10 ..
+            ' PositionW ' .. LayW - 35 .. ' PositionH ' .. LayH - 35 ..
+            ' VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0')
+    end
+    do return 1, First_Id_Lay, LayNr, CurrentMacroNr end
+end -- end Create_XYZ_Sequence
+
 function Command_Title(title, TLayNr, LayNr, LayX, LayY, Pw, Ph, align)
     Cmd('Store Layout ' .. TLayNr .. '.' .. LayNr .. ' Property CustomTextText=\' ' .. title .. ' \'')
     Cmd('Set Layout ' .. TLayNr .. '.' .. LayNr .. ' Property CustomTextSize \'24')
