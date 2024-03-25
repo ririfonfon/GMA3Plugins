@@ -508,22 +508,14 @@ function Construct_Layout(displayHandle, TLay, SeqNrStart, MacroNrStart, Matrick
         ' VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0')
     -- end Kill all LCx_
 
-    -- add All Color
-    LayNr = math.floor(LayNr + 1)
-    CurrentSeqNr = math.floor(CurrentSeqNr + 1)
-    LayX = math.floor(LayX + LayW + 20)
-    NrNeed = math.floor(AppNr + 1)
-
-    local Return_AddAllColor = { AddAllColor(TCol, CurrentSeqNr, prefix, TLayNr, LayNr, NrNeed, LayX, LayY, LayW,
-        LayH, SelectedGelNr, MaxColLgn, RefX) }
-    if Return_AddAllColor[1] then
-        LayNr = Return_AddAllColor[2]
-        LayX = Return_AddAllColor[3]
-        First_All_Color = Return_AddAllColor[4]
-    end
-
-    LayX = math.floor(LayX + LayW + 20)
-    -- end All Color
+    -- Create_All_Color
+    local Return_Create_All_Color = { Create_All_Color(TCol, CurrentSeqNr, prefix, TLayNr, LayNr, NrNeed, LayX, LayY,
+        LayW, LayH, MaxColLgn, RefX, AppNr) }
+    if Return_Create_All_Color[1] then
+        LayNr = Return_Create_All_Color[2]
+        LayX = Return_Create_All_Color[3]
+        First_All_Color = Return_Create_All_Color[4]
+    end -- Create_All_Color
 
     -- add Macro priority
     CurrentMacroNr = math.floor(CurrentMacroNr)

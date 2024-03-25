@@ -866,48 +866,18 @@ function Create_XYZ_Sequence(CurrentMacroNr, First_Id_Lay, prefix, surfix, Call_
     do return 1, First_Id_Lay, LayNr, CurrentMacroNr end
 end -- end Create_XYZ_Sequence
 
-function Command_Title(title, TLayNr, LayNr, LayX, LayY, Pw, Ph, align)
-    Cmd('Store Layout ' .. TLayNr .. '.' .. LayNr .. ' Property CustomTextText=\' ' .. title .. ' \'')
-    Cmd('Set Layout ' .. TLayNr .. '.' .. LayNr .. ' Property CustomTextSize \'24')
-    Cmd('Set Layout ' .. TLayNr .. '.' .. LayNr .. ' Property CustomTextAlignmentV \'Top')
-    if (align == 1) then
-        Cmd('Set Layout ' .. TLayNr .. '.' .. LayNr .. ' Property CustomTextAlignmentH \'Left')
-    elseif (align == 2) then
-        Cmd('Set Layout ' .. TLayNr .. '.' .. LayNr .. ' Property CustomTextAlignmentH \'Center')
-    elseif (align == 3) then
-        Cmd('Set Layout ' .. TLayNr .. '.' .. LayNr .. ' Property CustomTextAlignmentH \'Right')
-    elseif (align == 4) then
-        Cmd('Set Layout ' .. TLayNr .. '.' .. LayNr .. ' Property CustomTextAlignmentH \'Left')
-        Cmd('Set Layout ' .. TLayNr .. '.' .. LayNr .. ' Property CustomTextAlignmentV \'Bottom')
-    end
-    Cmd('Set Layout ' .. TLayNr .. '.' .. LayNr .. ' Property VisibilityBorder \'0')
-    Cmd('Set Layout ' ..
-        TLayNr ..
-        '.' .. LayNr .. ' Property PosX ' .. LayX .. ' PosY ' .. LayY .. ' PositionW ' .. Pw .. ' PositionH ' .. Ph .. '')
-end -- end function Command_Title(...)
-
-function Command_Ext_Suite(CurrentSeqNr)
-    Cmd('Set Seq ' .. CurrentSeqNr .. ' Property prefercueappearance=on')
-    Cmd('Set Seq ' .. CurrentSeqNr .. ' AutoStart=1 AutoStop=1 MasterGoMode=None AutoFix=0 AutoStomp=0')
-    Cmd('Set Seq ' .. CurrentSeqNr ..
-        ' Tracking=0 WrapAround=1 ReleaseFirstCue=0 RestartMode=1 CommandEnable=1 XFadeReload=0')
-    Cmd('Set Seq ' .. CurrentSeqNr .. ' OutputFilter="" Priority=0 SoftLTP=1 PlaybackMaster="" XfadeMode=0')
-    Cmd('Set Seq ' .. CurrentSeqNr .. ' RateMaster="" RateScale=0 SpeedMaster="" SpeedScale=0 SpeedfromRate=0')
-    Cmd('Set Seq ' .. CurrentSeqNr ..
-        ' InputFilter="" SwapProtect=0 KillProtect=0 IncludeLinkLastGo=1 UseExecutorTime=0 OffwhenOverridden=1 Lock=0')
-    Cmd('Set Seq ' .. CurrentSeqNr .. ' SequMIB=0 SequMIBMode=1')
-end -- end function Command_Ext_Suite(...)
-
-function AddAllColor(TCol, CurrentSeqNr, prefix, TLayNr, LayNr, NrNeed, LayX, LayY, LayW, LayH, SelectedGelNr, MaxColLgn,
-                     RefX)
+function Create_All_Color(TCol, CurrentSeqNr, prefix, TLayNr, LayNr, NrNeed, LayX, LayY, LayW, LayH, MaxColLgn,
+                          RefX, AppNr)
+    LayNr = math.floor(LayNr + 1)
+    CurrentSeqNr = math.floor(CurrentSeqNr + 1)
+    LayX = math.floor(LayX + LayW + 20)
+    NrNeed = math.floor(AppNr + 1)
     local col_count = 0
     local First_All_Color
     for col in ipairs(TCol) do
         col_count = col_count + 1
-        -- local StColCode = "\"" .. TCol[col].r .. "," .. TCol[col].g .. "," .. TCol[col].b .. ",1\""
         local StColName = TCol[col].name
         local StringColName = string.gsub(StColName, " ", "_")
-        -- local ColNr = SelectedGelNr .. "." .. TCol[col].no
 
         if col == 1 then
             First_All_Color = '' .. prefix .. 'ALL' .. StringColName .. 'ALL\''
@@ -939,7 +909,41 @@ function AddAllColor(TCol, CurrentSeqNr, prefix, TLayNr, LayNr, NrNeed, LayX, La
         LayNr = math.floor(LayNr + 1)
         CurrentSeqNr = math.floor(CurrentSeqNr + 1)
     end
+    LayX = math.floor(LayX + LayW + 20)
+
     do return 1, LayNr, LayX, First_All_Color end
-end -- end function AddAllColor
+end -- end Create_All_Color
+
+function Command_Title(title, TLayNr, LayNr, LayX, LayY, Pw, Ph, align)
+    Cmd('Store Layout ' .. TLayNr .. '.' .. LayNr .. ' Property CustomTextText=\' ' .. title .. ' \'')
+    Cmd('Set Layout ' .. TLayNr .. '.' .. LayNr .. ' Property CustomTextSize \'24')
+    Cmd('Set Layout ' .. TLayNr .. '.' .. LayNr .. ' Property CustomTextAlignmentV \'Top')
+    if (align == 1) then
+        Cmd('Set Layout ' .. TLayNr .. '.' .. LayNr .. ' Property CustomTextAlignmentH \'Left')
+    elseif (align == 2) then
+        Cmd('Set Layout ' .. TLayNr .. '.' .. LayNr .. ' Property CustomTextAlignmentH \'Center')
+    elseif (align == 3) then
+        Cmd('Set Layout ' .. TLayNr .. '.' .. LayNr .. ' Property CustomTextAlignmentH \'Right')
+    elseif (align == 4) then
+        Cmd('Set Layout ' .. TLayNr .. '.' .. LayNr .. ' Property CustomTextAlignmentH \'Left')
+        Cmd('Set Layout ' .. TLayNr .. '.' .. LayNr .. ' Property CustomTextAlignmentV \'Bottom')
+    end
+    Cmd('Set Layout ' .. TLayNr .. '.' .. LayNr .. ' Property VisibilityBorder \'0')
+    Cmd('Set Layout ' ..
+        TLayNr ..
+        '.' .. LayNr .. ' Property PosX ' .. LayX .. ' PosY ' .. LayY .. ' PositionW ' .. Pw .. ' PositionH ' .. Ph .. '')
+end -- end function Command_Title(...)
+
+function Command_Ext_Suite(CurrentSeqNr)
+    Cmd('Set Seq ' .. CurrentSeqNr .. ' Property prefercueappearance=on')
+    Cmd('Set Seq ' .. CurrentSeqNr .. ' AutoStart=1 AutoStop=1 MasterGoMode=None AutoFix=0 AutoStomp=0')
+    Cmd('Set Seq ' .. CurrentSeqNr ..
+        ' Tracking=0 WrapAround=1 ReleaseFirstCue=0 RestartMode=1 CommandEnable=1 XFadeReload=0')
+    Cmd('Set Seq ' .. CurrentSeqNr .. ' OutputFilter="" Priority=0 SoftLTP=1 PlaybackMaster="" XfadeMode=0')
+    Cmd('Set Seq ' .. CurrentSeqNr .. ' RateMaster="" RateScale=0 SpeedMaster="" SpeedScale=0 SpeedfromRate=0')
+    Cmd('Set Seq ' .. CurrentSeqNr ..
+        ' InputFilter="" SwapProtect=0 KillProtect=0 IncludeLinkLastGo=1 UseExecutorTime=0 OffwhenOverridden=1 Lock=0')
+    Cmd('Set Seq ' .. CurrentSeqNr .. ' SequMIB=0 SequMIBMode=1')
+end -- end function Command_Ext_Suite(...)
 
 --end LC_Cmd.lua
