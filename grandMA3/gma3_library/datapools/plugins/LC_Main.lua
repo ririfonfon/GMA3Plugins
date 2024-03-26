@@ -13,47 +13,8 @@ local myHandle = select(4, ...)
 local function Main(displayHandle)
     local list = false
     local popuplists = {}
-    local DataPools_List = Root().ShowData.DataPools:Children()
-    for x in ipairs(DataPools_List) do
-        Echo(x)
-        popuplists[x] = {
-            DataPools_F      = {},
-            Grp_Select       = {},
-            Gel_Select       = {},
-            Name_Select      = { 'Layout Color', 'Layout Kolor', 'L Co', 'L Ko', 'Color', 'Kolor' },
-            DataPools_Select = { 1, 11, 21, 31, 41, 51, 61, 71, 81, 91, 101, 111, 121, 128 },
-            Lay_Select       = { 1, 11, 101, 201, 301, 401, 501, 601, 701, 801, 901, 1001, 2001 },
-            Seq_Select       = { 1, 11, 101, 201, 301, 401, 501, 601, 701, 801, 901, 1001, 2001 },
-            Macro_Select     = { 1, 11, 101, 201, 301, 401, 501, 601, 701, 801, 901, 1001, 2001 },
-            Appear_Select    = { 1, 11, 101, 201, 301, 401, 501, 601, 701, 801, 901, 1001, 2001 },
-            Preset_Select    = { 1, 11, 101, 201, 301, 401, 501, 601, 701, 801, 901, 1001, 2001 },
-            Matrick_Select   = { 1, 11, 101, 201, 301, 401, 501, 601, 701, 801, 901, 1001, 2001 }
-        }
-    end
+    -- local DataPools_List = Root().ShowData.DataPools:Children()
 
-    for z in ipairs(DataPools_List) do
-        for k in ipairs(popuplists[z].DataPools_Select) do
-            for x, DataPool in ipairs(DataPools_List) do
-                if popuplists[z].DataPools_Select[k] == DataPool.No then
-                    Echo(z .. '>' .. DataPool.No .. ' remove')
-                    table.remove(popuplists[x].DataPools_Select, k)
-                end
-            end
-        end
-    end
-
-    for x, DataPool in ipairs(DataPools_List) do
-        Echo(DataPool.Name)
-        Echo(popuplists[x].Name_Select[x])
-        for z, Group in ipairs(DataPool.Groups:Children()) do
-            Echo(z .. '    ' .. Group.Name)
-            table.insert(popuplists[x].Grp_Select, z, "'" .. Group.Name .. "'")
-        end
-        for y, DataP in ipairs(DataPools_List) do
-            Echo(y .. ' ' .. DataP.No .. ' ' .. DataP.Name)
-            table.insert(popuplists[x].DataPools_F, y, "'" .. DataP.Name .. "'")
-        end
-    end
     local FixtureGroups = Root().ShowData.DataPools.Default.Groups:Children()
     local SelectedGrp = {}
     local SelectedGrpNo = {}
@@ -67,109 +28,219 @@ local function Main(displayHandle)
     local MaxColLgn = 15
     local check_gel = false
     local TLay = Root().ShowData.DataPools.Default.Layouts:Children()
-    local TLayNr
-    local TLayNrRef
+    local TLayNr = {}
+    local TLayNrRef = {}
     local NaLay = "Colors"
     local SeqNr = Root().ShowData.DataPools.Default.Sequences:Children()
-    local SeqNrStart
-    local SeqNrRange
+    local SeqNrStart = {}
+    local SeqNrRange = {}
     local MacroNr = Root().ShowData.DataPools.Default.Macros:Children()
-    local MacroNrStart
-    local MacroNrRange
+    local MacroNrStart = {}
+    local MacroNrRange = {}
     local App = Root().ShowData.Appearances:Children()
-    local AppNr
-    local AppNrRange
+    local AppNr = {}
+    local AppNrRange = {}
     local All_5_Nr = Root().ShowData.DataPools.Default.PresetPools[25]:Children()
-    local All_5_NrStart
-    local All_5_NrRange
-    local All_5_Current
+    local All_5_NrStart = {}
+    local All_5_NrRange = {}
+    local All_5_Current = {}
     local MatrickNr = Root().ShowData.DataPools.Default.MAtricks:Children()
-    local MatrickNrStart
-    local MatrickNrRange
+    local MatrickNrStart = {}
+    local MatrickNrRange = {}
     local DataPools_Grp = 'Default'
 
-
     if list == false then
-        for k in ipairs(DataPools_List) do
-            table.insert(popuplists.DataPools_Select, "'" .. DataPools_List[k].name .. "'")
+        for x in ipairs(ShowData().DataPools:Children()) do
+            Echo('Dim list' .. x)
+            popuplists[x] = {
+                DataPools_F      = {},
+                Grp_Select       = {},
+                Gel_Select       = {},
+                Name_Select      = { 'Layout Color', 'Layout Kolor', 'L Co', 'L Ko', 'Color', 'Kolor' },
+                DataPools_Select = { 1, 11, 21, 31, 41, 51, 61, 71, 81, 91, 101, 111, 121, 128 },
+                Lay_Select       = { 1, 11, 101, 201, 301, 401, 501, 601, 701, 801, 901, 1001, 2001 },
+                Seq_Select       = { 1, 11, 101, 201, 301, 401, 501, 601, 701, 801, 901, 1001, 2001 },
+                Macro_Select     = { 1, 11, 101, 201, 301, 401, 501, 601, 701, 801, 901, 1001, 2001 },
+                Appear_Select    = { 1, 11, 101, 201, 301, 401, 501, 601, 701, 801, 901, 1001, 2001 },
+                Preset_Select    = { 1, 11, 101, 201, 301, 401, 501, 601, 701, 801, 901, 1001, 2001 },
+                Matrick_Select   = { 1, 11, 101, 201, 301, 401, 501, 601, 701, 801, 901, 1001, 2001 }
+            }
+            AppNr[x] = {}
+            TLayNr[x] = {}
+            TLayNrRef[x] = {}
+            MacroNrStart[x] = {}
+            SeqNrStart[x] = {}
+            All_5_NrStart[x] = {}
         end
-        for k in ipairs(FixtureGroups) do
-            table.insert(popuplists.Grp_Select, "'" .. FixtureGroups[k].name .. "'")
-        end
-        for k in ipairs(ColGels) do
-            table.insert(popuplists.Gel_Select, "'" .. ColGels[k].name .. "'")
-        end
-        for k in ipairs(TLay) do
-            for i in ipairs(popuplists.Lay_Select) do
-                if popuplists.Lay_Select[i] == TLay[k].NO then
-                    table.remove(popuplists.Lay_Select, i)
+
+        for z in ipairs(ShowData().DataPools:Children()) do
+            for k in ipairs(popuplists[z].DataPools_Select) do
+                for x, DataPool in ipairs(ShowData().DataPools:Children()) do
+                    if popuplists[z].DataPools_Select[k] == DataPool.No then
+                        Echo(z .. '>' .. DataPool.No .. ' remove')
+                        table.remove(popuplists[x].DataPools_Select, k)
+                    end
                 end
             end
-            TLayNr = TLay[k].NO + 1
-            TLayNrRef = k
         end
-        if TLayNr == nil then
-            TLayNr = 1
-        end
-        for k in ipairs(SeqNr) do
-            for i in ipairs(popuplists.Seq_Select) do
-                if popuplists.Seq_Select[i] == SeqNr[k].NO then
-                    table.remove(popuplists.Seq_Select, i)
+
+        for z, DataPool in ipairs(ShowData().DataPools:Children()) do
+            for i, Data in ipairs(ShowData().Appearances:Children()) do
+                if popuplists[z].Appear_Select[i] == Data.NO then
+                    table.remove(popuplists[z].Appear_Select, i)
                 end
+                AppNr[z] = Data.NO + 1
             end
-            SeqNrStart = SeqNr[k].NO + 1
-        end
-        if SeqNrStart == nil then
-            SeqNrStart = 1
-        end
-        for k in ipairs(MacroNr) do
-            for i in ipairs(popuplists.Macro_Select) do
-                if popuplists.Macro_Select[i] == MacroNr[k].NO then
-                    table.remove(popuplists.Macro_Select, i)
-                end
+            if AppNr[z] == nil then
+                AppNr[z] = 1
             end
-            MacroNrStart = MacroNr[k].NO + 1
-        end
-        if MacroNrStart == nil then
-            MacroNrStart = 1
-        end
-        for k in ipairs(App) do
-            for i in ipairs(popuplists.Appear_Select) do
-                if popuplists.Appear_Select[i] == App[k].NO then
-                    table.remove(popuplists.Appear_Select, i)
+            -- ShowData
+
+            for y, Data in ipairs(DataPool.Layouts:Children()) do
+                if popuplists[z].Lay_Select[y] == Data.NO then
+                    table.remove(popuplists[z].Lay_Select, y)
                 end
+                TLayNr[z] = Data.NO + 1
+                TLayNrRef[z] = y
+            end
+            if TLayNr[z] == nil then
+                TLayNr[z] = 1
             end
 
-            AppNr = App[k].NO + 1
-        end
-        if AppNr == nil then
-            AppNr = 1
-        end
-        for k in ipairs(All_5_Nr) do
-            for i in ipairs(popuplists.Preset_Select) do
-                if popuplists.Preset_Select[i] == All_5_Nr[k].NO then
-                    table.remove(popuplists.Preset_Select, i)
+
+            for i, Data in ipairs(DataPool.Macros:Children()) do
+                if popuplists[z].Macro_Select[i] == Data.NO then
+                    table.remove(popuplists[z].Macro_Select, i)
                 end
+                MacroNrStart[z] = Data.NO + 1
             end
-            All_5_NrStart = All_5_Nr[k].NO + 1
-        end
-        if All_5_NrStart == nil then
-            All_5_NrStart = 1
-        end
-        All_5_Current = All_5_NrStart
-        for k in ipairs(MatrickNr) do
-            for i in ipairs(popuplists.Matrick_Select) do
-                if popuplists.Matrick_Select[i] == MatrickNr[k].NO then
-                    table.remove(popuplists.Matrick_Select, i)
+            if MacroNrStart[z] == nil then
+                MacroNrStart[z] = 1
+            end
+
+            for i, Data in ipairs(DataPool.Sequences:Children()) do
+                if popuplists[z].Seq_Select[i] == Data.NO then
+                    table.remove(popuplists[z].Seq_Select, i)
                 end
+                SeqNrStart[z] = Data.NO + 1
             end
-            MatrickNrStart = MatrickNr[k].NO + 1
+            if SeqNrStart[z] == nil then
+                SeqNrStart[z] = 1
+            end
+
+            for i, Data in ipairs(DataPool.PresetPools[25]:Children()) do
+                if popuplists[z].Preset_Select[i] == Data.NO then
+                    table.remove(popuplists[z].Preset_Select, i)
+                end
+                All_5_NrStart[z] = Data.NO + 1
+            end
+            if All_5_NrStart[z] == nil then
+                All_5_NrStart[z] = 1
+            end
+            All_5_Current[z] = All_5_NrStart[z]
+
+            for i, Data in ipairs(DataPool.Matricks:Children()) do
+                if popuplists[z].Matrick_Select[i] == Data.NO then
+                    table.remove(popuplists[z].Matrick_Select, i)
+                end
+                MatrickNrStart[z] = Data.NO + 1
+            end
+            if MatrickNrStart[z] == nil then
+                MatrickNrStart[z] = 1
+            end
         end
-        if MatrickNrStart == nil then
-            MatrickNrStart = 1
+
+
+        for x, DataPool in ipairs(ShowData().DataPools:Children()) do
+            Echo('Add table ' .. x)
+            for z, Data in ipairs(ShowData().DataPools:Children()) do
+                Echo(z .. ' ' .. Data.Name)
+                table.insert(popuplists[x].DataPools_F, z, "'" .. Data.Name .. "'")
+            end
+            for z, Data in ipairs(DataPool.Groups:Children()) do
+                Echo(z .. '    ' .. Data.Name)
+                table.insert(popuplists[x].Grp_Select, z, "'" .. Data.Name .. "'")
+            end
+            for z, Data in ipairs(ShowData().GelPools:Children()) do
+                Echo(z .. '    ' .. Data.Name)
+                table.insert(popuplists[x].Gel_Select, z, "'" .. Data.Name .. "'")
+            end
         end
-        -- MatrickNr = MatrickNrStart
+        
         list = true
+
+        -- for k in ipairs(MatrickNr) do
+        --     for i in ipairs(popuplists.Matrick_Select) do
+        --         if popuplists.Matrick_Select[i] == MatrickNr[k].NO then
+        --             table.remove(popuplists.Matrick_Select, i)
+        --         end
+        --     end
+        --     MatrickNrStart = MatrickNr[k].NO + 1
+        -- end
+        -- if MatrickNrStart == nil then
+        --     MatrickNrStart = 1
+        -- end
+
+        -- for k in ipairs(All_5_Nr) do
+        --     for i in ipairs(popuplists.Preset_Select) do
+        --         if popuplists.Preset_Select[i] == All_5_Nr[k].NO then
+        --             table.remove(popuplists.Preset_Select, i)
+        --         end
+        --     end
+        --     All_5_NrStart = All_5_Nr[k].NO + 1
+        -- end
+        -- if All_5_NrStart == nil then
+        --     All_5_NrStart = 1
+        -- end
+        -- All_5_Current = All_5_NrStart
+        -- for k in ipairs(TLay) do
+        --     for i in ipairs(popuplists.Lay_Select) do
+        --         if popuplists.Lay_Select[i] == TLay[k].NO then
+        --             table.remove(popuplists.Lay_Select, i)
+        --         end
+        --     end
+        --     TLayNr = TLay[k].NO + 1
+        --     TLayNrRef = k
+        -- end
+        -- if TLayNr == nil then
+        --     TLayNr = 1
+        -- end
+        -- for k in ipairs(SeqNr) do
+        --     for i in ipairs(popuplists.Seq_Select) do
+        --         if popuplists.Seq_Select[i] == SeqNr[k].NO then
+        --             table.remove(popuplists.Seq_Select, i)
+        --         end
+        --     end
+        --     SeqNrStart = SeqNr[k].NO + 1
+        -- end
+        -- if SeqNrStart == nil then
+        --     SeqNrStart = 1
+        -- end
+        -- for k in ipairs(MacroNr) do
+        --     for i in ipairs(popuplists.Macro_Select) do
+        --         if popuplists.Macro_Select[i] == MacroNr[k].NO then
+        --             table.remove(popuplists.Macro_Select, i)
+        --         end
+        --     end
+        --     MacroNrStart = MacroNr[k].NO + 1
+        -- end
+        -- if MacroNrStart == nil then
+        --     MacroNrStart = 1
+        -- end
+        -- for k in ipairs(App) do
+        --     for i in ipairs(popuplists.Appear_Select) do
+        --         if popuplists.Appear_Select[i] == App[k].NO then
+        --             table.remove(popuplists.Appear_Select, i)
+        --         end
+        --     end
+
+        --     AppNr = App[k].NO + 1
+        -- end
+        -- if AppNr == nil then
+        --     AppNr = 1
+        -- end
+
+        -- MatrickNr = MatrickNrStart
     end
 
     -- Get the index of the display on which to create the dialog.
@@ -991,7 +1062,7 @@ local function Main(displayHandle)
     end
 
     function signalTable.mypopup(caller)
-        local itemlist = popuplists[caller.Name]
+        local itemlist = popuplists[1][caller.Name]
         local _, choice = PopupInput { title = caller.Name, caller = caller:GetDisplay(), items = itemlist, selectedValue = caller.Text }
 
         if caller.Name == "Gel_Select" then
