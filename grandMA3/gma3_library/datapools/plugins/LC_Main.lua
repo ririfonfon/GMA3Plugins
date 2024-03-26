@@ -12,7 +12,48 @@ local myHandle = select(4, ...)
 
 local function Main(displayHandle)
     local list = false
+    local popuplists = {}
     local DataPools_List = Root().ShowData.DataPools:Children()
+    for x in ipairs(DataPools_List) do
+        Echo(x)
+        popuplists[x] = {
+            DataPools_F      = {},
+            Grp_Select       = {},
+            Gel_Select       = {},
+            Name_Select      = { 'Layout Color', 'Layout Kolor', 'L Co', 'L Ko', 'Color', 'Kolor' },
+            DataPools_Select = { 1, 11, 21, 31, 41, 51, 61, 71, 81, 91, 101, 111, 121, 128 },
+            Lay_Select       = { 1, 11, 101, 201, 301, 401, 501, 601, 701, 801, 901, 1001, 2001 },
+            Seq_Select       = { 1, 11, 101, 201, 301, 401, 501, 601, 701, 801, 901, 1001, 2001 },
+            Macro_Select     = { 1, 11, 101, 201, 301, 401, 501, 601, 701, 801, 901, 1001, 2001 },
+            Appear_Select    = { 1, 11, 101, 201, 301, 401, 501, 601, 701, 801, 901, 1001, 2001 },
+            Preset_Select    = { 1, 11, 101, 201, 301, 401, 501, 601, 701, 801, 901, 1001, 2001 },
+            Matrick_Select   = { 1, 11, 101, 201, 301, 401, 501, 601, 701, 801, 901, 1001, 2001 }
+        }
+    end
+
+    for z in ipairs(DataPools_List) do
+        for k in ipairs(popuplists[z].DataPools_Select) do
+            for x, DataPool in ipairs(DataPools_List) do
+                if popuplists[z].DataPools_Select[k] == DataPool.No then
+                    Echo(z .. '>' .. DataPool.No .. ' remove')
+                    table.remove(popuplists[x].DataPools_Select, k)
+                end
+            end
+        end
+    end
+
+    for x, DataPool in ipairs(DataPools_List) do
+        Echo(DataPool.Name)
+        Echo(popuplists[x].Name_Select[x])
+        for z, Group in ipairs(DataPool.Groups:Children()) do
+            Echo(z .. '    ' .. Group.Name)
+            table.insert(popuplists[x].Grp_Select, z, "'" .. Group.Name .. "'")
+        end
+        for y, DataP in ipairs(DataPools_List) do
+            Echo(y .. ' ' .. DataP.No .. ' ' .. DataP.Name)
+            table.insert(popuplists[x].DataPools_F, y, "'" .. DataP.Name .. "'")
+        end
+    end
     local FixtureGroups = Root().ShowData.DataPools.Default.Groups:Children()
     local SelectedGrp = {}
     local SelectedGrpNo = {}
@@ -47,18 +88,6 @@ local function Main(displayHandle)
     local MatrickNrRange
     local DataPools_Grp = 'Default'
 
-    local popuplists = {
-        DataPools_Select = {},
-        Grp_Select       = {},
-        Gel_Select       = {},
-        Name_Select      = { 'Layout Color', 'Layout Kolor', 'L Co', 'L Ko', 'Color', 'Kolor' },
-        Lay_Select       = { 1, 11, 101, 201, 301, 401, 501, 601, 701, 801, 901, 1001, 2001 },
-        Seq_Select       = { 1, 11, 101, 201, 301, 401, 501, 601, 701, 801, 901, 1001, 2001 },
-        Macro_Select     = { 1, 11, 101, 201, 301, 401, 501, 601, 701, 801, 901, 1001, 2001 },
-        Appear_Select    = { 1, 11, 101, 201, 301, 401, 501, 601, 701, 801, 901, 1001, 2001 },
-        Preset_Select    = { 1, 11, 101, 201, 301, 401, 501, 601, 701, 801, 901, 1001, 2001 },
-        Matrick_Select   = { 1, 11, 101, 201, 301, 401, 501, 601, 701, 801, 901, 1001, 2001 }
-    }
 
     if list == false then
         for k in ipairs(DataPools_List) do
