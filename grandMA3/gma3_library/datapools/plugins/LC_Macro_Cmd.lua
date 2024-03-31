@@ -169,28 +169,28 @@ function Create_Macro_Delay_From(CurrentMacroNr, prefix, surfix, a, FirstSeq, La
 end
 
 function Create_Macro_Delay_To(CurrentMacroNr, prefix, surfix, a, FirstSeq, LastSeq, MatrickNrStart, fonct, TLayNr, LayNr,
-    MatrickNr)
-Cmd('Store Macro ' .. CurrentMacroNr .. ' \'' .. prefix .. 'DelayTo Input\'' .. surfix[a] .. '"')
-Cmd('ChangeDestination Macro ' .. CurrentMacroNr .. '')
-Cmd('Insert')
-Cmd('set 1 Command=\'off seq ' .. FirstSeq .. ' thru ' .. LastSeq .. ' - ' .. LastSeq .. '')
-Cmd("Insert")
-Cmd('set 2 Command=\'Edit Matricks ' .. MatrickNrStart .. ' Property "DelayTo' .. surfix[a] .. '"')
-Cmd("Insert")
-Cmd('set 3 Command=\'SetUserVariable "LC_Fonction" ' .. fonct .. '')
-Cmd("Insert")
-Cmd('set 4 Command=\'SetUserVariable "LC_Axes" "' .. a .. '"')
-Cmd("Insert")
-Cmd('set 5 Command=\'SetUserVariable "LC_Layout" ' .. TLayNr .. '')
-Cmd("Insert")
-Cmd('set 6 Command=\'SetUserVariable "LC_Element" ' .. LayNr .. '')
-Cmd("Insert")
-Cmd('set 7 Command=\'SetUserVariable "LC_Matrick" ' .. MatrickNrStart .. '')
-Cmd("Insert")
-Cmd('set 8 Command=\'SetUserVariable "LC_Matrick_Thru" ' .. MatrickNr .. '')
-Cmd("Insert")
-Cmd('set 9 Command=\'Call Plugin "LC_View"')
-Cmd('ChangeDestination Root')
+                               MatrickNr)
+    Cmd('Store Macro ' .. CurrentMacroNr .. ' \'' .. prefix .. 'DelayTo Input\'' .. surfix[a] .. '"')
+    Cmd('ChangeDestination Macro ' .. CurrentMacroNr .. '')
+    Cmd('Insert')
+    Cmd('set 1 Command=\'off seq ' .. FirstSeq .. ' thru ' .. LastSeq .. ' - ' .. LastSeq .. '')
+    Cmd("Insert")
+    Cmd('set 2 Command=\'Edit Matricks ' .. MatrickNrStart .. ' Property "DelayTo' .. surfix[a] .. '"')
+    Cmd("Insert")
+    Cmd('set 3 Command=\'SetUserVariable "LC_Fonction" ' .. fonct .. '')
+    Cmd("Insert")
+    Cmd('set 4 Command=\'SetUserVariable "LC_Axes" "' .. a .. '"')
+    Cmd("Insert")
+    Cmd('set 5 Command=\'SetUserVariable "LC_Layout" ' .. TLayNr .. '')
+    Cmd("Insert")
+    Cmd('set 6 Command=\'SetUserVariable "LC_Element" ' .. LayNr .. '')
+    Cmd("Insert")
+    Cmd('set 7 Command=\'SetUserVariable "LC_Matrick" ' .. MatrickNrStart .. '')
+    Cmd("Insert")
+    Cmd('set 8 Command=\'SetUserVariable "LC_Matrick_Thru" ' .. MatrickNr .. '')
+    Cmd("Insert")
+    Cmd('set 9 Command=\'Call Plugin "LC_View"')
+    Cmd('ChangeDestination Root')
 end
 
 function Create_Macro_Phase(CurrentMacroNr, prefix, surfix, a, MatrickNrStart, fonct, TLayNr, LayNr, MatrickNr)
@@ -408,6 +408,25 @@ function Add_Macro_Call(a, TLayNr, Fade_Element, MatrickNrStart, Delay_F_Element
     Cmd('set 73 Command=\'SetUserVariable "LC_Matrick" ' .. MatrickNrStart .. '')
     Cmd("Insert")
     Cmd('set 74 Command=\'Call Plugin "LC_View"')
+end
+
+function String_FromBytes(t)
+
+    local bytearr = {}
+    for _, v in ipairs(t) do
+        local utf8byte = v < 0 and (0xff + v + 1) or v
+        table.insert(bytearr, string.char(utf8byte))
+    end
+    return table.concat(bytearr)
+end
+
+function String_ToBytes(str)
+    local t = {}
+    str:gsub(".",function(c)
+            table.insert(t, string.byte(c))
+        end
+    )
+    return t
 end
 
 --end LC_Macro_Cmd.lua
