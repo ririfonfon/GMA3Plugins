@@ -12,8 +12,16 @@ local myHandle = select(4, ...)
 
 local function Main(displayHandle)
     local list = false
+<<<<<<< Updated upstream
     local DataPools_List = Root().ShowData.DataPools:Children()
     local FixtureGroups = Root().ShowData.DataPools.Default.Groups:Children()
+=======
+    local popuplists = {}
+    -- local DataPools_List = Root().ShowData.DataPools:Children()
+
+    -- local FixtureGroups = Root().ShowData.DataPools.Default.Groups:Children()
+    local FixtureGroups = {}
+>>>>>>> Stashed changes
     local SelectedGrp = {}
     local SelectedGrpNo = {}
     local SelGrp
@@ -43,9 +51,16 @@ local function Main(displayHandle)
     local All_5_NrRange
     local All_5_Current
     local MatrickNr = Root().ShowData.DataPools.Default.MAtricks:Children()
+<<<<<<< Updated upstream
     local MatrickNrStart
     local MatrickNrRange
     local DataPools_Grp = 'Default'
+=======
+    local MatrickNrStart = {}
+    local MatrickNrRange = {}
+    local DataPools_Grp
+    local DataPools_Nr
+>>>>>>> Stashed changes
 
     local popuplists = {
         DataPools_Select = {},
@@ -61,8 +76,34 @@ local function Main(displayHandle)
     }
 
     if list == false then
+<<<<<<< Updated upstream
         for k in ipairs(DataPools_List) do
             table.insert(popuplists.DataPools_Select, "'" .. DataPools_List[k].name .. "'")
+=======
+        DataPools_Grp = 'Default'
+        DataPools_Nr = 1
+        for x in ipairs(ShowData().DataPools:Children()) do
+            Echo('Dim list' .. x)
+            popuplists[x] = {
+                DataPools_F      = {},
+                Grp_Select       = {},
+                Gel_Select       = {},
+                Name_Select      = { 'Layout Color', 'Layout Kolor', 'L Co', 'L Ko', 'Color', 'Kolor' },
+                DataPools_Select = { 1, 11, 21, 31, 41, 51, 61, 71, 81, 91, 101, 111, 121, 128 },
+                Lay_Select       = { 1, 11, 101, 201, 301, 401, 501, 601, 701, 801, 901, 1001, 2001 },
+                Seq_Select       = { 1, 11, 101, 201, 301, 401, 501, 601, 701, 801, 901, 1001, 2001 },
+                Macro_Select     = { 1, 11, 101, 201, 301, 401, 501, 601, 701, 801, 901, 1001, 2001 },
+                Appear_Select    = { 1, 11, 101, 201, 301, 401, 501, 601, 701, 801, 901, 1001, 2001 },
+                Preset_Select    = { 1, 11, 101, 201, 301, 401, 501, 601, 701, 801, 901, 1001, 2001 },
+                Matrick_Select   = { 1, 11, 101, 201, 301, 401, 501, 601, 701, 801, 901, 1001, 2001 }
+            }
+            AppNr[x] = {}
+            TLayNr[x] = {}
+            TLayNrRef[x] = {}
+            MacroNrStart[x] = {}
+            SeqNrStart[x] = {}
+            All_5_NrStart[x] = {}
+>>>>>>> Stashed changes
         end
         for k in ipairs(FixtureGroups) do
             table.insert(popuplists.Grp_Select, "'" .. FixtureGroups[k].name .. "'")
@@ -70,15 +111,46 @@ local function Main(displayHandle)
         for k in ipairs(ColGels) do
             table.insert(popuplists.Gel_Select, "'" .. ColGels[k].name .. "'")
         end
+<<<<<<< Updated upstream
         for k in ipairs(TLay) do
             for i in ipairs(popuplists.Lay_Select) do
                 if popuplists.Lay_Select[i] == TLay[k].NO then
                     table.remove(popuplists.Lay_Select, i)
                 end
+=======
+
+
+        for x, DataPool in ipairs(ShowData().DataPools:Children()) do
+            Echo('Add table ' .. x)
+            for z, Data in ipairs(ShowData().DataPools:Children()) do
+                Echo(z .. ' ' .. Data.Name)
+                table.insert(popuplists[x].DataPools_F, z, "'" .. Data.Name .. "'")
+                local tab = 'ShowData().DataPools.' .. Data.Name .. '.Groups:Children()'
+                -- FixtureGroups[z] = ShowData().DataPools.. Data.Name :Children()
+                Echo(tab)
+                -- FixtureGroups = tab
+                FixtureGroups[z]= string.gsub( tab,"'","" )
+                -- for _, DDAA in ipairs(FixtureGroups) do
+                --     -- Echo('*********' .. DDAA.Name )
+                --     Echo('********' .. _)
+                --     Echo('----' .. toString(DDAA) )
+                -- end
+                -- FixtureGroups[z] = tab
+            end
+            for z, Data in ipairs(DataPool.Groups:Children()) do
+                Echo(z .. '    ' .. Data.Name)
+                table.insert(popuplists[x].Grp_Select, z, "'" .. Data.Name .. "'")
+                FixtureGroups[x][z] = string.gsub (Data.Name,"'","")
+            end
+            for z, Data in ipairs(ShowData().GelPools:Children()) do
+                Echo(z .. '    ' .. Data.Name)
+                table.insert(popuplists[x].Gel_Select, z, "'" .. Data.Name .. "'")
+>>>>>>> Stashed changes
             end
             TLayNr = TLay[k].NO + 1
             TLayNrRef = k
         end
+<<<<<<< Updated upstream
         if TLayNr == nil then
             TLayNr = 1
         end
@@ -110,6 +182,81 @@ local function Main(displayHandle)
                     table.remove(popuplists.Appear_Select, i)
                 end
             end
+=======
+
+        list = true
+
+        -- for k in ipairs(MatrickNr) do
+        --     for i in ipairs(popuplists.Matrick_Select) do
+        --         if popuplists.Matrick_Select[i] == MatrickNr[k].NO then
+        --             table.remove(popuplists.Matrick_Select, i)
+        --         end
+        --     end
+        --     MatrickNrStart = MatrickNr[k].NO + 1
+        -- end
+        -- if MatrickNrStart == nil then
+        --     MatrickNrStart = 1
+        -- end
+
+        -- for k in ipairs(All_5_Nr) do
+        --     for i in ipairs(popuplists.Preset_Select) do
+        --         if popuplists.Preset_Select[i] == All_5_Nr[k].NO then
+        --             table.remove(popuplists.Preset_Select, i)
+        --         end
+        --     end
+        --     All_5_NrStart = All_5_Nr[k].NO + 1
+        -- end
+        -- if All_5_NrStart == nil then
+        --     All_5_NrStart = 1
+        -- end
+        -- All_5_Current = All_5_NrStart
+        -- for k in ipairs(TLay) do
+        --     for i in ipairs(popuplists.Lay_Select) do
+        --         if popuplists.Lay_Select[i] == TLay[k].NO then
+        --             table.remove(popuplists.Lay_Select, i)
+        --         end
+        --     end
+        --     TLayNr = TLay[k].NO + 1
+        --     TLayNrRef = k
+        -- end
+        -- if TLayNr == nil then
+        --     TLayNr = 1
+        -- end
+        -- for k in ipairs(SeqNr) do
+        --     for i in ipairs(popuplists.Seq_Select) do
+        --         if popuplists.Seq_Select[i] == SeqNr[k].NO then
+        --             table.remove(popuplists.Seq_Select, i)
+        --         end
+        --     end
+        --     SeqNrStart = SeqNr[k].NO + 1
+        -- end
+        -- if SeqNrStart == nil then
+        --     SeqNrStart = 1
+        -- end
+        -- for k in ipairs(MacroNr) do
+        --     for i in ipairs(popuplists.Macro_Select) do
+        --         if popuplists.Macro_Select[i] == MacroNr[k].NO then
+        --             table.remove(popuplists.Macro_Select, i)
+        --         end
+        --     end
+        --     MacroNrStart = MacroNr[k].NO + 1
+        -- end
+        -- if MacroNrStart == nil then
+        --     MacroNrStart = 1
+        -- end
+        -- for k in ipairs(App) do
+        --     for i in ipairs(popuplists.Appear_Select) do
+        --         if popuplists.Appear_Select[i] == App[k].NO then
+        --             table.remove(popuplists.Appear_Select, i)
+        --         end
+        --     end
+
+        --     AppNr = App[k].NO + 1
+        -- end
+        -- if AppNr == nil then
+        --     AppNr = 1
+        -- end
+>>>>>>> Stashed changes
 
             AppNr = App[k].NO + 1
         end
@@ -685,7 +832,7 @@ local function Main(displayHandle)
     input10Sujestion.Padding = "5.5"
     input10Sujestion.Margin = { left = 0, right = 2, top = 9, bottom = 2 }
     input10Sujestion.Icon = "object_datapool"
-    input10Sujestion.Name = 'DataPools_Select'
+    input10Sujestion.Name = 'DataPools_F'
     input10Sujestion.PluginComponent = thiscomponent
     input10Sujestion.Clicked = 'mypopup'
     input10Sujestion.HasHover = "yes"
@@ -697,7 +844,7 @@ local function Main(displayHandle)
     input11Sujestion.Padding = "5.5"
     input11Sujestion.Margin = { left = 1, right = 3, top = 9, bottom = 2 }
     input11Sujestion.Text = DataPools_Grp
-    input11Sujestion.Name = 'DataPools_Select'
+    input11Sujestion.Name = 'DataPools_F'
     input11Sujestion.Clicked = 'mypopup'
     input11Sujestion.HasHover = "yes"
     input11Sujestion.backColor = colorGroups
@@ -962,7 +1109,11 @@ local function Main(displayHandle)
     end
 
     function signalTable.mypopup(caller)
+<<<<<<< Updated upstream
         local itemlist = popuplists[caller.Name]
+=======
+        local itemlist = popuplists[DataPools_Nr][caller.Name]
+>>>>>>> Stashed changes
         local _, choice = PopupInput { title = caller.Name, caller = caller:GetDisplay(), items = itemlist, selectedValue = caller.Text }
 
         if caller.Name == "Gel_Select" then
@@ -980,24 +1131,38 @@ local function Main(displayHandle)
             input10Button.Visible = "Yes"
             input10Sujestion.Visible = "Yes"
             input11Sujestion.Visible = "Yes"
+        elseif caller.Name == "DataPools_F" then
+            for k in ipairs(popuplists[DataPools_Nr].DataPools_F) do
+                if popuplists[DataPools_Nr].DataPools_F[k] == choice then
+                    DataPools_Nr = k
+                    DataPools_Grp = choice:gsub("'", "")
+                end
+            end
+            Echo(choice)
+            Echo(DataPools_Grp)
         elseif caller.Name == "Grp_Select" then
-            for k in ipairs(popuplists.Grp_Select) do
-                if popuplists.Grp_Select[k] == choice then
-                    table.remove(popuplists.Grp_Select, k)
+            for k in ipairs(popuplists[DataPools_Nr].Grp_Select) do
+                if popuplists[DataPools_Nr].Grp_Select[k] == choice then
+                    table.remove(popuplists[DataPools_Nr].Grp_Select, k)
                 end
             end
             choice = choice:gsub("'", "")
-            for k in ipairs(FixtureGroups) do
-                if choice == FixtureGroups[k].name then
+            Echo('DATAAAAA ' .. DataPools_Nr)
+            for k in ipairs(FixtureGroups[DataPools_Nr]) do
+                Echo('********************************************************')
+                Echo(k)
+                Echo(FixtureGroups[DataPools_Nr][k].name)
+                if choice == FixtureGroups[DataPools_Nr][k].name then
                     SelGrp = k
+                    Echo(SelGrp)
                 end
             end
-            table.insert(SelectedGrp, "'" .. FixtureGroups[SelGrp].name .. "'")
-            table.insert(SelectedGrpNo, "'" .. FixtureGroups[SelGrp].NO .. "'")
+            table.insert(SelectedGrp, "'" .. FixtureGroups[DataPools_Nr][SelGrp].name .. "'")
+            table.insert(SelectedGrpNo, "'" .. FixtureGroups[DataPools_Nr][SelGrp].NO .. "'")
             for k in ipairs(SelectedGrp) do
                 Nr_SelectedGrp = k
             end
-            subTitle.Text = subTitle.Text .. Nr_SelectedGrp .. "." .. FixtureGroups[SelGrp].name .. " "
+            subTitle.Text = subTitle.Text .. Nr_SelectedGrp .. "." .. FixtureGroups[DataPools_Nr][SelGrp].name .. " "
             check_grp = true
             if check_gel == true then
                 OkButton.Visible = "Yes"
