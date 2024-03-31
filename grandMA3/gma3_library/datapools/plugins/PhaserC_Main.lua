@@ -1,6 +1,6 @@
 --[[
 Releases:
-* 2.0.0.4
+* 2.0.0.5
 
 Created by Richard Fontaine "RIRI", March 2024.
 --]]
@@ -711,7 +711,7 @@ local function Main(displayHandle)
             OkButton.BackColor = colorBackground
         end
         Obj.Delete(screenOverlay, Obj.Index(baseInput))
-        Construct_Layout(displayHandle, TLay, SeqNrStart, MacroNrStart, MatrickNrStart, MatrickNr, TLayNr, AppNr,
+        PC_Construct_Layout(displayHandle, TLay, SeqNrStart, MacroNrStart, MatrickNrStart, MatrickNr, TLayNr, AppNr,
             All_5_Current, All_5_NrStart, ColPath, SelectedGelNr, SelectedGrp, SelectedGrpNo, TLayNrRef, NaLay, MaxColLgn)
     end
 

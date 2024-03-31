@@ -1,11 +1,11 @@
 --[[
 Releases:
-* 2.0.0.4
+* 2.0.0.5
 
 Created by Richard Fontaine "RIRI", March 2024.
 --]]
 
-function Create_Appearances(SelectedGrp, AppNr, prefix, TCol, NrAppear, StColCode, StColName, StringColName, AppRef)
+function PC_Create_Appearances(SelectedGrp, AppNr, prefix, TCol, NrAppear, StColCode, StColName, StringColName, AppRef)
     AppRef = AppNr
     local StAppNameOn
     local StAppNameOff
@@ -34,7 +34,7 @@ function Create_Appearances(SelectedGrp, AppNr, prefix, TCol, NrAppear, StColCod
     do return 1, NrAppear, AppRef end
 end
 
-function Create_Preset_25(TCol, StColName, StringColName, SelectedGelNr, prefix, All_5_NrEnd, All_5_Current)
+function PC_Create_Preset_25(TCol, StColName, StringColName, SelectedGelNr, prefix, All_5_NrEnd, All_5_Current)
     Cmd("ClearAll /nu")
     Cmd('Set Preset 25 Property PresetMode "Universal"')
     Cmd('Fixture Thru')
@@ -50,7 +50,7 @@ function Create_Preset_25(TCol, StColName, StringColName, SelectedGelNr, prefix,
     do return 1, All_5_NrEnd, All_5_Current end
 end
 
-function Create_Matrix(MatrickNr, Argument_Matricks, surfix, prefix)
+function PC_Create_Matricks(MatrickNr, Argument_Matricks, surfix, prefix)
     for axes in pairs(surfix) do
         for g in pairs(Argument_Matricks) do
             Cmd('Store MAtricks ' .. MatrickNr .. ' /nu')
@@ -74,7 +74,7 @@ function Create_Matrix(MatrickNr, Argument_Matricks, surfix, prefix)
     end
 end
 
-function Create_Preset_Ref_1234(All_5_Current, SelectedGelNr)
+function PC_Create_Preset_Ref_1234(All_5_Current, SelectedGelNr)
     Cmd("ClearAll /nu")
     Cmd('Fixture Thru')
     for i = 1, 4 do
@@ -86,7 +86,7 @@ function Create_Preset_Ref_1234(All_5_Current, SelectedGelNr)
     do return 1, All_5_Current, Preset_Ref end
 end
 
-function Create_Phaser(All_5_Current, Preset_Ref, prefix, Argument_Ref, Phaser_Off)
+function PC_Create_Phaser(All_5_Current, Preset_Ref, prefix, Argument_Ref, Phaser_Off)
     local transition
     local Preset_cal
     Cmd("ClearAll /nu")
@@ -156,7 +156,7 @@ function Copy_Phaser_Ref(Phaser_Off, All_5_Current, Phaser_Ref, Preset_25_Ref)
     do return 1, Phaser_Ref, All_5_Current, Preset_25_Ref end
 end
 
-function Create_Active_Appearances(AppImp, NrAppear, prefix)
+function PC_Create_Active_Appearances(AppImp, NrAppear, prefix)
     for q in pairs(AppImp) do
         AppImp[q].Nr = math.floor(NrAppear)
         Cmd('Store App ' ..
@@ -167,7 +167,7 @@ function Create_Active_Appearances(AppImp, NrAppear, prefix)
     do return 1, NrAppear end
 end
 
-function Create_Group_Appearances(AppImp, NrAppear, prefix, SelectedGrp, SelectedGrpName, color_ref)
+function PC_Create_Group_Appearances(AppImp, NrAppear, prefix, SelectedGrp, SelectedGrpName, color_ref)
     local a = 1
     for grp in pairs(SelectedGrp) do
         for q = 1, 19 do
@@ -184,7 +184,7 @@ function Create_Group_Appearances(AppImp, NrAppear, prefix, SelectedGrp, Selecte
     do return 1, NrAppear end
 end
 
-function Create_Group_Sequence(SelectedGrp, SelectedGrpName, Phaser_Off, CurrentSeqNr, SelectedGrpNo, prefix,
+function PC_Create_Group_Sequence(SelectedGrp, SelectedGrpName, Phaser_Off, CurrentSeqNr, SelectedGrpNo, prefix,
                                Sequence_Ref, Sequence_Ref_End)
     Sequence_Ref = CurrentSeqNr
     for g in ipairs(SelectedGrp) do
@@ -204,7 +204,7 @@ function Create_Group_Sequence(SelectedGrp, SelectedGrpName, Phaser_Off, Current
     do return 1, CurrentSeqNr, Sequence_Ref, Sequence_Ref_End end
 end
 
-function Create_Layout_Phaser(TLayNr, NaLay, SelectedGelNr, CurrentSeqNr, Preset_Ref, MaxColLgn, RefX, LayY,
+function PC_Create_Layout_Phaser(TLayNr, NaLay, SelectedGelNr, CurrentSeqNr, Preset_Ref, MaxColLgn, RefX, LayY,
                               LayH, AppNr, LayW, StColName, CurrentMacroNr, ColPath, prefix, All_5_NrStart)
     local Macro_Pool = Root().ShowData.DataPools.Default.Macros
     local TCol
@@ -354,7 +354,7 @@ function Create_Layout_Phaser(TLayNr, NaLay, SelectedGelNr, CurrentSeqNr, Preset
     do return 1, CurrentMacroNr, CurrentSeqNr, LayNr, LayY end
 end
 
-function Create_Layout_FixGroup(CurrentMacroNr, CurrentSeqNr, LayNr, LayY, RefX, LayH, LayW, TLayNr, NaLay, SelectedGrp,
+function PC_Create_Layout_FixGroup(CurrentMacroNr, CurrentSeqNr, LayNr, LayY, RefX, LayH, LayW, TLayNr, NaLay, SelectedGrp,
                                 SelectedGrpName, Argument_Matricks, surfix, prefix, AppImp, Argument_Ref, AppRef,
                                 Preset_25_Ref, Phaser_Off, Phaser_Ref, All_Call_Ref, All_Call_Y)
     local Macro_Pool = Root().ShowData.DataPools.Default.Macros
@@ -542,7 +542,7 @@ function Create_Layout_FixGroup(CurrentMacroNr, CurrentSeqNr, LayNr, LayY, RefX,
     do return 1, CurrentSeqNr, CurrentMacroNr, All_Call_Ref, All_Call_Y, LayNr end
 end
 
-function Create_All_Call_Layout(CurrentMacroNr, LayNr, LayY, RefX, LayH, LayW, TLayNr, SelectedGrp,
+function PC_Create_All_Call_Layout(CurrentMacroNr, LayNr, LayY, RefX, LayH, LayW, TLayNr, SelectedGrp,
                                 SelectedGrpName, prefix, All_Call_Ref, All_Call_Y, AppImp)
     local Macro_Pool = Root().ShowData.DataPools.Default.Macros
     LayY = math.floor(All_Call_Y)
@@ -621,7 +621,7 @@ function Create_All_Call_Layout(CurrentMacroNr, LayNr, LayY, RefX, LayH, LayW, T
     do return 1, CurrentMacroNr, LayX, LayNr end
 end
 
-function Create_Macro_Priority(CurrentMacroNr, TLayNr, LayNr, LayX, LayY, LayW, LayH, prefix, Sequence_Ref, Sequence_Ref_End)
+function PC_Create_Macro_Priority(CurrentMacroNr, TLayNr, LayNr, LayX, LayY, LayW, LayH, prefix, Sequence_Ref, Sequence_Ref_End)
     local Macro_Pool = Root().ShowData.DataPools.Default.Macros
     CurrentMacroNr = math.floor(CurrentMacroNr)
     Cmd('Store Macro ' .. CurrentMacroNr .. ' \'' .. 'Priority\'')
