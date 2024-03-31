@@ -866,54 +866,6 @@ function Create_XYZ_Sequence(CurrentMacroNr, First_Id_Lay, prefix, surfix, Call_
     do return 1, First_Id_Lay, LayNr, CurrentMacroNr end
 end -- end Create_XYZ_Sequence
 
-function Create_All_Color(TCol, CurrentSeqNr, prefix, TLayNr, LayNr, NrNeed, LayX, LayY, LayW, LayH, MaxColLgn,
-                          RefX, AppNr)
-    LayNr = math.floor(LayNr + 1)
-    CurrentSeqNr = math.floor(CurrentSeqNr + 1)
-    LayX = math.floor(LayX + LayW + 20)
-    NrNeed = math.floor(AppNr + 1)
-    local col_count = 0
-    local First_All_Color
-    for col in ipairs(TCol) do
-        col_count = col_count + 1
-        local StColName = TCol[col].name
-        local StringColName = string.gsub(StColName, " ", "_")
-
-        if col == 1 then
-            First_All_Color = '' .. prefix .. 'ALL' .. StringColName .. 'ALL\''
-        end
-        Cmd("ClearAll /nu")
-        Cmd('Store Sequence ' .. CurrentSeqNr .. ' \'' .. prefix .. 'ALL' .. StringColName .. 'ALL\'')
-        Cmd('Set Seq ' .. CurrentSeqNr .. ' Cue 1 Property Appearance=' .. NrNeed + 1)
-        Cmd('Set Seq ' .. CurrentSeqNr .. ' Cue \'' .. prefix .. 'ALL' .. StringColName .. '' ..
-            'ALL\' Property Command=\'Go+ Sequence \'' .. prefix .. StringColName .. '*')
-        Cmd('Set Seq ' .. CurrentSeqNr .. ' Property Appearance=' .. NrNeed + 1)
-        Command_Ext_Suite(CurrentSeqNr)
-        Cmd("Assign Seq " .. CurrentSeqNr .. " at Layout " .. TLayNr)
-        Cmd("Set Layout " .. TLayNr .. "." .. LayNr ..
-            " Property appearance <default> PosX " .. LayX .. " PosY " .. LayY ..
-            " PositionW " .. LayW .. " PositionH " .. LayH ..
-            " VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0")
-
-        if (col_count ~= MaxColLgn) then
-            LayX = math.floor(LayX + LayW + 20)
-        else
-            LayX = RefX
-            LayX = math.floor(LayX + LayW + 20)
-            LayY = math.floor(LayY - 20) -- Add offset for Layout Element distance
-            LayY = math.floor(LayY - LayH)
-            col_count = 0
-        end
-
-        NrNeed = math.floor(NrNeed + 2); -- Set App Nr to next color
-        LayNr = math.floor(LayNr + 1)
-        CurrentSeqNr = math.floor(CurrentSeqNr + 1)
-    end
-    LayX = math.floor(LayX + LayW + 20)
-
-    do return 1, LayNr, LayX, First_All_Color end
-end -- end Create_All_Color
-
 function Command_Title(title, TLayNr, LayNr, LayX, LayY, Pw, Ph, align)
     Cmd('Store Layout ' .. TLayNr .. '.' .. LayNr .. ' Property CustomTextText=\' ' .. title .. ' \'')
     Cmd('Set Layout ' .. TLayNr .. '.' .. LayNr .. ' Property CustomTextSize \'24')
@@ -945,5 +897,49 @@ function Command_Ext_Suite(CurrentSeqNr)
         ' InputFilter="" SwapProtect=0 KillProtect=0 IncludeLinkLastGo=1 UseExecutorTime=0 OffwhenOverridden=1 Lock=0')
     Cmd('Set Seq ' .. CurrentSeqNr .. ' SequMIB=0 SequMIBMode=1')
 end -- end function Command_Ext_Suite(...)
+
+function AddAllColor(TCol, CurrentSeqNr, prefix, TLayNr, LayNr, NrNeed, LayX, LayY, LayW, LayH, SelectedGelNr, MaxColLgn,
+                     RefX)
+    local col_count = 0
+    local First_All_Color
+    for col in ipairs(TCol) do
+        col_count = col_count + 1
+        -- local StColCode = "\"" .. TCol[col].r .. "," .. TCol[col].g .. "," .. TCol[col].b .. ",1\""
+        local StColName = TCol[col].name
+        local StringColName = string.gsub(StColName, " ", "_")
+        -- local ColNr = SelectedGelNr .. "." .. TCol[col].no
+
+        if col == 1 then
+            First_All_Color = '' .. prefix .. 'ALL' .. StringColName .. 'ALL\''
+        end
+        Cmd("ClearAll /nu")
+        Cmd('Store Sequence ' .. CurrentSeqNr .. ' \'' .. prefix .. 'ALL' .. StringColName .. 'ALL\'')
+        Cmd('Set Seq ' .. CurrentSeqNr .. ' Cue 1 Property Appearance=' .. NrNeed + 1)
+        Cmd('Set Seq ' .. CurrentSeqNr .. ' Cue \'' .. prefix .. 'ALL' .. StringColName .. '' ..
+            'ALL\' Property Command=\'Go+ Sequence \'' .. prefix .. StringColName .. '*')
+        Cmd('Set Seq ' .. CurrentSeqNr .. ' Property Appearance=' .. NrNeed + 1)
+        Command_Ext_Suite(CurrentSeqNr)
+        Cmd("Assign Seq " .. CurrentSeqNr .. " at Layout " .. TLayNr)
+        Cmd("Set Layout " .. TLayNr .. "." .. LayNr ..
+            " Property appearance <default> PosX " .. LayX .. " PosY " .. LayY ..
+            " PositionW " .. LayW .. " PositionH " .. LayH ..
+            " VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0")
+
+        if (col_count ~= MaxColLgn) then
+            LayX = math.floor(LayX + LayW + 20)
+        else
+            LayX = RefX
+            LayX = math.floor(LayX + LayW + 20)
+            LayY = math.floor(LayY - 20) -- Add offset for Layout Element distance
+            LayY = math.floor(LayY - LayH)
+            col_count = 0
+        end
+
+        NrNeed = math.floor(NrNeed + 2); -- Set App Nr to next color
+        LayNr = math.floor(LayNr + 1)
+        CurrentSeqNr = math.floor(CurrentSeqNr + 1)
+    end
+    do return 1, LayNr, LayX, First_All_Color end
+end -- end function AddAllColor
 
 --end LC_Cmd.lua
