@@ -225,10 +225,6 @@ local SelectedGrpName = {}
 local check = {}
 local FirstSeqTime
 local LastSeqTime
-local FirstSeqDelayFrom
-local LastSeqDelayFrom
-local FirstSeqDelayTo
-local LastSeqDelayTo
 local FirstSeqGrp
 local LastSeqGrp
 local FirstSeqBlock
@@ -355,8 +351,9 @@ LayY = math.floor(LayY - 150)
 LayX = RefX
 LayX = math.floor(LayX + LayW - 100)
 
+-- Create Function for X Y Z
 for a = 1, 3 do
--- add Sequence FADE
+-- Create Sequence FADE
 local Return_Create_Fade_Sequence = { Create_Fade_Sequences(MakeX, FirstSeqTime, LastSeqTime, CurrentSeqNr,
 CurrentMacroNr, prefix, surfix, First_Id_Lay, LayNr, MatrickNrStart, TLayNr, Fade_Element, Argument_Fade,
 AppImp, LayX, LayY, LayW, LayH, SeqNrStart, SeqNrEnd, Current_Id_Lay, Delay_F_Element, a) }
@@ -367,687 +364,119 @@ LayNr = Return_Create_Fade_Sequence[4]
 LayX = Return_Create_Fade_Sequence[5]
 Current_Id_Lay = Return_Create_Fade_Sequence[6]
 Fade_Element = Return_Create_Fade_Sequence[7]
-end
--- end add Sequence FADE
+end -- end Create Sequence FADE
 
-
--- Setup DelayFrom seq
-CurrentMacroNr = math.floor(CurrentMacroNr + 5)
-FirstSeqDelayFrom = CurrentSeqNr
-LastSeqDelayFrom = math.floor(CurrentSeqNr + 4)
-
--- Create Macro DelayFrom Input
-Create_Macro_Delay_From(CurrentMacroNr, prefix, surfix, a, FirstSeqDelayFrom, LastSeqDelayFrom,
-MatrickNrStart, 2, TLayNr, Delay_F_Element, MatrickNr)
-
-if MakeX then
-Command_Title('DELAY FROM', LayNr, TLayNr, LayX, LayY, 580, 140, 2)
-LayNr = math.floor(LayNr + 1)
-Command_Title('none', LayNr, TLayNr, LayX, LayY, 580, 140, 3)
-LayNr = math.floor(LayNr + 1)
-end
 -- Create Sequences Delayfrom
-for i = 1, 5 do
-local ia = tonumber(i * 2 + 11)
-local ib = tonumber(i * 2 + 12)
-if i == 1 then
-if a == 1 then
-First_Id_Lay[5] = math.floor(LayNr)
-First_Id_Lay[6] = CurrentSeqNr
-elseif a == 2 then
-First_Id_Lay[7] = CurrentSeqNr
-elseif a == 3 then
-First_Id_Lay[8] = CurrentSeqNr
-end
-Current_Id_Lay = First_Id_Lay[5]
-end
-Cmd('ClearAll /nu')
-Cmd('Store Sequence ' ..
-CurrentSeqNr .. ' \'' .. prefix .. Argument_Delay[i].name .. surfix[a] .. '\'')
--- Add Cmd to Squence
-Cmd('set seq ' .. CurrentSeqNr .. ' cue 1 Property Appearance=' .. AppImp[ia].Nr)
-if i == 5 then
-Cmd('set seq ' ..
-CurrentSeqNr ..
-' cue \'' ..
-prefix ..
-Argument_Delay[i].name .. surfix[a] .. '\' Property Command=\'Go Macro ' .. CurrentMacroNr .. '')
-else
-Cmd('set seq ' ..
-CurrentSeqNr ..
-' cue \'' ..
-prefix ..
-Argument_Delay[i].name ..
-surfix[a] ..
-'\' Property Command=\'off seq ' ..
-FirstSeqDelayFrom ..
-' thru ' ..
-LastSeqDelayFrom ..
-' - ' ..
-CurrentSeqNr ..
-' ; Set Matricks ' ..
-MatrickNrStart ..
-' Property "DelayFrom' ..
-surfix[a] ..
-'" ' ..
-Argument_Delay[i].Time ..
-'  ; SetUserVariable "LC_Fonction" 2 ; SetUserVariable "LC_Axes" "' ..
-a ..
-'" ; SetUserVariable "LC_Layout" ' ..
-TLayNr ..
-' ; SetUserVariable "LC_Element" ' ..
-Delay_F_Element ..
-' ; SetUserVariable "LC_Matrick" ' ..
-MatrickNrStart ..
-' ; SetUserVariable "LC_Matrick_Thru" ' ..
-MatrickNr ..
-' ; Call Plugin "LC_View" ')
-end
-Cmd('set seq ' .. CurrentSeqNr .. ' Property Appearance=' .. AppImp[ib].Nr)
-Command_Ext_Suite(CurrentSeqNr)
--- Add Squences to Layout
-if MakeX then
-Cmd("Assign Seq " .. CurrentSeqNr .. " at Layout " .. TLayNr)
-Cmd("Set Layout " ..
-TLayNr ..
-"." ..
-LayNr ..
-" property appearance <default> PosX " ..
-LayX ..
-" PosY " ..
-LayY ..
-" PositionW " ..
-LayW ..
-" PositionH " .. LayH .. " VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0")
-LayX = math.floor(LayX + LayW + 20)
-LayNr = math.floor(LayNr + 1)
-Delay_T_Element = math.floor(LayNr + 1)
-end
-CurrentSeqNr = math.floor(CurrentSeqNr + 1)
-end -- end Sequences DelayFrom
+local Return_Create_Delay_From_Sequences = { Create_Delay_From_Sequences(First_Id_Lay, LayNr, CurrentSeqNr,
+Current_Id_Lay, prefix, surfix, Argument_Delay, AppImp, CurrentMacroNr, a, MatrickNrStart, TLayNr,
+Delay_F_Element, MatrickNr, MakeX, LayX, LayY, LayW, LayH, Delay_T_Element) }
+if Return_Create_Delay_From_Sequences[1] then
+Current_Id_Lay = Return_Create_Delay_From_Sequences[2]
+First_Id_Lay = Return_Create_Delay_From_Sequences[3]
+LayX = Return_Create_Delay_From_Sequences[4]
+LayNr = Return_Create_Delay_From_Sequences[5]
+Delay_T_Element = Return_Create_Delay_From_Sequences[6]
+CurrentSeqNr = Return_Create_Delay_From_Sequences[7]
+CurrentMacroNr = Return_Create_Delay_From_Sequences[8]
+end -- end Create Sequences Delayfrom
 
--- Setup DelayTo seq
-CurrentMacroNr = math.floor(CurrentMacroNr + 1)
-FirstSeqDelayTo = CurrentSeqNr
-LastSeqDelayTo = math.floor(CurrentSeqNr + 4)
--- Create Macro DelayTo Input
-Create_Macro_Delay_To(CurrentMacroNr, prefix, surfix, a, FirstSeqDelayTo, LastSeqDelayTo, MatrickNrStart,
-3, TLayNr, Delay_T_Element, MatrickNr)
-
-if MakeX then
-Command_Title('DELAY TO', LayNr, TLayNr, LayX, LayY, 580, 140, 2)
-LayNr = math.floor(LayNr + 1)
-Command_Title('none', LayNr, TLayNr, LayX, LayY, 580, 140, 3)
-LayNr = math.floor(LayNr + 1)
-end
 -- Create Sequences DelayTo
-for i = 1, 5 do
-local ia = tonumber(i * 2 + 21)
-local ib = tonumber(i * 2 + 22)
-if i == 1 then
-if a == 1 then
-First_Id_Lay[9] = math.floor(LayNr)
-First_Id_Lay[10] = CurrentSeqNr
-elseif a == 2 then
-First_Id_Lay[11] = CurrentSeqNr
-elseif a == 3 then
-First_Id_Lay[12] = CurrentSeqNr
-end
-Current_Id_Lay = First_Id_Lay[9]
-end
-Cmd('ClearAll /nu')
-Cmd('Store Sequence ' ..
-CurrentSeqNr .. ' \'' .. prefix .. Argument_DelayTo[i].name .. surfix[a] .. '\'')
--- Add Cmd to Squence
-Cmd('set seq ' .. CurrentSeqNr .. ' cue 1 Property Appearance=' .. AppImp[ia].Nr)
-if i == 5 then
-Cmd('set seq ' ..
-CurrentSeqNr ..
-' cue \'' ..
-prefix ..
-Argument_DelayTo[i].name .. surfix[a] ..
-'\' Property Command=\'Go Macro ' .. CurrentMacroNr .. '')
-else
-Cmd('set seq ' ..
-CurrentSeqNr ..
-' cue \'' ..
-prefix ..
-Argument_DelayTo[i].name ..
-surfix[a] ..
-'\' Property Command=\'off seq ' ..
-FirstSeqDelayTo ..
-' thru ' ..
-LastSeqDelayTo ..
-' - ' ..
-CurrentSeqNr ..
-' ; Set Matricks ' ..
-MatrickNrStart ..
-' Property "DelayTo' ..
-surfix[a] ..
-'" ' ..
-Argument_DelayTo[i].Time ..
-' ; SetUserVariable "LC_Fonction" 3 ; SetUserVariable "LC_Axes" "' ..
-a ..
-'" ; SetUserVariable "LC_Layout" ' ..
-TLayNr ..
-' ; SetUserVariable "LC_Element" ' ..
-Delay_T_Element ..
-' ; SetUserVariable "LC_Matrick" ' ..
-MatrickNrStart ..
-' ; SetUserVariable "LC_Matrick_Thru" ' ..
-MatrickNr ..
-' ; Call Plugin "LC_View" ')
-end
-Cmd('set seq ' .. CurrentSeqNr .. ' Property Appearance=' .. AppImp[ib].Nr)
-Command_Ext_Suite(CurrentSeqNr)
--- end Sequences
--- Add Squences to Layout
-if MakeX then
-Cmd('Assign Seq ' .. CurrentSeqNr .. ' at Layout ' .. TLayNr)
-Cmd('Set Layout ' ..
-TLayNr ..
-'.' ..
-LayNr ..
-' property appearance <default> PosX ' ..
-LayX ..
-' PosY ' ..
-LayY ..
-' PositionW ' ..
-LayW ..
-' PositionH ' .. LayH .. ' VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0')
-LayX = math.floor(LayX + LayW + 20)
-LayNr = math.floor(LayNr + 1)
-Phase_Element = math.floor(LayNr + 2)
-end
-CurrentSeqNr = math.floor(CurrentSeqNr + 1)
-end -- end Sequences DelayTo
+local Return_Create_Delay_To_Sequences = { Create_Delay_To_Sequences(a, First_Id_Lay, LayNr, CurrentSeqNr,
+Current_Id_Lay, prefix, Argument_DelayTo, surfix, MatrickNrStart, TLayNr, Delay_T_Element, MatrickNr, AppImp,
+LayX, LayY, LayW, LayH, Phase_Element, CurrentMacroNr, MakeX) }
+if Return_Create_Delay_To_Sequences[1] then
+First_Id_Lay = Return_Create_Delay_To_Sequences[2]
+Current_Id_Lay = Return_Create_Delay_To_Sequences[3]
+LayX = Return_Create_Delay_To_Sequences[4]
+LayNr = Return_Create_Delay_To_Sequences[5]
+Phase_Element = Return_Create_Delay_To_Sequences[6]
+CurrentSeqNr = Return_Create_Delay_To_Sequences[7]
+CurrentMacroNr = Return_Create_Delay_To_Sequences[8]
+end -- end Create Sequences DelayTo
 
--- Add offset for Layout Element distance
-LayY = math.floor(LayY - 150)
-LayX = RefX
-LayX = math.floor(LayX + LayW - 100)
+-- Create_Sequence_Phase
+local Return_Create_Phase_Sequence = { Create_Phase_Sequence(LayY, LayX, LayW, a, First_Id_Lay, LayNr,
+CurrentSeqNr, Current_Id_Lay, CurrentMacroNr, prefix, surfix, MatrickNrStart, TLayNr, Phase_Element,
+MatrickNr, AppImp, MakeX, LayH, RefX, Group_Element) }
+if Return_Create_Phase_Sequence[1] then
+Current_Id_Lay = Return_Create_Phase_Sequence[2]
+CurrentMacroNr = Return_Create_Phase_Sequence[3]
+LayY = Return_Create_Phase_Sequence[4]
+LayX = Return_Create_Phase_Sequence[5]
+LayNr = Return_Create_Phase_Sequence[6]
+CurrentSeqNr = Return_Create_Phase_Sequence[7]
+Group_Element = Return_Create_Phase_Sequence[8]
+end -- end Sequences Phase
 
--- Create Macro Phase Input
-if a == 1 then
-First_Id_Lay[13] = math.floor(LayNr)
-First_Id_Lay[14] = CurrentSeqNr
-elseif a == 2 then
-First_Id_Lay[15] = CurrentSeqNr
-elseif a == 3 then
-First_Id_Lay[16] = CurrentSeqNr
-end
-Current_Id_Lay = First_Id_Lay[13]
-CurrentMacroNr = math.floor(CurrentMacroNr + 1)
-Create_Macro_Phase(CurrentMacroNr, prefix, surfix, a, MatrickNrStart, 4, TLayNr, Phase_Element, MatrickNr)
+-- Create_sequence_xgroup
+local Return_Create_Group_Sequence = { Create_Group_Sequence(CurrentMacroNr, FirstSeqGrp, CurrentSeqNr,
+LastSeqGrp, prefix, surfix, a, MatrickNrStart, TLayNr, Group_Element, MatrickNr, LayNr, LayX, LayY,
+CurrentSeqNr, First_Id_Lay, Current_Id_Lay, Argument_Xgrp, AppImp, LayW, LayH, Block_Element, MakeX) }
+if Return_Create_Group_Sequence[1] then
+CurrentSeqNr = Return_Create_Group_Sequence[2]
+Block_Element = Return_Create_Group_Sequence[3]
+LayNr = Return_Create_Group_Sequence[4]
+LayX = Return_Create_Group_Sequence[5]
+Current_Id_Lay = Return_Create_Group_Sequence[6]
+First_Id_Lay = Return_Create_Group_Sequence[7]
+CurrentMacroNr = Return_Create_Group_Sequence[8]
+LastSeqGrp = Return_Create_Group_Sequence[9]
+FirstSeqGrp = Return_Create_Group_Sequence[10]
+end -- end Sequences XGroup
 
--- Create Sequences
-Cmd('ClearAll /nu')
-Cmd('Store Sequence ' .. CurrentSeqNr .. ' \'' .. prefix .. 'Phase Input' .. surfix[a] .. '\'')
--- Add Cmd to Squence
-Cmd('set seq ' .. CurrentSeqNr .. ' cue 1 Property Appearance=' .. AppImp[63].Nr)
-Cmd('set seq ' ..
-CurrentSeqNr ..
-' cue \'' ..
-prefix .. 'Phase Input' .. surfix[a] .. '\' Property Command=\'Go Macro ' .. CurrentMacroNr .. '')
-Cmd('set seq ' .. CurrentSeqNr .. ' Property Appearance=' .. AppImp[64].Nr)
-Command_Ext_Suite(CurrentSeqNr)
+-- Create_Block_Sequence
+local Return_Create_Block_Sequence = { Create_Block_Sequence(CurrentMacroNr, FirstSeqBlock, CurrentSeqNr,
+LastSeqBlock, prefix, surfix, a, MatrickNrStart, TLayNr, Block_Element, MatrickNr, MakeX, LayNr, LayX, LayY,
+First_Id_Lay, Current_Id_Lay, Argument_Xblock, AppImp, Wings_Element, LayW, LayH) }
+if Return_Create_Block_Sequence[1] then
+CurrentSeqNr = Return_Create_Block_Sequence[2]
+Wings_Element = Return_Create_Block_Sequence[3]
+LayNr = Return_Create_Block_Sequence[4]
+LayX = Return_Create_Block_Sequence[5]
+Current_Id_Lay = Return_Create_Block_Sequence[6]
+First_Id_Lay = Return_Create_Block_Sequence[7]
+CurrentMacroNr = Return_Create_Block_Sequence[8]
+FirstSeqBlock = Return_Create_Block_Sequence[9]
+LastSeqBlock = Return_Create_Block_Sequence[10]
+end -- end Create_Block_Sequence
 
--- Add Squences to Layout
-if MakeX then
-Cmd('Assign Seq ' .. CurrentSeqNr .. ' at Layout ' .. TLayNr)
-Cmd('Set Layout ' ..
-TLayNr ..
-'.' ..
-LayNr ..
-' property appearance <default> PosX ' ..
-LayX ..
-' PosY ' ..
-LayY ..
-' PositionW ' ..
-LayW .. ' PositionH ' .. LayH .. ' VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0')
-LayX = math.floor(LayX + LayW + 20)
-LayNr = math.floor(LayNr + 1)
-Command_Title('PHASE', LayNr, TLayNr, LayX - 120, LayY - 30, 700, 170, 4)
-LayNr = math.floor(LayNr + 1)
-Command_Title('none > none', LayNr, TLayNr, LayX - 120, LayY - 30, 700, 170, 1)
-LayNr = math.floor(LayNr + 1)
-Group_Element = math.floor(LayNr + 1)
-end
-CurrentSeqNr = math.floor(CurrentSeqNr + 1)
--- end Sequences Phase
--- Setup XGroup seq
-CurrentMacroNr = math.floor(CurrentMacroNr + 1)
-FirstSeqGrp = CurrentSeqNr
-LastSeqGrp = math.floor(CurrentSeqNr + 4)
--- Create Macro Group Input
-Create_Macro_Group(CurrentMacroNr, prefix, surfix, a, FirstSeqGrp, LastSeqGrp, MatrickNrStart, 5, TLayNr,
-Group_Element, MatrickNr)
+-- Create_Wings_Sequence
+local Return_Create_Wings_Sequence = { Create_Wings_Sequence(CurrentMacroNr, FirstSeqWings, CurrentSeqNr,
+LastSeqWings, prefix, surfix, a, MatrickNrStart, TLayNr, Wings_Element, MatrickNr, MakeX, LayNr, LayX, LayY,
+First_Id_Lay, Current_Id_Lay, Argument_Xwings, AppImp, LayW, LayH) }
+if Return_Create_Wings_Sequence[1] then
+CurrentSeqNr = Return_Create_Wings_Sequence[2]
+LayNr = Return_Create_Wings_Sequence[3]
+LayX = Return_Create_Wings_Sequence[4]
+Current_Id_Lay = Return_Create_Wings_Sequence[5]
+First_Id_Lay = Return_Create_Wings_Sequence[6]
+LastSeqWings = Return_Create_Wings_Sequence[7]
+FirstSeqWings = Return_Create_Wings_Sequence[8]
+CurrentMacroNr = Return_Create_Wings_Sequence[9]
+end -- end Create_Wings_Sequence
 
-if MakeX then
-Command_Title('GROUP', LayNr, TLayNr, LayX - 120, LayY - 30, 700, 170, 2)
-LayNr = math.floor(LayNr + 1)
-Command_Title('None', LayNr, TLayNr, LayX - 120, LayY - 30, 700, 170, 3)
-LayNr = math.floor(LayNr + 1)
-end
--- Create Sequences XGroup
-for i = 1, 5 do
-local ia = tonumber(i * 2 + 31)
-local ib = tonumber(i * 2 + 32)
-if i == 1 then
-if a == 1 then
-First_Id_Lay[17] = math.floor(LayNr)
-First_Id_Lay[18] = CurrentSeqNr
-elseif a == 2 then
-First_Id_Lay[19] = CurrentSeqNr
-elseif a == 3 then
-First_Id_Lay[20] = CurrentSeqNr
-end
-Current_Id_Lay = First_Id_Lay[17]
-end
-Cmd('ClearAll /nu')
-Cmd('Store Sequence ' ..
-CurrentSeqNr .. ' \'' .. prefix .. Argument_Xgrp[i].name .. surfix[a] .. '\'')
--- Add Cmd to Squence
-Cmd('set seq ' .. CurrentSeqNr .. ' cue 1 Property Appearance=' .. AppImp[ia].Nr)
-if i == 5 then
-Cmd('set seq ' ..
-CurrentSeqNr ..
-' cue \'' ..
-prefix ..
-Argument_Xgrp[i].name .. surfix[a] .. '\' Property Command=\'Go Macro ' .. CurrentMacroNr .. '')
-else
-Cmd('set seq ' ..
-CurrentSeqNr ..
-' cue \'' ..
-prefix ..
-Argument_Xgrp[i].name ..
-surfix[a] ..
-'\' Property Command=\'off seq ' ..
-FirstSeqGrp ..
-' thru ' ..
-LastSeqGrp ..
-' - ' ..
-CurrentSeqNr ..
-' ; Set Matricks ' ..
-MatrickNrStart ..
-' Property "' ..
-surfix[a] ..
-'Group" ' ..
-Argument_Xgrp[i].Time ..
-'  ; SetUserVariable "LC_Fonction" 5 ; SetUserVariable "LC_Axes" "' ..
-a ..
-'" ; SetUserVariable "LC_Layout" ' ..
-TLayNr ..
-' ; SetUserVariable "LC_Element" ' ..
-Group_Element ..
-' ; SetUserVariable "LC_Matrick" ' ..
-MatrickNrStart ..
-' ; SetUserVariable "LC_Matrick_Thru" ' ..
-MatrickNr ..
-' ; Call Plugin "LC_View" ')
-end
-Cmd('set seq ' .. CurrentSeqNr .. ' Property Appearance=' .. AppImp[ib].Nr)
-Command_Ext_Suite(CurrentSeqNr)
--- end Sequences
--- Add Squences to Layout
-if MakeX then
-Cmd('Assign Seq ' .. CurrentSeqNr .. ' at Layout ' .. TLayNr)
-Cmd('Set Layout ' ..
-TLayNr ..
-'.' ..
-LayNr ..
-' property appearance <default> PosX ' ..
-LayX ..
-' PosY ' ..
-LayY ..
-' PositionW ' ..
-LayW ..
-' PositionH ' .. LayH .. ' VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0')
-LayX = math.floor(LayX + LayW + 20)
-LayNr = math.floor(LayNr + 1)
-Block_Element = math.floor(LayNr + 1)
-end
-CurrentSeqNr = math.floor(CurrentSeqNr + 1)
-end
--- end Sequences XGroup
--- Setup XBlock seq
-CurrentMacroNr = math.floor(CurrentMacroNr + 1)
-FirstSeqBlock = CurrentSeqNr
-LastSeqBlock = math.floor(CurrentSeqNr + 4)
--- Create Macro Block Input
-Create_Macro_Block(CurrentMacroNr, prefix, surfix, a, FirstSeqBlock, LastSeqBlock, MatrickNrStart, 6,
-TLayNr, Block_Element, MatrickNr)
+-- Create_XYZ_Sequence
+local Return_Create_XYZ_Sequence = { Create_XYZ_Sequence(CurrentMacroNr, First_Id_Lay, prefix, surfix, Call_inc,
+CallT, MatrickNrStart, a, CurrentSeqNr, TLayNr, Fade_Element, Delay_F_Element, Delay_T_Element, Phase_Element,
+Group_Element, Block_Element, Wings_Element, MatrickNr, AppImp, MakeX, LayNr, LayX, LayY, LayW, LayH) }
+if Return_Create_XYZ_Sequence[1] then
+First_Id_Lay = Return_Create_XYZ_Sequence[2]
+LayNr = Return_Create_XYZ_Sequence[3]
+CurrentMacroNr = Return_Create_XYZ_Sequence[4]
+end -- Create_XYZ_Sequence
 
-if MakeX then
-Command_Title('BLOCK', LayNr, TLayNr, LayX, LayY, 580, 140, 2)
-LayNr = math.floor(LayNr + 1)
-Command_Title('none', LayNr, TLayNr, LayX, LayY, 580, 140, 3)
-LayNr = math.floor(LayNr + 1)
-end
--- Create Sequences XBlock
-for i = 1, 5 do
-local ia = tonumber(i * 2 + 41)
-local ib = tonumber(i * 2 + 42)
-if i == 1 then
-if a == 1 then
-First_Id_Lay[21] = math.floor(LayNr)
-First_Id_Lay[22] = CurrentSeqNr
-elseif a == 2 then
-First_Id_Lay[23] = CurrentSeqNr
-elseif a == 3 then
-First_Id_Lay[24] = CurrentSeqNr
-end
-Current_Id_Lay = First_Id_Lay[21]
-end
-Cmd('ClearAll /nu')
-Cmd('Store Sequence ' ..
-CurrentSeqNr .. ' \'' .. prefix .. Argument_Xblock[i].name .. surfix[a] .. '\'')
--- Add Cmd to Squence
-Cmd('set seq ' .. CurrentSeqNr .. ' cue 1 Property Appearance=' .. AppImp[ia].Nr)
-if i == 5 then
-Cmd('set seq ' ..
-CurrentSeqNr ..
-' cue \'' ..
-prefix ..
-Argument_Xblock[i].name .. surfix[a] .. '\' Property Command=\'Go Macro ' .. CurrentMacroNr .. '')
-else
-Cmd('set seq ' ..
-CurrentSeqNr ..
-' cue \'' ..
-prefix ..
-Argument_Xblock[i].name ..
-surfix[a] ..
-'\' Property Command=\'off seq ' ..
-FirstSeqBlock ..
-' thru ' ..
-LastSeqBlock ..
-' - ' ..
-CurrentSeqNr ..
-' ; Set Matricks ' ..
-MatrickNrStart ..
-' Property "' ..
-surfix[a] ..
-'Block" ' ..
-Argument_Xblock[i].Time ..
-'  ; SetUserVariable "LC_Fonction" 6 ; SetUserVariable "LC_Axes" "' ..
-a ..
-'" ; SetUserVariable "LC_Layout" ' ..
-TLayNr ..
-' ; SetUserVariable "LC_Element" ' ..
-Block_Element ..
-' ; SetUserVariable "LC_Matrick" ' ..
-MatrickNrStart ..
-' ; SetUserVariable "LC_Matrick_Thru" ' ..
-MatrickNr ..
-' ; Call Plugin "LC_View" ')
-end
-Cmd('set seq ' .. CurrentSeqNr .. ' Property Appearance=' .. AppImp[ib].Nr)
-Command_Ext_Suite(CurrentSeqNr)
--- end Sequences
--- Add Squences to Layout
-if MakeX then
-Cmd('Assign Seq ' .. CurrentSeqNr .. ' at Layout ' .. TLayNr)
-Cmd('Set Layout ' ..
-TLayNr ..
-'.' ..
-LayNr ..
-' property appearance <default> PosX ' ..
-LayX ..
-' PosY ' ..
-LayY ..
-' PositionW ' ..
-LayW ..
-' PositionH ' .. LayH .. ' VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0')
-LayX = math.floor(LayX + LayW + 20)
-LayNr = math.floor(LayNr + 1)
-Wings_Element = math.floor(LayNr + 1)
-end
-CurrentSeqNr = math.floor(CurrentSeqNr + 1)
-end
--- end Sequences XBlock
--- Setup XWings seq
-CurrentMacroNr = math.floor(CurrentMacroNr + 1)
-FirstSeqWings = CurrentSeqNr
-LastSeqWings = math.floor(CurrentSeqNr + 4)
--- Create Macro Wings Input
-Create_Macro_Wings(CurrentMacroNr, prefix, surfix, a, FirstSeqWings, LastSeqWings, MatrickNrStart, 7,
-TLayNr, Wings_Element, MatrickNr)
-
-if MakeX then
-Command_Title('WINGS', LayNr, TLayNr, LayX, LayY, 580, 140, 2)
-LayNr = math.floor(LayNr + 1)
-Command_Title('none', LayNr, TLayNr, LayX, LayY, 580, 140, 3)
-LayNr = math.floor(LayNr + 1)
-end
--- Create Sequences XWings
-for i = 1, 5 do
-local ia = tonumber(i * 2 + 51)
-local ib = tonumber(i * 2 + 52)
-if i == 1 then
-if a == 1 then
-First_Id_Lay[25] = math.floor(LayNr)
-First_Id_Lay[26] = CurrentSeqNr
-elseif a == 2 then
-First_Id_Lay[27] = CurrentSeqNr
-elseif a == 3 then
-First_Id_Lay[28] = CurrentSeqNr
-end
-Current_Id_Lay = First_Id_Lay[25]
-end
-Cmd('ClearAll /nu')
-Cmd('Store Sequence ' ..
-CurrentSeqNr .. ' \'' .. prefix .. Argument_Xwings[i].name .. surfix[a] .. '\'')
--- Add Cmd to Squence
-Cmd('set seq ' .. CurrentSeqNr .. ' cue 1 Property Appearance=' .. AppImp[ia].Nr)
-if i == 5 then
-Cmd('set seq ' ..
-CurrentSeqNr ..
-' cue \'' ..
-prefix ..
-Argument_Xwings[i].name .. surfix[a] .. '\' Property Command=\'Go Macro ' .. CurrentMacroNr .. '')
-else
-Cmd('set seq ' ..
-CurrentSeqNr ..
-' cue \'' ..
-prefix ..
-Argument_Xwings[i].name ..
-surfix[a] ..
-'\' Property Command=\'off seq ' ..
-FirstSeqWings ..
-' thru ' ..
-LastSeqWings ..
-' - ' ..
-CurrentSeqNr ..
-' ; Set Matricks ' ..
-MatrickNrStart ..
-' Property "' ..
-surfix[a] ..
-'Wings" ' ..
-Argument_Xwings[i].Time ..
-'  ; SetUserVariable "LC_Fonction" 7 ; SetUserVariable "LC_Axes" "' ..
-a ..
-'" ; SetUserVariable "LC_Layout" ' ..
-TLayNr ..
-' ; SetUserVariable "LC_Element" ' ..
-Wings_Element ..
-' ; SetUserVariable "LC_Matrick" ' ..
-MatrickNrStart ..
-' ; SetUserVariable "LC_Matrick_Thru" ' ..
-MatrickNr ..
-' ; Call Plugin "LC_View" ')
-end
-Cmd('set seq ' .. CurrentSeqNr .. ' Property Appearance=' .. AppImp[ib].Nr)
-Command_Ext_Suite(CurrentSeqNr)
--- end Sequences
--- Add Squences to Layout
-if MakeX then
-Cmd('Assign Seq ' .. CurrentSeqNr .. ' at Layout ' .. TLayNr)
-Cmd('Set Layout ' ..
-TLayNr ..
-'.' ..
-LayNr ..
-' property appearance <default> PosX ' ..
-LayX ..
-' PosY ' ..
-LayY ..
-' PositionW ' ..
-LayW ..
-' PositionH ' .. LayH .. ' VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0')
-LayX = math.floor(LayX + LayW + 20)
-LayNr = math.floor(LayNr + 1)
-end
-CurrentSeqNr = math.floor(CurrentSeqNr + 1)
-end
--- end Sequences XWings
-
--- add Sequences X Y Z call
-CurrentMacroNr = math.floor(CurrentMacroNr + 1)
-First_Id_Lay[33 + a] = CurrentMacroNr
-Cmd('Store Macro ' .. CurrentMacroNr .. ' \'' .. prefix .. surfix[a] .. '_Call\'')
-Cmd('ChangeDestination Macro ' .. CurrentMacroNr .. '')
-for m = 1, 31 do
-if m == 1 or m == 6 or m == 11 or m == 16 or m == 17 or m == 22 or m == 27 then
-Call_inc = 0
-end
-if m < 6 then
-CallT = 1
-elseif m < 11 then
-CallT = 5
-elseif m < 16 then
-CallT = 9
-elseif m < 17 then
-CallT = 13
-elseif m < 22 then
-CallT = 17
-elseif m < 27 then
-CallT = 21
-elseif m <= 31 then
-CallT = 25
-end
-Cmd('Insert')
-Cmd('set ' ..
-m ..
-' Command=\'Assign Sequence ' ..
-First_Id_Lay[CallT + a] + Call_inc .. ' At Layout ' ..
-TLayNr .. '.' .. First_Id_Lay[CallT] + Call_inc)
-Call_inc = math.floor(Call_inc + 1)
-end
-Cmd('ChangeDestination Root')
-Create_Macro_Reset(CurrentMacroNr, prefix, surfix, MatrickNrStart, a, CurrentSeqNr, First_Id_Lay, TLayNr,
-Fade_Element, Delay_F_Element, Delay_T_Element, Phase_Element, Group_Element, Block_Element,
-Wings_Element, MatrickNr)
-
-First_Id_Lay[28 + a] = CurrentSeqNr
-Cmd('ClearAll /nu')
-Cmd('Store Sequence ' .. CurrentSeqNr .. ' \'' .. prefix .. surfix[a] .. '_Call\'')
-Cmd('set seq ' .. CurrentSeqNr .. ' cue 1 Property Appearance=' .. AppImp[66 + tonumber(a * 2 - 1)].Nr)
-Cmd('set seq ' ..
-CurrentSeqNr ..
-' cue \'' .. prefix .. surfix[a] .. '_Call\' Property Command=\'Go Macro ' .. CurrentMacroNr .. '')
-Cmd('set seq ' .. CurrentSeqNr .. ' Property Appearance=' .. AppImp[67 + tonumber(a * 2 - 1)].Nr)
-Command_Ext_Suite(CurrentSeqNr)
-Cmd('ClearAll /nu')
-Cmd('Store Sequence ' .. CurrentSeqNr + 1 .. ' \'' .. prefix .. surfix[a] .. '_Reset\'')
-Cmd("set seq " .. CurrentSeqNr + 1 .. " cue 1 Property Appearance=" .. prefix .. "'skull_on'")
-Cmd('set seq ' ..
-CurrentSeqNr + 1 ..
-' cue \'' .. prefix .. surfix[a] .. '_Reset\' Property Command=\'Go Macro ' .. CurrentMacroNr + 1 .. '')
-Cmd("set seq " .. CurrentSeqNr + 1 .. " Property Appearance=" .. prefix .. "'skull_off'")
-Command_Ext_Suite(CurrentSeqNr + 1)
-if MakeX == false then
-LayNr = math.floor(LayNr + 1)
-end
-if a == 1 then
-First_Id_Lay[32] = LayX
-First_Id_Lay[33] = LayY
-Cmd('Assign Seq ' .. CurrentSeqNr .. ' at Layout ' .. TLayNr)
-Cmd('Set Layout ' ..
-TLayNr ..
-'.' ..
-LayNr ..
-' property appearance <default> PosX ' ..
-First_Id_Lay[32] ..
-' PosY ' ..
-First_Id_Lay[33] + 170 ..
-' PositionW ' ..
-LayW - 35 ..
-' PositionH ' .. LayH - 35 .. ' VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0')
-Cmd('Assign Seq ' .. CurrentSeqNr + 1 .. ' at Layout ' .. TLayNr)
-Cmd('Set Layout ' ..
-TLayNr ..
-'.' ..
-LayNr + 1 ..
-' property appearance <default> PosX ' ..
-First_Id_Lay[32] + 85 ..
-' PosY ' ..
-First_Id_Lay[33] + 170 ..
-' PositionW ' ..
-LayW - 35 ..
-' PositionH ' .. LayH - 35 .. ' VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0')
-elseif a == 2 then
-Cmd('Assign Seq ' .. CurrentSeqNr .. ' at Layout ' .. TLayNr)
-Cmd('Set Layout ' ..
-TLayNr ..
-'.' ..
-LayNr ..
-' property appearance <default> PosX ' ..
-First_Id_Lay[32] ..
-' PosY ' ..
-First_Id_Lay[33] + 90 ..
-' PositionW ' ..
-LayW - 35 ..
-' PositionH ' .. LayH - 35 .. ' VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0')
-Cmd('Assign Seq ' .. CurrentSeqNr + 1 .. ' at Layout ' .. TLayNr)
-Cmd('Set Layout ' ..
-TLayNr ..
-'.' ..
-LayNr + 1 ..
-' property appearance <default> PosX ' ..
-First_Id_Lay[32] + 85 ..
-' PosY ' ..
-First_Id_Lay[33] + 90 ..
-' PositionW ' ..
-LayW - 35 ..
-' PositionH ' .. LayH - 35 .. ' VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0')
-elseif a == 3 then
-Cmd('Assign Seq ' .. CurrentSeqNr .. ' at Layout ' .. TLayNr)
-Cmd('Set Layout ' ..
-TLayNr ..
-'.' ..
-LayNr ..
-' property appearance <default> PosX ' ..
-First_Id_Lay[32] ..
-' PosY ' ..
-First_Id_Lay[33] + 10 ..
-' PositionW ' ..
-LayW - 35 ..
-' PositionH ' .. LayH - 35 .. ' VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0')
-Cmd('Assign Seq ' .. CurrentSeqNr + 1 .. ' at Layout ' .. TLayNr)
-Cmd('Set Layout ' ..
-TLayNr ..
-'.' ..
-LayNr + 1 ..
-' property appearance <default> PosX ' ..
-First_Id_Lay[32] + 85 ..
-' PosY ' ..
-First_Id_Lay[33] + 10 ..
-' PositionW ' ..
-LayW - 35 ..
-' PositionH ' .. LayH - 35 .. ' VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0')
-end
 LayNr = math.floor(LayNr + 1)
 CurrentSeqNr = math.floor(CurrentSeqNr + 2)
 CurrentMacroNr = math.floor(CurrentMacroNr + 2)
 MakeX = false
-end -- end Sequences X Y Z call
+end --end  Create Function for X Y Z
 
 -- add line macro X Y Z Call
 for i = 1, 3 do
 Cmd('ChangeDestination Macro ' .. First_Id_Lay[33 + i])
 Cmd('Insert')
-Cmd('set 32 Command=\'Off Sequence ' ..
-First_Id_Lay[29] ..
-' + ' .. First_Id_Lay[30] .. ' + ' .. First_Id_Lay[31] .. ' - ' .. First_Id_Lay[28 + i])
+Cmd('Set 32 Command=\'Off Sequence ' .. First_Id_Lay[29] .. ' + ' .. First_Id_Lay[30] ..
+' + ' .. First_Id_Lay[31] .. ' - ' .. First_Id_Lay[28 + i])
 Add_Macro_Call(i, TLayNr, Fade_Element, MatrickNrStart, Delay_F_Element, Delay_T_Element, Phase_Element,
 Group_Element, Block_Element, Wings_Element)
 Cmd('ChangeDestination Root')
@@ -1067,40 +496,26 @@ LayX = RefX
 LayNr = math.floor(LayNr + 1)
 Cmd('ClearAll /nu')
 Cmd('Store Sequence ' .. CurrentSeqNr .. ' \'' .. prefix .. 'KILL_ALL\'')
-Cmd("set seq " .. CurrentSeqNr .. " cue 1 Property Appearance=" .. prefix .. "'skull_on'")
-Cmd('set seq ' ..
+Cmd("Set Seq " .. CurrentSeqNr .. " cue 1 Property Appearance=" .. prefix .. "'skull_on'")
+Cmd('Set Seq ' ..
 CurrentSeqNr .. ' cue \'' .. prefix .. 'KILL_ALL\' Property Command=\'Off Sequence \'' .. prefix .. '*')
-Cmd("set seq " .. CurrentSeqNr .. " Property Appearance=" .. prefix .. "'skull_off'")
+Cmd("Set Seq " .. CurrentSeqNr .. " Property Appearance=" .. prefix .. "'skull_off'")
 Command_Ext_Suite(CurrentSeqNr)
 Cmd("Assign Seq " .. CurrentSeqNr .. " at Layout " .. TLayNr)
-Cmd('Set Layout ' ..
-TLayNr ..
-'.' ..
-LayNr ..
-' property appearance <default> PosX ' ..
-LayX ..
-' PosY ' ..
-LayY ..
-' PositionW ' ..
-LayW .. ' PositionH ' .. LayH .. ' VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0')
+Cmd('Set Layout ' .. TLayNr .. '.' .. LayNr ..
+' Property Appearance <default> PosX ' .. LayX .. ' PosY ' .. LayY ..
+' PositionW ' .. LayW .. ' PositionH ' .. LayH ..
+' VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0')
 -- end Kill all LCx_
 
--- add All Color
-LayNr = math.floor(LayNr + 1)
-CurrentSeqNr = math.floor(CurrentSeqNr + 1)
-LayX = math.floor(LayX + LayW + 20)
-NrNeed = math.floor(AppNr + 1)
-
-local Return_AddAllColor = { AddAllColor(TCol, CurrentSeqNr, prefix, TLayNr, LayNr, NrNeed, LayX, LayY, LayW,
-LayH, SelectedGelNr, MaxColLgn, RefX) }
-if Return_AddAllColor[1] then
-LayNr = Return_AddAllColor[2]
-LayX = Return_AddAllColor[3]
-First_All_Color = Return_AddAllColor[4]
-end
-
-LayX = math.floor(LayX + LayW + 20)
--- end All Color
+-- Create_All_Color
+local Return_Create_All_Color = { Create_All_Color(TCol, CurrentSeqNr, prefix, TLayNr, LayNr, NrNeed, LayX, LayY,
+LayW, LayH, MaxColLgn, RefX, AppNr) }
+if Return_Create_All_Color[1] then
+LayNr = Return_Create_All_Color[2]
+LayX = Return_Create_All_Color[3]
+First_All_Color = Return_Create_All_Color[4]
+end -- Create_All_Color
 
 -- add Macro priority
 CurrentMacroNr = math.floor(CurrentMacroNr)
@@ -1111,7 +526,7 @@ Cmd('Insert')
 end
 Cmd('Assign Macro ' .. CurrentMacroNr .. ' at Layout ' .. TLayNr)
 Cmd('Set Layout ' .. TLayNr .. '.' .. LayNr ..
-' property appearance <default> PosX ' .. LayX .. ' PosY ' .. LayY ..
+' Property Appearance <default> PosX ' .. LayX .. ' PosY ' .. LayY ..
 ' PositionW ' .. LayW .. ' PositionH ' .. LayH ..
 ' VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0')
 Cmd('Set Layout ' .. TLayNr .. "." .. LayNr .. ' Property "Appearance" "p_super_png" ')
