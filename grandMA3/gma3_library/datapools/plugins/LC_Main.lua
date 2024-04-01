@@ -12,7 +12,6 @@ local myHandle = select(4, ...)
 
 local function Main(displayHandle)
     local list = false
-    -- local FixtureGroups = Root().ShowData.DataPools.Default.Groups:Children()
     local FixtureGroups = DataPool().Groups:Children()
     local SelectedGrp = {}
     local SelectedGrpNo = {}
