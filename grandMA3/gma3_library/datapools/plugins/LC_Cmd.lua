@@ -206,7 +206,9 @@ function Create_Appearances_Sequences(CurrentMacroNr, SelectedGelNr, SelectedGrp
             '\' Property Command=\'Assign DataPool ' ..
             Data_Pool_Nr .. ' MaTricks ' .. prefix .. SelectedGrpName[g]:gsub('\'', '') ..
             ' At DataPool ' .. Data_Pool_Nr .. ' Sequence ' .. FirstSeqColor .. ' Thru ' .. LastSeqColor ..
-            ' Cue 1 part 0.1 ;  Assign DataPool ' .. Data_Pool_Nr .. ' Sequence ' .. CurrentSeqNr + 1 .. ' At DataPool ' .. Data_Pool_Nr .. ' Layout ' .. TLayNr .. '.' .. LayNr)
+            ' Cue 1 part 0.1 ;  Assign DataPool ' ..
+            Data_Pool_Nr ..
+            ' Sequence ' .. CurrentSeqNr + 1 .. ' At DataPool ' .. Data_Pool_Nr .. ' Layout ' .. TLayNr .. '.' .. LayNr)
         Cmd('Set Sequence ' .. CurrentSeqNr .. ' Property Appearance=' .. AppTricks[2].Nr)
         Cmd("Assign Sequence " .. CurrentSeqNr .. " at Layout " .. TLayNr)
         Cmd("Set Layout " .. TLayNr .. "." .. LayNr ..
@@ -221,7 +223,9 @@ function Create_Appearances_Sequences(CurrentMacroNr, SelectedGelNr, SelectedGrp
             SelectedGrpName[g]:gsub('\'', '') ..
             '\' Property Command=\'Assign DataPool ' .. Data_Pool_Nr .. ' MaTricks ' .. MatrickNrStart ..
             ' At DataPool ' .. Data_Pool_Nr .. ' Sequence ' .. FirstSeqColor .. ' Thru ' .. LastSeqColor ..
-            ' Cue 1 part 0.1 ; Assign DataPool ' .. Data_Pool_Nr .. ' Sequence ' .. CurrentSeqNr - 1 .. ' At DataPool ' .. Data_Pool_Nr .. ' Layout ' .. TLayNr .. '.' .. LayNr)
+            ' Cue 1 part 0.1 ; Assign DataPool ' ..
+            Data_Pool_Nr ..
+            ' Sequence ' .. CurrentSeqNr - 1 .. ' At DataPool ' .. Data_Pool_Nr .. ' Layout ' .. TLayNr .. '.' .. LayNr)
         Cmd('Set Sequence ' .. CurrentSeqNr .. ' Property Appearance=' .. AppTricks[1].Nr)
         LayNr = math.floor(LayNr + 1)
         LayX = math.floor(LayX + LayW - 35 + 20)
@@ -273,7 +277,7 @@ function Create_Fade_Sequences(MakeX, FirstSeqTime, LastSeqTime, CurrentSeqNr, C
     end
     Cmd('Insert')
     Cmd('set 2 Command=\'Edit DataPool ' ..
-    Data_Pool_Nr .. ' Matricks ' .. MatrickNrStart .. ' Property "FadeFrom' .. surfix[a] .. '"')
+        Data_Pool_Nr .. ' Matricks ' .. MatrickNrStart .. ' Property "FadeFrom' .. surfix[a] .. '"')
     Cmd("Insert")
     Cmd('set 3 Command=\'Edit DataPool ' ..
         Data_Pool_Nr .. ' Matricks ' .. MatrickNrStart .. ' Property "FadeTo' .. surfix[a] .. '"')

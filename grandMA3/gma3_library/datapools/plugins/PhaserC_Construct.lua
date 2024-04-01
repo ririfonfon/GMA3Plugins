@@ -1,16 +1,17 @@
 --[[
 Releases:
-* 2.0.0.5
+* 2.0.0.6
 
 Created by Richard Fontaine "RIRI", March 2024.
 --]]
 
 function PC_Construct_Layout(displayHandle, TLay, SeqNrStart, MacroNrStart, MatrickNrStart, MatrickNr, TLayNr, AppNr,
-                          All_5_Current, All_5_NrStart, ColPath, SelectedGelNr, SelectedGrp, SelectedGrpNo, TLayNrRef,
-                          NaLay, MaxColLgn)
-    local Macro_Pool = Root().ShowData.DataPools.Default.Macros
+                             All_5_Current, All_5_NrStart, ColPath, SelectedGelNr, SelectedGrp, SelectedGrpNo, TLayNrRef,
+                             NaLay, MaxColLgn)
+    local Macro_Pool = DataPool().Macros
+    local Data_Pool_Nr = DataPool().No
     local All_5_NrEnd
-    local Img = Root().ShowData.MediaPools.Images:Children()
+    local Img = ShowData().MediaPools.Images:Children()
     local ImgNr
     for k in pairs(Img) do
         ImgNr = math.floor(Img[k].NO)
@@ -194,7 +195,7 @@ function PC_Construct_Layout(displayHandle, TLay, SeqNrStart, MacroNrStart, Matr
 
     -- Create MAtricks
     MatrickNr = math.floor(MatrickNrStart)
-    PC_Create_Matricks(MatrickNr, Argument_Matricks, surfix, prefix)
+    PC_Create_Matricks(MatrickNr, Argument_Matricks, surfix, prefix, Data_Pool_Nr)
 
     -- Create new Layout View
     Cmd("Store Layout " .. TLayNr .. " \"" .. prefix .. NaLay .. "")
@@ -256,16 +257,17 @@ function PC_Construct_Layout(displayHandle, TLay, SeqNrStart, MacroNrStart, Matr
     end
     -- end PC_Create_Group_Appearances
     -- PC_Create_Group_Sequence
-    local Return_PC_Create_Group_Sequence = { PC_Create_Group_Sequence(SelectedGrp, SelectedGrpName, Phaser_Off, CurrentSeqNr,
-        SelectedGrpNo, prefix, Sequence_Ref, Sequence_Ref_End) }
+    local Return_PC_Create_Group_Sequence = { PC_Create_Group_Sequence(SelectedGrp, SelectedGrpName, Phaser_Off,
+        CurrentSeqNr, SelectedGrpNo, prefix, Sequence_Ref, Sequence_Ref_End) }
     if Return_PC_Create_Group_Sequence[1] then
         CurrentSeqNr = Return_PC_Create_Group_Sequence[2]
         Sequence_Ref = Return_PC_Create_Group_Sequence[3]
         Sequence_Ref_End = Return_PC_Create_Group_Sequence[4]
     end
     -- end PC_Create_Group_Sequence
-    local Return_PC_Create_Layout_Phaser = { PC_Create_Layout_Phaser(TLayNr, NaLay, SelectedGelNr, CurrentSeqNr, Preset_Ref,
-        MaxColLgn, RefX, LayY, LayH, AppNr, LayW, StColName, CurrentMacroNr, ColPath, prefix, All_5_NrStart) }
+    local Return_PC_Create_Layout_Phaser = { PC_Create_Layout_Phaser(TLayNr, NaLay, SelectedGelNr, CurrentSeqNr,
+        Preset_Ref, MaxColLgn, RefX, LayY, LayH, AppNr, LayW, StColName, CurrentMacroNr, ColPath, prefix, All_5_NrStart,
+        Data_Pool_Nr) }
     if Return_PC_Create_Layout_Phaser[1] then
         CurrentMacroNr = Return_PC_Create_Layout_Phaser[2]
         CurrentSeqNr = Return_PC_Create_Layout_Phaser[3]
@@ -273,9 +275,9 @@ function PC_Construct_Layout(displayHandle, TLay, SeqNrStart, MacroNrStart, Matr
         LayY = Return_PC_Create_Layout_Phaser[5]
     end
 
-    local Return_PC_Create_Layout_FixGroup = { PC_Create_Layout_FixGroup(CurrentMacroNr, CurrentSeqNr, LayNr, LayY, RefX, LayH,
-        LayW, TLayNr, NaLay, SelectedGrp, SelectedGrpName, Argument_Matricks, surfix, prefix, AppImp, Argument_Ref,
-        AppRef, Preset_25_Ref, Phaser_Off, Phaser_Ref, All_Call_Ref, All_Call_Y) }
+    local Return_PC_Create_Layout_FixGroup = { PC_Create_Layout_FixGroup(CurrentMacroNr, CurrentSeqNr, LayNr, LayY, RefX,
+        LayH, LayW, TLayNr, NaLay, SelectedGrp, SelectedGrpName, Argument_Matricks, surfix, prefix, AppImp, Argument_Ref,
+        AppRef, Preset_25_Ref, Phaser_Off, Phaser_Ref, All_Call_Ref, All_Call_Y, Data_Pool_Nr) }
     if Return_PC_Create_Layout_FixGroup[1] then
         CurrentSeqNr = Return_PC_Create_Layout_FixGroup[2]
         CurrentMacroNr = Return_PC_Create_Layout_FixGroup[3]
@@ -284,18 +286,19 @@ function PC_Construct_Layout(displayHandle, TLay, SeqNrStart, MacroNrStart, Matr
         LayNr = Return_PC_Create_Layout_FixGroup[6]
     end
 
-    local Return_PC_Create_All_Call_Layout = { PC_Create_All_Call_Layout(CurrentMacroNr, LayNr, LayY, RefX, LayH, LayW, TLayNr,
-        SelectedGrp, SelectedGrpName, prefix, All_Call_Ref, All_Call_Y, AppImp) }
+    local Return_PC_Create_All_Call_Layout = { PC_Create_All_Call_Layout(CurrentMacroNr, LayNr, LayY, RefX, LayH, LayW,
+        TLayNr, SelectedGrp, SelectedGrpName, prefix, All_Call_Ref, All_Call_Y, AppImp, Data_Pool_Nr) }
     if Return_PC_Create_All_Call_Layout[1] then
         CurrentMacroNr = Return_PC_Create_All_Call_Layout[2]
         LayX = Return_PC_Create_All_Call_Layout[3]
         LayNr = Return_PC_Create_All_Call_Layout[4]
     end
 
-    PC_Create_Macro_Priority(CurrentMacroNr, TLayNr, LayNr, LayX, LayY, LayW, LayH, prefix, Sequence_Ref, Sequence_Ref_End)
+    PC_Create_Macro_Priority(CurrentMacroNr, TLayNr, LayNr, LayX, LayY, LayW, LayH, prefix, Sequence_Ref,
+        Sequence_Ref_End, Data_Pool_Nr)
 
     -- SeqNrEnd = CurrentSeqNr - 1
-    
+
     -- Add offset for Layout Element distance
     LayY = math.floor(LayY - 150)
     LayX = RefX
@@ -329,13 +332,13 @@ function PC_Construct_Layout(displayHandle, TLay, SeqNrStart, MacroNrStart, Matr
     -- end Macro Del PC prefix
 
     -- dimension of layout & scal it
-    for k in pairs(Root().ShowData.DataPools.Default.Layouts:Children()) do
-        if (math.floor(TLayNr) == math.floor(tonumber(Root().ShowData.DataPools.Default.Layouts:Children()[k].NO))) then
+    for k in pairs(DataPool().Layouts:Children()) do
+        if (math.floor(TLayNr) == math.floor(tonumber(DataPool().Layouts:Children()[k].NO))) then
             TLayNrRef = k
         end
     end
-    UsedW = Root().ShowData.DataPools.Default.Layouts:Children()[TLayNrRef].UsedW / 2
-    UsedH = Root().ShowData.DataPools.Default.Layouts:Children()[TLayNrRef].UsedH / 2
+    UsedW = DataPool().Layouts:Children()[TLayNrRef].UsedW / 2
+    UsedH = DataPool().Layouts:Children()[TLayNrRef].UsedH / 2
     Cmd("Set Layout " .. TLayNr .. " DimensionW " .. UsedW .. " DimensionH " .. UsedH)
     Cmd('Select Layout ' .. TLayNr)
 end -- end Construct_Layout
