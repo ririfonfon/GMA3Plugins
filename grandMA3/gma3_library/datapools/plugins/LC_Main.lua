@@ -1,6 +1,6 @@
 --[[
 Releases:
-* 2.0.0.4
+* 2.0.0.6
 
 Created by Richard Fontaine "RIRI", March 2024.
 --]]
@@ -12,7 +12,8 @@ local myHandle = select(4, ...)
 
 local function Main(displayHandle)
     local list = false
-    local FixtureGroups = Root().ShowData.DataPools.Default.Groups:Children()
+    -- local FixtureGroups = Root().ShowData.DataPools.Default.Groups:Children()
+    local FixtureGroups = DataPool().Groups:Children()
     local SelectedGrp = {}
     local SelectedGrpNo = {}
     local SelGrp
@@ -24,24 +25,24 @@ local function Main(displayHandle)
     local NGel
     local MaxColLgn = 15
     local check_gel = false
-    local TLay = Root().ShowData.DataPools.Default.Layouts:Children()
+    local TLay = DataPool().Layouts:Children()
     local TLayNr
     local TLayNrRef
     local NaLay = "Colors"
-    local SeqNr = Root().ShowData.DataPools.Default.Sequences:Children()
+    local SeqNr = DataPool().Sequences:Children()
     local SeqNrStart
     local SeqNrRange
-    local MacroNr = Root().ShowData.DataPools.Default.Macros:Children()
+    local MacroNr = DataPool().Macros:Children()
     local MacroNrStart
     local MacroNrRange
     local App = Root().ShowData.Appearances:Children()
     local AppNr
     local AppNrRange
-    local All_5_Nr = Root().ShowData.DataPools.Default.PresetPools[25]:Children()
+    local All_5_Nr = DataPool().PresetPools[25]:Children()
     local All_5_NrStart
     local All_5_NrRange
     local All_5_Current
-    local MatrickNr = Root().ShowData.DataPools.Default.MAtricks:Children()
+    local MatrickNr = DataPool().MAtricks:Children()
     local MatrickNrStart
     local MatrickNrRange
 
