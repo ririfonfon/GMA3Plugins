@@ -1,6 +1,6 @@
 --[[
 Releases:
-* 2.0.0.6
+* 2.0.0.7
 
 Created by Richard Fontaine "RIRI", March 2024.
 --]]
@@ -509,7 +509,7 @@ function Construct_Layout(displayHandle, TLay, SeqNrStart, MacroNrStart, Matrick
     Cmd('Set Layout ' .. TLayNr .. '.' .. LayNr ..
         ' Property Appearance <default> PosX ' .. LayX .. ' PosY ' .. LayY ..
         ' PositionW ' .. LayW .. ' PositionH ' .. LayH ..
-        ' VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0')
+        ' VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0 VisibilityBorder=0')
     -- end Kill all LCx_
 
     -- Create_All_Color
@@ -522,6 +522,13 @@ function Construct_Layout(displayHandle, TLay, SeqNrStart, MacroNrStart, Matrick
     end -- Create_All_Color
 
     -- add Macro priority
+    for k in pairs(DataPool().Layouts:Children()) do
+        if (math.floor(TLayNr) == math.floor(tonumber(DataPool().Layouts:Children()[k].NO))) then
+            TLayNrRef = k
+        end
+    end
+    UsedW = DataPool().Layouts:Children()[TLayNrRef].UsedW / 2
+    LayX = math.floor(UsedW - 20)
     CurrentMacroNr = math.floor(CurrentMacroNr)
     Cmd('Store Macro ' .. CurrentMacroNr .. ' \'' .. 'Priority\'')
     Cmd('ChangeDestination Macro ' .. CurrentMacroNr .. '')
@@ -532,7 +539,7 @@ function Construct_Layout(displayHandle, TLay, SeqNrStart, MacroNrStart, Matrick
     Cmd('Set Layout ' .. TLayNr .. '.' .. LayNr ..
         ' Property Appearance <default> PosX ' .. LayX .. ' PosY ' .. LayY ..
         ' PositionW ' .. LayW .. ' PositionH ' .. LayH ..
-        ' VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0')
+        ' VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0 VisibilityBorder=0')
     Cmd('Set Layout ' .. TLayNr .. "." .. LayNr .. ' Property "Appearance" "p_super_png" ')
     Cmd('ChangeDestination Root')
     local Color_message = 'SetUserVariable "LC_Sequence" "' .. First_All_Color .. '"'

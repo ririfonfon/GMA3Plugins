@@ -1,6 +1,6 @@
 --[[
 Releases:
-* 2.0.0.6
+* 2.0.0.7
 
 Created by Richard Fontaine "RIRI", March 2024.
 --]]
@@ -9,8 +9,8 @@ function PC_Create_Appearances(SelectedGrp, AppNr, prefix, TCol, NrAppear, StCol
     AppRef = AppNr
     local StAppNameOn
     local StAppNameOff
-    local StAppOn = '\"Showdata.MediaPools.Images.on\"'
-    local StAppOff = '\"Showdata.MediaPools.Images.off\"'
+    local StAppOn = '\"Showdata.MediaPools.Symbols.on\"'
+    local StAppOff = '\"Showdata.MediaPools.Symbols.off\"'
     for g in ipairs(SelectedGrp) do
         AppNr = math.floor(AppNr);
         Cmd('Store App ' .. AppNr .. ' \'' .. prefix .. ' Label\' Appearance=' .. StAppOn .. ' color=\'0,0,0,1\'')
@@ -292,25 +292,25 @@ function PC_Create_Layout_Phaser(TLayNr, NaLay, SelectedGelNr, CurrentSeqNr, Pre
             if (g == 1) then
                 Echo("G 1")
                 Cmd("Set seq " .. CurrentSeqNr .. " cue \"CueZero\" Property Command=\"Set Layout " .. TLayNr .. "." ..
-                    LayNr .. " Property Appearance " .. NrNeed .. "; Go+ DataPool " .. Data_Pool_Nr .. " Macro " ..
+                    LayNr .. " Property Appearance " .. NrNeed .. " VisibilityBorder=0 ; Go+ DataPool " .. Data_Pool_Nr .. " Macro " ..
                     CurrentMacroNr .. "; Off DataPool " .. Data_Pool_Nr .. "  Sequence " .. Start_Seq_1 ..
                     " Thru " .. End_Seq_1 .. " - " .. CurrentSeqNr .. "\"")
             elseif (g == 2) then
                 Echo("G 2")
                 Cmd("Set seq " .. CurrentSeqNr .. " cue \"CueZero\" Property Command=\"Set Layout " .. TLayNr .. "." ..
-                    LayNr .. " Property Appearance " .. NrNeed .. "; Go+ DataPool " .. Data_Pool_Nr .. " Macro " ..
+                    LayNr .. " Property Appearance " .. NrNeed .. " VisibilityBorder=0 ; Go+ DataPool " .. Data_Pool_Nr .. " Macro " ..
                     CurrentMacroNr .. "; Off DataPool " .. Data_Pool_Nr .. "  Sequence " .. Start_Seq_2 ..
                     " Thru " .. End_Seq_2 .. " - " .. CurrentSeqNr .. "\"")
             elseif (g == 3) then
                 Echo("G 3")
                 Cmd("Set seq " .. CurrentSeqNr .. " cue \"CueZero\" Property Command=\"Set Layout " .. TLayNr .. "." ..
-                    LayNr .. " Property Appearance " .. NrNeed .. "; Go+ DataPool " .. Data_Pool_Nr .. " Macro " ..
+                    LayNr .. " Property Appearance " .. NrNeed .. " VisibilityBorder=0 ; Go+ DataPool " .. Data_Pool_Nr .. " Macro " ..
                     CurrentMacroNr .. "; Off DataPool " .. Data_Pool_Nr .. "  Sequence " .. Start_Seq_3 ..
                     " Thru " .. End_Seq_3 .. " - " .. CurrentSeqNr .. "\"")
             elseif (g == 4) then
                 Echo("G 4")
                 Cmd("Set seq " .. CurrentSeqNr .. " cue \"CueZero\" Property Command=\"Set Layout " .. TLayNr .. "." ..
-                    LayNr .. " Property Appearance " .. NrNeed .. "; Go+ DataPool " .. Data_Pool_Nr .. " Macro " ..
+                    LayNr .. " Property Appearance " .. NrNeed .. " VisibilityBorder=0 ; Go+ DataPool " .. Data_Pool_Nr .. " Macro " ..
                     CurrentMacroNr .. "; Off DataPool " .. Data_Pool_Nr .. "  Sequence " .. Start_Seq_4 ..
                     " Thru " .. End_Seq_4 .. " - " .. CurrentSeqNr .. "\"")
             end
@@ -318,7 +318,7 @@ function PC_Create_Layout_Phaser(TLayNr, NaLay, SelectedGelNr, CurrentSeqNr, Pre
             Echo("Set seq")
             Cmd("Set seq " .. CurrentSeqNr .. " cue \"OffCue\" Property Command=\"Set Layout " ..
                 TLayNr .. "." .. LayNr .. " Property Appearance " .. NrNeed + 1 ..
-                "\"")
+                " VisibilityBorder=0 \"")
 
             -- end Cmd to Sequences
 
@@ -328,7 +328,7 @@ function PC_Create_Layout_Phaser(TLayNr, NaLay, SelectedGelNr, CurrentSeqNr, Pre
             Cmd("Set Layout " .. TLayNr .. "." .. LayNr .. " Property Appearance " ..
                 NrNeed + 1 .. " PosX " .. LayX .. " PosY " .. LayY ..
                 " PositionW " .. LayW .. " PositionH " .. LayH ..
-                " VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0 ")
+                " VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0 VisibilityBorder=0")
             -- end Sequences to Layout
 
             NrNeed = math.floor(NrNeed + 2); -- Set App Nr to next color
@@ -384,7 +384,7 @@ function PC_Create_Layout_FixGroup(CurrentMacroNr, CurrentSeqNr, LayNr, LayY, Re
             " PosY " .. LayY ..
             " PositionW " .. LayW ..
             " PositionH " .. LayH ..
-            " VisibilityObjectname=1 VisibilityBar=0 VisibilityIndicatorBar=0 ")
+            " VisibilityObjectname=1 VisibilityBar=0 VisibilityIndicatorBar=0 VisibilityBorder=0")
 
         LayNr = math.floor(LayNr + 1)
         LayX = math.floor(LayX + LayW + 20)
@@ -424,7 +424,7 @@ function PC_Create_Layout_FixGroup(CurrentMacroNr, CurrentSeqNr, LayNr, LayY, Re
                 ' Property Appearance ' .. prefix .. AppImp[i].Name .. SelectedGrpName[g] ..
                 ' PosX ' .. LayX .. ' PosY ' .. LayY ..
                 ' PositionW ' .. LayW .. ' PositionH ' .. LayH ..
-                ' VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0')
+                ' VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0 VisibilityBorder=0')
             -- end Assign Seq to Layout
             LayX = math.floor(LayX + LayW + 20)
             LayNr = math.floor(LayNr + 1)
@@ -467,7 +467,7 @@ function PC_Create_Layout_FixGroup(CurrentMacroNr, CurrentSeqNr, LayNr, LayY, Re
                 ' Property Appearance ' .. prefix .. AppImp[i].Name .. SelectedGrpName[g] ..
                 ' PosX ' .. LayX .. ' PosY ' .. LayY ..
                 ' PositionW ' .. LayW .. ' PositionH ' .. LayH ..
-                ' VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0')
+                ' VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0 VisibilityBorder=0')
             -- end Assign Seq to Layout
             LayX = math.floor(LayX + LayW + 20)
             LayNr = math.floor(LayNr + 1)
@@ -484,6 +484,7 @@ function PC_Create_Layout_FixGroup(CurrentMacroNr, CurrentSeqNr, LayNr, LayY, Re
         ' \'' .. prefix .. ' 100 50 0 \'')
     Cmd('Store Sequence ' .. CurrentSeqNr ..
         'Cue 2 Thru 3')
+        Cmd('Set Sequence ' .. CurrentSeqNr .. 'Property PreferCueAppearance 1')
     -- Create Macros
     Cmd('Store Macro ' .. CurrentMacroNr ..
         ' \'' .. prefix .. ' cent \'')
@@ -544,7 +545,7 @@ function PC_Create_Layout_FixGroup(CurrentMacroNr, CurrentSeqNr, LayNr, LayY, Re
     Cmd('Set Layout ' .. TLayNr .. '.' .. LayNr ..
         ' PosX ' .. LayX .. ' PosY ' .. LayY ..
         ' PositionW ' .. LayW .. ' PositionH ' .. LayH ..
-        ' VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0')
+        ' VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0 VisibilityBorder=0')
     -- end Assign Seq to Layout
     LayX = math.floor(LayX + LayW + 20)
     LayNr = math.floor(LayNr + 1)
@@ -628,7 +629,7 @@ function PC_Create_All_Call_Layout(CurrentMacroNr, LayNr, LayY, RefX, LayH, LayW
         Cmd('Set Layout ' .. TLayNr .. '.' .. LayNr ..
             ' Property Appearance  arrow_down_png PosX ' .. LayX .. ' PosY ' .. LayY ..
             ' PositionW ' .. LayW .. ' PositionH ' .. LayH ..
-            ' VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0')
+            ' VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0 VisibilityBorder=0')
         -- end Assign Seq to Layout
         LayX = math.floor(LayX + LayW + 20)
         LayNr = math.floor(LayNr + 1)
@@ -650,8 +651,8 @@ function PC_Create_Macro_Priority(CurrentMacroNr, TLayNr, LayNr, LayX, LayY, Lay
     Cmd('Set Layout ' .. TLayNr .. '.' .. LayNr ..
         ' property appearance <default> PosX ' .. LayX .. ' PosY ' .. LayY ..
         ' PositionW ' .. LayW .. ' PositionH ' .. LayH ..
-        ' VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0')
-    Cmd('Set Layout ' .. TLayNr .. "." .. LayNr .. ' Property "Appearance" "p_super_png" ')
+        ' VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0 VisibilityBorder=0')
+    Cmd('Set Layout ' .. TLayNr .. "." .. LayNr .. ' Property "Appearance" "p_super_png" VisibilityBorder=0')
     Cmd('ChangeDestination Root')
     local Color_message = 'SetUserVariable "LC_Sequence" "' .. Sequence_Ref .. '"'
     Color_message = string.gsub(Color_message, "'", "")
