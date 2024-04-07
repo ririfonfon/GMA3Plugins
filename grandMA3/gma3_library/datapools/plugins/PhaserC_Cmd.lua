@@ -1,6 +1,6 @@
 --[[
 Releases:
-* 2.0.0.7
+* 2.0.0.8
 
 Created by Richard Fontaine "RIRI", March 2024.
 --]]
@@ -291,27 +291,32 @@ function PC_Create_Layout_Phaser(TLayNr, NaLay, SelectedGelNr, CurrentSeqNr, Pre
             -- Add Cmd to Sequences
             if (g == 1) then
                 Echo("G 1")
-                Cmd("Set seq " .. CurrentSeqNr .. " cue \"CueZero\" Property Command=\"Set Layout " .. TLayNr .. "." ..
-                    LayNr .. " Property Appearance " .. NrNeed .. " VisibilityBorder=0 ; Go+ DataPool " .. Data_Pool_Nr .. " Macro " ..
-                    CurrentMacroNr .. "; Off DataPool " .. Data_Pool_Nr .. "  Sequence " .. Start_Seq_1 ..
+                Cmd("Set seq " .. CurrentSeqNr ..
+                    " cue \"CueZero\" Property Command=\"Set Layout " .. TLayNr .. "." .. LayNr ..
+                    " Property Appearance " .. NrNeed .. " VisibilityBorder=0 ; Go+ DataPool " .. Data_Pool_Nr ..
+                    " Macro " .. CurrentMacroNr .. "; Off DataPool " .. Data_Pool_Nr .. "  Sequence " .. Start_Seq_1 ..
                     " Thru " .. End_Seq_1 .. " - " .. CurrentSeqNr .. "\"")
             elseif (g == 2) then
                 Echo("G 2")
                 Cmd("Set seq " .. CurrentSeqNr .. " cue \"CueZero\" Property Command=\"Set Layout " .. TLayNr .. "." ..
-                    LayNr .. " Property Appearance " .. NrNeed .. " VisibilityBorder=0 ; Go+ DataPool " .. Data_Pool_Nr .. " Macro " ..
-                    CurrentMacroNr .. "; Off DataPool " .. Data_Pool_Nr .. "  Sequence " .. Start_Seq_2 ..
+                Cmd("Set seq " .. CurrentSeqNr ..
+                    " cue \"CueZero\" Property Command=\"Set Layout " .. TLayNr .. "." .. LayNr ..
+                    " Property Appearance " .. NrNeed .. " VisibilityBorder=0 ; Go+ DataPool " .. Data_Pool_Nr ..
+                    " Macro " .. CurrentMacroNr .. "; Off DataPool " .. Data_Pool_Nr .. "  Sequence " .. Start_Seq_2 ..
                     " Thru " .. End_Seq_2 .. " - " .. CurrentSeqNr .. "\"")
             elseif (g == 3) then
                 Echo("G 3")
-                Cmd("Set seq " .. CurrentSeqNr .. " cue \"CueZero\" Property Command=\"Set Layout " .. TLayNr .. "." ..
-                    LayNr .. " Property Appearance " .. NrNeed .. " VisibilityBorder=0 ; Go+ DataPool " .. Data_Pool_Nr .. " Macro " ..
-                    CurrentMacroNr .. "; Off DataPool " .. Data_Pool_Nr .. "  Sequence " .. Start_Seq_3 ..
+                Cmd("Set seq " .. CurrentSeqNr ..
+                    " cue \"CueZero\" Property Command=\"Set Layout " .. TLayNr .. "." .. LayNr ..
+                    " Property Appearance " .. NrNeed .. " VisibilityBorder=0 ; Go+ DataPool " .. Data_Pool_Nr ..
+                    " Macro " .. CurrentMacroNr .. "; Off DataPool " .. Data_Pool_Nr .. "  Sequence " .. Start_Seq_3 ..
                     " Thru " .. End_Seq_3 .. " - " .. CurrentSeqNr .. "\"")
             elseif (g == 4) then
                 Echo("G 4")
-                Cmd("Set seq " .. CurrentSeqNr .. " cue \"CueZero\" Property Command=\"Set Layout " .. TLayNr .. "." ..
-                    LayNr .. " Property Appearance " .. NrNeed .. " VisibilityBorder=0 ; Go+ DataPool " .. Data_Pool_Nr .. " Macro " ..
-                    CurrentMacroNr .. "; Off DataPool " .. Data_Pool_Nr .. "  Sequence " .. Start_Seq_4 ..
+                Cmd("Set seq " .. CurrentSeqNr ..
+                    " cue \"CueZero\" Property Command=\"Set Layout " .. TLayNr .. "." .. LayNr ..
+                    " Property Appearance " .. NrNeed .. " VisibilityBorder=0 ; Go+ DataPool " .. Data_Pool_Nr ..
+                    " Macro " .. CurrentMacroNr .. "; Off DataPool " .. Data_Pool_Nr .. "  Sequence " .. Start_Seq_4 ..
                     " Thru " .. End_Seq_4 .. " - " .. CurrentSeqNr .. "\"")
             end
 
@@ -482,12 +487,10 @@ function PC_Create_Layout_FixGroup(CurrentMacroNr, CurrentSeqNr, LayNr, LayY, Re
     -- Create Seq 100 50 0
     Cmd('Store Sequence ' .. CurrentSeqNr ..
         ' \'' .. prefix .. ' 100 50 0 \'')
-    Cmd('Store Sequence ' .. CurrentSeqNr ..
-        'Cue 2 Thru 3')
-        Cmd('Set Sequence ' .. CurrentSeqNr .. 'Property PreferCueAppearance 1')
+    Cmd('Store Sequence ' .. CurrentSeqNr .. 'Cue 2 Thru 3')
+    Cmd('Set Sequence ' .. CurrentSeqNr .. 'Property PreferCueAppearance 1')
     -- Create Macros
-    Cmd('Store Macro ' .. CurrentMacroNr ..
-        ' \'' .. prefix .. ' cent \'')
+    Cmd('Store Macro ' .. CurrentMacroNr .. ' \'' .. prefix .. ' cent \'')
     Cmd('ChangeDestination Macro ' .. CurrentMacroNr .. '')
     for a = 1, 8 do
         Cmd('Insert')
@@ -500,8 +503,7 @@ function PC_Create_Layout_FixGroup(CurrentMacroNr, CurrentSeqNr, LayNr, LayY, Re
     end
 
     CurrentMacroNr = math.floor(CurrentMacroNr + 1)
-    Cmd('Store Macro ' .. CurrentMacroNr ..
-        ' \'' .. prefix .. ' cinquante \'')
+    Cmd('Store Macro ' .. CurrentMacroNr .. ' \'' .. prefix .. ' cinquante \'')
     Cmd('ChangeDestination Macro ' .. CurrentMacroNr .. '')
     for a = 1, 8 do
         Cmd('Insert')
@@ -514,8 +516,7 @@ function PC_Create_Layout_FixGroup(CurrentMacroNr, CurrentSeqNr, LayNr, LayY, Re
     end
 
     CurrentMacroNr = math.floor(CurrentMacroNr + 1)
-    Cmd('Store Macro ' .. CurrentMacroNr ..
-        ' \'' .. prefix .. ' zero \'')
+    Cmd('Store Macro ' .. CurrentMacroNr .. ' \'' .. prefix .. ' zero \'')
     Cmd('ChangeDestination Macro ' .. CurrentMacroNr .. '')
     for a = 1, 8 do
         Cmd('Insert')
@@ -528,16 +529,12 @@ function PC_Create_Layout_FixGroup(CurrentMacroNr, CurrentSeqNr, LayNr, LayY, Re
     end
     -- end Create Macros
 
-    Cmd('Set Sequence ' .. CurrentSeqNr ..
-        ' Property  Appearance  ' .. prefix .. 'cent')
-    Cmd('Set Sequence ' .. CurrentSeqNr ..
-        ' Cue 1 Property Command=\'Go+ DataPool ' ..
+    Cmd('Set Sequence ' .. CurrentSeqNr .. ' Property  Appearance  ' .. prefix .. 'cent')
+    Cmd('Set Sequence ' .. CurrentSeqNr .. ' Cue 1 Property Command=\'Go+ DataPool ' ..
         Data_Pool_Nr .. ' Macro ' .. CurrentMacroNr - 2 .. '\' Property Appearance  ' .. prefix .. 'cent')
-    Cmd('Set Sequence ' .. CurrentSeqNr ..
-        ' Cue 2 Property Command=\'Go+ DataPool ' ..
+    Cmd('Set Sequence ' .. CurrentSeqNr .. ' Cue 2 Property Command=\'Go+ DataPool ' ..
         Data_Pool_Nr .. ' Macro ' .. CurrentMacroNr - 1 .. '\' Property Appearance  ' .. prefix .. 'cinquante')
-    Cmd('Set Sequence ' .. CurrentSeqNr ..
-        ' Cue 3 Property Command=\'Go+ DataPool ' ..
+    Cmd('Set Sequence ' .. CurrentSeqNr .. ' Cue 3 Property Command=\'Go+ DataPool ' ..
         Data_Pool_Nr .. ' Macro ' .. CurrentMacroNr .. '\' Property Appearance  ' .. prefix .. 'zero')
     -- end Create Seq 100 50 0
     -- Assign Seq to Layout
@@ -568,8 +565,7 @@ function PC_Create_All_Call_Layout(CurrentMacroNr, LayNr, LayY, RefX, LayH, LayW
 
     -- Create Macros
     for i = 1, 19 do
-        Cmd('Store Macro ' .. CurrentMacroNr ..
-            ' \'' .. prefix .. 'All' .. AppImp[i].Name .. '\'')
+        Cmd('Store Macro ' .. CurrentMacroNr .. ' \'' .. prefix .. 'All' .. AppImp[i].Name .. '\'')
         Cmd('ChangeDestination Macro ' .. CurrentMacroNr .. '')
         for g in pairs(SelectedGrp) do
             Cmd('Insert')
@@ -584,8 +580,7 @@ function PC_Create_All_Call_Layout(CurrentMacroNr, LayNr, LayY, RefX, LayH, LayW
     end
     Ref_Macro_Call_off = CurrentMacroNr
     for g in ipairs(SelectedGrp) do
-        Cmd('Store Macro ' .. CurrentMacroNr ..
-            ' \'' .. prefix .. SelectedGrpName[g] .. 'Alloff\'')
+        Cmd('Store Macro ' .. CurrentMacroNr .. ' \'' .. prefix .. SelectedGrpName[g] .. 'Alloff\'')
         Cmd('ChangeDestination Macro ' .. CurrentMacroNr .. '')
         for i = 1, 19 do
             Cmd('Insert')
@@ -600,8 +595,7 @@ function PC_Create_All_Call_Layout(CurrentMacroNr, LayNr, LayY, RefX, LayH, LayW
     CurrentMacroNr = math.floor(CurrentMacroNr + 1)
     Ref_Macro_Call_on = CurrentMacroNr
     for g in ipairs(SelectedGrp) do
-        Cmd('Store Macro ' .. CurrentMacroNr ..
-            ' \'' .. prefix .. SelectedGrpName[g] .. 'Allon\'')
+        Cmd('Store Macro ' .. CurrentMacroNr .. ' \'' .. prefix .. SelectedGrpName[g] .. 'Allon\'')
         Cmd('ChangeDestination Macro ' .. CurrentMacroNr .. '')
         for i = 1, 19 do
             Cmd('Insert')
@@ -615,13 +609,10 @@ function PC_Create_All_Call_Layout(CurrentMacroNr, LayNr, LayY, RefX, LayH, LayW
     end
 
     for g in ipairs(SelectedGrp) do
-        Cmd('Set Sequence ' ..
-            All_Call_Ref[g][1] ..
+        Cmd('Set Sequence ' .. All_Call_Ref[g][1] ..
             ' Cue 1 Property Command=\'Go+ DataPool ' .. Data_Pool_Nr .. ' Macro ' .. Ref_Macro_Call_off + g - 1 .. '')
-        Cmd('Set Sequence ' ..
-            All_Call_Ref[g][1] ..
-            ' Cue 2 Property Command=\'Go+ DataPool ' .. Data_Pool_Nr .. ' Macro ' .. Ref_Macro_Call_on + g - 1 ..
-            '')
+        Cmd('Set Sequence ' .. All_Call_Ref[g][1] ..
+            ' Cue 2 Property Command=\'Go+ DataPool ' .. Data_Pool_Nr .. ' Macro ' .. Ref_Macro_Call_on + g - 1 .. '')
     end
 
     for i = 1, 19 do
@@ -640,6 +631,7 @@ end
 
 function PC_Create_Macro_Priority(CurrentMacroNr, TLayNr, LayNr, LayX, LayY, LayW, LayH, prefix, Sequence_Ref,
                                   Sequence_Ref_End, Data_Pool_Nr)
+    LayY = 440
     local Macro_Pool = DataPool().Macros
     CurrentMacroNr = math.floor(CurrentMacroNr)
     Cmd('Store Macro ' .. CurrentMacroNr .. ' \'' .. 'Priority\'')
