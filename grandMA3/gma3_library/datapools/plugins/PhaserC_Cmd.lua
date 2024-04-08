@@ -2,7 +2,7 @@
 Releases:
 * 2.0.0.8
 
-Created by Richard Fontaine "RIRI", March 2024.
+Created by Richard Fontaine "RIRI", April 2024.
 --]]
 
 function PC_Create_Appearances(SelectedGrp, AppNr, prefix, TCol, NrAppear, StColCode, StColName, StringColName, AppRef)

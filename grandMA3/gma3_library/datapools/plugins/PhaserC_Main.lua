@@ -1,8 +1,8 @@
 --[[
 Releases:
-* 2.0.0.6
+* 2.0.0.8
 
-Created by Richard Fontaine "RIRI", March 2024.
+Created by Richard Fontaine "RIRI", April 2024.
 --]]
 
 local pluginName = select(1, ...)
@@ -11,6 +11,7 @@ local signalTable, thiscomponent = select(3, ...)
 local myHandle = select(4, ...)
 
 local function Main(displayHandle)
+    Cmd ('Set CurrentUserProfile Property KeyboardShortcutsActive 0')
     local list = false
     local FixtureGroups = DataPool().Groups:Children()
     local SelectedGrp = {}

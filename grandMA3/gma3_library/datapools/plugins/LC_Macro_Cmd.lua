@@ -1,8 +1,8 @@
 --[[
     Releases:
-    * 2.0.0.6
+    * 2.0.0.8
 
-    Created by Richard Fontaine "RIRI", March 2024.
+    Created by Richard Fontaine "RIRI", April 2024.
     --]]
 
 function Create_Macro_Reset(CurrentMacroNr, prefix, surfix, MatrickNrStart, a, CurrentSeqNr, First_Id_Lay, TLayNr,
