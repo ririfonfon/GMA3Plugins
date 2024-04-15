@@ -1,6 +1,6 @@
 --[[
 Releases:
-* 2.0.0.8
+* 2.0.0.9
 
 Created by Richard Fontaine "RIRI", April 2024.
 --]]
@@ -292,35 +292,35 @@ function PC_Create_Layout_Phaser(TLayNr, NaLay, SelectedGelNr, CurrentSeqNr, Pre
             if (g == 1) then
                 Echo("G 1")
                 Cmd("Set seq " .. CurrentSeqNr ..
-                    " cue \"CueZero\" Property Command=\"Set Layout " .. TLayNr .. "." .. LayNr ..
+                    " cue \"CueZero\" Property Command=\"Set DataPool " .. Data_Pool_Nr .. " Layout " .. TLayNr .. "." .. LayNr ..
                     " Property Appearance " .. NrNeed .. " VisibilityBorder=0 ; Go+ DataPool " .. Data_Pool_Nr ..
                     " Macro " .. CurrentMacroNr .. "; Off DataPool " .. Data_Pool_Nr .. "  Sequence " .. Start_Seq_1 ..
                     " Thru " .. End_Seq_1 .. " - " .. CurrentSeqNr .. "\"")
             elseif (g == 2) then
                 Echo("G 2")
                 Cmd("Set seq " .. CurrentSeqNr ..
-                    " cue \"CueZero\" Property Command=\"Set Layout " .. TLayNr .. "." .. LayNr ..
+                    " cue \"CueZero\" Property Command=\"Set DataPool " .. Data_Pool_Nr .. " Layout " .. TLayNr .. "." .. LayNr ..
                     " Property Appearance " .. NrNeed .. " VisibilityBorder=0 ; Go+ DataPool " .. Data_Pool_Nr ..
                     " Macro " .. CurrentMacroNr .. "; Off DataPool " .. Data_Pool_Nr .. "  Sequence " .. Start_Seq_2 ..
                     " Thru " .. End_Seq_2 .. " - " .. CurrentSeqNr .. "\"")
             elseif (g == 3) then
                 Echo("G 3")
                 Cmd("Set seq " .. CurrentSeqNr ..
-                    " cue \"CueZero\" Property Command=\"Set Layout " .. TLayNr .. "." .. LayNr ..
+                    " cue \"CueZero\" Property Command=\"Set DataPool " .. Data_Pool_Nr .. " Layout " .. TLayNr .. "." .. LayNr ..
                     " Property Appearance " .. NrNeed .. " VisibilityBorder=0 ; Go+ DataPool " .. Data_Pool_Nr ..
                     " Macro " .. CurrentMacroNr .. "; Off DataPool " .. Data_Pool_Nr .. "  Sequence " .. Start_Seq_3 ..
                     " Thru " .. End_Seq_3 .. " - " .. CurrentSeqNr .. "\"")
             elseif (g == 4) then
                 Echo("G 4")
                 Cmd("Set seq " .. CurrentSeqNr ..
-                    " cue \"CueZero\" Property Command=\"Set Layout " .. TLayNr .. "." .. LayNr ..
+                    " cue \"CueZero\" Property Command=\"Set DataPool " .. Data_Pool_Nr .. " Layout " .. TLayNr .. "." .. LayNr ..
                     " Property Appearance " .. NrNeed .. " VisibilityBorder=0 ; Go+ DataPool " .. Data_Pool_Nr ..
                     " Macro " .. CurrentMacroNr .. "; Off DataPool " .. Data_Pool_Nr .. "  Sequence " .. Start_Seq_4 ..
                     " Thru " .. End_Seq_4 .. " - " .. CurrentSeqNr .. "\"")
             end
 
             Echo("Set seq")
-            Cmd("Set seq " .. CurrentSeqNr .. " cue \"OffCue\" Property Command=\"Set Layout " ..
+            Cmd("Set seq " .. CurrentSeqNr .. " cue \"OffCue\" Property Command=\"Set DataPool " .. Data_Pool_Nr .. " Layout " ..
                 TLayNr .. "." .. LayNr .. " Property Appearance " .. NrNeed + 1 ..
                 " VisibilityBorder=0 \"")
 
