@@ -193,6 +193,7 @@
         "cast-local-type",
         "assign-type-mismatch",
         "param-type-mismatch",
-        "undefined-global"
+        "undefined-global",
+        "undefined-field"
     ]
 }
