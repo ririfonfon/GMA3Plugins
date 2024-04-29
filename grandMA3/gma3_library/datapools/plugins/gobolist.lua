@@ -42,7 +42,7 @@ return function(display)
   Echo(wheel:Parent():Parent().ShortName)
   Echo(wheel:Parent():Parent().Name)
   Echo(wheel:Parent():Parent().No)
-  Echo(wheel.Attribute)
+  -- Echo(wheel.Attribute().No)
 
   local Fixt_Type = tonumber(wheel:Parent():Parent().No)
   local Fixt_Name = wheel:Parent():Parent().Name
@@ -51,7 +51,7 @@ return function(display)
 
   for _, slot in ipairs(wheel:Children()) do
     Echo(slot.Name)
-    Echo(slot.Attribute)
+    -- Echo(slot.Attribute())
     local obj = ShowData().Appearances:Aquire()
     obj.Name = string.format('Active %s', slot.Name)
     for _, prop in ipairs { 'ImageR', 'ImageG', 'ImageB', 'ImageAlpha', 'Appearance' } do
