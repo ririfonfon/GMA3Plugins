@@ -67,9 +67,6 @@ local function getWheelName(ftype, attribut)
 end
 
 local function createAppearances(ft, att, j)
-    -- thanks for andrea for this
-
-
     local gobowheel = getWheelName(ft, att)
     Cmd("cd ft '" .. ft .. "'.Wheels.'" .. gobowheel .. "'")
     local wheel = CmdObj().Destination
@@ -104,8 +101,7 @@ local function Check_SlotID(att, fixtureID, Slot_ID)
     if GoboAttNum == #CmdObj().Destination:Children() then
         Printf("Returning")
         return
-    end
-    -- this is to terminate the function if there is no gobo
+    end -- this is to terminate the function if there is no gobo
     local DefaultP = dec24_to_dec8(CmdObj().Destination:Children()[GoboAttNum].Default)
     CmdIndirectWait("cd '*" .. att .. "'")
     CmdIndirectWait("cd '*" .. att .. "'")
@@ -115,13 +111,10 @@ local function Check_SlotID(att, fixtureID, Slot_ID)
             -- this is to find where is the static attributes of the gobo wheel
             i = i + 1
         end
-        Cmd("cd " .. i) -- changing destination to the not shaking, or revolving gobos
+        Cmd("cd " .. i)                                -- changing destination to the not shaking, or revolving gobos
         i = 1
-        while i <= #CmdObj().Destination:Children() do
-            -- iterating over the gobos
-
+        while i <= #CmdObj().Destination:Children() do -- iterating over the gobos
             Slot_ID[i] = CmdObj().Destination:Children()[i].WHEELSLOTINDEX
-
             i = i + 1
         end
         return Slot_ID
@@ -168,9 +161,7 @@ local function CreateLabelPresets(att, fixtureID, FirstPresetIndex)
         Cmd("cd " .. i) -- changing destination to the not shaking, or revolving gobos
         i = 1
         local PresetIndex = FirstPresetIndex
-        while i <= #CmdObj().Destination:Children() do
-            -- iterating over the gobos
-
+        while i <= #CmdObj().Destination:Children() do -- iterating over the gobos
             Printf("start of loop Dmx range of " ..
                 PresetIndex ..
                 " is " ..
@@ -182,12 +173,10 @@ local function CreateLabelPresets(att, fixtureID, FirstPresetIndex)
             CmdIndirectWait(" Blind on; Clearall")
             CmdIndirectWait(fixtureID .. " At Absolute Decimal8 " .. avgdmx .. " Attribute " .. att)
             CmdIndirect("store preset 3." .. PresetIndex .. " /merge")
-            presetnames[PresetIndex] = CmdObj().Destination:Children()[i].Name
-            -- geting the name of the gobo
+            presetnames[PresetIndex] = CmdObj().Destination:Children()[i].Name -- geting the name of the gobo
             CmdIndirect("Label preset 3." .. PresetIndex .. " '" .. presetnames[PresetIndex] .. "'")
             Printf("preset " .. PresetIndex .. " is " .. presetnames[PresetIndex])
             Printf("End of loop")
-            coroutine.yield(0.05) -- otherwise in the last loop information is lost
             PresetIndex = PresetIndex + 1
             i = i + 1
         end
@@ -198,7 +187,8 @@ local function CreateLabelPresets(att, fixtureID, FirstPresetIndex)
     end
 end
 
-local function CreateSequence(SeqNameF, Preset_Name1F, Preset_Name2F, Preset_Name3F, GroupNum, Grp, Slot_ID1, Slot_ID2, Slot_ID3)
+local function CreateSequence(SeqNameF, Preset_Name1F, Preset_Name2F, Preset_Name3F, GroupNum, Grp, Slot_ID1, Slot_ID2,
+                              Slot_ID3)
     CmdIndirectWait("delete seq '" .. SeqNameF .. "' /nc") -- delete existing sequence except "open"
     local cue = 0
     local length1 = arrayLength(Preset_Name1F)
@@ -214,16 +204,14 @@ local function CreateSequence(SeqNameF, Preset_Name1F, Preset_Name2F, Preset_Nam
     Printf("The length 1 is " .. length1 .. " and 2 is " .. length2 .. " and 3 is " .. length3)
     Cmd("Clearall")
     CmdIndirectWait("store seq '" .. SeqNameF .. "' /nc")
-    CmdIndirectWait("store seq '" .. SeqNameF .. "' cue 1 t " .. length1 + length2 + length3 - 1 .. " /nc")
-    -- the minus 1 is because i dont need the open gobo twwice
-    for i = 1, length1, 1 do
+    CmdIndirectWait("store seq '" .. SeqNameF .. "' cue 1 t " .. length1 + length2 + length3 - 2 .. " /nc")
+    for i = 1, length1, 1 do -- gobo1 loop from preset to sequence
         cue = cue + 1
-        -- gobo1 loop from preset to sequence
         CmdIndirectWait("assign preset 3." .. GroupNum * 100 + i .. " at seq '" .. SeqNameF ..
             "' cue " .. cue .. " part 0.1")
-        CmdIndirectWait("assign appearance " .. 1000 + GroupNum * 100 + Slot_ID1[i] .. " at seq '" .. SeqNameF .. "' cue " .. i)
+        CmdIndirectWait("assign appearance " ..
+            1000 + GroupNum * 100 + Slot_ID1[i] .. " at seq '" .. SeqNameF .. "' cue " .. i)
         CmdIndirectWait("label seq '" .. SeqNameF .. "'  cue " .. cue .. " '" .. Preset_Name1F[GroupNum * 100 + i] .. "'")
-        coroutine.yield(0.05)
     end
 
     for i = 2, length2, 1 do -- gobo2 loop from preset to sequence, if there is no gobo2 length2 would be 1 and loop wont commited
@@ -234,7 +222,6 @@ local function CreateSequence(SeqNameF, Preset_Name1F, Preset_Name2F, Preset_Nam
             1050 + GroupNum * 100 + Slot_ID2[i] .. " at seq '" .. SeqNameF .. "' cue " .. cue)
         CmdIndirectWait("label seq '" .. SeqNameF .. "'  cue " .. cue .. " '" ..
             Preset_Name2F[GroupNum * 100 + 50 + i] .. "'")
-        coroutine.yield(0.05)
     end
 
     for i = 2, length3, 1 do -- gobo3 loop from preset to sequence, if there is no gobo3 length3 would be 1 and loop wont commited
@@ -245,7 +232,6 @@ local function CreateSequence(SeqNameF, Preset_Name1F, Preset_Name2F, Preset_Nam
             1100 + GroupNum * 100 + Slot_ID3[i] .. " at seq '" .. SeqNameF .. "' cue " .. cue)
         CmdIndirectWait("label seq '" .. SeqNameF .. "'  cue " .. cue .. " '" ..
             Preset_Name3F[GroupNum * 100 + 100 + i] .. "'")
-        coroutine.yield(0.05)
     end
     CmdIndirectWait("assign group " .. Grp .. " at seq '" .. SeqNameF .. "' cue 1 t part 0.1")
 end
@@ -253,12 +239,11 @@ end
 
 local function main()
     Echo(
-        '***************************************************************************************************************************************************')
+        '**********************************************************************************************************************************************************************')
     local fixtureNo = "101"
     local fixture = 'Fixture ' .. fixtureNo .. ''
     local fixturenum = tonumber(fixtureNo)
     local FixtureType = ObjectList(fixture)[1].FIXTURETYPE.name
-    local dmxValues = {} -- not usefull in this plugin
     local FirstPreset = 101
     local SeqName = "Gobo Group 1"
     local Preset_Name = {}
@@ -296,13 +281,13 @@ local function main()
         createAppearances(FixtureType, "Gobo2", 1050 + fixturenum)
     end
     Cmd("clearall; fixture " .. fixtureNo)
-    if GetUIChannelIndex(SelectionFirst(), GetAttributeIndex('Gobo3')) then -- check if fixture has gobo2
+    if GetUIChannelIndex(SelectionFirst(), GetAttributeIndex('Gobo3')) then -- check if fixture has gobo3
         createAppearances(FixtureType, "Gobo3", 1100 + fixturenum)
     end
     Cmd("cd root")
-
     -- printTable(Preset_Name[1])
     -- printTable(Preset_Name[2])
+    -- printTable(Preset_Name[3])
     CreateSequence(SeqName, Preset_Name[1], Preset_Name[2], Preset_Name[3], tostring(math.floor(fixturenum / 100)),
         fixturenum, Slot_ID[1], Slot_ID[2], Slot_ID[3])
     Cmd("Blind Off")
