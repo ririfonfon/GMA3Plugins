@@ -13,7 +13,7 @@ local myHandle = select(4, ...)
 local function Main(displayHandle)
     Echo(
         '**********************************************************************************************************************************************************************')
-    Cmd ('Set CurrentUserProfile Property KeyboardShortcutsActive 0')
+    Cmd('Set CurrentUserProfile Property KeyboardShortcutsActive 0')
     local list = false
     local FixtureGroups = DataPool().Groups:Children()
     local SelectedGrp = {}
@@ -36,16 +36,17 @@ local function Main(displayHandle)
     local Preset_3_NrRange
     local Preset_3_Current
     local MaxGobLgn = 16
+    local Nr_Gobo = 0
 
     local TopInc = 0
 
     local popuplists = {
-        Grp_Select     = {},
-        Name_Select    = { 'Layout Gobo Select', 'LGS', 'L_GOBO', 'L_G'},
-        Lay_Select     = { 1, 11, 101, 201, 301, 401, 501, 601, 701, 801, 901, 1001, 2001 },
-        Seq_Select     = { 1, 11, 101, 201, 301, 401, 501, 601, 701, 801, 901, 1001, 2001 },
-        Appear_Select  = { 1, 11, 101, 201, 301, 401, 501, 601, 701, 801, 901, 1001, 2001 },
-        Preset_Select  = { 1, 11, 101, 201, 301, 401, 501, 601, 701, 801, 901, 1001, 2001 }
+        Grp_Select    = {},
+        Name_Select   = { 'Layout Gobo Select', 'LGS', 'L_GOBO', 'L_G' },
+        Lay_Select    = { 1, 11, 101, 201, 301, 401, 501, 601, 701, 801, 901, 1001, 2001 },
+        Seq_Select    = { 1, 11, 101, 201, 301, 401, 501, 601, 701, 801, 901, 1001, 2001 },
+        Appear_Select = { 1, 11, 101, 201, 301, 401, 501, 601, 701, 801, 901, 1001, 2001 },
+        Preset_Select = { 1, 11, 101, 201, 301, 401, 501, 601, 701, 801, 901, 1001, 2001 }
     }
     if list == false then
         for k in ipairs(FixtureGroups) do
@@ -179,13 +180,10 @@ local function Main(displayHandle)
     dlgFrame.Anchors = { left = 0, right = 0, top = 1, bottom = 1 }
     dlgFrame[1][1].SizePolicy = "Fixed"
     dlgFrame[1][1].Size = "150"
-    --   dlgFrame[1][1].Size = "60"
     dlgFrame[1][2].SizePolicy = "Fixed"
     dlgFrame[1][2].Size = "700"
-    -- dlgFrame[1][2].Size = "Stretch"
     dlgFrame[1][3].SizePolicy = "Fixed"
     dlgFrame[1][3].Size = "50"
-    --   dlgFrame[1][3].Size = "80"
 
     -- Create the sub title.
     -- This is row 1 of the dlgFrame.
@@ -200,7 +198,6 @@ local function Main(displayHandle)
     subTitle.Anchors = { left = 0, right = 0, top = 0, bottom = 0 }
     subTitle.Padding = { left = 0, right = 0, top = 5, bottom = 5 }
     subTitle.Font = "2"
-    -- subTitle.Font = "Medium20"
     subTitle.HasHover = "No"
     subTitle.BackColor = colorTransparent
 
@@ -275,7 +272,7 @@ local function Main(displayHandle)
     input2Label.TextalignmentH = "Left"
     input2Label.Anchors = { left = 1, right = 3, top = TopInc, bottom = TopInc }
     input2Label.Padding = "5,5"
-    input2Label.Margin = { left = 2, right = 2, top = TopInc , bottom = 2 } -- top = 2
+    input2Label.Margin = { left = 2, right = 2, top = TopInc, bottom = 2 }  -- top = 2
     input2Label.HasHover = "No";
     input2Label.BackColor = colorLayouts
     input2Label.Font = "2"
@@ -359,54 +356,6 @@ local function Main(displayHandle)
     input3Sujestion.HasHover = "yes"
     input3Sujestion.backColor = colorSequences
     input3Sujestion.Visible = "No"
-
-    -- Create the UI elements for the 4 input.
-    -- local input4Icon = inputsGrid:Append("Button")
-    -- input4Icon.Text = ""
-    -- input4Icon.Anchors = { left = 0, right = 0, top = 3, bottom = 3 }
-    -- input4Icon.Icon = "object_macro"
-    -- input4Icon.Margin = { left = 0, right = 2, top = 3, bottom = 2 }
-    -- input4Icon.HasHover = "No";
-    -- input4Icon.BackColor = colorMacro
-
-    -- local input4Label = inputsGrid:Append("UIObject")
-    -- input4Label.Text = "Macro Nr"
-    -- input4Label.TextalignmentH = "Left"
-    -- input4Label.Anchors = { left = 1, right = 3, top = 3, bottom = 3 }
-    -- input4Label.Padding = "5,5"
-    -- input4Label.Margin = { left = 2, right = 2, top = 3, bottom = 2 }
-    -- input4Label.HasHover = "No";
-    -- input4Label.Font = "2"
-    -- input4Label.BackColor = colorMacro
-
-    -- local input4LineEdit = inputsGrid:Append("LineEdit")
-    -- input4LineEdit.Prompt = "Nr: "
-    -- input4LineEdit.TextAutoAdjust = "Yes"
-    -- input4LineEdit.Anchors = { left = 4, right = 7, top = 3, bottom = 3 }
-    -- input4LineEdit.Padding = "5,5"
-    -- input4LineEdit.Margin = { left = 2, right = 0, top = 3, bottom = 2 }
-    -- input4LineEdit.Filter = "0123456789"
-    -- input4LineEdit.VkPluginName = "TextInputNumOnly"
-    -- input4LineEdit.Content = MacroNrStart
-    -- input4LineEdit.MaxTextLength = 6
-    -- input4LineEdit.HideFocusFrame = "Yes"
-    -- input4LineEdit.PluginComponent = myHandle
-    -- input4LineEdit.TextChanged = "OnInput4TextChanged"
-    -- input4LineEdit.Font = "2"
-    -- input4LineEdit.BackColor = colorMacro
-    -- input4LineEdit.Visible = "No"
-
-    -- local input4Sujestion = inputsGrid:Append("Button")
-    -- input4Sujestion.Text = ""
-    -- input4Sujestion.Anchors = { left = 8, right = 9, top = 3, bottom = 3 }
-    -- input4Sujestion.Margin = { left = 2, right = 0, top = 2, bottom = 2 }
-    -- input4Sujestion.Icon = "zoom"
-    -- input4Sujestion.Name = 'Macro_Select'
-    -- input4Sujestion.PluginComponent = thiscomponent
-    -- input4Sujestion.Clicked = 'mypopup'
-    -- input4Sujestion.HasHover = "yes"
-    -- input4Sujestion.backColor = colorMacro
-    -- input4Sujestion.Visible = "No"
 
     TopInc = TopInc + 1
 
@@ -508,54 +457,6 @@ local function Main(displayHandle)
     input6Sujestion.backColor = colorPresets
     input6Sujestion.Visible = "No"
 
-    -- -- Create the UI elements for the 7 input.
-    -- local input7Icon = inputsGrid:Append("Button")
-    -- input7Icon.Text = ""
-    -- input7Icon.Anchors = { left = 0, right = 0, top = 6, bottom = 6 }
-    -- input7Icon.Icon = "object_matricks"
-    -- input7Icon.Margin = { left = 0, right = 2, top = 6, bottom = 2 }
-    -- input7Icon.HasHover = "No";
-    -- input7Icon.BackColor = colorMatricks
-
-    -- local input7Label = inputsGrid:Append("UIObject")
-    -- input7Label.Text = "Matrick Nr"
-    -- input7Label.TextalignmentH = "Left"
-    -- input7Label.Anchors = { left = 1, right = 3, top = 6, bottom = 6 }
-    -- input7Label.Padding = "5,5"
-    -- input7Label.Margin = { left = 2, right = 2, top = 6, bottom = 2 }
-    -- input7Label.HasHover = "No";
-    -- input7Label.Font = "2"
-    -- input7Label.BackColor = colorMatricks
-
-    -- local input7LineEdit = inputsGrid:Append("LineEdit")
-    -- input7LineEdit.Prompt = "Nr: "
-    -- input7LineEdit.TextAutoAdjust = "Yes"
-    -- input7LineEdit.Anchors = { left = 4, right = 7, top = 6, bottom = 6 }
-    -- input7LineEdit.Padding = "5,5"
-    -- input7LineEdit.Margin = { left = 2, right = 0, top = 6, bottom = 2 }
-    -- input7LineEdit.Filter = "0123456789"
-    -- input7LineEdit.VkPluginName = "TextInputNumOnly"
-    -- input7LineEdit.Content = MatrickNrStart
-    -- input7LineEdit.MaxTextLength = 6
-    -- input7LineEdit.HideFocusFrame = "Yes"
-    -- input7LineEdit.PluginComponent = myHandle
-    -- input7LineEdit.TextChanged = "OnInput7TextChanged"
-    -- input7LineEdit.Font = "2"
-    -- input7LineEdit.BackColor = colorMatricks
-    -- input7LineEdit.Visible = "No"
-
-    -- local input7Sujestion = inputsGrid:Append("Button")
-    -- input7Sujestion.Text = ""
-    -- input7Sujestion.Anchors = { left = 8, right = 9, top = 6, bottom = 6 }
-    -- input7Sujestion.Margin = { left = 2, right = 0, top = 2, bottom = 2 }
-    -- input7Sujestion.Icon = "zoom"
-    -- input7Sujestion.Name = 'Matrick_Select'
-    -- input7Sujestion.PluginComponent = thiscomponent
-    -- input7Sujestion.Clicked = 'mypopup'
-    -- input7Sujestion.HasHover = "yes"
-    -- input7Sujestion.backColor = colorMatricks
-    -- input7Sujestion.Visible = "No"
-
     TopInc = TopInc + 1
 
     -- Create the UI elements for the 8 input.
@@ -594,38 +495,6 @@ local function Main(displayHandle)
     input8LineEdit.BackColor = colorPartlySelected
     input8LineEdit.Visible = "No"
 
-    -- -- Create the UI elements for the 9 input button.
-    -- local input9Icon = inputsGrid:Append("Button")
-    -- input9Icon.Text = ""
-    -- input9Icon.Anchors = { left = 0, right = 0, top = 8, bottom = 8 }
-    -- input9Icon.Icon = "object_gels"
-    -- input9Icon.Margin = { left = 0, right = 2, top = 8, bottom = 2 }
-    -- input9Icon.HasHover = "No";
-    -- input9Icon.BackColor = colorPartlySelectedPreset
-    -- input9Icon.Font = "2"
-
-    -- local input9Label = inputsGrid:Append("UIObject")
-    -- input9Label.Text = "Gel  "
-    -- input9Label.TextalignmentH = "Left"
-    -- input9Label.Anchors = { left = 1, right = 3, top = 8, bottom = 8 }
-    -- input9Label.Padding = "5,5"
-    -- input9Label.Margin = { left = 2, right = 2, top = 8, bottom = 2 }
-    -- input9Label.HasHover = "No";
-    -- input9Label.Font = "2"
-    -- input9Label.BackColor = colorPartlySelectedPreset
-
-    -- local input9Button = inputsGrid:Append('Button')
-    -- input9Button.Anchors = { left = 4, right = 9, top = 8, bottom = 8 }
-    -- input9Button.Padding = "5,5"
-    -- input9Button.Margin = { left = 2, right = 0, top = 8, bottom = 2 }
-    -- input9Button.Name = 'Gel_Select'
-    -- input9Button.Text = "Please select Gel"
-    -- -- input9Button.Text = "'Custom'"
-    -- input9Button.PluginComponent = thiscomponent
-    -- input9Button.Clicked = 'mypopup'
-    -- input9Button.BackColor = colorPartlySelectedPreset
-    -- input9Button.Font = "2"
-
     TopInc = TopInc + 1
 
     -- Create the UI elements for the 10 input button.
@@ -639,7 +508,7 @@ local function Main(displayHandle)
     input10Icon.Font = "2"
 
     local input10Button = inputsGrid:Append('Button')
-    input10Button.Anchors = { left = 1, right = 9, top =TopInc, bottom = TopInc }
+    input10Button.Anchors = { left = 1, right = 9, top = TopInc, bottom = TopInc }
     input10Button.Padding = "5,5"
     input10Button.Margin = { left = 2, right = 0, top = TopInc, bottom = 2 }
     input10Button.Name = 'Grp_Select'
@@ -718,7 +587,7 @@ local function Main(displayHandle)
         end
         if check == false then
             input2LineEdit.TextColor = colorText
-            if check_grp == true and check_gel == true then
+            if check_grp == true then
                 OkButton.Visible = "Yes"
             end
         end
@@ -733,7 +602,7 @@ local function Main(displayHandle)
         end
         SeqNrStart = caller.Content:gsub("'", "")
         SeqNrStart = tonumber(SeqNrStart)
-        SeqNrRange = SeqNrStart + tonumber((Nr_SelectedGrp * (NGel + 2)) + NGel + 100)
+        SeqNrRange = SeqNrStart + tonumber(Nr_Gobo)
         for k in ipairs(SeqNr) do
             if SeqNrStart <= tonumber(SeqNr[k].NO) then
                 if SeqNrRange >= tonumber(SeqNr[k].NO) then
@@ -758,32 +627,6 @@ local function Main(displayHandle)
         end
     end
 
-    -- signalTable.OnInput4TextChanged = function(caller)
-    --     local checks = false
-    --     if caller.Content == "" or caller.Content == "0" then
-    --         OkButton.Visible = "No"
-    --         input4LineEdit.TextColor = colorAlertText
-    --         checks = true
-    --     end
-    --     MacroNrStart = caller.Content:gsub("'", "")
-    --     MacroNrStart = tonumber(MacroNrStart)
-    --     MacroNrRange = MacroNrStart + 45
-    --     for k in ipairs(MacroNr) do
-    --         if MacroNrStart <= tonumber(MacroNr[k].NO) then
-    --             if MacroNrRange >= tonumber(MacroNr[k].NO) then
-    --                 OkButton.Visible = "No"
-    --                 input4LineEdit.TextColor = colorAlertText
-    --                 checks = true
-    --             end
-    --         end
-    --     end
-    --     if checks == false then
-    --         input4LineEdit.TextColor = colorText
-    --         if check_grp == true and check_gel == true then
-    --             OkButton.Visible = "Yes"
-    --         end
-    --     end
-    -- end
 
     signalTable.OnInput5TextChanged = function(caller)
         local checks = false
@@ -794,7 +637,7 @@ local function Main(displayHandle)
         end
         AppNr = caller.Content:gsub("'", "")
         AppNr = tonumber(AppNr)
-        AppNrRange = AppNr + 75 + (NGel * 2)
+        AppNrRange = AppNr + 75 + (Nr_Gobo * 2)
         for k in ipairs(App) do
             if AppNr <= tonumber(App[k].NO) then
                 if AppNrRange >= tonumber(App[k].NO) then
@@ -829,7 +672,7 @@ local function Main(displayHandle)
         Preset_3_NrStart = caller.Content:gsub("'", "")
         Preset_3_NrStart = tonumber(Preset_3_NrStart)
         Preset_3_Current = Preset_3_NrStart
-        Preset_3_NrRange = Preset_3_NrStart + NGel
+        Preset_3_NrRange = Preset_3_NrStart + Nr_Gobo
         for k in ipairs(Preset_3_Nr) do
             if Preset_3_NrStart <= tonumber(Preset_3_Nr[k].NO) then
                 if Preset_3_NrRange >= tonumber(Preset_3_Nr[k].NO) then
@@ -848,45 +691,11 @@ local function Main(displayHandle)
         end
         if checks == false then
             input6LineEdit.TextColor = colorText
-            if check_grp == true and check_gel == true then
+            if check_grp == true  then
                 OkButton.Visible = "Yes"
             end
         end
     end
-
-    -- signalTable.OnInput7TextChanged = function(caller)
-    --     local checks = false
-    --     if caller.Content == "" or caller.Content == "0" then
-    --         OkButton.Visible = "No"
-    --         input7LineEdit.TextColor = colorAlertText
-    --         checks = true
-    --     end
-    --     MatrickNrStart = caller.Content:gsub("'", "")
-    --     MatrickNrStart = tonumber(MatrickNrStart)
-    --     MatrickNrRange = MatrickNrStart + Nr_SelectedGrp + 1
-    --     for k in ipairs(MatrickNr) do
-    --         if MatrickNrStart <= tonumber(MatrickNr[k].NO) then
-    --             if MatrickNrRange >= tonumber(MatrickNr[k].NO) then
-    --                 OkButton.Visible = "No"
-    --                 input7LineEdit.TextColor = colorAlertText
-    --                 checks = true
-    --                 for i in ipairs(popuplists.Matrick_Select) do
-    --                     if MatrickNrStart <= tonumber(popuplists.Matrick_Select[i]) then
-    --                         if MatrickNrRange >= tonumber(popuplists.Matrick_Select[i]) then
-    --                             table.remove(popuplists.Matrick_Select, i)
-    --                         end
-    --                     end
-    --                 end
-    --             end
-    --         end
-    --     end
-    --     if checks == false then
-    --         input7LineEdit.TextColor = colorText
-    --         if check_grp == true and check_gel == true then
-    --             OkButton.Visible = "Yes"
-    --         end
-    --     end
-    -- end
 
     signalTable.OnInput8TextChanged = function(caller)
         local checks = false
@@ -912,21 +721,7 @@ local function Main(displayHandle)
         local itemlist = popuplists[caller.Name]
         local _, choice = PopupInput { title = caller.Name, caller = caller:GetDisplay(), items = itemlist, selectedValue = caller.Text }
 
-        -- if caller.Name == "Gel_Select" then
-        --     caller.Text = choice or caller.Text
-        --     for k in ipairs(ColGels) do
-        --         if ColGels[k].name == caller.Text:gsub("'", "") then
-        --             SelectedGelNr = k
-        --         end
-        --     end
-        --     local TCol = ColPath:Children()[SelectedGelNr]
-        --     for k in ipairs(TCol) do
-        --         NGel = k
-        --     end
-        --     check_gel = true
-        --     input10Button.Visible = "Yes"
         if caller.Name == "Grp_Select" then
-            -- caller.Text = choice or caller.Text
             for k in ipairs(popuplists.Grp_Select) do
                 if popuplists.Grp_Select[k] == choice then
                     table.remove(popuplists.Grp_Select, k)
@@ -944,40 +739,95 @@ local function Main(displayHandle)
                 Nr_SelectedGrp = k
             end
             subTitle.Text = subTitle.Text .. Nr_SelectedGrp .. "." .. FixtureGroups[SelGrp].name .. " "
-            check_grp = true
-            if check_grp == true then
-                OkButton.Visible = "Yes"
-                input1LineEdit.Visible = "Yes"
-                input2LineEdit.Visible = "Yes"
-                input3LineEdit.Visible = "Yes"
-                -- input4LineEdit.Visible = "Yes"
-                input5LineEdit.Visible = "Yes"
-                input6LineEdit.Visible = "Yes"
-                -- input7LineEdit.Visible = "Yes"
-                input8LineEdit.Visible = "Yes"
-                input1Sujestion.Visible = "Yes"
-                input2Sujestion.Visible = "Yes"
-                input3Sujestion.Visible = "Yes"
-                -- input4Sujestion.Visible = "Yes"
-                input5Sujestion.Visible = "Yes"
-                input6Sujestion.Visible = "Yes"
-                -- input7Sujestion.Visible = "Yes"
-            end
+            OkButton.Visible = "Yes"
+            input1LineEdit.Visible = "Yes"
+            input2LineEdit.Visible = "Yes"
+            input3LineEdit.Visible = "Yes"
+            input5LineEdit.Visible = "Yes"
+            input6LineEdit.Visible = "Yes"
+            input8LineEdit.Visible = "Yes"
+            input1Sujestion.Visible = "Yes"
+            input2Sujestion.Visible = "Yes"
+            input3Sujestion.Visible = "Yes"
+            input5Sujestion.Visible = "Yes"
+            input6Sujestion.Visible = "Yes"
+           Nr_Gobo = Check_Nr_Gobo(FixtureGroups[SelGrp].NO,Nr_Gobo)
         elseif caller.Name == "Name_Select" then
             input1LineEdit.Content = choice
         elseif caller.Name == "Lay_Select" then
             input2LineEdit.Content = choice
         elseif caller.Name == "Seq_Select" then
             input3LineEdit.Content = choice
-        -- elseif caller.Name == "Macro_Select" then
-        --     input4LineEdit.Content = choice
         elseif caller.Name == "Appear_Select" then
             input5LineEdit.Content = choice
         elseif caller.Name == "Preset_Select" then
             input6LineEdit.Content = choice
-        -- elseif caller.Name == "Matrick_Select" then
-        --     input7LineEdit.Content = choice
         end
+    end
+    local function dec24_to_dec8(dec24)
+        return math.floor(dec24 * 255 / 16777215)
+    end
+    
+    local function Check_Gobo(att, fixtureID, Nr_Gobo_)
+        local handlefixture = ObjectList(fixtureID)[1]
+        local mode = handlefixture.MODEDIRECT.name
+        local ft = handlefixture.FIXTURETYPE.name
+    
+        CmdIndirectWait("cd root")
+        CmdIndirectWait("cd FixtureType '" .. ft .. "'")
+        CmdIndirectWait("cd DMXModes.'*" .. mode .. "*'.DMXChannels")
+    
+        local GoboAttNum = 1
+    
+        while not string.find(CmdObj().Destination:Children()[GoboAttNum].Name, att) and GoboAttNum < #CmdObj().Destination:Children() do
+            -- this loop is to find where attribute gobo is in the dmxchannels
+            GoboAttNum = GoboAttNum + 1
+        end
+        if GoboAttNum == #CmdObj().Destination:Children() then
+            Printf("Returning")
+            return
+        end
+        -- this is to terminate the function if there is no gobo
+        local DefaultP = dec24_to_dec8(CmdObj().Destination:Children()[GoboAttNum].Default)
+        CmdIndirectWait("cd '*" .. att .. "'")
+        CmdIndirectWait("cd '*" .. att .. "'")
+        if CmdObj().Destination:Children()[1].DMXTO ~= nil then
+            local i = 1
+            while DefaultP > dec24_to_dec8(CmdObj().Destination:Children()[i].DMXTO) or DefaultP < dec24_to_dec8(CmdObj().Destination:Children()[i].DMXFROM) do
+                -- this is to find where is the static attributes of the gobo wheel
+                i = i + 1
+            end
+            local MaxDmxForLoop = dec24_to_dec8(CmdObj().Destination:Children()[i].DMXTO)
+            Cmd("cd " .. i) -- changing destination to the not shaking, or revolving gobos
+            i = 1
+            while i <= #CmdObj().Destination:Children() do -- iterating over the gobos
+                Nr_Gobo_ = Nr_Gobo_ + 1
+                i = i + 1
+            end
+    
+            return Nr_Gobo_
+        else
+            Printf("No " .. att .. " here")
+        end
+    end
+
+    function Check_Nr_Gobo(FGNr_,Nr_Gobo_)
+        local FixtureID_ = #DataPool().Groups[FGNr_].Selectiondata
+        local fixture = 'Fixture ' .. FixtureID_ .. ''
+        
+        Cmd("clearall; fixture " .. FixtureID_)
+
+        if GetUIChannelIndex(SelectionFirst(), GetAttributeIndex('Gobo1')) ~= nil then -- check if fixture has gobo1
+            Nr_Gobo_ = Check_Gobo("Gobo1", fixture, Nr_Gobo_)
+        end
+        if GetUIChannelIndex(SelectionFirst(), GetAttributeIndex('Gobo2')) ~= nil then -- check if fixture has gobo2
+            Nr_Gobo_ = Check_Gobo("Gobo2", fixture, Nr_Gobo_)
+        end
+        if GetUIChannelIndex(SelectionFirst(), GetAttributeIndex('Gobo3')) ~= nil then -- check if fixture has gobo3
+            Nr_Gobo_ = Check_Gobo("Gobo3", fixture, Nr_Gobo_)
+        end
+        Echo(Nr_Gobo_)
+        return Nr_Gobo_
     end
 end
 -- Run the plugin.
