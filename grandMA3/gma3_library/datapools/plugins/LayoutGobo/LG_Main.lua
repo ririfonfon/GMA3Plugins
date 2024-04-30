@@ -37,6 +37,7 @@ local function Main(displayHandle)
     local Preset_3_Current
     local MaxGobLgn = 16
     local Nr_Gobo = 0
+    local Selected_Grp_Wheel = {}
 
     local TopInc = 0
 
@@ -738,6 +739,7 @@ local function Main(displayHandle)
             for k in ipairs(SelectedGrp) do
                 Nr_SelectedGrp = k
             end
+            Selected_Grp_Wheel[Nr_SelectedGrp] = {}
             subTitle.Text = subTitle.Text .. Nr_SelectedGrp .. "." .. FixtureGroups[SelGrp].name .. " "
             OkButton.Visible = "Yes"
             input1LineEdit.Visible = "Yes"
@@ -812,11 +814,10 @@ local function Main(displayHandle)
     end
 
     function Check_Nr_Gobo(FGNr_,Nr_Gobo_)
+        
         local FixtureID_ = #DataPool().Groups[FGNr_].Selectiondata
         local fixture = 'Fixture ' .. FixtureID_ .. ''
-        
         Cmd("clearall; fixture " .. FixtureID_)
-
         if GetUIChannelIndex(SelectionFirst(), GetAttributeIndex('Gobo1')) ~= nil then -- check if fixture has gobo1
             Nr_Gobo_ = Check_Gobo("Gobo1", fixture, Nr_Gobo_)
         end
