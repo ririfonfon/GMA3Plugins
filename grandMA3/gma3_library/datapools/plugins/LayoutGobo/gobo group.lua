@@ -237,41 +237,9 @@ local function CreateSequence(SeqNameF, Preset_Name1F, Preset_Name2F, Preset_Nam
 end
 
 
-local function main(display)
+local function main()
     Echo(
         '**********************************************************************************************************************************************************************')
-    Cmd ('Set CurrentUserProfile Property KeyboardShortcutsActive 0')
-    local list = false
-    local FixtureGroups = DataPool().Groups:Children()
-    local SelectedGrp = {}
-    local SelectedGrpNo = {}
-    local SelGrp
-    local Nr_SelectedGrp
-    local check_grp = false
-    local TLay = DataPool().Layouts:Children()
-    local TLayNr
-    local TLayNrRef
-    local NaLay = "Phaser_Color"
-    local SeqNr = DataPool().Sequences:Children()
-    local SeqNrStart
-    local SeqNrRange
-    local App = ShowData().Appearances:Children()
-    local AppNr
-    local AppNrRange
-    local Preset_3_Nr = DataPool().PresetPools[3]:Children()
-    local Preset_3_NrStart
-    local Preset_3_NrRange
-    local Preset_3_Current
-
-    local popuplists = {
-        Grp_Select     = {},
-        Name_Select    = { 'Gobo Select', 'GS', 'GOBO'},
-        Lay_Select     = { 1, 11, 101, 201, 301, 401, 501, 601, 701, 801, 901, 1001, 2001 },
-        Seq_Select     = { 1, 11, 101, 201, 301, 401, 501, 601, 701, 801, 901, 1001, 2001 },
-        Appear_Select  = { 1, 11, 101, 201, 301, 401, 501, 601, 701, 801, 901, 1001, 2001 },
-        Preset_Select  = { 1, 11, 101, 201, 301, 401, 501, 601, 701, 801, 901, 1001, 2001 }
-    }
-
     local fixtureNo = "101"
     local fixture = 'Fixture ' .. fixtureNo .. ''
     local fixturenum = tonumber(fixtureNo)
@@ -283,64 +251,6 @@ local function main(display)
     Slot_ID[1] = {}
     Slot_ID[2] = {}
     Slot_ID[3] = {}
-
-    if list == false then
-        for k in ipairs(FixtureGroups) do
-            table.insert(popuplists.Grp_Select, "'" .. FixtureGroups[k].name .. "'")
-        end
-        for k in ipairs(ColGels) do
-            table.insert(popuplists.Gel_Select, "'" .. ColGels[k].name .. "'")
-        end
-        for k in ipairs(TLay) do
-            for i in ipairs(popuplists.Lay_Select) do
-                if popuplists.Lay_Select[i] == TLay[k].NO then
-                    table.remove(popuplists.Lay_Select, i)
-                end
-            end
-            TLayNr = TLay[k].NO + 1
-            TLayNrRef = k
-        end
-        if TLayNr == nil then
-            TLayNr = 1
-        end
-        for k in ipairs(SeqNr) do
-            for i in ipairs(popuplists.Seq_Select) do
-                if popuplists.Seq_Select[i] == SeqNr[k].NO then
-                    table.remove(popuplists.Seq_Select, i)
-                end
-            end
-            SeqNrStart = SeqNr[k].NO + 1
-        end
-        if SeqNrStart == nil then
-            SeqNrStart = 1
-        end
-        for k in ipairs(App) do
-            for i in ipairs(popuplists.Appear_Select) do
-                if popuplists.Appear_Select[i] == App[k].NO then
-                    table.remove(popuplists.Appear_Select, i)
-                end
-            end
-
-            AppNr = App[k].NO + 1
-        end
-        if AppNr == nil then
-            AppNr = 1
-        end
-        for k in ipairs(Preset_3_Nr) do
-            for i in ipairs(popuplists.Preset_Select) do
-                if popuplists.Preset_Select[i] == Preset_3_Nr[k].NO then
-                    table.remove(popuplists.Preset_Select, i)
-                end
-            end
-            Preset_3_NrStart = Preset_3_Nr[k].NO + 1
-        end
-        if Preset_3_NrStart == nil then
-            Preset_3_NrStart = 1
-        end
-        Preset_3_Current = Preset_3_NrStart
-        list = true
-
-    end
 
     Cmd("clearall; fixture " .. fixtureNo)
 
