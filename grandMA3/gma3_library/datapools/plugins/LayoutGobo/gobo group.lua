@@ -60,9 +60,7 @@ local function getWheelName(ftype, attribut)
     Cmd("Blind On;Clearall")
     CmdIndirectWait("cd root")
     CmdIndirectWait("cd FixtureType '" .. ftype .. "'")
-
     CmdIndirectWait("cd DMXModes.1.DMXChannels.'*" .. attribut .. "'.1")
-    Printf(CmdObj().Destination:Children()[1].Wheel.name)
     return CmdObj().Destination:Children()[1].Wheel.name
 end
 
@@ -89,12 +87,11 @@ local function Check_SlotID(att, fixtureID)
     local mode = handlefixture.MODEDIRECT.name
     local ft = handlefixture.FIXTURETYPE.name
     local slot_index = 1
+    local GoboAttNum = 1
 
     CmdIndirectWait("cd root")
     CmdIndirectWait("cd FixtureType '" .. ft .. "'")
     CmdIndirectWait("cd DMXModes.'*" .. mode .. "*'.DMXChannels")
-
-    local GoboAttNum = 1
 
     while not string.find(CmdObj().Destination:Children()[GoboAttNum].Name, att) and GoboAttNum < #CmdObj().Destination:Children() do
         -- this loop is to find where attribute gobo is in the dmxchannels
@@ -104,6 +101,7 @@ local function Check_SlotID(att, fixtureID)
         Printf("Returning")
         return
     end -- this is to terminate the function if there is no gobo
+
     local DefaultP = dec24_to_dec8(CmdObj().Destination:Children()[GoboAttNum].Default)
     CmdIndirectWait("cd '*" .. att .. "'")
     CmdIndirectWait("cd '*" .. att .. "'")
@@ -136,26 +134,22 @@ local function CreateLabelPresets(att, fixtureID, FirstPresetIndex)
     local mode = handlefixture.MODEDIRECT.name
     local ft = handlefixture.FIXTURETYPE.name
     local PresetIndex = FirstPresetIndex
+    local GoboAttNum = 1
 
     CmdIndirectWait("delete preset 25." .. FirstPresetIndex .. " t " .. 49 + FirstPresetIndex .. " /nc") -- I have presets of group 3 between 301 and 350 for wheel 1 and 351 and 400 for wheel 2
     CmdIndirectWait("cd root")
     CmdIndirectWait("cd FixtureType '" .. ft .. "'")
-
     CmdIndirectWait("cd DMXModes.'*" .. mode .. "*'.DMXChannels")
-
-    local GoboAttNum = 1
 
     while not string.find(CmdObj().Destination:Children()[GoboAttNum].Name, att) and GoboAttNum < #CmdObj().Destination:Children() do
         -- this loop is to find where attribute gobo is in the dmxchannels
-        Printf(CmdObj().Destination:Children()[GoboAttNum].Name)
-
         GoboAttNum = GoboAttNum + 1
     end
     if GoboAttNum == #CmdObj().Destination:Children() then
         Printf("Returning")
         return
-    end
-    -- this is to terminate the function if there is no gobo
+    end -- this is to terminate the function if there is no gobo
+
     local DefaultP = dec24_to_dec8(CmdObj().Destination:Children()[GoboAttNum].Default)
     CmdIndirectWait("cd '*" .. att .. "'")
     CmdIndirectWait("cd '*" .. att .. "'")
@@ -165,11 +159,6 @@ local function CreateLabelPresets(att, fixtureID, FirstPresetIndex)
             local i = 1
             Cmd("cd " .. d)                                -- changing destination
             while i <= #CmdObj().Destination:Children() do -- iterating over the gobos
-                Printf("start of loop Dmx range of " ..
-                    PresetIndex ..
-                    " is " ..
-                    dec24_to_dec8(CmdObj().Destination:Children()[i].DMXTO) ..
-                    " to " .. dec24_to_dec8(CmdObj().Destination:Children()[i].DMXFROM))
                 local fromdmx = dec24_to_dec8(CmdObj().Destination:Children()[i].DMXFROM)
                 local todmx = dec24_to_dec8(CmdObj().Destination:Children()[i].DMXTO)
                 -- local avgdmx = math.floor((fromdmx + todmx) / 2) -- so there is no problem of the conversion from decimal24 to deecimal8
@@ -179,8 +168,6 @@ local function CreateLabelPresets(att, fixtureID, FirstPresetIndex)
                 CmdIndirect("store preset 25." .. PresetIndex .. " /merge")
                 presetnames[PresetIndex] = CmdObj().Destination:Children()[i].Name -- geting the name of the gobo
                 CmdIndirect("Label preset 25." .. PresetIndex .. " '" .. presetnames[PresetIndex] .. "'")
-                Printf("preset " .. PresetIndex .. " is " .. presetnames[PresetIndex])
-                Printf("End of loop")
                 PresetIndex = PresetIndex + 1
                 i = i + 1
             end
