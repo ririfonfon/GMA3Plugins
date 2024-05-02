@@ -65,7 +65,7 @@ local function Check_SlotID(att, FixtureID)
         local rang = tonumber(CmdObj().Destination:Count())
         for d = 1, rang, 1 do
             local i = 1
-            CmdIndirectWait("cd " .. d)                                -- changing destination
+            CmdIndirectWait("cd " .. d)                    -- changing destination
             while i <= #CmdObj().Destination:Children() do -- iterating over the gobos
                 if (tonumber(CmdObj().Destination:Children()[i].WHEELSLOTINDEX) ~= nil) then
                     Slot_ID_[slot_index] = CmdObj().Destination:Children()[i].WHEELSLOTINDEX
@@ -115,7 +115,7 @@ local function CreateLabelPresets(att, FixtureID, FirstPresetIndex)
         local rang = tonumber(CmdObj().Destination:Count())
         for d = 1, rang, 1 do
             local i = 1
-            CmdIndirectWait("cd " .. d)                                -- changing destination
+            CmdIndirectWait("cd " .. d)                    -- changing destination
             while i <= #CmdObj().Destination:Children() do -- iterating over the gobos
                 if (tonumber(CmdObj().Destination:Children()[i].WHEELSLOTINDEX) ~= nil) then
                     Slot_ID_[slot_index] = CmdObj().Destination:Children()[i].WHEELSLOTINDEX
@@ -145,23 +145,22 @@ local function CreateLabelPresets(att, FixtureID, FirstPresetIndex)
     end
 end
 
-local function CreateSequence(SeqNameF, Preset_Name1F, Preset_Name2F, Preset_Name3F, Preset_Name4F, Grp,
-                              Slot_ID1, Slot_ID2, Slot_ID3, Slot_ID4, PresetIndex, AppIndex)
+local function CreateSequence(SeqNameF, Preset_Name, Grp, Slot_ID, PresetIndex, AppIndex)
     CmdIndirectWait("delete seq '" .. SeqNameF .. "' /nc") -- delete existing sequence
     local cue = 0
-    local length1 = arrayLength(Preset_Name1F)
+    local length1 = arrayLength(Preset_Name[1])
     CmdIndirectWait("Clearall; Group " .. Grp)
     local length2 = 1
     if GetUIChannelIndex(SelectionFirst(), GetAttributeIndex('Gobo2')) ~= nil then
-        length2 = arrayLength(Preset_Name2F)
+        length2 = arrayLength(Preset_Name[2])
     end
     local length3 = 1
     if GetUIChannelIndex(SelectionFirst(), GetAttributeIndex('Gobo3')) ~= nil then
-        length3 = arrayLength(Preset_Name3F)
+        length3 = arrayLength(Preset_Name[3])
     end
     local length4 = 1
     if GetUIChannelIndex(SelectionFirst(), GetAttributeIndex('EFFECTWHEEL')) ~= nil then
-        length4 = arrayLength(Preset_Name4F)
+        length4 = arrayLength(Preset_Name[4])
     end
     Printf("The length 1 is " ..
         length1 .. " and 2 is " .. length2 .. " and 3 is " .. length3 .. " and 4 is " .. length4)
@@ -174,8 +173,8 @@ local function CreateSequence(SeqNameF, Preset_Name1F, Preset_Name2F, Preset_Nam
         CmdIndirectWait("assign preset 25." .. PresetIndex[1] + i .. " at seq '" .. SeqNameF ..
             "' cue " .. cue .. " part 0.1")
         CmdIndirectWait("assign appearance " ..
-            AppIndex[1] + Slot_ID1[i] .. " at seq '" .. SeqNameF .. "' cue " .. i)
-        CmdIndirectWait("label seq '" .. SeqNameF .. "'  cue " .. cue .. " '" .. Preset_Name1F[i] .. "'")
+            AppIndex[1] + Slot_ID[1][i] .. " at seq '" .. SeqNameF .. "' cue " .. i)
+        CmdIndirectWait("label seq '" .. SeqNameF .. "'  cue " .. cue .. " '" .. Preset_Name[1][i] .. "'")
     end
 
     for i = 1, length2, 1 do -- gobo2 loop from preset to sequence, if there is no gobo2 length2 would be 1 and loop wont commited
@@ -183,8 +182,8 @@ local function CreateSequence(SeqNameF, Preset_Name1F, Preset_Name2F, Preset_Nam
         CmdIndirectWait("assign preset 25." .. PresetIndex[2] + i .. " at seq '" .. SeqNameF ..
             "' cue " .. cue .. " part 0.1")
         CmdIndirectWait("assign appearance " ..
-            AppIndex[2] + Slot_ID2[i] .. " at seq '" .. SeqNameF .. "' cue " .. cue)
-        CmdIndirectWait("label seq '" .. SeqNameF .. "'  cue " .. cue .. " '" .. Preset_Name2F[i] .. "'")
+            AppIndex[2] + Slot_ID[2][i] .. " at seq '" .. SeqNameF .. "' cue " .. cue)
+        CmdIndirectWait("label seq '" .. SeqNameF .. "'  cue " .. cue .. " '" .. Preset_Name[2][i] .. "'")
     end
 
     for i = 1, length3, 1 do -- gobo3 loop from preset to sequence, if there is no gobo3 length3 would be 1 and loop wont commited
@@ -192,8 +191,8 @@ local function CreateSequence(SeqNameF, Preset_Name1F, Preset_Name2F, Preset_Nam
         CmdIndirectWait("assign preset 25." .. PresetIndex[3] + i .. " at seq '" .. SeqNameF ..
             "' cue " .. cue .. " part 0.1")
         CmdIndirectWait("assign appearance " ..
-        AppIndex[3] + Slot_ID3[i] .. " at seq '" .. SeqNameF .. "' cue " .. cue)
-        CmdIndirectWait("label seq '" .. SeqNameF .. "'  cue " .. cue .. " '" .. Preset_Name3F[i] .. "'")
+            AppIndex[3] + Slot_ID[3][i] .. " at seq '" .. SeqNameF .. "' cue " .. cue)
+        CmdIndirectWait("label seq '" .. SeqNameF .. "'  cue " .. cue .. " '" .. Preset_Name[3][i] .. "'")
     end
 
     for i = 1, length4, 1 do -- EFFECTWHEEL loop from preset to sequence, if there is no EFFECTWHEEL length4 would be 1 and loop wont commited
@@ -201,8 +200,8 @@ local function CreateSequence(SeqNameF, Preset_Name1F, Preset_Name2F, Preset_Nam
         CmdIndirectWait("assign preset 25." .. PresetIndex[4] + i .. " at seq '" .. SeqNameF ..
             "' cue " .. cue .. " part 0.1")
         CmdIndirectWait("assign appearance " ..
-        AppIndex[4] + Slot_ID4[i] .. " at seq '" .. SeqNameF .. "' cue " .. cue)
-        CmdIndirectWait("label seq '" .. SeqNameF .. "'  cue " .. cue .. " '" .. Preset_Name4F[i] .. "'")
+            AppIndex[4] + Slot_ID[4][i] .. " at seq '" .. SeqNameF .. "' cue " .. cue)
+        CmdIndirectWait("label seq '" .. SeqNameF .. "'  cue " .. cue .. " '" .. Preset_Name[4][i] .. "'")
     end
 
     CmdIndirectWait("assign group " .. Grp .. " at seq '" .. SeqNameF .. "' cue 1 t part 0.1")
@@ -300,8 +299,7 @@ local function main(display)
 
     CmdIndirectWait("cd root")
 
-    CreateSequence(SeqName, Preset_Name[1], Preset_Name[2], Preset_Name[3], Preset_Name[4],
-        FixtureGroupsNo, Slot_ID[1], Slot_ID[2], Slot_ID[3], Slot_ID[4], Index, AppIndex)
+    CreateSequence(SeqName, Preset_Name, FixtureGroupsNo, Slot_ID, Index, AppIndex)
     CmdIndirectWait("Blind Off")
 end
 return main
