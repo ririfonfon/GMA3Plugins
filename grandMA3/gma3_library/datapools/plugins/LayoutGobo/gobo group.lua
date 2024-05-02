@@ -87,6 +87,8 @@ end
 local function CreateLabelPresets(att, FixtureID, FirstPresetIndex)
     local handleFixture = ObjectList(FixtureID)[1]
     local presetnames = {}
+    local Slot_ID_ = {}
+    local slot_index = 1
     local mode = handleFixture.MODEDIRECT.name
     local ft = handleFixture.FixtureTYPE.name
     local PresetIndex = FirstPresetIndex
@@ -113,31 +115,37 @@ local function CreateLabelPresets(att, FixtureID, FirstPresetIndex)
         local rang = tonumber(CmdObj().Destination:Count())
         for d = 1, rang, 1 do
             local i = 1
-            Cmd("cd " .. d)                                -- changing destination
+            CmdIndirectWait("cd " .. d)                                -- changing destination
             while i <= #CmdObj().Destination:Children() do -- iterating over the gobos
+                if (tonumber(CmdObj().Destination:Children()[i].WHEELSLOTINDEX) ~= nil) then
+                    Slot_ID_[slot_index] = CmdObj().Destination:Children()[i].WHEELSLOTINDEX
+                else
+                    Slot_ID_[slot_index] = 1
+                end
                 local fromdmx = dec24_to_dec8(CmdObj().Destination:Children()[i].DMXFROM)
                 local todmx = dec24_to_dec8(CmdObj().Destination:Children()[i].DMXTO)
                 -- local avgdmx = math.floor((fromdmx + todmx) / 2) -- so there is no problem of the conversion from decimal24 to deecimal8
                 local avgdmx = math.floor(((todmx - fromdmx) / 2) + fromdmx) -- good
                 CmdIndirectWait("Clearall")
                 CmdIndirectWait(FixtureID .. " At Absolute Decimal8 " .. avgdmx .. " Attribute " .. att)
-                CmdIndirect("store preset 25." .. PresetIndex .. " /merge")
+                CmdIndirectWait("store preset 25." .. PresetIndex .. " /merge")
                 presetnames[PN] = CmdObj().Destination:Children()[i].Name -- geting the name of the gobo
-                CmdIndirect("Label preset 25." .. PresetIndex .. " '" .. presetnames[PN] .. "'")
+                CmdIndirectWait("Label preset 25." .. PresetIndex .. " '" .. presetnames[PN] .. "'")
                 PresetIndex = PresetIndex + 1
                 i = i + 1
                 PN = PN + 1
+                slot_index = slot_index + 1
             end
-            Cmd('Cd ..')
+            CmdIndirectWait('Cd ..')
         end
 
-        return presetnames, PresetIndex
+        return presetnames, PresetIndex, Slot_ID_
     else
         Printf("No " .. att .. " here")
     end
 end
 
-local function CreateSequence(SeqNameF, Preset_Name1F, Preset_Name2F, Preset_Name3F, Preset_Name4F, GroupNum, Grp,
+local function CreateSequence(SeqNameF, Preset_Name1F, Preset_Name2F, Preset_Name3F, Preset_Name4F, Grp,
                               Slot_ID1, Slot_ID2, Slot_ID3, Slot_ID4, PresetIndex, AppIndex)
     CmdIndirectWait("delete seq '" .. SeqNameF .. "' /nc") -- delete existing sequence
     local cue = 0
@@ -252,23 +260,23 @@ local function main(display)
     Cmd("clearall; Fixture " .. FixtureNum)
     if GetUIChannelIndex(SelectionFirst(), GetAttributeIndex('Gobo1')) ~= nil then -- check if Fixture has gobo1
         Index[1] = FirstPreset - 1
-        Preset_Name[1], PresetIndex = CreateLabelPresets("Gobo1", Fixture, FirstPreset)
-        Slot_ID[1] = Check_SlotID("Gobo1", Fixture)
+        Preset_Name[1], PresetIndex, Slot_ID[1] = CreateLabelPresets("Gobo1", Fixture, FirstPreset)
+        -- Slot_ID[1] = Check_SlotID("Gobo1", Fixture)
     end
     if GetUIChannelIndex(SelectionFirst(), GetAttributeIndex('Gobo2')) ~= nil then -- check if Fixture has gobo2
         Index[2] = PresetIndex - 1
-        Preset_Name[2], PresetIndex = CreateLabelPresets("Gobo2", Fixture, PresetIndex)
-        Slot_ID[2] = Check_SlotID("Gobo2", Fixture)
+        Preset_Name[2], PresetIndex, Slot_ID[2] = CreateLabelPresets("Gobo2", Fixture, PresetIndex)
+        -- Slot_ID[2] = Check_SlotID("Gobo2", Fixture)
     end
     if GetUIChannelIndex(SelectionFirst(), GetAttributeIndex('Gobo3')) ~= nil then -- check if Fixture has gobo3
         Index[3] = PresetIndex - 1
-        Preset_Name[3], PresetIndex = CreateLabelPresets("Gobo3", Fixture, PresetIndex)
-        Slot_ID[3] = Check_SlotID("Gobo3", Fixture)
+        Preset_Name[3], PresetIndex, Slot_ID[3] = CreateLabelPresets("Gobo3", Fixture, PresetIndex)
+        -- Slot_ID[3] = Check_SlotID("Gobo3", Fixture)
     end
     if GetUIChannelIndex(SelectionFirst(), GetAttributeIndex('EFFECTWHEEL')) ~= nil then -- check if Fixture has gobo3
         Index[4] = PresetIndex - 1
-        Preset_Name[4], PresetIndex = CreateLabelPresets("EFFECTWHEEL", Fixture, PresetIndex)
-        Slot_ID[4] = Check_SlotID("EFFECTWHEEL", Fixture)
+        Preset_Name[4], PresetIndex, Slot_ID[4] = CreateLabelPresets("EFFECTWHEEL", Fixture, PresetIndex)
+        -- Slot_ID[4] = Check_SlotID("EFFECTWHEEL", Fixture)
     end
 
     Cmd("cd root")
@@ -297,7 +305,6 @@ local function main(display)
     Cmd("cd root")
 
     CreateSequence(SeqName, Preset_Name[1], Preset_Name[2], Preset_Name[3], Preset_Name[4],
-        tostring(math.floor(FixtureNum / 100)),
         FixtureGroupsNo, Slot_ID[1], Slot_ID[2], Slot_ID[3], Slot_ID[4], Index, AppIndex)
     Cmd("Blind Off")
 end
