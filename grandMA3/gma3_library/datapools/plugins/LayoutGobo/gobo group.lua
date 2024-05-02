@@ -145,8 +145,9 @@ local function CreateLabelPresets(att, FixtureID, FirstPresetIndex)
     end
 end
 
-local function CreateSequence(SeqNameF, Preset_Name, Grp, Slot_ID, PresetIndex, AppIndex)
-    CmdIndirectWait("delete seq '" .. SeqNameF .. "' /nc") -- delete existing sequence
+local function CreateSequence(FixtureType,prefix,SeqNrStart, Preset_Name, Grp, Slot_ID, PresetIndex, AppIndex)
+    -- CmdIndirectWait("delete seq '" .. SeqNameF .. "' /nc") -- delete existing sequence
+    SeqNrStart = tonumber(SeqNrStart)
     local cue = 0
     local length1 = arrayLength(Preset_Name[1])
     CmdIndirectWait("Clearall; Group " .. Grp)
@@ -166,45 +167,56 @@ local function CreateSequence(SeqNameF, Preset_Name, Grp, Slot_ID, PresetIndex, 
         length1 .. " and 2 is " .. length2 .. " and 3 is " .. length3 .. " and 4 is " .. length4)
     CmdIndirectWait("Clearall")
 
-    CmdIndirectWait("store seq '" .. SeqNameF .. "' /nc")
-    CmdIndirectWait("store seq '" .. SeqNameF .. "' cue 1 t " .. length1 + length2 + length3 + length4 .. " /nc")
+    CmdIndirectWait('store seq ' .. SeqNrStart .. ' \'' .. prefix .. '_' .. FixtureType .. '_Gobo1\' /nc')
+    CmdIndirectWait('store seq ' .. SeqNrStart .. ' cue 1 t ' .. length1 .. ' /nc')
     for i = 1, length1, 1 do -- gobo1 loop from preset to sequence
         cue = cue + 1
-        CmdIndirectWait("assign preset 25." .. PresetIndex[1] + i .. " at seq '" .. SeqNameF ..
-            "' cue " .. cue .. " part 0.1")
-        CmdIndirectWait("assign appearance " ..
-            AppIndex[1] + Slot_ID[1][i] .. " at seq '" .. SeqNameF .. "' cue " .. i)
-        CmdIndirectWait("label seq '" .. SeqNameF .. "'  cue " .. cue .. " '" .. Preset_Name[1][i] .. "'")
+        CmdIndirectWait('assign preset 25.' .. PresetIndex[1] + i .. ' at seq ' .. SeqNrStart ..
+            ' cue ' .. cue .. ' part 0.1')
+        CmdIndirectWait('assign appearance ' ..
+            AppIndex[1] + Slot_ID[1][i] .. ' at seq ' .. SeqNrStart .. ' cue ' .. i)
+        CmdIndirectWait('label seq ' .. SeqNrStart .. ' cue ' .. cue .. ' "' .. Preset_Name[1][i] .. '"')
     end
-
+    CmdIndirectWait('assign group ' .. Grp .. ' at seq ' .. SeqNrStart .. ' cue 1 t part 0.1')
+    SeqNrStart = SeqNrStart + 1
+    cue = 0
+    CmdIndirectWait('store seq ' .. SeqNrStart .. ' \'' .. prefix .. '_' .. FixtureType .. '_Gobo2\' /nc')
+    CmdIndirectWait('store seq ' .. SeqNrStart .. ' cue 1 t ' .. length2 .. ' /nc')
     for i = 1, length2, 1 do -- gobo2 loop from preset to sequence, if there is no gobo2 length2 would be 1 and loop wont commited
         cue = cue + 1
-        CmdIndirectWait("assign preset 25." .. PresetIndex[2] + i .. " at seq '" .. SeqNameF ..
-            "' cue " .. cue .. " part 0.1")
-        CmdIndirectWait("assign appearance " ..
-            AppIndex[2] + Slot_ID[2][i] .. " at seq '" .. SeqNameF .. "' cue " .. cue)
-        CmdIndirectWait("label seq '" .. SeqNameF .. "'  cue " .. cue .. " '" .. Preset_Name[2][i] .. "'")
+        CmdIndirectWait('assign preset 25.' .. PresetIndex[2] + i .. ' at seq ' .. SeqNrStart ..
+            ' cue ' .. cue .. ' part 0.1')
+        CmdIndirectWait('assign appearance ' ..
+            AppIndex[2] + Slot_ID[2][i] .. ' at seq ' .. SeqNrStart .. ' cue ' .. i)
+        CmdIndirectWait('label seq ' .. SeqNrStart .. ' cue ' .. cue .. ' "' .. Preset_Name[2][i] .. '"')
     end
-
+    CmdIndirectWait('assign group ' .. Grp .. ' at seq ' .. SeqNrStart .. ' cue 1 t part 0.1')
+    SeqNrStart = SeqNrStart + 1
+    cue = 0
+    CmdIndirectWait('store seq ' .. SeqNrStart .. ' \'' .. prefix .. '_' .. FixtureType .. '_Gobo3\' /nc')
+    CmdIndirectWait('store seq ' .. SeqNrStart .. ' cue 1 t ' .. length3 .. ' /nc')
     for i = 1, length3, 1 do -- gobo3 loop from preset to sequence, if there is no gobo3 length3 would be 1 and loop wont commited
         cue = cue + 1
-        CmdIndirectWait("assign preset 25." .. PresetIndex[3] + i .. " at seq '" .. SeqNameF ..
-            "' cue " .. cue .. " part 0.1")
-        CmdIndirectWait("assign appearance " ..
-            AppIndex[3] + Slot_ID[3][i] .. " at seq '" .. SeqNameF .. "' cue " .. cue)
-        CmdIndirectWait("label seq '" .. SeqNameF .. "'  cue " .. cue .. " '" .. Preset_Name[3][i] .. "'")
+        CmdIndirectWait('assign preset 25.' .. PresetIndex[3] + i .. ' at seq ' .. SeqNrStart ..
+            ' cue ' .. cue .. ' part 0.1')
+        CmdIndirectWait('assign appearance ' ..
+            AppIndex[3] + Slot_ID[3][i] .. ' at seq ' .. SeqNrStart .. ' cue ' .. i)
+        CmdIndirectWait('label seq ' .. SeqNrStart .. ' cue ' .. cue .. ' "' .. Preset_Name[3][i] .. '"')
     end
-
+    CmdIndirectWait('assign group ' .. Grp .. ' at seq ' .. SeqNrStart .. ' cue 1 t part 0.1')
+    SeqNrStart = SeqNrStart + 1
+    cue = 0
+    CmdIndirectWait('store seq ' .. SeqNrStart .. ' \'' .. prefix .. '_' .. FixtureType .. '_EFFECTWHEEL\' /nc')
+    CmdIndirectWait('store seq ' .. SeqNrStart .. ' cue 1 t ' .. length4 .. ' /nc')
     for i = 1, length4, 1 do -- EFFECTWHEEL loop from preset to sequence, if there is no EFFECTWHEEL length4 would be 1 and loop wont commited
         cue = cue + 1
-        CmdIndirectWait("assign preset 25." .. PresetIndex[4] + i .. " at seq '" .. SeqNameF ..
-            "' cue " .. cue .. " part 0.1")
-        CmdIndirectWait("assign appearance " ..
-            AppIndex[4] + Slot_ID[4][i] .. " at seq '" .. SeqNameF .. "' cue " .. cue)
-        CmdIndirectWait("label seq '" .. SeqNameF .. "'  cue " .. cue .. " '" .. Preset_Name[4][i] .. "'")
+        CmdIndirectWait('assign preset 25.' .. PresetIndex[4] + i .. ' at seq ' .. SeqNrStart ..
+            ' cue ' .. cue .. ' part 0.1')
+        CmdIndirectWait('assign appearance ' ..
+            AppIndex[4] + Slot_ID[4][i] .. ' at seq ' .. SeqNrStart .. ' cue ' .. i)
+        CmdIndirectWait('label seq ' .. SeqNrStart .. ' cue ' .. cue .. ' "' .. Preset_Name[4][i] .. '"')
     end
-
-    CmdIndirectWait("assign group " .. Grp .. " at seq '" .. SeqNameF .. "' cue 1 t part 0.1")
+    CmdIndirectWait('assign group ' .. Grp .. ' at seq ' .. SeqNrStart .. ' cue 1 t part 0.1')
 end
 
 
@@ -247,8 +259,34 @@ local function main(display)
         AppNr = 1
     end
 
+    local SeqNr = DataPool().Sequences:Children()
+    local SeqNrStart
+    for k in ipairs(SeqNr) do
+        SeqNrStart = SeqNr[k].NO + 1
+    end
+    if SeqNrStart == nil then
+        SeqNrStart = 1
+    end
 
-    local SeqName = "Gobo Group 1"
+    -- fix prefix
+    local prefix_index = 1
+    local old_prefix_index
+    local prefix = 'LG' .. tostring(prefix_index) .. '_'
+    local exit = false
+    repeat
+        old_prefix_index = prefix_index
+        for k in pairs(SeqNr) do
+            if string.match(SeqNr[k].name, prefix) then
+                prefix_index = math.floor(prefix_index + 1)
+            end
+        end
+        prefix = 'LG' .. tostring(prefix_index) .. '_'
+        if old_prefix_index == prefix_index then
+            exit = true
+        end
+    until exit == true
+
+
     local Preset_Name = {}
     local Slot_ID = {}
     local PresetIndex
@@ -299,7 +337,7 @@ local function main(display)
 
     CmdIndirectWait("cd root")
 
-    CreateSequence(SeqName, Preset_Name, FixtureGroupsNo, Slot_ID, Index, AppIndex)
+    CreateSequence(FixtureType,prefix, SeqNrStart, Preset_Name, FixtureGroupsNo, Slot_ID, Index, AppIndex)
     CmdIndirectWait("Blind Off")
 end
 return main
