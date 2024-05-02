@@ -13,7 +13,7 @@ end
 
 
 local function getWheelName(ftype, attribut)
-    Cmd("Blind On;Clearall")
+    Cmd("Clearall")
     CmdIndirectWait("cd root")
     CmdIndirectWait("cd FixtureType '" .. ftype .. "'")
     CmdIndirectWait("cd DMXModes.1.DMXChannels.'*" .. attribut .. "'.1")
@@ -24,7 +24,6 @@ local function createAppearances(ft, att, j)
     local gobowheel = getWheelName(ft, att)
     Cmd("cd ft '" .. ft .. "'.Wheels.'" .. gobowheel .. "'")
     local wheel = CmdObj().Destination
-    CmdIndirectWait("delete appearance " .. j .. " thru " .. 99 + j .. " /nc") -- deleting existent appearances
     for _, slot in ipairs(wheel:Children()) do
         Cmd("Store appearance " .. j .. " 'Appearance " .. j .. "'")
         local objlist = ObjectList("appearance " .. tostring(j))
@@ -35,6 +34,7 @@ local function createAppearances(ft, att, j)
             obj[prop] = slot[prop]
         end
     end
+    return j
 end
 
 local function Check_SlotID(att, FixtureID)
@@ -119,11 +119,10 @@ local function CreateLabelPresets(att, FixtureID, FirstPresetIndex)
                 local todmx = dec24_to_dec8(CmdObj().Destination:Children()[i].DMXTO)
                 -- local avgdmx = math.floor((fromdmx + todmx) / 2) -- so there is no problem of the conversion from decimal24 to deecimal8
                 local avgdmx = math.floor(((todmx - fromdmx) / 2) + fromdmx) -- good
-                CmdIndirectWait(" Blind on; Clearall")
+                CmdIndirectWait("Clearall")
                 CmdIndirectWait(FixtureID .. " At Absolute Decimal8 " .. avgdmx .. " Attribute " .. att)
                 CmdIndirect("store preset 25." .. PresetIndex .. " /merge")
                 presetnames[PN] = CmdObj().Destination:Children()[i].Name -- geting the name of the gobo
-                Printf("%%%%%%%%%% i '%d' '%s' ", i, presetnames[i])
                 CmdIndirect("Label preset 25." .. PresetIndex .. " '" .. presetnames[PN] .. "'")
                 PresetIndex = PresetIndex + 1
                 i = i + 1
@@ -139,7 +138,7 @@ local function CreateLabelPresets(att, FixtureID, FirstPresetIndex)
 end
 
 local function CreateSequence(SeqNameF, Preset_Name1F, Preset_Name2F, Preset_Name3F, Preset_Name4F, GroupNum, Grp,
-                              Slot_ID1, Slot_ID2, Slot_ID3, Slot_ID4, PresetIndex)
+                              Slot_ID1, Slot_ID2, Slot_ID3, Slot_ID4, PresetIndex, AppIndex)
     CmdIndirectWait("delete seq '" .. SeqNameF .. "' /nc") -- delete existing sequence
     local cue = 0
     local length1 = arrayLength(Preset_Name1F)
@@ -167,7 +166,7 @@ local function CreateSequence(SeqNameF, Preset_Name1F, Preset_Name2F, Preset_Nam
         CmdIndirectWait("assign preset 25." .. PresetIndex[1] + i .. " at seq '" .. SeqNameF ..
             "' cue " .. cue .. " part 0.1")
         CmdIndirectWait("assign appearance " ..
-            1000 + GroupNum * 100 + Slot_ID1[i] .. " at seq '" .. SeqNameF .. "' cue " .. i)
+            AppIndex[1] + Slot_ID1[i] .. " at seq '" .. SeqNameF .. "' cue " .. i)
         CmdIndirectWait("label seq '" .. SeqNameF .. "'  cue " .. cue .. " '" .. Preset_Name1F[i] .. "'")
     end
 
@@ -176,7 +175,7 @@ local function CreateSequence(SeqNameF, Preset_Name1F, Preset_Name2F, Preset_Nam
         CmdIndirectWait("assign preset 25." .. PresetIndex[2] + i .. " at seq '" .. SeqNameF ..
             "' cue " .. cue .. " part 0.1")
         CmdIndirectWait("assign appearance " ..
-            1050 + GroupNum * 100 + Slot_ID2[i] .. " at seq '" .. SeqNameF .. "' cue " .. cue)
+            AppIndex[2] + Slot_ID2[i] .. " at seq '" .. SeqNameF .. "' cue " .. cue)
         CmdIndirectWait("label seq '" .. SeqNameF .. "'  cue " .. cue .. " '" .. Preset_Name2F[i] .. "'")
     end
 
@@ -185,7 +184,7 @@ local function CreateSequence(SeqNameF, Preset_Name1F, Preset_Name2F, Preset_Nam
         CmdIndirectWait("assign preset 25." .. PresetIndex[3] + i .. " at seq '" .. SeqNameF ..
             "' cue " .. cue .. " part 0.1")
         CmdIndirectWait("assign appearance " ..
-            1100 + GroupNum * 100 + Slot_ID3[i] .. " at seq '" .. SeqNameF .. "' cue " .. cue)
+        AppIndex[3] + Slot_ID3[i] .. " at seq '" .. SeqNameF .. "' cue " .. cue)
         CmdIndirectWait("label seq '" .. SeqNameF .. "'  cue " .. cue .. " '" .. Preset_Name3F[i] .. "'")
     end
 
@@ -194,7 +193,7 @@ local function CreateSequence(SeqNameF, Preset_Name1F, Preset_Name2F, Preset_Nam
         CmdIndirectWait("assign preset 25." .. PresetIndex[4] + i .. " at seq '" .. SeqNameF ..
             "' cue " .. cue .. " part 0.1")
         CmdIndirectWait("assign appearance " ..
-            1150 + GroupNum * 100 + Slot_ID4[i] .. " at seq '" .. SeqNameF .. "' cue " .. cue)
+        AppIndex[4] + Slot_ID4[i] .. " at seq '" .. SeqNameF .. "' cue " .. cue)
         CmdIndirectWait("label seq '" .. SeqNameF .. "'  cue " .. cue .. " '" .. Preset_Name4F[i] .. "'")
     end
 
@@ -232,13 +231,24 @@ local function main(display)
         FirstPreset = 1
     end
 
+    local App = ShowData().Appearances:Children()
+    local AppNr
+    for k in ipairs(App) do
+        AppNr = App[k].NO + 1
+    end
+    if AppNr == nil then
+        AppNr = 1
+    end
+
 
     local SeqName = "Gobo Group 1"
     local Preset_Name = {}
     local Slot_ID = {}
     local PresetIndex
     local Index = {}
+    local AppIndex = {}
 
+    Cmd("Blind On")
     Cmd("clearall; Fixture " .. FixtureNum)
     if GetUIChannelIndex(SelectionFirst(), GetAttributeIndex('Gobo1')) ~= nil then -- check if Fixture has gobo1
         Index[1] = FirstPreset - 1
@@ -265,26 +275,30 @@ local function main(display)
 
     Cmd("clearall; Fixture " .. FixtureNum)
     if GetUIChannelIndex(SelectionFirst(), GetAttributeIndex('Gobo1')) then -- check if Fixture has gobo1
-        createAppearances(FixtureType, "Gobo1", 1000 + FixtureNum)
+        AppIndex[1] = AppNr - 1
+        AppNr = createAppearances(FixtureType, "Gobo1", AppNr)
     end
     Cmd("clearall; Fixture " .. FixtureNum)
     if GetUIChannelIndex(SelectionFirst(), GetAttributeIndex('Gobo2')) then -- check if Fixture has gobo2
-        createAppearances(FixtureType, "Gobo2", 1050 + FixtureNum)
+        AppIndex[2] = AppNr - 1
+        AppNr = createAppearances(FixtureType, "Gobo2", AppNr)
     end
     Cmd("clearall; Fixture " .. FixtureNum)
     if GetUIChannelIndex(SelectionFirst(), GetAttributeIndex('Gobo3')) then -- check if Fixture has gobo3
-        createAppearances(FixtureType, "Gobo3", 1100 + FixtureNum)
+        AppIndex[3] = AppNr - 1
+        AppNr = createAppearances(FixtureType, "Gobo3", AppNr)
     end
     Cmd("clearall; Fixture " .. FixtureNum)
     if GetUIChannelIndex(SelectionFirst(), GetAttributeIndex('EFFECTWHEEL')) then -- check if Fixture has gobo3
-        createAppearances(FixtureType, "EFFECTWHEEL", 1150 + FixtureNum)
+        AppIndex[4] = AppNr - 1
+        AppNr = createAppearances(FixtureType, "EFFECTWHEEL", AppNr)
     end
 
     Cmd("cd root")
 
     CreateSequence(SeqName, Preset_Name[1], Preset_Name[2], Preset_Name[3], Preset_Name[4],
         tostring(math.floor(FixtureNum / 100)),
-        FixtureGroupsNo, Slot_ID[1], Slot_ID[2], Slot_ID[3], Slot_ID[4], Index)
+        FixtureGroupsNo, Slot_ID[1], Slot_ID[2], Slot_ID[3], Slot_ID[4], Index, AppIndex)
     Cmd("Blind Off")
 end
 return main
