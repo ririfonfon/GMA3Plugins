@@ -37,13 +37,14 @@ local function createAppearances(ft, att, j)
     return j
 end
 
-local function Check_SlotID(att, FixtureID)
-    local Slot_ID_ = {}
+local function List_SlotID(att, FixtureID, Slot_ID_, n)
+    -- local Slot_ID_ = {}
     local handleFixture = ObjectList(FixtureID)[1]
     local mode = handleFixture.MODEDIRECT.name
     local ft = handleFixture.FixtureTYPE.name
-    local slot_index = 1
+    local slot_index = 2
     local GoboAttNum = 1
+    local slot_
 
     CmdIndirectWait("cd root")
     CmdIndirectWait("cd FixtureType '" .. ft .. "'")
@@ -68,23 +69,32 @@ local function Check_SlotID(att, FixtureID)
             CmdIndirectWait("cd " .. d)                    -- changing destination
             while i <= #CmdObj().Destination:Children() do -- iterating over the gobos
                 if (tonumber(CmdObj().Destination:Children()[i].WHEELSLOTINDEX) ~= nil) then
-                    Slot_ID_[slot_index] = CmdObj().Destination:Children()[i].WHEELSLOTINDEX
+                    local fromdmx = dec24_to_dec8(CmdObj().Destination:Children()[i].DMXFROM)
+                    local todmx = dec24_to_dec8(CmdObj().Destination:Children()[i].DMXTO)
+                    local avgdmx = math.floor(((todmx - fromdmx) / 2) + fromdmx) -- good
+                    CmdIndirectWait("Clearall")
+                    CmdIndirectWait(FixtureID .. " At Absolute Decimal8 " .. avgdmx .. " Attribute " .. att)
+                    -- Slot_ID_[n][slot_index] = {'handle', name = CmdObj().Destination:Children()[i].Name, state = false }
+                    local slot_index_ = slot_index - 1
+                    Slot_ID_[n][slot_index] =
+                        string.format('%02d %s', slot_index_, tostring(CmdObj().Destination:Children()[i].Name))
+                    slot_ = slot_index
                 else
-                    Slot_ID_[slot_index] = 1
+                    Slot_ID_[n][slot_index] = 'Empty'
                 end
                 i = i + 1
                 slot_index = slot_index + 1
             end
             CmdIndirectWait('Cd ..')
         end
-        return Slot_ID_
+        return Slot_ID_[n], slot_
     else
         Printf("No " .. att .. " here")
     end
 end
 
 
-local function CreateLabelPresets(att, FixtureID, FirstPresetIndex)
+local function CreateLabelPresets(att, FixtureID, FirstPresetIndex, Select_)
     local handleFixture = ObjectList(FixtureID)[1]
     local presetnames = {}
     local Slot_ID_ = {}
@@ -129,12 +139,17 @@ local function CreateLabelPresets(att, FixtureID, FirstPresetIndex)
                 CmdIndirectWait("Clearall")
                 CmdIndirectWait(FixtureID .. " At Absolute Decimal8 " .. avgdmx .. " Attribute " .. att)
                 CmdIndirectWait("store preset 25." .. PresetIndex .. " /merge")
-                presetnames[PN] = CmdObj().Destination:Children()[i].Name -- geting the name of the gobo
-                CmdIndirectWait("Label preset 25." .. PresetIndex .. " '" .. presetnames[PN] .. "'")
-                PresetIndex = PresetIndex + 1
+                for f in pairs(Select_) do
+                    if (string.) then
+                        
+                        presetnames[PN] = CmdObj().Destination:Children()[i].Name -- geting the name of the gobo
+                        CmdIndirectWait("Label preset 25." .. PresetIndex .. " '" .. presetnames[PN] .. "'")
+                        PresetIndex = PresetIndex + 1
+                        PN = PN + 1
+                        slot_index = slot_index + 1
+                    end
+                end
                 i = i + 1
-                PN = PN + 1
-                slot_index = slot_index + 1
             end
             CmdIndirectWait('Cd ..')
         end
@@ -145,7 +160,7 @@ local function CreateLabelPresets(att, FixtureID, FirstPresetIndex)
     end
 end
 
-local function CreateSequence(FixtureType,prefix,SeqNrStart, Preset_Name, Grp, Slot_ID, PresetIndex, AppIndex)
+local function CreateSequence(FixtureType, prefix, SeqNrStart, Preset_Name, Grp, Slot_ID, PresetIndex, AppIndex)
     -- CmdIndirectWait("delete seq '" .. SeqNameF .. "' /nc") -- delete existing sequence
     SeqNrStart = tonumber(SeqNrStart)
     local cue = 0
@@ -289,55 +304,206 @@ local function main(display)
 
     local Preset_Name = {}
     local Slot_ID = {}
+    local Item_Slot_Select_ID = {}
+    local Slot_Select_ID = {}
+    local Selected_Slot_Select_ID = {}
     local PresetIndex
     local Index = {}
     local AppIndex = {}
+    local slot_index = {}
+    local G_Check = { false, false, false, false }
 
     CmdIndirectWait("Blind On")
     CmdIndirectWait("clearall; Fixture " .. FixtureNum)
     if GetUIChannelIndex(SelectionFirst(), GetAttributeIndex('Gobo1')) ~= nil then -- check if Fixture has gobo1
-        Index[1] = FirstPreset - 1
-        Preset_Name[1], PresetIndex, Slot_ID[1] = CreateLabelPresets("Gobo1", Fixture, FirstPreset)
+        Printf('Gob')
+        Item_Slot_Select_ID[1] = {}
+        Item_Slot_Select_ID[1][1] = true
+        Item_Slot_Select_ID[1], slot_index[1] = List_SlotID('Gobo1', Fixture, Item_Slot_Select_ID, 1)
+    else
+        Printf('NoGob')
+        Item_Slot_Select_ID[1][1] = false
     end
     if GetUIChannelIndex(SelectionFirst(), GetAttributeIndex('Gobo2')) ~= nil then -- check if Fixture has gobo2
-        Index[2] = PresetIndex - 1
-        Preset_Name[2], PresetIndex, Slot_ID[2] = CreateLabelPresets("Gobo2", Fixture, PresetIndex)
+        Item_Slot_Select_ID[2] = {}
+        Item_Slot_Select_ID[2][1] = true
+        Item_Slot_Select_ID[2], slot_index[2] = List_SlotID('Gobo2', Fixture, Item_Slot_Select_ID, 2)
+    else
+        Item_Slot_Select_ID[2][1] = false
     end
     if GetUIChannelIndex(SelectionFirst(), GetAttributeIndex('Gobo3')) ~= nil then -- check if Fixture has gobo3
-        Index[3] = PresetIndex - 1
-        Preset_Name[3], PresetIndex, Slot_ID[3] = CreateLabelPresets("Gobo3", Fixture, PresetIndex)
+        Item_Slot_Select_ID[3] = {}
+        Item_Slot_Select_ID[3][1] = true
+        Item_Slot_Select_ID[3], slot_index[3] = List_SlotID('Gobo3', Fixture, Item_Slot_Select_ID, 3)
+    else
+        Item_Slot_Select_ID[3][1] = false
     end
     if GetUIChannelIndex(SelectionFirst(), GetAttributeIndex('EFFECTWHEEL')) ~= nil then -- check if Fixture has gobo3
-        Index[4] = PresetIndex - 1
-        Preset_Name[4], PresetIndex, Slot_ID[4] = CreateLabelPresets("EFFECTWHEEL", Fixture, PresetIndex)
+        Item_Slot_Select_ID[4] = {}
+        Item_Slot_Select_ID[4][1] = true
+        Item_Slot_Select_ID[4], slot_index[4] = List_SlotID('EFFECTWHEEL', Fixture, Item_Slot_Select_ID, 4)
+    else
+        Item_Slot_Select_ID[4][1] = false
+    end
+    if (Item_Slot_Select_ID[1][1] == true) then
+        Selected_Slot_Select_ID[1] = {}
+        local Item_List = {}
+        local a = 1
+        local c = 1
+        for i = 2, slot_index[1], 1 do
+            Item_List[a] = { name = Item_Slot_Select_ID[1][i], state = false }
+            a = a + 1
+        end
+        Slot_Select_ID[1] = MessageBox(
+            {
+                title = "Wheel Gobo1",
+                commands = { { value = 1, name = "Ok" }, { value = 0, name = "Cancel" } },
+                states = Item_List,
+                icon = "object_plugin1",
+                titleTextColor = "Global.AlertText",
+                messageTextColor = "Global.Text"
+            }
+        )
+        for k, v in pairs(Slot_Select_ID[1].states) do
+            if (v == true) then
+                G_Check[1] = true
+                k = string.sub(k,1,3)
+                Selected_Slot_Select_ID[1][c] = k
+                Printf("Gobo1 State '%s' = '%s'", k, tostring(v))
+                c = c + 1
+            end
+        end
+    end
+    if (Item_Slot_Select_ID[2][1] == true) then
+        Selected_Slot_Select_ID[2] = {}
+        local Item_List = {}
+        local a = 1
+        local c = 1
+        for i = 2, slot_index[2], 1 do
+            Item_List[a] = { name = Item_Slot_Select_ID[2][i], state = false }
+            a = a + 1
+        end
+        Slot_Select_ID[2] = MessageBox(
+            {
+                title = "Wheel Gobo2",
+                commands = { { value = 1, name = "Ok" }, { value = 0, name = "Cancel" } },
+                states = Item_List,
+                icon = "object_plugin1",
+                titleTextColor = "Global.AlertText",
+                messageTextColor = "Global.Text"
+            }
+        )
+        for k, v in pairs(Slot_Select_ID[2].states) do
+            if (v == true) then
+                G_Check[2] = true
+                Selected_Slot_Select_ID[2][c] = k
+                Printf("Gobo2 State '%s' = '%s'", k, tostring(v))
+                c = c + 1
+            end
+        end
+    end
+    if (Item_Slot_Select_ID[3][1] == true) then
+        Selected_Slot_Select_ID[3] = {}
+        local Item_List = {}
+        local a = 1
+        local c = 1
+        for i = 2, slot_index[3], 1 do
+            Item_List[a] = { name = Item_Slot_Select_ID[3][i], state = false }
+            a = a + 1
+        end
+        Slot_Select_ID[3] = MessageBox(
+            {
+                title = "Wheel Gobo3",
+                commands = { { value = 1, name = "Ok" }, { value = 0, name = "Cancel" } },
+                states = Item_List,
+                icon = "object_plugin1",
+                titleTextColor = "Global.AlertText",
+                messageTextColor = "Global.Text"
+            }
+        )
+        for k, v in pairs(Slot_Select_ID[3].states) do
+            if (v == true) then
+                G_Check[3] = true
+                Selected_Slot_Select_ID[3][c] = k
+                Printf("Gobo3 State '%s' = '%s'", k, tostring(v))
+                c = c + 1
+            end
+        end
+    end
+    if (Item_Slot_Select_ID[4][1] == true) then
+        Selected_Slot_Select_ID[4] = {}
+        local Item_List = {}
+        local a = 1
+        local c = 1
+        for i = 2, slot_index[4], 1 do
+            Item_List[a] = { name = Item_Slot_Select_ID[4][i], state = false }
+            a = a + 1
+        end
+        Slot_Select_ID[4] = MessageBox(
+            {
+                title = "Wheel EFFECTWHEEL",
+                commands = { { value = 1, name = "Ok" }, { value = 0, name = "Cancel" } },
+                states = Item_List,
+                icon = "object_plugin1",
+                titleTextColor = "Global.AlertText",
+                messageTextColor = "Global.Text"
+            }
+        )
+        for k, v in pairs(Slot_Select_ID[4].states) do
+            if (v == true) then
+                G_Check[4] = true
+                Selected_Slot_Select_ID[4][c] = k
+                Printf("EFFECTWHEEL State '%s' = '%s'", k, tostring(v))
+                c = c + 1
+            end
+        end
     end
 
-    CmdIndirectWait("cd root")
 
-    CmdIndirectWait("clearall; Fixture " .. FixtureNum)
-    if GetUIChannelIndex(SelectionFirst(), GetAttributeIndex('Gobo1')) then -- check if Fixture has gobo1
-        AppIndex[1] = AppNr - 1
-        AppNr = createAppearances(FixtureType, "Gobo1", AppNr)
-    end
-    CmdIndirectWait("clearall; Fixture " .. FixtureNum)
-    if GetUIChannelIndex(SelectionFirst(), GetAttributeIndex('Gobo2')) then -- check if Fixture has gobo2
-        AppIndex[2] = AppNr - 1
-        AppNr = createAppearances(FixtureType, "Gobo2", AppNr)
-    end
-    CmdIndirectWait("clearall; Fixture " .. FixtureNum)
-    if GetUIChannelIndex(SelectionFirst(), GetAttributeIndex('Gobo3')) then -- check if Fixture has gobo3
-        AppIndex[3] = AppNr - 1
-        AppNr = createAppearances(FixtureType, "Gobo3", AppNr)
-    end
-    CmdIndirectWait("clearall; Fixture " .. FixtureNum)
-    if GetUIChannelIndex(SelectionFirst(), GetAttributeIndex('EFFECTWHEEL')) then -- check if Fixture has gobo3
-        AppIndex[4] = AppNr - 1
-        AppNr = createAppearances(FixtureType, "EFFECTWHEEL", AppNr)
-    end
+    -- if GetUIChannelIndex(SelectionFirst(), GetAttributeIndex('Gobo1')) ~= nil then -- check if Fixture has gobo1
+    --     Index[1] = FirstPreset - 1
+    --     Preset_Name[1], PresetIndex, Slot_ID[1] = CreateLabelPresets("Gobo1", Fixture, FirstPreset,
+    --         Selected_Slot_Select_ID[1])
+    -- end
+    -- if GetUIChannelIndex(SelectionFirst(), GetAttributeIndex('Gobo2')) ~= nil then -- check if Fixture has gobo2
+    --     Index[2] = PresetIndex - 1
+    --     Preset_Name[2], PresetIndex, Slot_ID[2] = CreateLabelPresets("Gobo2", Fixture, PresetIndex)
+    -- end
+    -- if GetUIChannelIndex(SelectionFirst(), GetAttributeIndex('Gobo3')) ~= nil then -- check if Fixture has gobo3
+    --     Index[3] = PresetIndex - 1
+    --     Preset_Name[3], PresetIndex, Slot_ID[3] = CreateLabelPresets("Gobo3", Fixture, PresetIndex)
+    -- end
+    -- if GetUIChannelIndex(SelectionFirst(), GetAttributeIndex('EFFECTWHEEL')) ~= nil then -- check if Fixture has gobo3
+    --     Index[4] = PresetIndex - 1
+    --     Preset_Name[4], PresetIndex, Slot_ID[4] = CreateLabelPresets("EFFECTWHEEL", Fixture, PresetIndex)
+    -- end
 
-    CmdIndirectWait("cd root")
+    -- CmdIndirectWait("cd root")
 
-    CreateSequence(FixtureType,prefix, SeqNrStart, Preset_Name, FixtureGroupsNo, Slot_ID, Index, AppIndex)
+    -- CmdIndirectWait("clearall; Fixture " .. FixtureNum)
+    -- if GetUIChannelIndex(SelectionFirst(), GetAttributeIndex('Gobo1')) then -- check if Fixture has gobo1
+    --     AppIndex[1] = AppNr - 1
+    --     AppNr = createAppearances(FixtureType, "Gobo1", AppNr)
+    -- end
+    -- CmdIndirectWait("clearall; Fixture " .. FixtureNum)
+    -- if GetUIChannelIndex(SelectionFirst(), GetAttributeIndex('Gobo2')) then -- check if Fixture has gobo2
+    --     AppIndex[2] = AppNr - 1
+    --     AppNr = createAppearances(FixtureType, "Gobo2", AppNr)
+    -- end
+    -- CmdIndirectWait("clearall; Fixture " .. FixtureNum)
+    -- if GetUIChannelIndex(SelectionFirst(), GetAttributeIndex('Gobo3')) then -- check if Fixture has gobo3
+    --     AppIndex[3] = AppNr - 1
+    --     AppNr = createAppearances(FixtureType, "Gobo3", AppNr)
+    -- end
+    -- CmdIndirectWait("clearall; Fixture " .. FixtureNum)
+    -- if GetUIChannelIndex(SelectionFirst(), GetAttributeIndex('EFFECTWHEEL')) then -- check if Fixture has gobo3
+    --     AppIndex[4] = AppNr - 1
+    --     AppNr = createAppearances(FixtureType, "EFFECTWHEEL", AppNr)
+    -- end
+
+    -- CmdIndirectWait("cd root")
+
+    -- CreateSequence(FixtureType, prefix, SeqNrStart, Preset_Name, FixtureGroupsNo, Slot_ID, Index, AppIndex)
     CmdIndirectWait("Blind Off")
 end
 return main
