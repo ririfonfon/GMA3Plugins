@@ -134,7 +134,7 @@ local function CreateLabelPresets(att, FixtureID, FirstPresetIndex, Select_)
                 CmdIndirectWait("Clearall")
                 CmdIndirectWait(FixtureID .. " At Absolute Decimal8 " .. avgdmx .. " Attribute " .. att)
                 for _, v in ipairs(Select_) do
-                    if (string.find(CmdObj().Destination:Children()[i].Name, v)) then
+                    if (CmdObj().Destination:Children()[i].Name == v) then
                         Printf(' obj %s Sel %s', CmdObj().Destination:Children()[i].Name, v)
                         presetnames[PN] = CmdObj().Destination:Children()[i].Name -- geting the name of the gobo
                         CmdIndirectWait("store preset 25." .. PresetIndex .. " /merge")
@@ -468,18 +468,21 @@ local function main(display)
         Preset_Name[1], PresetIndex, Slot_ID[1] = CreateLabelPresets("Gobo1", Fixture, FirstPreset,
             Selected_Slot_Select_ID[1])
     end
-    -- if GetUIChannelIndex(SelectionFirst(), GetAttributeIndex('Gobo2')) ~= nil then -- check if Fixture has gobo2
-    --     Index[2] = PresetIndex - 1
-    --     Preset_Name[2], PresetIndex, Slot_ID[2] = CreateLabelPresets("Gobo2", Fixture, PresetIndex)
-    -- end
-    -- if GetUIChannelIndex(SelectionFirst(), GetAttributeIndex('Gobo3')) ~= nil then -- check if Fixture has gobo3
-    --     Index[3] = PresetIndex - 1
-    --     Preset_Name[3], PresetIndex, Slot_ID[3] = CreateLabelPresets("Gobo3", Fixture, PresetIndex)
-    -- end
-    -- if GetUIChannelIndex(SelectionFirst(), GetAttributeIndex('EFFECTWHEEL')) ~= nil then -- check if Fixture has gobo3
-    --     Index[4] = PresetIndex - 1
-    --     Preset_Name[4], PresetIndex, Slot_ID[4] = CreateLabelPresets("EFFECTWHEEL", Fixture, PresetIndex)
-    -- end
+    if GetUIChannelIndex(SelectionFirst(), GetAttributeIndex('Gobo2')) ~= nil then -- check if Fixture has gobo2
+        Index[2] = PresetIndex - 1
+        Preset_Name[2], PresetIndex, Slot_ID[2] = CreateLabelPresets("Gobo2", Fixture, PresetIndex,
+            Selected_Slot_Select_ID[2])
+    end
+    if GetUIChannelIndex(SelectionFirst(), GetAttributeIndex('Gobo3')) ~= nil then -- check if Fixture has gobo3
+        Index[3] = PresetIndex - 1
+        Preset_Name[3], PresetIndex, Slot_ID[3] = CreateLabelPresets("Gobo3", Fixture, PresetIndex,
+            Selected_Slot_Select_ID[3])
+    end
+    if GetUIChannelIndex(SelectionFirst(), GetAttributeIndex('EFFECTWHEEL')) ~= nil then -- check if Fixture has gobo3
+        Index[4] = PresetIndex - 1
+        Preset_Name[4], PresetIndex, Slot_ID[4] = CreateLabelPresets("EFFECTWHEEL", Fixture, PresetIndex,
+            Selected_Slot_Select_ID[4])
+    end
 
     -- CmdIndirectWait("cd root")
 
