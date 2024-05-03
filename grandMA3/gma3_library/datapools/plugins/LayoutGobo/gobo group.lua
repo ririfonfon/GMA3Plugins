@@ -127,27 +127,27 @@ local function CreateLabelPresets(att, FixtureID, FirstPresetIndex, Select_)
             local i = 1
             CmdIndirectWait("cd " .. d)                    -- changing destination
             while i <= #CmdObj().Destination:Children() do -- iterating over the gobos
-                if (tonumber(CmdObj().Destination:Children()[i].WHEELSLOTINDEX) ~= nil) then
-                    Slot_ID_[slot_index] = CmdObj().Destination:Children()[i].WHEELSLOTINDEX
-                else
-                    Slot_ID_[slot_index] = 1
-                end
                 local fromdmx = dec24_to_dec8(CmdObj().Destination:Children()[i].DMXFROM)
                 local todmx = dec24_to_dec8(CmdObj().Destination:Children()[i].DMXTO)
                 -- local avgdmx = math.floor((fromdmx + todmx) / 2) -- so there is no problem of the conversion from decimal24 to deecimal8
                 local avgdmx = math.floor(((todmx - fromdmx) / 2) + fromdmx) -- good
                 CmdIndirectWait("Clearall")
                 CmdIndirectWait(FixtureID .. " At Absolute Decimal8 " .. avgdmx .. " Attribute " .. att)
-                CmdIndirectWait("store preset 25." .. PresetIndex .. " /merge")
-                for f in pairs(Select_) do
-                    -- if (string.) then
-                        
+                for _, v in ipairs(Select_) do
+                    if (string.find(CmdObj().Destination:Children()[i].Name, v)) then
+                        Printf(' obj %s Sel %s', CmdObj().Destination:Children()[i].Name, v)
                         presetnames[PN] = CmdObj().Destination:Children()[i].Name -- geting the name of the gobo
+                        CmdIndirectWait("store preset 25." .. PresetIndex .. " /merge")
                         CmdIndirectWait("Label preset 25." .. PresetIndex .. " '" .. presetnames[PN] .. "'")
+                        if (tonumber(CmdObj().Destination:Children()[i].WHEELSLOTINDEX) ~= nil) then
+                            Slot_ID_[slot_index] = CmdObj().Destination:Children()[i].WHEELSLOTINDEX
+                        else
+                            Slot_ID_[slot_index] = 1
+                        end
                         PresetIndex = PresetIndex + 1
                         PN = PN + 1
                         slot_index = slot_index + 1
-                    -- end
+                    end
                 end
                 i = i + 1
             end
@@ -367,7 +367,7 @@ local function main(display)
         for k, v in pairs(Slot_Select_ID[1].states) do
             if (v == true) then
                 G_Check[1] = true
-                k = string.sub(k,4,-1)
+                k = string.sub(k, 4, -1)
                 Selected_Slot_Select_ID[1][c] = k
                 Printf("Gobo1 State '%s' = '%s'", k, tostring(v))
                 c = c + 1
@@ -396,7 +396,7 @@ local function main(display)
         for k, v in pairs(Slot_Select_ID[2].states) do
             if (v == true) then
                 G_Check[2] = true
-                k = string.sub(k,4,-1)
+                k = string.sub(k, 4, -1)
                 Selected_Slot_Select_ID[2][c] = k
                 Printf("Gobo2 State '%s' = '%s'", k, tostring(v))
                 c = c + 1
@@ -425,7 +425,7 @@ local function main(display)
         for k, v in pairs(Slot_Select_ID[3].states) do
             if (v == true) then
                 G_Check[3] = true
-                k = string.sub(k,4,-1)
+                k = string.sub(k, 4, -1)
                 Selected_Slot_Select_ID[3][c] = k
                 Printf("Gobo3 State '%s' = '%s'", k, tostring(v))
                 c = c + 1
@@ -454,7 +454,7 @@ local function main(display)
         for k, v in pairs(Slot_Select_ID[4].states) do
             if (v == true) then
                 G_Check[4] = true
-                k = string.sub(k,4,-1)
+                k = string.sub(k, 4, -1)
                 Selected_Slot_Select_ID[4][c] = k
                 Printf("EFFECTWHEEL State '%s' = '%s'", k, tostring(v))
                 c = c + 1
@@ -463,11 +463,11 @@ local function main(display)
     end
 
 
-    -- if GetUIChannelIndex(SelectionFirst(), GetAttributeIndex('Gobo1')) ~= nil then -- check if Fixture has gobo1
-    --     Index[1] = FirstPreset - 1
-    --     Preset_Name[1], PresetIndex, Slot_ID[1] = CreateLabelPresets("Gobo1", Fixture, FirstPreset,
-    --         Selected_Slot_Select_ID[1])
-    -- end
+    if GetUIChannelIndex(SelectionFirst(), GetAttributeIndex('Gobo1')) ~= nil then -- check if Fixture has gobo1
+        Index[1] = FirstPreset - 1
+        Preset_Name[1], PresetIndex, Slot_ID[1] = CreateLabelPresets("Gobo1", Fixture, FirstPreset,
+            Selected_Slot_Select_ID[1])
+    end
     -- if GetUIChannelIndex(SelectionFirst(), GetAttributeIndex('Gobo2')) ~= nil then -- check if Fixture has gobo2
     --     Index[2] = PresetIndex - 1
     --     Preset_Name[2], PresetIndex, Slot_ID[2] = CreateLabelPresets("Gobo2", Fixture, PresetIndex)
