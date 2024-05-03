@@ -484,32 +484,32 @@ local function main(display)
             Selected_Slot_Select_ID[4])
     end
 
-    -- CmdIndirectWait("cd root")
+    CmdIndirectWait("cd root")
 
-    -- CmdIndirectWait("clearall; Fixture " .. FixtureNum)
-    -- if GetUIChannelIndex(SelectionFirst(), GetAttributeIndex('Gobo1')) then -- check if Fixture has gobo1
-    --     AppIndex[1] = AppNr - 1
-    --     AppNr = createAppearances(FixtureType, "Gobo1", AppNr)
-    -- end
-    -- CmdIndirectWait("clearall; Fixture " .. FixtureNum)
-    -- if GetUIChannelIndex(SelectionFirst(), GetAttributeIndex('Gobo2')) then -- check if Fixture has gobo2
-    --     AppIndex[2] = AppNr - 1
-    --     AppNr = createAppearances(FixtureType, "Gobo2", AppNr)
-    -- end
-    -- CmdIndirectWait("clearall; Fixture " .. FixtureNum)
-    -- if GetUIChannelIndex(SelectionFirst(), GetAttributeIndex('Gobo3')) then -- check if Fixture has gobo3
-    --     AppIndex[3] = AppNr - 1
-    --     AppNr = createAppearances(FixtureType, "Gobo3", AppNr)
-    -- end
-    -- CmdIndirectWait("clearall; Fixture " .. FixtureNum)
-    -- if GetUIChannelIndex(SelectionFirst(), GetAttributeIndex('EFFECTWHEEL')) then -- check if Fixture has gobo3
-    --     AppIndex[4] = AppNr - 1
-    --     AppNr = createAppearances(FixtureType, "EFFECTWHEEL", AppNr)
-    -- end
+    CmdIndirectWait("clearall; Fixture " .. FixtureNum)
+    if GetUIChannelIndex(SelectionFirst(), GetAttributeIndex('Gobo1')) then -- check if Fixture has gobo1
+        AppIndex[1] = AppNr - 1
+        AppNr = createAppearances(FixtureType, "Gobo1", AppNr)
+    end
+    CmdIndirectWait("clearall; Fixture " .. FixtureNum)
+    if GetUIChannelIndex(SelectionFirst(), GetAttributeIndex('Gobo2')) then -- check if Fixture has gobo2
+        AppIndex[2] = AppNr - 1
+        AppNr = createAppearances(FixtureType, "Gobo2", AppNr)
+    end
+    CmdIndirectWait("clearall; Fixture " .. FixtureNum)
+    if GetUIChannelIndex(SelectionFirst(), GetAttributeIndex('Gobo3')) then -- check if Fixture has gobo3
+        AppIndex[3] = AppNr - 1
+        AppNr = createAppearances(FixtureType, "Gobo3", AppNr)
+    end
+    CmdIndirectWait("clearall; Fixture " .. FixtureNum)
+    if GetUIChannelIndex(SelectionFirst(), GetAttributeIndex('EFFECTWHEEL')) then -- check if Fixture has gobo3
+        AppIndex[4] = AppNr - 1
+        AppNr = createAppearances(FixtureType, "EFFECTWHEEL", AppNr)
+    end
 
-    -- CmdIndirectWait("cd root")
+    CmdIndirectWait("cd root")
 
-    -- CreateSequence(FixtureType, prefix, SeqNrStart, Preset_Name, FixtureGroupsNo, Slot_ID, Index, AppIndex)
+    CreateSequence(FixtureType, prefix, SeqNrStart, Preset_Name, FixtureGroupsNo, Slot_ID, Index, AppIndex)
     CmdIndirectWait("Blind Off")
 end
 return main
