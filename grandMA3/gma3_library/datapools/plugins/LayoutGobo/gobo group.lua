@@ -140,14 +140,14 @@ local function CreateLabelPresets(att, FixtureID, FirstPresetIndex, Select_)
                 CmdIndirectWait(FixtureID .. " At Absolute Decimal8 " .. avgdmx .. " Attribute " .. att)
                 CmdIndirectWait("store preset 25." .. PresetIndex .. " /merge")
                 for f in pairs(Select_) do
-                    if (string.) then
+                    -- if (string.) then
                         
                         presetnames[PN] = CmdObj().Destination:Children()[i].Name -- geting the name of the gobo
                         CmdIndirectWait("Label preset 25." .. PresetIndex .. " '" .. presetnames[PN] .. "'")
                         PresetIndex = PresetIndex + 1
                         PN = PN + 1
                         slot_index = slot_index + 1
-                    end
+                    -- end
                 end
                 i = i + 1
             end
@@ -367,7 +367,7 @@ local function main(display)
         for k, v in pairs(Slot_Select_ID[1].states) do
             if (v == true) then
                 G_Check[1] = true
-                k = string.sub(k,1,3)
+                k = string.sub(k,4,-1)
                 Selected_Slot_Select_ID[1][c] = k
                 Printf("Gobo1 State '%s' = '%s'", k, tostring(v))
                 c = c + 1
@@ -396,6 +396,7 @@ local function main(display)
         for k, v in pairs(Slot_Select_ID[2].states) do
             if (v == true) then
                 G_Check[2] = true
+                k = string.sub(k,4,-1)
                 Selected_Slot_Select_ID[2][c] = k
                 Printf("Gobo2 State '%s' = '%s'", k, tostring(v))
                 c = c + 1
@@ -424,6 +425,7 @@ local function main(display)
         for k, v in pairs(Slot_Select_ID[3].states) do
             if (v == true) then
                 G_Check[3] = true
+                k = string.sub(k,4,-1)
                 Selected_Slot_Select_ID[3][c] = k
                 Printf("Gobo3 State '%s' = '%s'", k, tostring(v))
                 c = c + 1
@@ -452,6 +454,7 @@ local function main(display)
         for k, v in pairs(Slot_Select_ID[4].states) do
             if (v == true) then
                 G_Check[4] = true
+                k = string.sub(k,4,-1)
                 Selected_Slot_Select_ID[4][c] = k
                 Printf("EFFECTWHEEL State '%s' = '%s'", k, tostring(v))
                 c = c + 1
