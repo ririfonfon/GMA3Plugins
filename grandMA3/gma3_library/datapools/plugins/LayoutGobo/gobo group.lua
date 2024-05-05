@@ -255,6 +255,16 @@ local function main(display)
     local Fixture = 'Fixture ' .. FixtureID_ .. ''
     local FixtureNum = tonumber(FixtureID_)
     local FixtureType = ObjectList(Fixture)[1].FixtureTYPE.name
+    Printf('FixtureType ')
+    Printf(FixtureType)
+    -- local grp = gma.show.getobj.handle("FixtureGroup 10")
+    local GroupType = FixtureGroupsSelect.getFixtures()
+    for i,fixture in ipairs(GroupType) do
+        local fixid = fixture.id
+        Printf(fixid)
+    end
+    -- Printf('GroupType ')
+    -- Printf(GroupType)
 
     local All_5_Nr = DataPool().PresetPools[25]:Children()
     local FirstPreset
