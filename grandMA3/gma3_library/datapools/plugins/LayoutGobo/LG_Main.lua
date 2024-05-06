@@ -31,10 +31,10 @@ local function Main(displayHandle)
     local App = ShowData().Appearances:Children()
     local AppNr
     local AppNrRange
-    local Preset_3_Nr = DataPool().PresetPools[3]:Children()
-    local Preset_3_NrStart
-    local Preset_3_NrRange
-    local Preset_3_Current
+    local Preset_5_Nr = DataPool().PresetPools[25]:Children()
+    local Preset_5_NrStart
+    local Preset_5_NrRange
+    local Preset_5_Current
     local MaxGobLgn = 16
     local Nr_Gobo = 0
     local Selected_Grp_Wheel = {}
@@ -88,18 +88,18 @@ local function Main(displayHandle)
         if AppNr == nil then
             AppNr = 1
         end
-        for k in ipairs(Preset_3_Nr) do
+        for k in ipairs(Preset_5_Nr) do
             for i in ipairs(popuplists.Preset_Select) do
-                if popuplists.Preset_Select[i] == Preset_3_Nr[k].NO then
+                if popuplists.Preset_Select[i] == Preset_5_Nr[k].NO then
                     table.remove(popuplists.Preset_Select, i)
                 end
             end
-            Preset_3_NrStart = Preset_3_Nr[k].NO + 1
+            Preset_5_NrStart = Preset_5_Nr[k].NO + 1
         end
-        if Preset_3_NrStart == nil then
-            Preset_3_NrStart = 1
+        if Preset_5_NrStart == nil then
+            Preset_5_NrStart = 1
         end
-        Preset_3_Current = Preset_3_NrStart
+        Preset_5_Current = Preset_5_NrStart
         list = true
     end
 
@@ -437,7 +437,7 @@ local function Main(displayHandle)
     input6LineEdit.Margin = { left = 2, right = 0, top = TopInc, bottom = 2 }
     input6LineEdit.Filter = "0123456789"
     input6LineEdit.VkPluginName = "TextInputNumOnly"
-    input6LineEdit.Content = Preset_3_NrStart
+    input6LineEdit.Content = Preset_5_NrStart
     input6LineEdit.MaxTextLength = 6
     input6LineEdit.HideFocusFrame = "Yes"
     input6LineEdit.PluginComponent = myHandle
@@ -563,7 +563,7 @@ local function Main(displayHandle)
         end
         Obj.Delete(screenOverlay, Obj.Index(baseInput))
         Construct_Gobo_Layout(displayHandle, TLay, SeqNrStart, TLayNr, AppNr,
-            Preset_3_Current, Preset_3_NrStart, SelectedGrp, SelectedGrpNo, TLayNrRef, NaLay, MaxGobLgn)
+            Preset_5_Current, Preset_5_NrStart, SelectedGrp, SelectedGrpNo, TLayNrRef, NaLay, MaxGobLgn)
     end
 
     signalTable.OnInput1TextChanged = function(caller)
@@ -670,19 +670,19 @@ local function Main(displayHandle)
             input6LineEdit.TextColor = colorAlertText
             checks = true
         end
-        Preset_3_NrStart = caller.Content:gsub("'", "")
-        Preset_3_NrStart = tonumber(Preset_3_NrStart)
-        Preset_3_Current = Preset_3_NrStart
-        Preset_3_NrRange = Preset_3_NrStart + Nr_Gobo
-        for k in ipairs(Preset_3_Nr) do
-            if Preset_3_NrStart <= tonumber(Preset_3_Nr[k].NO) then
-                if Preset_3_NrRange >= tonumber(Preset_3_Nr[k].NO) then
+        Preset_5_NrStart = caller.Content:gsub("'", "")
+        Preset_5_NrStart = tonumber(Preset_5_NrStart)
+        Preset_5_Current = Preset_5_NrStart
+        Preset_5_NrRange = Preset_5_NrStart + Nr_Gobo
+        for k in ipairs(Preset_5_Nr) do
+            if Preset_5_NrStart <= tonumber(Preset_5_Nr[k].NO) then
+                if Preset_5_NrRange >= tonumber(Preset_5_Nr[k].NO) then
                     OkButton.Visible = "No"
                     input6LineEdit.TextColor = colorAlertText
                     checks = true
                     for i in ipairs(popuplists.Preset_Select) do
-                        if Preset_3_NrStart <= tonumber(popuplists.Preset_Select[i]) then
-                            if Preset_3_NrRange >= tonumber(popuplists.Preset_Select[i]) then
+                        if Preset_5_NrStart <= tonumber(popuplists.Preset_Select[i]) then
+                            if Preset_5_NrRange >= tonumber(popuplists.Preset_Select[i]) then
                                 table.remove(popuplists.Preset_Select, i)
                             end
                         end

@@ -255,6 +255,16 @@ local function main(display)
     local Fixture = 'Fixture ' .. FixtureID_ .. ''
     local FixtureNum = tonumber(FixtureID_)
     local FixtureType = ObjectList(Fixture)[1].FixtureTYPE.name
+    Printf('FixtureType ')
+    Printf(FixtureType)
+    -- local grp = gma.show.getobj.handle("FixtureGroup 10")
+    local GroupType = FixtureGroupsSelect.getFixtures()
+    for i,fixture in ipairs(GroupType) do
+        local fixid = fixture.id
+        Printf(fixid)
+    end
+    -- Printf('GroupType ')
+    -- Printf(GroupType)
 
     local All_5_Nr = DataPool().PresetPools[25]:Children()
     local FirstPreset
@@ -322,6 +332,7 @@ local function main(display)
         Item_Slot_Select_ID[1], slot_index[1] = List_SlotID('Gobo1', Fixture, Item_Slot_Select_ID, 1)
     else
         Printf('NoGob')
+        Item_Slot_Select_ID[1] = {}
         Item_Slot_Select_ID[1][1] = false
     end
     if GetUIChannelIndex(SelectionFirst(), GetAttributeIndex('Gobo2')) ~= nil then -- check if Fixture has gobo2
@@ -329,6 +340,7 @@ local function main(display)
         Item_Slot_Select_ID[2][1] = true
         Item_Slot_Select_ID[2], slot_index[2] = List_SlotID('Gobo2', Fixture, Item_Slot_Select_ID, 2)
     else
+        Item_Slot_Select_ID[2] = {}
         Item_Slot_Select_ID[2][1] = false
     end
     if GetUIChannelIndex(SelectionFirst(), GetAttributeIndex('Gobo3')) ~= nil then -- check if Fixture has gobo3
@@ -336,6 +348,7 @@ local function main(display)
         Item_Slot_Select_ID[3][1] = true
         Item_Slot_Select_ID[3], slot_index[3] = List_SlotID('Gobo3', Fixture, Item_Slot_Select_ID, 3)
     else
+        Item_Slot_Select_ID[3] = {}
         Item_Slot_Select_ID[3][1] = false
     end
     if GetUIChannelIndex(SelectionFirst(), GetAttributeIndex('EFFECTWHEEL')) ~= nil then -- check if Fixture has gobo3
@@ -343,6 +356,7 @@ local function main(display)
         Item_Slot_Select_ID[4][1] = true
         Item_Slot_Select_ID[4], slot_index[4] = List_SlotID('EFFECTWHEEL', Fixture, Item_Slot_Select_ID, 4)
     else
+        Item_Slot_Select_ID[4] = {}
         Item_Slot_Select_ID[4][1] = false
     end
     if (Item_Slot_Select_ID[1][1] == true) then
