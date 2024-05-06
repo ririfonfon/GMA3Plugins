@@ -309,7 +309,7 @@ local function main(display)
     end
     CmdIndirectWait("Blind On")
     CmdIndirectWait('Clearall')
-    CmdIndirectWait('SelectFixtures Group ' .. FixtureGroupsSelect)
+    CmdIndirectWait('SelectFixtures Group ' .. FixtureGroupsNo)
     local FixtureID_
     local myFixtureIndex = SelectionFirst(true)
     local mySubFixture = GetSubfixture(myFixtureIndex)
