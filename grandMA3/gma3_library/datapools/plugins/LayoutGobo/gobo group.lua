@@ -251,20 +251,20 @@ local function main(display)
             FixtureGroupsNo = FixtureGroups[k].NO
         end
     end
-    local FixtureID_ = #DataPool().Groups[FixtureGroupsNo].Selectiondata
+    CmdIndirectWait("Blind On")
+    CmdIndirectWait('Clearall')
+    CmdIndirectWait('SelectFixtures Group ' .. FixtureGroupsSelect)
+    local FixtureID_
+    local myFixtureIndex = SelectionFirst(true)
+    local mySubFixture = GetSubfixture(myFixtureIndex)
+    if mySubFixture ~= nil then
+        FixtureID_ = mySubFixture.fid
+        Printf(FixtureID_)
+    end
     local Fixture = 'Fixture ' .. FixtureID_ .. ''
     local FixtureNum = tonumber(FixtureID_)
     local FixtureType = ObjectList(Fixture)[1].FixtureTYPE.name
-    Printf('FixtureType ')
-    Printf(FixtureType)
-    -- local grp = gma.show.getobj.handle("FixtureGroup 10")
-    local GroupType = FixtureGroupsSelect.getFixtures()
-    for i,fixture in ipairs(GroupType) do
-        local fixid = fixture.id
-        Printf(fixid)
-    end
-    -- Printf('GroupType ')
-    -- Printf(GroupType)
+
 
     local All_5_Nr = DataPool().PresetPools[25]:Children()
     local FirstPreset
@@ -323,7 +323,6 @@ local function main(display)
     local slot_index = {}
     local G_Check = { false, false, false, false }
 
-    CmdIndirectWait("Blind On")
     CmdIndirectWait("clearall; Fixture " .. FixtureNum)
     if GetUIChannelIndex(SelectionFirst(), GetAttributeIndex('Gobo1')) ~= nil then -- check if Fixture has gobo1
         Printf('Gob')
