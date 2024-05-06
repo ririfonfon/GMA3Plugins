@@ -185,12 +185,19 @@ local function CreateSequence(FixtureType, prefix, SeqNrStart, Preset_Name, Grp,
         length4 = arrayLength(Preset_Name[4])
         WH[4] = true
     end
+    local length5 = 1
     if GetUIChannelIndex(SelectionFirst(), GetAttributeIndex('Prism1')) ~= nil then
-        length4 = arrayLength(Preset_Name[4])
+        length5 = arrayLength(Preset_Name[5])
         WH[5] = true
     end
+    local length6 = 1
+    if GetUIChannelIndex(SelectionFirst(), GetAttributeIndex('Prism2')) ~= nil then
+        length6 = arrayLength(Preset_Name[6])
+        WH[6] = true
+    end
     Printf("The length 1 is " ..
-        length1 .. " and 2 is " .. length2 .. " and 3 is " .. length3 .. " and 4 is " .. length4)
+        length1 ..
+        " and 2 is " .. length2 .. " and 3 is " .. length3 .. " and 4 is " .. length4 .. " and 5 is " .. length5)
     CmdIndirectWait("Clearall")
 
     if WH[1] then
@@ -253,16 +260,33 @@ local function CreateSequence(FixtureType, prefix, SeqNrStart, Preset_Name, Grp,
     end
     if WH[5] then
         CmdIndirectWait('store seq ' .. SeqNrStart .. ' \'' .. prefix .. '_' .. FixtureType .. '_Prism1\' /nc')
-        CmdIndirectWait('store seq ' .. SeqNrStart .. ' cue 1 t ' .. length4 .. ' /nc')
-        for i = 1, length4, 1 do -- Prism1 loop from preset to sequence, if there is no Prism1 length4 would be 1 and loop wont commited
+        CmdIndirectWait('store seq ' .. SeqNrStart .. ' cue 1 t ' .. length5 .. ' /nc')
+        for i = 1, length5, 1 do -- Prism1 loop from preset to sequence, if there is no Prism1 length4 would be 1 and loop wont commited
             cue = cue + 1
-            CmdIndirectWait('assign preset 25.' .. PresetIndex[4] + i .. ' at seq ' .. SeqNrStart ..
+            CmdIndirectWait('assign preset 25.' .. PresetIndex[5] + i .. ' at seq ' .. SeqNrStart ..
                 ' cue ' .. cue .. ' part 0.1')
             CmdIndirectWait('assign appearance ' ..
-                AppIndex[4] + Slot_ID[4][i] .. ' at seq ' .. SeqNrStart .. ' cue ' .. i)
-            CmdIndirectWait('label seq ' .. SeqNrStart .. ' cue ' .. cue .. ' "' .. Preset_Name[4][i] .. '"')
+                AppIndex[5] + Slot_ID[5][i] .. ' at seq ' .. SeqNrStart .. ' cue ' .. i)
+            CmdIndirectWait('label seq ' .. SeqNrStart .. ' cue ' .. cue .. ' "' .. Preset_Name[5][i] .. '"')
         end
         CmdIndirectWait('assign group ' .. Grp .. ' at seq ' .. SeqNrStart .. ' cue 1 t part 0.1')
+        SeqNrStart = SeqNrStart + 1
+        cue = 0
+    end
+    if WH[6] then
+        CmdIndirectWait('store seq ' .. SeqNrStart .. ' \'' .. prefix .. '_' .. FixtureType .. '_Prism2\' /nc')
+        CmdIndirectWait('store seq ' .. SeqNrStart .. ' cue 1 t ' .. length6 .. ' /nc')
+        for i = 1, length6, 1 do -- Prism2 loop from preset to sequence, if there is no Prism2 length4 would be 1 and loop wont commited
+            cue = cue + 1
+            CmdIndirectWait('assign preset 25.' .. PresetIndex[6] + i .. ' at seq ' .. SeqNrStart ..
+                ' cue ' .. cue .. ' part 0.1')
+            CmdIndirectWait('assign appearance ' ..
+                AppIndex[6] + Slot_ID[6][i] .. ' at seq ' .. SeqNrStart .. ' cue ' .. i)
+            CmdIndirectWait('label seq ' .. SeqNrStart .. ' cue ' .. cue .. ' "' .. Preset_Name[6][i] .. '"')
+        end
+        CmdIndirectWait('assign group ' .. Grp .. ' at seq ' .. SeqNrStart .. ' cue 1 t part 0.1')
+        SeqNrStart = SeqNrStart + 1
+        cue = 0
     end
 end
 
@@ -353,16 +377,14 @@ local function main(display)
     local Index = {}
     local AppIndex = {}
     local slot_index = {}
-    local G_Check = { false, false, false, false }
+    local G_Check = { false, false, false, false , false , false}
 
     CmdIndirectWait("clearall; Fixture " .. FixtureNum)
     if GetUIChannelIndex(SelectionFirst(), GetAttributeIndex('Gobo1')) ~= nil then -- check if Fixture has gobo1
-        Printf('Gob')
         Item_Slot_Select_ID[1] = {}
         Item_Slot_Select_ID[1][1] = true
         Item_Slot_Select_ID[1], slot_index[1] = List_SlotID('Gobo1', Fixture, Item_Slot_Select_ID, 1)
     else
-        Printf('NoGob')
         Item_Slot_Select_ID[1] = {}
         Item_Slot_Select_ID[1][1] = false
     end
@@ -382,18 +404,31 @@ local function main(display)
         Item_Slot_Select_ID[3] = {}
         Item_Slot_Select_ID[3][1] = false
     end
-    if GetUIChannelIndex(SelectionFirst(), GetAttributeIndex('EFFECTWHEEL')) ~= nil then -- check if Fixture has gobo3
+    if GetUIChannelIndex(SelectionFirst(), GetAttributeIndex('EFFECTWHEEL')) ~= nil then -- check if Fixture has EFFECTWHEEL
         Item_Slot_Select_ID[4] = {}
         Item_Slot_Select_ID[4][1] = true
         Item_Slot_Select_ID[4], slot_index[4] = List_SlotID('EFFECTWHEEL', Fixture, Item_Slot_Select_ID, 4)
-    elseif GetUIChannelIndex(SelectionFirst(), GetAttributeIndex('Prism1')) ~= nil then -- check if Fixture has gobo3
-        Item_Slot_Select_ID[4] = {}
-        Item_Slot_Select_ID[4][1] = true
-        Item_Slot_Select_ID[4], slot_index[4] = List_SlotID('Prism1', Fixture, Item_Slot_Select_ID, 4)
     else
         Item_Slot_Select_ID[4] = {}
         Item_Slot_Select_ID[4][1] = false
     end
+    if GetUIChannelIndex(SelectionFirst(), GetAttributeIndex('Prism1')) ~= nil then -- check if Fixture has Prism1
+        Item_Slot_Select_ID[5] = {}
+        Item_Slot_Select_ID[5][1] = true
+        Item_Slot_Select_ID[5], slot_index[5] = List_SlotID('Prism1', Fixture, Item_Slot_Select_ID, 5)
+    else
+        Item_Slot_Select_ID[5] = {}
+        Item_Slot_Select_ID[5][1] = false
+    end
+    if GetUIChannelIndex(SelectionFirst(), GetAttributeIndex('Prism2')) ~= nil then -- check if Fixture has Prism2
+        Item_Slot_Select_ID[6] = {}
+        Item_Slot_Select_ID[6][1] = true
+        Item_Slot_Select_ID[6], slot_index[6] = List_SlotID('Prism2', Fixture, Item_Slot_Select_ID, 6)
+    else
+        Item_Slot_Select_ID[6] = {}
+        Item_Slot_Select_ID[6][1] = false
+    end
+
     if (Item_Slot_Select_ID[1][1] == true) then
         Selected_Slot_Select_ID[1] = {}
         local Item_List = {}
@@ -510,6 +545,64 @@ local function main(display)
             end
         end
     end
+    if (Item_Slot_Select_ID[5][1] == true) then
+        Selected_Slot_Select_ID[5] = {}
+        local Item_List = {}
+        local a = 1
+        local c = 1
+        for i = 2, slot_index[5], 1 do
+            Item_List[a] = { name = Item_Slot_Select_ID[5][i], state = false }
+            a = a + 1
+        end
+        Slot_Select_ID[5] = MessageBox(
+            {
+                title = "Wheel Prism1",
+                commands = { { value = 1, name = "Ok" }, { value = 0, name = "Cancel" } },
+                states = Item_List,
+                icon = "object_plugin1",
+                titleTextColor = "Global.AlertText",
+                messageTextColor = "Global.Text"
+            }
+        )
+        for k, v in pairs(Slot_Select_ID[5].states) do
+            if (v == true) then
+                G_Check[5] = true
+                k = string.sub(k, 4, -1)
+                Selected_Slot_Select_ID[5][c] = k
+                Printf("Prism1 State '%s' = '%s'", k, tostring(v))
+                c = c + 1
+            end
+        end
+    end
+    if (Item_Slot_Select_ID[6][1] == true) then
+        Selected_Slot_Select_ID[6] = {}
+        local Item_List = {}
+        local a = 1
+        local c = 1
+        for i = 2, slot_index[6], 1 do
+            Item_List[a] = { name = Item_Slot_Select_ID[6][i], state = false }
+            a = a + 1
+        end
+        Slot_Select_ID[6] = MessageBox(
+            {
+                title = "Wheel Prism2",
+                commands = { { value = 1, name = "Ok" }, { value = 0, name = "Cancel" } },
+                states = Item_List,
+                icon = "object_plugin1",
+                titleTextColor = "Global.AlertText",
+                messageTextColor = "Global.Text"
+            }
+        )
+        for k, v in pairs(Slot_Select_ID[6].states) do
+            if (v == true) then
+                G_Check[6] = true
+                k = string.sub(k, 4, -1)
+                Selected_Slot_Select_ID[6][c] = k
+                Printf("Prism2 State '%s' = '%s'", k, tostring(v))
+                c = c + 1
+            end
+        end
+    end
 
 
     if GetUIChannelIndex(SelectionFirst(), GetAttributeIndex('Gobo1')) ~= nil then -- check if Fixture has gobo1
@@ -527,15 +620,20 @@ local function main(display)
         Preset_Name[3], PresetIndex, Slot_ID[3] = CreateLabelPresets("Gobo3", Fixture, PresetIndex,
             Selected_Slot_Select_ID[3])
     end
-    if GetUIChannelIndex(SelectionFirst(), GetAttributeIndex('EFFECTWHEEL')) ~= nil then -- check if Fixture has gobo3
+    if GetUIChannelIndex(SelectionFirst(), GetAttributeIndex('EFFECTWHEEL')) ~= nil then -- check if Fixture has EFFECTWHEEL
         Index[4] = PresetIndex - 1
         Preset_Name[4], PresetIndex, Slot_ID[4] = CreateLabelPresets("EFFECTWHEEL", Fixture, PresetIndex,
             Selected_Slot_Select_ID[4])
     end
-    if GetUIChannelIndex(SelectionFirst(), GetAttributeIndex('Prism1')) ~= nil then -- check if Fixture has gobo3
-        Index[4] = PresetIndex - 1
-        Preset_Name[4], PresetIndex, Slot_ID[4] = CreateLabelPresets("Prism1", Fixture, PresetIndex,
-            Selected_Slot_Select_ID[4])
+    if GetUIChannelIndex(SelectionFirst(), GetAttributeIndex('Prism1')) ~= nil then -- check if Fixture has Prism1
+        Index[5] = PresetIndex - 1
+        Preset_Name[5], PresetIndex, Slot_ID[5] = CreateLabelPresets("Prism1", Fixture, PresetIndex,
+            Selected_Slot_Select_ID[5])
+    end
+    if GetUIChannelIndex(SelectionFirst(), GetAttributeIndex('Prism2')) ~= nil then -- check if Fixture has Prism2
+        Index[6] = PresetIndex - 1
+        Preset_Name[6], PresetIndex, Slot_ID[6] = CreateLabelPresets("Prism2", Fixture, PresetIndex,
+            Selected_Slot_Select_ID[6])
     end
 
     CmdIndirectWait("cd root")
@@ -556,13 +654,19 @@ local function main(display)
         AppNr = createAppearances(FixtureType, "Gobo3", AppNr)
     end
     CmdIndirectWait("clearall; Fixture " .. FixtureNum)
-    if GetUIChannelIndex(SelectionFirst(), GetAttributeIndex('EFFECTWHEEL')) then -- check if Fixture has gobo3
+    if GetUIChannelIndex(SelectionFirst(), GetAttributeIndex('EFFECTWHEEL')) then -- check if Fixture has EFFECTWHEEL
         AppIndex[4] = AppNr - 1
         AppNr = createAppearances(FixtureType, "EFFECTWHEEL", AppNr)
     end
-    if GetUIChannelIndex(SelectionFirst(), GetAttributeIndex('Prism1')) then -- check if Fixture has gobo3
-        AppIndex[4] = AppNr - 1
+    CmdIndirectWait("clearall; Fixture " .. FixtureNum)
+    if GetUIChannelIndex(SelectionFirst(), GetAttributeIndex('Prism1')) then -- check if Fixture has Prism1
+        AppIndex[5] = AppNr - 1
         AppNr = createAppearances(FixtureType, "Prism1", AppNr)
+    end
+    CmdIndirectWait("clearall; Fixture " .. FixtureNum)
+    if GetUIChannelIndex(SelectionFirst(), GetAttributeIndex('Prism2')) then -- check if Fixture has Prism2
+        AppIndex[6] = AppNr - 1
+        AppNr = createAppearances(FixtureType, "Prism2", AppNr)
     end
     CmdIndirectWait("cd root")
 
