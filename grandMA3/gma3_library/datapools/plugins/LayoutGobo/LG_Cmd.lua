@@ -142,7 +142,7 @@ function CreateLabelPresets(att, FixtureID, FirstPresetIndex, Select_, prefix)
                         presetnames[PN] = CmdObj().Destination:Children()[i].Name -- geting the name of the gobo
                         CmdIndirectWait("Store Preset 25." .. PresetIndex .. " /merge")
                         CmdIndirectWait("Label Preset 25." ..
-                        PresetIndex .. " '" .. prefix .. '_' .. presetnames[PN] .. "'")
+                            PresetIndex .. " '" .. prefix .. '_' .. presetnames[PN] .. "'")
                         if (tonumber(CmdObj().Destination:Children()[i].WHEELSLOTINDEX) ~= nil) then
                             Slot_ID_[slot_index] = CmdObj().Destination:Children()[i].WHEELSLOTINDEX
                         else
@@ -165,7 +165,10 @@ function CreateLabelPresets(att, FixtureID, FirstPresetIndex, Select_, prefix)
 end
 
 function CreateSequence(FixtureType, prefix, SeqNrStart, Preset_Name, Grp, Slot_ID, PresetIndex, AppIndex, GrpName,
-                        Result)
+                        Result, TLayNr, RefX, LayY, LayH, LayW, LayNr)
+    local LayX = RefX
+    LayY = math.floor(LayY - LayH) -- Max Y Position minus hight from element. 0 are at the Bottom!
+
     SeqNrStart = tonumber(SeqNrStart)
     local WH = { false, false, false, false, false }
     local Cue = 0
@@ -216,6 +219,16 @@ function CreateSequence(FixtureType, prefix, SeqNrStart, Preset_Name, Grp, Slot_
     Printf("The length 1 is " .. length1 .. " and 2 is " .. length2 .. " and 3 is " .. length3 ..
         " and 4 is " .. length4 .. " and 5 is " .. length5 .. " and 6 is " .. length6)
     CmdIndirectWait("ClearAll")
+    CmdIndirectWait('Store Layout ' .. TLayNr .. '.' .. LayNr .. ' Property CustomTextText=\' ' .. GrpName .. ' \'')
+    CmdIndirectWait('Set Layout ' .. TLayNr .. '.' .. LayNr .. ' Property CustomTextSize \'32')
+    CmdIndirectWait('Set Layout ' .. TLayNr .. '.' .. LayNr .. ' Property CustomTextAlignmentV \'Top')
+    CmdIndirectWait('Set Layout ' .. TLayNr .. '.' .. LayNr .. ' Property CustomTextAlignmentH \'Left')
+    CmdIndirectWait("Set Layout " .. TLayNr .. "." .. LayNr ..
+        " Property PosX " .. LayX .. " PosY " .. LayY ..
+        " PositionW " .. LayW .. " PositionH " .. LayH ..
+        " VisibilityBorder=0")
+    LayNr = math.floor(LayNr + 1)
+    LayX = math.floor(LayX + LayW + 20)
 
     if WH[1] then
         CmdIndirectWait('Store Sequence ' ..
@@ -230,6 +243,14 @@ function CreateSequence(FixtureType, prefix, SeqNrStart, Preset_Name, Grp, Slot_
             CmdIndirectWait('Label Sequence ' .. SeqNrStart .. ' Cue ' .. Cue .. ' "' .. Preset_Name[1][i] .. '"')
         end
         CmdIndirectWait('Assign Group ' .. Grp .. ' At Sequence ' .. SeqNrStart .. ' Cue 1 Thru Part 0.1')
+
+        CmdIndirectWait('Assign Sequence ' .. SeqNrStart .. ' At Layout ' .. TLayNr)
+        CmdIndirectWait('Set Layout ' .. TLayNr .. '.' .. LayNr ..
+            ' Property Appearance <Default> Action=Goto PosX ' .. LayX .. ' PosY ' .. LayY ..
+            ' PositionW ' .. LayW .. ' PositionH ' .. LayH ..
+            ' VisibilityObjectName=0 VisibilityBar=0 VisibilityIndicatorBar=0 VisibilityBorder=0')
+        LayX = math.floor(LayX + LayW + 20)
+        LayNr = math.floor(LayNr + 1)
         SeqNrStart = SeqNrStart + 1
         Cue = 0
     end
@@ -311,7 +332,7 @@ function CreateSequence(FixtureType, prefix, SeqNrStart, Preset_Name, Grp, Slot_
         SeqNrStart = SeqNrStart + 1
         Cue = 0
     end
-    return SeqNrStart + 1
+    return SeqNrStart + 1, LayNr
 end
 
 -- end LG_Cmd.lua
