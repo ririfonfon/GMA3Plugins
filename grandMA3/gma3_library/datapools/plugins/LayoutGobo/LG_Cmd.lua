@@ -25,7 +25,7 @@ function GetWheelName(ftype, attribut)
     return CmdObj().Destination:Children()[1].Wheel.name
 end
 
-function CreateAppearances(ft, att, j)
+function CreateAppearances(ft, att, j, prefix)
     local gobowheel = GetWheelName(ft, att)
     CmdIndirectWait("Cd ft '" .. ft .. "'.Wheels.'" .. gobowheel .. "'")
     local wheel = CmdObj().Destination
@@ -34,7 +34,7 @@ function CreateAppearances(ft, att, j)
         local objlist = ObjectList("Appearance " .. tostring(j))
         j = j + 1
         local obj = objlist[1]
-        obj.Name = string.format('FT %s %s %s', wheel:Parent():Parent().ShortName, wheel.Name, slot.Name)
+        obj.Name = string.format('%s %s %s %s', prefix .. '_', wheel:Parent():Parent().ShortName, wheel.Name, slot.Name)
         for _, prop in ipairs { 'ImageR', 'ImageG', 'ImageB', 'ImageAlpha', 'Appearance' } do
             obj[prop] = slot[prop]
         end
@@ -97,7 +97,7 @@ function List_SlotID(att, FixtureID, Slot_ID_, n)
     end
 end
 
-function CreateLabelPresets(att, FixtureID, FirstPresetIndex, Select_)
+function CreateLabelPresets(att, FixtureID, FirstPresetIndex, Select_, prefix)
     local handleFixture = ObjectList(FixtureID)[1]
     local presetnames = {}
     local Slot_ID_ = {}
@@ -141,7 +141,8 @@ function CreateLabelPresets(att, FixtureID, FirstPresetIndex, Select_)
                         Printf(' obj %s Sel %s', CmdObj().Destination:Children()[i].Name, v)
                         presetnames[PN] = CmdObj().Destination:Children()[i].Name -- geting the name of the gobo
                         CmdIndirectWait("Store Preset 25." .. PresetIndex .. " /merge")
-                        CmdIndirectWait("Label Preset 25." .. PresetIndex .. " '" .. presetnames[PN] .. "'")
+                        CmdIndirectWait("Label Preset 25." ..
+                        PresetIndex .. " '" .. prefix .. '_' .. presetnames[PN] .. "'")
                         if (tonumber(CmdObj().Destination:Children()[i].WHEELSLOTINDEX) ~= nil) then
                             Slot_ID_[slot_index] = CmdObj().Destination:Children()[i].WHEELSLOTINDEX
                         else
