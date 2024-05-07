@@ -28,6 +28,7 @@ function Construct_Gobo_Layout(displayHandle, TLay, SeqNrStart, TLayNr, AppNr, P
         end
     until exit == true
     CmdIndirectWait("Blind On")
+    CmdIndirectWait("Store Layout " .. TLayNr .. " \"" .. prefix .. NaLay .. "")
     local FixtureGroupsNo
     local FixtureGroupsName
     local PresetIndex = Preset_5_NrStart
@@ -58,6 +59,20 @@ function Construct_Gobo_Layout(displayHandle, TLay, SeqNrStart, TLayNr, AppNr, P
         local AppIndex = {}
         local slot_index = {}
         local G_Check = { false, false, false, false, false, false }
+
+        local LayX
+        local RefX
+        local LayY
+        if TLayNrRef then
+            RefX = math.floor(0 - TLay[TLayNrRef].DimensionW / 2)
+            LayY = TLay[TLayNrRef].DimensionH / 2
+        else
+            RefX = -960
+            LayY = 540
+        end
+        local LayW = 100
+        local LayH = 100
+        local LayNr = 1
 
         CmdIndirectWait("ClearAll; Fixture " .. FixtureNum)
         if GetUIChannelIndex(SelectionFirst(), GetAttributeIndex('Gobo1')) ~= nil then -- check if Fixture has gobo1
@@ -386,8 +401,8 @@ function Construct_Gobo_Layout(displayHandle, TLay, SeqNrStart, TLayNr, AppNr, P
 
         CmdIndirectWait("Cd Root")
 
-        SeqNrStart = CreateSequence(FixtureType, prefix, SeqNrStart, Preset_Name, FixtureGroupsNo, Slot_ID, Index,
-            AppIndex, FixtureGroupsName, Result)
+        SeqNrStart, LayNr = CreateSequence(FixtureType, prefix, SeqNrStart, Preset_Name, FixtureGroupsNo, Slot_ID, Index,
+            AppIndex, FixtureGroupsName, Result, TLayNr, RefX, LayY, LayH, LayW, LayNr)
     end
     CmdIndirectWait("Blind Off")
 end -- end Construct_Gobo_Layout
