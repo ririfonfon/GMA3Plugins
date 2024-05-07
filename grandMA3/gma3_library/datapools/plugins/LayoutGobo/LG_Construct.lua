@@ -164,11 +164,11 @@ function Construct_Gobo_Layout(displayHandle, TLay, SeqNrStart, TLayNr, AppNr, P
             end
             Slot_Select_ID[1] = MessageBox(
                 {
-                    title = "Wheel Gobo1",
+                    title = FixtureGroupsName .. " Wheel Gobo1",
                     commands = { { value = 1, name = "Ok" }, { value = 0, name = "Cancel" } },
                     states = Item_List,
                     icon = "object_plugin1",
-                    titleTextColor = "Global.AlertText",
+                    titleTextColor = "Global.Text",
                     messageTextColor = "Global.Text"
                 }
             )
@@ -193,11 +193,11 @@ function Construct_Gobo_Layout(displayHandle, TLay, SeqNrStart, TLayNr, AppNr, P
             end
             Slot_Select_ID[2] = MessageBox(
                 {
-                    title = "Wheel Gobo2",
+                    title = FixtureGroupsName .. " Wheel Gobo2",
                     commands = { { value = 1, name = "Ok" }, { value = 0, name = "Cancel" } },
                     states = Item_List,
                     icon = "object_plugin1",
-                    titleTextColor = "Global.AlertText",
+                    titleTextColor = "Global.Text",
                     messageTextColor = "Global.Text"
                 }
             )
@@ -222,11 +222,11 @@ function Construct_Gobo_Layout(displayHandle, TLay, SeqNrStart, TLayNr, AppNr, P
             end
             Slot_Select_ID[3] = MessageBox(
                 {
-                    title = "Wheel Gobo3",
+                    title = FixtureGroupsName .. " Wheel Gobo3",
                     commands = { { value = 1, name = "Ok" }, { value = 0, name = "Cancel" } },
                     states = Item_List,
                     icon = "object_plugin1",
-                    titleTextColor = "Global.AlertText",
+                    titleTextColor = "Global.Text",
                     messageTextColor = "Global.Text"
                 }
             )
@@ -251,11 +251,11 @@ function Construct_Gobo_Layout(displayHandle, TLay, SeqNrStart, TLayNr, AppNr, P
             end
             Slot_Select_ID[4] = MessageBox(
                 {
-                    title = "Wheel EFFECTWHEEL",
+                    title = FixtureGroupsName .. " Wheel EFFECTWHEEL",
                     commands = { { value = 1, name = "Ok" }, { value = 0, name = "Cancel" } },
                     states = Item_List,
                     icon = "object_plugin1",
-                    titleTextColor = "Global.AlertText",
+                    titleTextColor = "Global.Text",
                     messageTextColor = "Global.Text"
                 }
             )
@@ -280,11 +280,11 @@ function Construct_Gobo_Layout(displayHandle, TLay, SeqNrStart, TLayNr, AppNr, P
             end
             Slot_Select_ID[5] = MessageBox(
                 {
-                    title = "Wheel Prism1",
+                    title = FixtureGroupsName .. " Wheel Prism1",
                     commands = { { value = 1, name = "Ok" }, { value = 0, name = "Cancel" } },
                     states = Item_List,
                     icon = "object_plugin1",
-                    titleTextColor = "Global.AlertText",
+                    titleTextColor = "Global.Text",
                     messageTextColor = "Global.Text"
                 }
             )
@@ -309,11 +309,11 @@ function Construct_Gobo_Layout(displayHandle, TLay, SeqNrStart, TLayNr, AppNr, P
             end
             Slot_Select_ID[6] = MessageBox(
                 {
-                    title = "Wheel Prism2",
+                    title = FixtureGroupsName .. " Wheel Prism2",
                     commands = { { value = 1, name = "Ok" }, { value = 0, name = "Cancel" } },
                     states = Item_List,
                     icon = "object_plugin1",
-                    titleTextColor = "Global.AlertText",
+                    titleTextColor = "Global.Text",
                     messageTextColor = "Global.Text"
                 }
             )
@@ -394,7 +394,8 @@ function Construct_Gobo_Layout(displayHandle, TLay, SeqNrStart, TLayNr, AppNr, P
         end
         CmdIndirectWait("cd root")
 
-        SeqNrStart = CreateSequence(FixtureType, prefix, SeqNrStart, Preset_Name, FixtureGroupsNo, Slot_ID, Index, AppIndex,
+        SeqNrStart = CreateSequence(FixtureType, prefix, SeqNrStart, Preset_Name, FixtureGroupsNo, Slot_ID, Index,
+            AppIndex,
             FixtureGroupsName)
     end
     CmdIndirectWait("Blind Off")
