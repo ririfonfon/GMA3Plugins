@@ -31,26 +31,12 @@ function Construct_Gobo_Layout(displayHandle, TLay, SeqNrStart, TLayNr, AppNr, P
     local FixtureGroupsNo
     local FixtureGroupsName
     local PresetIndex = Preset_5_NrStart
+    local Result = {}
 
     for g in ipairs(SelectedGrpNo) do
-        -- local FixtureGroups = DataPool().Groups:Children()
-        -- local Grp_Select = {}
-        -- for k in ipairs(FixtureGroups) do
-        --     table.insert(Grp_Select, "'" .. FixtureGroups[k].name .. "'")
-        -- end
-        -- local _, FixtureGroupsSelect = PopupInput { title = 'Select Fixture Group', caller = display, items = Grp_Select, add_args = { FilterSupport = "Yes" } }
-        -- FixtureGroupsSelect = FixtureGroupsSelect:gsub("'", "")
-        -- for k in ipairs(FixtureGroups) do
-        --     if (FixtureGroups[k].name == FixtureGroupsSelect) then
-        --         FixtureGroupsNo = FixtureGroups[k].NO
-        --     end
-        -- end
-
         FixtureGroupsNo = string.gsub(SelectedGrpNo[g], "'", "")
-
         FixtureGroupsName = SelectedGrp[g]
-
-        CmdIndirectWait('Clearall')
+        CmdIndirectWait('ClearAll')
         CmdIndirectWait('SelectFixtures Group ' .. FixtureGroupsNo)
         local FixtureID_
         local myFixtureIndex = SelectionFirst(true)
@@ -63,36 +49,6 @@ function Construct_Gobo_Layout(displayHandle, TLay, SeqNrStart, TLayNr, AppNr, P
         local FixtureNum = tonumber(FixtureID_)
         local FixtureType = ObjectList(Fixture)[1].FixtureTYPE.name
 
-
-        -- local All_5_Nr = DataPool().PresetPools[25]:Children()
-        -- local Preset_5_NrStart
-        -- for k in ipairs(All_5_Nr) do
-        --     Preset_5_NrStart = All_5_Nr[k].NO + 1
-        -- end
-        -- if Preset_5_NrStart == nil then
-        --     Preset_5_NrStart = 1
-        -- end
-
-        -- local App = ShowData().Appearances:Children()
-        -- local AppNr
-        -- for k in ipairs(App) do
-        --     AppNr = App[k].NO + 1
-        -- end
-        -- if AppNr == nil then
-        --     AppNr = 1
-        -- end
-
-        -- local SeqNr = DataPool().Sequences:Children()
-        -- local SeqNrStart
-        -- for k in ipairs(SeqNr) do
-        --     SeqNrStart = SeqNr[k].NO + 1
-        -- end
-        -- if SeqNrStart == nil then
-        --     SeqNrStart = 1
-        -- end
-
-
-
         local Preset_Name = {}
         local Slot_ID = {}
         local Item_Slot_Select_ID = {}
@@ -103,7 +59,7 @@ function Construct_Gobo_Layout(displayHandle, TLay, SeqNrStart, TLayNr, AppNr, P
         local slot_index = {}
         local G_Check = { false, false, false, false, false, false }
 
-        CmdIndirectWait("clearall; Fixture " .. FixtureNum)
+        CmdIndirectWait("ClearAll; Fixture " .. FixtureNum)
         if GetUIChannelIndex(SelectionFirst(), GetAttributeIndex('Gobo1')) ~= nil then -- check if Fixture has gobo1
             Item_Slot_Select_ID[1] = {}
             Item_Slot_Select_ID[1][1] = true
@@ -172,6 +128,7 @@ function Construct_Gobo_Layout(displayHandle, TLay, SeqNrStart, TLayNr, AppNr, P
                     messageTextColor = "Global.Text"
                 }
             )
+            Result[1] = Slot_Select_ID[1].result
             for k, v in pairs(Slot_Select_ID[1].states) do
                 if (v == true) then
                     G_Check[1] = true
@@ -181,6 +138,7 @@ function Construct_Gobo_Layout(displayHandle, TLay, SeqNrStart, TLayNr, AppNr, P
                     c = c + 1
                 end
             end
+            if (c == 1) then Result[1] = 0 end
         end
         if (Item_Slot_Select_ID[2][1] == true) then
             Selected_Slot_Select_ID[2] = {}
@@ -201,6 +159,7 @@ function Construct_Gobo_Layout(displayHandle, TLay, SeqNrStart, TLayNr, AppNr, P
                     messageTextColor = "Global.Text"
                 }
             )
+            Result[2] = Slot_Select_ID[2].result
             for k, v in pairs(Slot_Select_ID[2].states) do
                 if (v == true) then
                     G_Check[2] = true
@@ -210,6 +169,7 @@ function Construct_Gobo_Layout(displayHandle, TLay, SeqNrStart, TLayNr, AppNr, P
                     c = c + 1
                 end
             end
+            if (c == 1) then Result[2] = 0 end
         end
         if (Item_Slot_Select_ID[3][1] == true) then
             Selected_Slot_Select_ID[3] = {}
@@ -230,6 +190,7 @@ function Construct_Gobo_Layout(displayHandle, TLay, SeqNrStart, TLayNr, AppNr, P
                     messageTextColor = "Global.Text"
                 }
             )
+            Result[3] = Slot_Select_ID[3].result
             for k, v in pairs(Slot_Select_ID[3].states) do
                 if (v == true) then
                     G_Check[3] = true
@@ -239,6 +200,7 @@ function Construct_Gobo_Layout(displayHandle, TLay, SeqNrStart, TLayNr, AppNr, P
                     c = c + 1
                 end
             end
+            if (c == 1) then Result[3] = 0 end
         end
         if (Item_Slot_Select_ID[4][1] == true) then
             Selected_Slot_Select_ID[4] = {}
@@ -259,6 +221,7 @@ function Construct_Gobo_Layout(displayHandle, TLay, SeqNrStart, TLayNr, AppNr, P
                     messageTextColor = "Global.Text"
                 }
             )
+            Result[4] = Slot_Select_ID[4].result
             for k, v in pairs(Slot_Select_ID[4].states) do
                 if (v == true) then
                     G_Check[4] = true
@@ -268,6 +231,7 @@ function Construct_Gobo_Layout(displayHandle, TLay, SeqNrStart, TLayNr, AppNr, P
                     c = c + 1
                 end
             end
+            if (c == 1) then Result[4] = 0 end
         end
         if (Item_Slot_Select_ID[5][1] == true) then
             Selected_Slot_Select_ID[5] = {}
@@ -288,6 +252,7 @@ function Construct_Gobo_Layout(displayHandle, TLay, SeqNrStart, TLayNr, AppNr, P
                     messageTextColor = "Global.Text"
                 }
             )
+            Result[5] = Slot_Select_ID[5].result
             for k, v in pairs(Slot_Select_ID[5].states) do
                 if (v == true) then
                     G_Check[5] = true
@@ -297,6 +262,7 @@ function Construct_Gobo_Layout(displayHandle, TLay, SeqNrStart, TLayNr, AppNr, P
                     c = c + 1
                 end
             end
+            if (c == 1) then Result[5] = 0 end
         end
         if (Item_Slot_Select_ID[6][1] == true) then
             Selected_Slot_Select_ID[6] = {}
@@ -317,6 +283,7 @@ function Construct_Gobo_Layout(displayHandle, TLay, SeqNrStart, TLayNr, AppNr, P
                     messageTextColor = "Global.Text"
                 }
             )
+            Result[6] = Slot_Select_ID[6].result
             for k, v in pairs(Slot_Select_ID[6].states) do
                 if (v == true) then
                     G_Check[6] = true
@@ -326,77 +293,101 @@ function Construct_Gobo_Layout(displayHandle, TLay, SeqNrStart, TLayNr, AppNr, P
                     c = c + 1
                 end
             end
+            if (c == 1) then Result[6] = 0 end
         end
 
+        if Result[1] == 1 then
+            if GetUIChannelIndex(SelectionFirst(), GetAttributeIndex('Gobo1')) ~= nil then -- check if Fixture has gobo1
+                Index[1] = PresetIndex - 1
+                Preset_Name[1], PresetIndex, Slot_ID[1] = CreateLabelPresets("Gobo1", Fixture, PresetIndex,
+                    Selected_Slot_Select_ID[1])
+            end
+        end
+        if Result[2] == 1 then
+            if GetUIChannelIndex(SelectionFirst(), GetAttributeIndex('Gobo2')) ~= nil then -- check if Fixture has gobo2
+                Index[2] = PresetIndex - 1
+                Preset_Name[2], PresetIndex, Slot_ID[2] = CreateLabelPresets("Gobo2", Fixture, PresetIndex,
+                    Selected_Slot_Select_ID[2])
+            end
+        end
+        if Result[3] == 1 then
+            if GetUIChannelIndex(SelectionFirst(), GetAttributeIndex('Gobo3')) ~= nil then -- check if Fixture has gobo3
+                Index[3] = PresetIndex - 1
+                Preset_Name[3], PresetIndex, Slot_ID[3] = CreateLabelPresets("Gobo3", Fixture, PresetIndex,
+                    Selected_Slot_Select_ID[3])
+            end
+        end
+        if Result[4] == 1 then
+            if GetUIChannelIndex(SelectionFirst(), GetAttributeIndex('EFFECTWHEEL')) ~= nil then -- check if Fixture has EFFECTWHEEL
+                Index[4] = PresetIndex - 1
+                Preset_Name[4], PresetIndex, Slot_ID[4] = CreateLabelPresets("EFFECTWHEEL", Fixture, PresetIndex,
+                    Selected_Slot_Select_ID[4])
+            end
+        end
+        if Result[5] == 1 then
+            if GetUIChannelIndex(SelectionFirst(), GetAttributeIndex('Prism1')) ~= nil then -- check if Fixture has Prism1
+                Index[5] = PresetIndex - 1
+                Preset_Name[5], PresetIndex, Slot_ID[5] = CreateLabelPresets("Prism1", Fixture, PresetIndex,
+                    Selected_Slot_Select_ID[5])
+            end
+        end
+        if Result[6] == 1 then
+            if GetUIChannelIndex(SelectionFirst(), GetAttributeIndex('Prism2')) ~= nil then -- check if Fixture has Prism2
+                Index[6] = PresetIndex - 1
+                Preset_Name[6], PresetIndex, Slot_ID[6] = CreateLabelPresets("Prism2", Fixture, PresetIndex,
+                    Selected_Slot_Select_ID[6])
+            end
+        end
 
-        if GetUIChannelIndex(SelectionFirst(), GetAttributeIndex('Gobo1')) ~= nil then -- check if Fixture has gobo1
-            Index[1] = PresetIndex - 1
-            Preset_Name[1], PresetIndex, Slot_ID[1] = CreateLabelPresets("Gobo1", Fixture, PresetIndex,
-                Selected_Slot_Select_ID[1])
+        CmdIndirectWait("Cd Root")
+        CmdIndirectWait("ClearAll; Fixture " .. FixtureNum)
+
+        if Result[1] == 1 then
+            if GetUIChannelIndex(SelectionFirst(), GetAttributeIndex('Gobo1')) then -- check if Fixture has gobo1
+                AppIndex[1] = AppNr - 1
+                AppNr = CreateAppearances(FixtureType, "Gobo1", AppNr)
+            end
         end
-        if GetUIChannelIndex(SelectionFirst(), GetAttributeIndex('Gobo2')) ~= nil then -- check if Fixture has gobo2
-            Index[2] = PresetIndex - 1
-            Preset_Name[2], PresetIndex, Slot_ID[2] = CreateLabelPresets("Gobo2", Fixture, PresetIndex,
-                Selected_Slot_Select_ID[2])
+        if Result[2] == 1 then
+            CmdIndirectWait("ClearAll; Fixture " .. FixtureNum)
+            if GetUIChannelIndex(SelectionFirst(), GetAttributeIndex('Gobo2')) then -- check if Fixture has gobo2
+                AppIndex[2] = AppNr - 1
+                AppNr = CreateAppearances(FixtureType, "Gobo2", AppNr)
+            end
         end
-        if GetUIChannelIndex(SelectionFirst(), GetAttributeIndex('Gobo3')) ~= nil then -- check if Fixture has gobo3
-            Index[3] = PresetIndex - 1
-            Preset_Name[3], PresetIndex, Slot_ID[3] = CreateLabelPresets("Gobo3", Fixture, PresetIndex,
-                Selected_Slot_Select_ID[3])
+        if Result[3] == 1 then
+            CmdIndirectWait("ClearAll; Fixture " .. FixtureNum)
+            if GetUIChannelIndex(SelectionFirst(), GetAttributeIndex('Gobo3')) then -- check if Fixture has gobo3
+                AppIndex[3] = AppNr - 1
+                AppNr = CreateAppearances(FixtureType, "Gobo3", AppNr)
+            end
         end
-        if GetUIChannelIndex(SelectionFirst(), GetAttributeIndex('EFFECTWHEEL')) ~= nil then -- check if Fixture has EFFECTWHEEL
-            Index[4] = PresetIndex - 1
-            Preset_Name[4], PresetIndex, Slot_ID[4] = CreateLabelPresets("EFFECTWHEEL", Fixture, PresetIndex,
-                Selected_Slot_Select_ID[4])
+        if Result[4] == 1 then
+            CmdIndirectWait("ClearAll; Fixture " .. FixtureNum)
+            if GetUIChannelIndex(SelectionFirst(), GetAttributeIndex('EFFECTWHEEL')) then -- check if Fixture has EFFECTWHEEL
+                AppIndex[4] = AppNr - 1
+                AppNr = CreateAppearances(FixtureType, "EFFECTWHEEL", AppNr)
+            end
         end
-        if GetUIChannelIndex(SelectionFirst(), GetAttributeIndex('Prism1')) ~= nil then -- check if Fixture has Prism1
-            Index[5] = PresetIndex - 1
-            Preset_Name[5], PresetIndex, Slot_ID[5] = CreateLabelPresets("Prism1", Fixture, PresetIndex,
-                Selected_Slot_Select_ID[5])
+        if Result[5] == 1 then
+            CmdIndirectWait("ClearAll; Fixture " .. FixtureNum)
+            if GetUIChannelIndex(SelectionFirst(), GetAttributeIndex('Prism1')) then -- check if Fixture has Prism1
+                AppIndex[5] = AppNr - 1
+                AppNr = CreateAppearances(FixtureType, "Prism1", AppNr)
+            end
         end
-        if GetUIChannelIndex(SelectionFirst(), GetAttributeIndex('Prism2')) ~= nil then -- check if Fixture has Prism2
-            Index[6] = PresetIndex - 1
-            Preset_Name[6], PresetIndex, Slot_ID[6] = CreateLabelPresets("Prism2", Fixture, PresetIndex,
-                Selected_Slot_Select_ID[6])
+        if Result[6] == 1 then
+            CmdIndirectWait("ClearAll; Fixture " .. FixtureNum)
+            if GetUIChannelIndex(SelectionFirst(), GetAttributeIndex('Prism2')) then -- check if Fixture has Prism2
+                AppIndex[6] = AppNr - 1
+                AppNr = CreateAppearances(FixtureType, "Prism2", AppNr)
+            end
         end
 
-        CmdIndirectWait("cd root")
-
-        CmdIndirectWait("clearall; Fixture " .. FixtureNum)
-        if GetUIChannelIndex(SelectionFirst(), GetAttributeIndex('Gobo1')) then -- check if Fixture has gobo1
-            AppIndex[1] = AppNr - 1
-            AppNr = CreateAppearances(FixtureType, "Gobo1", AppNr)
-        end
-        CmdIndirectWait("clearall; Fixture " .. FixtureNum)
-        if GetUIChannelIndex(SelectionFirst(), GetAttributeIndex('Gobo2')) then -- check if Fixture has gobo2
-            AppIndex[2] = AppNr - 1
-            AppNr = CreateAppearances(FixtureType, "Gobo2", AppNr)
-        end
-        CmdIndirectWait("clearall; Fixture " .. FixtureNum)
-        if GetUIChannelIndex(SelectionFirst(), GetAttributeIndex('Gobo3')) then -- check if Fixture has gobo3
-            AppIndex[3] = AppNr - 1
-            AppNr = CreateAppearances(FixtureType, "Gobo3", AppNr)
-        end
-        CmdIndirectWait("clearall; Fixture " .. FixtureNum)
-        if GetUIChannelIndex(SelectionFirst(), GetAttributeIndex('EFFECTWHEEL')) then -- check if Fixture has EFFECTWHEEL
-            AppIndex[4] = AppNr - 1
-            AppNr = CreateAppearances(FixtureType, "EFFECTWHEEL", AppNr)
-        end
-        CmdIndirectWait("clearall; Fixture " .. FixtureNum)
-        if GetUIChannelIndex(SelectionFirst(), GetAttributeIndex('Prism1')) then -- check if Fixture has Prism1
-            AppIndex[5] = AppNr - 1
-            AppNr = CreateAppearances(FixtureType, "Prism1", AppNr)
-        end
-        CmdIndirectWait("clearall; Fixture " .. FixtureNum)
-        if GetUIChannelIndex(SelectionFirst(), GetAttributeIndex('Prism2')) then -- check if Fixture has Prism2
-            AppIndex[6] = AppNr - 1
-            AppNr = CreateAppearances(FixtureType, "Prism2", AppNr)
-        end
-        CmdIndirectWait("cd root")
+        CmdIndirectWait("Cd Root")
 
         SeqNrStart = CreateSequence(FixtureType, prefix, SeqNrStart, Preset_Name, FixtureGroupsNo, Slot_ID, Index,
-            AppIndex,
-            FixtureGroupsName)
+            AppIndex, FixtureGroupsName, Result)
     end
     CmdIndirectWait("Blind Off")
 end -- end Construct_Gobo_Layout
