@@ -273,7 +273,7 @@ local function Main(displayHandle)
     input2Label.TextalignmentH = "Left"
     input2Label.Anchors = { left = 1, right = 3, top = TopInc, bottom = TopInc }
     input2Label.Padding = "5,5"
-    input2Label.Margin = { left = 2, right = 2, top = TopInc, bottom = 2 }  -- top = 2
+    input2Label.Margin = { left = 2, right = 2, top = TopInc, bottom = 2 } -- top = 2
     input2Label.HasHover = "No";
     input2Label.BackColor = colorLayouts
     input2Label.Font = "2"
@@ -692,7 +692,7 @@ local function Main(displayHandle)
         end
         if checks == false then
             input6LineEdit.TextColor = colorText
-            if check_grp == true  then
+            if check_grp == true then
                 OkButton.Visible = "Yes"
             end
         end
@@ -753,7 +753,7 @@ local function Main(displayHandle)
             input3Sujestion.Visible = "Yes"
             input5Sujestion.Visible = "Yes"
             input6Sujestion.Visible = "Yes"
-           Nr_Gobo = Check_Nr_Gobo(FixtureGroups[SelGrp].NO,Nr_Gobo)
+            Nr_Gobo = Check_Nr_Gobo(FixtureGroups[SelGrp].NO, Nr_Gobo)
         elseif caller.Name == "Name_Select" then
             input1LineEdit.Content = choice
         elseif caller.Name == "Lay_Select" then
@@ -766,21 +766,24 @@ local function Main(displayHandle)
             input6LineEdit.Content = choice
         end
     end
-    local function dec24_to_dec8(dec24)
-        return math.floor(dec24 * 255 / 16777215)
-    end
-    
-    local function Check_Gobo(att, fixtureID, Nr_Gobo_)
-        local handlefixture = ObjectList(fixtureID)[1]
+
+    -- local function Dec24_To_Dec8(dec24)
+    --     return math.floor(dec24 * 255 / 16777215)
+    -- end
+
+    function Check_Gobo(att, fixtureID, Nr_Gobo_)
+        local _fixtureID_ = 'Fixture ' .. fixtureID
+       
+        CmdIndirectWait("clearall; Fixture " .. fixtureID)
+        local handlefixture = ObjectList(_fixtureID_)[1]
         local mode = handlefixture.MODEDIRECT.name
         local ft = handlefixture.FIXTURETYPE.name
-    
+
         CmdIndirectWait("cd root")
         CmdIndirectWait("cd FixtureType '" .. ft .. "'")
         CmdIndirectWait("cd DMXModes.'*" .. mode .. "*'.DMXChannels")
-    
+
         local GoboAttNum = 1
-    
         while not string.find(CmdObj().Destination:Children()[GoboAttNum].Name, att) and GoboAttNum < #CmdObj().Destination:Children() do
             -- this loop is to find where attribute gobo is in the dmxchannels
             GoboAttNum = GoboAttNum + 1
@@ -790,42 +793,58 @@ local function Main(displayHandle)
             return
         end
         -- this is to terminate the function if there is no gobo
-        local DefaultP = dec24_to_dec8(CmdObj().Destination:Children()[GoboAttNum].Default)
+        local DefaultP = Dec24_To_Dec8(CmdObj().Destination:Children()[GoboAttNum].Default)
         CmdIndirectWait("cd '*" .. att .. "'")
         CmdIndirectWait("cd '*" .. att .. "'")
         if CmdObj().Destination:Children()[1].DMXTO ~= nil then
             local i = 1
-            while DefaultP > dec24_to_dec8(CmdObj().Destination:Children()[i].DMXTO) or DefaultP < dec24_to_dec8(CmdObj().Destination:Children()[i].DMXFROM) do
+            while DefaultP > Dec24_To_Dec8(CmdObj().Destination:Children()[i].DMXTO) or DefaultP < Dec24_To_Dec8(CmdObj().Destination:Children()[i].DMXFROM) do
                 -- this is to find where is the static attributes of the gobo wheel
                 i = i + 1
             end
-            local MaxDmxForLoop = dec24_to_dec8(CmdObj().Destination:Children()[i].DMXTO)
-            Cmd("cd " .. i) -- changing destination to the not shaking, or revolving gobos
+            local MaxDmxForLoop = Dec24_To_Dec8(CmdObj().Destination:Children()[i].DMXTO)
+            Cmd("cd " .. i)                                    -- changing destination to the not shaking, or revolving gobos
             i = 1
-            while i <= #CmdObj().Destination:Children() do -- iterating over the gobos
+            while i <= #CmdObj().Destination:Children() do     -- iterating over the gobos
                 Nr_Gobo_ = Nr_Gobo_ + 1
                 i = i + 1
             end
-    
+
             return Nr_Gobo_
         else
             Printf("No " .. att .. " here")
         end
     end
 
-    function Check_Nr_Gobo(FGNr_,Nr_Gobo_)
-        
-        local FixtureID_ = #DataPool().Groups[FGNr_].Selectiondata
-        local fixture = 'Fixture ' .. FixtureID_ .. ''
+    function Check_Nr_Gobo(FGNr_, Nr_Gobo_)
+        local FixtureID_
+        CmdIndirectWait('Clearall')
+        CmdIndirectWait('SelectFixtures Group ' .. FGNr_)
+        local myFixtureIndex = SelectionFirst(true)
+        local mySubFixture = GetSubfixture(myFixtureIndex)
+        if mySubFixture ~= nil then
+            FixtureID_ = mySubFixture.fid
+            Printf(FixtureID_)
+        end
+
         Cmd("clearall; fixture " .. FixtureID_)
         if GetUIChannelIndex(SelectionFirst(), GetAttributeIndex('Gobo1')) ~= nil then -- check if fixture has gobo1
-            Nr_Gobo_ = Check_Gobo("Gobo1", fixture, Nr_Gobo_)
+            Nr_Gobo_ = Check_Gobo("Gobo1", FixtureID_, Nr_Gobo_)
         end
         if GetUIChannelIndex(SelectionFirst(), GetAttributeIndex('Gobo2')) ~= nil then -- check if fixture has gobo2
-            Nr_Gobo_ = Check_Gobo("Gobo2", fixture, Nr_Gobo_)
+            Nr_Gobo_ = Check_Gobo("Gobo2", FixtureID_, Nr_Gobo_)
         end
         if GetUIChannelIndex(SelectionFirst(), GetAttributeIndex('Gobo3')) ~= nil then -- check if fixture has gobo3
-            Nr_Gobo_ = Check_Gobo("Gobo3", fixture, Nr_Gobo_)
+            Nr_Gobo_ = Check_Gobo("Gobo3", FixtureID_, Nr_Gobo_)
+        end
+        if GetUIChannelIndex(SelectionFirst(), GetAttributeIndex('EFFECTWHEEL')) ~= nil then -- check if fixture has EFFECTWHEEL
+            Nr_Gobo_ = Check_Gobo("EFFECTWHEEL", FixtureID_, Nr_Gobo_)
+        end
+        if GetUIChannelIndex(SelectionFirst(), GetAttributeIndex('Prism1')) ~= nil then -- check if fixture has Prism1
+            Nr_Gobo_ = Check_Gobo("Prism1", FixtureID_, Nr_Gobo_)
+        end
+        if GetUIChannelIndex(SelectionFirst(), GetAttributeIndex('Prism2')) ~= nil then -- check if fixture has Prism2
+            Nr_Gobo_ = Check_Gobo("Prism2", FixtureID_, Nr_Gobo_)
         end
         Echo(Nr_Gobo_)
         return Nr_Gobo_
