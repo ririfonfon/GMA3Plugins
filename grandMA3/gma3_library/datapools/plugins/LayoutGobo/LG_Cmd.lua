@@ -5,11 +5,11 @@ Releases:
 Created by Richard Fontaine "RIRI", May 2024.
 --]]
 
-local function dec24_to_dec8(dec24)
+function Dec24_To_Dec8(dec24)
     return math.floor(dec24 * 255 / 16777215)
 end
 
-local function arrayLength(arr)
+function ArrayLength(arr)
     local length = 0
     for _ in pairs(arr) do
         length = length + 1
@@ -17,9 +17,7 @@ local function arrayLength(arr)
     return length
 end
 
-
-
-local function getWheelName(ftype, attribut)
+function GetWheelName(ftype, attribut)
     CmdIndirectWait("Clearall")
     CmdIndirectWait("cd root")
     CmdIndirectWait("cd FixtureType '" .. ftype .. "'")
@@ -27,8 +25,8 @@ local function getWheelName(ftype, attribut)
     return CmdObj().Destination:Children()[1].Wheel.name
 end
 
-local function createAppearances(ft, att, j)
-    local gobowheel = getWheelName(ft, att)
+function CreateAppearances(ft, att, j)
+    local gobowheel = GetWheelName(ft, att)
     CmdIndirectWait("cd ft '" .. ft .. "'.Wheels.'" .. gobowheel .. "'")
     local wheel = CmdObj().Destination
     for _, slot in ipairs(wheel:Children()) do
@@ -44,7 +42,7 @@ local function createAppearances(ft, att, j)
     return j
 end
 
-local function List_SlotID(att, FixtureID, Slot_ID_, n)
+function List_SlotID(att, FixtureID, Slot_ID_, n)
     -- local Slot_ID_ = {}
     local handleFixture = ObjectList(FixtureID)[1]
     local mode = handleFixture.MODEDIRECT.name
@@ -66,7 +64,7 @@ local function List_SlotID(att, FixtureID, Slot_ID_, n)
         return
     end -- this is to terminate the function if there is no gobo
 
-    local DefaultP = dec24_to_dec8(CmdObj().Destination:Children()[GoboAttNum].Default)
+    local DefaultP = Dec24_To_Dec8(CmdObj().Destination:Children()[GoboAttNum].Default)
     CmdIndirectWait("cd '*" .. att .. "'")
     CmdIndirectWait("cd '*" .. att .. "'")
     if CmdObj().Destination:Children()[1].DMXTO ~= nil then
@@ -76,8 +74,8 @@ local function List_SlotID(att, FixtureID, Slot_ID_, n)
             CmdIndirectWait("cd " .. d)                    -- changing destination
             while i <= #CmdObj().Destination:Children() do -- iterating over the gobos
                 if (tonumber(CmdObj().Destination:Children()[i].WHEELSLOTINDEX) ~= nil) then
-                    local fromdmx = dec24_to_dec8(CmdObj().Destination:Children()[i].DMXFROM)
-                    local todmx = dec24_to_dec8(CmdObj().Destination:Children()[i].DMXTO)
+                    local fromdmx = Dec24_To_Dec8(CmdObj().Destination:Children()[i].DMXFROM)
+                    local todmx = Dec24_To_Dec8(CmdObj().Destination:Children()[i].DMXTO)
                     local avgdmx = math.floor(((todmx - fromdmx) / 2) + fromdmx) -- good
                     CmdIndirectWait("Clearall")
                     CmdIndirectWait(FixtureID .. " At Absolute Decimal8 " .. avgdmx .. " Attribute " .. att)
@@ -100,8 +98,7 @@ local function List_SlotID(att, FixtureID, Slot_ID_, n)
     end
 end
 
-
-local function CreateLabelPresets(att, FixtureID, FirstPresetIndex, Select_)
+function CreateLabelPresets(att, FixtureID, FirstPresetIndex, Select_)
     local handleFixture = ObjectList(FixtureID)[1]
     local presetnames = {}
     local Slot_ID_ = {}
@@ -125,7 +122,7 @@ local function CreateLabelPresets(att, FixtureID, FirstPresetIndex, Select_)
         return
     end -- this is to terminate the function if there is no gobo
 
-    local DefaultP = dec24_to_dec8(CmdObj().Destination:Children()[GoboAttNum].Default)
+    local DefaultP = Dec24_To_Dec8(CmdObj().Destination:Children()[GoboAttNum].Default)
     CmdIndirectWait("cd '*" .. att .. "'")
     CmdIndirectWait("cd '*" .. att .. "'")
     if CmdObj().Destination:Children()[1].DMXTO ~= nil then
@@ -134,8 +131,8 @@ local function CreateLabelPresets(att, FixtureID, FirstPresetIndex, Select_)
             local i = 1
             CmdIndirectWait("cd " .. d)                    -- changing destination
             while i <= #CmdObj().Destination:Children() do -- iterating over the gobos
-                local fromdmx = dec24_to_dec8(CmdObj().Destination:Children()[i].DMXFROM)
-                local todmx = dec24_to_dec8(CmdObj().Destination:Children()[i].DMXTO)
+                local fromdmx = Dec24_To_Dec8(CmdObj().Destination:Children()[i].DMXFROM)
+                local todmx = Dec24_To_Dec8(CmdObj().Destination:Children()[i].DMXTO)
                 -- local avgdmx = math.floor((fromdmx + todmx) / 2) -- so there is no problem of the conversion from decimal24 to deecimal8
                 local avgdmx = math.floor(((todmx - fromdmx) / 2) + fromdmx) -- good
                 CmdIndirectWait("Clearall")
@@ -167,48 +164,51 @@ local function CreateLabelPresets(att, FixtureID, FirstPresetIndex, Select_)
     end
 end
 
-local function CreateSequence(FixtureType, prefix, SeqNrStart, Preset_Name, Grp, Slot_ID, PresetIndex, AppIndex)
+function CreateSequence(FixtureType, prefix, SeqNrStart, Preset_Name, Grp, Slot_ID, PresetIndex, AppIndex, GrpName)
     SeqNrStart = tonumber(SeqNrStart)
     local WH = { false, false, false, false, false }
     local cue = 0
     CmdIndirectWait("Clearall; Group " .. Grp)
     local length1 = 1
     if GetUIChannelIndex(SelectionFirst(), GetAttributeIndex('Gobo1')) ~= nil then
-        length1 = arrayLength(Preset_Name[1])
+        length1 = ArrayLength(Preset_Name[1])
         WH[1] = true
     end
     local length2 = 1
     if GetUIChannelIndex(SelectionFirst(), GetAttributeIndex('Gobo2')) ~= nil then
-        length2 = arrayLength(Preset_Name[2])
+        length2 = ArrayLength(Preset_Name[2])
         WH[2] = true
     end
     local length3 = 1
     if GetUIChannelIndex(SelectionFirst(), GetAttributeIndex('Gobo3')) ~= nil then
-        length3 = arrayLength(Preset_Name[3])
+        length3 = ArrayLength(Preset_Name[3])
         WH[3] = true
     end
     local length4 = 1
     if GetUIChannelIndex(SelectionFirst(), GetAttributeIndex('EFFECTWHEEL')) ~= nil then
-        length4 = arrayLength(Preset_Name[4])
+        length4 = ArrayLength(Preset_Name[4])
         WH[4] = true
     end
     local length5 = 1
     if GetUIChannelIndex(SelectionFirst(), GetAttributeIndex('Prism1')) ~= nil then
-        length5 = arrayLength(Preset_Name[5])
+        length5 = ArrayLength(Preset_Name[5])
         WH[5] = true
     end
     local length6 = 1
     if GetUIChannelIndex(SelectionFirst(), GetAttributeIndex('Prism2')) ~= nil then
-        length6 = arrayLength(Preset_Name[6])
+        length6 = ArrayLength(Preset_Name[6])
         WH[6] = true
     end
     Printf("The length 1 is " ..
         length1 ..
-        " and 2 is " .. length2 .. " and 3 is " .. length3 .. " and 4 is " .. length4 .. " and 5 is " .. length5)
+        " and 2 is " ..
+        length2 ..
+        " and 3 is " .. length3 .. " and 4 is " .. length4 .. " and 5 is " .. length5 .. " and 6 is " .. length6)
     CmdIndirectWait("Clearall")
 
     if WH[1] then
-        CmdIndirectWait('store seq ' .. SeqNrStart .. ' \'' .. prefix .. '_' .. FixtureType .. '_Gobo1\' /nc')
+        CmdIndirectWait('store seq ' ..
+        SeqNrStart .. ' \'' .. prefix .. '_' .. FixtureType .. '_' .. GrpName .. '_Gobo1\' /nc')
         CmdIndirectWait('store seq ' .. SeqNrStart .. ' cue 1 t ' .. length1 .. ' /nc')
         for i = 1, length1, 1 do -- gobo1 loop from preset to sequence
             cue = cue + 1
@@ -223,7 +223,8 @@ local function CreateSequence(FixtureType, prefix, SeqNrStart, Preset_Name, Grp,
         cue = 0
     end
     if WH[2] then
-        CmdIndirectWait('store seq ' .. SeqNrStart .. ' \'' .. prefix .. '_' .. FixtureType .. '_Gobo2\' /nc')
+        CmdIndirectWait('store seq ' ..
+        SeqNrStart .. ' \'' .. prefix .. '_' .. FixtureType .. '_' .. GrpName .. '_Gobo2\' /nc')
         CmdIndirectWait('store seq ' .. SeqNrStart .. ' cue 1 t ' .. length2 .. ' /nc')
         for i = 1, length2, 1 do -- gobo2 loop from preset to sequence, if there is no gobo2 length2 would be 1 and loop wont commited
             cue = cue + 1
@@ -238,7 +239,8 @@ local function CreateSequence(FixtureType, prefix, SeqNrStart, Preset_Name, Grp,
         cue = 0
     end
     if WH[3] then
-        CmdIndirectWait('store seq ' .. SeqNrStart .. ' \'' .. prefix .. '_' .. FixtureType .. '_Gobo3\' /nc')
+        CmdIndirectWait('store seq ' ..
+        SeqNrStart .. ' \'' .. prefix .. '_' .. FixtureType .. '_' .. GrpName .. '_Gobo3\' /nc')
         CmdIndirectWait('store seq ' .. SeqNrStart .. ' cue 1 t ' .. length3 .. ' /nc')
         for i = 1, length3, 1 do -- gobo3 loop from preset to sequence, if there is no gobo3 length3 would be 1 and loop wont commited
             cue = cue + 1
@@ -253,7 +255,8 @@ local function CreateSequence(FixtureType, prefix, SeqNrStart, Preset_Name, Grp,
         cue = 0
     end
     if WH[4] then
-        CmdIndirectWait('store seq ' .. SeqNrStart .. ' \'' .. prefix .. '_' .. FixtureType .. '_EFFECTWHEEL\' /nc')
+        CmdIndirectWait('store seq ' ..
+        SeqNrStart .. ' \'' .. prefix .. '_' .. FixtureType .. '_' .. GrpName .. '_EFFECTWHEEL\' /nc')
         CmdIndirectWait('store seq ' .. SeqNrStart .. ' cue 1 t ' .. length4 .. ' /nc')
         for i = 1, length4, 1 do -- EFFECTWHEEL loop from preset to sequence, if there is no EFFECTWHEEL length4 would be 1 and loop wont commited
             cue = cue + 1
@@ -266,7 +269,8 @@ local function CreateSequence(FixtureType, prefix, SeqNrStart, Preset_Name, Grp,
         CmdIndirectWait('assign group ' .. Grp .. ' at seq ' .. SeqNrStart .. ' cue 1 t part 0.1')
     end
     if WH[5] then
-        CmdIndirectWait('store seq ' .. SeqNrStart .. ' \'' .. prefix .. '_' .. FixtureType .. '_Prism1\' /nc')
+        CmdIndirectWait('store seq ' ..
+        SeqNrStart .. ' \'' .. prefix .. '_' .. FixtureType .. '_' .. GrpName .. '_Prism1\' /nc')
         CmdIndirectWait('store seq ' .. SeqNrStart .. ' cue 1 t ' .. length5 .. ' /nc')
         for i = 1, length5, 1 do -- Prism1 loop from preset to sequence, if there is no Prism1 length4 would be 1 and loop wont commited
             cue = cue + 1
@@ -281,7 +285,8 @@ local function CreateSequence(FixtureType, prefix, SeqNrStart, Preset_Name, Grp,
         cue = 0
     end
     if WH[6] then
-        CmdIndirectWait('store seq ' .. SeqNrStart .. ' \'' .. prefix .. '_' .. FixtureType .. '_Prism2\' /nc')
+        CmdIndirectWait('store seq ' ..
+        SeqNrStart .. ' \'' .. prefix .. '_' .. FixtureType .. '_' .. GrpName .. '_Prism2\' /nc')
         CmdIndirectWait('store seq ' .. SeqNrStart .. ' cue 1 t ' .. length6 .. ' /nc')
         for i = 1, length6, 1 do -- Prism2 loop from preset to sequence, if there is no Prism2 length4 would be 1 and loop wont commited
             cue = cue + 1
@@ -295,6 +300,7 @@ local function CreateSequence(FixtureType, prefix, SeqNrStart, Preset_Name, Grp,
         SeqNrStart = SeqNrStart + 1
         cue = 0
     end
+    return SeqNrStart + 1
 end
 
 -- end LG_Cmd.lua
