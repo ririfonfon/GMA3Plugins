@@ -24,7 +24,7 @@ local function Main(displayHandle)
     local TLay = DataPool().Layouts:Children()
     local TLayNr
     local TLayNrRef
-    local NaLay = "Phaser_Color"
+    local NaLay = "Layout_GOBO"
     local SeqNr = DataPool().Sequences:Children()
     local SeqNrStart
     local SeqNrRange
