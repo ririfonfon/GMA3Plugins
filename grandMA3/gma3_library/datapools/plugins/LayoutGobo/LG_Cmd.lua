@@ -251,6 +251,7 @@ function CreateSequence(FixtureType, prefix, SeqNrStart, Preset_Name, Grp, Slot_
             ' VisibilityObjectName=0 VisibilityBar=0 VisibilityIndicatorBar=0 VisibilityBorder=0')
         LayX = math.floor(LayX + LayW + 20)
         LayNr = math.floor(LayNr + 1)
+
         SeqNrStart = SeqNrStart + 1
         Cue = 0
     end
@@ -267,6 +268,15 @@ function CreateSequence(FixtureType, prefix, SeqNrStart, Preset_Name, Grp, Slot_
             CmdIndirectWait('Label Sequence ' .. SeqNrStart .. ' Cue ' .. Cue .. ' "' .. Preset_Name[2][i] .. '"')
         end
         CmdIndirectWait('Assign Group ' .. Grp .. ' At Sequence ' .. SeqNrStart .. ' Cue 1 Thru Part 0.1')
+
+        CmdIndirectWait('Assign Sequence ' .. SeqNrStart .. ' At Layout ' .. TLayNr)
+        CmdIndirectWait('Set Layout ' .. TLayNr .. '.' .. LayNr ..
+            ' Property Appearance <Default> Action=Goto PosX ' .. LayX .. ' PosY ' .. LayY ..
+            ' PositionW ' .. LayW .. ' PositionH ' .. LayH ..
+            ' VisibilityObjectName=0 VisibilityBar=0 VisibilityIndicatorBar=0 VisibilityBorder=0')
+        LayX = math.floor(LayX + LayW + 20)
+        LayNr = math.floor(LayNr + 1)
+
         SeqNrStart = SeqNrStart + 1
         Cue = 0
     end
@@ -283,6 +293,15 @@ function CreateSequence(FixtureType, prefix, SeqNrStart, Preset_Name, Grp, Slot_
             CmdIndirectWait('Label Sequence ' .. SeqNrStart .. ' Cue ' .. Cue .. ' "' .. Preset_Name[3][i] .. '"')
         end
         CmdIndirectWait('Assign Group ' .. Grp .. ' At Sequence ' .. SeqNrStart .. ' Cue 1 Thru Part 0.1')
+
+        CmdIndirectWait('Assign Sequence ' .. SeqNrStart .. ' At Layout ' .. TLayNr)
+        CmdIndirectWait('Set Layout ' .. TLayNr .. '.' .. LayNr ..
+            ' Property Appearance <Default> Action=Goto PosX ' .. LayX .. ' PosY ' .. LayY ..
+            ' PositionW ' .. LayW .. ' PositionH ' .. LayH ..
+            ' VisibilityObjectName=0 VisibilityBar=0 VisibilityIndicatorBar=0 VisibilityBorder=0')
+        LayX = math.floor(LayX + LayW + 20)
+        LayNr = math.floor(LayNr + 1)
+
         SeqNrStart = SeqNrStart + 1
         Cue = 0
     end
@@ -299,6 +318,17 @@ function CreateSequence(FixtureType, prefix, SeqNrStart, Preset_Name, Grp, Slot_
             CmdIndirectWait('Label Sequence ' .. SeqNrStart .. ' Cue ' .. Cue .. ' "' .. Preset_Name[4][i] .. '"')
         end
         CmdIndirectWait('Assign Group ' .. Grp .. ' At Sequence ' .. SeqNrStart .. ' Cue 1 Thru Part 0.1')
+
+        CmdIndirectWait('Assign Sequence ' .. SeqNrStart .. ' At Layout ' .. TLayNr)
+        CmdIndirectWait('Set Layout ' .. TLayNr .. '.' .. LayNr ..
+            ' Property Appearance <Default> Action=Goto PosX ' .. LayX .. ' PosY ' .. LayY ..
+            ' PositionW ' .. LayW .. ' PositionH ' .. LayH ..
+            ' VisibilityObjectName=0 VisibilityBar=0 VisibilityIndicatorBar=0 VisibilityBorder=0')
+        LayX = math.floor(LayX + LayW + 20)
+        LayNr = math.floor(LayNr + 1)
+        
+        SeqNrStart = SeqNrStart + 1
+        Cue = 0
     end
     if WH[5] then
         CmdIndirectWait('Store Sequence ' ..
@@ -313,6 +343,15 @@ function CreateSequence(FixtureType, prefix, SeqNrStart, Preset_Name, Grp, Slot_
             CmdIndirectWait('Label Sequence ' .. SeqNrStart .. ' Cue ' .. Cue .. ' "' .. Preset_Name[5][i] .. '"')
         end
         CmdIndirectWait('Assign Group ' .. Grp .. ' At Sequence ' .. SeqNrStart .. ' Cue 1 Thru Part 0.1')
+
+        CmdIndirectWait('Assign Sequence ' .. SeqNrStart .. ' At Layout ' .. TLayNr)
+        CmdIndirectWait('Set Layout ' .. TLayNr .. '.' .. LayNr ..
+            ' Property Appearance <Default> Action=Goto PosX ' .. LayX .. ' PosY ' .. LayY ..
+            ' PositionW ' .. LayW .. ' PositionH ' .. LayH ..
+            ' VisibilityObjectName=0 VisibilityBar=0 VisibilityIndicatorBar=0 VisibilityBorder=0')
+        LayX = math.floor(LayX + LayW + 20)
+        LayNr = math.floor(LayNr + 1)
+
         SeqNrStart = SeqNrStart + 1
         Cue = 0
     end
@@ -329,6 +368,15 @@ function CreateSequence(FixtureType, prefix, SeqNrStart, Preset_Name, Grp, Slot_
             CmdIndirectWait('Label Sequence ' .. SeqNrStart .. ' Cue ' .. Cue .. ' "' .. Preset_Name[6][i] .. '"')
         end
         CmdIndirectWait('Assign Group ' .. Grp .. ' At Sequence ' .. SeqNrStart .. ' Cue 1 Thru Part 0.1')
+
+        CmdIndirectWait('Assign Sequence ' .. SeqNrStart .. ' At Layout ' .. TLayNr)
+        CmdIndirectWait('Set Layout ' .. TLayNr .. '.' .. LayNr ..
+            ' Property Appearance <Default> Action=Goto PosX ' .. LayX .. ' PosY ' .. LayY ..
+            ' PositionW ' .. LayW .. ' PositionH ' .. LayH ..
+            ' VisibilityObjectName=0 VisibilityBar=0 VisibilityIndicatorBar=0 VisibilityBorder=0')
+        LayX = math.floor(LayX + LayW + 20)
+        LayNr = math.floor(LayNr + 1)
+        
         SeqNrStart = SeqNrStart + 1
         Cue = 0
     end
