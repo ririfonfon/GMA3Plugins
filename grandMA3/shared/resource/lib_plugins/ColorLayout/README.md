@@ -16,3 +16,4 @@ Releases:
 * 1.1.2.0 - For a lot color add Max_Color_By_Line
 * 1.1.3.0 - gma 3 1.7.2.2
 * 1.1.3.1 - gma 3 1.8.1.0 
+* 1.1.3.2 - gma 3 1.9.2.2 
