@@ -6,7 +6,7 @@ Created by Richard Fontaine "RIRI", May 2024.
 --]]
 
 function Construct_Gobo_Layout(displayHandle, TLay, SeqNrStart, TLayNr, AppNr, Preset_5_Current, Preset_5_NrStart,
-                               SelectedGrp, SelectedGrpNo, TLayNrRef, NaLay, MaxGobLgn)
+                               SelectedGrp, SelectedGrpNo, TLayNrRef, NaLay, MaxGobLgn, MacroNrStart)
     Echo(
         '**********************************************************************************************************************************************************************')
     -- fix prefix
@@ -34,6 +34,23 @@ function Construct_Gobo_Layout(displayHandle, TLay, SeqNrStart, TLayNr, AppNr, P
     local PresetIndex = Preset_5_NrStart
     local Result = {}
 
+    local RefX
+    local LayY
+    if TLayNrRef then
+        RefX = math.floor(0 - TLay[TLayNrRef].DimensionW / 2)
+        LayY = TLay[TLayNrRef].DimensionH / 2
+    else
+        RefX = -960
+        LayY = 540
+    end
+    local LayNr = 1
+    
+    local CurrentMacroNr = MacroNrStart
+    local Data_Pool_Nr = DataPool().No
+    local condition_string
+    local Macro_Pool = DataPool().Macros
+
+
     for g in ipairs(SelectedGrpNo) do
         FixtureGroupsNo = string.gsub(SelectedGrpNo[g], "'", "")
         FixtureGroupsName = SelectedGrp[g]
@@ -60,19 +77,10 @@ function Construct_Gobo_Layout(displayHandle, TLay, SeqNrStart, TLayNr, AppNr, P
         local slot_index = {}
         local G_Check = { false, false, false, false, false, false }
 
-        local LayX
-        local RefX
-        local LayY
-        if TLayNrRef then
-            RefX = math.floor(0 - TLay[TLayNrRef].DimensionW / 2)
-            LayY = TLay[TLayNrRef].DimensionH / 2
-        else
-            RefX = -960
-            LayY = 540
-        end
+
+        -- local LayX
         local LayW = 100
         local LayH = 100
-        local LayNr = 1
 
         CmdIndirectWait("ClearAll; Fixture " .. FixtureNum)
         if GetUIChannelIndex(SelectionFirst(), GetAttributeIndex('Gobo1')) ~= nil then -- check if Fixture has gobo1
@@ -401,9 +409,52 @@ function Construct_Gobo_Layout(displayHandle, TLay, SeqNrStart, TLayNr, AppNr, P
 
         CmdIndirectWait("Cd Root")
 
-        SeqNrStart, LayNr = CreateSequence(FixtureType, prefix, SeqNrStart, Preset_Name, FixtureGroupsNo, Slot_ID, Index,
+        SeqNrStart, LayNr, LayY = CreateSequence(FixtureType, prefix, SeqNrStart, Preset_Name, FixtureGroupsNo, Slot_ID,
+            Index,
             AppIndex, FixtureGroupsName, Result, TLayNr, RefX, LayY, LayH, LayW, LayNr)
+    end -- end  for g in ipairs(SelectedGrpNo) do
+
+    -- Macro Del LC prefix
+    CurrentMacroNr = math.floor(CurrentMacroNr + 1)
+    condition_string = "Lua 'if Confirm(\"Delete Layout Color LG" ..
+        prefix:gsub('%D*', '') ..
+        "?\") then; Cmd(\"Go macro " ..
+        CurrentMacroNr .. "\"); else Cmd(\"Off macro " .. CurrentMacroNr .. "\"); end'" .. ' /nu'
+    Cmd('Store Macro ' .. CurrentMacroNr .. ' \'' .. 'ERASE\'')
+    Cmd('ChangeDestination Macro ' .. CurrentMacroNr .. '')
+    for i = 1, 8 do
+        Cmd('Insert')
     end
+    Cmd('ChangeDestination Root')
+    Macro_Pool[CurrentMacroNr]:Set('name', 'Erase [' .. prefix:gsub('_', '') .. ']')
+    Macro_Pool[CurrentMacroNr][1]:Set('Command', condition_string)
+    Macro_Pool[CurrentMacroNr][1]:Set('Wait', 'Go')
+    Macro_Pool[CurrentMacroNr][2]:Set('Command',
+        'Delete DataPool ' .. Data_Pool_Nr .. ' Sequence ' .. prefix .. '*' .. ' /nc')
+    Macro_Pool[CurrentMacroNr][3]:Set('Command',
+        'Delete DataPool ' .. Data_Pool_Nr .. ' Layout ' .. prefix .. '*' .. ' /nc')
+    Macro_Pool[CurrentMacroNr][4]:Set('Command',
+        'Delete DataPool ' .. Data_Pool_Nr .. ' Matricks ' .. prefix .. '*' .. ' /nc')
+    Macro_Pool[CurrentMacroNr][5]:Set('Command', 'Delete Appearance ' .. prefix .. '*' .. ' /nc')
+    Macro_Pool[CurrentMacroNr][6]:Set('Command',
+        'Delete DataPool ' .. Data_Pool_Nr .. ' Preset 25. ' .. prefix .. '*' .. ' /nc')
+    Macro_Pool[CurrentMacroNr][7]:Set('Command',
+        'Delete DataPool ' .. Data_Pool_Nr .. '  Macro ' .. prefix .. '*' .. ' /nc')
+    Macro_Pool[CurrentMacroNr][8]:Set('Command',
+        'Delete DataPool ' .. Data_Pool_Nr .. '  Macro ' .. CurrentMacroNr .. ' /nc')
+    -- end Macro Del LC prefix
+
+    -- dimension of layout & scal it
+    for k in pairs(DataPool().Layouts:Children()) do
+        if (math.floor(TLayNr) == math.floor(tonumber(DataPool().Layouts:Children()[k].NO))) then
+            TLayNrRef = k
+        end
+    end
+    UsedW = DataPool().Layouts:Children()[TLayNrRef].UsedW / 2
+    UsedH = DataPool().Layouts:Children()[TLayNrRef].UsedH / 2
+    Cmd("Set Layout " .. TLayNr .. " DimensionW " .. UsedW .. " DimensionH " .. UsedH)
+    Cmd('Select Layout ' .. TLayNr)
+
     CmdIndirectWait("Blind Off")
 end -- end Construct_Gobo_Layout
 
