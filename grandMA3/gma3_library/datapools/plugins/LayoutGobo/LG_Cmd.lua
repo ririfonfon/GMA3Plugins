@@ -326,7 +326,7 @@ function CreateSequence(FixtureType, prefix, SeqNrStart, Preset_Name, Grp, Slot_
             ' VisibilityObjectName=0 VisibilityBar=0 VisibilityIndicatorBar=0 VisibilityBorder=0')
         LayX = math.floor(LayX + LayW + 20)
         LayNr = math.floor(LayNr + 1)
-        
+
         SeqNrStart = SeqNrStart + 1
         Cue = 0
     end
@@ -376,11 +376,12 @@ function CreateSequence(FixtureType, prefix, SeqNrStart, Preset_Name, Grp, Slot_
             ' VisibilityObjectName=0 VisibilityBar=0 VisibilityIndicatorBar=0 VisibilityBorder=0')
         LayX = math.floor(LayX + LayW + 20)
         LayNr = math.floor(LayNr + 1)
-        
+
         SeqNrStart = SeqNrStart + 1
         Cue = 0
     end
-    return SeqNrStart + 1, LayNr
+    LayY = math.floor(LayY - 120)
+    return SeqNrStart + 1, LayNr, LayY
 end
 
 -- end LG_Cmd.lua
