@@ -28,6 +28,9 @@ local function Main(displayHandle)
     local SeqNr = DataPool().Sequences:Children()
     local SeqNrStart
     local SeqNrRange
+    local MacroNr = DataPool().Macros:Children()
+    local MacroNrStart
+    local MacroNrRange
     local App = ShowData().Appearances:Children()
     local AppNr
     local AppNrRange
@@ -46,6 +49,7 @@ local function Main(displayHandle)
         Name_Select   = { 'Layout Gobo Select', 'LGS', 'L_GOBO', 'L_G' },
         Lay_Select    = { 1, 11, 101, 201, 301, 401, 501, 601, 701, 801, 901, 1001, 2001 },
         Seq_Select    = { 1, 11, 101, 201, 301, 401, 501, 601, 701, 801, 901, 1001, 2001 },
+        Macro_Select  = { 1, 11, 101, 201, 301, 401, 501, 601, 701, 801, 901, 1001, 2001 },
         Appear_Select = { 1, 11, 101, 201, 301, 401, 501, 601, 701, 801, 901, 1001, 2001 },
         Preset_Select = { 1, 11, 101, 201, 301, 401, 501, 601, 701, 801, 901, 1001, 2001 }
     }
@@ -75,6 +79,17 @@ local function Main(displayHandle)
         end
         if SeqNrStart == nil then
             SeqNrStart = 1
+        end
+        for k in ipairs(MacroNr) do
+            for i in ipairs(popuplists.Macro_Select) do
+                if popuplists.Macro_Select[i] == MacroNr[k].NO then
+                    table.remove(popuplists.Macro_Select, i)
+                end
+            end
+            MacroNrStart = MacroNr[k].NO + 1
+        end
+        if MacroNrStart == nil then
+            MacroNrStart = 1
         end
         for k in ipairs(App) do
             for i in ipairs(popuplists.Appear_Select) do
@@ -206,7 +221,7 @@ local function Main(displayHandle)
     -- This is row 2 of the dlgFrame.
     local inputsGrid = dlgFrame:Append("UILayoutGrid")
     inputsGrid.Columns = 10
-    inputsGrid.Rows = 7
+    inputsGrid.Rows = 8
     inputsGrid.Anchors = { left = 0, right = 0, top = 1, bottom = 1 }
     inputsGrid.Margin = { left = 0, right = 0, top = 0, bottom = 5 }
 
@@ -357,6 +372,56 @@ local function Main(displayHandle)
     input3Sujestion.HasHover = "yes"
     input3Sujestion.backColor = colorSequences
     input3Sujestion.Visible = "No"
+
+    TopInc = TopInc + 1
+
+    -- Create the UI elements for the 4 input.
+    local input4Icon = inputsGrid:Append("Button")
+    input4Icon.Text = ""
+    input4Icon.Anchors = { left = 0, right = 0, top = TopInc, bottom = TopInc }
+    input4Icon.Icon = "object_macro"
+    input4Icon.Margin = { left = 0, right = 2, top = TopInc, bottom = 2 }
+    input4Icon.HasHover = "No";
+    input4Icon.BackColor = colorMacro
+
+    local input4Label = inputsGrid:Append("UIObject")
+    input4Label.Text = "Macro Nr"
+    input4Label.TextalignmentH = "Left"
+    input4Label.Anchors = { left = 1, right = 3, top = TopInc, bottom = TopInc }
+    input4Label.Padding = "5,5"
+    input4Label.Margin = { left = 2, right = 2, top = TopInc, bottom = 2 }
+    input4Label.HasHover = "No";
+    input4Label.Font = "2"
+    input4Label.BackColor = colorMacro
+
+    local input4LineEdit = inputsGrid:Append("LineEdit")
+    input4LineEdit.Prompt = "Nr: "
+    input4LineEdit.TextAutoAdjust = "Yes"
+    input4LineEdit.Anchors = { left = 4, right = 7, top = TopInc, bottom = TopInc }
+    input4LineEdit.Padding = "5,5"
+    input4LineEdit.Margin = { left = 2, right = 0, top = TopInc, bottom = 2 }
+    input4LineEdit.Filter = "0123456789"
+    input4LineEdit.VkPluginName = "TextInputNumOnly"
+    input4LineEdit.Content = MacroNrStart
+    input4LineEdit.MaxTextLength = 6
+    input4LineEdit.HideFocusFrame = "Yes"
+    input4LineEdit.PluginComponent = myHandle
+    input4LineEdit.TextChanged = "OnInput4TextChanged"
+    input4LineEdit.Font = "2"
+    input4LineEdit.BackColor = colorMacro
+    input4LineEdit.Visible = "No"
+
+    local input4Sujestion = inputsGrid:Append("Button")
+    input4Sujestion.Text = ""
+    input4Sujestion.Anchors = { left = 8, right = 9, top = TopInc, bottom = TopInc }
+    input4Sujestion.Margin = { left = 2, right = 0, top = TopInc, bottom = 2 }
+    input4Sujestion.Icon = "zoom"
+    input4Sujestion.Name = 'Macro_Select'
+    input4Sujestion.PluginComponent = thiscomponent
+    input4Sujestion.Clicked = 'mypopup'
+    input4Sujestion.HasHover = "yes"
+    input4Sujestion.backColor = colorMacro
+    input4Sujestion.Visible = "No"
 
     TopInc = TopInc + 1
 
@@ -563,7 +628,7 @@ local function Main(displayHandle)
         end
         Obj.Delete(screenOverlay, Obj.Index(baseInput))
         Construct_Gobo_Layout(displayHandle, TLay, SeqNrStart, TLayNr, AppNr,
-            Preset_5_Current, Preset_5_NrStart, SelectedGrp, SelectedGrpNo, TLayNrRef, NaLay, MaxGobLgn)
+            Preset_5_Current, Preset_5_NrStart, SelectedGrp, SelectedGrpNo, TLayNrRef, NaLay, MaxGobLgn, MacroNrStart)
     end
 
     signalTable.OnInput1TextChanged = function(caller)
@@ -622,7 +687,34 @@ local function Main(displayHandle)
         end
         if checks == false then
             input3LineEdit.TextColor = colorText
-            if check_grp == true and check_gel == true then
+            if check_grp == true then
+                OkButton.Visible = "Yes"
+            end
+        end
+    end
+
+    signalTable.OnInput4TextChanged = function(caller)
+        local checks = false
+        if caller.Content == "" or caller.Content == "0" then
+            OkButton.Visible = "No"
+            input4LineEdit.TextColor = colorAlertText
+            checks = true
+        end
+        MacroNrStart = caller.Content:gsub("'", "")
+        MacroNrStart = tonumber(MacroNrStart)
+        MacroNrRange = MacroNrStart + 2
+        for k in ipairs(MacroNr) do
+            if MacroNrStart <= tonumber(MacroNr[k].NO) then
+                if MacroNrRange >= tonumber(MacroNr[k].NO) then
+                    OkButton.Visible = "No"
+                    input4LineEdit.TextColor = colorAlertText
+                    checks = true
+                end
+            end
+        end
+        if checks == false then
+            input4LineEdit.TextColor = colorText
+            if check_grp == true then
                 OkButton.Visible = "Yes"
             end
         end
@@ -657,7 +749,7 @@ local function Main(displayHandle)
         end
         if checks == false then
             input5LineEdit.TextColor = colorText
-            if check_grp == true and check_gel == true then
+            if check_grp == true then
                 OkButton.Visible = "Yes"
             end
         end
@@ -712,7 +804,7 @@ local function Main(displayHandle)
         end
         if checks == false then
             input8LineEdit.TextColor = colorText
-            if check_grp == true and check_gel == true then
+            if check_grp == true then
                 OkButton.Visible = "Yes"
             end
         end
@@ -745,12 +837,14 @@ local function Main(displayHandle)
             input1LineEdit.Visible = "Yes"
             input2LineEdit.Visible = "Yes"
             input3LineEdit.Visible = "Yes"
+            input4LineEdit.Visible = "Yes"
             input5LineEdit.Visible = "Yes"
             input6LineEdit.Visible = "Yes"
             input8LineEdit.Visible = "Yes"
             input1Sujestion.Visible = "Yes"
             input2Sujestion.Visible = "Yes"
             input3Sujestion.Visible = "Yes"
+            input4Sujestion.Visible = "Yes"
             input5Sujestion.Visible = "Yes"
             input6Sujestion.Visible = "Yes"
             Nr_Gobo = Check_Nr_Gobo(FixtureGroups[SelGrp].NO, Nr_Gobo)
@@ -760,6 +854,8 @@ local function Main(displayHandle)
             input2LineEdit.Content = choice
         elseif caller.Name == "Seq_Select" then
             input3LineEdit.Content = choice
+        elseif caller.Name == "Macro_Select" then
+            input4LineEdit.Content = choice
         elseif caller.Name == "Appear_Select" then
             input5LineEdit.Content = choice
         elseif caller.Name == "Preset_Select" then
@@ -773,7 +869,7 @@ local function Main(displayHandle)
 
     function Check_Gobo(att, fixtureID, Nr_Gobo_)
         local _fixtureID_ = 'Fixture ' .. fixtureID
-       
+
         CmdIndirectWait("clearall; Fixture " .. fixtureID)
         local handlefixture = ObjectList(_fixtureID_)[1]
         local mode = handlefixture.MODEDIRECT.name
@@ -803,9 +899,9 @@ local function Main(displayHandle)
                 i = i + 1
             end
             local MaxDmxForLoop = Dec24_To_Dec8(CmdObj().Destination:Children()[i].DMXTO)
-            Cmd("cd " .. i)                                    -- changing destination to the not shaking, or revolving gobos
+            Cmd("cd " .. i)                                -- changing destination to the not shaking, or revolving gobos
             i = 1
-            while i <= #CmdObj().Destination:Children() do     -- iterating over the gobos
+            while i <= #CmdObj().Destination:Children() do -- iterating over the gobos
                 Nr_Gobo_ = Nr_Gobo_ + 1
                 i = i + 1
             end
