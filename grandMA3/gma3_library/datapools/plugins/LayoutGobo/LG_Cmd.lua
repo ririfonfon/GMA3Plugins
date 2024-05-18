@@ -173,14 +173,20 @@ function CreateSequence(FixtureType, prefix, SeqNrStart, Preset_Name, Grp, Slot_
     local WH = { false, false, false, false, false }
     local Cue = 0
     CmdIndirectWait("ClearAll; Group " .. Grp)
-    local length1 = 1
 
+    local progHandle = StartProgress("List Name")
+    local startIdx, endIdx = 1, 6
+    SetProgressRange(progHandle, startIdx, endIdx)
+
+    SetProgress(progHandle, 1)
+    local length1 = 1
     if Result[1] == 1 then
         if GetUIChannelIndex(SelectionFirst(), GetAttributeIndex('Gobo1')) ~= nil then
             length1 = ArrayLength(Preset_Name[1])
             WH[1] = true
         end
     end
+    SetProgress(progHandle, 2)
     local length2 = 1
     if Result[2] == 1 then
         if GetUIChannelIndex(SelectionFirst(), GetAttributeIndex('Gobo2')) ~= nil then
@@ -188,6 +194,7 @@ function CreateSequence(FixtureType, prefix, SeqNrStart, Preset_Name, Grp, Slot_
             WH[2] = true
         end
     end
+    SetProgress(progHandle, 3)
     local length3 = 1
     if Result[3] == 1 then
         if GetUIChannelIndex(SelectionFirst(), GetAttributeIndex('Gobo3')) ~= nil then
@@ -195,6 +202,7 @@ function CreateSequence(FixtureType, prefix, SeqNrStart, Preset_Name, Grp, Slot_
             WH[3] = true
         end
     end
+    SetProgress(progHandle, 4)
     local length4 = 1
     if Result[4] == 1 then
         if GetUIChannelIndex(SelectionFirst(), GetAttributeIndex('EFFECTWHEEL')) ~= nil then
@@ -202,6 +210,7 @@ function CreateSequence(FixtureType, prefix, SeqNrStart, Preset_Name, Grp, Slot_
             WH[4] = true
         end
     end
+    SetProgress(progHandle, 5)
     local length5 = 1
     if Result[5] == 1 then
         if GetUIChannelIndex(SelectionFirst(), GetAttributeIndex('Prism1')) ~= nil then
@@ -209,6 +218,7 @@ function CreateSequence(FixtureType, prefix, SeqNrStart, Preset_Name, Grp, Slot_
             WH[5] = true
         end
     end
+    SetProgress(progHandle, 6)
     local length6 = 1
     if Result[6] == 1 then
         if GetUIChannelIndex(SelectionFirst(), GetAttributeIndex('Prism2')) ~= nil then
@@ -216,6 +226,8 @@ function CreateSequence(FixtureType, prefix, SeqNrStart, Preset_Name, Grp, Slot_
             WH[6] = true
         end
     end
+    StopProgress(progHandle)
+
     Printf("The length 1 is " .. length1 .. " and 2 is " .. length2 .. " and 3 is " .. length3 ..
         " and 4 is " .. length4 .. " and 5 is " .. length5 .. " and 6 is " .. length6)
     CmdIndirectWait("ClearAll")
@@ -230,6 +242,8 @@ function CreateSequence(FixtureType, prefix, SeqNrStart, Preset_Name, Grp, Slot_
     LayNr = math.floor(LayNr + 1)
     LayX = math.floor(LayX + LayW + 20)
 
+    progHandle = StartProgress("Store Sequence & Assign To Layout")
+    SetProgress(progHandle, 1)
     if WH[1] then
         CmdIndirectWait('Store Sequence ' ..
             SeqNrStart .. ' \'' .. prefix .. '_' .. FixtureType .. '_' .. GrpName .. '_Gobo1\' /nc')
@@ -255,6 +269,7 @@ function CreateSequence(FixtureType, prefix, SeqNrStart, Preset_Name, Grp, Slot_
         SeqNrStart = SeqNrStart + 1
         Cue = 0
     end
+    SetProgress(progHandle, 2)
     if WH[2] then
         CmdIndirectWait('Store Sequence ' ..
             SeqNrStart .. ' \'' .. prefix .. '_' .. FixtureType .. '_' .. GrpName .. '_Gobo2\' /nc')
@@ -280,6 +295,7 @@ function CreateSequence(FixtureType, prefix, SeqNrStart, Preset_Name, Grp, Slot_
         SeqNrStart = SeqNrStart + 1
         Cue = 0
     end
+    SetProgress(progHandle, 3)
     if WH[3] then
         CmdIndirectWait('Store Sequence ' ..
             SeqNrStart .. ' \'' .. prefix .. '_' .. FixtureType .. '_' .. GrpName .. '_Gobo3\' /nc')
@@ -305,6 +321,7 @@ function CreateSequence(FixtureType, prefix, SeqNrStart, Preset_Name, Grp, Slot_
         SeqNrStart = SeqNrStart + 1
         Cue = 0
     end
+    SetProgress(progHandle, 4)
     if WH[4] then
         CmdIndirectWait('Store Sequence ' ..
             SeqNrStart .. ' \'' .. prefix .. '_' .. FixtureType .. '_' .. GrpName .. '_EFFECTWHEEL\' /nc')
@@ -330,6 +347,7 @@ function CreateSequence(FixtureType, prefix, SeqNrStart, Preset_Name, Grp, Slot_
         SeqNrStart = SeqNrStart + 1
         Cue = 0
     end
+    SetProgress(progHandle, 5)
     if WH[5] then
         CmdIndirectWait('Store Sequence ' ..
             SeqNrStart .. ' \'' .. prefix .. '_' .. FixtureType .. '_' .. GrpName .. '_Prism1\' /nc')
@@ -355,6 +373,7 @@ function CreateSequence(FixtureType, prefix, SeqNrStart, Preset_Name, Grp, Slot_
         SeqNrStart = SeqNrStart + 1
         Cue = 0
     end
+    SetProgress(progHandle, 6)
     if WH[6] then
         CmdIndirectWait('Store Sequence ' ..
             SeqNrStart .. ' \'' .. prefix .. '_' .. FixtureType .. '_' .. GrpName .. '_Prism2\' /nc')
@@ -380,6 +399,7 @@ function CreateSequence(FixtureType, prefix, SeqNrStart, Preset_Name, Grp, Slot_
         SeqNrStart = SeqNrStart + 1
         Cue = 0
     end
+    StopProgress(progHandle)
     LayY = math.floor(LayY - 120)
     return SeqNrStart + 1, LayNr, LayY
 end

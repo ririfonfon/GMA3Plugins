@@ -918,31 +918,42 @@ local function Main(displayHandle)
         CmdIndirectWait('SelectFixtures Group ' .. FGNr_)
         local myFixtureIndex = SelectionFirst(true)
         local mySubFixture = GetSubfixture(myFixtureIndex)
+	    local progHandle = StartProgress("Check Wheel")
+    	local startIdx, endIdx = 1, 6
+        SetProgressRange(progHandle, startIdx, endIdx)
+
         if mySubFixture ~= nil then
             FixtureID_ = mySubFixture.fid
             Printf(FixtureID_)
         end
 
         Cmd("clearall; fixture " .. FixtureID_)
+		SetProgress(progHandle, 1)
         if GetUIChannelIndex(SelectionFirst(), GetAttributeIndex('Gobo1')) ~= nil then -- check if fixture has gobo1
-            Nr_Gobo_ = Check_Gobo("Gobo1", FixtureID_, Nr_Gobo_)
+        Nr_Gobo_ = Check_Gobo("Gobo1", FixtureID_, Nr_Gobo_)
         end
+		SetProgress(progHandle, 2)
         if GetUIChannelIndex(SelectionFirst(), GetAttributeIndex('Gobo2')) ~= nil then -- check if fixture has gobo2
-            Nr_Gobo_ = Check_Gobo("Gobo2", FixtureID_, Nr_Gobo_)
+        Nr_Gobo_ = Check_Gobo("Gobo2", FixtureID_, Nr_Gobo_)
         end
+		SetProgress(progHandle, 3)
         if GetUIChannelIndex(SelectionFirst(), GetAttributeIndex('Gobo3')) ~= nil then -- check if fixture has gobo3
-            Nr_Gobo_ = Check_Gobo("Gobo3", FixtureID_, Nr_Gobo_)
+        Nr_Gobo_ = Check_Gobo("Gobo3", FixtureID_, Nr_Gobo_)
         end
+		SetProgress(progHandle, 4)
         if GetUIChannelIndex(SelectionFirst(), GetAttributeIndex('EFFECTWHEEL')) ~= nil then -- check if fixture has EFFECTWHEEL
-            Nr_Gobo_ = Check_Gobo("EFFECTWHEEL", FixtureID_, Nr_Gobo_)
+        Nr_Gobo_ = Check_Gobo("EFFECTWHEEL", FixtureID_, Nr_Gobo_)
         end
+		SetProgress(progHandle, 5)
         if GetUIChannelIndex(SelectionFirst(), GetAttributeIndex('Prism1')) ~= nil then -- check if fixture has Prism1
-            Nr_Gobo_ = Check_Gobo("Prism1", FixtureID_, Nr_Gobo_)
+        Nr_Gobo_ = Check_Gobo("Prism1", FixtureID_, Nr_Gobo_)
         end
+		SetProgress(progHandle, 6)
         if GetUIChannelIndex(SelectionFirst(), GetAttributeIndex('Prism2')) ~= nil then -- check if fixture has Prism2
-            Nr_Gobo_ = Check_Gobo("Prism2", FixtureID_, Nr_Gobo_)
+        Nr_Gobo_ = Check_Gobo("Prism2", FixtureID_, Nr_Gobo_)
         end
         Echo(Nr_Gobo_)
+    	StopProgress(progHandle)
         return Nr_Gobo_
     end
 end

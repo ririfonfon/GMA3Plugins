@@ -82,7 +82,12 @@ function Construct_Gobo_Layout(displayHandle, TLay, SeqNrStart, TLayNr, AppNr, P
         local LayW = 100
         local LayH = 100
 
+        local progHandle = StartProgress("List Wheel N°")
+    	local startIdx, endIdx = 1, 6
+        SetProgressRange(progHandle, startIdx, endIdx)
+
         CmdIndirectWait("ClearAll; Fixture " .. FixtureNum)
+		SetProgress(progHandle, 1)
         if GetUIChannelIndex(SelectionFirst(), GetAttributeIndex('Gobo1')) ~= nil then -- check if Fixture has gobo1
             Item_Slot_Select_ID[1] = {}
             Item_Slot_Select_ID[1][1] = true
@@ -91,6 +96,7 @@ function Construct_Gobo_Layout(displayHandle, TLay, SeqNrStart, TLayNr, AppNr, P
             Item_Slot_Select_ID[1] = {}
             Item_Slot_Select_ID[1][1] = false
         end
+		SetProgress(progHandle, 2)
         if GetUIChannelIndex(SelectionFirst(), GetAttributeIndex('Gobo2')) ~= nil then -- check if Fixture has gobo2
             Item_Slot_Select_ID[2] = {}
             Item_Slot_Select_ID[2][1] = true
@@ -99,6 +105,7 @@ function Construct_Gobo_Layout(displayHandle, TLay, SeqNrStart, TLayNr, AppNr, P
             Item_Slot_Select_ID[2] = {}
             Item_Slot_Select_ID[2][1] = false
         end
+		SetProgress(progHandle, 3)
         if GetUIChannelIndex(SelectionFirst(), GetAttributeIndex('Gobo3')) ~= nil then -- check if Fixture has gobo3
             Item_Slot_Select_ID[3] = {}
             Item_Slot_Select_ID[3][1] = true
@@ -107,6 +114,7 @@ function Construct_Gobo_Layout(displayHandle, TLay, SeqNrStart, TLayNr, AppNr, P
             Item_Slot_Select_ID[3] = {}
             Item_Slot_Select_ID[3][1] = false
         end
+		SetProgress(progHandle, 4)
         if GetUIChannelIndex(SelectionFirst(), GetAttributeIndex('EFFECTWHEEL')) ~= nil then -- check if Fixture has EFFECTWHEEL
             Item_Slot_Select_ID[4] = {}
             Item_Slot_Select_ID[4][1] = true
@@ -115,6 +123,7 @@ function Construct_Gobo_Layout(displayHandle, TLay, SeqNrStart, TLayNr, AppNr, P
             Item_Slot_Select_ID[4] = {}
             Item_Slot_Select_ID[4][1] = false
         end
+		SetProgress(progHandle, 5)
         if GetUIChannelIndex(SelectionFirst(), GetAttributeIndex('Prism1')) ~= nil then -- check if Fixture has Prism1
             Item_Slot_Select_ID[5] = {}
             Item_Slot_Select_ID[5][1] = true
@@ -123,6 +132,7 @@ function Construct_Gobo_Layout(displayHandle, TLay, SeqNrStart, TLayNr, AppNr, P
             Item_Slot_Select_ID[5] = {}
             Item_Slot_Select_ID[5][1] = false
         end
+		SetProgress(progHandle, 6)
         if GetUIChannelIndex(SelectionFirst(), GetAttributeIndex('Prism2')) ~= nil then -- check if Fixture has Prism2
             Item_Slot_Select_ID[6] = {}
             Item_Slot_Select_ID[6][1] = true
@@ -131,6 +141,7 @@ function Construct_Gobo_Layout(displayHandle, TLay, SeqNrStart, TLayNr, AppNr, P
             Item_Slot_Select_ID[6] = {}
             Item_Slot_Select_ID[6][1] = false
         end
+    	StopProgress(progHandle)
 
         if (Item_Slot_Select_ID[1][1] == true) then
             Selected_Slot_Select_ID[1] = {}
@@ -319,6 +330,11 @@ function Construct_Gobo_Layout(displayHandle, TLay, SeqNrStart, TLayNr, AppNr, P
             if (c == 1) then Result[6] = 0 end
         end
 
+        local progHandle = StartProgress("Create Preset")
+    	local startIdx, endIdx = 1, 6
+        SetProgressRange(progHandle, startIdx, endIdx)
+
+		SetProgress(progHandle, 1)
         if Result[1] == 1 then
             if GetUIChannelIndex(SelectionFirst(), GetAttributeIndex('Gobo1')) ~= nil then -- check if Fixture has gobo1
                 Index[1] = PresetIndex - 1
@@ -326,6 +342,7 @@ function Construct_Gobo_Layout(displayHandle, TLay, SeqNrStart, TLayNr, AppNr, P
                     Selected_Slot_Select_ID[1], prefix)
             end
         end
+		SetProgress(progHandle, 2)
         if Result[2] == 1 then
             if GetUIChannelIndex(SelectionFirst(), GetAttributeIndex('Gobo2')) ~= nil then -- check if Fixture has gobo2
                 Index[2] = PresetIndex - 1
@@ -333,6 +350,7 @@ function Construct_Gobo_Layout(displayHandle, TLay, SeqNrStart, TLayNr, AppNr, P
                     Selected_Slot_Select_ID[2], prefix)
             end
         end
+		SetProgress(progHandle, 3)
         if Result[3] == 1 then
             if GetUIChannelIndex(SelectionFirst(), GetAttributeIndex('Gobo3')) ~= nil then -- check if Fixture has gobo3
                 Index[3] = PresetIndex - 1
@@ -340,6 +358,7 @@ function Construct_Gobo_Layout(displayHandle, TLay, SeqNrStart, TLayNr, AppNr, P
                     Selected_Slot_Select_ID[3], prefix)
             end
         end
+		SetProgress(progHandle, 4)
         if Result[4] == 1 then
             if GetUIChannelIndex(SelectionFirst(), GetAttributeIndex('EFFECTWHEEL')) ~= nil then -- check if Fixture has EFFECTWHEEL
                 Index[4] = PresetIndex - 1
@@ -347,6 +366,7 @@ function Construct_Gobo_Layout(displayHandle, TLay, SeqNrStart, TLayNr, AppNr, P
                     Selected_Slot_Select_ID[4], prefix)
             end
         end
+		SetProgress(progHandle, 5)
         if Result[5] == 1 then
             if GetUIChannelIndex(SelectionFirst(), GetAttributeIndex('Prism1')) ~= nil then -- check if Fixture has Prism1
                 Index[5] = PresetIndex - 1
@@ -354,6 +374,7 @@ function Construct_Gobo_Layout(displayHandle, TLay, SeqNrStart, TLayNr, AppNr, P
                     Selected_Slot_Select_ID[5], prefix)
             end
         end
+		SetProgress(progHandle, 6)
         if Result[6] == 1 then
             if GetUIChannelIndex(SelectionFirst(), GetAttributeIndex('Prism2')) ~= nil then -- check if Fixture has Prism2
                 Index[6] = PresetIndex - 1
@@ -361,16 +382,23 @@ function Construct_Gobo_Layout(displayHandle, TLay, SeqNrStart, TLayNr, AppNr, P
                     Selected_Slot_Select_ID[6], prefix)
             end
         end
+    	StopProgress(progHandle)
 
         CmdIndirectWait("Cd Root")
         CmdIndirectWait("ClearAll; Fixture " .. FixtureNum)
 
+        local progHandle = StartProgress("Create Appearances")
+    	local startIdx, endIdx = 1, 6
+        SetProgressRange(progHandle, startIdx, endIdx)
+
+		SetProgress(progHandle, 1)
         if Result[1] == 1 then
             if GetUIChannelIndex(SelectionFirst(), GetAttributeIndex('Gobo1')) then -- check if Fixture has gobo1
                 AppIndex[1] = AppNr - 1
                 AppNr = CreateAppearances(FixtureType, "Gobo1", AppNr, prefix)
             end
         end
+		SetProgress(progHandle, 2)
         if Result[2] == 1 then
             CmdIndirectWait("ClearAll; Fixture " .. FixtureNum)
             if GetUIChannelIndex(SelectionFirst(), GetAttributeIndex('Gobo2')) then -- check if Fixture has gobo2
@@ -378,6 +406,7 @@ function Construct_Gobo_Layout(displayHandle, TLay, SeqNrStart, TLayNr, AppNr, P
                 AppNr = CreateAppearances(FixtureType, "Gobo2", AppNr, prefix)
             end
         end
+		SetProgress(progHandle, 3)
         if Result[3] == 1 then
             CmdIndirectWait("ClearAll; Fixture " .. FixtureNum)
             if GetUIChannelIndex(SelectionFirst(), GetAttributeIndex('Gobo3')) then -- check if Fixture has gobo3
@@ -385,6 +414,7 @@ function Construct_Gobo_Layout(displayHandle, TLay, SeqNrStart, TLayNr, AppNr, P
                 AppNr = CreateAppearances(FixtureType, "Gobo3", AppNr, prefix)
             end
         end
+		SetProgress(progHandle, 4)
         if Result[4] == 1 then
             CmdIndirectWait("ClearAll; Fixture " .. FixtureNum)
             if GetUIChannelIndex(SelectionFirst(), GetAttributeIndex('EFFECTWHEEL')) then -- check if Fixture has EFFECTWHEEL
@@ -392,6 +422,7 @@ function Construct_Gobo_Layout(displayHandle, TLay, SeqNrStart, TLayNr, AppNr, P
                 AppNr = CreateAppearances(FixtureType, "EFFECTWHEEL", AppNr, prefix)
             end
         end
+		SetProgress(progHandle, 5)
         if Result[5] == 1 then
             CmdIndirectWait("ClearAll; Fixture " .. FixtureNum)
             if GetUIChannelIndex(SelectionFirst(), GetAttributeIndex('Prism1')) then -- check if Fixture has Prism1
@@ -399,6 +430,7 @@ function Construct_Gobo_Layout(displayHandle, TLay, SeqNrStart, TLayNr, AppNr, P
                 AppNr = CreateAppearances(FixtureType, "Prism1", AppNr, prefix)
             end
         end
+		SetProgress(progHandle, 6)
         if Result[6] == 1 then
             CmdIndirectWait("ClearAll; Fixture " .. FixtureNum)
             if GetUIChannelIndex(SelectionFirst(), GetAttributeIndex('Prism2')) then -- check if Fixture has Prism2
@@ -406,6 +438,7 @@ function Construct_Gobo_Layout(displayHandle, TLay, SeqNrStart, TLayNr, AppNr, P
                 AppNr = CreateAppearances(FixtureType, "Prism2", AppNr, prefix)
             end
         end
+    	StopProgress(progHandle)
 
         CmdIndirectWait("Cd Root")
 
