@@ -529,7 +529,7 @@ local function Main(displayHandle)
     local input7Icon = inputsGrid:Append("Button")
     input7Icon.Text = ""
     input7Icon.Anchors = { left = 0, right = 0, top = TopInc, bottom = TopInc }
-    input7Icon.Icon = "object_matricks"
+    input7Icon.Icon = "display"
     input7Icon.Margin = { left = 0, right = 2, top = TopInc, bottom = 2 }
     input7Icon.HasHover = "No";
     input7Icon.BackColor = colorMatricks
@@ -549,7 +549,7 @@ local function Main(displayHandle)
     input7LineEdit.Padding = "5,5"
     input7LineEdit.Margin = { left = 2, right = 0, top = TopInc, bottom = 2 }
     input7LineEdit.Text = " Sequenciel "
-    input7LineEdit.State = 0;
+    input7LineEdit.State = 1
     input7LineEdit.PluginComponent = myHandle
     input7LineEdit.Clicked = "CheckBoxClicked"
     input7LineEdit.Font = "2"
@@ -568,7 +568,7 @@ local function Main(displayHandle)
     input7Sujestion.Anchors = { left = 8, right = 9, top = TopInc, bottom = TopInc }
     input7Sujestion.Margin = { left = 2, right = 0, top = TopInc, bottom = 2 }
     input7Sujestion.Text = " Cue "
-    input7Sujestion.State = 0;
+    input7Sujestion.State = 0
     input7Sujestion.PluginComponent = myHandle
     input7Sujestion.Clicked = 'CheckBoxClicked'
     input7Sujestion.Font = "2"
@@ -687,16 +687,24 @@ local function Main(displayHandle)
     end
 
     signalTable.CheckBoxClicked = function(caller)
-  
         Echo("Checkbox '" .. caller.Text .. "' clicked. State = " .. caller.State)
-        
+
         if (caller.State == 1) then
-          caller.State = 0
+            if (caller.Text == " Sequenciel ") then
+                input7Sujestion.State = 1
+            else
+                input7LineEdit.State = 1
+            end
+            caller.State = 0
         else
-          caller.State = 1
+            if (caller.Text == " Sequenciel ") then
+                input7Sujestion.State = 0
+            else
+                input7LineEdit.State = 0
+            end
+            caller.State = 1
         end
-      
-      end
+    end
 
     signalTable.OnInput1TextChanged = function(caller)
         NaLay = caller.Content:gsub("'", "")
@@ -987,8 +995,8 @@ local function Main(displayHandle)
         CmdIndirectWait('SelectFixtures Group ' .. FGNr_)
         local myFixtureIndex = SelectionFirst(true)
         local mySubFixture = GetSubfixture(myFixtureIndex)
-	    local progHandle = StartProgress("Check Wheel")
-    	local startIdx, endIdx = 1, 6
+        local progHandle = StartProgress("Check Wheel")
+        local startIdx, endIdx = 1, 6
         SetProgressRange(progHandle, startIdx, endIdx)
 
         if mySubFixture ~= nil then
@@ -997,32 +1005,32 @@ local function Main(displayHandle)
         end
 
         Cmd("clearall; fixture " .. FixtureID_)
-		SetProgress(progHandle, 1)
+        SetProgress(progHandle, 1)
         if GetUIChannelIndex(SelectionFirst(), GetAttributeIndex('Gobo1')) ~= nil then -- check if fixture has gobo1
-        Nr_Gobo_ = Check_Gobo("Gobo1", FixtureID_, Nr_Gobo_)
+            Nr_Gobo_ = Check_Gobo("Gobo1", FixtureID_, Nr_Gobo_)
         end
-		SetProgress(progHandle, 2)
+        SetProgress(progHandle, 2)
         if GetUIChannelIndex(SelectionFirst(), GetAttributeIndex('Gobo2')) ~= nil then -- check if fixture has gobo2
-        Nr_Gobo_ = Check_Gobo("Gobo2", FixtureID_, Nr_Gobo_)
+            Nr_Gobo_ = Check_Gobo("Gobo2", FixtureID_, Nr_Gobo_)
         end
-		SetProgress(progHandle, 3)
+        SetProgress(progHandle, 3)
         if GetUIChannelIndex(SelectionFirst(), GetAttributeIndex('Gobo3')) ~= nil then -- check if fixture has gobo3
-        Nr_Gobo_ = Check_Gobo("Gobo3", FixtureID_, Nr_Gobo_)
+            Nr_Gobo_ = Check_Gobo("Gobo3", FixtureID_, Nr_Gobo_)
         end
-		SetProgress(progHandle, 4)
+        SetProgress(progHandle, 4)
         if GetUIChannelIndex(SelectionFirst(), GetAttributeIndex('EFFECTWHEEL')) ~= nil then -- check if fixture has EFFECTWHEEL
-        Nr_Gobo_ = Check_Gobo("EFFECTWHEEL", FixtureID_, Nr_Gobo_)
+            Nr_Gobo_ = Check_Gobo("EFFECTWHEEL", FixtureID_, Nr_Gobo_)
         end
-		SetProgress(progHandle, 5)
+        SetProgress(progHandle, 5)
         if GetUIChannelIndex(SelectionFirst(), GetAttributeIndex('Prism1')) ~= nil then -- check if fixture has Prism1
-        Nr_Gobo_ = Check_Gobo("Prism1", FixtureID_, Nr_Gobo_)
+            Nr_Gobo_ = Check_Gobo("Prism1", FixtureID_, Nr_Gobo_)
         end
-		SetProgress(progHandle, 6)
+        SetProgress(progHandle, 6)
         if GetUIChannelIndex(SelectionFirst(), GetAttributeIndex('Prism2')) ~= nil then -- check if fixture has Prism2
-        Nr_Gobo_ = Check_Gobo("Prism2", FixtureID_, Nr_Gobo_)
+            Nr_Gobo_ = Check_Gobo("Prism2", FixtureID_, Nr_Gobo_)
         end
         Echo(Nr_Gobo_)
-    	StopProgress(progHandle)
+        StopProgress(progHandle)
         return Nr_Gobo_
     end
 end
