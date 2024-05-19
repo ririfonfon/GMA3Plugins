@@ -221,7 +221,7 @@ local function Main(displayHandle)
     -- This is row 2 of the dlgFrame.
     local inputsGrid = dlgFrame:Append("UILayoutGrid")
     inputsGrid.Columns = 10
-    inputsGrid.Rows = 8
+    inputsGrid.Rows = 9
     inputsGrid.Anchors = { left = 0, right = 0, top = 1, bottom = 1 }
     inputsGrid.Margin = { left = 0, right = 0, top = 0, bottom = 5 }
 
@@ -525,6 +525,61 @@ local function Main(displayHandle)
 
     TopInc = TopInc + 1
 
+    -- Create the UI elements for the 7 input.
+    local input7Icon = inputsGrid:Append("Button")
+    input7Icon.Text = ""
+    input7Icon.Anchors = { left = 0, right = 0, top = TopInc, bottom = TopInc }
+    input7Icon.Icon = "object_matricks"
+    input7Icon.Margin = { left = 0, right = 2, top = TopInc, bottom = 2 }
+    input7Icon.HasHover = "No";
+    input7Icon.BackColor = colorMatricks
+
+    local input7Label = inputsGrid:Append("UIObject")
+    input7Label.Text = "Mode Type"
+    input7Label.TextalignmentH = "Left"
+    input7Label.Anchors = { left = 1, right = 3, top = TopInc, bottom = TopInc }
+    input7Label.Padding = "5,5"
+    input7Label.Margin = { left = 2, right = 2, top = TopInc, bottom = 2 }
+    input7Label.HasHover = "No";
+    input7Label.Font = "2"
+    input7Label.BackColor = colorMatricks
+
+    local input7LineEdit = inputsGrid:Append("Button")
+    input7LineEdit.Anchors = { left = 4, right = 7, top = TopInc, bottom = TopInc }
+    input7LineEdit.Padding = "5,5"
+    input7LineEdit.Margin = { left = 2, right = 0, top = TopInc, bottom = 2 }
+    input7LineEdit.Text = " Sequenciel "
+    input7LineEdit.State = 0;
+    input7LineEdit.PluginComponent = myHandle
+    input7LineEdit.Clicked = "CheckBoxClicked"
+    input7LineEdit.Font = "2"
+    input7LineEdit.BackColor = colorMatricks
+    input7LineEdit.Visible = "No"
+    -- input7LineEdit.Prompt = "Nr: "
+    -- input7LineEdit.TextAutoAdjust = "Yes"
+    -- input7LineEdit.Filter = "0123456789"
+    -- input7LineEdit.VkPluginName = "TextInputNumOnly"
+    -- input7LineEdit.Content = ""
+    -- input7LineEdit.MaxTextLength = 6
+    -- input7LineEdit.HideFocusFrame = "Yes"
+    -- input7LineEdit.TextChanged = "OnInput7TextChanged"
+
+    local input7Sujestion = inputsGrid:Append("Button")
+    input7Sujestion.Anchors = { left = 8, right = 9, top = TopInc, bottom = TopInc }
+    input7Sujestion.Margin = { left = 2, right = 0, top = TopInc, bottom = 2 }
+    input7Sujestion.Text = " Cue "
+    input7Sujestion.State = 0;
+    input7Sujestion.PluginComponent = myHandle
+    input7Sujestion.Clicked = 'CheckBoxClicked'
+    input7Sujestion.Font = "2"
+    input7Sujestion.backColor = colorMatricks
+    input7Sujestion.Visible = "No"
+    -- input7Sujestion.Icon = "zoom"
+    -- input7Sujestion.Name = 'Matrick_Select'
+    -- input7Sujestion.HasHover = "yes"
+
+    TopInc = TopInc + 1
+
     -- Create the UI elements for the 8 input.
     local input8Icon = inputsGrid:Append("Button")
     input8Icon.Text = ""
@@ -630,6 +685,18 @@ local function Main(displayHandle)
         Construct_Gobo_Layout(displayHandle, TLay, SeqNrStart, TLayNr, AppNr,
             Preset_5_Current, Preset_5_NrStart, SelectedGrp, SelectedGrpNo, TLayNrRef, NaLay, MaxGobLgn, MacroNrStart)
     end
+
+    signalTable.CheckBoxClicked = function(caller)
+  
+        Echo("Checkbox '" .. caller.Text .. "' clicked. State = " .. caller.State)
+        
+        if (caller.State == 1) then
+          caller.State = 0
+        else
+          caller.State = 1
+        end
+      
+      end
 
     signalTable.OnInput1TextChanged = function(caller)
         NaLay = caller.Content:gsub("'", "")
@@ -840,6 +907,7 @@ local function Main(displayHandle)
             input4LineEdit.Visible = "Yes"
             input5LineEdit.Visible = "Yes"
             input6LineEdit.Visible = "Yes"
+            input7LineEdit.Visible = "Yes"
             input8LineEdit.Visible = "Yes"
             input1Sujestion.Visible = "Yes"
             input2Sujestion.Visible = "Yes"
@@ -847,6 +915,7 @@ local function Main(displayHandle)
             input4Sujestion.Visible = "Yes"
             input5Sujestion.Visible = "Yes"
             input6Sujestion.Visible = "Yes"
+            input7Sujestion.Visible = "Yes"
             Nr_Gobo = Check_Nr_Gobo(FixtureGroups[SelGrp].NO, Nr_Gobo)
         elseif caller.Name == "Name_Select" then
             input1LineEdit.Content = choice
