@@ -27,7 +27,7 @@ local function Main(displayHandle)
     local NaLay = "Layout_GOBO"
     local SeqNr = DataPool().Sequences:Children()
     local SeqNrStart
-    local SeqNrRange
+    local SeqNrRange = 0
     local MacroNr = DataPool().Macros:Children()
     local MacroNrStart
     local MacroNrRange
@@ -40,6 +40,11 @@ local function Main(displayHandle)
     local Preset_5_Current
     local MaxGobLgn = 16
     local Nr_Gobo = 0
+    local Nr_Total_Gobo = 0
+    local Nr_Whell = 0
+    local Nr_Total_Whell = 0
+    local Mode_Cue_Type = false
+    local First_Seq_Check = false
     local Selected_Grp_Wheel = {}
 
     local TopInc = 0
@@ -141,6 +146,7 @@ local function Main(displayHandle)
     local colorGroups = Root().ColorTheme.ColorGroups.PoolWindow.Groups
     local colorText = Root().ColorTheme.colorGroups.Global.Text
     local colorAlertText = Root().ColorTheme.colorGroups.Global.AlertText
+    local colorText = Root().ColorTheme.colorGroups.Global.AlertText
 
     -- Get the overlay.
     local display = GetDisplayByIndex(displayIndex)
@@ -532,7 +538,7 @@ local function Main(displayHandle)
     input7Icon.Icon = "display"
     input7Icon.Margin = { left = 0, right = 2, top = TopInc, bottom = 2 }
     input7Icon.HasHover = "No";
-    input7Icon.BackColor = colorMatricks
+    input7Icon.BackColor = colorPartlySelected
 
     local input7Label = inputsGrid:Append("UIObject")
     input7Label.Text = "Mode Type"
@@ -542,41 +548,18 @@ local function Main(displayHandle)
     input7Label.Margin = { left = 2, right = 2, top = TopInc, bottom = 2 }
     input7Label.HasHover = "No";
     input7Label.Font = "2"
-    input7Label.BackColor = colorMatricks
+    input7Label.BackColor = colorPartlySelected
 
     local input7LineEdit = inputsGrid:Append("Button")
-    input7LineEdit.Anchors = { left = 4, right = 7, top = TopInc, bottom = TopInc }
+    input7LineEdit.Anchors = { left = 4, right = 9, top = TopInc, bottom = TopInc }
     input7LineEdit.Padding = "5,5"
     input7LineEdit.Margin = { left = 2, right = 0, top = TopInc, bottom = 2 }
-    input7LineEdit.Text = " Sequenciel "
-    input7LineEdit.State = 1
+    input7LineEdit.Text = " Sequence "
     input7LineEdit.PluginComponent = myHandle
     input7LineEdit.Clicked = "CheckBoxClicked"
     input7LineEdit.Font = "2"
-    input7LineEdit.BackColor = colorMatricks
+    input7LineEdit.BackColor = colorPartlySelected
     input7LineEdit.Visible = "No"
-    -- input7LineEdit.Prompt = "Nr: "
-    -- input7LineEdit.TextAutoAdjust = "Yes"
-    -- input7LineEdit.Filter = "0123456789"
-    -- input7LineEdit.VkPluginName = "TextInputNumOnly"
-    -- input7LineEdit.Content = ""
-    -- input7LineEdit.MaxTextLength = 6
-    -- input7LineEdit.HideFocusFrame = "Yes"
-    -- input7LineEdit.TextChanged = "OnInput7TextChanged"
-
-    local input7Sujestion = inputsGrid:Append("Button")
-    input7Sujestion.Anchors = { left = 8, right = 9, top = TopInc, bottom = TopInc }
-    input7Sujestion.Margin = { left = 2, right = 0, top = TopInc, bottom = 2 }
-    input7Sujestion.Text = " Cue "
-    input7Sujestion.State = 0
-    input7Sujestion.PluginComponent = myHandle
-    input7Sujestion.Clicked = 'CheckBoxClicked'
-    input7Sujestion.Font = "2"
-    input7Sujestion.backColor = colorMatricks
-    input7Sujestion.Visible = "No"
-    -- input7Sujestion.Icon = "zoom"
-    -- input7Sujestion.Name = 'Matrick_Select'
-    -- input7Sujestion.HasHover = "yes"
 
     TopInc = TopInc + 1
 
@@ -683,26 +666,21 @@ local function Main(displayHandle)
         end
         Obj.Delete(screenOverlay, Obj.Index(baseInput))
         Construct_Gobo_Layout(displayHandle, TLay, SeqNrStart, TLayNr, AppNr,
-            Preset_5_Current, Preset_5_NrStart, SelectedGrp, SelectedGrpNo, TLayNrRef, NaLay, MaxGobLgn, MacroNrStart)
+            Preset_5_Current, Preset_5_NrStart, SelectedGrp, SelectedGrpNo, TLayNrRef, NaLay, MaxGobLgn, MacroNrStart,
+            Mode_Cue_Type)
     end
 
     signalTable.CheckBoxClicked = function(caller)
-        Echo("Checkbox '" .. caller.Text .. "' clicked. State = " .. caller.State)
+        Echo("Checkbox '" .. caller.Text)
 
-        if (caller.State == 1) then
-            if (caller.Text == " Sequenciel ") then
-                input7Sujestion.State = 1
-            else
-                input7LineEdit.State = 1
-            end
-            caller.State = 0
-        else
-            if (caller.Text == " Sequenciel ") then
-                input7Sujestion.State = 0
-            else
-                input7LineEdit.State = 0
-            end
-            caller.State = 1
+        if (caller.Text == " Sequence ") then
+            input7LineEdit.Text = " Cue "
+            input8LineEdit.Visible = "Yes"
+            Mode_Cue_Type = true
+        elseif (caller.Text == " Cue ") then
+            input7LineEdit.Text = " Sequence "
+            input8LineEdit.Visible = "No"
+            Mode_Cue_Type = false
         end
     end
 
@@ -743,23 +721,9 @@ local function Main(displayHandle)
         end
         SeqNrStart = caller.Content:gsub("'", "")
         SeqNrStart = tonumber(SeqNrStart)
-        SeqNrRange = SeqNrStart + tonumber(Nr_Gobo)
-        for k in ipairs(SeqNr) do
-            if SeqNrStart <= tonumber(SeqNr[k].NO) then
-                if SeqNrRange >= tonumber(SeqNr[k].NO) then
-                    OkButton.Visible = "No"
-                    input3LineEdit.TextColor = colorAlertText
-                    checks = true
-                    for i in ipairs(popuplists.Seq_Select) do
-                        if SeqNrStart <= tonumber(popuplists.Seq_Select[i]) then
-                            if SeqNrRange >= tonumber(popuplists.Seq_Select[i]) then
-                                table.remove(popuplists.Seq_Select, i)
-                            end
-                        end
-                    end
-                end
-            end
-        end
+
+        checks = Check_Sequence(checks,SeqNrRange)
+
         if checks == false then
             input3LineEdit.TextColor = colorText
             if check_grp == true then
@@ -916,15 +880,15 @@ local function Main(displayHandle)
             input5LineEdit.Visible = "Yes"
             input6LineEdit.Visible = "Yes"
             input7LineEdit.Visible = "Yes"
-            input8LineEdit.Visible = "Yes"
+            input8LineEdit.Visible = "No"
             input1Sujestion.Visible = "Yes"
             input2Sujestion.Visible = "Yes"
             input3Sujestion.Visible = "Yes"
             input4Sujestion.Visible = "Yes"
             input5Sujestion.Visible = "Yes"
             input6Sujestion.Visible = "Yes"
-            input7Sujestion.Visible = "Yes"
             Nr_Gobo = Check_Nr_Gobo(FixtureGroups[SelGrp].NO, Nr_Gobo)
+            Nr_Total_Gobo = Nr_Total_Gobo + Nr_Gobo
         elseif caller.Name == "Name_Select" then
             input1LineEdit.Content = choice
         elseif caller.Name == "Lay_Select" then
@@ -991,6 +955,7 @@ local function Main(displayHandle)
 
     function Check_Nr_Gobo(FGNr_, Nr_Gobo_)
         local FixtureID_
+        Nr_Whell = 0
         CmdIndirectWait('Clearall')
         CmdIndirectWait('SelectFixtures Group ' .. FGNr_)
         local myFixtureIndex = SelectionFirst(true)
@@ -1007,31 +972,77 @@ local function Main(displayHandle)
         Cmd("clearall; fixture " .. FixtureID_)
         SetProgress(progHandle, 1)
         if GetUIChannelIndex(SelectionFirst(), GetAttributeIndex('Gobo1')) ~= nil then -- check if fixture has gobo1
+            Nr_Whell = Nr_Whell + 1
             Nr_Gobo_ = Check_Gobo("Gobo1", FixtureID_, Nr_Gobo_)
         end
         SetProgress(progHandle, 2)
         if GetUIChannelIndex(SelectionFirst(), GetAttributeIndex('Gobo2')) ~= nil then -- check if fixture has gobo2
+            Nr_Whell = Nr_Whell + 1
             Nr_Gobo_ = Check_Gobo("Gobo2", FixtureID_, Nr_Gobo_)
         end
         SetProgress(progHandle, 3)
         if GetUIChannelIndex(SelectionFirst(), GetAttributeIndex('Gobo3')) ~= nil then -- check if fixture has gobo3
+            Nr_Whell = Nr_Whell + 1
             Nr_Gobo_ = Check_Gobo("Gobo3", FixtureID_, Nr_Gobo_)
         end
         SetProgress(progHandle, 4)
         if GetUIChannelIndex(SelectionFirst(), GetAttributeIndex('EFFECTWHEEL')) ~= nil then -- check if fixture has EFFECTWHEEL
+            Nr_Whell = Nr_Whell + 1
             Nr_Gobo_ = Check_Gobo("EFFECTWHEEL", FixtureID_, Nr_Gobo_)
         end
         SetProgress(progHandle, 5)
         if GetUIChannelIndex(SelectionFirst(), GetAttributeIndex('Prism1')) ~= nil then -- check if fixture has Prism1
+            Nr_Whell = Nr_Whell + 1
             Nr_Gobo_ = Check_Gobo("Prism1", FixtureID_, Nr_Gobo_)
         end
         SetProgress(progHandle, 6)
         if GetUIChannelIndex(SelectionFirst(), GetAttributeIndex('Prism2')) ~= nil then -- check if fixture has Prism2
+            Nr_Whell = Nr_Whell + 1
             Nr_Gobo_ = Check_Gobo("Prism2", FixtureID_, Nr_Gobo_)
         end
-        Echo(Nr_Gobo_)
+        Nr_Total_Whell = Nr_Total_Whell + Nr_Whell
+        Echo(" Nr Gobo " .. Nr_Gobo_ .. " Nr Whell " .. Nr_Whell .. " Nr Whell total " .. Nr_Total_Whell)
         StopProgress(progHandle)
         return Nr_Gobo_
+    end
+
+    function Check_Sequence(checks,SeqNrRange_)
+        if (Mode_Cue_Type) then
+            if (First_Seq_Check) then
+                SeqNrRange_ = SeqNrRange_ + tonumber(Nr_Gobo)
+            else
+                SeqNrRange_ = SeqNrRange_ + SeqNrStart + tonumber(Nr_Gobo)
+            end
+            Echo("cue mode " .. SeqNrRange_)
+        else
+            if (First_Seq_Check) then
+                SeqNrRange_ = SeqNrRange_ + tonumber(Nr_Whell)
+            else
+                SeqNrRange_ = SeqNrRange_ + SeqNrStart + tonumber(Nr_Whell)
+            end
+            Echo("sequence mode " .. SeqNrRange_)
+        end
+        for k in ipairs(SeqNr) do
+            if SeqNrStart <= tonumber(SeqNr[k].NO) then
+                if SeqNrRange_ >= tonumber(SeqNr[k].NO) then
+                    OkButton.Visible = "No"
+                    input3LineEdit.TextColor = colorAlertText
+                    checks = true
+                    for i in ipairs(popuplists.Seq_Select) do
+                        if SeqNrStart <= tonumber(popuplists.Seq_Select[i]) then
+                            if SeqNrRange_ >= tonumber(popuplists.Seq_Select[i]) then
+                                table.remove(popuplists.Seq_Select, i)
+                            end
+                        end
+                    end
+                end
+            end
+        end
+        if checks == false then
+            SeqNrRange = SeqNrRange_
+            Echo(" gggggogoogogogogog")
+        end
+        return checks
     end
 end
 -- Run the plugin.
