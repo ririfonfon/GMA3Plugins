@@ -6,7 +6,7 @@ Created by Richard Fontaine "RIRI", May 2024.
 --]]
 
 function Construct_Gobo_Layout(displayHandle, TLay, SeqNrStart, TLayNr, AppNr, Preset_5_Current, Preset_5_NrStart,
-                               SelectedGrp, SelectedGrpNo, TLayNrRef, NaLay, MaxGobLgn, MacroNrStart)
+                               SelectedGrp, SelectedGrpNo, TLayNrRef, NaLay, MaxGobLgn, MacroNrStart, Mode_Cue_Type)
     Echo(
         '**********************************************************************************************************************************************************************')
     -- fix prefix
@@ -155,7 +155,7 @@ function Construct_Gobo_Layout(displayHandle, TLay, SeqNrStart, TLayNr, AppNr, P
             Slot_Select_ID[1] = MessageBox(
                 {
                     title = FixtureGroupsName .. " Wheel Gobo1",
-                    commands = { { value = 1, name = "Ok" }, { value = 0, name = "Cancel" } },
+                    commands = { { value = 1, name = "Ok" }, { value = 0, name = "Next Wheel" } },
                     states = Item_List,
                     icon = "object_plugin1",
                     titleTextColor = "Global.Text",
@@ -186,7 +186,7 @@ function Construct_Gobo_Layout(displayHandle, TLay, SeqNrStart, TLayNr, AppNr, P
             Slot_Select_ID[2] = MessageBox(
                 {
                     title = FixtureGroupsName .. " Wheel Gobo2",
-                    commands = { { value = 1, name = "Ok" }, { value = 0, name = "Cancel" } },
+                    commands = { { value = 1, name = "Ok" }, { value = 0, name = "Next Wheel" } },
                     states = Item_List,
                     icon = "object_plugin1",
                     titleTextColor = "Global.Text",
@@ -217,7 +217,7 @@ function Construct_Gobo_Layout(displayHandle, TLay, SeqNrStart, TLayNr, AppNr, P
             Slot_Select_ID[3] = MessageBox(
                 {
                     title = FixtureGroupsName .. " Wheel Gobo3",
-                    commands = { { value = 1, name = "Ok" }, { value = 0, name = "Cancel" } },
+                    commands = { { value = 1, name = "Ok" }, { value = 0, name = "Next Wheel" } },
                     states = Item_List,
                     icon = "object_plugin1",
                     titleTextColor = "Global.Text",
@@ -248,7 +248,7 @@ function Construct_Gobo_Layout(displayHandle, TLay, SeqNrStart, TLayNr, AppNr, P
             Slot_Select_ID[4] = MessageBox(
                 {
                     title = FixtureGroupsName .. " Wheel EFFECTWHEEL",
-                    commands = { { value = 1, name = "Ok" }, { value = 0, name = "Cancel" } },
+                    commands = { { value = 1, name = "Ok" }, { value = 0, name = "Next Wheel" } },
                     states = Item_List,
                     icon = "object_plugin1",
                     titleTextColor = "Global.Text",
@@ -279,7 +279,7 @@ function Construct_Gobo_Layout(displayHandle, TLay, SeqNrStart, TLayNr, AppNr, P
             Slot_Select_ID[5] = MessageBox(
                 {
                     title = FixtureGroupsName .. " Wheel Prism1",
-                    commands = { { value = 1, name = "Ok" }, { value = 0, name = "Cancel" } },
+                    commands = { { value = 1, name = "Ok" }, { value = 0, name = "Next Wheel" } },
                     states = Item_List,
                     icon = "object_plugin1",
                     titleTextColor = "Global.Text",
@@ -310,7 +310,7 @@ function Construct_Gobo_Layout(displayHandle, TLay, SeqNrStart, TLayNr, AppNr, P
             Slot_Select_ID[6] = MessageBox(
                 {
                     title = FixtureGroupsName .. " Wheel Prism2",
-                    commands = { { value = 1, name = "Ok" }, { value = 0, name = "Cancel" } },
+                    commands = { { value = 1, name = "Ok" }, { value = 0, name = "Next Wheel" } },
                     states = Item_List,
                     icon = "object_plugin1",
                     titleTextColor = "Global.Text",
@@ -330,8 +330,7 @@ function Construct_Gobo_Layout(displayHandle, TLay, SeqNrStart, TLayNr, AppNr, P
             if (c == 1) then Result[6] = 0 end
         end
 
-        local progHandle = StartProgress("Create Preset")
-    	local startIdx, endIdx = 1, 6
+        progHandle = StartProgress("Create Preset")
         SetProgressRange(progHandle, startIdx, endIdx)
 
 		SetProgress(progHandle, 1)
@@ -387,10 +386,9 @@ function Construct_Gobo_Layout(displayHandle, TLay, SeqNrStart, TLayNr, AppNr, P
         CmdIndirectWait("Cd Root")
         CmdIndirectWait("ClearAll; Fixture " .. FixtureNum)
 
-        local progHandle = StartProgress("Create Appearances")
-    	local startIdx, endIdx = 1, 6
+        progHandle = StartProgress("Create Appearances")
+    	
         SetProgressRange(progHandle, startIdx, endIdx)
-
 		SetProgress(progHandle, 1)
         if Result[1] == 1 then
             if GetUIChannelIndex(SelectionFirst(), GetAttributeIndex('Gobo1')) then -- check if Fixture has gobo1
