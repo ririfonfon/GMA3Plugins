@@ -146,7 +146,6 @@ local function Main(displayHandle)
     local colorGroups = Root().ColorTheme.ColorGroups.PoolWindow.Groups
     local colorText = Root().ColorTheme.colorGroups.Global.Text
     local colorAlertText = Root().ColorTheme.colorGroups.Global.AlertText
-    local colorText = Root().ColorTheme.colorGroups.Global.AlertText
 
     -- Get the overlay.
     local display = GetDisplayByIndex(displayIndex)
@@ -715,18 +714,44 @@ local function Main(displayHandle)
     signalTable.OnInput3TextChanged = function(caller)
         local checks = false
         if caller.Content == "" or caller.Content == "0" then
+            Echo("nul content")
             OkButton.Visible = "No"
             input3LineEdit.TextColor = colorAlertText
             checks = true
         end
         SeqNrStart = caller.Content:gsub("'", "")
         SeqNrStart = tonumber(SeqNrStart)
-
-        checks = Check_Sequence(checks,SeqNrRange)
-
+        if Mode_Cue_Type then
+            Echo("Cue Mode")
+            SeqNrRange = SeqNrStart + Nr_Total_Gobo
+        else
+            Echo("Seq Mode")
+            SeqNrRange = SeqNrStart + Nr_Total_Whell
+        end
+        Echo("seq range " .. SeqNrStart .. " Thru " .. SeqNrRange)
+        for k in ipairs(SeqNr) do
+            if SeqNrStart <= tonumber(SeqNr[k].NO) then
+                Echo(SeqNrStart .. " <= " .. tonumber(SeqNr[k].NO))
+                if SeqNrRange >= tonumber(SeqNr[k].NO) then
+                    Echo("if seq")
+                    Echo(SeqNrRange .. " >= " .. tonumber(SeqNr[k].NO))
+                    OkButton.Visible = "No"
+                    input3LineEdit.TextColor = colorAlertText
+                    checks = true
+                    for i in ipairs(popuplists.Seq_Select) do
+                        if SeqNrStart <= tonumber(popuplists.Seq_Select[i]) then
+                            if SeqNrRange >= tonumber(popuplists.Seq_Select[i]) then
+                                table.remove(popuplists.Seq_Select, i)
+                            end
+                        end
+                    end
+                end
+            end
+        end
         if checks == false then
             input3LineEdit.TextColor = colorText
             if check_grp == true then
+                Echo("check_grp")
                 OkButton.Visible = "Yes"
             end
         end
@@ -880,15 +905,25 @@ local function Main(displayHandle)
             input5LineEdit.Visible = "Yes"
             input6LineEdit.Visible = "Yes"
             input7LineEdit.Visible = "Yes"
-            input8LineEdit.Visible = "No"
             input1Sujestion.Visible = "Yes"
             input2Sujestion.Visible = "Yes"
             input3Sujestion.Visible = "Yes"
             input4Sujestion.Visible = "Yes"
             input5Sujestion.Visible = "Yes"
             input6Sujestion.Visible = "Yes"
-            Nr_Gobo = Check_Nr_Gobo(FixtureGroups[SelGrp].NO, Nr_Gobo)
+            Nr_Gobo, Nr_Whell = Check_Nr_Gobo(FixtureGroups[SelGrp].NO, Nr_Gobo)
             Nr_Total_Gobo = Nr_Total_Gobo + Nr_Gobo
+            Nr_Total_Whell = Nr_Total_Whell + Nr_Whell
+            Echo(" Nr Gobo " ..
+                Nr_Gobo ..
+                " Nr Total Gobo " .. Nr_Total_Gobo .. " Nr Whell " .. Nr_Whell .. " Nr Whell total " .. Nr_Total_Whell)
+            if Mode_Cue_Type then
+                Echo("Cue Mode")
+                input8LineEdit.Visible = "Yes"
+            else
+                Echo("Seq Mode")
+                input8LineEdit.Visible = "No"
+            end
         elseif caller.Name == "Name_Select" then
             input1LineEdit.Content = choice
         elseif caller.Name == "Lay_Select" then
@@ -1000,49 +1035,8 @@ local function Main(displayHandle)
             Nr_Whell = Nr_Whell + 1
             Nr_Gobo_ = Check_Gobo("Prism2", FixtureID_, Nr_Gobo_)
         end
-        Nr_Total_Whell = Nr_Total_Whell + Nr_Whell
-        Echo(" Nr Gobo " .. Nr_Gobo_ .. " Nr Whell " .. Nr_Whell .. " Nr Whell total " .. Nr_Total_Whell)
         StopProgress(progHandle)
-        return Nr_Gobo_
-    end
-
-    function Check_Sequence(checks,SeqNrRange_)
-        if (Mode_Cue_Type) then
-            if (First_Seq_Check) then
-                SeqNrRange_ = SeqNrRange_ + tonumber(Nr_Gobo)
-            else
-                SeqNrRange_ = SeqNrRange_ + SeqNrStart + tonumber(Nr_Gobo)
-            end
-            Echo("cue mode " .. SeqNrRange_)
-        else
-            if (First_Seq_Check) then
-                SeqNrRange_ = SeqNrRange_ + tonumber(Nr_Whell)
-            else
-                SeqNrRange_ = SeqNrRange_ + SeqNrStart + tonumber(Nr_Whell)
-            end
-            Echo("sequence mode " .. SeqNrRange_)
-        end
-        for k in ipairs(SeqNr) do
-            if SeqNrStart <= tonumber(SeqNr[k].NO) then
-                if SeqNrRange_ >= tonumber(SeqNr[k].NO) then
-                    OkButton.Visible = "No"
-                    input3LineEdit.TextColor = colorAlertText
-                    checks = true
-                    for i in ipairs(popuplists.Seq_Select) do
-                        if SeqNrStart <= tonumber(popuplists.Seq_Select[i]) then
-                            if SeqNrRange_ >= tonumber(popuplists.Seq_Select[i]) then
-                                table.remove(popuplists.Seq_Select, i)
-                            end
-                        end
-                    end
-                end
-            end
-        end
-        if checks == false then
-            SeqNrRange = SeqNrRange_
-            Echo(" gggggogoogogogogog")
-        end
-        return checks
+        return Nr_Gobo_, Nr_Whell
     end
 end
 -- Run the plugin.
