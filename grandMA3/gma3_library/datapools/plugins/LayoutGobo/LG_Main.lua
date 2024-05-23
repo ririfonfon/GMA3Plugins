@@ -20,14 +20,15 @@ local function Main(displayHandle)
     local SelectedGrpNo = {}
     local SelGrp
     local Nr_SelectedGrp
-    local check_grp = false
     local TLay = DataPool().Layouts:Children()
     local TLayNr
     local TLayNrRef
     local NaLay = "Layout_GOBO"
     local SeqNr = DataPool().Sequences:Children()
     local SeqNrStart
+    local NrRange = 0
     local SeqNrRange = 0
+    local CueNrRange = 0
     local MacroNr = DataPool().Macros:Children()
     local MacroNrStart
     local MacroNrRange
@@ -670,8 +671,6 @@ local function Main(displayHandle)
     end
 
     signalTable.CheckBoxClicked = function(caller)
-        Echo("Checkbox '" .. caller.Text)
-
         if (caller.Text == " Sequence ") then
             input7LineEdit.Text = " Cue "
             input8LineEdit.Visible = "Yes"
@@ -680,6 +679,34 @@ local function Main(displayHandle)
             input7LineEdit.Text = " Sequence "
             input8LineEdit.Visible = "No"
             Mode_Cue_Type = false
+        end
+        local checks = false
+        CueNrRange = SeqNrStart + Nr_Total_Gobo
+        SeqNrRange = SeqNrStart + Nr_Total_Whell
+        if Mode_Cue_Type then
+            NrRange = CueNrRange
+        else
+            NrRange = SeqNrRange
+        end
+        for k in ipairs(SeqNr) do
+            if SeqNrStart <= tonumber(SeqNr[k].NO) then
+                if NrRange >= tonumber(SeqNr[k].NO) then
+                    OkButton.Visible = "No"
+                    input3LineEdit.TextColor = colorAlertText
+                    checks = true
+                    for i in ipairs(popuplists.Seq_Select) do
+                        if SeqNrStart <= tonumber(popuplists.Seq_Select[i]) then
+                            if NrRange >= tonumber(popuplists.Seq_Select[i]) then
+                                table.remove(popuplists.Seq_Select, i)
+                            end
+                        end
+                    end
+                end
+            end
+        end
+        if checks == false then
+            input3LineEdit.TextColor = colorText
+            OkButton.Visible = "Yes"
         end
     end
 
@@ -705,42 +732,35 @@ local function Main(displayHandle)
         end
         if check == false then
             input2LineEdit.TextColor = colorText
-            if check_grp == true then
-                OkButton.Visible = "Yes"
-            end
+            OkButton.Visible = "Yes"
         end
     end
 
     signalTable.OnInput3TextChanged = function(caller)
         local checks = false
         if caller.Content == "" or caller.Content == "0" then
-            Echo("nul content")
             OkButton.Visible = "No"
             input3LineEdit.TextColor = colorAlertText
             checks = true
         end
         SeqNrStart = caller.Content:gsub("'", "")
         SeqNrStart = tonumber(SeqNrStart)
+        CueNrRange = SeqNrStart + Nr_Total_Gobo
+        SeqNrRange = SeqNrStart + Nr_Total_Whell
         if Mode_Cue_Type then
-            Echo("Cue Mode")
-            SeqNrRange = SeqNrStart + Nr_Total_Gobo
+            NrRange = CueNrRange
         else
-            Echo("Seq Mode")
-            SeqNrRange = SeqNrStart + Nr_Total_Whell
+            NrRange = SeqNrRange
         end
-        Echo("seq range " .. SeqNrStart .. " Thru " .. SeqNrRange)
         for k in ipairs(SeqNr) do
             if SeqNrStart <= tonumber(SeqNr[k].NO) then
-                Echo(SeqNrStart .. " <= " .. tonumber(SeqNr[k].NO))
-                if SeqNrRange >= tonumber(SeqNr[k].NO) then
-                    Echo("if seq")
-                    Echo(SeqNrRange .. " >= " .. tonumber(SeqNr[k].NO))
+                if NrRange >= tonumber(SeqNr[k].NO) then
                     OkButton.Visible = "No"
                     input3LineEdit.TextColor = colorAlertText
                     checks = true
                     for i in ipairs(popuplists.Seq_Select) do
                         if SeqNrStart <= tonumber(popuplists.Seq_Select[i]) then
-                            if SeqNrRange >= tonumber(popuplists.Seq_Select[i]) then
+                            if NrRange >= tonumber(popuplists.Seq_Select[i]) then
                                 table.remove(popuplists.Seq_Select, i)
                             end
                         end
@@ -750,10 +770,7 @@ local function Main(displayHandle)
         end
         if checks == false then
             input3LineEdit.TextColor = colorText
-            if check_grp == true then
-                Echo("check_grp")
-                OkButton.Visible = "Yes"
-            end
+            OkButton.Visible = "Yes"
         end
     end
 
@@ -778,9 +795,7 @@ local function Main(displayHandle)
         end
         if checks == false then
             input4LineEdit.TextColor = colorText
-            if check_grp == true then
-                OkButton.Visible = "Yes"
-            end
+            OkButton.Visible = "Yes"
         end
     end
 
@@ -813,9 +828,7 @@ local function Main(displayHandle)
         end
         if checks == false then
             input5LineEdit.TextColor = colorText
-            if check_grp == true then
-                OkButton.Visible = "Yes"
-            end
+            OkButton.Visible = "Yes"
         end
     end
 
@@ -848,9 +861,7 @@ local function Main(displayHandle)
         end
         if checks == false then
             input6LineEdit.TextColor = colorText
-            if check_grp == true then
-                OkButton.Visible = "Yes"
-            end
+            OkButton.Visible = "Yes"
         end
     end
 
@@ -868,9 +879,7 @@ local function Main(displayHandle)
         end
         if checks == false then
             input8LineEdit.TextColor = colorText
-            if check_grp == true then
-                OkButton.Visible = "Yes"
-            end
+            OkButton.Visible = "Yes"
         end
     end
 
