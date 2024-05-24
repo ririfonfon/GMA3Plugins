@@ -440,8 +440,13 @@ function Construct_Gobo_Layout(displayHandle, TLay, SeqNrStart, TLayNr, AppNr, P
 
         CmdIndirectWait("Cd Root")
 
-        SeqNrStart, LayNr, LayY = CreateSequence(FixtureType, prefix, SeqNrStart, Preset_Name, FixtureGroupsNo, Slot_ID,
-            Index, AppIndex, FixtureGroupsName, Result, TLayNr, RefX, LayY, LayH, LayW, LayNr)
+        if Mode_Cue_Type then
+            SeqNrStart, LayNr, LayY = CreateCue(FixtureType, prefix, SeqNrStart, Preset_Name, FixtureGroupsNo,
+            Slot_ID, Index, AppIndex, FixtureGroupsName, Result, TLayNr, RefX, LayY, LayH, LayW, LayNr)
+        else
+            SeqNrStart, LayNr, LayY = CreateSequence(FixtureType, prefix, SeqNrStart, Preset_Name, FixtureGroupsNo,
+                Slot_ID, Index, AppIndex, FixtureGroupsName, Result, TLayNr, RefX, LayY, LayH, LayW, LayNr)
+        end
     end -- end  for g in ipairs(SelectedGrpNo) do
 
     -- Macro Del LC prefix
