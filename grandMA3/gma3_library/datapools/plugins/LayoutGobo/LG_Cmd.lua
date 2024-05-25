@@ -1,6 +1,6 @@
 --[[
 Releases:
-* 0.0.0.2
+* 0.0.0.3
 
 Created by Richard Fontaine "RIRI", May 2024.
 --]]
@@ -139,7 +139,7 @@ function CreateLabelPresets(att, FixtureID, FirstPresetIndex, Select_, prefix)
                 for _, v in ipairs(Select_) do
                     if (CmdObj().Destination:Children()[i].Name == v) then
                         Printf(' obj %s Sel %s', CmdObj().Destination:Children()[i].Name, v)
-                        presetnames[PN] = CmdObj().Destination:Children()[i].Name -- geting the name of the gobo
+                        presetnames[PN] = CmdObj().Destination:Children()[i].Name:gsub(' ', '_') -- geting the name of the gobo
                         CmdIndirectWait("Store Preset 25." .. PresetIndex .. " /merge")
                         CmdIndirectWait("Label Preset 25." ..
                             PresetIndex .. " '" .. prefix .. '_' .. presetnames[PN] .. "'")
