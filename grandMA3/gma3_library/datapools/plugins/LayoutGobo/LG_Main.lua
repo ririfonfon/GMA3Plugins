@@ -573,7 +573,7 @@ local function Main(displayHandle)
     input8Icon.BackColor = colorPartlySelected
 
     local input8Label = inputsGrid:Append("UIObject")
-    input8Label.Text = "Nb Gobo / line"
+    input8Label.Text = "Line Type"
     input8Label.TextalignmentH = "Left"
     input8Label.Anchors = { left = 1, right = 3, top = TopInc, bottom = TopInc }
     input8Label.Padding = "5,5"
@@ -582,19 +582,13 @@ local function Main(displayHandle)
     input8Label.Font = "2"
     input8Label.BackColor = colorPartlySelected
 
-    local input8LineEdit = inputsGrid:Append("LineEdit")
-    input8LineEdit.Prompt = "Nb: "
-    input8LineEdit.TextAutoAdjust = "Yes"
+    local input8LineEdit = inputsGrid:Append("Button")
     input8LineEdit.Anchors = { left = 4, right = 9, top = TopInc, bottom = TopInc }
     input8LineEdit.Padding = "5,5"
     input8LineEdit.Margin = { left = 2, right = 0, top = TopInc, bottom = 2 }
-    input8LineEdit.Filter = "0123456789"
-    input8LineEdit.VkPluginName = "TextInputNumOnly"
-    input8LineEdit.Content = MaxGobLgn
-    input8LineEdit.MaxTextLength = 6
-    input8LineEdit.HideFocusFrame = "Yes"
+    input8LineEdit.Text = " All in line "
     input8LineEdit.PluginComponent = myHandle
-    input8LineEdit.TextChanged = "OnInput8TextChanged"
+    input8LineEdit.Clicked = "Clicked"
     input8LineEdit.Font = "2"
     input8LineEdit.BackColor = colorPartlySelected
     input8LineEdit.Visible = "No"
@@ -673,12 +667,12 @@ local function Main(displayHandle)
     signalTable.CheckBoxClicked = function(caller)
         if (caller.Text == " Sequence ") then
             input7LineEdit.Text = " Cue "
-            input8LineEdit.Visible = "Yes"
             Mode_Cue_Type = true
+            input8LineEdit.Visible = "Yes"
         elseif (caller.Text == " Cue ") then
             input7LineEdit.Text = " Sequence "
-            input8LineEdit.Visible = "No"
             Mode_Cue_Type = false
+            input8LineEdit.Visible = "No"
         end
         local checks = false
         CueNrRange = SeqNrStart + Nr_Total_Gobo
@@ -707,6 +701,15 @@ local function Main(displayHandle)
         if checks == false then
             input3LineEdit.TextColor = colorText
             OkButton.Visible = "Yes"
+        end
+    end
+
+    signalTable.Clicked = function(caller)
+        Echo("Click line")
+        if caller.Text == " All in line " then
+            input8LineEdit.Text = " One line / wheel "
+        elseif caller.Text == " One line / wheel " then
+            input8LineEdit.Text = " All in line "
         end
     end
 
@@ -914,6 +917,7 @@ local function Main(displayHandle)
             input5LineEdit.Visible = "Yes"
             input6LineEdit.Visible = "Yes"
             input7LineEdit.Visible = "Yes"
+            -- input8LineEdit.Visible = "Yes"
             input1Sujestion.Visible = "Yes"
             input2Sujestion.Visible = "Yes"
             input3Sujestion.Visible = "Yes"
