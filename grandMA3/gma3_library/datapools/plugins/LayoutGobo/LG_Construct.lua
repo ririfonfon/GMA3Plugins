@@ -1,6 +1,6 @@
 --[[
 Releases:
-* 0.0.0.3
+* 0.0.0.4
 
 Created by Richard Fontaine "RIRI", May 2024.
 --]]
@@ -16,11 +16,15 @@ function Construct_Gobo_Layout(displayHandle, TLay, SeqNrStart, TLayNr, AppNr, P
     local exit = false
     local SeqNr = DataPool().Sequences:Children()
     repeat
+        local check_prefix = false
         old_prefix_index = prefix_index
         for k in pairs(SeqNr) do
             if string.match(SeqNr[k].name, prefix) then
-                prefix_index = math.floor(prefix_index + 1)
+                check_prefix = true
             end
+        end
+        if check_prefix then
+            prefix_index = math.floor(prefix_index + 1)
         end
         prefix = 'LG' .. tostring(prefix_index) .. '_'
         if old_prefix_index == prefix_index then

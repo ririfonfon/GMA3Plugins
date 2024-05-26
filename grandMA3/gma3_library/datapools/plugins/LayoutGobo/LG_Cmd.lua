@@ -1,6 +1,6 @@
 --[[
 Releases:
-* 0.0.0.3
+* 0.0.0.4
 
 Created by Richard Fontaine "RIRI", May 2024.
 --]]
@@ -262,7 +262,7 @@ function CreateSequence(FixtureType, prefix, SeqNrStart, Preset_Name, Grp, Slot_
     SetProgress(progHandle, 1)
     if WH[1] then
         CmdIndirectWait('Store Sequence ' ..
-            SeqNrStart .. ' \'' .. prefix .. '_' .. FixtureType .. '_' .. GrpName .. '_Gobo1\' /nc')
+            SeqNrStart .. ' \'' .. prefix .. '_' .. FixtureType:gsub(' ', '_') .. '_' .. GrpName:gsub(' ', '_') .. '_Gobo1\' /nc')
         CmdIndirectWait('Store Sequence ' .. SeqNrStart .. ' Cue 1 Thru ' .. length1 .. ' /nc')
         for i = 1, length1, 1 do -- gobo1 loop from Preset to sequence
             Cue = Cue + 1
@@ -270,13 +270,13 @@ function CreateSequence(FixtureType, prefix, SeqNrStart, Preset_Name, Grp, Slot_
                 ' Cue ' .. Cue .. ' Part 0.1')
             CmdIndirectWait('Assign Appearance ' ..
                 AppIndex[1] + Slot_ID[1][i] .. ' At Sequence ' .. SeqNrStart .. ' Cue ' .. i)
-            CmdIndirectWait('Label Sequence ' .. SeqNrStart .. ' Cue ' .. Cue .. ' "' .. Preset_Name[1][i] .. '"')
+            CmdIndirectWait('Label Sequence ' .. SeqNrStart .. ' Cue ' .. Cue .. ' "' .. Preset_Name[1][i]:gsub(' ', '_') .. '"')
         end
         CmdIndirectWait('Assign Group ' .. Grp .. ' At Sequence ' .. SeqNrStart .. ' Cue 1 Thru Part 0.1')
 
         CmdIndirectWait('Assign Sequence ' .. SeqNrStart .. ' At Layout ' .. TLayNr)
         CmdIndirectWait('Set Layout ' .. TLayNr .. '.' .. LayNr ..
-            ' Property Appearance <Default> Action=Goto PosX ' .. LayX .. ' PosY ' .. LayY ..
+            ' Property Action=Goto PosX ' .. LayX .. ' PosY ' .. LayY ..
             ' PositionW ' .. LayW .. ' PositionH ' .. LayH ..
             ' VisibilityObjectName=0 VisibilityBar=0 VisibilityIndicatorBar=0 VisibilityBorder=0')
         LayX = math.floor(LayX + LayW + 20)
@@ -288,7 +288,7 @@ function CreateSequence(FixtureType, prefix, SeqNrStart, Preset_Name, Grp, Slot_
     SetProgress(progHandle, 2)
     if WH[2] then
         CmdIndirectWait('Store Sequence ' ..
-            SeqNrStart .. ' \'' .. prefix .. '_' .. FixtureType .. '_' .. GrpName .. '_Gobo2\' /nc')
+            SeqNrStart .. ' \'' .. prefix .. '_' .. FixtureType:gsub(' ', '_') .. '_' .. GrpName:gsub(' ', '_') .. '_Gobo2\' /nc')
         CmdIndirectWait('Store Sequence ' .. SeqNrStart .. ' Cue 1 Thru ' .. length2 .. ' /nc')
         for i = 1, length2, 1 do -- gobo2 loop from Preset to sequence, if there is no gobo2 length2 would be 1 and loop wont commited
             Cue = Cue + 1
@@ -296,13 +296,13 @@ function CreateSequence(FixtureType, prefix, SeqNrStart, Preset_Name, Grp, Slot_
                 ' Cue ' .. Cue .. ' Part 0.1')
             CmdIndirectWait('Assign Appearance ' ..
                 AppIndex[2] + Slot_ID[2][i] .. ' At Sequence ' .. SeqNrStart .. ' Cue ' .. i)
-            CmdIndirectWait('Label Sequence ' .. SeqNrStart .. ' Cue ' .. Cue .. ' "' .. Preset_Name[2][i] .. '"')
+            CmdIndirectWait('Label Sequence ' .. SeqNrStart .. ' Cue ' .. Cue .. ' "' .. Preset_Name[2][i]:gsub(' ', '_') .. '"')
         end
         CmdIndirectWait('Assign Group ' .. Grp .. ' At Sequence ' .. SeqNrStart .. ' Cue 1 Thru Part 0.1')
 
         CmdIndirectWait('Assign Sequence ' .. SeqNrStart .. ' At Layout ' .. TLayNr)
         CmdIndirectWait('Set Layout ' .. TLayNr .. '.' .. LayNr ..
-            ' Property Appearance <Default> Action=Goto PosX ' .. LayX .. ' PosY ' .. LayY ..
+            ' Property Action=Goto PosX ' .. LayX .. ' PosY ' .. LayY ..
             ' PositionW ' .. LayW .. ' PositionH ' .. LayH ..
             ' VisibilityObjectName=0 VisibilityBar=0 VisibilityIndicatorBar=0 VisibilityBorder=0')
         LayX = math.floor(LayX + LayW + 20)
@@ -314,7 +314,7 @@ function CreateSequence(FixtureType, prefix, SeqNrStart, Preset_Name, Grp, Slot_
     SetProgress(progHandle, 3)
     if WH[3] then
         CmdIndirectWait('Store Sequence ' ..
-            SeqNrStart .. ' \'' .. prefix .. '_' .. FixtureType .. '_' .. GrpName .. '_Gobo3\' /nc')
+            SeqNrStart .. ' \'' .. prefix .. '_' .. FixtureType:gsub(' ', '_') .. '_' .. GrpName:gsub(' ', '_') .. '_Gobo3\' /nc')
         CmdIndirectWait('Store Sequence ' .. SeqNrStart .. ' Cue 1 Thru ' .. length3 .. ' /nc')
         for i = 1, length3, 1 do -- gobo3 loop from Preset to sequence, if there is no gobo3 length3 would be 1 and loop wont commited
             Cue = Cue + 1
@@ -322,13 +322,13 @@ function CreateSequence(FixtureType, prefix, SeqNrStart, Preset_Name, Grp, Slot_
                 ' Cue ' .. Cue .. ' Part 0.1')
             CmdIndirectWait('Assign Appearance ' ..
                 AppIndex[3] + Slot_ID[3][i] .. ' At Sequence ' .. SeqNrStart .. ' Cue ' .. i)
-            CmdIndirectWait('Label Sequence ' .. SeqNrStart .. ' Cue ' .. Cue .. ' "' .. Preset_Name[3][i] .. '"')
+            CmdIndirectWait('Label Sequence ' .. SeqNrStart .. ' Cue ' .. Cue .. ' "' .. Preset_Name[3][i]:gsub(' ', '_') .. '"')
         end
         CmdIndirectWait('Assign Group ' .. Grp .. ' At Sequence ' .. SeqNrStart .. ' Cue 1 Thru Part 0.1')
 
         CmdIndirectWait('Assign Sequence ' .. SeqNrStart .. ' At Layout ' .. TLayNr)
         CmdIndirectWait('Set Layout ' .. TLayNr .. '.' .. LayNr ..
-            ' Property Appearance <Default> Action=Goto PosX ' .. LayX .. ' PosY ' .. LayY ..
+            ' Property Action=Goto PosX ' .. LayX .. ' PosY ' .. LayY ..
             ' PositionW ' .. LayW .. ' PositionH ' .. LayH ..
             ' VisibilityObjectName=0 VisibilityBar=0 VisibilityIndicatorBar=0 VisibilityBorder=0')
         LayX = math.floor(LayX + LayW + 20)
@@ -340,7 +340,7 @@ function CreateSequence(FixtureType, prefix, SeqNrStart, Preset_Name, Grp, Slot_
     SetProgress(progHandle, 4)
     if WH[4] then
         CmdIndirectWait('Store Sequence ' ..
-            SeqNrStart .. ' \'' .. prefix .. '_' .. FixtureType .. '_' .. GrpName .. '_EFFECTWHEEL\' /nc')
+            SeqNrStart .. ' \'' .. prefix .. '_' .. FixtureType:gsub(' ', '_') .. '_' .. GrpName:gsub(' ', '_') .. '_EFFECTWHEEL\' /nc')
         CmdIndirectWait('Store Sequence ' .. SeqNrStart .. ' Cue 1 Thru ' .. length4 .. ' /nc')
         for i = 1, length4, 1 do -- EFFECTWHEEL loop from Preset to sequence, if there is no EFFECTWHEEL length4 would be 1 and loop wont commited
             Cue = Cue + 1
@@ -348,13 +348,13 @@ function CreateSequence(FixtureType, prefix, SeqNrStart, Preset_Name, Grp, Slot_
                 ' Cue ' .. Cue .. ' Part 0.1')
             CmdIndirectWait('Assign Appearance ' ..
                 AppIndex[4] + Slot_ID[4][i] .. ' At Sequence ' .. SeqNrStart .. ' Cue ' .. i)
-            CmdIndirectWait('Label Sequence ' .. SeqNrStart .. ' Cue ' .. Cue .. ' "' .. Preset_Name[4][i] .. '"')
+            CmdIndirectWait('Label Sequence ' .. SeqNrStart .. ' Cue ' .. Cue .. ' "' .. Preset_Name[4][i]:gsub(' ', '_') .. '"')
         end
         CmdIndirectWait('Assign Group ' .. Grp .. ' At Sequence ' .. SeqNrStart .. ' Cue 1 Thru Part 0.1')
 
         CmdIndirectWait('Assign Sequence ' .. SeqNrStart .. ' At Layout ' .. TLayNr)
         CmdIndirectWait('Set Layout ' .. TLayNr .. '.' .. LayNr ..
-            ' Property Appearance <Default> Action=Goto PosX ' .. LayX .. ' PosY ' .. LayY ..
+            ' Property Action=Goto PosX ' .. LayX .. ' PosY ' .. LayY ..
             ' PositionW ' .. LayW .. ' PositionH ' .. LayH ..
             ' VisibilityObjectName=0 VisibilityBar=0 VisibilityIndicatorBar=0 VisibilityBorder=0')
         LayX = math.floor(LayX + LayW + 20)
@@ -366,7 +366,7 @@ function CreateSequence(FixtureType, prefix, SeqNrStart, Preset_Name, Grp, Slot_
     SetProgress(progHandle, 5)
     if WH[5] then
         CmdIndirectWait('Store Sequence ' ..
-            SeqNrStart .. ' \'' .. prefix .. '_' .. FixtureType .. '_' .. GrpName .. '_Prism1\' /nc')
+            SeqNrStart .. ' \'' .. prefix .. '_' .. FixtureType:gsub(' ', '_') .. '_' .. GrpName:gsub(' ', '_') .. '_Prism1\' /nc')
         CmdIndirectWait('Store Sequence ' .. SeqNrStart .. ' Cue 1 Thru ' .. length5 .. ' /nc')
         for i = 1, length5, 1 do -- Prism1 loop from Preset to sequence, if there is no Prism1 length4 would be 1 and loop wont commited
             Cue = Cue + 1
@@ -374,13 +374,13 @@ function CreateSequence(FixtureType, prefix, SeqNrStart, Preset_Name, Grp, Slot_
                 ' Cue ' .. Cue .. ' Part 0.1')
             CmdIndirectWait('Assign Appearance ' ..
                 AppIndex[5] + Slot_ID[5][i] .. ' At Sequence ' .. SeqNrStart .. ' Cue ' .. i)
-            CmdIndirectWait('Label Sequence ' .. SeqNrStart .. ' Cue ' .. Cue .. ' "' .. Preset_Name[5][i] .. '"')
+            CmdIndirectWait('Label Sequence ' .. SeqNrStart .. ' Cue ' .. Cue .. ' "' .. Preset_Name[5][i]:gsub(' ', '_') .. '"')
         end
         CmdIndirectWait('Assign Group ' .. Grp .. ' At Sequence ' .. SeqNrStart .. ' Cue 1 Thru Part 0.1')
 
         CmdIndirectWait('Assign Sequence ' .. SeqNrStart .. ' At Layout ' .. TLayNr)
         CmdIndirectWait('Set Layout ' .. TLayNr .. '.' .. LayNr ..
-            ' Property Appearance <Default> Action=Goto PosX ' .. LayX .. ' PosY ' .. LayY ..
+            ' Property Action=Goto PosX ' .. LayX .. ' PosY ' .. LayY ..
             ' PositionW ' .. LayW .. ' PositionH ' .. LayH ..
             ' VisibilityObjectName=0 VisibilityBar=0 VisibilityIndicatorBar=0 VisibilityBorder=0')
         LayX = math.floor(LayX + LayW + 20)
@@ -392,7 +392,7 @@ function CreateSequence(FixtureType, prefix, SeqNrStart, Preset_Name, Grp, Slot_
     SetProgress(progHandle, 6)
     if WH[6] then
         CmdIndirectWait('Store Sequence ' ..
-            SeqNrStart .. ' \'' .. prefix .. '_' .. FixtureType .. '_' .. GrpName .. '_Prism2\' /nc')
+            SeqNrStart .. ' \'' .. prefix .. '_' .. FixtureType:gsub(' ', '_') .. '_' .. GrpName:gsub(' ', '_') .. '_Prism2\' /nc')
         CmdIndirectWait('Store Sequence ' .. SeqNrStart .. ' Cue 1 Thru ' .. length6 .. ' /nc')
         for i = 1, length6, 1 do -- Prism2 loop from Preset to sequence, if there is no Prism2 length4 would be 1 and loop wont commited
             Cue = Cue + 1
@@ -400,13 +400,13 @@ function CreateSequence(FixtureType, prefix, SeqNrStart, Preset_Name, Grp, Slot_
                 ' Cue ' .. Cue .. ' Part 0.1')
             CmdIndirectWait('Assign Appearance ' ..
                 AppIndex[6] + Slot_ID[6][i] .. ' At Sequence ' .. SeqNrStart .. ' Cue ' .. i)
-            CmdIndirectWait('Label Sequence ' .. SeqNrStart .. ' Cue ' .. Cue .. ' "' .. Preset_Name[6][i] .. '"')
+            CmdIndirectWait('Label Sequence ' .. SeqNrStart .. ' Cue ' .. Cue .. ' "' .. Preset_Name[6][i]:gsub(' ', '_') .. '"')
         end
         CmdIndirectWait('Assign Group ' .. Grp .. ' At Sequence ' .. SeqNrStart .. ' Cue 1 Thru Part 0.1')
 
         CmdIndirectWait('Assign Sequence ' .. SeqNrStart .. ' At Layout ' .. TLayNr)
         CmdIndirectWait('Set Layout ' .. TLayNr .. '.' .. LayNr ..
-            ' Property Appearance <Default> Action=Goto PosX ' .. LayX .. ' PosY ' .. LayY ..
+            ' Property Action=Goto PosX ' .. LayX .. ' PosY ' .. LayY ..
             ' PositionW ' .. LayW .. ' PositionH ' .. LayH ..
             ' VisibilityObjectName=0 VisibilityBar=0 VisibilityIndicatorBar=0 VisibilityBorder=0')
         LayX = math.floor(LayX + LayW + 20)
@@ -510,18 +510,17 @@ function CreateCue(FixtureType, prefix, SeqNrStart, Preset_Name, Grp, Slot_ID, P
             Echo("wh1 " .. i .. " app ii-1 " .. AppIndex[1] + ii - 1)
             Echo("wh1 " .. i .. " app ii " .. AppIndex[1] + ii)
             CmdIndirectWait('Store Sequence ' .. SeqNrStart ..
-                ' \'' .. prefix .. '_' .. FixtureType .. '_' .. GrpName .. '_' .. Preset_Name[1][i] .. '_Gobo1\' /nc')
+                ' \'' .. prefix .. '_' .. FixtureType:gsub(' ', '_') .. '_' .. GrpName:gsub(' ', '_') .. '_' .. Preset_Name[1][i]:gsub(' ', '_') .. '_Gobo1\' /nc')
             CmdIndirectWait('Assign Preset 25.' .. PresetIndex[1] + i .. ' At Sequence ' .. SeqNrStart ..
                 ' Cue 1 Part 0.1')
             CmdIndirectWait('Assign Appearance ' ..
                 AppIndex[1] + ii .. ' At Sequence ' .. SeqNrStart .. ' Cue 1')
             CmdIndirectWait('Set Sequence ' .. SeqNrStart .. ' Property Appearance=' .. AppIndex[1] + ii - 1)
-            CmdIndirectWait('Label Sequence ' .. SeqNrStart .. ' Cue 1 "' .. Preset_Name[1][i] .. '"')
+            CmdIndirectWait('Label Sequence ' .. SeqNrStart .. ' Cue 1 "' .. Preset_Name[1][i]:gsub(' ', '_') .. '"')
             CmdIndirectWait('Assign Group ' .. Grp .. ' At Sequence ' .. SeqNrStart .. ' Cue 1 Part 0.1')
             CmdIndirectWait('Assign Sequence ' .. SeqNrStart .. ' At Layout ' .. TLayNr)
             CmdIndirectWait('Set Layout ' .. TLayNr .. '.' .. LayNr ..
                 ' Property Action=Go PosX ' .. LayX .. ' PosY ' .. LayY ..
-                -- ' Property Appearance <Default> Action=Go PosX ' .. LayX .. ' PosY ' .. LayY ..
                 ' PositionW ' .. LayW .. ' PositionH ' .. LayH ..
                 ' VisibilityObjectName=0 VisibilityBar=0 VisibilityIndicatorBar=0 VisibilityBorder=0')
             LayX = math.floor(LayX + LayW + 20)
@@ -537,17 +536,17 @@ function CreateCue(FixtureType, prefix, SeqNrStart, Preset_Name, Grp, Slot_ID, P
         for i = 1, length2, 1 do -- gobo2 loop from Preset to sequence, if there is no gobo2 length2 would be 1 and loop wont commited
             ii = i * 2
             CmdIndirectWait('Store Sequence ' .. SeqNrStart ..
-                ' \'' .. prefix .. '_' .. FixtureType .. '_' .. GrpName .. '_' .. Preset_Name[2][i] .. '_Gobo2\' /nc')
+                ' \'' .. prefix .. '_' .. FixtureType:gsub(' ', '_') .. '_' .. GrpName:gsub(' ', '_') .. '_' .. Preset_Name[2][i]:gsub(' ', '_') .. '_Gobo2\' /nc')
             CmdIndirectWait('Assign Preset 25.' .. PresetIndex[2] + i .. ' At Sequence ' .. SeqNrStart ..
                 ' Cue 1 Part 0.1')
             CmdIndirectWait('Assign Appearance ' ..
                 AppIndex[2] + ii .. ' At Sequence ' .. SeqNrStart .. ' Cue 1')
             CmdIndirectWait('Set Sequence ' .. SeqNrStart .. ' Property Appearance=' .. AppIndex[2] + ii - 1)
-            CmdIndirectWait('Label Sequence ' .. SeqNrStart .. ' Cue 1 "' .. Preset_Name[2][i] .. '"')
+            CmdIndirectWait('Label Sequence ' .. SeqNrStart .. ' Cue 1 "' .. Preset_Name[2][i]:gsub(' ', '_') .. '"')
             CmdIndirectWait('Assign Group ' .. Grp .. ' At Sequence ' .. SeqNrStart .. ' Cue 1 Part 0.1')
             CmdIndirectWait('Assign Sequence ' .. SeqNrStart .. ' At Layout ' .. TLayNr)
             CmdIndirectWait('Set Layout ' .. TLayNr .. '.' .. LayNr ..
-                ' Property Appearance <Default> Action=Go PosX ' .. LayX .. ' PosY ' .. LayY ..
+                ' Property Action=Go PosX ' .. LayX .. ' PosY ' .. LayY ..
                 ' PositionW ' .. LayW .. ' PositionH ' .. LayH ..
                 ' VisibilityObjectName=0 VisibilityBar=0 VisibilityIndicatorBar=0 VisibilityBorder=0')
             LayX = math.floor(LayX + LayW + 20)
@@ -563,17 +562,17 @@ function CreateCue(FixtureType, prefix, SeqNrStart, Preset_Name, Grp, Slot_ID, P
         for i = 1, length3, 1 do -- gobo3 loop from Preset to sequence, if there is no gobo3 length3 would be 1 and loop wont commited
             ii = i * 2
             CmdIndirectWait('Store Sequence ' .. SeqNrStart ..
-                ' \'' .. prefix .. '_' .. FixtureType .. '_' .. GrpName .. '_' .. Preset_Name[3][i] .. '_Gobo3\' /nc')
+                ' \'' .. prefix .. '_' .. FixtureType:gsub(' ', '_') .. '_' .. GrpName:gsub(' ', '_') .. '_' .. Preset_Name[3][i]:gsub(' ', '_') .. '_Gobo3\' /nc')
             CmdIndirectWait('Assign Preset 25.' .. PresetIndex[3] + i .. ' At Sequence ' .. SeqNrStart ..
                 ' Cue 1 Part 0.1')
             CmdIndirectWait('Assign Appearance ' ..
                 AppIndex[3] + ii .. ' At Sequence ' .. SeqNrStart .. ' Cue 1')
             CmdIndirectWait('Set Sequence ' .. SeqNrStart .. ' Property Appearance=' .. AppIndex[3] + ii - 1)
-            CmdIndirectWait('Label Sequence ' .. SeqNrStart .. ' Cue 1 "' .. Preset_Name[3][i] .. '"')
+            CmdIndirectWait('Label Sequence ' .. SeqNrStart .. ' Cue 1 "' .. Preset_Name[3][i]:gsub(' ', '_') .. '"')
             CmdIndirectWait('Assign Group ' .. Grp .. ' At Sequence ' .. SeqNrStart .. ' Cue 1 Part 0.1')
             CmdIndirectWait('Assign Sequence ' .. SeqNrStart .. ' At Layout ' .. TLayNr)
             CmdIndirectWait('Set Layout ' .. TLayNr .. '.' .. LayNr ..
-                ' Property Appearance <Default> Action=Go PosX ' .. LayX .. ' PosY ' .. LayY ..
+                ' Property Action=Go PosX ' .. LayX .. ' PosY ' .. LayY ..
                 ' PositionW ' .. LayW .. ' PositionH ' .. LayH ..
                 ' VisibilityObjectName=0 VisibilityBar=0 VisibilityIndicatorBar=0 VisibilityBorder=0')
             LayX = math.floor(LayX + LayW + 20)
@@ -589,17 +588,17 @@ function CreateCue(FixtureType, prefix, SeqNrStart, Preset_Name, Grp, Slot_ID, P
         for i = 1, length4, 1 do -- EFFECTWHEEL loop from Preset to sequence, if there is no EFFECTWHEEL length4 would be 1 and loop wont commited
             ii = i * 2
             CmdIndirectWait('Store Sequence ' .. SeqNrStart .. ' \'' ..
-                prefix .. '_' .. FixtureType .. '_' .. GrpName .. '_' .. Preset_Name[4][i] .. '_EFFECTWHEEL\' /nc')
+                prefix .. '_' .. FixtureType:gsub(' ', '_') .. '_' .. GrpName:gsub(' ', '_') .. '_' .. Preset_Name[4][i]:gsub(' ', '_') .. '_EFFECTWHEEL\' /nc')
             CmdIndirectWait('Assign Preset 25.' .. PresetIndex[4] + i .. ' At Sequence ' .. SeqNrStart ..
                 ' Cue 1 Part 0.1')
             CmdIndirectWait('Assign Appearance ' ..
                 AppIndex[4] + ii .. ' At Sequence ' .. SeqNrStart .. ' Cue 1')
             CmdIndirectWait('Set Sequence ' .. SeqNrStart .. ' Property Appearance=' .. AppIndex[4] + ii - 1)
-            CmdIndirectWait('Label Sequence ' .. SeqNrStart .. ' Cue 1 "' .. Preset_Name[4][i] .. '"')
+            CmdIndirectWait('Label Sequence ' .. SeqNrStart .. ' Cue 1 "' .. Preset_Name[4][i]:gsub(' ', '_') .. '"')
             CmdIndirectWait('Assign Group ' .. Grp .. ' At Sequence ' .. SeqNrStart .. ' Cue 1 Part 0.1')
             CmdIndirectWait('Assign Sequence ' .. SeqNrStart .. ' At Layout ' .. TLayNr)
             CmdIndirectWait('Set Layout ' .. TLayNr .. '.' .. LayNr ..
-                ' Property Appearance <Default> Action=Go PosX ' .. LayX .. ' PosY ' .. LayY ..
+                ' Property Action=Go PosX ' .. LayX .. ' PosY ' .. LayY ..
                 ' PositionW ' .. LayW .. ' PositionH ' .. LayH ..
                 ' VisibilityObjectName=0 VisibilityBar=0 VisibilityIndicatorBar=0 VisibilityBorder=0')
             LayX = math.floor(LayX + LayW + 20)
@@ -615,17 +614,17 @@ function CreateCue(FixtureType, prefix, SeqNrStart, Preset_Name, Grp, Slot_ID, P
         for i = 1, length5, 1 do -- Prism1 loop from Preset to sequence, if there is no Prism1 length4 would be 1 and loop wont commited
             ii = i * 2
             CmdIndirectWait('Store Sequence ' .. SeqNrStart ..
-                ' \'' .. prefix .. '_' .. FixtureType .. '_' .. GrpName .. '_' .. Preset_Name[5][i] .. '_Prism1\' /nc')
+                ' \'' .. prefix .. '_' .. FixtureType:gsub(' ', '_') .. '_' .. GrpName:gsub(' ', '_') .. '_' .. Preset_Name[5][i]:gsub(' ', '_') .. '_Prism1\' /nc')
             CmdIndirectWait('Assign Preset 25.' .. PresetIndex[5] + i .. ' At Sequence ' .. SeqNrStart ..
                 ' Cue 1 Part 0.1')
             CmdIndirectWait('Assign Appearance ' ..
                 AppIndex[5] + ii .. ' At Sequence ' .. SeqNrStart .. ' Cue 1')
             CmdIndirectWait('Set Sequence ' .. SeqNrStart .. ' Property Appearance=' .. AppIndex[5] + ii - 1)
-            CmdIndirectWait('Label Sequence ' .. SeqNrStart .. ' Cue 1 "' .. Preset_Name[5][i] .. '"')
+            CmdIndirectWait('Label Sequence ' .. SeqNrStart .. ' Cue 1 "' .. Preset_Name[5][i]:gsub(' ', '_') .. '"')
             CmdIndirectWait('Assign Group ' .. Grp .. ' At Sequence ' .. SeqNrStart .. ' Cue 1 Part 0.1')
             CmdIndirectWait('Assign Sequence ' .. SeqNrStart .. ' At Layout ' .. TLayNr)
             CmdIndirectWait('Set Layout ' .. TLayNr .. '.' .. LayNr ..
-                ' Property Appearance <Default> Action=Go PosX ' .. LayX .. ' PosY ' .. LayY ..
+                ' Property Action=Go PosX ' .. LayX .. ' PosY ' .. LayY ..
                 ' PositionW ' .. LayW .. ' PositionH ' .. LayH ..
                 ' VisibilityObjectName=0 VisibilityBar=0 VisibilityIndicatorBar=0 VisibilityBorder=0')
             LayX = math.floor(LayX + LayW + 20)
@@ -642,17 +641,17 @@ function CreateCue(FixtureType, prefix, SeqNrStart, Preset_Name, Grp, Slot_ID, P
             ii = i * 2
             CmdIndirectWait('Store Sequence ' ..
                 SeqNrStart ..
-                ' \'' .. prefix .. '_' .. FixtureType .. '_' .. GrpName .. '_' .. Preset_Name[6][i] .. '_Prism2\' /nc')
+                ' \'' .. prefix .. '_' .. FixtureType:gsub(' ', '_') .. '_' .. GrpName:gsub(' ', '_') .. '_' .. Preset_Name[6][i]:gsub(' ', '_') .. '_Prism2\' /nc')
             CmdIndirectWait('Assign Preset 25.' .. PresetIndex[6] + i .. ' At Sequence ' .. SeqNrStart ..
                 ' Cue 1 Part 0.1')
             CmdIndirectWait('Assign Appearance ' ..
                 AppIndex[6] + ii .. ' At Sequence ' .. SeqNrStart .. ' Cue 1')
             CmdIndirectWait('Set Sequence ' .. SeqNrStart .. ' Property Appearance=' .. AppIndex[6] + ii - 1)
-            CmdIndirectWait('Label Sequence ' .. SeqNrStart .. ' Cue 1 "' .. Preset_Name[6][i] .. '"')
+            CmdIndirectWait('Label Sequence ' .. SeqNrStart .. ' Cue 1 "' .. Preset_Name[6][i]:gsub(' ', '_') .. '"')
             CmdIndirectWait('Assign Group ' .. Grp .. ' At Sequence ' .. SeqNrStart .. ' Cue 1 Part 0.1')
             CmdIndirectWait('Assign Sequence ' .. SeqNrStart .. ' At Layout ' .. TLayNr)
             CmdIndirectWait('Set Layout ' .. TLayNr .. '.' .. LayNr ..
-                ' Property Appearance <Default> Action=Go PosX ' .. LayX .. ' PosY ' .. LayY ..
+                ' Property Action=Go PosX ' .. LayX .. ' PosY ' .. LayY ..
                 ' PositionW ' .. LayW .. ' PositionH ' .. LayH ..
                 ' VisibilityObjectName=0 VisibilityBar=0 VisibilityIndicatorBar=0 VisibilityBorder=0')
             LayX = math.floor(LayX + LayW + 20)
