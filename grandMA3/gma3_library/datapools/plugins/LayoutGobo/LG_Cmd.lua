@@ -530,7 +530,7 @@ function CreateCue(FixtureType, prefix, SeqNrStart, Preset_Name, Grp, Slot_ID, P
     LayY = math.floor(LayY - LayH) -- Max Y Position minus hight from element. 0 are at the Bottom!
 
     SeqNrStart = tonumber(SeqNrStart)
-    local WH = { false, false, false, false, false }
+    local WH = { false, false, false, false, false, false, false, false, false}
     local Cue = 0
     local ii
     CmdIndirectWait("ClearAll; Group " .. Grp)
@@ -567,6 +567,7 @@ function CreateCue(FixtureType, prefix, SeqNrStart, Preset_Name, Grp, Slot_ID, P
     local length4 = 1
     if Result[4] == 1 then
         if GetUIChannelIndex(SelectionFirst(), GetAttributeIndex('EFFECTWHEEL')) ~= nil then
+            Printf("EFFECTWHEEL ok")
             length4 = ArrayLength(Preset_Name[4])
             WH[4] = true
         end
@@ -591,6 +592,7 @@ function CreateCue(FixtureType, prefix, SeqNrStart, Preset_Name, Grp, Slot_ID, P
     local length7 = 1
     if Result[7] == 1 then
         if GetUIChannelIndex(SelectionFirst(), GetAttributeIndex('EFFECTWHEEL2')) ~= nil then
+            Printf("EFFECTWHEEL2 ok")
             length7 = ArrayLength(Preset_Name[7])
             WH[7] = true
         end
@@ -599,6 +601,7 @@ function CreateCue(FixtureType, prefix, SeqNrStart, Preset_Name, Grp, Slot_ID, P
     local length8 = 1
     if Result[8] == 1 then
         if GetUIChannelIndex(SelectionFirst(), GetAttributeIndex('EFFECTWHEEL3')) ~= nil then
+            Printf("EFFECTWHEEL3 ok")
             length8 = ArrayLength(Preset_Name[8])
             WH[8] = true
         end
@@ -606,9 +609,8 @@ function CreateCue(FixtureType, prefix, SeqNrStart, Preset_Name, Grp, Slot_ID, P
     StopProgress(progHandle)
 
     Printf("The length 1 is " .. length1 .. " and 2 is " .. length2 .. " and 3 is " .. length3 ..
-        " and 4 is " ..
-        length4 ..
-        " and 5 is " .. length5 .. " and 6 is " .. length6 .. " and 7 is " .. length7 .. " and 8 is " .. length8)
+        " and 4 is " .. length4 .. " and 5 is " .. length5 .. " and 6 is " .. length6 .. 
+        " and 7 is " .. length7 .. " and 8 is " .. length8)
     CmdIndirectWait("ClearAll")
     CmdIndirectWait('Store Layout ' .. TLayNr .. '.' .. LayNr .. ' Property CustomTextText=\' ' .. GrpName)
     CmdIndirectWait('Set Layout ' .. TLayNr .. '.' .. LayNr .. ' Property CustomTextSize \'32')
@@ -791,7 +793,7 @@ function CreateCue(FixtureType, prefix, SeqNrStart, Preset_Name, Grp, Slot_ID, P
     LayX = math.floor(LayX + LayW + 20)
     SetProgress(progHandle, 7)
     if WH[7] then
-        for i = 1, length7, 1 do -- EFFECTWHEEL loop from Preset to sequence, if there is no EFFECTWHEEL length4 would be 1 and loop wont commited
+        for i = 1, length7, 1 do -- EFFECTWHEEL2 loop from Preset to sequence, if there is no EFFECTWHEEL2 length7 would be 1 and loop wont commited
             ii = i * 2
             CmdIndirectWait('Store Sequence ' .. SeqNrStart .. ' \'' .. prefix .. '_' .. FixtureType:gsub(' ', '_') ..
                 '_' .. GrpName:gsub(' ', '_') .. '_' .. Preset_Name[7][i]:gsub(' ', '_') .. '_EFFECTWHEEL2\' /nc')
@@ -818,7 +820,7 @@ function CreateCue(FixtureType, prefix, SeqNrStart, Preset_Name, Grp, Slot_ID, P
     LayX = math.floor(LayX + LayW + 20)
     SetProgress(progHandle, 8)
     if WH[8] then
-        for i = 1, length8, 1 do -- EFFECTWHEEL loop from Preset to sequence, if there is no EFFECTWHEEL length4 would be 1 and loop wont commited
+        for i = 1, length8, 1 do -- EFFECTWHEEL3 loop from Preset to sequence, if there is no EFFECTWHEEL3 length8 would be 1 and loop wont commited
             ii = i * 2
             CmdIndirectWait('Store Sequence ' .. SeqNrStart .. ' \'' .. prefix .. '_' .. FixtureType:gsub(' ', '_') ..
                 '_' .. GrpName:gsub(' ', '_') .. '_' .. Preset_Name[8][i]:gsub(' ', '_') .. '_EFFECTWHEEL3\' /nc')
