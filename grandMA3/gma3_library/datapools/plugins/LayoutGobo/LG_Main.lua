@@ -1,6 +1,6 @@
 --[[
 Releases:
-* 0.0.0.4
+* 0.0.0.5
 
 Created by Richard Fontaine "RIRI", May 2024.
 --]]
@@ -1009,7 +1009,7 @@ local function Main(displayHandle)
         local myFixtureIndex = SelectionFirst(true)
         local mySubFixture = GetSubfixture(myFixtureIndex)
         local progHandle = StartProgress("Check Wheel")
-        local startIdx, endIdx = 1, 6
+        local startIdx, endIdx = 1, 8
         SetProgressRange(progHandle, startIdx, endIdx)
 
         if mySubFixture ~= nil then
@@ -1039,11 +1039,21 @@ local function Main(displayHandle)
             Nr_Gobo_ = Check_Gobo("EFFECTWHEEL", FixtureID_, Nr_Gobo_)
         end
         SetProgress(progHandle, 5)
+        if GetUIChannelIndex(SelectionFirst(), GetAttributeIndex('EFFECTWHEEL2')) ~= nil then -- check if fixture has EFFECTWHEEL
+            Nr_Whell = Nr_Whell + 1
+            Nr_Gobo_ = Check_Gobo("EFFECTWHEEL2", FixtureID_, Nr_Gobo_)
+        end
+        SetProgress(progHandle, 6)
+        if GetUIChannelIndex(SelectionFirst(), GetAttributeIndex('EFFECTWHEEL3')) ~= nil then -- check if fixture has EFFECTWHEEL
+            Nr_Whell = Nr_Whell + 1
+            Nr_Gobo_ = Check_Gobo("EFFECTWHEEL3", FixtureID_, Nr_Gobo_)
+        end
+        SetProgress(progHandle, 7)
         if GetUIChannelIndex(SelectionFirst(), GetAttributeIndex('Prism1')) ~= nil then -- check if fixture has Prism1
             Nr_Whell = Nr_Whell + 1
             Nr_Gobo_ = Check_Gobo("Prism1", FixtureID_, Nr_Gobo_)
         end
-        SetProgress(progHandle, 6)
+        SetProgress(progHandle, 8)
         if GetUIChannelIndex(SelectionFirst(), GetAttributeIndex('Prism2')) ~= nil then -- check if fixture has Prism2
             Nr_Whell = Nr_Whell + 1
             Nr_Gobo_ = Check_Gobo("Prism2", FixtureID_, Nr_Gobo_)

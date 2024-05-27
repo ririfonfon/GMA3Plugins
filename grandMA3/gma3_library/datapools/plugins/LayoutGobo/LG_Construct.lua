@@ -1,6 +1,6 @@
 --[[
 Releases:
-* 0.0.0.4
+* 0.0.0.5
 
 Created by Richard Fontaine "RIRI", May 2024.
 --]]
@@ -87,7 +87,7 @@ function Construct_Gobo_Layout(displayHandle, TLay, SeqNrStart, TLayNr, AppNr, P
         local LayH = 100
 
         local progHandle = StartProgress("List Wheel N°")
-        local startIdx, endIdx = 1, 6
+        local startIdx, endIdx = 1, 8
         SetProgressRange(progHandle, startIdx, endIdx)
 
         CmdIndirectWait("ClearAll; Fixture " .. FixtureNum)
@@ -144,6 +144,24 @@ function Construct_Gobo_Layout(displayHandle, TLay, SeqNrStart, TLayNr, AppNr, P
         else
             Item_Slot_Select_ID[6] = {}
             Item_Slot_Select_ID[6][1] = false
+        end
+        SetProgress(progHandle, 7)
+        if GetUIChannelIndex(SelectionFirst(), GetAttributeIndex('EFFECTWHEEL2')) ~= nil then -- check if Fixture has EFFECTWHEEL
+            Item_Slot_Select_ID[7] = {}
+            Item_Slot_Select_ID[7][1] = true
+            Item_Slot_Select_ID[7], slot_index[7] = List_SlotID('EFFECTWHEEL2', Fixture, Item_Slot_Select_ID, 4)
+        else
+            Item_Slot_Select_ID[7] = {}
+            Item_Slot_Select_ID[7][1] = false
+        end
+        SetProgress(progHandle, 8)
+        if GetUIChannelIndex(SelectionFirst(), GetAttributeIndex('EFFECTWHEEL3')) ~= nil then -- check if Fixture has EFFECTWHEEL
+            Item_Slot_Select_ID[8] = {}
+            Item_Slot_Select_ID[8][1] = true
+            Item_Slot_Select_ID[8], slot_index[8] = List_SlotID('EFFECTWHEEL3', Fixture, Item_Slot_Select_ID, 4)
+        else
+            Item_Slot_Select_ID[8] = {}
+            Item_Slot_Select_ID[8][1] = false
         end
         StopProgress(progHandle)
 
@@ -333,6 +351,68 @@ function Construct_Gobo_Layout(displayHandle, TLay, SeqNrStart, TLayNr, AppNr, P
             end
             if (c == 1) then Result[6] = 0 end
         end
+        if (Item_Slot_Select_ID[7][1] == true) then
+            Selected_Slot_Select_ID[7] = {}
+            local Item_List = {}
+            local a = 1
+            local c = 1
+            for i = 2, slot_index[7], 1 do
+                Item_List[a] = { name = Item_Slot_Select_ID[7][i], state = false }
+                a = a + 1
+            end
+            Slot_Select_ID[7] = MessageBox(
+                {
+                    title = FixtureGroupsName .. " Wheel EFFECTWHEEL2",
+                    commands = { { value = 1, name = "Ok" }, { value = 0, name = "Next Wheel" } },
+                    states = Item_List,
+                    icon = "object_plugin1",
+                    titleTextColor = "Global.Text",
+                    messageTextColor = "Global.Text"
+                }
+            )
+            Result[7] = Slot_Select_ID[7].result
+            for k, v in pairs(Slot_Select_ID[7].states) do
+                if (v == true) then
+                    G_Check[7] = true
+                    k = string.sub(k, 4, -1)
+                    Selected_Slot_Select_ID[7][c] = k
+                    Printf("EFFECTWHEEL2 State '%s' = '%s'", k, tostring(v))
+                    c = c + 1
+                end
+            end
+            if (c == 1) then Result[7] = 0 end
+        end
+        if (Item_Slot_Select_ID[8][1] == true) then
+            Selected_Slot_Select_ID[8] = {}
+            local Item_List = {}
+            local a = 1
+            local c = 1
+            for i = 2, slot_index[8], 1 do
+                Item_List[a] = { name = Item_Slot_Select_ID[8][i], state = false }
+                a = a + 1
+            end
+            Slot_Select_ID[8] = MessageBox(
+                {
+                    title = FixtureGroupsName .. " Wheel EFFECTWHEEL3",
+                    commands = { { value = 1, name = "Ok" }, { value = 0, name = "Next Wheel" } },
+                    states = Item_List,
+                    icon = "object_plugin1",
+                    titleTextColor = "Global.Text",
+                    messageTextColor = "Global.Text"
+                }
+            )
+            Result[8] = Slot_Select_ID[8].result
+            for k, v in pairs(Slot_Select_ID[8].states) do
+                if (v == true) then
+                    G_Check[4] = true
+                    k = string.sub(k, 4, -1)
+                    Selected_Slot_Select_ID[8][c] = k
+                    Printf("EFFECTWHEEL State '%s' = '%s'", k, tostring(v))
+                    c = c + 1
+                end
+            end
+            if (c == 1) then Result[8] = 0 end
+        end
 
         progHandle = StartProgress("Create Preset")
         SetProgressRange(progHandle, startIdx, endIdx)
@@ -383,6 +463,22 @@ function Construct_Gobo_Layout(displayHandle, TLay, SeqNrStart, TLayNr, AppNr, P
                 Index[6] = PresetIndex - 1
                 Preset_Name[6], PresetIndex, Slot_ID[6] = CreateLabelPresets("Prism2", Fixture, PresetIndex,
                     Selected_Slot_Select_ID[6], prefix)
+            end
+        end
+        SetProgress(progHandle, 7)
+        if Result[7] == 1 then
+            if GetUIChannelIndex(SelectionFirst(), GetAttributeIndex('EFFECTWHEEL2')) ~= nil then -- check if Fixture has EFFECTWHEEL
+                Index[7] = PresetIndex - 1
+                Preset_Name[7], PresetIndex, Slot_ID[7] = CreateLabelPresets("EFFECTWHEEL2", Fixture, PresetIndex,
+                    Selected_Slot_Select_ID[7], prefix)
+            end
+        end
+        SetProgress(progHandle, 8)
+        if Result[8] == 1 then
+            if GetUIChannelIndex(SelectionFirst(), GetAttributeIndex('EFFECTWHEEL3')) ~= nil then -- check if Fixture has EFFECTWHEEL
+                Index[8] = PresetIndex - 1
+                Preset_Name[8], PresetIndex, Slot_ID[8] = CreateLabelPresets("EFFECTWHEEL3", Fixture, PresetIndex,
+                    Selected_Slot_Select_ID[8], prefix)
             end
         end
         StopProgress(progHandle)
@@ -438,6 +534,22 @@ function Construct_Gobo_Layout(displayHandle, TLay, SeqNrStart, TLayNr, AppNr, P
             if GetUIChannelIndex(SelectionFirst(), GetAttributeIndex('Prism2')) then -- check if Fixture has Prism2
                 AppIndex[6] = AppNr - 1
                 AppNr = CreateAppearances(FixtureType, "Prism2", AppNr, prefix, Mode_Cue_Type)
+            end
+        end
+        SetProgress(progHandle, 7)
+        if Result[7] == 1 then
+            CmdIndirectWait("ClearAll; Fixture " .. FixtureNum)
+            if GetUIChannelIndex(SelectionFirst(), GetAttributeIndex('EFFECTWHEEL2')) then -- check if Fixture has EFFECTWHEEL
+                AppIndex[7] = AppNr - 1
+                AppNr = CreateAppearances(FixtureType, "EFFECTWHEEL2", AppNr, prefix, Mode_Cue_Type)
+            end
+        end
+        SetProgress(progHandle, 8)
+        if Result[8] == 1 then
+            CmdIndirectWait("ClearAll; Fixture " .. FixtureNum)
+            if GetUIChannelIndex(SelectionFirst(), GetAttributeIndex('EFFECTWHEEL3')) then -- check if Fixture has EFFECTWHEEL
+                AppIndex[8] = AppNr - 1
+                AppNr = CreateAppearances(FixtureType, "EFFECTWHEEL3", AppNr, prefix, Mode_Cue_Type)
             end
         end
         StopProgress(progHandle)
