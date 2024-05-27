@@ -79,7 +79,7 @@ function Construct_Gobo_Layout(displayHandle, TLay, SeqNrStart, TLayNr, AppNr, P
         local Index = {}
         local AppIndex = {}
         local slot_index = {}
-        local G_Check = { false, false, false, false, false, false }
+        local G_Check = { false, false, false, false, false, false, false, false }
 
 
         -- local LayX
