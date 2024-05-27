@@ -404,10 +404,10 @@ function Construct_Gobo_Layout(displayHandle, TLay, SeqNrStart, TLayNr, AppNr, P
             Result[8] = Slot_Select_ID[8].result
             for k, v in pairs(Slot_Select_ID[8].states) do
                 if (v == true) then
-                    G_Check[4] = true
+                    G_Check[8] = true
                     k = string.sub(k, 4, -1)
                     Selected_Slot_Select_ID[8][c] = k
-                    Printf("EFFECTWHEEL State '%s' = '%s'", k, tostring(v))
+                    Printf("EFFECTWHEEL3 State '%s' = '%s'", k, tostring(v))
                     c = c + 1
                 end
             end
