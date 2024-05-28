@@ -17,16 +17,16 @@ function ArrayLength(arr)
     return length
 end
 
-function GetWheelName(ftype, attribut)
+function GetWheelName(ftype, attribut, NrFixtureModeType)
     CmdIndirectWait("ClearAll")
     CmdIndirectWait("Cd Root")
     CmdIndirectWait("Cd FixtureType '" .. ftype .. "'")
-    CmdIndirectWait("Cd DMXModes.1.DMXChannels.'*" .. attribut .. "'.1")
+    CmdIndirectWait("Cd DMXModes." .. NrFixtureModeType .. ".DMXChannels.'*" .. attribut .. "'.1")
     return CmdObj().Destination:Children()[1].Wheel.name
 end
 
-function CreateAppearances(ft, att, j, prefix, Mode_Cue_Type)
-    local gobowheel = GetWheelName(ft, att)
+function CreateAppearances(ft, att, j, prefix, Mode_Cue_Type, NrFixtureModeType)
+    local gobowheel = GetWheelName(ft, att, NrFixtureModeType)
     CmdIndirectWait("Cd ft '" .. ft .. "'.Wheels.'" .. gobowheel .. "'")
     local wheel = CmdObj().Destination
     for _, slot in ipairs(wheel:Children()) do
