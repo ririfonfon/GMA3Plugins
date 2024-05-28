@@ -70,6 +70,10 @@ function Construct_Gobo_Layout(displayHandle, TLay, SeqNrStart, TLayNr, AppNr, P
         local Fixture = 'Fixture ' .. FixtureID_ .. ''
         local FixtureNum = tonumber(FixtureID_)
         local FixtureType = ObjectList(Fixture)[1].FixtureTYPE.name
+        local FixtureModeType =ObjectList(Fixture)[1].MODEDIRECT.name
+        local NrFixtureModeType = ObjectList(Fixture)[1].MODEDIRECT.no
+
+        Printf("*** fixture type mode " .. FixtureModeType .. " number " .. NrFixtureModeType)
 
         local Preset_Name = {}
         local Slot_ID = {}
@@ -493,7 +497,7 @@ function Construct_Gobo_Layout(displayHandle, TLay, SeqNrStart, TLayNr, AppNr, P
         if Result[1] == 1 then
             if GetUIChannelIndex(SelectionFirst(), GetAttributeIndex('Gobo1')) then -- check if Fixture has gobo1
                 AppIndex[1] = AppNr - 1
-                AppNr = CreateAppearances(FixtureType, "Gobo1", AppNr, prefix, Mode_Cue_Type)
+                AppNr = CreateAppearances(FixtureType, "Gobo1", AppNr, prefix, Mode_Cue_Type, NrFixtureModeType)
             end
         end
         SetProgress(progHandle, 2)
@@ -501,7 +505,7 @@ function Construct_Gobo_Layout(displayHandle, TLay, SeqNrStart, TLayNr, AppNr, P
             CmdIndirectWait("ClearAll; Fixture " .. FixtureNum)
             if GetUIChannelIndex(SelectionFirst(), GetAttributeIndex('Gobo2')) then -- check if Fixture has gobo2
                 AppIndex[2] = AppNr - 1
-                AppNr = CreateAppearances(FixtureType, "Gobo2", AppNr, prefix, Mode_Cue_Type)
+                AppNr = CreateAppearances(FixtureType, "Gobo2", AppNr, prefix, Mode_Cue_Type, NrFixtureModeType)
             end
         end
         SetProgress(progHandle, 3)
@@ -509,7 +513,7 @@ function Construct_Gobo_Layout(displayHandle, TLay, SeqNrStart, TLayNr, AppNr, P
             CmdIndirectWait("ClearAll; Fixture " .. FixtureNum)
             if GetUIChannelIndex(SelectionFirst(), GetAttributeIndex('Gobo3')) then -- check if Fixture has gobo3
                 AppIndex[3] = AppNr - 1
-                AppNr = CreateAppearances(FixtureType, "Gobo3", AppNr, prefix, Mode_Cue_Type)
+                AppNr = CreateAppearances(FixtureType, "Gobo3", AppNr, prefix, Mode_Cue_Type, NrFixtureModeType)
             end
         end
         SetProgress(progHandle, 4)
@@ -517,7 +521,7 @@ function Construct_Gobo_Layout(displayHandle, TLay, SeqNrStart, TLayNr, AppNr, P
             CmdIndirectWait("ClearAll; Fixture " .. FixtureNum)
             if GetUIChannelIndex(SelectionFirst(), GetAttributeIndex('EFFECTWHEEL')) then -- check if Fixture has EFFECTWHEEL
                 AppIndex[4] = AppNr - 1
-                AppNr = CreateAppearances(FixtureType, "EFFECTWHEEL", AppNr, prefix, Mode_Cue_Type)
+                AppNr = CreateAppearances(FixtureType, "EFFECTWHEEL", AppNr, prefix, Mode_Cue_Type, NrFixtureModeType)
             end
         end
         SetProgress(progHandle, 5)
@@ -525,7 +529,7 @@ function Construct_Gobo_Layout(displayHandle, TLay, SeqNrStart, TLayNr, AppNr, P
             CmdIndirectWait("ClearAll; Fixture " .. FixtureNum)
             if GetUIChannelIndex(SelectionFirst(), GetAttributeIndex('Prism1')) then -- check if Fixture has Prism1
                 AppIndex[5] = AppNr - 1
-                AppNr = CreateAppearances(FixtureType, "Prism1", AppNr, prefix, Mode_Cue_Type)
+                AppNr = CreateAppearances(FixtureType, "Prism1", AppNr, prefix, Mode_Cue_Type, NrFixtureModeType)
             end
         end
         SetProgress(progHandle, 6)
@@ -533,7 +537,7 @@ function Construct_Gobo_Layout(displayHandle, TLay, SeqNrStart, TLayNr, AppNr, P
             CmdIndirectWait("ClearAll; Fixture " .. FixtureNum)
             if GetUIChannelIndex(SelectionFirst(), GetAttributeIndex('Prism2')) then -- check if Fixture has Prism2
                 AppIndex[6] = AppNr - 1
-                AppNr = CreateAppearances(FixtureType, "Prism2", AppNr, prefix, Mode_Cue_Type)
+                AppNr = CreateAppearances(FixtureType, "Prism2", AppNr, prefix, Mode_Cue_Type, NrFixtureModeType)
             end
         end
         SetProgress(progHandle, 7)
@@ -541,7 +545,7 @@ function Construct_Gobo_Layout(displayHandle, TLay, SeqNrStart, TLayNr, AppNr, P
             CmdIndirectWait("ClearAll; Fixture " .. FixtureNum)
             if GetUIChannelIndex(SelectionFirst(), GetAttributeIndex('EFFECTWHEEL2')) then -- check if Fixture has EFFECTWHEEL
                 AppIndex[7] = AppNr - 1
-                AppNr = CreateAppearances(FixtureType, "EFFECTWHEEL2", AppNr, prefix, Mode_Cue_Type)
+                AppNr = CreateAppearances(FixtureType, "EFFECTWHEEL2", AppNr, prefix, Mode_Cue_Type, NrFixtureModeType)
             end
         end
         SetProgress(progHandle, 8)
@@ -549,7 +553,7 @@ function Construct_Gobo_Layout(displayHandle, TLay, SeqNrStart, TLayNr, AppNr, P
             CmdIndirectWait("ClearAll; Fixture " .. FixtureNum)
             if GetUIChannelIndex(SelectionFirst(), GetAttributeIndex('EFFECTWHEEL3')) then -- check if Fixture has EFFECTWHEEL
                 AppIndex[8] = AppNr - 1
-                AppNr = CreateAppearances(FixtureType, "EFFECTWHEEL3", AppNr, prefix, Mode_Cue_Type)
+                AppNr = CreateAppearances(FixtureType, "EFFECTWHEEL3", AppNr, prefix, Mode_Cue_Type, NrFixtureModeType)
             end
         end
         StopProgress(progHandle)
