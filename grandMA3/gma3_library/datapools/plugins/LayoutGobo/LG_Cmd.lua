@@ -94,11 +94,10 @@ function List_SlotID(att, FixtureID, Slot_ID_, n)
                     local avgdmx = math.floor(((todmx - fromdmx) / 2) + fromdmx) -- good
                     CmdIndirectWait("ClearAll")
                     CmdIndirectWait(FixtureID .. " At Absolute Decimal8 " .. avgdmx .. " Attribute " .. att)
-                    -- Slot_ID_[n][slot_index] = {'handle', name = CmdObj().Destination:Children()[i].Name, state = false }
                     slot_index_ = slot_index - 1
                     Slot_ID_[n][slot_index] =
                         string.format('%02d %s', slot_index_, tostring(CmdObj().Destination:Children()[i].Name))
-                    slot_ = slot_index
+                        slot_ = slot_index
                 else
                     Slot_ID_[n][slot_index] = 'Empty'
                 end
@@ -148,13 +147,11 @@ function CreateLabelPresets(att, FixtureID, FirstPresetIndex, Select_, prefix)
             while i <= #CmdObj().Destination:Children() do -- iterating over the gobos
                 local fromdmx = Dec24_To_Dec8(CmdObj().Destination:Children()[i].DMXFROM)
                 local todmx = Dec24_To_Dec8(CmdObj().Destination:Children()[i].DMXTO)
-                -- local avgdmx = math.floor((fromdmx + todmx) / 2) -- so there is no problem of the conversion from decimal24 to deecimal8
                 local avgdmx = math.floor(((todmx - fromdmx) / 2) + fromdmx) -- good
                 CmdIndirectWait("ClearAll")
                 CmdIndirectWait(FixtureID .. " At Absolute Decimal8 " .. avgdmx .. " Attribute " .. att)
                 for _, v in ipairs(Select_) do
                     if (CmdObj().Destination:Children()[i].Name == v) then
-                        Printf(' obj %s Sel %s', CmdObj().Destination:Children()[i].Name, v)
                         presetnames[PN] = CmdObj().Destination:Children()[i].Name:gsub(' ', '_') -- geting the name of the gobo
                         CmdIndirectWait("Store Preset 25." .. PresetIndex .. " /merge")
                         CmdIndirectWait("Label Preset 25." ..
@@ -261,9 +258,8 @@ function CreateSequence(FixtureType, prefix, SeqNrStart, Preset_Name, Grp, Slot_
     StopProgress(progHandle)
 
     Printf("The length 1 is " .. length1 .. " and 2 is " .. length2 .. " and 3 is " .. length3 ..
-        " and 4 is " ..
-        length4 ..
-        " and 5 is " .. length5 .. " and 6 is " .. length6 .. " and 7 is " .. length7 .. " and 8 is " .. length8)
+        " and 4 is " .. length4 .. " and 5 is " .. length5 .. " and 6 is " .. length6 .. 
+        " and 7 is " .. length7 .. " and 8 is " .. length8)
     CmdIndirectWait("ClearAll")
     CmdIndirectWait('Store Layout ' .. TLayNr .. '.' .. LayNr .. ' Property CustomTextText=\' ' .. GrpName .. ' \'')
     CmdIndirectWait('Set Layout ' .. TLayNr .. '.' .. LayNr .. ' Property CustomTextSize \'32')
@@ -567,7 +563,6 @@ function CreateCue(FixtureType, prefix, SeqNrStart, Preset_Name, Grp, Slot_ID, P
     local length4 = 1
     if Result[4] == 1 then
         if GetUIChannelIndex(SelectionFirst(), GetAttributeIndex('EFFECTWHEEL')) ~= nil then
-            Printf("EFFECTWHEEL ok")
             length4 = ArrayLength(Preset_Name[4])
             WH[4] = true
         end
@@ -592,7 +587,6 @@ function CreateCue(FixtureType, prefix, SeqNrStart, Preset_Name, Grp, Slot_ID, P
     local length7 = 1
     if Result[7] == 1 then
         if GetUIChannelIndex(SelectionFirst(), GetAttributeIndex('EFFECTWHEEL2')) ~= nil then
-            Printf("EFFECTWHEEL2 ok")
             length7 = ArrayLength(Preset_Name[7])
             WH[7] = true
         end
@@ -601,7 +595,6 @@ function CreateCue(FixtureType, prefix, SeqNrStart, Preset_Name, Grp, Slot_ID, P
     local length8 = 1
     if Result[8] == 1 then
         if GetUIChannelIndex(SelectionFirst(), GetAttributeIndex('EFFECTWHEEL3')) ~= nil then
-            Printf("EFFECTWHEEL3 ok")
             length8 = ArrayLength(Preset_Name[8])
             WH[8] = true
         end

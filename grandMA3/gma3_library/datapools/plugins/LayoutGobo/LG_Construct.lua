@@ -70,7 +70,7 @@ function Construct_Gobo_Layout(displayHandle, TLay, SeqNrStart, TLayNr, AppNr, P
         local Fixture = 'Fixture ' .. FixtureID_ .. ''
         local FixtureNum = tonumber(FixtureID_)
         local FixtureType = ObjectList(Fixture)[1].FixtureTYPE.name
-        local FixtureModeType =ObjectList(Fixture)[1].MODEDIRECT.name
+        local FixtureModeType = ObjectList(Fixture)[1].MODEDIRECT.name
         local NrFixtureModeType = ObjectList(Fixture)[1].MODEDIRECT.no
 
         Printf("*** fixture type mode " .. FixtureModeType .. " number " .. NrFixtureModeType)
@@ -128,6 +128,7 @@ function Construct_Gobo_Layout(displayHandle, TLay, SeqNrStart, TLayNr, AppNr, P
             Item_Slot_Select_ID[4][1] = true
             Item_Slot_Select_ID[4], slot_index[4] = List_SlotID('EFFECTWHEEL', Fixture, Item_Slot_Select_ID, 4)
         else
+            Printf("no itemslotselect 4")
             Item_Slot_Select_ID[4] = {}
             Item_Slot_Select_ID[4][1] = false
         end
@@ -153,7 +154,7 @@ function Construct_Gobo_Layout(displayHandle, TLay, SeqNrStart, TLayNr, AppNr, P
         if GetUIChannelIndex(SelectionFirst(), GetAttributeIndex('EFFECTWHEEL2')) ~= nil then -- check if Fixture has EFFECTWHEEL
             Item_Slot_Select_ID[7] = {}
             Item_Slot_Select_ID[7][1] = true
-            Item_Slot_Select_ID[7], slot_index[7] = List_SlotID('EFFECTWHEEL2', Fixture, Item_Slot_Select_ID, 4)
+            Item_Slot_Select_ID[7], slot_index[7] = List_SlotID('EFFECTWHEEL2', Fixture, Item_Slot_Select_ID, 7)
         else
             Item_Slot_Select_ID[7] = {}
             Item_Slot_Select_ID[7][1] = false
@@ -162,7 +163,7 @@ function Construct_Gobo_Layout(displayHandle, TLay, SeqNrStart, TLayNr, AppNr, P
         if GetUIChannelIndex(SelectionFirst(), GetAttributeIndex('EFFECTWHEEL3')) ~= nil then -- check if Fixture has EFFECTWHEEL
             Item_Slot_Select_ID[8] = {}
             Item_Slot_Select_ID[8][1] = true
-            Item_Slot_Select_ID[8], slot_index[8] = List_SlotID('EFFECTWHEEL3', Fixture, Item_Slot_Select_ID, 4)
+            Item_Slot_Select_ID[8], slot_index[8] = List_SlotID('EFFECTWHEEL3', Fixture, Item_Slot_Select_ID, 8)
         else
             Item_Slot_Select_ID[8] = {}
             Item_Slot_Select_ID[8][1] = false
@@ -263,6 +264,9 @@ function Construct_Gobo_Layout(displayHandle, TLay, SeqNrStart, TLayNr, AppNr, P
             if (c == 1) then Result[3] = 0 end
         end
         if (Item_Slot_Select_ID[4][1] == true) then
+            Printf("********Item_Slot_Select_ID 4 '%s' ", Item_Slot_Select_ID[4][2])
+            Printf("********Item_Slot_Select_ID 4 '%s' ", Item_Slot_Select_ID[4][3])
+            Printf("********Item_Slot_Select_ID 4 '%s' ", Item_Slot_Select_ID[4][4])
             Selected_Slot_Select_ID[4] = {}
             local Item_List = {}
             local a = 1
@@ -285,6 +289,7 @@ function Construct_Gobo_Layout(displayHandle, TLay, SeqNrStart, TLayNr, AppNr, P
             for k, v in pairs(Slot_Select_ID[4].states) do
                 if (v == true) then
                     G_Check[4] = true
+                    Printf("------ EFFECTWHEEL '%s'", k)
                     k = string.sub(k, 4, -1)
                     Selected_Slot_Select_ID[4][c] = k
                     Printf("EFFECTWHEEL State '%s' = '%s'", k, tostring(v))

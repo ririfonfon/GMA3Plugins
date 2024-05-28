@@ -896,46 +896,49 @@ local function Main(displayHandle)
                     table.remove(popuplists.Grp_Select, k)
                 end
             end
-            choice = choice:gsub("'", "")
-            for k in ipairs(FixtureGroups) do
-                if choice == FixtureGroups[k].name then
-                    SelGrp = k
+            if choice then
+                choice = choice:gsub("'", "")
+                for k in ipairs(FixtureGroups) do
+                    if choice == FixtureGroups[k].name then
+                        SelGrp = k
+                    end
                 end
-            end
-            table.insert(SelectedGrp, "'" .. FixtureGroups[SelGrp].name .. "'")
-            table.insert(SelectedGrpNo, "'" .. FixtureGroups[SelGrp].NO .. "'")
-            for k in ipairs(SelectedGrp) do
-                Nr_SelectedGrp = k
-            end
-            Selected_Grp_Wheel[Nr_SelectedGrp] = {}
-            subTitle.Text = subTitle.Text .. Nr_SelectedGrp .. "." .. FixtureGroups[SelGrp].name .. " "
-            OkButton.Visible = "Yes"
-            input1LineEdit.Visible = "Yes"
-            input2LineEdit.Visible = "Yes"
-            input3LineEdit.Visible = "Yes"
-            input4LineEdit.Visible = "Yes"
-            input5LineEdit.Visible = "Yes"
-            input6LineEdit.Visible = "Yes"
-            input7LineEdit.Visible = "Yes"
-            -- input8LineEdit.Visible = "Yes"
-            input1Sujestion.Visible = "Yes"
-            input2Sujestion.Visible = "Yes"
-            input3Sujestion.Visible = "Yes"
-            input4Sujestion.Visible = "Yes"
-            input5Sujestion.Visible = "Yes"
-            input6Sujestion.Visible = "Yes"
-            Nr_Gobo, Nr_Whell = Check_Nr_Gobo(FixtureGroups[SelGrp].NO, Nr_Gobo)
-            Nr_Total_Gobo = Nr_Total_Gobo + Nr_Gobo
-            Nr_Total_Whell = Nr_Total_Whell + Nr_Whell
-            Echo(" Nr Gobo " ..
-                Nr_Gobo ..
-                " Nr Total Gobo " .. Nr_Total_Gobo .. " Nr Whell " .. Nr_Whell .. " Nr Whell total " .. Nr_Total_Whell)
-            if Mode_Cue_Type then
-                Echo("Cue Mode")
-                input8LineEdit.Visible = "Yes"
-            else
-                Echo("Seq Mode")
-                input8LineEdit.Visible = "No"
+                table.insert(SelectedGrp, "'" .. FixtureGroups[SelGrp].name .. "'")
+                table.insert(SelectedGrpNo, "'" .. FixtureGroups[SelGrp].NO .. "'")
+                for k in ipairs(SelectedGrp) do
+                    Nr_SelectedGrp = k
+                end
+                Selected_Grp_Wheel[Nr_SelectedGrp] = {}
+                subTitle.Text = subTitle.Text .. Nr_SelectedGrp .. "." .. FixtureGroups[SelGrp].name .. " "
+                OkButton.Visible = "Yes"
+                input1LineEdit.Visible = "Yes"
+                input2LineEdit.Visible = "Yes"
+                input3LineEdit.Visible = "Yes"
+                input4LineEdit.Visible = "Yes"
+                input5LineEdit.Visible = "Yes"
+                input6LineEdit.Visible = "Yes"
+                input7LineEdit.Visible = "Yes"
+                -- input8LineEdit.Visible = "Yes"
+                input1Sujestion.Visible = "Yes"
+                input2Sujestion.Visible = "Yes"
+                input3Sujestion.Visible = "Yes"
+                input4Sujestion.Visible = "Yes"
+                input5Sujestion.Visible = "Yes"
+                input6Sujestion.Visible = "Yes"
+                Nr_Gobo, Nr_Whell = Check_Nr_Gobo(FixtureGroups[SelGrp].NO, Nr_Gobo)
+                Nr_Total_Gobo = Nr_Total_Gobo + Nr_Gobo
+                Nr_Total_Whell = Nr_Total_Whell + Nr_Whell
+                Echo(" Nr Gobo " ..
+                    Nr_Gobo ..
+                    " Nr Total Gobo " ..
+                    Nr_Total_Gobo .. " Nr Whell " .. Nr_Whell .. " Nr Whell total " .. Nr_Total_Whell)
+                if Mode_Cue_Type then
+                    Echo("Cue Mode")
+                    input8LineEdit.Visible = "Yes"
+                else
+                    Echo("Seq Mode")
+                    input8LineEdit.Visible = "No"
+                end
             end
         elseif caller.Name == "Name_Select" then
             input1LineEdit.Content = choice
