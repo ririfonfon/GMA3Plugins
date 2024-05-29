@@ -176,20 +176,35 @@ function Construct_Gobo_Layout(displayHandle, TLay, SeqNrStart, TLayNr, AppNr, P
             local Item_List = {}
             local a = 1
             local c = 1
+            local all_select_ = false
+            ::gotoselect::
             for i = 2, slot_index[1], 1 do
-                Item_List[a] = { name = Item_Slot_Select_ID[1][i], state = false }
+                if all_select_ then
+                    Item_List[a] = { name = Item_Slot_Select_ID[1][i], state = true }
+                else
+                    Item_List[a] = { name = Item_Slot_Select_ID[1][i], state = false }
+                end
                 a = a + 1
             end
             Slot_Select_ID[1] = MessageBox(
                 {
                     title = FixtureGroupsName .. " Wheel Gobo1",
-                    commands = { { value = 1, name = "Ok" }, { value = 0, name = "Next Wheel" } },
+                    commands = { { value = 1, name = "Ok" }, { value = 0, name = "Next Wheel" }, { value = 2, name = "Select All" }, { value = 3, name = "Select None" } },
                     states = Item_List,
                     icon = "object_plugin1",
                     titleTextColor = "Global.Text",
                     messageTextColor = "Global.Text"
                 }
             )
+            if string.gsub(Slot_Select_ID[1].result, "'", "") == "2" then
+                a = 1
+                all_select_ = true
+                goto gotoselect
+            elseif string.gsub(Slot_Select_ID[1].result, "'", "") == "3" then
+                a = 1
+                all_select_ = false
+                goto gotoselect
+            end
             Result[1] = Slot_Select_ID[1].result
             for k, v in pairs(Slot_Select_ID[1].states) do
                 if (v == true) then
@@ -207,20 +222,35 @@ function Construct_Gobo_Layout(displayHandle, TLay, SeqNrStart, TLayNr, AppNr, P
             local Item_List = {}
             local a = 1
             local c = 1
+            local all_select_ = false
+            ::gotoselect::
             for i = 2, slot_index[2], 1 do
-                Item_List[a] = { name = Item_Slot_Select_ID[2][i], state = false }
+                if all_select_ then
+                    Item_List[a] = { name = Item_Slot_Select_ID[2][i], state = true }
+                else
+                    Item_List[a] = { name = Item_Slot_Select_ID[2][i], state = false }
+                end
                 a = a + 1
             end
             Slot_Select_ID[2] = MessageBox(
                 {
                     title = FixtureGroupsName .. " Wheel Gobo2",
-                    commands = { { value = 1, name = "Ok" }, { value = 0, name = "Next Wheel" } },
+                    commands = { { value = 1, name = "Ok" }, { value = 0, name = "Next Wheel" }, { value = 2, name = "Select All" }, { value = 3, name = "Select None" } },
                     states = Item_List,
                     icon = "object_plugin1",
                     titleTextColor = "Global.Text",
                     messageTextColor = "Global.Text"
                 }
             )
+            if string.gsub(Slot_Select_ID[2].result, "'", "") == "2" then
+                a = 1
+                all_select_ = true
+                goto gotoselect
+            elseif string.gsub(Slot_Select_ID[2].result, "'", "") == "3" then
+                a = 1
+                all_select_ = false
+                goto gotoselect
+            end
             Result[2] = Slot_Select_ID[2].result
             for k, v in pairs(Slot_Select_ID[2].states) do
                 if (v == true) then
@@ -238,20 +268,35 @@ function Construct_Gobo_Layout(displayHandle, TLay, SeqNrStart, TLayNr, AppNr, P
             local Item_List = {}
             local a = 1
             local c = 1
+            local all_select_ = false
+            ::gotoselect::
             for i = 2, slot_index[3], 1 do
-                Item_List[a] = { name = Item_Slot_Select_ID[3][i], state = false }
+                if all_select_ then
+                    Item_List[a] = { name = Item_Slot_Select_ID[3][i], state = true }
+                else
+                    Item_List[a] = { name = Item_Slot_Select_ID[3][i], state = false }
+                end
                 a = a + 1
             end
             Slot_Select_ID[3] = MessageBox(
                 {
                     title = FixtureGroupsName .. " Wheel Gobo3",
-                    commands = { { value = 1, name = "Ok" }, { value = 0, name = "Next Wheel" } },
+                    commands = { { value = 1, name = "Ok" }, { value = 0, name = "Next Wheel" }, { value = 2, name = "Select All" }, { value = 3, name = "Select None" } },
                     states = Item_List,
                     icon = "object_plugin1",
                     titleTextColor = "Global.Text",
                     messageTextColor = "Global.Text"
                 }
             )
+            if string.gsub(Slot_Select_ID[3].result, "'", "") == "2" then
+                a = 1
+                all_select_ = true
+                goto gotoselect
+            elseif string.gsub(Slot_Select_ID[3].result, "'", "") == "3" then
+                a = 1
+                all_select_ = false
+                goto gotoselect
+            end
             Result[3] = Slot_Select_ID[3].result
             for k, v in pairs(Slot_Select_ID[3].states) do
                 if (v == true) then
@@ -265,27 +310,39 @@ function Construct_Gobo_Layout(displayHandle, TLay, SeqNrStart, TLayNr, AppNr, P
             if (c == 1) then Result[3] = 0 end
         end
         if (Item_Slot_Select_ID[4][1] == true) then
-            Printf("********Item_Slot_Select_ID 4 '%s' ", Item_Slot_Select_ID[4][2])
-            Printf("********Item_Slot_Select_ID 4 '%s' ", Item_Slot_Select_ID[4][3])
-            Printf("********Item_Slot_Select_ID 4 '%s' ", Item_Slot_Select_ID[4][4])
             Selected_Slot_Select_ID[4] = {}
             local Item_List = {}
             local a = 1
             local c = 1
+            local all_select_ = false
+            ::gotoselect::
             for i = 2, slot_index[4], 1 do
-                Item_List[a] = { name = Item_Slot_Select_ID[4][i], state = false }
+                if all_select_ then
+                    Item_List[a] = { name = Item_Slot_Select_ID[4][i], state = true }
+                else
+                    Item_List[a] = { name = Item_Slot_Select_ID[4][i], state = false }
+                end
                 a = a + 1
             end
             Slot_Select_ID[4] = MessageBox(
                 {
                     title = FixtureGroupsName .. " Wheel EFFECTWHEEL",
-                    commands = { { value = 1, name = "Ok" }, { value = 0, name = "Next Wheel" } },
+                    commands = { { value = 1, name = "Ok" }, { value = 0, name = "Next Wheel" }, { value = 2, name = "Select All" }, { value = 3, name = "Select None" } },
                     states = Item_List,
                     icon = "object_plugin1",
                     titleTextColor = "Global.Text",
                     messageTextColor = "Global.Text"
                 }
             )
+            if string.gsub(Slot_Select_ID[4].result, "'", "") == "2" then
+                a = 1
+                all_select_ = true
+                goto gotoselect
+            elseif string.gsub(Slot_Select_ID[4].result, "'", "") == "3" then
+                a = 1
+                all_select_ = false
+                goto gotoselect
+            end
             Result[4] = Slot_Select_ID[4].result
             for k, v in pairs(Slot_Select_ID[4].states) do
                 if (v == true) then
@@ -304,20 +361,35 @@ function Construct_Gobo_Layout(displayHandle, TLay, SeqNrStart, TLayNr, AppNr, P
             local Item_List = {}
             local a = 1
             local c = 1
+            local all_select_ = false
+            ::gotoselect::
             for i = 2, slot_index[5], 1 do
-                Item_List[a] = { name = Item_Slot_Select_ID[5][i], state = false }
+                if all_select_ then
+                    Item_List[a] = { name = Item_Slot_Select_ID[5][i], state = true }
+                else
+                    Item_List[a] = { name = Item_Slot_Select_ID[5][i], state = false }
+                end
                 a = a + 1
             end
             Slot_Select_ID[5] = MessageBox(
                 {
                     title = FixtureGroupsName .. " Wheel Prism1",
-                    commands = { { value = 1, name = "Ok" }, { value = 0, name = "Next Wheel" } },
+                    commands = { { value = 1, name = "Ok" }, { value = 0, name = "Next Wheel" }, { value = 2, name = "Select All" }, { value = 3, name = "Select None" } },
                     states = Item_List,
                     icon = "object_plugin1",
                     titleTextColor = "Global.Text",
                     messageTextColor = "Global.Text"
                 }
             )
+            if string.gsub(Slot_Select_ID[5].result, "'", "") == "2" then
+                a = 1
+                all_select_ = true
+                goto gotoselect
+            elseif string.gsub(Slot_Select_ID[5].result, "'", "") == "3" then
+                a = 1
+                all_select_ = false
+                goto gotoselect
+            end
             Result[5] = Slot_Select_ID[5].result
             for k, v in pairs(Slot_Select_ID[5].states) do
                 if (v == true) then
@@ -335,20 +407,35 @@ function Construct_Gobo_Layout(displayHandle, TLay, SeqNrStart, TLayNr, AppNr, P
             local Item_List = {}
             local a = 1
             local c = 1
+            local all_select_ = false
+            ::gotoselect::
             for i = 2, slot_index[6], 1 do
-                Item_List[a] = { name = Item_Slot_Select_ID[6][i], state = false }
+                if all_select_ then
+                    Item_List[a] = { name = Item_Slot_Select_ID[6][i], state = true }
+                else
+                    Item_List[a] = { name = Item_Slot_Select_ID[6][i], state = false }
+                end
                 a = a + 1
             end
             Slot_Select_ID[6] = MessageBox(
                 {
                     title = FixtureGroupsName .. " Wheel Prism2",
-                    commands = { { value = 1, name = "Ok" }, { value = 0, name = "Next Wheel" } },
+                    commands = { { value = 1, name = "Ok" }, { value = 0, name = "Next Wheel" }, { value = 2, name = "Select All" }, { value = 3, name = "Select None" } },
                     states = Item_List,
                     icon = "object_plugin1",
                     titleTextColor = "Global.Text",
                     messageTextColor = "Global.Text"
                 }
             )
+            if string.gsub(Slot_Select_ID[6].result, "'", "") == "2" then
+                a = 1
+                all_select_ = true
+                goto gotoselect
+            elseif string.gsub(Slot_Select_ID[6].result, "'", "") == "3" then
+                a = 1
+                all_select_ = false
+                goto gotoselect
+            end
             Result[6] = Slot_Select_ID[6].result
             for k, v in pairs(Slot_Select_ID[6].states) do
                 if (v == true) then
@@ -366,20 +453,35 @@ function Construct_Gobo_Layout(displayHandle, TLay, SeqNrStart, TLayNr, AppNr, P
             local Item_List = {}
             local a = 1
             local c = 1
+            local all_select_ = false
+            ::gotoselect::
             for i = 2, slot_index[7], 1 do
-                Item_List[a] = { name = Item_Slot_Select_ID[7][i], state = false }
+                if all_select_ then
+                    Item_List[a] = { name = Item_Slot_Select_ID[7][i], state = true }
+                else
+                    Item_List[a] = { name = Item_Slot_Select_ID[7][i], state = false }
+                end
                 a = a + 1
             end
             Slot_Select_ID[7] = MessageBox(
                 {
                     title = FixtureGroupsName .. " Wheel EFFECTWHEEL2",
-                    commands = { { value = 1, name = "Ok" }, { value = 0, name = "Next Wheel" } },
+                    commands = { { value = 1, name = "Ok" }, { value = 0, name = "Next Wheel" }, { value = 2, name = "Select All" }, { value = 3, name = "Select None" } },
                     states = Item_List,
                     icon = "object_plugin1",
                     titleTextColor = "Global.Text",
                     messageTextColor = "Global.Text"
                 }
             )
+            if string.gsub(Slot_Select_ID[7].result, "'", "") == "2" then
+                a = 1
+                all_select_ = true
+                goto gotoselect
+            elseif string.gsub(Slot_Select_ID[7].result, "'", "") == "3" then
+                a = 1
+                all_select_ = false
+                goto gotoselect
+            end
             Result[7] = Slot_Select_ID[7].result
             for k, v in pairs(Slot_Select_ID[7].states) do
                 if (v == true) then
@@ -397,20 +499,35 @@ function Construct_Gobo_Layout(displayHandle, TLay, SeqNrStart, TLayNr, AppNr, P
             local Item_List = {}
             local a = 1
             local c = 1
+            local all_select_ = false
+            ::gotoselect::
             for i = 2, slot_index[8], 1 do
-                Item_List[a] = { name = Item_Slot_Select_ID[8][i], state = false }
+                if all_select_ then
+                    Item_List[a] = { name = Item_Slot_Select_ID[8][i], state = true }
+                else
+                    Item_List[a] = { name = Item_Slot_Select_ID[8][i], state = false }
+                end
                 a = a + 1
             end
             Slot_Select_ID[8] = MessageBox(
                 {
                     title = FixtureGroupsName .. " Wheel EFFECTWHEEL3",
-                    commands = { { value = 1, name = "Ok" }, { value = 0, name = "Next Wheel" } },
+                    commands = { { value = 1, name = "Ok" }, { value = 0, name = "Next Wheel" }, { value = 2, name = "Select All" }, { value = 3, name = "Select None" } },
                     states = Item_List,
                     icon = "object_plugin1",
                     titleTextColor = "Global.Text",
                     messageTextColor = "Global.Text"
                 }
             )
+            if string.gsub(Slot_Select_ID[8].result, "'", "") == "2" then
+                a = 1
+                all_select_ = true
+                goto gotoselect
+            elseif string.gsub(Slot_Select_ID[8].result, "'", "") == "3" then
+                a = 1
+                all_select_ = false
+                goto gotoselect
+            end
             Result[8] = Slot_Select_ID[8].result
             for k, v in pairs(Slot_Select_ID[8].states) do
                 if (v == true) then
