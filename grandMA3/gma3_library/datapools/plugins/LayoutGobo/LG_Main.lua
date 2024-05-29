@@ -1,6 +1,6 @@
 --[[
 Releases:
-* 0.0.0.5
+* 0.0.0.6
 
 Created by Richard Fontaine "RIRI", May 2024.
 --]]
