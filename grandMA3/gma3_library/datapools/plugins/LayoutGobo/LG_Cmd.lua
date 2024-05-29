@@ -521,7 +521,7 @@ function CreateSequence(FixtureType, prefix, SeqNrStart, Preset_Name, Grp, Slot_
 end
 
 function CreateCue(FixtureType, prefix, SeqNrStart, Preset_Name, Grp, Slot_ID, PresetIndex, AppIndex, GrpName,
-                   Result, TLayNr, RefX, LayY, LayH, LayW, LayNr)
+                   Result, TLayNr, RefX, LayY, LayH, LayW, LayNr,Mode_Line)
     local LayX = RefX
     LayY = math.floor(LayY - LayH) -- Max Y Position minus hight from element. 0 are at the Bottom!
 
@@ -610,11 +610,11 @@ function CreateCue(FixtureType, prefix, SeqNrStart, Preset_Name, Grp, Slot_ID, P
     CmdIndirectWait('Set Layout ' .. TLayNr .. '.' .. LayNr .. ' Property CustomTextAlignmentV \'Top')
     CmdIndirectWait('Set Layout ' .. TLayNr .. '.' .. LayNr .. ' Property CustomTextAlignmentH \'Left')
     CmdIndirectWait("Set Layout " .. TLayNr .. "." .. LayNr ..
-        " Property PosX " .. LayX .. " PosY " .. LayY ..
+        " Property PosX " .. LayX - LayW - 20 .. " PosY " .. LayY ..
         " PositionW " .. LayW .. " PositionH " .. LayH ..
         " VisibilityBorder=0")
     LayNr = math.floor(LayNr + 1)
-    LayX = math.floor(LayX + LayW + 20)
+    -- LayX = math.floor(LayX + LayW + 20)
 
     progHandle = StartProgress("Store Cues & Assign To Layout")
     SetProgressRange(progHandle, startIdx, endIdx)
@@ -644,11 +644,15 @@ function CreateCue(FixtureType, prefix, SeqNrStart, Preset_Name, Grp, Slot_ID, P
                 ' VisibilityObjectName=0 VisibilityBar=0 VisibilityIndicatorBar=0 VisibilityBorder=0')
             LayX = math.floor(LayX + LayW + 20)
             LayNr = math.floor(LayNr + 1)
-
+            
             SeqNrStart = SeqNrStart + 1
         end
+        LayX = math.floor(LayX + LayW + 20)
+        if Mode_Line then
+            LayY = math.floor(LayY - 120)
+            LayX = RefX
+        end
     end
-    LayX = math.floor(LayX + LayW + 20)
     SetProgress(progHandle, 2)
     if WH[2] then
         for i = 1, length2, 1 do -- gobo2 loop from Preset to sequence, if there is no gobo2 length2 would be 1 and loop wont commited
@@ -674,8 +678,12 @@ function CreateCue(FixtureType, prefix, SeqNrStart, Preset_Name, Grp, Slot_ID, P
 
             SeqNrStart = SeqNrStart + 1
         end
+        LayX = math.floor(LayX + LayW + 20)
+        if Mode_Line then
+            LayY = math.floor(LayY - 120)
+            LayX = RefX
+        end
     end
-    LayX = math.floor(LayX + LayW + 20)
     SetProgress(progHandle, 3)
     if WH[3] then
         for i = 1, length3, 1 do -- gobo3 loop from Preset to sequence, if there is no gobo3 length3 would be 1 and loop wont commited
@@ -701,8 +709,12 @@ function CreateCue(FixtureType, prefix, SeqNrStart, Preset_Name, Grp, Slot_ID, P
 
             SeqNrStart = SeqNrStart + 1
         end
+        LayX = math.floor(LayX + LayW + 20)
+        if Mode_Line then
+            LayY = math.floor(LayY - 120)
+            LayX = RefX
+        end
     end
-    LayX = math.floor(LayX + LayW + 20)
     SetProgress(progHandle, 4)
     if WH[4] then
         for i = 1, length4, 1 do -- EFFECTWHEEL loop from Preset to sequence, if there is no EFFECTWHEEL length4 would be 1 and loop wont commited
@@ -728,8 +740,12 @@ function CreateCue(FixtureType, prefix, SeqNrStart, Preset_Name, Grp, Slot_ID, P
 
             SeqNrStart = SeqNrStart + 1
         end
+        LayX = math.floor(LayX + LayW + 20)
+        if Mode_Line then
+            LayY = math.floor(LayY - 120)
+            LayX = RefX
+        end
     end
-    LayX = math.floor(LayX + LayW + 20)
     SetProgress(progHandle, 5)
     if WH[5] then
         for i = 1, length5, 1 do -- Prism1 loop from Preset to sequence, if there is no Prism1 length4 would be 1 and loop wont commited
@@ -755,8 +771,12 @@ function CreateCue(FixtureType, prefix, SeqNrStart, Preset_Name, Grp, Slot_ID, P
 
             SeqNrStart = SeqNrStart + 1
         end
+        LayX = math.floor(LayX + LayW + 20)
+        if Mode_Line then
+            LayY = math.floor(LayY - 120)
+            LayX = RefX
+        end
     end
-    LayX = math.floor(LayX + LayW + 20)
     SetProgress(progHandle, 6)
     if WH[6] then
         for i = 1, length6, 1 do -- Prism2 loop from Preset to sequence, if there is no Prism2 length4 would be 1 and loop wont commited
@@ -782,8 +802,12 @@ function CreateCue(FixtureType, prefix, SeqNrStart, Preset_Name, Grp, Slot_ID, P
 
             SeqNrStart = SeqNrStart + 1
         end
+        LayX = math.floor(LayX + LayW + 20)
+        if Mode_Line then
+            LayY = math.floor(LayY - 120)
+            LayX = RefX
+        end
     end
-    LayX = math.floor(LayX + LayW + 20)
     SetProgress(progHandle, 7)
     if WH[7] then
         for i = 1, length7, 1 do -- EFFECTWHEEL2 loop from Preset to sequence, if there is no EFFECTWHEEL2 length7 would be 1 and loop wont commited
@@ -809,8 +833,12 @@ function CreateCue(FixtureType, prefix, SeqNrStart, Preset_Name, Grp, Slot_ID, P
 
             SeqNrStart = SeqNrStart + 1
         end
+        LayX = math.floor(LayX + LayW + 20)
+        if Mode_Line then
+            LayY = math.floor(LayY - 120)
+            LayX = RefX
+        end
     end
-    LayX = math.floor(LayX + LayW + 20)
     SetProgress(progHandle, 8)
     if WH[8] then
         for i = 1, length8, 1 do -- EFFECTWHEEL3 loop from Preset to sequence, if there is no EFFECTWHEEL3 length8 would be 1 and loop wont commited

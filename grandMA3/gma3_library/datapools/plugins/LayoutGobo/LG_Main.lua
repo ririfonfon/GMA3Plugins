@@ -45,6 +45,7 @@ local function Main(displayHandle)
     local Nr_Whell = 0
     local Nr_Total_Whell = 0
     local Mode_Cue_Type = false
+    local Mode_Line = false
     local First_Seq_Check = false
     local Selected_Grp_Wheel = {}
 
@@ -661,7 +662,7 @@ local function Main(displayHandle)
         Obj.Delete(screenOverlay, Obj.Index(baseInput))
         Construct_Gobo_Layout(displayHandle, TLay, SeqNrStart, TLayNr, AppNr,
             Preset_5_Current, Preset_5_NrStart, SelectedGrp, SelectedGrpNo, TLayNrRef, NaLay, MaxGobLgn, MacroNrStart,
-            Mode_Cue_Type)
+            Mode_Cue_Type, Mode_Line)
     end
 
     signalTable.CheckBoxClicked = function(caller)
@@ -708,8 +709,10 @@ local function Main(displayHandle)
         Echo("Click line")
         if caller.Text == " All in line " then
             input8LineEdit.Text = " One line / wheel "
+            Mode_Line = true
         elseif caller.Text == " One line / wheel " then
             input8LineEdit.Text = " All in line "
+            Mode_Line = false
         end
     end
 

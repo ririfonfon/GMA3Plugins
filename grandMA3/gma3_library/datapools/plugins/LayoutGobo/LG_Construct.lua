@@ -6,7 +6,8 @@ Created by Richard Fontaine "RIRI", May 2024.
 --]]
 
 function Construct_Gobo_Layout(displayHandle, TLay, SeqNrStart, TLayNr, AppNr, Preset_5_Current, Preset_5_NrStart,
-                               SelectedGrp, SelectedGrpNo, TLayNrRef, NaLay, MaxGobLgn, MacroNrStart, Mode_Cue_Type)
+                               SelectedGrp, SelectedGrpNo, TLayNrRef, NaLay, MaxGobLgn, MacroNrStart, Mode_Cue_Type,
+                               Mode_Line)
     Echo(
         '**********************************************************************************************************************************************************************')
     -- fix prefix
@@ -567,7 +568,7 @@ function Construct_Gobo_Layout(displayHandle, TLay, SeqNrStart, TLayNr, AppNr, P
 
         if Mode_Cue_Type then
             SeqNrStart, LayNr, LayY = CreateCue(FixtureType, prefix, SeqNrStart, Preset_Name, FixtureGroupsNo,
-                Slot_ID, Index, AppIndex, FixtureGroupsName, Result, TLayNr, RefX, LayY, LayH, LayW, LayNr)
+                Slot_ID, Index, AppIndex, FixtureGroupsName, Result, TLayNr, RefX, LayY, LayH, LayW, LayNr, Mode_Line)
         else
             SeqNrStart, LayNr, LayY = CreateSequence(FixtureType, prefix, SeqNrStart, Preset_Name, FixtureGroupsNo,
                 Slot_ID, Index, AppIndex, FixtureGroupsName, Result, TLayNr, RefX, LayY, LayH, LayW, LayNr)
