@@ -1,6 +1,6 @@
 --[[
 Releases:
-* 0.0.0.7
+* 0.0.0.8
 
 Created by Richard Fontaine "RIRI", May 2024.
 --]]
@@ -546,6 +546,8 @@ function Construct_Gobo_Layout(displayHandle, TLay, SeqNrStart, TLayNr, AppNr, P
             end
             if (c == 1) then Result[8] = 0 end
         end
+
+        CmdIndirectWait('Set Preset 25 Property PresetMode "Universal"')
 
         progHandle = StartProgress("Create Preset")
         SetProgressRange(progHandle, startIdx, endIdx)
