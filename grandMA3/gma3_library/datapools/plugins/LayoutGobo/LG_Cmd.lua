@@ -1,6 +1,6 @@
 --[[
 Releases:
-* 0.0.0.6
+* 0.0.0.7
 
 Created by Richard Fontaine "RIRI", May 2024.
 --]]
@@ -25,31 +25,35 @@ function GetWheelName(ftype, attribut, NrFixtureModeType)
     return CmdObj().Destination:Children()[1].Wheel.name
 end
 
-function CreateAppearances(ft, att, j, prefix, Mode_Cue_Type, NrFixtureModeType)
+function CreateAppearances(ft, att, j, prefix, Mode_Cue_Type, NrFixtureModeType, Slot_Id_)
     local gobowheel = GetWheelName(ft, att, NrFixtureModeType)
     CmdIndirectWait("Cd ft '" .. ft .. "'.Wheels.'" .. gobowheel .. "'")
     local wheel = CmdObj().Destination
-    for _, slot in ipairs(wheel:Children()) do
-        CmdIndirectWait("Store Appearance " .. j .. " 'Appearance " .. j .. "'")
-        local objlist = ObjectList("Appearance " .. tostring(j))
-        j = j + 1
-        local obj = objlist[1]
-        obj.Name = string.format('%s %s %s %s', prefix .. '_', wheel:Parent():Parent().ShortName, wheel.Name, slot.Name)
-        for _, prop in ipairs { 'ImageR', 'ImageG', 'ImageB', 'ImageAlpha', 'Appearance' } do
-            obj[prop] = slot[prop]
-        end
-        if Mode_Cue_Type then
-            CmdIndirectWait("Store Appearance " .. j .. " 'Appearance " .. j .. "'")
-            objlist = ObjectList("Appearance " .. tostring(j))
-            j = j + 1
-            obj = objlist[1]
-            obj.Name = string.format('%s %s %s %s', prefix .. '_ActiveCue_', wheel:Parent():Parent().ShortName,
-                wheel.Name,
-                slot.Name)
-            for _, prop in ipairs { 'ImageR', 'ImageG', 'ImageB', 'ImageAlpha', 'Appearance' } do
-                obj[prop] = slot[prop]
-                if prop == 'ImageR' or prop == 'ImageB' then
-                    obj[prop] = 0
+    for _ , id_slot in ipairs(Slot_Id_) do
+        for _, slot in ipairs(wheel:Children()) do
+            if tonumber(id_slot) == tonumber(slot.No) then
+                CmdIndirectWait("Store Appearance " .. j .. " 'Appearance " .. j .. "'")
+                local objlist = ObjectList("Appearance " .. tostring(j))
+                j = j + 1
+                local obj = objlist[1]
+                obj.Name = string.format('%s %s %s %s', prefix .. '_', wheel:Parent():Parent().ShortName, wheel.Name, slot.Name)
+                for _, prop in ipairs { 'ImageR', 'ImageG', 'ImageB', 'ImageAlpha', 'Appearance' } do
+                    obj[prop] = slot[prop]
+                end
+                if Mode_Cue_Type then
+                    CmdIndirectWait("Store Appearance " .. j .. " 'Appearance " .. j .. "'")
+                    objlist = ObjectList("Appearance " .. tostring(j))
+                    j = j + 1
+                    obj = objlist[1]
+                    obj.Name = string.format('%s %s %s %s', prefix .. '_ActiveCue_', wheel:Parent():Parent().ShortName,
+                    wheel.Name,
+                    slot.Name)
+                    for _, prop in ipairs { 'ImageR', 'ImageG', 'ImageB', 'ImageAlpha', 'Appearance' } do
+                        obj[prop] = slot[prop]
+                        if prop == 'ImageR' or prop == 'ImageB' then
+                            obj[prop] = 0
+                        end
+                    end
                 end
             end
         end
@@ -158,6 +162,7 @@ function CreateLabelPresets(att, FixtureID, FirstPresetIndex, Select_, prefix)
                             PresetIndex .. " '" .. prefix .. '_' .. presetnames[PN] .. "'")
                         if (tonumber(CmdObj().Destination:Children()[i].WHEELSLOTINDEX) ~= nil) then
                             Slot_ID_[slot_index] = CmdObj().Destination:Children()[i].WHEELSLOTINDEX
+                            Printf(tonumber(CmdObj().Destination:Children()[i].WHEELSLOTINDEX))
                         else
                             Slot_ID_[slot_index] = 1
                         end
@@ -263,7 +268,7 @@ function CreateSequence(FixtureType, prefix, SeqNrStart, Preset_Name, Grp, Slot_
         " and 4 is " .. length4 .. " and 5 is " .. length5 .. " and 6 is " .. length6 ..
         " and 7 is " .. length7 .. " and 8 is " .. length8)
     CmdIndirectWait("ClearAll")
-    CmdIndirectWait('Store Layout ' .. TLayNr .. '.' .. LayNr .. ' Property CustomTextText=\' ' .. GrpName .. ' \'')
+    CmdIndirectWait('Store Layout ' .. TLayNr .. '.' .. LayNr .. ' Property CustomTextText=\' ' .. GrpName:gsub(' ','_'))
     CmdIndirectWait('Set Layout ' .. TLayNr .. '.' .. LayNr .. ' Property CustomTextSize \'32')
     CmdIndirectWait('Set Layout ' .. TLayNr .. '.' .. LayNr .. ' Property CustomTextAlignmentV \'Top')
     CmdIndirectWait('Set Layout ' .. TLayNr .. '.' .. LayNr .. ' Property CustomTextAlignmentH \'Left')
@@ -642,7 +647,7 @@ function CreateCue(FixtureType, prefix, SeqNrStart, Preset_Name, Grp, Slot_ID, P
         " and 4 is " .. length4 .. " and 5 is " .. length5 .. " and 6 is " .. length6 ..
         " and 7 is " .. length7 .. " and 8 is " .. length8)
     CmdIndirectWait("ClearAll")
-    CmdIndirectWait('Store Layout ' .. TLayNr .. '.' .. LayNr .. ' Property CustomTextText=\' ' .. GrpName)
+    CmdIndirectWait('Store Layout ' .. TLayNr .. '.' .. LayNr .. ' Property CustomTextText=\' ' .. GrpName:gsub(' ','_'))
     CmdIndirectWait('Set Layout ' .. TLayNr .. '.' .. LayNr .. ' Property CustomTextSize \'32')
     CmdIndirectWait('Set Layout ' .. TLayNr .. '.' .. LayNr .. ' Property CustomTextAlignmentV \'Top')
     CmdIndirectWait('Set Layout ' .. TLayNr .. '.' .. LayNr .. ' Property CustomTextAlignmentH \'Left')

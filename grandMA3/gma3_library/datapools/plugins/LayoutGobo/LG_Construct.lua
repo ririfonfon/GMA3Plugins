@@ -1,6 +1,6 @@
 --[[
 Releases:
-* 0.0.0.6
+* 0.0.0.7
 
 Created by Richard Fontaine "RIRI", May 2024.
 --]]
@@ -64,6 +64,7 @@ function Construct_Gobo_Layout(displayHandle, TLay, SeqNrStart, TLayNr, AppNr, P
     for g in ipairs(SelectedGrpNo) do
         FixtureGroupsNo = string.gsub(SelectedGrpNo[g], "'", "")
         FixtureGroupsName = SelectedGrp[g]
+
         CmdIndirectWait('ClearAll')
         CmdIndirectWait('SelectFixtures Group ' .. FixtureGroupsNo)
         local FixtureID_
@@ -625,7 +626,7 @@ function Construct_Gobo_Layout(displayHandle, TLay, SeqNrStart, TLayNr, AppNr, P
         if Result[1] == 1 then
             if GetUIChannelIndex(SelectionFirst(), GetAttributeIndex('Gobo1')) then -- check if Fixture has gobo1
                 AppIndex[1] = AppNr - 1
-                AppNr = CreateAppearances(FixtureType, "Gobo1", AppNr, prefix, Mode_Cue_Type, NrFixtureModeType)
+                AppNr = CreateAppearances(FixtureType, "Gobo1", AppNr, prefix, Mode_Cue_Type, NrFixtureModeType, Slot_ID[1])
             end
         end
         SetProgress(progHandle, 2)
@@ -633,7 +634,7 @@ function Construct_Gobo_Layout(displayHandle, TLay, SeqNrStart, TLayNr, AppNr, P
             CmdIndirectWait("ClearAll; Fixture " .. FixtureNum)
             if GetUIChannelIndex(SelectionFirst(), GetAttributeIndex('Gobo2')) then -- check if Fixture has gobo2
                 AppIndex[2] = AppNr - 1
-                AppNr = CreateAppearances(FixtureType, "Gobo2", AppNr, prefix, Mode_Cue_Type, NrFixtureModeType)
+                AppNr = CreateAppearances(FixtureType, "Gobo2", AppNr, prefix, Mode_Cue_Type, NrFixtureModeType, Slot_ID[2])
             end
         end
         SetProgress(progHandle, 3)
@@ -641,7 +642,7 @@ function Construct_Gobo_Layout(displayHandle, TLay, SeqNrStart, TLayNr, AppNr, P
             CmdIndirectWait("ClearAll; Fixture " .. FixtureNum)
             if GetUIChannelIndex(SelectionFirst(), GetAttributeIndex('Gobo3')) then -- check if Fixture has gobo3
                 AppIndex[3] = AppNr - 1
-                AppNr = CreateAppearances(FixtureType, "Gobo3", AppNr, prefix, Mode_Cue_Type, NrFixtureModeType)
+                AppNr = CreateAppearances(FixtureType, "Gobo3", AppNr, prefix, Mode_Cue_Type, NrFixtureModeType, Slot_ID[3])
             end
         end
         SetProgress(progHandle, 4)
@@ -649,7 +650,7 @@ function Construct_Gobo_Layout(displayHandle, TLay, SeqNrStart, TLayNr, AppNr, P
             CmdIndirectWait("ClearAll; Fixture " .. FixtureNum)
             if GetUIChannelIndex(SelectionFirst(), GetAttributeIndex('EFFECTWHEEL')) then -- check if Fixture has EFFECTWHEEL
                 AppIndex[4] = AppNr - 1
-                AppNr = CreateAppearances(FixtureType, "EFFECTWHEEL", AppNr, prefix, Mode_Cue_Type, NrFixtureModeType)
+                AppNr = CreateAppearances(FixtureType, "EFFECTWHEEL", AppNr, prefix, Mode_Cue_Type, NrFixtureModeType, Slot_ID[4])
             end
         end
         SetProgress(progHandle, 5)
@@ -657,7 +658,7 @@ function Construct_Gobo_Layout(displayHandle, TLay, SeqNrStart, TLayNr, AppNr, P
             CmdIndirectWait("ClearAll; Fixture " .. FixtureNum)
             if GetUIChannelIndex(SelectionFirst(), GetAttributeIndex('Prism1')) then -- check if Fixture has Prism1
                 AppIndex[5] = AppNr - 1
-                AppNr = CreateAppearances(FixtureType, "Prism1", AppNr, prefix, Mode_Cue_Type, NrFixtureModeType)
+                AppNr = CreateAppearances(FixtureType, "Prism1", AppNr, prefix, Mode_Cue_Type, NrFixtureModeType, Slot_ID[5])
             end
         end
         SetProgress(progHandle, 6)
@@ -665,7 +666,7 @@ function Construct_Gobo_Layout(displayHandle, TLay, SeqNrStart, TLayNr, AppNr, P
             CmdIndirectWait("ClearAll; Fixture " .. FixtureNum)
             if GetUIChannelIndex(SelectionFirst(), GetAttributeIndex('Prism2')) then -- check if Fixture has Prism2
                 AppIndex[6] = AppNr - 1
-                AppNr = CreateAppearances(FixtureType, "Prism2", AppNr, prefix, Mode_Cue_Type, NrFixtureModeType)
+                AppNr = CreateAppearances(FixtureType, "Prism2", AppNr, prefix, Mode_Cue_Type, NrFixtureModeType, Slot_ID[6])
             end
         end
         SetProgress(progHandle, 7)
@@ -673,7 +674,7 @@ function Construct_Gobo_Layout(displayHandle, TLay, SeqNrStart, TLayNr, AppNr, P
             CmdIndirectWait("ClearAll; Fixture " .. FixtureNum)
             if GetUIChannelIndex(SelectionFirst(), GetAttributeIndex('EFFECTWHEEL2')) then -- check if Fixture has EFFECTWHEEL
                 AppIndex[7] = AppNr - 1
-                AppNr = CreateAppearances(FixtureType, "EFFECTWHEEL2", AppNr, prefix, Mode_Cue_Type, NrFixtureModeType)
+                AppNr = CreateAppearances(FixtureType, "EFFECTWHEEL2", AppNr, prefix, Mode_Cue_Type, NrFixtureModeType, Slot_ID[7])
             end
         end
         SetProgress(progHandle, 8)
@@ -681,7 +682,7 @@ function Construct_Gobo_Layout(displayHandle, TLay, SeqNrStart, TLayNr, AppNr, P
             CmdIndirectWait("ClearAll; Fixture " .. FixtureNum)
             if GetUIChannelIndex(SelectionFirst(), GetAttributeIndex('EFFECTWHEEL3')) then -- check if Fixture has EFFECTWHEEL
                 AppIndex[8] = AppNr - 1
-                AppNr = CreateAppearances(FixtureType, "EFFECTWHEEL3", AppNr, prefix, Mode_Cue_Type, NrFixtureModeType)
+                AppNr = CreateAppearances(FixtureType, "EFFECTWHEEL3", AppNr, prefix, Mode_Cue_Type, NrFixtureModeType, Slot_ID[8])
             end
         end
         StopProgress(progHandle)
@@ -704,6 +705,8 @@ function Construct_Gobo_Layout(displayHandle, TLay, SeqNrStart, TLayNr, AppNr, P
         end
     end
 
+    Printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+
     LayY = math.floor(LayY - 120)
     UsedW = DataPool().Layouts:Children()[TLayNrRef].UsedW / 2
     LayX_View = math.floor(UsedW - 20)
@@ -715,7 +718,7 @@ function Construct_Gobo_Layout(displayHandle, TLay, SeqNrStart, TLayNr, AppNr, P
     end
     Cmd('Assign Macro ' .. CurrentMacroNr .. ' at Layout ' .. TLayNr)
     Cmd('Set Layout ' .. TLayNr .. '.' .. LayNr ..
-        ' Property Appearance <default> PosX ' .. LayX_View .. ' PosY ' .. LayY ..
+        ' Property PosX ' .. LayX_View .. ' PosY ' .. LayY ..
         ' PositionW ' .. LayW_View .. ' PositionH ' .. LayH_View ..
         ' VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0 VisibilityBorder=0')
     Cmd('Set Layout ' .. TLayNr .. "." .. LayNr .. ' Property "Appearance" "p_super_png" ')
