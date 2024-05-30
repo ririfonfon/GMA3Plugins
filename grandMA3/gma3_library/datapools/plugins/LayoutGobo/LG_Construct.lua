@@ -55,6 +55,11 @@ function Construct_Gobo_Layout(displayHandle, TLay, SeqNrStart, TLayNr, AppNr, P
     local condition_string
     local Macro_Pool = DataPool().Macros
 
+    local UsedW
+    local LayX_View = RefX
+    local LayW_View = 100
+    local LayH_View = 100
+    local First_Gobo
 
     for g in ipairs(SelectedGrpNo) do
         FixtureGroupsNo = string.gsub(SelectedGrpNo[g], "'", "")
@@ -684,13 +689,49 @@ function Construct_Gobo_Layout(displayHandle, TLay, SeqNrStart, TLayNr, AppNr, P
         CmdIndirectWait("Cd Root")
 
         if Mode_Cue_Type then
-            SeqNrStart, LayNr, LayY = CreateCue(FixtureType, prefix, SeqNrStart, Preset_Name, FixtureGroupsNo,
+            SeqNrStart, LayNr, LayY, First_Gobo = CreateCue(FixtureType, prefix, SeqNrStart, Preset_Name, FixtureGroupsNo,
                 Slot_ID, Index, AppIndex, FixtureGroupsName, Result, TLayNr, RefX, LayY, LayH, LayW, LayNr, Mode_Line)
         else
-            SeqNrStart, LayNr, LayY = CreateSequence(FixtureType, prefix, SeqNrStart, Preset_Name, FixtureGroupsNo,
+            SeqNrStart, LayNr, LayY, First_Gobo = CreateSequence(FixtureType, prefix, SeqNrStart, Preset_Name, FixtureGroupsNo,
                 Slot_ID, Index, AppIndex, FixtureGroupsName, Result, TLayNr, RefX, LayY, LayH, LayW, LayNr)
         end
     end -- end  for g in ipairs(SelectedGrpNo) do
+
+    -- add Macro priority
+    for k in pairs(DataPool().Layouts:Children()) do
+        if (math.floor(TLayNr) == math.floor(tonumber(DataPool().Layouts:Children()[k].NO))) then
+            TLayNrRef = k
+        end
+    end
+
+    LayY = math.floor(LayY - 120)
+    UsedW = DataPool().Layouts:Children()[TLayNrRef].UsedW / 2
+    LayX_View = math.floor(UsedW - 20)
+    CurrentMacroNr = math.floor(CurrentMacroNr + 1)
+    Cmd('Store Macro ' .. CurrentMacroNr .. ' \'' .. 'Priority\'')
+    Cmd('ChangeDestination Macro ' .. CurrentMacroNr .. '')
+    for i = 1, 7 do
+        Cmd('Insert')
+    end
+    Cmd('Assign Macro ' .. CurrentMacroNr .. ' at Layout ' .. TLayNr)
+    Cmd('Set Layout ' .. TLayNr .. '.' .. LayNr ..
+        ' Property Appearance <default> PosX ' .. LayX_View .. ' PosY ' .. LayY ..
+        ' PositionW ' .. LayW_View .. ' PositionH ' .. LayH_View ..
+        ' VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0 VisibilityBorder=0')
+    Cmd('Set Layout ' .. TLayNr .. "." .. LayNr .. ' Property "Appearance" "p_super_png" ')
+    Cmd('ChangeDestination Root')
+    local Gobo_message = 'SetUserVariable "LC_Sequence" "' .. First_Gobo .. '"'
+    Gobo_message = string.gsub(Gobo_message, "'", "")
+    Macro_Pool[CurrentMacroNr]:Set('name', '' .. prefix .. 'Priority')
+    Macro_Pool[CurrentMacroNr][1]:Set('Command',
+        'Edit DataPool ' .. Data_Pool_Nr .. ' Sequence "' .. prefix .. '*" Property "priority"')
+    Macro_Pool[CurrentMacroNr][2]:Set('Command', 'SetUserVariable "LC_Fonction" 8')
+    Macro_Pool[CurrentMacroNr][3]:Set('Command', 'SetUserVariable "LC_Layout" ' .. TLayNr)
+    Macro_Pool[CurrentMacroNr][4]:Set('Command', 'SetUserVariable "LC_Element" ' .. LayNr)
+    Macro_Pool[CurrentMacroNr][5]:Set('Command', 'SetUserVariable "LC_DataPool" ' .. Data_Pool_Nr)
+    Macro_Pool[CurrentMacroNr][6]:Set('Command', Gobo_message)
+    Macro_Pool[CurrentMacroNr][7]:Set('Command', 'Call DataPool ' .. Data_Pool_Nr .. ' Plugin "LC_View"')
+    -- end Macro priority
 
     -- Macro Del LC prefix
     CurrentMacroNr = math.floor(CurrentMacroNr + 1)

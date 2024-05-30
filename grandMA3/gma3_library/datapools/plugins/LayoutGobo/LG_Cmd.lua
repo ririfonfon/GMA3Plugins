@@ -97,7 +97,7 @@ function List_SlotID(att, FixtureID, Slot_ID_, n)
                     slot_index_ = slot_index - 1
                     Slot_ID_[n][slot_index] =
                         string.format('%02d %s', slot_index_, tostring(CmdObj().Destination:Children()[i].Name))
-                        slot_ = slot_index
+                    slot_ = slot_index
                 else
                     Slot_ID_[n][slot_index] = 'Empty'
                 end
@@ -185,6 +185,8 @@ function CreateSequence(FixtureType, prefix, SeqNrStart, Preset_Name, Grp, Slot_
     SeqNrStart = tonumber(SeqNrStart)
     local WH = { false, false, false, false, false }
     local Cue = 0
+    local check_first_gobo = true
+    local first_gobo_name
     CmdIndirectWait("ClearAll; Group " .. Grp)
 
     local progHandle = StartProgress("List Name")
@@ -258,7 +260,7 @@ function CreateSequence(FixtureType, prefix, SeqNrStart, Preset_Name, Grp, Slot_
     StopProgress(progHandle)
 
     Printf("The length 1 is " .. length1 .. " and 2 is " .. length2 .. " and 3 is " .. length3 ..
-        " and 4 is " .. length4 .. " and 5 is " .. length5 .. " and 6 is " .. length6 .. 
+        " and 4 is " .. length4 .. " and 5 is " .. length5 .. " and 6 is " .. length6 ..
         " and 7 is " .. length7 .. " and 8 is " .. length8)
     CmdIndirectWait("ClearAll")
     CmdIndirectWait('Store Layout ' .. TLayNr .. '.' .. LayNr .. ' Property CustomTextText=\' ' .. GrpName .. ' \'')
@@ -275,6 +277,10 @@ function CreateSequence(FixtureType, prefix, SeqNrStart, Preset_Name, Grp, Slot_
     progHandle = StartProgress("Store Sequence & Assign To Layout")
     SetProgress(progHandle, 1)
     if WH[1] then
+        if check_first_gobo then
+            first_gobo_name = prefix .. '_' .. FixtureType:gsub(' ', '_') .. '_' .. GrpName:gsub(' ', '_') .. '_Gobo1'
+            check_first_gobo = false
+        end
         CmdIndirectWait('Store Sequence ' ..
             SeqNrStart ..
             ' \'' .. prefix .. '_' .. FixtureType:gsub(' ', '_') .. '_' .. GrpName:gsub(' ', '_') .. '_Gobo1\' /nc')
@@ -305,6 +311,10 @@ function CreateSequence(FixtureType, prefix, SeqNrStart, Preset_Name, Grp, Slot_
     end
     SetProgress(progHandle, 2)
     if WH[2] then
+        if check_first_gobo then
+            first_gobo_name = prefix .. '_' .. FixtureType:gsub(' ', '_') .. '_' .. GrpName:gsub(' ', '_') .. '_Gobo2'
+            check_first_gobo = false
+        end
         CmdIndirectWait('Store Sequence ' ..
             SeqNrStart ..
             ' \'' .. prefix .. '_' .. FixtureType:gsub(' ', '_') .. '_' .. GrpName:gsub(' ', '_') .. '_Gobo2\' /nc')
@@ -335,6 +345,10 @@ function CreateSequence(FixtureType, prefix, SeqNrStart, Preset_Name, Grp, Slot_
     end
     SetProgress(progHandle, 3)
     if WH[3] then
+        if check_first_gobo then
+            first_gobo_name = prefix .. '_' .. FixtureType:gsub(' ', '_') .. '_' .. GrpName:gsub(' ', '_') .. '_Gobo3'
+            check_first_gobo = false
+        end
         CmdIndirectWait('Store Sequence ' ..
             SeqNrStart ..
             ' \'' .. prefix .. '_' .. FixtureType:gsub(' ', '_') .. '_' .. GrpName:gsub(' ', '_') .. '_Gobo3\' /nc')
@@ -365,6 +379,10 @@ function CreateSequence(FixtureType, prefix, SeqNrStart, Preset_Name, Grp, Slot_
     end
     SetProgress(progHandle, 4)
     if WH[4] then
+        if check_first_gobo then
+            first_gobo_name = prefix .. '_' .. FixtureType:gsub(' ', '_') .. '_' .. GrpName:gsub(' ', '_') .. '_EFFECTWHEEL'
+            check_first_gobo = false
+        end
         CmdIndirectWait('Store Sequence ' ..
             SeqNrStart ..
             ' \'' .. prefix .. '_' .. FixtureType:gsub(' ', '_') .. '_' .. GrpName:gsub(' ', '_') .. '_EFFECTWHEEL\' /nc')
@@ -395,6 +413,10 @@ function CreateSequence(FixtureType, prefix, SeqNrStart, Preset_Name, Grp, Slot_
     end
     SetProgress(progHandle, 5)
     if WH[5] then
+        if check_first_gobo then
+            first_gobo_name = prefix .. '_' .. FixtureType:gsub(' ', '_') .. '_' .. GrpName:gsub(' ', '_') .. '_Prism1'
+            check_first_gobo = false
+        end
         CmdIndirectWait('Store Sequence ' ..
             SeqNrStart ..
             ' \'' .. prefix .. '_' .. FixtureType:gsub(' ', '_') .. '_' .. GrpName:gsub(' ', '_') .. '_Prism1\' /nc')
@@ -425,6 +447,10 @@ function CreateSequence(FixtureType, prefix, SeqNrStart, Preset_Name, Grp, Slot_
     end
     SetProgress(progHandle, 6)
     if WH[6] then
+        if check_first_gobo then
+            first_gobo_name = prefix .. '_' .. FixtureType:gsub(' ', '_') .. '_' .. GrpName:gsub(' ', '_') .. '_Prism2'
+            check_first_gobo = false
+        end
         CmdIndirectWait('Store Sequence ' ..
             SeqNrStart ..
             ' \'' .. prefix .. '_' .. FixtureType:gsub(' ', '_') .. '_' .. GrpName:gsub(' ', '_') .. '_Prism2\' /nc')
@@ -455,6 +481,10 @@ function CreateSequence(FixtureType, prefix, SeqNrStart, Preset_Name, Grp, Slot_
     end
     SetProgress(progHandle, 7)
     if WH[7] then
+        if check_first_gobo then
+            first_gobo_name = prefix .. '_' .. FixtureType:gsub(' ', '_') .. '_' .. GrpName:gsub(' ', '_') .. '_EFFECTWHEEL2'
+            check_first_gobo = false
+        end
         CmdIndirectWait('Store Sequence ' ..
             SeqNrStart ..
             ' \'' ..
@@ -486,6 +516,10 @@ function CreateSequence(FixtureType, prefix, SeqNrStart, Preset_Name, Grp, Slot_
     end
     SetProgress(progHandle, 8)
     if WH[8] then
+        if check_first_gobo then
+            first_gobo_name = prefix .. '_' .. FixtureType:gsub(' ', '_') .. '_' .. GrpName:gsub(' ', '_') .. '_EFFECTWHEEL3'
+            check_first_gobo = false
+        end
         CmdIndirectWait('Store Sequence ' ..
             SeqNrStart ..
             ' \'' ..
@@ -517,18 +551,21 @@ function CreateSequence(FixtureType, prefix, SeqNrStart, Preset_Name, Grp, Slot_
     end
     StopProgress(progHandle)
     LayY = math.floor(LayY - 120)
-    return SeqNrStart + 1, LayNr, LayY
+    return SeqNrStart + 1, LayNr, LayY, first_gobo_name
 end
 
 function CreateCue(FixtureType, prefix, SeqNrStart, Preset_Name, Grp, Slot_ID, PresetIndex, AppIndex, GrpName,
-                   Result, TLayNr, RefX, LayY, LayH, LayW, LayNr,Mode_Line)
+                   Result, TLayNr, RefX, LayY, LayH, LayW, LayNr, Mode_Line)
     local LayX = RefX
     LayY = math.floor(LayY - LayH) -- Max Y Position minus hight from element. 0 are at the Bottom!
 
     SeqNrStart = tonumber(SeqNrStart)
-    local WH = { false, false, false, false, false, false, false, false, false}
+    local WH = { false, false, false, false, false, false, false, false, false }
     local Cue = 0
     local ii
+    local check_first_gobo = true
+    local first_gobo_name
+
     CmdIndirectWait("ClearAll; Group " .. Grp)
 
     local progHandle = StartProgress("List Name")
@@ -602,7 +639,7 @@ function CreateCue(FixtureType, prefix, SeqNrStart, Preset_Name, Grp, Slot_ID, P
     StopProgress(progHandle)
 
     Printf("The length 1 is " .. length1 .. " and 2 is " .. length2 .. " and 3 is " .. length3 ..
-        " and 4 is " .. length4 .. " and 5 is " .. length5 .. " and 6 is " .. length6 .. 
+        " and 4 is " .. length4 .. " and 5 is " .. length5 .. " and 6 is " .. length6 ..
         " and 7 is " .. length7 .. " and 8 is " .. length8)
     CmdIndirectWait("ClearAll")
     CmdIndirectWait('Store Layout ' .. TLayNr .. '.' .. LayNr .. ' Property CustomTextText=\' ' .. GrpName)
@@ -621,11 +658,11 @@ function CreateCue(FixtureType, prefix, SeqNrStart, Preset_Name, Grp, Slot_ID, P
     SetProgress(progHandle, 1)
     if WH[1] then
         for i = 1, length1, 1 do -- gobo1 loop from Preset to sequence
+            if check_first_gobo then
+                first_gobo_name = prefix .. '_' .. FixtureType:gsub(' ', '_') .. '_' .. GrpName:gsub(' ', '_').. '_' .. Preset_Name[1][i]:gsub(' ', '_') .. '_Gobo1'
+                check_first_gobo = false
+            end
             ii = i * 2
-            Echo("wh1 " .. i .. " app index ii-1 " .. AppIndex[1] .. " slot " .. ii - 1)
-            Echo("wh1 " .. i .. " app index ii " .. AppIndex[1] .. " slot " .. ii)
-            Echo("wh1 " .. i .. " app ii-1 " .. AppIndex[1] + ii - 1)
-            Echo("wh1 " .. i .. " app ii " .. AppIndex[1] + ii)
             CmdIndirectWait('Store Sequence ' .. SeqNrStart .. ' \'' .. prefix .. '_' .. FixtureType:gsub(' ', '_') ..
                 '_' .. GrpName:gsub(' ', '_') .. '_' .. Preset_Name[1][i]:gsub(' ', '_') .. '_Gobo1\' /nc')
             CmdIndirectWait('Set Sequence ' .. SeqNrStart .. ' Property "OffwhenOverridden" 1')
@@ -644,7 +681,7 @@ function CreateCue(FixtureType, prefix, SeqNrStart, Preset_Name, Grp, Slot_ID, P
                 ' VisibilityObjectName=0 VisibilityBar=0 VisibilityIndicatorBar=0 VisibilityBorder=0')
             LayX = math.floor(LayX + LayW + 20)
             LayNr = math.floor(LayNr + 1)
-            
+
             SeqNrStart = SeqNrStart + 1
         end
         LayX = math.floor(LayX + LayW + 20)
@@ -656,6 +693,10 @@ function CreateCue(FixtureType, prefix, SeqNrStart, Preset_Name, Grp, Slot_ID, P
     SetProgress(progHandle, 2)
     if WH[2] then
         for i = 1, length2, 1 do -- gobo2 loop from Preset to sequence, if there is no gobo2 length2 would be 1 and loop wont commited
+            if check_first_gobo then
+                first_gobo_name = prefix .. '_' .. FixtureType:gsub(' ', '_') .. '_' .. GrpName:gsub(' ', '_').. '_' .. Preset_Name[2][i]:gsub(' ', '_') .. '_Gobo2'
+                check_first_gobo = false
+            end
             ii = i * 2
             CmdIndirectWait('Store Sequence ' .. SeqNrStart .. ' \'' .. prefix .. '_' .. FixtureType:gsub(' ', '_') ..
                 '_' .. GrpName:gsub(' ', '_') .. '_' .. Preset_Name[2][i]:gsub(' ', '_') .. '_Gobo2\' /nc')
@@ -687,6 +728,10 @@ function CreateCue(FixtureType, prefix, SeqNrStart, Preset_Name, Grp, Slot_ID, P
     SetProgress(progHandle, 3)
     if WH[3] then
         for i = 1, length3, 1 do -- gobo3 loop from Preset to sequence, if there is no gobo3 length3 would be 1 and loop wont commited
+            if check_first_gobo then
+                first_gobo_name = prefix .. '_' .. FixtureType:gsub(' ', '_') .. '_' .. GrpName:gsub(' ', '_').. '_' .. Preset_Name[3][i]:gsub(' ', '_') .. '_Gobo3'
+                check_first_gobo = false
+            end
             ii = i * 2
             CmdIndirectWait('Store Sequence ' .. SeqNrStart .. ' \'' .. prefix .. '_' .. FixtureType:gsub(' ', '_') ..
                 '_' .. GrpName:gsub(' ', '_') .. '_' .. Preset_Name[3][i]:gsub(' ', '_') .. '_Gobo3\' /nc')
@@ -718,6 +763,10 @@ function CreateCue(FixtureType, prefix, SeqNrStart, Preset_Name, Grp, Slot_ID, P
     SetProgress(progHandle, 4)
     if WH[4] then
         for i = 1, length4, 1 do -- EFFECTWHEEL loop from Preset to sequence, if there is no EFFECTWHEEL length4 would be 1 and loop wont commited
+            if check_first_gobo then
+                first_gobo_name = prefix .. '_' .. FixtureType:gsub(' ', '_') .. '_' .. GrpName:gsub(' ', '_').. '_' .. Preset_Name[4][i]:gsub(' ', '_') .. '_EFFECTWHEEL'
+                check_first_gobo = false
+            end
             ii = i * 2
             CmdIndirectWait('Store Sequence ' .. SeqNrStart .. ' \'' .. prefix .. '_' .. FixtureType:gsub(' ', '_') ..
                 '_' .. GrpName:gsub(' ', '_') .. '_' .. Preset_Name[4][i]:gsub(' ', '_') .. '_EFFECTWHEEL\' /nc')
@@ -749,6 +798,10 @@ function CreateCue(FixtureType, prefix, SeqNrStart, Preset_Name, Grp, Slot_ID, P
     SetProgress(progHandle, 5)
     if WH[5] then
         for i = 1, length5, 1 do -- Prism1 loop from Preset to sequence, if there is no Prism1 length4 would be 1 and loop wont commited
+            if check_first_gobo then
+                first_gobo_name = prefix .. '_' .. FixtureType:gsub(' ', '_') .. '_' .. GrpName:gsub(' ', '_').. '_' .. Preset_Name[5][i]:gsub(' ', '_') .. '_Prism1'
+                check_first_gobo = false
+            end
             ii = i * 2
             CmdIndirectWait('Store Sequence ' .. SeqNrStart .. ' \'' .. prefix .. '_' .. FixtureType:gsub(' ', '_') ..
                 '_' .. GrpName:gsub(' ', '_') .. '_' .. Preset_Name[5][i]:gsub(' ', '_') .. '_Prism1\' /nc')
@@ -780,6 +833,10 @@ function CreateCue(FixtureType, prefix, SeqNrStart, Preset_Name, Grp, Slot_ID, P
     SetProgress(progHandle, 6)
     if WH[6] then
         for i = 1, length6, 1 do -- Prism2 loop from Preset to sequence, if there is no Prism2 length4 would be 1 and loop wont commited
+            if check_first_gobo then
+                first_gobo_name = prefix .. '_' .. FixtureType:gsub(' ', '_') .. '_' .. GrpName:gsub(' ', '_').. '_' .. Preset_Name[6][i]:gsub(' ', '_') .. '_Prism2'
+                check_first_gobo = false
+            end
             ii = i * 2
             CmdIndirectWait('Store Sequence ' .. SeqNrStart .. ' \'' .. prefix .. '_' .. FixtureType:gsub(' ', '_') ..
                 '_' .. GrpName:gsub(' ', '_') .. '_' .. Preset_Name[6][i]:gsub(' ', '_') .. '_Prism2\' /nc')
@@ -811,6 +868,10 @@ function CreateCue(FixtureType, prefix, SeqNrStart, Preset_Name, Grp, Slot_ID, P
     SetProgress(progHandle, 7)
     if WH[7] then
         for i = 1, length7, 1 do -- EFFECTWHEEL2 loop from Preset to sequence, if there is no EFFECTWHEEL2 length7 would be 1 and loop wont commited
+            if check_first_gobo then
+                first_gobo_name = prefix .. '_' .. FixtureType:gsub(' ', '_') .. '_' .. GrpName:gsub(' ', '_').. '_' .. Preset_Name[7][i]:gsub(' ', '_') .. '_EFFECTWHEEL2'
+                check_first_gobo = false
+            end
             ii = i * 2
             CmdIndirectWait('Store Sequence ' .. SeqNrStart .. ' \'' .. prefix .. '_' .. FixtureType:gsub(' ', '_') ..
                 '_' .. GrpName:gsub(' ', '_') .. '_' .. Preset_Name[7][i]:gsub(' ', '_') .. '_EFFECTWHEEL2\' /nc')
@@ -842,6 +903,10 @@ function CreateCue(FixtureType, prefix, SeqNrStart, Preset_Name, Grp, Slot_ID, P
     SetProgress(progHandle, 8)
     if WH[8] then
         for i = 1, length8, 1 do -- EFFECTWHEEL3 loop from Preset to sequence, if there is no EFFECTWHEEL3 length8 would be 1 and loop wont commited
+            if check_first_gobo then
+                first_gobo_name = prefix .. '_' .. FixtureType:gsub(' ', '_') .. '_' .. GrpName:gsub(' ', '_').. '_' .. Preset_Name[8][i]:gsub(' ', '_') .. '_EFFECTWHEEL3'
+                check_first_gobo = false
+            end
             ii = i * 2
             CmdIndirectWait('Store Sequence ' .. SeqNrStart .. ' \'' .. prefix .. '_' .. FixtureType:gsub(' ', '_') ..
                 '_' .. GrpName:gsub(' ', '_') .. '_' .. Preset_Name[8][i]:gsub(' ', '_') .. '_EFFECTWHEEL3\' /nc')
@@ -867,7 +932,7 @@ function CreateCue(FixtureType, prefix, SeqNrStart, Preset_Name, Grp, Slot_ID, P
     end
     StopProgress(progHandle)
     LayY = math.floor(LayY - 120)
-    return SeqNrStart + 1, LayNr, LayY
+    return SeqNrStart + 1, LayNr, LayY, first_gobo_name
 end
 
 -- end LG_Cmd.lua
