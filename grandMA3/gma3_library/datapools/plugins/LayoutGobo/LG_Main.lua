@@ -11,8 +11,8 @@ local signalTable, thiscomponent = select(3, ...)
 local myHandle = select(4, ...)
 
 local function Main(displayHandle)
-    Echo(
-        '**********************************************************************************************************************************************************************')
+    Printf(
+        '****************************************************************MAIN*****************************************************************************************')
     Cmd('Set CurrentUserProfile Property KeyboardShortcutsActive 0')
     local list = false
     local FixtureGroups = DataPool().Groups:Children()
@@ -39,15 +39,12 @@ local function Main(displayHandle)
     local Preset_5_NrStart
     local Preset_5_NrRange
     local Preset_5_Current
-    local MaxGobLgn = 16
     local Nr_Gobo = 0
     local Nr_Total_Gobo = 0
     local Nr_Whell = 0
     local Nr_Total_Whell = 0
     local Mode_Cue_Type = false
     local Mode_Line = false
-    local First_Seq_Check = false
-    local Selected_Grp_Wheel = {}
 
     local TopInc = 0
 
@@ -661,7 +658,7 @@ local function Main(displayHandle)
         end
         Obj.Delete(screenOverlay, Obj.Index(baseInput))
         Construct_Gobo_Layout(displayHandle, TLay, SeqNrStart, TLayNr, AppNr,
-            Preset_5_Current, Preset_5_NrStart, SelectedGrp, SelectedGrpNo, TLayNrRef, NaLay, MaxGobLgn, MacroNrStart,
+            Preset_5_Current, Preset_5_NrStart, SelectedGrp, SelectedGrpNo, TLayNrRef, NaLay, MacroNrStart,
             Mode_Cue_Type, Mode_Line)
     end
 
@@ -706,7 +703,6 @@ local function Main(displayHandle)
     end
 
     signalTable.Clicked = function(caller)
-        Echo("Click line")
         if caller.Text == " All in line " then
             input8LineEdit.Text = " One line / wheel "
             Mode_Line = true
@@ -871,24 +867,6 @@ local function Main(displayHandle)
         end
     end
 
-    signalTable.OnInput8TextChanged = function(caller)
-        local checks = false
-        if caller.Content == "" or caller.Content == "0" then
-            checks = true
-        end
-        MaxGobLgn = caller.Content:gsub("'", "")
-        MaxGobLgn = tonumber(MaxGobLgn)
-
-        if checks == true then
-            OkButton.Visible = "No"
-            input8LineEdit.TextColor = colorAlertText
-        end
-        if checks == false then
-            input8LineEdit.TextColor = colorText
-            OkButton.Visible = "Yes"
-        end
-    end
-
     function signalTable.mypopup(caller)
         local itemlist = popuplists[caller.Name]
         local _, choice = PopupInput { title = caller.Name, caller = caller:GetDisplay(), items = itemlist, selectedValue = caller.Text }
@@ -911,7 +889,6 @@ local function Main(displayHandle)
                 for k in ipairs(SelectedGrp) do
                     Nr_SelectedGrp = k
                 end
-                Selected_Grp_Wheel[Nr_SelectedGrp] = {}
                 subTitle.Text = subTitle.Text .. Nr_SelectedGrp .. "." .. FixtureGroups[SelGrp].name .. " "
                 OkButton.Visible = "Yes"
                 input1LineEdit.Visible = "Yes"
@@ -931,15 +908,9 @@ local function Main(displayHandle)
                 Nr_Gobo, Nr_Whell = Check_Nr_Gobo(FixtureGroups[SelGrp].NO, Nr_Gobo)
                 Nr_Total_Gobo = Nr_Total_Gobo + Nr_Gobo
                 Nr_Total_Whell = Nr_Total_Whell + Nr_Whell
-                Echo(" Nr Gobo " ..
-                    Nr_Gobo ..
-                    " Nr Total Gobo " ..
-                    Nr_Total_Gobo .. " Nr Whell " .. Nr_Whell .. " Nr Whell total " .. Nr_Total_Whell)
                 if Mode_Cue_Type then
-                    Echo("Cue Mode")
                     input8LineEdit.Visible = "Yes"
                 else
-                    Echo("Seq Mode")
                     input8LineEdit.Visible = "No"
                 end
             end
@@ -1020,7 +991,6 @@ local function Main(displayHandle)
 
         if mySubFixture ~= nil then
             FixtureID_ = mySubFixture.fid
-            Printf(FixtureID_)
         end
 
         Cmd("clearall; fixture " .. FixtureID_)
