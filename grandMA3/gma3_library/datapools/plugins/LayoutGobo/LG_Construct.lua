@@ -1,3 +1,4 @@
+---@diagnostic disable: redundant-parameter
 --[[
 Releases:
 * 0.0.0.8
@@ -6,10 +7,10 @@ Created by Richard Fontaine "RIRI", May 2024.
 --]]
 
 function Construct_Gobo_Layout(displayHandle, TLay, SeqNrStart, TLayNr, AppNr, Preset_5_Current, Preset_5_NrStart,
-                               SelectedGrp, SelectedGrpNo, TLayNrRef, NaLay, MaxGobLgn, MacroNrStart, Mode_Cue_Type,
+                               SelectedGrp, SelectedGrpNo, TLayNrRef, NaLay, MacroNrStart, Mode_Cue_Type,
                                Mode_Line)
-    Echo(
-        '**********************************************************************************************************************************************************************')
+    Printf(
+    '************************************************CONSTRUCT**************************************************************************')
     -- fix prefix
     local prefix_index = 1
     local old_prefix_index
@@ -72,7 +73,7 @@ function Construct_Gobo_Layout(displayHandle, TLay, SeqNrStart, TLayNr, AppNr, P
         local mySubFixture = GetSubfixture(myFixtureIndex)
         if mySubFixture ~= nil then
             FixtureID_ = mySubFixture.fid
-            Printf(FixtureID_)
+            -- Printf(FixtureID_)
         end
         local Fixture = 'Fixture ' .. FixtureID_ .. ''
         local FixtureNum = tonumber(FixtureID_)
@@ -80,7 +81,7 @@ function Construct_Gobo_Layout(displayHandle, TLay, SeqNrStart, TLayNr, AppNr, P
         local FixtureModeType = ObjectList(Fixture)[1].MODEDIRECT.name
         local NrFixtureModeType = ObjectList(Fixture)[1].MODEDIRECT.no
 
-        Printf("*** fixture type mode " .. FixtureModeType .. " number " .. NrFixtureModeType)
+        -- Printf("*** fixture type mode " .. FixtureModeType .. " number " .. NrFixtureModeType)
 
         local Preset_Name = {}
         local Slot_ID = {}
@@ -135,7 +136,7 @@ function Construct_Gobo_Layout(displayHandle, TLay, SeqNrStart, TLayNr, AppNr, P
             Item_Slot_Select_ID[4][1] = true
             Item_Slot_Select_ID[4], slot_index[4] = List_SlotID('EFFECTWHEEL', Fixture, Item_Slot_Select_ID, 4)
         else
-            Printf("no itemslotselect 4")
+            -- Printf("no itemslotselect 4")
             Item_Slot_Select_ID[4] = {}
             Item_Slot_Select_ID[4][1] = false
         end
@@ -195,7 +196,7 @@ function Construct_Gobo_Layout(displayHandle, TLay, SeqNrStart, TLayNr, AppNr, P
             Slot_Select_ID[1] = MessageBox(
                 {
                     title = FixtureGroupsName .. " Wheel Gobo1",
-                    commands = { { value = 1, name = "Ok" }, { value = 0, name = "Next Wheel" }, { value = 2, name = "Select All" }, { value = 3, name = "Select None" } },
+                    commands = { { value = 1, name = "Ok" }, { value = 2, name = "Select All" }, { value = 3, name = "Select None" }, { value = 0, name = "Next Wheel" } },
                     states = Item_List,
                     icon = "object_plugin1",
                     titleTextColor = "Global.Text",
@@ -217,7 +218,7 @@ function Construct_Gobo_Layout(displayHandle, TLay, SeqNrStart, TLayNr, AppNr, P
                     G_Check[1] = true
                     k = string.sub(k, 4, -1)
                     Selected_Slot_Select_ID[1][c] = k
-                    Printf("Gobo1 State '%s' = '%s'", k, tostring(v))
+                    -- Printf("Gobo1 State '%s' = '%s'", k, tostring(v))
                     c = c + 1
                 end
             end
@@ -241,7 +242,7 @@ function Construct_Gobo_Layout(displayHandle, TLay, SeqNrStart, TLayNr, AppNr, P
             Slot_Select_ID[2] = MessageBox(
                 {
                     title = FixtureGroupsName .. " Wheel Gobo2",
-                    commands = { { value = 1, name = "Ok" }, { value = 0, name = "Next Wheel" }, { value = 2, name = "Select All" }, { value = 3, name = "Select None" } },
+                    commands = { { value = 1, name = "Ok" }, { value = 2, name = "Select All" }, { value = 3, name = "Select None" }, { value = 0, name = "Next Wheel" } },
                     states = Item_List,
                     icon = "object_plugin1",
                     titleTextColor = "Global.Text",
@@ -263,7 +264,7 @@ function Construct_Gobo_Layout(displayHandle, TLay, SeqNrStart, TLayNr, AppNr, P
                     G_Check[2] = true
                     k = string.sub(k, 4, -1)
                     Selected_Slot_Select_ID[2][c] = k
-                    Printf("Gobo2 State '%s' = '%s'", k, tostring(v))
+                    -- Printf("Gobo2 State '%s' = '%s'", k, tostring(v))
                     c = c + 1
                 end
             end
@@ -287,7 +288,7 @@ function Construct_Gobo_Layout(displayHandle, TLay, SeqNrStart, TLayNr, AppNr, P
             Slot_Select_ID[3] = MessageBox(
                 {
                     title = FixtureGroupsName .. " Wheel Gobo3",
-                    commands = { { value = 1, name = "Ok" }, { value = 0, name = "Next Wheel" }, { value = 2, name = "Select All" }, { value = 3, name = "Select None" } },
+                    commands = { { value = 1, name = "Ok" }, { value = 2, name = "Select All" }, { value = 3, name = "Select None" }, { value = 0, name = "Next Wheel" } },
                     states = Item_List,
                     icon = "object_plugin1",
                     titleTextColor = "Global.Text",
@@ -309,7 +310,7 @@ function Construct_Gobo_Layout(displayHandle, TLay, SeqNrStart, TLayNr, AppNr, P
                     G_Check[3] = true
                     k = string.sub(k, 4, -1)
                     Selected_Slot_Select_ID[3][c] = k
-                    Printf("Gobo3 State '%s' = '%s'", k, tostring(v))
+                    -- Printf("Gobo3 State '%s' = '%s'", k, tostring(v))
                     c = c + 1
                 end
             end
@@ -333,7 +334,7 @@ function Construct_Gobo_Layout(displayHandle, TLay, SeqNrStart, TLayNr, AppNr, P
             Slot_Select_ID[4] = MessageBox(
                 {
                     title = FixtureGroupsName .. " Wheel EFFECTWHEEL",
-                    commands = { { value = 1, name = "Ok" }, { value = 0, name = "Next Wheel" }, { value = 2, name = "Select All" }, { value = 3, name = "Select None" } },
+                    commands = { { value = 1, name = "Ok" }, { value = 2, name = "Select All" }, { value = 3, name = "Select None" }, { value = 0, name = "Next Wheel" } },
                     states = Item_List,
                     icon = "object_plugin1",
                     titleTextColor = "Global.Text",
@@ -353,10 +354,8 @@ function Construct_Gobo_Layout(displayHandle, TLay, SeqNrStart, TLayNr, AppNr, P
             for k, v in pairs(Slot_Select_ID[4].states) do
                 if (v == true) then
                     G_Check[4] = true
-                    Printf("------ EFFECTWHEEL '%s'", k)
                     k = string.sub(k, 4, -1)
                     Selected_Slot_Select_ID[4][c] = k
-                    Printf("EFFECTWHEEL State '%s' = '%s'", k, tostring(v))
                     c = c + 1
                 end
             end
@@ -380,7 +379,7 @@ function Construct_Gobo_Layout(displayHandle, TLay, SeqNrStart, TLayNr, AppNr, P
             Slot_Select_ID[5] = MessageBox(
                 {
                     title = FixtureGroupsName .. " Wheel Prism1",
-                    commands = { { value = 1, name = "Ok" }, { value = 0, name = "Next Wheel" }, { value = 2, name = "Select All" }, { value = 3, name = "Select None" } },
+                    commands = { { value = 1, name = "Ok" }, { value = 2, name = "Select All" }, { value = 3, name = "Select None" }, { value = 0, name = "Next Wheel" } },
                     states = Item_List,
                     icon = "object_plugin1",
                     titleTextColor = "Global.Text",
@@ -402,7 +401,7 @@ function Construct_Gobo_Layout(displayHandle, TLay, SeqNrStart, TLayNr, AppNr, P
                     G_Check[5] = true
                     k = string.sub(k, 4, -1)
                     Selected_Slot_Select_ID[5][c] = k
-                    Printf("Prism1 State '%s' = '%s'", k, tostring(v))
+                    -- Printf("Prism1 State '%s' = '%s'", k, tostring(v))
                     c = c + 1
                 end
             end
@@ -426,7 +425,7 @@ function Construct_Gobo_Layout(displayHandle, TLay, SeqNrStart, TLayNr, AppNr, P
             Slot_Select_ID[6] = MessageBox(
                 {
                     title = FixtureGroupsName .. " Wheel Prism2",
-                    commands = { { value = 1, name = "Ok" }, { value = 0, name = "Next Wheel" }, { value = 2, name = "Select All" }, { value = 3, name = "Select None" } },
+                    commands = { { value = 1, name = "Ok" }, { value = 2, name = "Select All" }, { value = 3, name = "Select None" }, { value = 0, name = "Next Wheel" } },
                     states = Item_List,
                     icon = "object_plugin1",
                     titleTextColor = "Global.Text",
@@ -448,7 +447,7 @@ function Construct_Gobo_Layout(displayHandle, TLay, SeqNrStart, TLayNr, AppNr, P
                     G_Check[6] = true
                     k = string.sub(k, 4, -1)
                     Selected_Slot_Select_ID[6][c] = k
-                    Printf("Prism2 State '%s' = '%s'", k, tostring(v))
+                    -- Printf("Prism2 State '%s' = '%s'", k, tostring(v))
                     c = c + 1
                 end
             end
@@ -472,7 +471,7 @@ function Construct_Gobo_Layout(displayHandle, TLay, SeqNrStart, TLayNr, AppNr, P
             Slot_Select_ID[7] = MessageBox(
                 {
                     title = FixtureGroupsName .. " Wheel EFFECTWHEEL2",
-                    commands = { { value = 1, name = "Ok" }, { value = 0, name = "Next Wheel" }, { value = 2, name = "Select All" }, { value = 3, name = "Select None" } },
+                    commands = { { value = 1, name = "Ok" }, { value = 2, name = "Select All" }, { value = 3, name = "Select None" }, { value = 0, name = "Next Wheel" } },
                     states = Item_List,
                     icon = "object_plugin1",
                     titleTextColor = "Global.Text",
@@ -494,7 +493,7 @@ function Construct_Gobo_Layout(displayHandle, TLay, SeqNrStart, TLayNr, AppNr, P
                     G_Check[7] = true
                     k = string.sub(k, 4, -1)
                     Selected_Slot_Select_ID[7][c] = k
-                    Printf("EFFECTWHEEL2 State '%s' = '%s'", k, tostring(v))
+                    -- Printf("EFFECTWHEEL2 State '%s' = '%s'", k, tostring(v))
                     c = c + 1
                 end
             end
@@ -518,7 +517,7 @@ function Construct_Gobo_Layout(displayHandle, TLay, SeqNrStart, TLayNr, AppNr, P
             Slot_Select_ID[8] = MessageBox(
                 {
                     title = FixtureGroupsName .. " Wheel EFFECTWHEEL3",
-                    commands = { { value = 1, name = "Ok" }, { value = 0, name = "Next Wheel" }, { value = 2, name = "Select All" }, { value = 3, name = "Select None" } },
+                    commands = { { value = 1, name = "Ok" }, { value = 2, name = "Select All" }, { value = 3, name = "Select None" }, { value = 0, name = "Next Wheel" } },
                     states = Item_List,
                     icon = "object_plugin1",
                     titleTextColor = "Global.Text",
@@ -540,7 +539,7 @@ function Construct_Gobo_Layout(displayHandle, TLay, SeqNrStart, TLayNr, AppNr, P
                     G_Check[8] = true
                     k = string.sub(k, 4, -1)
                     Selected_Slot_Select_ID[8][c] = k
-                    Printf("EFFECTWHEEL3 State '%s' = '%s'", k, tostring(v))
+                    -- Printf("EFFECTWHEEL3 State '%s' = '%s'", k, tostring(v))
                     c = c + 1
                 end
             end
@@ -628,7 +627,8 @@ function Construct_Gobo_Layout(displayHandle, TLay, SeqNrStart, TLayNr, AppNr, P
         if Result[1] == 1 then
             if GetUIChannelIndex(SelectionFirst(), GetAttributeIndex('Gobo1')) then -- check if Fixture has gobo1
                 AppIndex[1] = AppNr - 1
-                AppNr = CreateAppearances(FixtureType, "Gobo1", AppNr, prefix, Mode_Cue_Type, NrFixtureModeType, Slot_ID[1])
+                AppNr = CreateAppearances(FixtureType, "Gobo1", AppNr, prefix, Mode_Cue_Type, NrFixtureModeType,
+                    Slot_ID[1])
             end
         end
         SetProgress(progHandle, 2)
@@ -636,7 +636,8 @@ function Construct_Gobo_Layout(displayHandle, TLay, SeqNrStart, TLayNr, AppNr, P
             CmdIndirectWait("ClearAll; Fixture " .. FixtureNum)
             if GetUIChannelIndex(SelectionFirst(), GetAttributeIndex('Gobo2')) then -- check if Fixture has gobo2
                 AppIndex[2] = AppNr - 1
-                AppNr = CreateAppearances(FixtureType, "Gobo2", AppNr, prefix, Mode_Cue_Type, NrFixtureModeType, Slot_ID[2])
+                AppNr = CreateAppearances(FixtureType, "Gobo2", AppNr, prefix, Mode_Cue_Type, NrFixtureModeType,
+                    Slot_ID[2])
             end
         end
         SetProgress(progHandle, 3)
@@ -644,7 +645,8 @@ function Construct_Gobo_Layout(displayHandle, TLay, SeqNrStart, TLayNr, AppNr, P
             CmdIndirectWait("ClearAll; Fixture " .. FixtureNum)
             if GetUIChannelIndex(SelectionFirst(), GetAttributeIndex('Gobo3')) then -- check if Fixture has gobo3
                 AppIndex[3] = AppNr - 1
-                AppNr = CreateAppearances(FixtureType, "Gobo3", AppNr, prefix, Mode_Cue_Type, NrFixtureModeType, Slot_ID[3])
+                AppNr = CreateAppearances(FixtureType, "Gobo3", AppNr, prefix, Mode_Cue_Type, NrFixtureModeType,
+                    Slot_ID[3])
             end
         end
         SetProgress(progHandle, 4)
@@ -652,7 +654,8 @@ function Construct_Gobo_Layout(displayHandle, TLay, SeqNrStart, TLayNr, AppNr, P
             CmdIndirectWait("ClearAll; Fixture " .. FixtureNum)
             if GetUIChannelIndex(SelectionFirst(), GetAttributeIndex('EFFECTWHEEL')) then -- check if Fixture has EFFECTWHEEL
                 AppIndex[4] = AppNr - 1
-                AppNr = CreateAppearances(FixtureType, "EFFECTWHEEL", AppNr, prefix, Mode_Cue_Type, NrFixtureModeType, Slot_ID[4])
+                AppNr = CreateAppearances(FixtureType, "EFFECTWHEEL", AppNr, prefix, Mode_Cue_Type, NrFixtureModeType,
+                    Slot_ID[4])
             end
         end
         SetProgress(progHandle, 5)
@@ -660,7 +663,8 @@ function Construct_Gobo_Layout(displayHandle, TLay, SeqNrStart, TLayNr, AppNr, P
             CmdIndirectWait("ClearAll; Fixture " .. FixtureNum)
             if GetUIChannelIndex(SelectionFirst(), GetAttributeIndex('Prism1')) then -- check if Fixture has Prism1
                 AppIndex[5] = AppNr - 1
-                AppNr = CreateAppearances(FixtureType, "Prism1", AppNr, prefix, Mode_Cue_Type, NrFixtureModeType, Slot_ID[5])
+                AppNr = CreateAppearances(FixtureType, "Prism1", AppNr, prefix, Mode_Cue_Type, NrFixtureModeType,
+                    Slot_ID[5])
             end
         end
         SetProgress(progHandle, 6)
@@ -668,7 +672,8 @@ function Construct_Gobo_Layout(displayHandle, TLay, SeqNrStart, TLayNr, AppNr, P
             CmdIndirectWait("ClearAll; Fixture " .. FixtureNum)
             if GetUIChannelIndex(SelectionFirst(), GetAttributeIndex('Prism2')) then -- check if Fixture has Prism2
                 AppIndex[6] = AppNr - 1
-                AppNr = CreateAppearances(FixtureType, "Prism2", AppNr, prefix, Mode_Cue_Type, NrFixtureModeType, Slot_ID[6])
+                AppNr = CreateAppearances(FixtureType, "Prism2", AppNr, prefix, Mode_Cue_Type, NrFixtureModeType,
+                    Slot_ID[6])
             end
         end
         SetProgress(progHandle, 7)
@@ -676,7 +681,8 @@ function Construct_Gobo_Layout(displayHandle, TLay, SeqNrStart, TLayNr, AppNr, P
             CmdIndirectWait("ClearAll; Fixture " .. FixtureNum)
             if GetUIChannelIndex(SelectionFirst(), GetAttributeIndex('EFFECTWHEEL2')) then -- check if Fixture has EFFECTWHEEL
                 AppIndex[7] = AppNr - 1
-                AppNr = CreateAppearances(FixtureType, "EFFECTWHEEL2", AppNr, prefix, Mode_Cue_Type, NrFixtureModeType, Slot_ID[7])
+                AppNr = CreateAppearances(FixtureType, "EFFECTWHEEL2", AppNr, prefix, Mode_Cue_Type, NrFixtureModeType,
+                    Slot_ID[7])
             end
         end
         SetProgress(progHandle, 8)
@@ -684,7 +690,8 @@ function Construct_Gobo_Layout(displayHandle, TLay, SeqNrStart, TLayNr, AppNr, P
             CmdIndirectWait("ClearAll; Fixture " .. FixtureNum)
             if GetUIChannelIndex(SelectionFirst(), GetAttributeIndex('EFFECTWHEEL3')) then -- check if Fixture has EFFECTWHEEL
                 AppIndex[8] = AppNr - 1
-                AppNr = CreateAppearances(FixtureType, "EFFECTWHEEL3", AppNr, prefix, Mode_Cue_Type, NrFixtureModeType, Slot_ID[8])
+                AppNr = CreateAppearances(FixtureType, "EFFECTWHEEL3", AppNr, prefix, Mode_Cue_Type, NrFixtureModeType,
+                    Slot_ID[8])
             end
         end
         StopProgress(progHandle)
@@ -695,7 +702,8 @@ function Construct_Gobo_Layout(displayHandle, TLay, SeqNrStart, TLayNr, AppNr, P
             SeqNrStart, LayNr, LayY, First_Gobo = CreateCue(FixtureType, prefix, SeqNrStart, Preset_Name, FixtureGroupsNo,
                 Slot_ID, Index, AppIndex, FixtureGroupsName, Result, TLayNr, RefX, LayY, LayH, LayW, LayNr, Mode_Line)
         else
-            SeqNrStart, LayNr, LayY, First_Gobo = CreateSequence(FixtureType, prefix, SeqNrStart, Preset_Name, FixtureGroupsNo,
+            SeqNrStart, LayNr, LayY, First_Gobo = CreateSequence(FixtureType, prefix, SeqNrStart, Preset_Name,
+                FixtureGroupsNo,
                 Slot_ID, Index, AppIndex, FixtureGroupsName, Result, TLayNr, RefX, LayY, LayH, LayW, LayNr)
         end
     end -- end  for g in ipairs(SelectedGrpNo) do
@@ -707,35 +715,36 @@ function Construct_Gobo_Layout(displayHandle, TLay, SeqNrStart, TLayNr, AppNr, P
         end
     end
 
-    Printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
-
-    LayY = math.floor(LayY - 120)
-    UsedW = DataPool().Layouts:Children()[TLayNrRef].UsedW / 2
-    LayX_View = math.floor(UsedW - 20)
-    CurrentMacroNr = math.floor(CurrentMacroNr + 1)
-    Cmd('Store Macro ' .. CurrentMacroNr .. ' \'' .. 'Priority\'')
-    Cmd('ChangeDestination Macro ' .. CurrentMacroNr .. '')
-    for i = 1, 7 do
-        Cmd('Insert')
+    -- Printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+    if First_Gobo ~= nil then
+        LayY = math.floor(LayY - 120)
+        UsedW = DataPool().Layouts:Children()[TLayNrRef].UsedW / 2
+        LayX_View = math.floor(UsedW - 20)
+        CurrentMacroNr = math.floor(CurrentMacroNr + 1)
+        Cmd('Store Macro ' .. CurrentMacroNr .. ' \'' .. 'Priority\'')
+        Cmd('ChangeDestination Macro ' .. CurrentMacroNr .. '')
+        for i = 1, 7 do
+            Cmd('Insert')
+        end
+        Cmd('Assign Macro ' .. CurrentMacroNr .. ' at Layout ' .. TLayNr)
+        Cmd('Set Layout ' .. TLayNr .. '.' .. LayNr ..
+            ' Property PosX ' .. LayX_View .. ' PosY ' .. LayY ..
+            ' PositionW ' .. LayW_View .. ' PositionH ' .. LayH_View ..
+            ' VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0 VisibilityBorder=0')
+        Cmd('Set Layout ' .. TLayNr .. "." .. LayNr .. ' Property "Appearance" "p_super_png" ')
+        Cmd('ChangeDestination Root')
+        local Gobo_message = 'SetUserVariable "LC_Sequence" "' .. First_Gobo .. '"'
+        Gobo_message = string.gsub(Gobo_message, "'", "")
+        Macro_Pool[CurrentMacroNr]:Set('name', '' .. prefix .. 'Priority')
+        Macro_Pool[CurrentMacroNr][1]:Set('Command',
+            'Edit DataPool ' .. Data_Pool_Nr .. ' Sequence "' .. prefix .. '*" Property "priority"')
+        Macro_Pool[CurrentMacroNr][2]:Set('Command', 'SetUserVariable "LC_Fonction" 8')
+        Macro_Pool[CurrentMacroNr][3]:Set('Command', 'SetUserVariable "LC_Layout" ' .. TLayNr)
+        Macro_Pool[CurrentMacroNr][4]:Set('Command', 'SetUserVariable "LC_Element" ' .. LayNr)
+        Macro_Pool[CurrentMacroNr][5]:Set('Command', 'SetUserVariable "LC_DataPool" ' .. Data_Pool_Nr)
+        Macro_Pool[CurrentMacroNr][6]:Set('Command', Gobo_message)
+        Macro_Pool[CurrentMacroNr][7]:Set('Command', 'Call DataPool ' .. Data_Pool_Nr .. ' Plugin "LC_View"')
     end
-    Cmd('Assign Macro ' .. CurrentMacroNr .. ' at Layout ' .. TLayNr)
-    Cmd('Set Layout ' .. TLayNr .. '.' .. LayNr ..
-        ' Property PosX ' .. LayX_View .. ' PosY ' .. LayY ..
-        ' PositionW ' .. LayW_View .. ' PositionH ' .. LayH_View ..
-        ' VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0 VisibilityBorder=0')
-    Cmd('Set Layout ' .. TLayNr .. "." .. LayNr .. ' Property "Appearance" "p_super_png" ')
-    Cmd('ChangeDestination Root')
-    local Gobo_message = 'SetUserVariable "LC_Sequence" "' .. First_Gobo .. '"'
-    Gobo_message = string.gsub(Gobo_message, "'", "")
-    Macro_Pool[CurrentMacroNr]:Set('name', '' .. prefix .. 'Priority')
-    Macro_Pool[CurrentMacroNr][1]:Set('Command',
-        'Edit DataPool ' .. Data_Pool_Nr .. ' Sequence "' .. prefix .. '*" Property "priority"')
-    Macro_Pool[CurrentMacroNr][2]:Set('Command', 'SetUserVariable "LC_Fonction" 8')
-    Macro_Pool[CurrentMacroNr][3]:Set('Command', 'SetUserVariable "LC_Layout" ' .. TLayNr)
-    Macro_Pool[CurrentMacroNr][4]:Set('Command', 'SetUserVariable "LC_Element" ' .. LayNr)
-    Macro_Pool[CurrentMacroNr][5]:Set('Command', 'SetUserVariable "LC_DataPool" ' .. Data_Pool_Nr)
-    Macro_Pool[CurrentMacroNr][6]:Set('Command', Gobo_message)
-    Macro_Pool[CurrentMacroNr][7]:Set('Command', 'Call DataPool ' .. Data_Pool_Nr .. ' Plugin "LC_View"')
     -- end Macro priority
 
     -- Macro Del LC prefix
