@@ -1,7 +1,7 @@
 ---@diagnostic disable: redundant-parameter
 --[[
 Releases:
-* 0.0.0.8
+* 0.0.0.9
 
 Created by Richard Fontaine "RIRI", May 2024.
 --]]

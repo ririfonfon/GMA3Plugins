@@ -1,6 +1,6 @@
 --[[
 Releases:
-* 0.0.0.8
+* 0.0.0.9
 
 Created by Richard Fontaine "RIRI", May 2024.
 --]]
@@ -259,7 +259,7 @@ function CreateSequence(FixtureType, prefix, SeqNrStart, Preset_Name, Grp, Slot_
     local length8 = 1
     if Result[8] == 1 then
         if GetUIChannelIndex(SelectionFirst(), GetAttributeIndex('EFFECTWHEEL3')) ~= nil then
-            length4 = ArrayLength(Preset_Name[8])
+            length8 = ArrayLength(Preset_Name[8])
             WH[8] = true
         end
     end
@@ -281,6 +281,7 @@ function CreateSequence(FixtureType, prefix, SeqNrStart, Preset_Name, Grp, Slot_
     LayX = math.floor(LayX + LayW + 20)
 
     progHandle = StartProgress("Store Sequence & Assign To Layout")
+    SetProgressRange(progHandle, startIdx, endIdx)
     SetProgress(progHandle, 1)
     if WH[1] then
         local Seq_Name_ = prefix .. '_' .. FixtureType:gsub(' ', '_') .. '_' .. GrpName:gsub(' ', '_') .. '_Gobo1'
@@ -399,6 +400,8 @@ function CreateSequence(FixtureType, prefix, SeqNrStart, Preset_Name, Grp, Slot_
             Cue = Cue + 1
             CmdIndirectWait('Assign Preset 25.' .. PresetIndex[4] + i .. ' At Sequence ' .. SeqNrStart ..
                 ' Cue ' .. Cue .. ' Part 0.1')
+            Printf("Appindex " .. AppIndex[4])
+            Printf("slot ".. Slot_ID[4][i])
             CmdIndirectWait('Assign Appearance ' ..
                 AppIndex[4] + Slot_ID[4][i] .. ' At Sequence ' .. SeqNrStart .. ' Cue ' .. i)
             CmdIndirectWait('Label Sequence ' ..
