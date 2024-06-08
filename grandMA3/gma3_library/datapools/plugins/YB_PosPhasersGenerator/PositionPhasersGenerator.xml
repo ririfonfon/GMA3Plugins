@@ -1,0 +1,6 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<GMA3 DataVersion="1.9.3.3">
+    <UserPlugin Name="PositionPhasersGenerator" Guid="8D 42 53 B1 6E 7D 10 04 B4 C3 5D EB ED 2D E9 23" Version="0.0.0.0">
+        <ComponentLua Name="[pos_effects_generator_lua]" Guid="8D 42 53 B1 FA 4F 10 04 22 DC 0C E1 E8 C7 FC 23" FileName="pos_effects_generator.lua" />
+    </UserPlugin>
+</GMA3>

@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<GMA3 DataVersion="1.9.3.3">
+    <UserPlugin Name="Color Picker Generator" Guid="C1 E6 44 68 D8 31 10 02 C6 EC 38 DC 7E EB 10 10" Version="0.0.0.0">
+        <ComponentLua Name="[main_function_lua]" Guid="C1 E6 44 68 4B 62 10 02 E7 70 82 EE 4C 37 34 11" FileName="main_function.lua" FilePath="/ColorPicker" />
+        <ComponentLua Name="[get_groups_lua]" Guid="C1 E6 44 68 5C 1F 10 02 37 77 96 10 59 55 23 77" FileName="get_groups.lua" FilePath="/ColorPicker" />
+        <ComponentLua Name="[get_presets_lua]" Guid="C1 E6 44 68 05 38 10 02 8C FD FF 1D 4E 42 D3 76" FileName="get_presets.lua" FilePath="/ColorPicker" />
+        <ComponentLua Name="[get_user_input_lua]" Guid="C1 E6 44 68 7B 13 10 02 7A 8E AE 2B 41 3C D8 7F" FileName="get_user_input.lua" FilePath="/ColorPicker" />
+        <ComponentLua Name="[create_naming_prefix_lua]" Guid="C1 E6 44 68 23 5E 10 02 1B 12 68 24 01 97 6B 49" FileName="create_naming_prefix.lua" FilePath="/ColorPicker" />
+        <ComponentLua Name="[generate_universal_color_presets_lua]" Guid="C1 E6 44 68 19 7B 10 02 4E 95 00 3F 82 F6 1A 50" FileName="generate_universal_color_presets.lua" FilePath="/ColorPicker" />
+        <ComponentLua Name="[declare_timings_lua]" Guid="C1 E6 44 68 5B 0B 10 02 F1 2C 1B 32 19 21 E9 58" FileName="declare_timings.lua" FilePath="/ColorPicker" />
+        <ComponentLua Name="[create_appearances_lua]" Guid="C1 E6 44 68 D2 7F 10 02 24 A6 33 35 21 1D DF A6" FileName="create_appearances.lua" FilePath="/ColorPicker" />
+        <ComponentLua Name="[create_color_picker_matricks_lua]" Guid="C1 E6 44 68 CD 06 10 02 6F 39 CA 49 45 FB AC B5" FileName="create_color_picker_matricks.lua" FilePath="/ColorPicker" />
+        <ComponentLua Name="[create_timing_macros_lua]" Guid="C1 E6 44 68 FA 0E 10 02 92 B0 E2 4C 11 43 5D BC" FileName="create_timing_macros.lua" FilePath="/ColorPicker" />
+        <ComponentLua Name="[create_color_sequences_lua]" Guid="C1 E6 44 68 90 1A 10 02 C5 CB FD 47 7C 1D 5B B9" FileName="create_color_sequences.lua" FilePath="/ColorPicker" />
+        <ComponentLua Name="[align_sequences_in_the_layout_lua]" Guid="C1 E6 44 68 F3 1A 10 02 08 4D 94 5A 94 9C CE 85" FileName="align_sequences_in_the_layout.lua" FilePath="/ColorPicker" />
+        <ComponentLua Name="[align_groups_in_the_layout_lua]" Guid="C1 E6 44 68 43 2B 10 02 B3 C4 AC 5D 8A 6A EA 83" FileName="align_groups_in_the_layout.lua" FilePath="/ColorPicker" />
+        <ComponentLua Name="[align_matricks_in_the_layout_lua]" Guid="C1 E6 44 68 3D 57 10 02 E6 5F 47 50 2B 91 04 8F" FileName="align_matricks_in_the_layout.lua" FilePath="/ColorPicker" />
+        <ComponentLua Name="[create_all_groups_macros_lua]" Guid="C1 E6 44 68 0B 43 10 02 5C 68 76 6E B0 56 AB 8B" FileName="create_all_groups_macros.lua" FilePath="/ColorPicker" />
+        <ComponentLua Name="[align_all_groups_macros_in_the_layout_lua]" Guid="C1 E6 44 68 0C 66 10 02 CA 7A 19 64 69 C0 71 97" FileName="align_all_groups_macros_in_the_layout.lua" FilePath="/ColorPicker" />
+        <ComponentLua Name="[align_timing_macros_in_the_layout_lua]" Guid="C1 E6 44 68 DD 6E 10 02 A0 77 C8 73 E1 08 6C 9C" FileName="align_timing_macros_in_the_layout.lua" FilePath="/ColorPicker" />
+        <ComponentLua Name="[create_off_macro_lua]" Guid="C1 E6 44 68 A8 33 10 02 EB 8E E0 76 06 38 70 98" FileName="create_off_macro.lua" FilePath="/ColorPicker" />
+        <ComponentLua Name="[align_off_macro_in_the_layout_lua]" Guid="C1 E6 44 68 34 62 10 02 1E 00 FB 89 2D A0 C9 19" FileName="align_off_macro_in_the_layout.lua" FilePath="/ColorPicker" />
+        <ComponentLua Name="[create_delete_macro_lua]" Guid="C1 E6 44 68 26 64 10 02 41 9B 93 8C 47 DA 54 65" FileName="create_delete_macro.lua" FilePath="/ColorPicker" />
+        <ComponentLua Name="[create_and_align_layout_labelling_objects_lua]" Guid="C1 E6 44 68 9C 10 10 02 F4 12 AA 87 75 AC 16 63" FileName="create_and_align_layout_labelling_objects.lua" FilePath="/ColorPicker" />
+        <ComponentLua Name="[create_favourites_macros_lua]" Guid="8D 42 53 B1 97 74 10 02 0E 25 75 68 A7 40 EB B3" FileName="create_favourites_macros.lua" FilePath="/ColorPicker" />
+        <ComponentLua Name="[favourites_layout_align_lua]" Guid="8D 42 53 B1 18 63 10 04 A8 0F 67 F6 C3 44 D0 2C" FileName="favourites_layout_align.lua" FilePath="/ColorPicker" />
+    </UserPlugin>
+</GMA3>
