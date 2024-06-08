@@ -1,8 +1,8 @@
 --[[
 Releases:
-* 2.0.0.8
+* 2.0.0.9
 
-Created by Richard Fontaine "RIRI", April 2024.
+Created by Richard Fontaine "RIRI", June 2024.
 --]]
 
 local pluginName = select(1, ...)

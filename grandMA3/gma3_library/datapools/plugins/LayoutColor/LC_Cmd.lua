@@ -1,8 +1,8 @@
 --[[
     Releases:
-    * 2.0.0.8
+    * 2.0.0.9
 
-    Created by Richard Fontaine "RIRI", April 2024.
+    Created by Richard Fontaine "RIRI", June 2024.
     --]]
 
 function CheckSymbols(displayHandle, Img, ImgImp, check, add_check, long_imgimp, ImgNr)

@@ -1,8 +1,8 @@
 --[[
 Releases:
-* 2.0.0.8
+* 2.0.0.9
 
-Created by Richard Fontaine "RIRI", April 2024.
+Created by Richard Fontaine "RIRI", June 2024.
 --]]
 
 function Construct_Layout(displayHandle, TLay, SeqNrStart, MacroNrStart, MatrickNrStart, MatrickNr, TLayNr, AppNr,
@@ -553,6 +553,14 @@ function Construct_Layout(displayHandle, TLay, SeqNrStart, MacroNrStart, Matrick
     Macro_Pool[CurrentMacroNr][6]:Set('Command', Color_message)
     Macro_Pool[CurrentMacroNr][7]:Set('Command', 'Call DataPool ' .. Data_Pool_Nr .. ' Plugin "LC_View"')
     -- end Macro priority
+
+    -- add Favourites
+    LayNr = math.floor(LayNr + 1)
+    CurrentMacroNr = Create_Favourite_Macro(prefix,CurrentMacroNr,TLayNr,Data_Pool_Nr)
+    Create_Favourite_Layout(LayNr, CurrentMacroNr, LayH, LayW,TLayNr,Data_Pool_Nr)
+
+
+    -- end Favourites 
 
     -- Macro Del LC prefix
     CurrentMacroNr = math.floor(CurrentMacroNr + 2)
