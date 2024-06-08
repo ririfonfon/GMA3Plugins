@@ -53,6 +53,7 @@ function Create_Favourite_Macro(prefix, CurrentMacroNr, TLayNr, Data_Pool_Nr)
     end
     -- macropool[macro_num]:Set('appearance', prefix .. 'Black Back')
     for i = macro_num + 1, CurrentMacroNr do
+        -- macropool[i]:Set('name',prefix..' ')
         -- macropool[i]:Set('name',prefix..' Favourite '..(i-macro_num))
         -- macropool[i]:Set('appearance', prefix .. 'Favourites')
     end
@@ -62,7 +63,7 @@ end
 function Create_Favourite_Layout(LayNr, CurrentMacroNr, LayH, LayW, TLayNr, Data_Pool_Nr)
     -- local progHandle = StartProgress("Aligning Favourites Macros")
     local pos_x = -400 -- position of te first object by x-axis
-    local pos_y = 1200  -- position of te first0 object by y-axis
+    local pos_y = 1000  -- position of te first0 object by y-axis
     local object_type = 'macro'
     local col_num = 1
     local line_num = 1
@@ -84,6 +85,7 @@ function Create_Favourite_Layout(LayNr, CurrentMacroNr, LayH, LayW, TLayNr, Data
     LayNr = LayNr + 1
     pool_obj_num = pool_obj_num + 1
     Cmd('assign ' .. object_type .. ' ' .. pool_obj_num .. ' thru ' .. last_pool_obj .. ' at Layout ' .. TLayNr .. ' /nu')
+    pos_y = pos_y - 120
     while line_num <= y_count do
         while col_num <= x_count do
             layout_pool[TLayNr][LayNr]:Set('posx', pos_x)
