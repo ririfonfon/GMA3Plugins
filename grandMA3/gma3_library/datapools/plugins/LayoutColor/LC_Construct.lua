@@ -517,7 +517,7 @@ function Construct_Layout(displayHandle, TLay, SeqNrStart, MacroNrStart, Matrick
     Macro_Pool[CurrentMacroNr][8]:Set('Command',
         'Delete DataPool ' .. Data_Pool_Nr .. ' Macro ' .. prefix .. '*' .. ' /nc')
     Macro_Pool[CurrentMacroNr][9]:Set('Command',
-        'Delete DataPool ' .. Data_Pool_Nr .. ' Sequence _' .. prefix .. '*' .. ' /nc')
+        'Delete DataPool ' .. Data_Pool_Nr .. ' Sequence o' .. prefix .. '*' .. ' /nc')
     Macro_Pool[CurrentMacroNr][10]:Set('Command',
         'Delete DataPool ' .. Data_Pool_Nr .. ' Macro ' .. CurrentMacroNr .. ' /nc')
     -- end Macro Del LC prefix
