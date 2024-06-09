@@ -23,7 +23,7 @@ local function Main(displayHandle)
     local ColGels = ColPath:Children()
     local SelectedGelNr
     local NGel
-    local MaxColLgn = 15
+    local MaxColLgn = 16
     local check_gel = false
     local TLay = DataPool().Layouts:Children()
     local TLayNr

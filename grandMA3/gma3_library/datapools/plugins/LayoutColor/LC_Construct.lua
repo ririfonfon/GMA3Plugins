@@ -254,6 +254,7 @@ function Construct_Layout(displayHandle, TLay, SeqNrStart, MacroNrStart, Matrick
     local Block_Element
     local Wings_Element
 
+    local Ligne_Inc = false
 
     -- fix prefix
     local prefix_index = 1
@@ -285,11 +286,8 @@ function Construct_Layout(displayHandle, TLay, SeqNrStart, MacroNrStart, Matrick
     CheckSymbols(displayHandle, Img, ImgImp, check, add_check, long_imgimp, ImgNr)
 
     -- Create MAtricks
-    local Return_Create_Matricks = { Create_Matricks(MatrickNrStart, prefix, NaLay, SelectedGrp, SelectedGrpName,
-        MatrickNr) }
-    if Return_Create_Matricks[1] then
-        MatrickNr = Return_Create_Matricks[2]
-    end
+    MatrickNr = Create_Matricks(MatrickNrStart, prefix, NaLay, SelectedGrp, SelectedGrpName, MatrickNr)
+
 
     -- Create new Layout View
     Cmd("Store Layout " .. TLayNr .. " \"" .. prefix .. NaLay .. "")
@@ -299,42 +297,23 @@ function Construct_Layout(displayHandle, TLay, SeqNrStart, MacroNrStart, Matrick
     MaxColLgn = tonumber(MaxColLgn)
 
     -- Create Appearances Tricks Ref
-    local Return_Create_Appear_Tricks = { Create_Appear_Tricks(AppTricks, AppNr, prefix) }
-    if Return_Create_Appear_Tricks[1] then
-        AppNr = Return_Create_Appear_Tricks[2]
-        AppTricks = Return_Create_Appear_Tricks[3]
-    end
+    AppNr, AppTricks = Create_Appear_Tricks(AppTricks, AppNr, prefix)
     -- end Appearances Tricks Ref
 
     -- Create Appearances
-    local Return_Create_Appearances = { Create_Appearances(SelectedGrp, AppNr, prefix, TCol, NrAppear, StColCode,
-        StColName, StringColName) }
-    if Return_Create_Appearances[1] then
-        NrAppear = Return_Create_Appearances[2]
-    end
+    NrAppear = Create_Appearances(SelectedGrp, AppNr, prefix, TCol, NrAppear, StColCode, StColName, StringColName)
     -- end Appearances
 
     -- Create Preset 25
-    local Return_Create_Preset_25 = { Create_Preset_25(TCol, StColName, StringColName, SelectedGelNr, prefix,
-        All_5_NrEnd, All_5_Current) }
-    if Return_Create_Preset_25[1] then
-        All_5_NrEnd = Return_Create_Preset_25[2]
-        All_5_Current = Return_Create_Preset_25[2]
-    end
+    All_5_NrEnd, All_5_Current = Create_Preset_25(TCol, StColName, StringColName, SelectedGelNr, prefix, All_5_NrEnd,
+        All_5_Current)
     -- endCreate Preset 25
 
     -- Appearances/Sequences
-    local Return_Create_Appearances_Sequences = { Create_Appearances_Sequences(CurrentMacroNr, SelectedGelNr,
-        SelectedGrp, RefX, LayY, LayH, NrAppear, AppNr, NrNeed, TLayNr, LayW, LayNr, CurrentSeqNr, MaxColLgn, TCol,
-        SelectedGrpNo, prefix, All_5_NrStart, MatrickNrStart, SelectedGrpName, AppTricks, Data_Pool_Nr) }
-    if Return_Create_Appearances_Sequences[1] then
-        LayY = Return_Create_Appearances_Sequences[2]
-        NrNeed = Return_Create_Appearances_Sequences[3]
-        LayNr = Return_Create_Appearances_Sequences[4]
-        CurrentSeqNr = Return_Create_Appearances_Sequences[5]
-        CurrentMacroNr = Return_Create_Appearances_Sequences[6]
-        ColLgnCount = Return_Create_Appearances_Sequences[7]
-    end
+    LayY, NrNeed, LayNr, CurrentSeqNr, CurrentMacroNr, ColLgnCount, Ligne_Inc = Create_Appearances_Sequences(
+        CurrentMacroNr,
+        SelectedGelNr, SelectedGrp, RefX, LayY, LayH, NrAppear, AppNr, NrNeed, TLayNr, LayW, LayNr, CurrentSeqNr,
+        MaxColLgn, TCol, SelectedGrpNo, prefix, All_5_NrStart, MatrickNrStart, SelectedGrpName, AppTricks, Data_Pool_Nr)
     -- end Appearances/Sequences
 
     -- Create Appearances/Function
@@ -355,117 +334,59 @@ function Construct_Layout(displayHandle, TLay, SeqNrStart, MacroNrStart, Matrick
     -- Create Function for X Y Z
     for a = 1, 3 do
         -- Create Sequence FADE
-        local Return_Create_Fade_Sequence = { Create_Fade_Sequences(MakeX, FirstSeqTime, LastSeqTime, CurrentSeqNr,
-            CurrentMacroNr, prefix, surfix, First_Id_Lay, LayNr, MatrickNrStart, TLayNr, Fade_Element, Argument_Fade,
-            AppImp, LayX, LayY, LayW, LayH, SeqNrStart, SeqNrEnd, Current_Id_Lay, Delay_F_Element, a, Data_Pool_Nr) }
-        if Return_Create_Fade_Sequence[1] then
-            CurrentSeqNr = Return_Create_Fade_Sequence[2]
-            Delay_F_Element = Return_Create_Fade_Sequence[3]
-            LayNr = Return_Create_Fade_Sequence[4]
-            LayX = Return_Create_Fade_Sequence[5]
-            Current_Id_Lay = Return_Create_Fade_Sequence[6]
-            Fade_Element = Return_Create_Fade_Sequence[7]
-        end -- end Create Sequence FADE
+        CurrentSeqNr, Delay_F_Element, LayNr, LayX, Current_Id_Lay, Fade_Element = Create_Fade_Sequences(MakeX,
+            FirstSeqTime, LastSeqTime, CurrentSeqNr, CurrentMacroNr, prefix, surfix, First_Id_Lay, LayNr, MatrickNrStart,
+            TLayNr, Fade_Element, Argument_Fade, AppImp, LayX, LayY, LayW, LayH, SeqNrStart, SeqNrEnd, Current_Id_Lay,
+            Delay_F_Element, a, Data_Pool_Nr)
+        -- end Create Sequence FADE
 
         -- Create Sequences Delayfrom
-        local Return_Create_Delay_From_Sequences = { Create_Delay_From_Sequences(First_Id_Lay, LayNr, CurrentSeqNr,
-            Current_Id_Lay, prefix, surfix, Argument_Delay, AppImp, CurrentMacroNr, a, MatrickNrStart, TLayNr,
-            Delay_F_Element, MatrickNr, MakeX, LayX, LayY, LayW, LayH, Delay_T_Element, Data_Pool_Nr) }
-        if Return_Create_Delay_From_Sequences[1] then
-            Current_Id_Lay = Return_Create_Delay_From_Sequences[2]
-            First_Id_Lay = Return_Create_Delay_From_Sequences[3]
-            LayX = Return_Create_Delay_From_Sequences[4]
-            LayNr = Return_Create_Delay_From_Sequences[5]
-            Delay_T_Element = Return_Create_Delay_From_Sequences[6]
-            CurrentSeqNr = Return_Create_Delay_From_Sequences[7]
-            CurrentMacroNr = Return_Create_Delay_From_Sequences[8]
-        end -- end Create Sequences Delayfrom
+        Current_Id_Lay, First_Id_Lay, LayX, LayNr, Delay_T_Element, CurrentSeqNr, CurrentMacroNr =
+            Create_Delay_From_Sequences(First_Id_Lay, LayNr, CurrentSeqNr, Current_Id_Lay, prefix, surfix, Argument_Delay,
+                AppImp, CurrentMacroNr, a, MatrickNrStart, TLayNr, Delay_F_Element, MatrickNr, MakeX, LayX, LayY, LayW,
+                LayH, Delay_T_Element, Data_Pool_Nr)
+        -- end Create Sequences Delayfrom
 
         -- Create Sequences DelayTo
-        local Return_Create_Delay_To_Sequences = { Create_Delay_To_Sequences(a, First_Id_Lay, LayNr, CurrentSeqNr,
-            Current_Id_Lay, prefix, Argument_DelayTo, surfix, MatrickNrStart, TLayNr, Delay_T_Element, MatrickNr, AppImp,
-            LayX, LayY, LayW, LayH, Phase_Element, CurrentMacroNr, MakeX, Data_Pool_Nr) }
-        if Return_Create_Delay_To_Sequences[1] then
-            First_Id_Lay = Return_Create_Delay_To_Sequences[2]
-            Current_Id_Lay = Return_Create_Delay_To_Sequences[3]
-            LayX = Return_Create_Delay_To_Sequences[4]
-            LayNr = Return_Create_Delay_To_Sequences[5]
-            Phase_Element = Return_Create_Delay_To_Sequences[6]
-            CurrentSeqNr = Return_Create_Delay_To_Sequences[7]
-            CurrentMacroNr = Return_Create_Delay_To_Sequences[8]
-        end -- end Create Sequences DelayTo
+        First_Id_Lay, Current_Id_Lay, LayX, LayNr, Phase_Element, CurrentSeqNr, CurrentMacroNr =
+            Create_Delay_To_Sequences(a, First_Id_Lay, LayNr, CurrentSeqNr, Current_Id_Lay, prefix, Argument_DelayTo,
+                surfix, MatrickNrStart, TLayNr, Delay_T_Element, MatrickNr, AppImp, LayX, LayY, LayW, LayH, Phase_Element,
+                CurrentMacroNr, MakeX, Data_Pool_Nr)
+        -- end Create Sequences DelayTo
 
         -- Create_Sequence_Phase
-        local Return_Create_Phase_Sequence = { Create_Phase_Sequence(LayY, LayX, LayW, a, First_Id_Lay, LayNr,
-            CurrentSeqNr, Current_Id_Lay, CurrentMacroNr, prefix, surfix, MatrickNrStart, TLayNr, Phase_Element,
-            MatrickNr, AppImp, MakeX, LayH, RefX, Group_Element, Data_Pool_Nr) }
-        if Return_Create_Phase_Sequence[1] then
-            Current_Id_Lay = Return_Create_Phase_Sequence[2]
-            CurrentMacroNr = Return_Create_Phase_Sequence[3]
-            LayY = Return_Create_Phase_Sequence[4]
-            LayX = Return_Create_Phase_Sequence[5]
-            LayNr = Return_Create_Phase_Sequence[6]
-            CurrentSeqNr = Return_Create_Phase_Sequence[7]
-            Group_Element = Return_Create_Phase_Sequence[8]
-        end -- end Sequences Phase
+        Current_Id_Lay, CurrentMacroNr, LayY, LayX, LayNr, CurrentSeqNr, Group_Element = Create_Phase_Sequence(LayY, LayX,
+            LayW, a, First_Id_Lay, LayNr, CurrentSeqNr, Current_Id_Lay, CurrentMacroNr, prefix, surfix, MatrickNrStart,
+            TLayNr, Phase_Element, MatrickNr, AppImp, MakeX, LayH, RefX, Group_Element, Data_Pool_Nr)
+        -- end Sequences Phase
 
         -- Create_sequence_xgroup
-        local Return_Create_Group_Sequence = { Create_Group_Sequence(CurrentMacroNr, FirstSeqGrp, CurrentSeqNr,
-            LastSeqGrp, prefix, surfix, a, MatrickNrStart, TLayNr, Group_Element, MatrickNr, LayNr, LayX, LayY,
-            First_Id_Lay, Current_Id_Lay, Argument_Xgrp, AppImp, LayW, LayH, Block_Element, MakeX, Data_Pool_Nr) }
-        if Return_Create_Group_Sequence[1] then
-            CurrentSeqNr = Return_Create_Group_Sequence[2]
-            Block_Element = Return_Create_Group_Sequence[3]
-            LayNr = Return_Create_Group_Sequence[4]
-            LayX = Return_Create_Group_Sequence[5]
-            Current_Id_Lay = Return_Create_Group_Sequence[6]
-            First_Id_Lay = Return_Create_Group_Sequence[7]
-            CurrentMacroNr = Return_Create_Group_Sequence[8]
-            LastSeqGrp = Return_Create_Group_Sequence[9]
-            FirstSeqGrp = Return_Create_Group_Sequence[10]
-        end -- end Sequences XGroup
+        CurrentSeqNr, Block_Element, LayNr, LayX, Current_Id_Lay, First_Id_Lay, CurrentMacroNr, LastSeqGrp, FirstSeqGrp =
+            Create_Group_Sequence(CurrentMacroNr, FirstSeqGrp, CurrentSeqNr, LastSeqGrp, prefix, surfix, a,
+                MatrickNrStart, TLayNr, Group_Element, MatrickNr, LayNr, LayX, LayY, First_Id_Lay, Current_Id_Lay,
+                Argument_Xgrp, AppImp, LayW, LayH, Block_Element, MakeX, Data_Pool_Nr)
+        -- end Sequences XGroup
 
         -- Create_Block_Sequence
-        local Return_Create_Block_Sequence = { Create_Block_Sequence(CurrentMacroNr, FirstSeqBlock, CurrentSeqNr,
-            LastSeqBlock, prefix, surfix, a, MatrickNrStart, TLayNr, Block_Element, MatrickNr, MakeX, LayNr, LayX, LayY,
-            First_Id_Lay, Current_Id_Lay, Argument_Xblock, AppImp, Wings_Element, LayW, LayH, Data_Pool_Nr) }
-        if Return_Create_Block_Sequence[1] then
-            CurrentSeqNr = Return_Create_Block_Sequence[2]
-            Wings_Element = Return_Create_Block_Sequence[3]
-            LayNr = Return_Create_Block_Sequence[4]
-            LayX = Return_Create_Block_Sequence[5]
-            Current_Id_Lay = Return_Create_Block_Sequence[6]
-            First_Id_Lay = Return_Create_Block_Sequence[7]
-            CurrentMacroNr = Return_Create_Block_Sequence[8]
-            FirstSeqBlock = Return_Create_Block_Sequence[9]
-            LastSeqBlock = Return_Create_Block_Sequence[10]
-        end -- end Create_Block_Sequence
+        CurrentSeqNr, Wings_Element, LayNr, LayX, Current_Id_Lay, First_Id_Lay, CurrentMacroNr, FirstSeqBlock, LastSeqBlock =
+            Create_Block_Sequence(CurrentMacroNr, FirstSeqBlock, CurrentSeqNr, LastSeqBlock, prefix, surfix, a,
+                MatrickNrStart, TLayNr, Block_Element, MatrickNr, MakeX, LayNr, LayX, LayY, First_Id_Lay, Current_Id_Lay,
+                Argument_Xblock, AppImp, Wings_Element, LayW, LayH, Data_Pool_Nr)
+        -- end Create_Block_Sequence
 
         -- Create_Wings_Sequence
-        local Return_Create_Wings_Sequence = { Create_Wings_Sequence(CurrentMacroNr, FirstSeqWings, CurrentSeqNr,
-            LastSeqWings, prefix, surfix, a, MatrickNrStart, TLayNr, Wings_Element, MatrickNr, MakeX, LayNr, LayX, LayY,
-            First_Id_Lay, Current_Id_Lay, Argument_Xwings, AppImp, LayW, LayH, Data_Pool_Nr) }
-        if Return_Create_Wings_Sequence[1] then
-            CurrentSeqNr = Return_Create_Wings_Sequence[2]
-            LayNr = Return_Create_Wings_Sequence[3]
-            LayX = Return_Create_Wings_Sequence[4]
-            Current_Id_Lay = Return_Create_Wings_Sequence[5]
-            First_Id_Lay = Return_Create_Wings_Sequence[6]
-            LastSeqWings = Return_Create_Wings_Sequence[7]
-            FirstSeqWings = Return_Create_Wings_Sequence[8]
-            CurrentMacroNr = Return_Create_Wings_Sequence[9]
-        end -- end Create_Wings_Sequence
+        CurrentSeqNr, LayNr, LayX, Current_Id_Lay, First_Id_Lay, LastSeqWings, FirstSeqWings, CurrentMacroNr =
+            Create_Wings_Sequence(CurrentMacroNr, FirstSeqWings, CurrentSeqNr, LastSeqWings, prefix, surfix, a,
+                MatrickNrStart, TLayNr, Wings_Element, MatrickNr, MakeX, LayNr, LayX, LayY, First_Id_Lay, Current_Id_Lay,
+                Argument_Xwings, AppImp, LayW, LayH, Data_Pool_Nr)
+        -- end Create_Wings_Sequence
 
         -- Create_XYZ_Sequence
-        local Return_Create_XYZ_Sequence = { Create_XYZ_Sequence(CurrentMacroNr, First_Id_Lay, prefix, surfix, Call_inc,
+        First_Id_Lay, LayNr, CurrentMacroNr = Create_XYZ_Sequence(CurrentMacroNr, First_Id_Lay, prefix, surfix, Call_inc,
             CallT, MatrickNrStart, a, CurrentSeqNr, TLayNr, Fade_Element, Delay_F_Element, Delay_T_Element, Phase_Element,
             Group_Element, Block_Element, Wings_Element, MatrickNr, AppImp, MakeX, LayNr, LayX, LayY, LayW, LayH,
-            Data_Pool_Nr) }
-        if Return_Create_XYZ_Sequence[1] then
-            First_Id_Lay = Return_Create_XYZ_Sequence[2]
-            LayNr = Return_Create_XYZ_Sequence[3]
-            CurrentMacroNr = Return_Create_XYZ_Sequence[4]
-        end -- Create_XYZ_Sequence
+            Data_Pool_Nr)
+        -- Create_XYZ_Sequence
 
         LayNr = math.floor(LayNr + 1)
         CurrentSeqNr = math.floor(CurrentSeqNr + 2)
@@ -507,19 +428,15 @@ function Construct_Layout(displayHandle, TLay, SeqNrStart, MacroNrStart, Matrick
     Command_Ext_Suite(CurrentSeqNr)
     Cmd("Assign Seq " .. CurrentSeqNr .. " at Layout " .. TLayNr)
     Cmd('Set Layout ' .. TLayNr .. '.' .. LayNr ..
-        ' Property Appearance <default> PosX ' .. LayX .. ' PosY ' .. LayY ..
+        ' Property PosX ' .. LayX .. ' PosY ' .. LayY ..
         ' PositionW ' .. LayW .. ' PositionH ' .. LayH ..
         ' VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0 VisibilityBorder=0')
     -- end Kill all LCx_
 
     -- Create_All_Color
-    local Return_Create_All_Color = { Create_All_Color(TCol, CurrentSeqNr, prefix, TLayNr, LayNr, NrNeed, LayX, LayY,
-        LayW, LayH, MaxColLgn, RefX, AppNr, Data_Pool_Nr) }
-    if Return_Create_All_Color[1] then
-        LayNr = Return_Create_All_Color[2]
-        LayX = Return_Create_All_Color[3]
-        First_All_Color = Return_Create_All_Color[4]
-    end -- Create_All_Color
+    LayNr, LayX, First_All_Color = Create_All_Color(TCol, CurrentSeqNr, prefix, TLayNr, LayNr, NrNeed, LayX, LayY,
+        LayW, LayH, MaxColLgn, RefX, AppNr, Data_Pool_Nr)
+    -- Create_All_Color
 
     -- add Macro priority
     for k in pairs(DataPool().Layouts:Children()) do
@@ -527,8 +444,13 @@ function Construct_Layout(displayHandle, TLay, SeqNrStart, MacroNrStart, Matrick
             TLayNrRef = k
         end
     end
-    UsedW = DataPool().Layouts:Children()[TLayNrRef].UsedW / 2
-    LayX = math.floor(UsedW - 20)
+    -- UsedW = DataPool().Layouts:Children()[TLayNrRef].UsedW / 2
+    -- LayX = math.floor(UsedW - 20)
+    LayX = -330
+    LayY = 700
+    if Ligne_Inc then
+        LayY = 800
+    end
     CurrentMacroNr = math.floor(CurrentMacroNr)
     Cmd('Store Macro ' .. CurrentMacroNr .. ' \'' .. 'Priority\'')
     Cmd('ChangeDestination Macro ' .. CurrentMacroNr .. '')
@@ -537,7 +459,7 @@ function Construct_Layout(displayHandle, TLay, SeqNrStart, MacroNrStart, Matrick
     end
     Cmd('Assign Macro ' .. CurrentMacroNr .. ' at Layout ' .. TLayNr)
     Cmd('Set Layout ' .. TLayNr .. '.' .. LayNr ..
-        ' Property Appearance <default> PosX ' .. LayX .. ' PosY ' .. LayY ..
+        ' Property PosX ' .. LayX .. ' PosY ' .. LayY ..
         ' PositionW ' .. LayW .. ' PositionH ' .. LayH ..
         ' VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0 VisibilityBorder=0')
     Cmd('Set Layout ' .. TLayNr .. "." .. LayNr .. ' Property "Appearance" "p_super_png" ')
@@ -545,7 +467,8 @@ function Construct_Layout(displayHandle, TLay, SeqNrStart, MacroNrStart, Matrick
     local Color_message = 'SetUserVariable "LC_Sequence" "' .. First_All_Color .. '"'
     Color_message = string.gsub(Color_message, "'", "")
     Macro_Pool[CurrentMacroNr]:Set('name', '' .. prefix .. 'Priority')
-    Macro_Pool[CurrentMacroNr][1]:Set('Command', 'Edit DataPool ' .. Data_Pool_Nr .. ' Sequence "' .. prefix .. '*" Property "priority"')
+    Macro_Pool[CurrentMacroNr][1]:Set('Command',
+        'Edit DataPool ' .. Data_Pool_Nr .. ' Sequence "' .. prefix .. '*" Property "priority"')
     Macro_Pool[CurrentMacroNr][2]:Set('Command', 'SetUserVariable "LC_Fonction" 8')
     Macro_Pool[CurrentMacroNr][3]:Set('Command', 'SetUserVariable "LC_Layout" ' .. TLayNr)
     Macro_Pool[CurrentMacroNr][4]:Set('Command', 'SetUserVariable "LC_Element" ' .. LayNr)
@@ -555,12 +478,15 @@ function Construct_Layout(displayHandle, TLay, SeqNrStart, MacroNrStart, Matrick
     -- end Macro priority
 
     -- add Favourites
+    local Macro_Num_Start
+    local Macro_Num_End
     LayNr = math.floor(LayNr + 1)
-    CurrentMacroNr = Create_Favourite_Macro(prefix,CurrentMacroNr,TLayNr,Data_Pool_Nr)
-    Create_Favourite_Layout(LayNr, CurrentMacroNr, LayH, LayW,TLayNr,Data_Pool_Nr)
+    CurrentMacroNr, Macro_Num_End = Create_Favourite_Macro(prefix, CurrentMacroNr, TLayNr, Data_Pool_Nr)
+    Macro_Num_Start = CurrentMacroNr + 1
+    Create_Favourite_Layout(LayNr, CurrentMacroNr, LayH, LayW, TLayNr, Data_Pool_Nr, Ligne_Inc)
 
 
-    -- end Favourites 
+    -- end Favourites
 
     -- Macro Del LC prefix
     CurrentMacroNr = math.floor(CurrentMacroNr + 2)
@@ -570,20 +496,30 @@ function Construct_Layout(displayHandle, TLay, SeqNrStart, MacroNrStart, Matrick
         CurrentMacroNr .. "\"); else Cmd(\"Off macro " .. CurrentMacroNr .. "\"); end'" .. ' /nu'
     Cmd('Store Macro ' .. CurrentMacroNr .. ' \'' .. 'ERASE\'')
     Cmd('ChangeDestination Macro ' .. CurrentMacroNr .. '')
-    for i = 1, 8 do
+    for i = 1, 10 do
         Cmd('Insert')
     end
     Cmd('ChangeDestination Root')
     Macro_Pool[CurrentMacroNr]:Set('name', 'Erase [' .. prefix:gsub('_', '') .. ']')
     Macro_Pool[CurrentMacroNr][1]:Set('Command', condition_string)
     Macro_Pool[CurrentMacroNr][1]:Set('Wait', 'Go')
-    Macro_Pool[CurrentMacroNr][2]:Set('Command', 'Delete DataPool ' .. Data_Pool_Nr .. ' Sequence ' .. prefix .. '*' .. ' /nc')
-    Macro_Pool[CurrentMacroNr][3]:Set('Command', 'Delete DataPool ' .. Data_Pool_Nr .. ' Layout ' .. prefix .. '*' .. ' /nc')
-    Macro_Pool[CurrentMacroNr][4]:Set('Command', 'Delete DataPool ' .. Data_Pool_Nr .. ' Matricks ' .. prefix .. '*' .. ' /nc')
+    Macro_Pool[CurrentMacroNr][2]:Set('Command',
+        'Delete DataPool ' .. Data_Pool_Nr .. ' Sequence ' .. prefix .. '*' .. ' /nc')
+    Macro_Pool[CurrentMacroNr][3]:Set('Command',
+        'Delete DataPool ' .. Data_Pool_Nr .. ' Layout ' .. prefix .. '*' .. ' /nc')
+    Macro_Pool[CurrentMacroNr][4]:Set('Command',
+        'Delete DataPool ' .. Data_Pool_Nr .. ' Matricks ' .. prefix .. '*' .. ' /nc')
     Macro_Pool[CurrentMacroNr][5]:Set('Command', 'Delete Appearance ' .. prefix .. '*' .. ' /nc')
-    Macro_Pool[CurrentMacroNr][6]:Set('Command', 'Delete DataPool ' .. Data_Pool_Nr .. ' Preset 25. ' .. prefix .. '*' .. ' /nc')
-    Macro_Pool[CurrentMacroNr][7]:Set('Command', 'Delete DataPool ' .. Data_Pool_Nr .. '  Macro ' .. prefix .. '*' .. ' /nc')
-    Macro_Pool[CurrentMacroNr][8]:Set('Command', 'Delete DataPool ' .. Data_Pool_Nr .. '  Macro ' .. CurrentMacroNr .. ' /nc')
+    Macro_Pool[CurrentMacroNr][6]:Set('Command',
+        'Delete DataPool ' .. Data_Pool_Nr .. ' Preset 25. ' .. prefix .. '*' .. ' /nc')
+    Macro_Pool[CurrentMacroNr][7]:Set('Command',
+        'Delete DataPool ' .. Data_Pool_Nr .. ' Macro ' .. Macro_Num_Start .. ' Thru ' .. Macro_Num_End .. ' /nc')
+    Macro_Pool[CurrentMacroNr][8]:Set('Command',
+        'Delete DataPool ' .. Data_Pool_Nr .. ' Macro ' .. prefix .. '*' .. ' /nc')
+    Macro_Pool[CurrentMacroNr][9]:Set('Command',
+        'Delete DataPool ' .. Data_Pool_Nr .. ' Sequence _' .. prefix .. '*' .. ' /nc')
+    Macro_Pool[CurrentMacroNr][10]:Set('Command',
+        'Delete DataPool ' .. Data_Pool_Nr .. ' Macro ' .. CurrentMacroNr .. ' /nc')
     -- end Macro Del LC prefix
 
     -- dimension of layout & scal it

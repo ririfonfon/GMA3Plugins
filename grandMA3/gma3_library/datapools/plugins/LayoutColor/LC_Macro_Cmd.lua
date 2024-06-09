@@ -108,7 +108,7 @@ function Create_Macro_Reset(CurrentMacroNr, prefix, surfix, MatrickNrStart, a, C
     Cmd("Insert")
     Cmd('set 41 Command=\'SetUserVariable "LC_Fonction" 4')
     Cmd("Insert")
-    Cmd('set 45 Command=\'SetUserVariable "LC_Axes" "' .. a .. '"')
+    Cmd('set 42 Command=\'SetUserVariable "LC_Axes" "' .. a .. '"')
     Cmd("Insert")
     Cmd('set 43 Command=\'SetUserVariable "LC_Layout" ' .. TLayNr .. '')
     Cmd("Insert")

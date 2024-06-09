@@ -77,7 +77,7 @@ function Create_Matricks(MatrickNrStart, prefix, NaLay, SelectedGrp, SelectedGrp
         Cmd('Set Matricks ' .. MatrickNr .. ' Property "FadeToz" 0')
         MatrickNr = math.floor(MatrickNr + 1)
     end
-    do return 1, MatrickNr end
+    return MatrickNr
 end -- end Create_Matricks
 
 function Create_Appear_Tricks(AppTricks, AppNr, prefix)
@@ -89,7 +89,7 @@ function Create_Appear_Tricks(AppTricks, AppNr, prefix)
             prefix .. AppTricks[q].Name .. '" "Appearance"=' .. AppTricks[q].StApp .. '' .. AppTricks[q].RGBref .. '')
         AppNr = math.floor(AppNr + 1)
     end
-    do return 1, AppNr, AppTricks end
+    return AppNr, AppTricks
 end -- end Create_Appear_Tricks
 
 function Create_Appearances(SelectedGrp, AppNr, prefix, TCol, NrAppear, StColCode, StColName, StringColName)
@@ -115,7 +115,7 @@ function Create_Appearances(SelectedGrp, AppNr, prefix, TCol, NrAppear, StColCod
             NrAppear = math.floor(NrAppear + 1)
         end
     end
-    do return 1, NrAppear end
+    return NrAppear
 end -- end Create_Appearances
 
 function Create_Preset_25(TCol, StColName, StringColName, SelectedGelNr, prefix, All_5_NrEnd, All_5_Current)
@@ -131,7 +131,7 @@ function Create_Preset_25(TCol, StColName, StringColName, SelectedGelNr, prefix,
         All_5_NrEnd = All_5_Current
         All_5_Current = math.floor(All_5_Current + 1)
     end
-    do return 1, All_5_NrEnd, All_5_Current end
+    return All_5_NrEnd, All_5_Current
 end -- end Create_Preset_25
 
 function Create_Appearances_Sequences(CurrentMacroNr, SelectedGelNr, SelectedGrp, RefX, LayY, LayH, NrAppear, AppNr,
@@ -139,6 +139,7 @@ function Create_Appearances_Sequences(CurrentMacroNr, SelectedGelNr, SelectedGrp
                                       All_5_NrStart, MatrickNrStart, SelectedGrpName, AppTricks, Data_Pool_Nr)
     local LastSeqColor
     local ColLgnCount = 0
+    local Ligne_Inc = false
 
     for g in ipairs(SelectedGrp) do
         local LayX = RefX
@@ -181,7 +182,7 @@ function Create_Appearances_Sequences(CurrentMacroNr, SelectedGelNr, SelectedGrp
             -- Add Squences to Layout
             Cmd("Assign Sequence " .. CurrentSeqNr .. " at Layout " .. TLayNr)
             Cmd("Set Layout " .. TLayNr .. "." .. LayNr ..
-                " Property appearance <Default> PosX " .. LayX .. " PosY " .. LayY ..
+                " Property PosX " .. LayX .. " PosY " .. LayY ..
                 " PositionW " .. LayW .. " PositionH " .. LayH ..
                 " VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0 VisibilityBorder=0")
             NrNeed = math.floor(NrNeed + 2); -- Set App Nr to next color
@@ -194,6 +195,7 @@ function Create_Appearances_Sequences(CurrentMacroNr, SelectedGelNr, SelectedGrp
                 LayY = math.floor(LayY - LayH)
                 col_count = 0
                 if (g == 1) then ColLgnCount = math.floor(ColLgnCount + 1) end
+                Ligne_Inc = true
             end
             LayNr = math.floor(LayNr + 1)
             LastSeqColor = CurrentSeqNr
@@ -247,7 +249,7 @@ function Create_Appearances_Sequences(CurrentMacroNr, SelectedGelNr, SelectedGrp
         -- FirstSeqColor = CurrentSeqNr
         LayY = math.floor(LayY - 20) -- Add offset for Layout Element distance
     end                              -- end GRP
-    do return 1, LayY, NrNeed, LayNr, CurrentSeqNr, CurrentMacroNr, ColLgnCount end
+    return LayY, NrNeed, LayNr, CurrentSeqNr, CurrentMacroNr, ColLgnCount, Ligne_Inc
 end                                  -- end Create_Appearances_Sequences
 
 function Create_Fade_Sequences(MakeX, FirstSeqTime, LastSeqTime, CurrentSeqNr, CurrentMacroNr, prefix, surfix,
@@ -255,6 +257,7 @@ function Create_Fade_Sequences(MakeX, FirstSeqTime, LastSeqTime, CurrentSeqNr, C
                                AppImp, LayX, LayY, LayW, LayH, SeqNrStart, SeqNrEnd, Current_Id_Lay, Delay_F_Element, a,
                                Data_Pool_Nr)
     -- Setup Fade Sequence
+    prefix = 'o' .. prefix
     if MakeX then
         FirstSeqTime = CurrentSeqNr
         First_Id_Lay[37] = CurrentSeqNr
@@ -308,7 +311,7 @@ function Create_Fade_Sequences(MakeX, FirstSeqTime, LastSeqTime, CurrentSeqNr, C
         Command_Ext_Suite(CurrentSeqNr)
         Cmd('Assign Sequence ' .. CurrentSeqNr .. ' at Layout ' .. TLayNr)
         Cmd('Set Layout ' .. TLayNr .. '.' .. LayNr ..
-            ' Property appearance <default> PosX ' .. LayX .. ' PosY ' .. LayY ..
+            ' Property PosX ' .. LayX .. ' PosY ' .. LayY ..
             ' PositionW ' .. LayW .. ' PositionH ' .. LayH ..
             ' VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0 VisibilityBorder=0')
 
@@ -360,7 +363,7 @@ function Create_Fade_Sequences(MakeX, FirstSeqTime, LastSeqTime, CurrentSeqNr, C
         if MakeX then
             Cmd('Assign Sequence ' .. CurrentSeqNr .. ' at Layout ' .. TLayNr)
             Cmd('Set Layout ' .. TLayNr .. '.' .. LayNr ..
-                ' Property appearance <default> PosX ' .. LayX .. ' PosY ' .. LayY ..
+                ' Property PosX ' .. LayX .. ' PosY ' .. LayY ..
                 ' PositionW ' .. LayW .. ' PositionH ' .. LayH ..
                 ' VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0 VisibilityBorder=0')
             LayX = math.floor(LayX + LayW + 20)
@@ -369,12 +372,13 @@ function Create_Fade_Sequences(MakeX, FirstSeqTime, LastSeqTime, CurrentSeqNr, C
         end
         CurrentSeqNr = math.floor(CurrentSeqNr + 1)
     end -- end Sequences FADE
-    do return 1, CurrentSeqNr, Delay_F_Element, LayNr, LayX, Current_Id_Lay, Fade_Element end
+    return CurrentSeqNr, Delay_F_Element, LayNr, LayX, Current_Id_Lay, Fade_Element
 end     -- end Create_Fade_Sequences
 
 function Create_Delay_From_Sequences(First_Id_Lay, LayNr, CurrentSeqNr, Current_Id_Lay, prefix, surfix, Argument_Delay,
                                      AppImp, CurrentMacroNr, a, MatrickNrStart, TLayNr, Delay_F_Element, MatrickNr, MakeX,
                                      LayX, LayY, LayW, LayH, Delay_T_Element, Data_Pool_Nr)
+    prefix = 'o' .. prefix
     -- Setup DelayFrom Sequence
     CurrentMacroNr = math.floor(CurrentMacroNr + 5)
     local FirstSeqDelayFrom = CurrentSeqNr
@@ -433,7 +437,7 @@ function Create_Delay_From_Sequences(First_Id_Lay, LayNr, CurrentSeqNr, Current_
         if MakeX then
             Cmd("Assign Sequence " .. CurrentSeqNr .. " at Layout " .. TLayNr)
             Cmd("Set Layout " .. TLayNr .. "." .. LayNr ..
-                " Property appearance <default> PosX " .. LayX .. " PosY " .. LayY ..
+                " Property PosX " .. LayX .. " PosY " .. LayY ..
                 " PositionW " .. LayW .. " PositionH " .. LayH ..
                 " VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0 VisibilityBorder=0")
             LayX = math.floor(LayX + LayW + 20)
@@ -442,12 +446,13 @@ function Create_Delay_From_Sequences(First_Id_Lay, LayNr, CurrentSeqNr, Current_
         end
         CurrentSeqNr = math.floor(CurrentSeqNr + 1)
     end -- end Sequences DelayFrom
-    do return 1, Current_Id_Lay, First_Id_Lay, LayX, LayNr, Delay_T_Element, CurrentSeqNr, CurrentMacroNr end
+    return Current_Id_Lay, First_Id_Lay, LayX, LayNr, Delay_T_Element, CurrentSeqNr, CurrentMacroNr
 end     --Create_Delay_From_Sequences
 
 function Create_Delay_To_Sequences(a, First_Id_Lay, LayNr, CurrentSeqNr, Current_Id_Lay, prefix, Argument_DelayTo, surfix,
                                    MatrickNrStart, TLayNr, Delay_T_Element, MatrickNr, AppImp, LayX, LayY, LayW, LayH,
                                    Phase_Element, CurrentMacroNr, MakeX, Data_Pool_Nr)
+    prefix = 'o' .. prefix
     -- Setup DelayTo Sequence
     CurrentMacroNr = math.floor(CurrentMacroNr + 1)
     local FirstSeqDelayTo = CurrentSeqNr
@@ -505,7 +510,7 @@ function Create_Delay_To_Sequences(a, First_Id_Lay, LayNr, CurrentSeqNr, Current
         if MakeX then
             Cmd('Assign Sequence ' .. CurrentSeqNr .. ' at Layout ' .. TLayNr)
             Cmd('Set Layout ' .. TLayNr .. '.' .. LayNr ..
-                ' Property appearance <default> PosX ' .. LayX .. ' PosY ' .. LayY ..
+                ' Property PosX ' .. LayX .. ' PosY ' .. LayY ..
                 ' PositionW ' .. LayW .. ' PositionH ' .. LayH ..
                 ' VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0 VisibilityBorder=0')
             LayX = math.floor(LayX + LayW + 20)
@@ -514,12 +519,13 @@ function Create_Delay_To_Sequences(a, First_Id_Lay, LayNr, CurrentSeqNr, Current
         end
         CurrentSeqNr = math.floor(CurrentSeqNr + 1)
     end -- end Sequences DelayTo
-    do return 1, First_Id_Lay, Current_Id_Lay, LayX, LayNr, Phase_Element, CurrentSeqNr, CurrentMacroNr end
+    return First_Id_Lay, Current_Id_Lay, LayX, LayNr, Phase_Element, CurrentSeqNr, CurrentMacroNr
 end     -- end Create_Delay_To_Sequences
 
 function Create_Phase_Sequence(LayY, LayX, LayW, a, First_Id_Lay, LayNr, CurrentSeqNr, Current_Id_Lay, CurrentMacroNr,
                                prefix, surfix, MatrickNrStart, TLayNr, Phase_Element, MatrickNr, AppImp, MakeX, LayH,
                                RefX, Group_Element, Data_Pool_Nr)
+    prefix = 'o' .. prefix
     -- Add offset for Layout Element distance
     LayY = math.floor(LayY - 150)
     LayX = RefX
@@ -553,7 +559,7 @@ function Create_Phase_Sequence(LayY, LayX, LayW, a, First_Id_Lay, LayNr, Current
     if MakeX then
         Cmd('Assign Sequence ' .. CurrentSeqNr .. ' at Layout ' .. TLayNr)
         Cmd('Set Layout ' .. TLayNr .. '.' .. LayNr ..
-            ' Property Appearance <default> PosX ' .. LayX .. ' PosY ' .. LayY ..
+            ' Property PosX ' .. LayX .. ' PosY ' .. LayY ..
             ' PositionW ' .. LayW .. ' PositionH ' .. LayH ..
             ' VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0 VisibilityBorder=0')
         LayX = math.floor(LayX + LayW + 20)
@@ -565,12 +571,13 @@ function Create_Phase_Sequence(LayY, LayX, LayW, a, First_Id_Lay, LayNr, Current
         Group_Element = math.floor(LayNr + 1)
     end
     CurrentSeqNr = math.floor(CurrentSeqNr + 1)
-    do return 1, Current_Id_Lay, CurrentMacroNr, LayY, LayX, LayNr, CurrentSeqNr, Group_Element end
+    return Current_Id_Lay, CurrentMacroNr, LayY, LayX, LayNr, CurrentSeqNr, Group_Element
 end -- end Create_Phase_Sequence
 
 function Create_Group_Sequence(CurrentMacroNr, FirstSeqGrp, CurrentSeqNr, LastSeqGrp, prefix, surfix, a, MatrickNrStart,
                                TLayNr, Group_Element, MatrickNr, LayNr, LayX, LayY, First_Id_Lay, Current_Id_Lay,
                                Argument_Xgrp, AppImp, LayW, LayH, Block_Element, MakeX, Data_Pool_Nr)
+    prefix = 'o' .. prefix
     -- Setup XGroup Sequence
     CurrentMacroNr = math.floor(CurrentMacroNr + 1)
     FirstSeqGrp = CurrentSeqNr
@@ -627,7 +634,7 @@ function Create_Group_Sequence(CurrentMacroNr, FirstSeqGrp, CurrentSeqNr, LastSe
         if MakeX then
             Cmd('Assign Sequence ' .. CurrentSeqNr .. ' at Layout ' .. TLayNr)
             Cmd('Set Layout ' .. TLayNr .. '.' .. LayNr ..
-                ' property appearance <default> PosX ' .. LayX .. ' PosY ' .. LayY ..
+                ' Property PosX ' .. LayX .. ' PosY ' .. LayY ..
                 ' PositionW ' .. LayW .. ' PositionH ' .. LayH ..
                 ' VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0 VisibilityBorder=0')
             LayX = math.floor(LayX + LayW + 20)
@@ -636,15 +643,14 @@ function Create_Group_Sequence(CurrentMacroNr, FirstSeqGrp, CurrentSeqNr, LastSe
         end
         CurrentSeqNr = math.floor(CurrentSeqNr + 1)
     end
-    do
-        return 1, CurrentSeqNr, Block_Element, LayNr, LayX, Current_Id_Lay, First_Id_Lay, CurrentMacroNr, LastSeqGrp,
-            FirstSeqGrp
-    end
+    return CurrentSeqNr, Block_Element, LayNr, LayX, Current_Id_Lay, First_Id_Lay, CurrentMacroNr, LastSeqGrp,
+        FirstSeqGrp
 end -- end Create_Group_Sequence
 
 function Create_Block_Sequence(CurrentMacroNr, FirstSeqBlock, CurrentSeqNr, LastSeqBlock, prefix, surfix, a,
                                MatrickNrStart, TLayNr, Block_Element, MatrickNr, MakeX, LayNr, LayX, LayY, First_Id_Lay,
                                Current_Id_Lay, Argument_Xblock, AppImp, Wings_Element, LayW, LayH, Data_Pool_Nr)
+    prefix = 'o' .. prefix
     CurrentMacroNr = math.floor(CurrentMacroNr + 1)
     FirstSeqBlock = CurrentSeqNr
     LastSeqBlock = math.floor(CurrentSeqNr + 4)
@@ -703,7 +709,7 @@ function Create_Block_Sequence(CurrentMacroNr, FirstSeqBlock, CurrentSeqNr, Last
         if MakeX then
             Cmd('Assign Sequence ' .. CurrentSeqNr .. ' at Layout ' .. TLayNr)
             Cmd('Set Layout ' .. TLayNr .. '.' .. LayNr ..
-                ' Property Appearance <default> PosX ' .. LayX .. ' PosY ' .. LayY ..
+                ' Property PosX ' .. LayX .. ' PosY ' .. LayY ..
                 ' PositionW ' .. LayW .. ' PositionH ' .. LayH ..
                 ' VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0 VisibilityBorder=0')
             LayX = math.floor(LayX + LayW + 20)
@@ -712,15 +718,14 @@ function Create_Block_Sequence(CurrentMacroNr, FirstSeqBlock, CurrentSeqNr, Last
         end
         CurrentSeqNr = math.floor(CurrentSeqNr + 1)
     end
-    do
-        return 1, CurrentSeqNr, Wings_Element, LayNr, LayX, Current_Id_Lay, First_Id_Lay, CurrentMacroNr, FirstSeqBlock,
-            LastSeqBlock
-    end
+    return CurrentSeqNr, Wings_Element, LayNr, LayX, Current_Id_Lay, First_Id_Lay, CurrentMacroNr, FirstSeqBlock,
+        LastSeqBlock
 end -- end Create_Block_Sequence
 
 function Create_Wings_Sequence(CurrentMacroNr, FirstSeqWings, CurrentSeqNr, LastSeqWings, prefix, surfix, a,
                                MatrickNrStart, TLayNr, Wings_Element, MatrickNr, MakeX, LayNr, LayX, LayY, First_Id_Lay,
                                Current_Id_Lay, Argument_Xwings, AppImp, LayW, LayH, Data_Pool_Nr)
+    prefix = 'o' .. prefix
     CurrentMacroNr = math.floor(CurrentMacroNr + 1)
     FirstSeqWings = CurrentSeqNr
     LastSeqWings = math.floor(CurrentSeqNr + 4)
@@ -775,7 +780,7 @@ function Create_Wings_Sequence(CurrentMacroNr, FirstSeqWings, CurrentSeqNr, Last
         if MakeX then
             Cmd('Assign Sequence ' .. CurrentSeqNr .. ' at Layout ' .. TLayNr)
             Cmd('Set Layout ' .. TLayNr .. '.' .. LayNr ..
-                ' Property Appearance <default> PosX ' .. LayX .. ' PosY ' .. LayY ..
+                ' Property PosX ' .. LayX .. ' PosY ' .. LayY ..
                 ' PositionW ' .. LayW .. ' PositionH ' .. LayH ..
                 ' VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0 VisibilityBorder=0')
             LayX = math.floor(LayX + LayW + 20)
@@ -783,13 +788,14 @@ function Create_Wings_Sequence(CurrentMacroNr, FirstSeqWings, CurrentSeqNr, Last
         end
         CurrentSeqNr = math.floor(CurrentSeqNr + 1)
     end
-    do return 1, CurrentSeqNr, LayNr, LayX, Current_Id_Lay, First_Id_Lay, LastSeqWings, FirstSeqWings, CurrentMacroNr end
+    return CurrentSeqNr, LayNr, LayX, Current_Id_Lay, First_Id_Lay, LastSeqWings, FirstSeqWings, CurrentMacroNr
 end -- end Create_Wings_Sequence
 
 function Create_XYZ_Sequence(CurrentMacroNr, First_Id_Lay, prefix, surfix, Call_inc, CallT, MatrickNrStart, a,
                              CurrentSeqNr, TLayNr, Fade_Element, Delay_F_Element, Delay_T_Element, Phase_Element,
                              Group_Element, Block_Element, Wings_Element, MatrickNr, AppImp, MakeX, LayNr, LayX, LayY,
                              LayW, LayH, Data_Pool_Nr)
+    prefix = 'o' .. prefix
     CurrentMacroNr = math.floor(CurrentMacroNr + 1)
     First_Id_Lay[33 + a] = CurrentMacroNr
     Cmd('Store Macro ' .. CurrentMacroNr .. ' \'' .. prefix .. surfix[a] .. '_Call\'')
@@ -834,10 +840,10 @@ function Create_XYZ_Sequence(CurrentMacroNr, First_Id_Lay, prefix, surfix, Call_
     Command_Ext_Suite(CurrentSeqNr)
     Cmd('ClearAll /nu')
     Cmd('Store Sequence ' .. CurrentSeqNr + 1 .. ' \'' .. prefix .. surfix[a] .. '_Reset\'')
-    Cmd("Set Sequence " .. CurrentSeqNr + 1 .. " Cue 1 Property Appearance=" .. prefix .. "'skull_on'")
+    Cmd("Set Sequence " .. CurrentSeqNr + 1 .. " Cue 1 Property Appearance=" .. prefix:gsub('o','') .. "'skull_on'")
     Cmd('Set Sequence ' .. CurrentSeqNr + 1 .. ' Cue \'' .. prefix .. surfix[a] ..
         '_Reset\' Property Command=\'Go DataPool ' .. Data_Pool_Nr .. ' Macro ' .. CurrentMacroNr + 1 .. '')
-    Cmd("Set Sequence " .. CurrentSeqNr + 1 .. " Property Appearance=" .. prefix .. "'skull_off'")
+    Cmd("Set Sequence " .. CurrentSeqNr + 1 .. " Property Appearance=" .. prefix:gsub('o','') .. "'skull_off'")
     Command_Ext_Suite(CurrentSeqNr + 1)
     if MakeX == false then
         LayNr = math.floor(LayNr + 1)
@@ -847,38 +853,38 @@ function Create_XYZ_Sequence(CurrentMacroNr, First_Id_Lay, prefix, surfix, Call_
         First_Id_Lay[33] = LayY
         Cmd('Assign Sequence ' .. CurrentSeqNr .. ' at Layout ' .. TLayNr)
         Cmd('Set Layout ' .. TLayNr .. '.' .. LayNr ..
-            ' Property Appearance <default> PosX ' .. First_Id_Lay[32] .. ' PosY ' .. First_Id_Lay[33] + 170 ..
+            ' Property PosX ' .. First_Id_Lay[32] .. ' PosY ' .. First_Id_Lay[33] + 170 ..
             ' PositionW ' .. LayW - 35 .. ' PositionH ' .. LayH - 35 ..
             ' VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0 VisibilityBorder=0')
         Cmd('Assign Sequence ' .. CurrentSeqNr + 1 .. ' at Layout ' .. TLayNr)
         Cmd('Set Layout ' .. TLayNr .. '.' .. LayNr + 1 ..
-            ' Property Appearance <default> PosX ' .. First_Id_Lay[32] + 85 .. ' PosY ' .. First_Id_Lay[33] + 170 ..
+            ' Property PosX ' .. First_Id_Lay[32] + 85 .. ' PosY ' .. First_Id_Lay[33] + 170 ..
             ' PositionW ' .. LayW - 35 .. ' PositionH ' .. LayH - 35 ..
             ' VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0 VisibilityBorder=0')
     elseif a == 2 then
         Cmd('Assign Sequence ' .. CurrentSeqNr .. ' at Layout ' .. TLayNr)
         Cmd('Set Layout ' .. TLayNr .. '.' .. LayNr ..
-            ' Property Appearance <default> PosX ' .. First_Id_Lay[32] .. ' PosY ' .. First_Id_Lay[33] + 90 ..
+            ' Property PosX ' .. First_Id_Lay[32] .. ' PosY ' .. First_Id_Lay[33] + 90 ..
             ' PositionW ' .. LayW - 35 .. ' PositionH ' .. LayH - 35 ..
             ' VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0 VisibilityBorder=0')
         Cmd('Assign Sequence ' .. CurrentSeqNr + 1 .. ' at Layout ' .. TLayNr)
         Cmd('Set Layout ' .. TLayNr .. '.' .. LayNr + 1 ..
-            ' Property Appearance <default> PosX ' .. First_Id_Lay[32] + 85 .. ' PosY ' .. First_Id_Lay[33] + 90 ..
+            ' Property PosX ' .. First_Id_Lay[32] + 85 .. ' PosY ' .. First_Id_Lay[33] + 90 ..
             ' PositionW ' .. LayW - 35 .. ' PositionH ' .. LayH - 35 ..
             ' VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0 VisibilityBorder=0')
     elseif a == 3 then
         Cmd('Assign Sequence ' .. CurrentSeqNr .. ' at Layout ' .. TLayNr)
         Cmd('Set Layout ' .. TLayNr .. '.' .. LayNr ..
-            ' Property Appearance <default> PosX ' .. First_Id_Lay[32] .. ' PosY ' .. First_Id_Lay[33] + 10 ..
+            ' Property PosX ' .. First_Id_Lay[32] .. ' PosY ' .. First_Id_Lay[33] + 10 ..
             ' PositionW ' .. LayW - 35 .. ' PositionH ' .. LayH - 35 ..
             ' VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0 VisibilityBorder=0')
         Cmd('Assign Sequence ' .. CurrentSeqNr + 1 .. ' at Layout ' .. TLayNr)
         Cmd('Set Layout ' .. TLayNr .. '.' .. LayNr + 1 ..
-            ' Property Appearance <default> PosX ' .. First_Id_Lay[32] + 85 .. ' PosY ' .. First_Id_Lay[33] + 10 ..
+            ' Property PosX ' .. First_Id_Lay[32] + 85 .. ' PosY ' .. First_Id_Lay[33] + 10 ..
             ' PositionW ' .. LayW - 35 .. ' PositionH ' .. LayH - 35 ..
             ' VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0 VisibilityBorder=0')
     end
-    do return 1, First_Id_Lay, LayNr, CurrentMacroNr end
+    return First_Id_Lay, LayNr, CurrentMacroNr
 end -- end Create_XYZ_Sequence
 
 function Create_All_Color(TCol, CurrentSeqNr, prefix, TLayNr, LayNr, NrNeed, LayX, LayY, LayW, LayH, MaxColLgn,
@@ -900,13 +906,17 @@ function Create_All_Color(TCol, CurrentSeqNr, prefix, TLayNr, LayNr, NrNeed, Lay
         Cmd("ClearAll /nu")
         Cmd('Store Sequence ' .. CurrentSeqNr .. ' \'' .. prefix .. 'ALL' .. StringColName .. 'ALL\'')
         Cmd('Set Sequence ' .. CurrentSeqNr .. ' Cue 1 Property Appearance=' .. NrNeed + 1)
-        Cmd('Set Sequence ' .. CurrentSeqNr .. ' Cue \'' .. prefix .. 'ALL' .. StringColName .. '' ..
-            'ALL\' Property Command=\'Go+ DataPool ' .. Data_Pool_Nr .. ' Sequence \'' .. prefix .. StringColName .. '*')
+        -- Cmd('Set Sequence ' .. CurrentSeqNr .. ' Cue \'' .. prefix .. 'ALL' .. StringColName .. '' ..
+        --     'ALL\' Property Command=\'Go+ DataPool ' ..
+        --     Data_Pool_Nr .. ' Sequence \'' .. prefix .. StringColName .. '* ; Off Sequence \'' .. CurrentSeqNr)
+        Cmd('Set Sequence ' .. CurrentSeqNr .. ' Cue ' .. prefix .. 'ALL' .. StringColName .. '' ..
+            'ALL Property Command= \'Go+ DataPool ' ..
+            Data_Pool_Nr .. ' Sequence ' .. prefix .. StringColName .. '* ; Off Sequence \'' .. CurrentSeqNr)
         Cmd('Set Sequence ' .. CurrentSeqNr .. ' Property Appearance=' .. NrNeed + 1)
         Command_Ext_Suite(CurrentSeqNr)
         Cmd("Assign Sequence " .. CurrentSeqNr .. " at Layout " .. TLayNr)
         Cmd("Set Layout " .. TLayNr .. "." .. LayNr ..
-            " Property appearance <default> PosX " .. LayX .. " PosY " .. LayY ..
+            " Property PosX " .. LayX .. " PosY " .. LayY ..
             " PositionW " .. LayW .. " PositionH " .. LayH ..
             " VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0 VisibilityBorder=0")
 
@@ -926,7 +936,7 @@ function Create_All_Color(TCol, CurrentSeqNr, prefix, TLayNr, LayNr, NrNeed, Lay
     end
     LayX = math.floor(LayX + LayW + 20)
 
-    do return 1, LayNr, LayX, First_All_Color end
+    return LayNr, LayX, First_All_Color
 end -- end Create_All_Color
 
 function Command_Title(title, TLayNr, LayNr, LayX, LayY, Pw, Ph, align)
