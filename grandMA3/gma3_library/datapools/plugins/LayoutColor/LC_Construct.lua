@@ -496,7 +496,7 @@ function Construct_Layout(displayHandle, TLay, SeqNrStart, MacroNrStart, Matrick
         CurrentMacroNr .. "\"); else Cmd(\"Off macro " .. CurrentMacroNr .. "\"); end'" .. ' /nu'
     Cmd('Store Macro ' .. CurrentMacroNr .. ' \'' .. 'ERASE\'')
     Cmd('ChangeDestination Macro ' .. CurrentMacroNr .. '')
-    for i = 1, 10 do
+    for i = 1, 11 do
         Cmd('Insert')
     end
     Cmd('ChangeDestination Root')
@@ -517,8 +517,10 @@ function Construct_Layout(displayHandle, TLay, SeqNrStart, MacroNrStart, Matrick
     Macro_Pool[CurrentMacroNr][8]:Set('Command',
         'Delete DataPool ' .. Data_Pool_Nr .. ' Macro ' .. prefix .. '*' .. ' /nc')
     Macro_Pool[CurrentMacroNr][9]:Set('Command',
-        'Delete DataPool ' .. Data_Pool_Nr .. ' Sequence o' .. prefix .. '*' .. ' /nc')
+        'Delete DataPool ' .. Data_Pool_Nr .. ' Macro o' .. prefix .. '*' .. ' /nc')
     Macro_Pool[CurrentMacroNr][10]:Set('Command',
+        'Delete DataPool ' .. Data_Pool_Nr .. ' Sequence o' .. prefix .. '*' .. ' /nc')
+    Macro_Pool[CurrentMacroNr][11]:Set('Command',
         'Delete DataPool ' .. Data_Pool_Nr .. ' Macro ' .. CurrentMacroNr .. ' /nc')
     -- end Macro Del LC prefix
 
