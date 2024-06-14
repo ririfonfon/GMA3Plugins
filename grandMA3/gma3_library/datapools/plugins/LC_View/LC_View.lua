@@ -1,6 +1,6 @@
 --[[
 Releases:
-* 2.0.0.6
+* 2.0.0.10
 
 Created by Richard Fontaine "RIRI", March 2024.
 --]]
@@ -8,7 +8,7 @@ Created by Richard Fontaine "RIRI", March 2024.
 local function main()
 
     local Select = UserVars()
-    local axes, layout, element, matrick, seq_call, matrickthru, data_pool = 0,0,0,0,0,0,0
+    local axes, layout, element, matrick, seq_call, matrickthru, macrostore, data_pool, prefix = 0,0,0,0,0,0,0,0,0
     local sel = tonumber(GetVar(Select, "LC_Fonction"))
     if GetVar(Select, "LC_Axes") then
         axes = tonumber(GetVar(Select, "LC_Axes"))
@@ -31,6 +31,12 @@ local function main()
     if GetVar(Select, "LC_DataPool") then
         data_pool = GetVar(Select, "LC_DataPool")
     end
+    if GetVar(Select,"LC_Favourites") then
+        macrostore = GetVar(Select, "LC_Favourites")
+    end
+    if GetVar(Select,"LC_Prefix") then
+        prefix = GetVar(Select, "LC_Prefix")
+    end
 
     if (sel == 1) then
         Fade(axes,layout,element,matrick,data_pool)
@@ -50,6 +56,8 @@ local function main()
         Priority(layout,element,seq_call,data_pool)
     elseif (sel == 9) then
         PriorityNumber(layout,element,seq_call,data_pool)
+    elseif (sel == 10) then
+        Favourites(layout,macrostore,data_pool,prefix)
     end
 
     DelVar(Select, "LC_Fonction")
@@ -60,6 +68,8 @@ local function main()
     DelVar(Select, "LC_Matrick_Thru")
     DelVar(Select, "LC_Sequence")
     DelVar(Select, "LC_Datapool")
+    DelVar(Select, "LC_Favourites")
+    DelVar(Select, "LC_Prefix")
 end
 return main
 
