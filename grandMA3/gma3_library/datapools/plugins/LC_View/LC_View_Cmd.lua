@@ -1,6 +1,6 @@
 --[[
 Releases:
-* 2.0.0.6
+* 2.0.1.0
 
 Created by Richard Fontaine "RIRI", March 2024.
 --]]
@@ -45,7 +45,7 @@ function Fade(axes, layout, element, matrick_call, data_pool)
         end
     end
     Cmd('Set DataPool ' ..
-    data_pool .. ' Layout ' .. layout .. "." .. element .. ' Property "CustomTextText" ' .. text .. ' ')
+        data_pool .. ' Layout ' .. layout .. "." .. element .. ' Property "CustomTextText" ' .. text .. ' ')
 end
 
 function Delay_From(axes, layout, element, matrick_call, matrickthru, data_pool)
@@ -65,15 +65,15 @@ function Delay_From(axes, layout, element, matrick_call, matrickthru, data_pool)
     if (axes == 1) then
         fx = tonumber(MATricks[matrick]:Get('DelayFromX', Enums.Roles.Display)) or 'None'
         Cmd('Set DataPool ' ..
-        data_pool .. ' Matricks ' .. matrick + 1 .. ' Thru ' .. matrickthru .. ' Property "DelayFromx" ' .. fx)
+            data_pool .. ' Matricks ' .. matrick + 1 .. ' Thru ' .. matrickthru .. ' Property "DelayFromx" ' .. fx)
     elseif (axes == 2) then
         fx = tonumber(MATricks[matrick]:Get('DelayFromY', Enums.Roles.Display)) or 'None'
         Cmd('Set DataPool ' ..
-        data_pool .. ' Matricks ' .. matrick + 1 .. ' Thru ' .. matrickthru .. ' Property "DelayFromy" ' .. fx)
+            data_pool .. ' Matricks ' .. matrick + 1 .. ' Thru ' .. matrickthru .. ' Property "DelayFromy" ' .. fx)
     elseif (axes == 3) then
         fx = tonumber(MATricks[matrick]:Get('DelayFromZ', Enums.Roles.Display)) or 'None'
         Cmd('Set DataPool ' ..
-        data_pool .. ' Matricks ' .. matrick + 1 .. ' Thru ' .. matrickthru .. ' Property "DelayFromz" ' .. fx)
+            data_pool .. ' Matricks ' .. matrick + 1 .. ' Thru ' .. matrickthru .. ' Property "DelayFromz" ' .. fx)
     end
     local text
     if (fx ~= "None") then
@@ -82,7 +82,7 @@ function Delay_From(axes, layout, element, matrick_call, matrickthru, data_pool)
         text = string.format('"%s"', fx)
     end
     Cmd('Set DataPool ' ..
-    data_pool .. ' Layout ' .. layout .. "." .. element .. ' Property "CustomTextText" ' .. text .. ' ')
+        data_pool .. ' Layout ' .. layout .. "." .. element .. ' Property "CustomTextText" ' .. text .. ' ')
 end
 
 function Delay_To(axes, layout, element, matrick_call, matrickthru, data_pool)
@@ -101,15 +101,15 @@ function Delay_To(axes, layout, element, matrick_call, matrickthru, data_pool)
     if (axes == 1) then
         tx = tonumber(MATricks[matrick]:Get('DelayToX', Enums.Roles.Display)) or 'None'
         Cmd('Set DataPool ' ..
-        data_pool .. ' Matricks ' .. matrick + 1 .. ' Thru ' .. matrickthru .. ' Property "DelayTox" ' .. tx)
+            data_pool .. ' Matricks ' .. matrick + 1 .. ' Thru ' .. matrickthru .. ' Property "DelayTox" ' .. tx)
     elseif (axes == 2) then
         tx = tonumber(MATricks[matrick]:Get('DelayToY', Enums.Roles.Display)) or 'None'
         Cmd('Set DataPool ' ..
-        data_pool .. ' Matricks ' .. matrick + 1 .. ' Thru ' .. matrickthru .. ' Property "DelayToy" ' .. tx)
+            data_pool .. ' Matricks ' .. matrick + 1 .. ' Thru ' .. matrickthru .. ' Property "DelayToy" ' .. tx)
     elseif (axes == 3) then
         tx = tonumber(MATricks[matrick]:Get('DelayToZ', Enums.Roles.Display)) or 'None'
         Cmd('Set DataPool ' ..
-        data_pool .. ' Matricks ' .. matrick + 1 .. ' Thru ' .. matrickthru .. ' Property "DelayToz" ' .. tx)
+            data_pool .. ' Matricks ' .. matrick + 1 .. ' Thru ' .. matrickthru .. ' Property "DelayToz" ' .. tx)
     end
     local text
     if (tx ~= "None") then
@@ -118,7 +118,7 @@ function Delay_To(axes, layout, element, matrick_call, matrickthru, data_pool)
         text = string.format('"%s"', tx)
     end
     Cmd('Set DataPool ' ..
-    data_pool .. ' Layout ' .. layout .. "." .. element .. ' Property "CustomTextText" ' .. text .. ' ')
+        data_pool .. ' Layout ' .. layout .. "." .. element .. ' Property "CustomTextText" ' .. text .. ' ')
 end
 
 function Phase(axes, layout, element, matrick_call, matrickthru, data_pool)
@@ -138,23 +138,23 @@ function Phase(axes, layout, element, matrick_call, matrickthru, data_pool)
         fx = MATricks[matrick]:Get('PhaseFromX', Enums.Roles.Display)
         tx = MATricks[matrick]:Get('PhaseToX', Enums.Roles.Display)
         Cmd('Set DataPool ' ..
-        data_pool .. ' Matricks ' .. matrick + 1 .. ' Thru ' .. matrickthru .. ' Property "PhaseFromx" ' .. fx)
+            data_pool .. ' Matricks ' .. matrick + 1 .. ' Thru ' .. matrickthru .. ' Property "PhaseFromx" ' .. fx)
         Cmd('Set DataPool ' ..
-        data_pool .. ' Matricks ' .. matrick + 1 .. ' Thru ' .. matrickthru .. ' Property "PhaseTox" ' .. tx)
+            data_pool .. ' Matricks ' .. matrick + 1 .. ' Thru ' .. matrickthru .. ' Property "PhaseTox" ' .. tx)
     elseif (axes == 2) then
         fx = MATricks[matrick]:Get('PhaseFromY', Enums.Roles.Display)
         tx = MATricks[matrick]:Get('PhaseToY', Enums.Roles.Display)
         Cmd('Set DataPool ' ..
-        data_pool .. ' Matricks ' .. matrick + 1 .. ' Thru ' .. matrickthru .. ' Property "PhaseFromy" ' .. fx)
+            data_pool .. ' Matricks ' .. matrick + 1 .. ' Thru ' .. matrickthru .. ' Property "PhaseFromy" ' .. fx)
         Cmd('Set DataPool ' ..
-        data_pool .. ' Matricks ' .. matrick + 1 .. ' Thru ' .. matrickthru .. ' Property "PhaseToy" ' .. tx)
+            data_pool .. ' Matricks ' .. matrick + 1 .. ' Thru ' .. matrickthru .. ' Property "PhaseToy" ' .. tx)
     elseif (axes == 3) then
         fx = MATricks[matrick]:Get('PhaseFromZ', Enums.Roles.Display)
         tx = MATricks[matrick]:Get('PhaseToZ', Enums.Roles.Display)
         Cmd('Set DataPool ' ..
-        data_pool .. ' Matricks ' .. matrick + 1 .. ' Thru ' .. matrickthru .. ' Property "PhaseFromz" ' .. fx)
+            data_pool .. ' Matricks ' .. matrick + 1 .. ' Thru ' .. matrickthru .. ' Property "PhaseFromz" ' .. fx)
         Cmd('Set DataPool ' ..
-        data_pool .. ' Matricks ' .. matrick + 1 .. ' Thru ' .. matrickthru .. ' Property "PhaseToz" ' .. tx)
+            data_pool .. ' Matricks ' .. matrick + 1 .. ' Thru ' .. matrickthru .. ' Property "PhaseToz" ' .. tx)
     end
     local text
     if (fx ~= "None" and fx ~= "90°" and fx ~= "180°" and fx ~= "270°" and fx ~= "360°") then
@@ -171,7 +171,7 @@ function Phase(axes, layout, element, matrick_call, matrickthru, data_pool)
         end
     end
     Cmd('Set DataPool ' ..
-    data_pool .. ' Layout ' .. layout .. "." .. element .. ' Property "CustomTextText" ' .. text .. ' ')
+        data_pool .. ' Layout ' .. layout .. "." .. element .. ' Property "CustomTextText" ' .. text .. ' ')
 end
 
 function Group(axes, layout, element, matrick_call, matrickthru, data_pool)
@@ -190,15 +190,15 @@ function Group(axes, layout, element, matrick_call, matrickthru, data_pool)
     if (axes == 1) then
         fx = tonumber(MATricks[matrick]:Get('xGroup', Enums.Roles.Display)) or 'None'
         Cmd('Set DataPool ' ..
-        data_pool .. ' Matricks ' .. matrick + 1 .. ' Thru ' .. matrickthru .. ' Property "xGroup" ' .. fx)
+            data_pool .. ' Matricks ' .. matrick + 1 .. ' Thru ' .. matrickthru .. ' Property "xGroup" ' .. fx)
     elseif (axes == 2) then
         fx = tonumber(MATricks[matrick]:Get('yGroup', Enums.Roles.Display)) or 'None'
         Cmd('Set DataPool ' ..
-        data_pool .. ' Matricks ' .. matrick + 1 .. ' Thru ' .. matrickthru .. ' Property "yGroup" ' .. fx)
+            data_pool .. ' Matricks ' .. matrick + 1 .. ' Thru ' .. matrickthru .. ' Property "yGroup" ' .. fx)
     elseif (axes == 3) then
         fx = tonumber(MATricks[matrick]:Get('zGroup', Enums.Roles.Display)) or 'None'
         Cmd('Set DataPool ' ..
-        data_pool .. ' Matricks ' .. matrick + 1 .. ' Thru ' .. matrickthru .. ' Property "zGroup" ' .. fx)
+            data_pool .. ' Matricks ' .. matrick + 1 .. ' Thru ' .. matrickthru .. ' Property "zGroup" ' .. fx)
     end
     local text
     if (fx ~= "None") then
@@ -207,7 +207,7 @@ function Group(axes, layout, element, matrick_call, matrickthru, data_pool)
         text = string.format('"%s"', fx)
     end
     Cmd('Set DataPool ' ..
-    data_pool .. ' Layout ' .. layout .. "." .. element .. ' Property "CustomTextText" ' .. text .. ' ')
+        data_pool .. ' Layout ' .. layout .. "." .. element .. ' Property "CustomTextText" ' .. text .. ' ')
 end
 
 function Block(axes, layout, element, matrick_call, matrickthru, data_pool)
@@ -226,15 +226,15 @@ function Block(axes, layout, element, matrick_call, matrickthru, data_pool)
     if (axes == 1) then
         fx = tonumber(MATricks[matrick]:Get('xBlock', Enums.Roles.Display)) or 'None'
         Cmd('Set DataPool ' ..
-        data_pool .. ' Matricks ' .. matrick + 1 .. ' Thru ' .. matrickthru .. ' Property "xBlock" ' .. fx)
+            data_pool .. ' Matricks ' .. matrick + 1 .. ' Thru ' .. matrickthru .. ' Property "xBlock" ' .. fx)
     elseif (axes == 2) then
         fx = tonumber(MATricks[matrick]:Get('yBlock', Enums.Roles.Display)) or 'None'
         Cmd('Set DataPool ' ..
-        data_pool .. ' Matricks ' .. matrick + 1 .. ' Thru ' .. matrickthru .. ' Property "yBlock" ' .. fx)
+            data_pool .. ' Matricks ' .. matrick + 1 .. ' Thru ' .. matrickthru .. ' Property "yBlock" ' .. fx)
     elseif (axes == 3) then
         fx = tonumber(MATricks[matrick]:Get('zBlock', Enums.Roles.Display)) or 'None'
         Cmd('Set DataPool ' ..
-        data_pool .. ' Matricks ' .. matrick + 1 .. ' Thru ' .. matrickthru .. ' Property "zBlock" ' .. fx)
+            data_pool .. ' Matricks ' .. matrick + 1 .. ' Thru ' .. matrickthru .. ' Property "zBlock" ' .. fx)
     end
     local text
     if (fx ~= "None") then
@@ -243,7 +243,7 @@ function Block(axes, layout, element, matrick_call, matrickthru, data_pool)
         text = string.format('"%s"', fx)
     end
     Cmd('Set DataPool ' ..
-    data_pool .. ' Layout ' .. layout .. "." .. element .. ' Property "CustomTextText" ' .. text .. ' ')
+        data_pool .. ' Layout ' .. layout .. "." .. element .. ' Property "CustomTextText" ' .. text .. ' ')
 end
 
 function Wings(axes, layout, element, matrick_call, matrickthru, data_pool)
@@ -262,15 +262,15 @@ function Wings(axes, layout, element, matrick_call, matrickthru, data_pool)
     if (axes == 1) then
         fx = tonumber(MATricks[matrick]:Get('xWings', Enums.Roles.Display)) or 'None'
         Cmd('Set DataPool ' ..
-        data_pool .. ' Matricks ' .. matrick + 1 .. ' Thru ' .. matrickthru .. ' Property "xWings" ' .. fx)
+            data_pool .. ' Matricks ' .. matrick + 1 .. ' Thru ' .. matrickthru .. ' Property "xWings" ' .. fx)
     elseif (axes == 2) then
         fx = tonumber(MATricks[matrick]:Get('yWings', Enums.Roles.Display)) or 'None'
         Cmd('Set DataPool ' ..
-        data_pool .. ' Matricks ' .. matrick + 1 .. ' Thru ' .. matrickthru .. ' Property "yWings" ' .. fx)
+            data_pool .. ' Matricks ' .. matrick + 1 .. ' Thru ' .. matrickthru .. ' Property "yWings" ' .. fx)
     elseif (axes == 3) then
         fx = tonumber(MATricks[matrick]:Get('zWings', Enums.Roles.Display)) or 'None'
         Cmd('Set DataPool ' ..
-        data_pool .. ' Matricks ' .. matrick + 1 .. ' Thru ' .. matrickthru .. ' Property "zWings" ' .. fx)
+            data_pool .. ' Matricks ' .. matrick + 1 .. ' Thru ' .. matrickthru .. ' Property "zWings" ' .. fx)
     end
     local text
     if (fx ~= "None") then
@@ -279,7 +279,7 @@ function Wings(axes, layout, element, matrick_call, matrickthru, data_pool)
         text = string.format('"%s"', fx)
     end
     Cmd('Set DataPool ' ..
-    data_pool .. ' Layout ' .. layout .. "." .. element .. ' Property "CustomTextText" ' .. text .. ' ')
+        data_pool .. ' Layout ' .. layout .. "." .. element .. ' Property "CustomTextText" ' .. text .. ' ')
 end
 
 function Priority(layout, element, seq_call, data_pool)
@@ -298,28 +298,28 @@ function Priority(layout, element, seq_call, data_pool)
     prio = SEQ_Root[seq]:Get('Priority', Enums.Roles.Display) or 'None'
     if prio == "Super" then
         Cmd('Set DataPool ' ..
-        data_pool .. ' Layout ' .. layout .. "." .. element .. ' Property "Appearance" "p_super_png" ')
+            data_pool .. ' Layout ' .. layout .. "." .. element .. ' Property "Appearance" "p_super_png" ')
     elseif prio == "Swap" then
         Cmd('Set DataPool ' ..
-        data_pool .. ' Layout ' .. layout .. "." .. element .. ' Property "Appearance" "p_swap_png" ')
+            data_pool .. ' Layout ' .. layout .. "." .. element .. ' Property "Appearance" "p_swap_png" ')
     elseif prio == "HTP" then
         Cmd('Set DataPool ' ..
-        data_pool .. ' Layout ' .. layout .. "." .. element .. ' Property "Appearance" "p_htp_png" ')
+            data_pool .. ' Layout ' .. layout .. "." .. element .. ' Property "Appearance" "p_htp_png" ')
     elseif prio == "Highest" then
         Cmd('Set DataPool ' ..
-        data_pool .. ' Layout ' .. layout .. "." .. element .. ' Property "Appearance" "p_highest_png" ')
+            data_pool .. ' Layout ' .. layout .. "." .. element .. ' Property "Appearance" "p_highest_png" ')
     elseif prio == "High" then
         Cmd('Set DataPool ' ..
-        data_pool .. ' Layout ' .. layout .. "." .. element .. ' Property "Appearance" "p_high_png" ')
+            data_pool .. ' Layout ' .. layout .. "." .. element .. ' Property "Appearance" "p_high_png" ')
     elseif prio == "LTP" then
         Cmd('Set DataPool ' ..
-        data_pool .. ' Layout ' .. layout .. "." .. element .. ' Property "Appearance" "p_ltp_png" ')
+            data_pool .. ' Layout ' .. layout .. "." .. element .. ' Property "Appearance" "p_ltp_png" ')
     elseif prio == "Low" then
         Cmd('Set DataPool ' ..
-        data_pool .. ' Layout ' .. layout .. "." .. element .. ' Property "Appearance" "p_low_png" ')
+            data_pool .. ' Layout ' .. layout .. "." .. element .. ' Property "Appearance" "p_low_png" ')
     elseif prio == "Lowest" then
         Cmd('Set DataPool ' ..
-        data_pool .. ' Layout ' .. layout .. "." .. element .. ' Property "Appearance" "p_lowest_png" ')
+            data_pool .. ' Layout ' .. layout .. "." .. element .. ' Property "Appearance" "p_lowest_png" ')
     end
 end
 
@@ -339,28 +339,62 @@ function PriorityNumber(layout, element, seq_call, data_pool)
     prio = SEQ_Root[seq]:Get('Priority', Enums.Roles.Display) or 'None'
     if prio == "Super" then
         Cmd('Set DataPool ' ..
-        data_pool .. ' Layout ' .. layout .. "." .. element .. ' Property "Appearance" "p_super_png" ')
+            data_pool .. ' Layout ' .. layout .. "." .. element .. ' Property "Appearance" "p_super_png" ')
     elseif prio == "Swap" then
         Cmd('Set DataPool ' ..
-        data_pool .. ' Layout ' .. layout .. "." .. element .. ' Property "Appearance" "p_swap_png" ')
+            data_pool .. ' Layout ' .. layout .. "." .. element .. ' Property "Appearance" "p_swap_png" ')
     elseif prio == "HTP" then
         Cmd('Set DataPool ' ..
-        data_pool .. ' Layout ' .. layout .. "." .. element .. ' Property "Appearance" "p_htp_png" ')
+            data_pool .. ' Layout ' .. layout .. "." .. element .. ' Property "Appearance" "p_htp_png" ')
     elseif prio == "Highest" then
         Cmd('Set DataPool ' ..
-        data_pool .. ' Layout ' .. layout .. "." .. element .. ' Property "Appearance" "p_highest_png" ')
+            data_pool .. ' Layout ' .. layout .. "." .. element .. ' Property "Appearance" "p_highest_png" ')
     elseif prio == "High" then
         Cmd('Set DataPool ' ..
-        data_pool .. ' Layout ' .. layout .. "." .. element .. ' Property "Appearance" "p_high_png" ')
+            data_pool .. ' Layout ' .. layout .. "." .. element .. ' Property "Appearance" "p_high_png" ')
     elseif prio == "LTP" then
         Cmd('Set DataPool ' ..
-        data_pool .. ' Layout ' .. layout .. "." .. element .. ' Property "Appearance" "p_ltp_png" ')
+            data_pool .. ' Layout ' .. layout .. "." .. element .. ' Property "Appearance" "p_ltp_png" ')
     elseif prio == "Low" then
         Cmd('Set DataPool ' ..
-        data_pool .. ' Layout ' .. layout .. "." .. element .. ' Property "Appearance" "p_low_png" ')
+            data_pool .. ' Layout ' .. layout .. "." .. element .. ' Property "Appearance" "p_low_png" ')
     elseif prio == "Lowest" then
         Cmd('Set DataPool ' ..
-        data_pool .. ' Layout ' .. layout .. "." .. element .. ' Property "Appearance" "p_lowest_png" ')
+            data_pool .. ' Layout ' .. layout .. "." .. element .. ' Property "Appearance" "p_lowest_png" ')
+    end
+end
+
+function Favourites(layout, macrostore, data_pool, prefix)
+    local sequences = ObjectList('DataPool ' .. data_pool ..
+        ' Sequence ' .. string.char(34) .. '' .. prefix .. '*' .. string.char(34) .. '')
+    local macropool = ShowData().DataPools[data_pool].Macros
+    local layoutspool = ShowData().DataPools[data_pool].Layouts
+    local activeseq = {}
+    Printf(macrostore)
+    local macronum = macrostore
+    macronum = macronum:gsub(' Macro', '')
+    local mess = 'DataPool ' .. data_pool
+    macronum = macronum:gsub(mess, '')
+    macronum = tonumber(macronum)
+    Printf(macronum)
+    for i = 1, #sequences do
+        if sequences[i]:HasActivePlayback() then
+            table.insert(activeseq, i)
+        end
+    end
+    if #macropool[macronum] == 0 then
+        layoutspool[layout]['Macro ' .. macronum]:Set('visibilityobjectname', true)
+    end
+    Cmd('label DataPool ' ..
+    data_pool .. ' macro ' .. macronum .. ' ' .. string.char(34) .. prefix .. ' Favourite' .. string.char(34) .. ' /o')
+    if #macropool[macronum] > 0 then
+        Cmd('delete DataPool ' .. data_pool .. ' macro ' .. macronum .. '.1 thru')
+    end
+    Cmd('store DataPool ' .. data_pool .. ' macro ' .. macronum .. '.1 thru' .. #activeseq .. ' /o')
+    for i = 1, #activeseq do
+        local seqnumber = activeseq[i]
+        macropool[macronum][i]:Set('command', 'go DataPool ' .. data_pool ..
+            ' Sequence ' .. string.char(34) .. '' .. sequences[seqnumber].name .. '' .. string.char(34) .. '')
     end
 end
 
