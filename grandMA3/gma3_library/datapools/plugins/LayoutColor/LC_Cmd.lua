@@ -1,6 +1,6 @@
 --[[
     Releases:
-    * 2.0.0.9
+    * 2.0.1.1
 
     Created by Richard Fontaine "RIRI", June 2024.
     --]]
@@ -901,15 +901,15 @@ function Create_All_Color(TCol, CurrentSeqNr, prefix, TLayNr, LayNr, NrNeed, Lay
         local StringColName = string.gsub(StColName, " ", "_")
 
         if col == 1 then
-            First_All_Color = '' .. prefix .. 'ALL' .. StringColName .. 'ALL\''
+            First_All_Color = 'o' .. prefix .. 'ALL' .. StringColName .. 'ALL\''
         end
         Cmd("ClearAll /nu")
-        Cmd('Store Sequence ' .. CurrentSeqNr .. ' \'' .. prefix .. 'ALL' .. StringColName .. 'ALL\'')
+        Cmd('Store Sequence ' .. CurrentSeqNr .. ' \'o' .. prefix .. 'ALL' .. StringColName .. 'ALL\'')
         Cmd('Set Sequence ' .. CurrentSeqNr .. ' Cue 1 Property Appearance=' .. NrNeed + 1)
         -- Cmd('Set Sequence ' .. CurrentSeqNr .. ' Cue \'' .. prefix .. 'ALL' .. StringColName .. '' ..
         --     'ALL\' Property Command=\'Go+ DataPool ' ..
         --     Data_Pool_Nr .. ' Sequence \'' .. prefix .. StringColName .. '* ; Off Sequence \'' .. CurrentSeqNr)
-        Cmd('Set Sequence ' .. CurrentSeqNr .. ' Cue ' .. prefix .. 'ALL' .. StringColName .. '' ..
+        Cmd('Set Sequence ' .. CurrentSeqNr .. ' Cue o' .. prefix .. 'ALL' .. StringColName .. '' ..
             'ALL Property Command= \'Go+ DataPool ' ..
             Data_Pool_Nr .. ' Sequence ' .. prefix .. StringColName .. '* ; Off Sequence \'' .. CurrentSeqNr)
         Cmd('Set Sequence ' .. CurrentSeqNr .. ' Property Appearance=' .. NrNeed + 1)
