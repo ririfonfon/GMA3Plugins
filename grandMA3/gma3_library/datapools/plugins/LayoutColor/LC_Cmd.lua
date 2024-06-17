@@ -1,6 +1,6 @@
 --[[
     Releases:
-    * 2.0.1.1
+    * 2.0.1.2
 
     Created by Richard Fontaine "RIRI", June 2024.
     --]]
@@ -840,10 +840,10 @@ function Create_XYZ_Sequence(CurrentMacroNr, First_Id_Lay, prefix, surfix, Call_
     Command_Ext_Suite(CurrentSeqNr)
     Cmd('ClearAll /nu')
     Cmd('Store Sequence ' .. CurrentSeqNr + 1 .. ' \'' .. prefix .. surfix[a] .. '_Reset\'')
-    Cmd("Set Sequence " .. CurrentSeqNr + 1 .. " Cue 1 Property Appearance=" .. prefix:gsub('o','') .. "'skull_on'")
+    Cmd("Set Sequence " .. CurrentSeqNr + 1 .. " Cue 1 Property Appearance=" .. prefix:gsub('o', '') .. "'skull_on'")
     Cmd('Set Sequence ' .. CurrentSeqNr + 1 .. ' Cue \'' .. prefix .. surfix[a] ..
         '_Reset\' Property Command=\'Go DataPool ' .. Data_Pool_Nr .. ' Macro ' .. CurrentMacroNr + 1 .. '')
-    Cmd("Set Sequence " .. CurrentSeqNr + 1 .. " Property Appearance=" .. prefix:gsub('o','') .. "'skull_off'")
+    Cmd("Set Sequence " .. CurrentSeqNr + 1 .. " Property Appearance=" .. prefix:gsub('o', '') .. "'skull_off'")
     Command_Ext_Suite(CurrentSeqNr + 1)
     if MakeX == false then
         LayNr = math.floor(LayNr + 1)
@@ -901,17 +901,15 @@ function Create_All_Color(TCol, CurrentSeqNr, prefix, TLayNr, LayNr, NrNeed, Lay
         local StringColName = string.gsub(StColName, " ", "_")
 
         if col == 1 then
-            First_All_Color = 'o' .. prefix .. 'ALL' .. StringColName .. 'ALL\''
+            First_All_Color = prefix .. 'ALL' .. StringColName .. 'ALL\''
         end
         Cmd("ClearAll /nu")
-        Cmd('Store Sequence ' .. CurrentSeqNr .. ' \'o' .. prefix .. 'ALL' .. StringColName .. 'ALL\'')
+        Cmd('Store Sequence ' .. CurrentSeqNr .. ' \'' .. prefix .. 'ALL' .. StringColName .. 'ALL\'')
         Cmd('Set Sequence ' .. CurrentSeqNr .. ' Cue 1 Property Appearance=' .. NrNeed + 1)
-        -- Cmd('Set Sequence ' .. CurrentSeqNr .. ' Cue \'' .. prefix .. 'ALL' .. StringColName .. '' ..
-        --     'ALL\' Property Command=\'Go+ DataPool ' ..
-        --     Data_Pool_Nr .. ' Sequence \'' .. prefix .. StringColName .. '* ; Off Sequence \'' .. CurrentSeqNr)
-        Cmd('Set Sequence ' .. CurrentSeqNr .. ' Cue o' .. prefix .. 'ALL' .. StringColName .. '' ..
-            'ALL Property Command= \'Go+ DataPool ' ..
-            Data_Pool_Nr .. ' Sequence ' .. prefix .. StringColName .. '* ; Off Sequence \'' .. CurrentSeqNr)
+        Cmd('Set Sequence ' .. CurrentSeqNr .. ' Cue ' .. prefix .. 'ALL' .. StringColName ..
+            'ALL Property Command= \'Go+ DataPool ' .. Data_Pool_Nr .. ' Sequence ' ..
+            prefix .. StringColName .. '* ; Off DataPool ' .. Data_Pool_Nr .. ' Sequence ' ..
+            CurrentSeqNr .. '\'')
         Cmd('Set Sequence ' .. CurrentSeqNr .. ' Property Appearance=' .. NrNeed + 1)
         Command_Ext_Suite(CurrentSeqNr)
         Cmd("Assign Sequence " .. CurrentSeqNr .. " at Layout " .. TLayNr)
