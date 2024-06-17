@@ -7,7 +7,7 @@ Created by Richard Fontaine "RIRI", June 2024.
 
 function Construct_Layout(displayHandle, TLay, SeqNrStart, MacroNrStart, MatrickNrStart, MatrickNr, TLayNr, AppNr,
                           All_5_Current, All_5_NrStart, ColPath, SelectedGelNr, SelectedGrp, SelectedGrpNo, TLayNrRef,
-                          NaLay, MaxColLgn)
+                          NaLay, MaxColLgn, Favourite_Nr)
     local Macro_Pool = DataPool().Macros
     local Data_Pool_Nr = DataPool().No
     local All_5_NrEnd
@@ -481,9 +481,9 @@ function Construct_Layout(displayHandle, TLay, SeqNrStart, MacroNrStart, Matrick
     local Macro_Num_Start
     local Macro_Num_End
     LayNr = math.floor(LayNr + 1)
-    CurrentMacroNr, Macro_Num_End = Create_Favourite_Macro(prefix, CurrentMacroNr, TLayNr, Data_Pool_Nr)
+    CurrentMacroNr, Macro_Num_End = Create_Favourite_Macro(prefix, CurrentMacroNr, TLayNr, Data_Pool_Nr, Favourite_Nr)
     Macro_Num_Start = CurrentMacroNr + 1
-    Create_Favourite_Layout(LayNr, CurrentMacroNr, LayH, LayW, TLayNr, Data_Pool_Nr, Ligne_Inc)
+    Create_Favourite_Layout(LayNr, CurrentMacroNr, LayH, LayW, TLayNr, Data_Pool_Nr, Ligne_Inc, Favourite_Nr)
 
 
     -- end Favourites
