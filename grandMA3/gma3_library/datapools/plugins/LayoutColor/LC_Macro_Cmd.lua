@@ -1,6 +1,6 @@
 --[[
     Releases:
-    * 2.0.1.1
+    * 2.0.1.3
 
     Created by Richard Fontaine "RIRI", June 2024.
     --]]
@@ -174,7 +174,7 @@ end -- end function Create_Macro_Reset(...)
 
 function Create_Macro_Delay_From(CurrentMacroNr, prefix, surfix, a, FirstSeq, LastSeq, MatrickNrStart, fonct, TLayNr,
                                  LayNr, MatrickNr, Data_Pool_Nr)
-    Cmd('Store Macro ' .. CurrentMacroNr .. ' \'' .. prefix .. 'DelayFrom Input\'' .. surfix[a] .. '"')
+    Cmd('Store Macro ' .. CurrentMacroNr .. ' \'' .. prefix .. 'DelayFrom Input' .. surfix[a] .. '"')
     Cmd('ChangeDestination Macro ' .. CurrentMacroNr .. '')
     Cmd('Insert')
     Cmd('set 1 Command=\'Off DataPool ' ..
@@ -203,7 +203,7 @@ end
 
 function Create_Macro_Delay_To(CurrentMacroNr, prefix, surfix, a, FirstSeq, LastSeq, MatrickNrStart, fonct, TLayNr, LayNr,
                                MatrickNr, Data_Pool_Nr)
-    Cmd('Store Macro ' .. CurrentMacroNr .. ' \'' .. prefix .. 'DelayTo Input\'' .. surfix[a] .. '"')
+    Cmd('Store Macro ' .. CurrentMacroNr .. ' \'' .. prefix .. 'DelayTo Input' .. surfix[a] .. '"')
     Cmd('ChangeDestination Macro ' .. CurrentMacroNr .. '')
     Cmd('Insert')
     Cmd('set 1 Command=\'Off DataPool ' ..
@@ -232,7 +232,7 @@ end
 
 function Create_Macro_Phase(CurrentMacroNr, prefix, surfix, a, MatrickNrStart, fonct, TLayNr, LayNr, MatrickNr,
                             Data_Pool_Nr)
-    Cmd('Store Macro ' .. CurrentMacroNr .. ' \'' .. prefix .. 'Phase Input\'' .. surfix[a] .. "'")
+    Cmd('Store Macro ' .. CurrentMacroNr .. ' \'' .. prefix .. 'Phase Input' .. surfix[a] .. "'")
     Cmd('ChangeDestination Macro ' .. CurrentMacroNr .. '')
     Cmd('Insert')
     Cmd('set 1 Command=\'Edit DataPool ' ..
@@ -261,7 +261,7 @@ end
 
 function Create_Macro_Group(CurrentMacroNr, prefix, surfix, a, FirstSeq, LastSeq, MatrickNrStart, fonct, TLayNr, LayNr,
                             MatrickNr, Data_Pool_Nr)
-    Cmd('Store Macro ' .. CurrentMacroNr .. ' \'' .. prefix .. 'Group Input\'' .. surfix[a] .. '"')
+    Cmd('Store Macro ' .. CurrentMacroNr .. ' \'' .. prefix .. 'Group Input' .. surfix[a] .. '"')
     Cmd('ChangeDestination Macro ' .. CurrentMacroNr .. '')
     Cmd('Insert')
     Cmd('set 1 Command=\'Off DataPool ' ..
@@ -290,7 +290,7 @@ end
 
 function Create_Macro_Block(CurrentMacroNr, prefix, surfix, a, FirstSeq, LastSeq, MatrickNrStart, fonct, TLayNr, LayNr,
                             MatrickNr, Data_Pool_Nr)
-    Cmd('Store Macro ' .. CurrentMacroNr .. ' \'' .. prefix .. 'Block Input\'' .. surfix[a] .. '"')
+    Cmd('Store Macro ' .. CurrentMacroNr .. ' \'' .. prefix .. 'Block Input' .. surfix[a] .. '"')
     Cmd('ChangeDestination Macro ' .. CurrentMacroNr .. '')
     Cmd('Insert')
     Cmd('set 1 Command=\'Off DataPool ' ..
