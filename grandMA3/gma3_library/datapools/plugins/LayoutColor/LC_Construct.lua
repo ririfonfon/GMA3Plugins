@@ -311,9 +311,9 @@ function Construct_Layout(displayHandle, TLay, SeqNrStart, MacroNrStart, Matrick
 
     -- Appearances/Sequences
     LayY, NrNeed, LayNr, CurrentSeqNr, CurrentMacroNr, ColLgnCount, Ligne_Inc = Create_Appearances_Sequences(
-        CurrentMacroNr,
-        SelectedGelNr, SelectedGrp, RefX, LayY, LayH, NrAppear, AppNr, NrNeed, TLayNr, LayW, LayNr, CurrentSeqNr,
-        MaxColLgn, TCol, SelectedGrpNo, prefix, All_5_NrStart, MatrickNrStart, SelectedGrpName, AppTricks, Data_Pool_Nr)
+        CurrentMacroNr, SelectedGelNr, SelectedGrp, RefX, LayY, LayH, NrAppear, AppNr, NrNeed, TLayNr, LayW, LayNr,
+        CurrentSeqNr, MaxColLgn, TCol, SelectedGrpNo, prefix, All_5_NrStart, MatrickNrStart, SelectedGrpName, AppTricks,
+        Data_Pool_Nr)
     -- end Appearances/Sequences
 
     -- Create Appearances/Function
@@ -484,8 +484,6 @@ function Construct_Layout(displayHandle, TLay, SeqNrStart, MacroNrStart, Matrick
     CurrentMacroNr, Macro_Num_End = Create_Favourite_Macro(prefix, CurrentMacroNr, TLayNr, Data_Pool_Nr, Favourite_Nr)
     Macro_Num_Start = CurrentMacroNr + 1
     Create_Favourite_Layout(LayNr, CurrentMacroNr, LayH, LayW, TLayNr, Data_Pool_Nr, Ligne_Inc, Favourite_Nr)
-
-
     -- end Favourites
 
     -- Macro Del LC prefix

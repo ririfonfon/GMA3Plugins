@@ -31,7 +31,7 @@ function PC_Create_Appearances(SelectedGrp, AppNr, prefix, TCol, NrAppear, StCol
             NrAppear = math.floor(NrAppear + 1)
         end
     end
-    do return 1, NrAppear, AppRef end
+    return NrAppear, AppRef
 end
 
 function PC_Create_Preset_25(TCol, StColName, StringColName, SelectedGelNr, prefix, All_5_NrEnd, All_5_Current)
@@ -47,7 +47,7 @@ function PC_Create_Preset_25(TCol, StColName, StringColName, SelectedGelNr, pref
         All_5_NrEnd = All_5_Current
         All_5_Current = math.floor(All_5_Current + 1)
     end
-    do return 1, All_5_NrEnd, All_5_Current end
+    return All_5_NrEnd, All_5_Current
 end
 
 function PC_Create_Matricks(MatrickNr, Argument_Matricks, surfix, prefix, Data_Pool_Nr)
@@ -85,7 +85,7 @@ function PC_Create_Preset_Ref_1234(All_5_Current, SelectedGelNr)
         All_5_Current = math.floor(All_5_Current + 1)
     end
     local Preset_Ref = All_5_Current - 4
-    do return 1, All_5_Current, Preset_Ref end
+    return All_5_Current, Preset_Ref
 end
 
 function PC_Create_Phaser(All_5_Current, Preset_Ref, prefix, Argument_Ref, Phaser_Off)
@@ -143,7 +143,7 @@ function PC_Create_Phaser(All_5_Current, Preset_Ref, prefix, Argument_Ref, Phase
             All_5_Current = math.floor(All_5_Current + 1)
         end
     end
-    do return 1, Phaser_Off, All_5_Current end
+    return Phaser_Off, All_5_Current
 end
 
 function Copy_Phaser_Ref(Phaser_Off, All_5_Current, Phaser_Ref, Preset_25_Ref)
@@ -155,7 +155,7 @@ function Copy_Phaser_Ref(Phaser_Off, All_5_Current, Phaser_Ref, Preset_25_Ref)
         Cmd('Copy Preset 25.' .. cop .. ' At Preset 25.' .. All_5_Current .. '')
         All_5_Current = math.floor(All_5_Current + 1)
     end
-    do return 1, Phaser_Ref, All_5_Current, Preset_25_Ref end
+    return Phaser_Ref, All_5_Current, Preset_25_Ref
 end
 
 function PC_Create_Active_Appearances(AppImp, NrAppear, prefix)
@@ -165,7 +165,7 @@ function PC_Create_Active_Appearances(AppImp, NrAppear, prefix)
             ' "Appearance"=' .. AppImp[q].StApp .. '' .. AppImp[q].RGBref .. '')
         NrAppear = math.floor(NrAppear + 1)
     end
-    do return 1, NrAppear end
+    return NrAppear
 end
 
 function PC_Create_Group_Appearances(AppImp, NrAppear, prefix, SelectedGrp, SelectedGrpName, color_ref)
@@ -182,7 +182,7 @@ function PC_Create_Group_Appearances(AppImp, NrAppear, prefix, SelectedGrp, Sele
             a = 1
         end
     end
-    do return 1, NrAppear end
+    return NrAppear
 end
 
 function PC_Create_Group_Sequence(SelectedGrp, SelectedGrpName, Phaser_Off, CurrentSeqNr, SelectedGrpNo, prefix,
@@ -202,7 +202,7 @@ function PC_Create_Group_Sequence(SelectedGrp, SelectedGrpName, Phaser_Off, Curr
         CurrentSeqNr = math.floor(CurrentSeqNr + 1)
     end
     Sequence_Ref_End = math.floor(CurrentSeqNr - 1)
-    do return 1, CurrentSeqNr, Sequence_Ref, Sequence_Ref_End end
+    return CurrentSeqNr, Sequence_Ref, Sequence_Ref_End
 end
 
 function PC_Create_Layout_Phaser(TLayNr, NaLay, SelectedGelNr, CurrentSeqNr, Preset_Ref, MaxColLgn, RefX, LayY,
@@ -222,6 +222,8 @@ function PC_Create_Layout_Phaser(TLayNr, NaLay, SelectedGelNr, CurrentSeqNr, Pre
     local LayNr = 1
     local NrNeed
     local Grp1234 = { "COLOR_1", "COLOR_2", "COLOR_3", "COLOR_4" }
+    local ColLgnCount = 0
+    local Ligne_Inc = false
 
 
 
@@ -292,35 +294,40 @@ function PC_Create_Layout_Phaser(TLayNr, NaLay, SelectedGelNr, CurrentSeqNr, Pre
             if (g == 1) then
                 Echo("G 1")
                 Cmd("Set seq " .. CurrentSeqNr ..
-                    " cue \"CueZero\" Property Command=\"Set DataPool " .. Data_Pool_Nr .. " Layout " .. TLayNr .. "." .. LayNr ..
+                    " cue \"CueZero\" Property Command=\"Set DataPool " ..
+                    Data_Pool_Nr .. " Layout " .. TLayNr .. "." .. LayNr ..
                     " Property Appearance " .. NrNeed .. " VisibilityBorder=0 ; Go+ DataPool " .. Data_Pool_Nr ..
                     " Macro " .. CurrentMacroNr .. "; Off DataPool " .. Data_Pool_Nr .. "  Sequence " .. Start_Seq_1 ..
                     " Thru " .. End_Seq_1 .. " - " .. CurrentSeqNr .. "\"")
             elseif (g == 2) then
                 Echo("G 2")
                 Cmd("Set seq " .. CurrentSeqNr ..
-                    " cue \"CueZero\" Property Command=\"Set DataPool " .. Data_Pool_Nr .. " Layout " .. TLayNr .. "." .. LayNr ..
+                    " cue \"CueZero\" Property Command=\"Set DataPool " ..
+                    Data_Pool_Nr .. " Layout " .. TLayNr .. "." .. LayNr ..
                     " Property Appearance " .. NrNeed .. " VisibilityBorder=0 ; Go+ DataPool " .. Data_Pool_Nr ..
                     " Macro " .. CurrentMacroNr .. "; Off DataPool " .. Data_Pool_Nr .. "  Sequence " .. Start_Seq_2 ..
                     " Thru " .. End_Seq_2 .. " - " .. CurrentSeqNr .. "\"")
             elseif (g == 3) then
                 Echo("G 3")
                 Cmd("Set seq " .. CurrentSeqNr ..
-                    " cue \"CueZero\" Property Command=\"Set DataPool " .. Data_Pool_Nr .. " Layout " .. TLayNr .. "." .. LayNr ..
+                    " cue \"CueZero\" Property Command=\"Set DataPool " ..
+                    Data_Pool_Nr .. " Layout " .. TLayNr .. "." .. LayNr ..
                     " Property Appearance " .. NrNeed .. " VisibilityBorder=0 ; Go+ DataPool " .. Data_Pool_Nr ..
                     " Macro " .. CurrentMacroNr .. "; Off DataPool " .. Data_Pool_Nr .. "  Sequence " .. Start_Seq_3 ..
                     " Thru " .. End_Seq_3 .. " - " .. CurrentSeqNr .. "\"")
             elseif (g == 4) then
                 Echo("G 4")
                 Cmd("Set seq " .. CurrentSeqNr ..
-                    " cue \"CueZero\" Property Command=\"Set DataPool " .. Data_Pool_Nr .. " Layout " .. TLayNr .. "." .. LayNr ..
+                    " cue \"CueZero\" Property Command=\"Set DataPool " ..
+                    Data_Pool_Nr .. " Layout " .. TLayNr .. "." .. LayNr ..
                     " Property Appearance " .. NrNeed .. " VisibilityBorder=0 ; Go+ DataPool " .. Data_Pool_Nr ..
                     " Macro " .. CurrentMacroNr .. "; Off DataPool " .. Data_Pool_Nr .. "  Sequence " .. Start_Seq_4 ..
                     " Thru " .. End_Seq_4 .. " - " .. CurrentSeqNr .. "\"")
             end
 
             Echo("Set seq")
-            Cmd("Set seq " .. CurrentSeqNr .. " cue \"OffCue\" Property Command=\"Set DataPool " .. Data_Pool_Nr .. " Layout " ..
+            Cmd("Set seq " ..
+                CurrentSeqNr .. " cue \"OffCue\" Property Command=\"Set DataPool " .. Data_Pool_Nr .. " Layout " ..
                 TLayNr .. "." .. LayNr .. " Property Appearance " .. NrNeed + 1 ..
                 " VisibilityBorder=0 \"")
 
@@ -345,6 +352,8 @@ function PC_Create_Layout_Phaser(TLayNr, NaLay, SelectedGelNr, CurrentSeqNr, Pre
                 LayY = math.floor(LayY - 20) -- Add offset for Layout Element distance
                 LayY = math.floor(LayY - LayH)
                 col_count = 0
+                if (g == 1) then ColLgnCount = math.floor(ColLgnCount + 1) end
+                Ligne_Inc = true
             end
             LayNr = math.floor(LayNr + 1)
 
@@ -358,7 +367,7 @@ function PC_Create_Layout_Phaser(TLayNr, NaLay, SelectedGelNr, CurrentSeqNr, Pre
     end
     -- end Group 1234
 
-    do return 1, CurrentMacroNr, CurrentSeqNr, LayNr, LayY end
+    return CurrentMacroNr, CurrentSeqNr, LayNr, LayY, ColLgnCount, Ligne_Inc
 end
 
 function PC_Create_Layout_FixGroup(CurrentMacroNr, CurrentSeqNr, LayNr, LayY, RefX, LayH, LayW, TLayNr, NaLay,
@@ -548,7 +557,7 @@ function PC_Create_Layout_FixGroup(CurrentMacroNr, CurrentSeqNr, LayNr, LayY, Re
     CurrentSeqNr = math.floor(CurrentSeqNr + 1)
     CurrentMacroNr = math.floor(CurrentMacroNr + 1)
 
-    do return 1, CurrentSeqNr, CurrentMacroNr, All_Call_Ref, All_Call_Y, LayNr end
+    return CurrentSeqNr, CurrentMacroNr, All_Call_Ref, All_Call_Y, LayNr
 end
 
 function PC_Create_All_Call_Layout(CurrentMacroNr, LayNr, LayY, RefX, LayH, LayW, TLayNr, SelectedGrp,
@@ -625,7 +634,7 @@ function PC_Create_All_Call_Layout(CurrentMacroNr, LayNr, LayY, RefX, LayH, LayW
         LayNr = math.floor(LayNr + 1)
     end
     CurrentMacroNr = math.floor(CurrentMacroNr + 1)
-    do return 1, CurrentMacroNr, LayX, LayNr end
+    return CurrentMacroNr, LayX, LayNr
 end
 
 function PC_Create_Macro_Priority(CurrentMacroNr, TLayNr, LayNr, LayX, LayY, LayW, LayH, prefix, Sequence_Ref,
@@ -656,6 +665,11 @@ function PC_Create_Macro_Priority(CurrentMacroNr, TLayNr, LayNr, LayX, LayY, Lay
     Macro_Pool[CurrentMacroNr][5]:Set('Command', 'SetUserVariable "LC_Data_Pool" ' .. Data_Pool_Nr)
     Macro_Pool[CurrentMacroNr][6]:Set('Command', Color_message)
     Macro_Pool[CurrentMacroNr][7]:Set('Command', 'Call DataPool ' .. Data_Pool_Nr .. '  Plugin "LC_View"')
+
+    LayX = math.floor(LayX + LayW + 20)
+    LayNr = math.floor(LayNr + 1)
+    CurrentMacroNr = math.floor(CurrentMacroNr + 1)
+    return CurrentMacroNr, LayX, LayNr
 end
 
 -- end PhaserC_Cmd.lua

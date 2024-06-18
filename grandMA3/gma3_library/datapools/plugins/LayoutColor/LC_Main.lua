@@ -220,13 +220,10 @@ local function Main(displayHandle)
     dlgFrame.Anchors = { left = 0, right = 0, top = 1, bottom = 1 }
     dlgFrame[1][1].SizePolicy = "Fixed"
     dlgFrame[1][1].Size = "150"
-    --   dlgFrame[1][1].Size = "60"
     dlgFrame[1][2].SizePolicy = "Fixed"
     dlgFrame[1][2].Size = "700"
-    -- dlgFrame[1][2].Size = "Stretch"
     dlgFrame[1][3].SizePolicy = "Fixed"
     dlgFrame[1][3].Size = "50"
-    --   dlgFrame[1][3].Size = "80"
 
     -- Create the sub title.
     -- This is row 1 of the dlgFrame.
@@ -241,7 +238,6 @@ local function Main(displayHandle)
     subTitle.Anchors = { left = 0, right = 0, top = 0, bottom = 0 }
     subTitle.Padding = { left = 0, right = 0, top = 5, bottom = 5 }
     subTitle.Font = "2"
-    -- subTitle.Font = "Medium20"
     subTitle.HasHover = "No"
     subTitle.BackColor = colorTransparent
 
@@ -1017,6 +1013,9 @@ local function Main(displayHandle)
         end
         Favourite_Nr = caller.Content:gsub("'", "")
         Favourite_Nr = tonumber(Favourite_Nr)
+        if Favourite_Nr == nil then
+            Favourite_Nr = 1
+        end
         MacroNrRange = MacroNrStart + 42 + Favourite_Nr + Nr_SelectedGrp
         for k in ipairs(MacroNr) do
             if MacroNrStart <= tonumber(MacroNr[k].NO) then

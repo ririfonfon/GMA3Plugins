@@ -7,7 +7,7 @@ Created by Richard Fontaine "RIRI", April 2024.
 
 function PC_Construct_Layout(displayHandle, TLay, SeqNrStart, MacroNrStart, MatrickNrStart, MatrickNr, TLayNr, AppNr,
                              All_5_Current, All_5_NrStart, ColPath, SelectedGelNr, SelectedGrp, SelectedGrpNo, TLayNrRef,
-                             NaLay, MaxColLgn)
+                             NaLay, MaxColLgn, Favourite_Nr)
     local Macro_Pool = DataPool().Macros
     local Data_Pool_Nr = DataPool().No
     local All_5_NrEnd
@@ -164,6 +164,8 @@ function PC_Construct_Layout(displayHandle, TLay, SeqNrStart, MacroNrStart, Matr
     local Sequence_Ref
     local Sequence_Ref_End
     local AppRef
+    local Ligne_Inc = false
+    local ColLgnCount = 0
 
     -- fix prefix
     local prefix_index = 1
@@ -205,97 +207,56 @@ function PC_Construct_Layout(displayHandle, TLay, SeqNrStart, MacroNrStart, Matr
     MaxColLgn = tonumber(MaxColLgn)
 
     -- Create Appearances
-    local Return_PC_Create_Appearances = { PC_Create_Appearances(SelectedGrp, AppNr, prefix, TCol, NrAppear, StColCode,
-        StColName, StringColName, AppRef) }
-    if Return_PC_Create_Appearances[1] then
-        NrAppear = Return_PC_Create_Appearances[2]
-        AppRef = Return_PC_Create_Appearances[3]
-    end
+    NrAppear, AppRef = PC_Create_Appearances(SelectedGrp, AppNr, prefix, TCol, NrAppear, StColCode,
+        StColName, StringColName, AppRef)
     -- end Appearances
     -- Create Preset 25
-    local Return_PC_Create_Preset_25 = { PC_Create_Preset_25(TCol, StColName, StringColName, SelectedGelNr, prefix,
-        All_5_NrEnd, All_5_Current) }
-    if Return_PC_Create_Preset_25[1] then
-        All_5_NrEnd = Return_PC_Create_Preset_25[2]
-        All_5_Current = Return_PC_Create_Preset_25[3]
-    end
+    All_5_NrEnd, All_5_Current = PC_Create_Preset_25(TCol, StColName, StringColName, SelectedGelNr, prefix,
+        All_5_NrEnd, All_5_Current)
     -- endCreate Preset 25
     -- PC_Create_Preset_Ref_1234
-    local Return_PC_Create_Preset_Ref_1234 = { PC_Create_Preset_Ref_1234(All_5_Current, SelectedGelNr) }
-    if Return_PC_Create_Preset_Ref_1234[1] then
-        All_5_Current = Return_PC_Create_Preset_Ref_1234[2]
-        Preset_Ref = Return_PC_Create_Preset_Ref_1234[3]
-        Preset_Ref_End = Preset_Ref + 3
-    end
+    All_5_Current, Preset_Ref = PC_Create_Preset_Ref_1234(All_5_Current, SelectedGelNr)
+    Preset_Ref_End = Preset_Ref + 3
     -- end PC_Create_Preset_Ref_1234
     -- PC_Create_Phaser
-    local Return_PC_Create_Phaser = { PC_Create_Phaser(All_5_Current, Preset_Ref, prefix, Argument_Ref, Phaser_Off) }
-    if Return_PC_Create_Phaser[1] then
-        Phaser_Off = Return_PC_Create_Phaser[2]
-        All_5_Current = Return_PC_Create_Phaser[3]
-    end
+    Phaser_Off, All_5_Current = PC_Create_Phaser(All_5_Current, Preset_Ref, prefix, Argument_Ref, Phaser_Off)
     -- end PC_Create_Phaser
     -- Copy_Phaser_Ref
-    local Return_Copy_Phaser_Ref = { Copy_Phaser_Ref(Phaser_Off, All_5_Current, Phaser_Ref, Preset_25_Ref) }
-    if Return_Copy_Phaser_Ref[1] then
-        Phaser_Ref = Return_Copy_Phaser_Ref[2]
-        All_5_Current = Return_Copy_Phaser_Ref[3]
-        Preset_25_Ref = Return_Copy_Phaser_Ref[4]
-    end
+    Phaser_Ref, All_5_Current, Preset_25_Ref = Copy_Phaser_Ref(Phaser_Off, All_5_Current, Phaser_Ref, Preset_25_Ref)
     -- end Copy_Phaser_Ref
     -- PC_Create_Active_Appearances
-    local Return_PC_Create_Active_Appearances = { PC_Create_Active_Appearances(AppImp, NrAppear, prefix) }
-    if Return_PC_Create_Active_Appearances[1] then
-        NrAppear = Return_PC_Create_Active_Appearances[2]
-    end
+    NrAppear = PC_Create_Active_Appearances(AppImp, NrAppear, prefix)
     -- end PC_Create_Active_Appearances
     -- PC_Create_Group_Appearances
-    local Return_PC_Create_Group_Appearances = { PC_Create_Group_Appearances(AppImp, NrAppear, prefix, SelectedGrp,
-        SelectedGrpName, color_ref) }
-    if Return_PC_Create_Group_Appearances[1] then
-        NrAppear = Return_PC_Create_Group_Appearances[2]
-    end
+    NrAppear = PC_Create_Group_Appearances(AppImp, NrAppear, prefix, SelectedGrp, SelectedGrpName, color_ref)
     -- end PC_Create_Group_Appearances
     -- PC_Create_Group_Sequence
-    local Return_PC_Create_Group_Sequence = { PC_Create_Group_Sequence(SelectedGrp, SelectedGrpName, Phaser_Off,
-        CurrentSeqNr, SelectedGrpNo, prefix, Sequence_Ref, Sequence_Ref_End) }
-    if Return_PC_Create_Group_Sequence[1] then
-        CurrentSeqNr = Return_PC_Create_Group_Sequence[2]
-        Sequence_Ref = Return_PC_Create_Group_Sequence[3]
-        Sequence_Ref_End = Return_PC_Create_Group_Sequence[4]
-    end
+    CurrentSeqNr, Sequence_Ref, Sequence_Ref_End = PC_Create_Group_Sequence(SelectedGrp, SelectedGrpName, Phaser_Off,
+        CurrentSeqNr, SelectedGrpNo, prefix, Sequence_Ref, Sequence_Ref_End)
     -- end PC_Create_Group_Sequence
-    local Return_PC_Create_Layout_Phaser = { PC_Create_Layout_Phaser(TLayNr, NaLay, SelectedGelNr, CurrentSeqNr,
+    CurrentMacroNr, CurrentSeqNr, LayNr, LayY, ColLgnCount, Ligne_Inc = PC_Create_Layout_Phaser(TLayNr, NaLay, SelectedGelNr, CurrentSeqNr,
         Preset_Ref, MaxColLgn, RefX, LayY, LayH, AppNr, LayW, StColName, CurrentMacroNr, ColPath, prefix, All_5_NrStart,
-        Data_Pool_Nr) }
-    if Return_PC_Create_Layout_Phaser[1] then
-        CurrentMacroNr = Return_PC_Create_Layout_Phaser[2]
-        CurrentSeqNr = Return_PC_Create_Layout_Phaser[3]
-        LayNr = Return_PC_Create_Layout_Phaser[4]
-        LayY = Return_PC_Create_Layout_Phaser[5]
-    end
-
-    local Return_PC_Create_Layout_FixGroup = { PC_Create_Layout_FixGroup(CurrentMacroNr, CurrentSeqNr, LayNr, LayY, RefX,
-        LayH, LayW, TLayNr, NaLay, SelectedGrp, SelectedGrpName, Argument_Matricks, surfix, prefix, AppImp, Argument_Ref,
-        AppRef, Preset_25_Ref, Phaser_Off, Phaser_Ref, All_Call_Ref, All_Call_Y, Data_Pool_Nr) }
-    if Return_PC_Create_Layout_FixGroup[1] then
-        CurrentSeqNr = Return_PC_Create_Layout_FixGroup[2]
-        CurrentMacroNr = Return_PC_Create_Layout_FixGroup[3]
-        All_Call_Ref = Return_PC_Create_Layout_FixGroup[4]
-        All_Call_Y = Return_PC_Create_Layout_FixGroup[5]
-        LayNr = Return_PC_Create_Layout_FixGroup[6]
-    end
-
-    local Return_PC_Create_All_Call_Layout = { PC_Create_All_Call_Layout(CurrentMacroNr, LayNr, LayY, RefX, LayH, LayW,
-        TLayNr, SelectedGrp, SelectedGrpName, prefix, All_Call_Ref, All_Call_Y, AppImp, Data_Pool_Nr) }
-    if Return_PC_Create_All_Call_Layout[1] then
-        CurrentMacroNr = Return_PC_Create_All_Call_Layout[2]
-        LayX = Return_PC_Create_All_Call_Layout[3]
-        LayNr = Return_PC_Create_All_Call_Layout[4]
-    end
-
-    PC_Create_Macro_Priority(CurrentMacroNr, TLayNr, LayNr, LayX, LayY, LayW, LayH, prefix, Sequence_Ref,
-        Sequence_Ref_End, Data_Pool_Nr)
+        Data_Pool_Nr)
+    CurrentSeqNr, CurrentMacroNr, All_Call_Ref, All_Call_Y, LayNr = PC_Create_Layout_FixGroup(CurrentMacroNr,
+        CurrentSeqNr, LayNr, LayY, RefX, LayH, LayW, TLayNr, NaLay, SelectedGrp, SelectedGrpName, Argument_Matricks,
+        surfix, prefix, AppImp, Argument_Ref, AppRef, Preset_25_Ref, Phaser_Off, Phaser_Ref, All_Call_Ref, All_Call_Y,
+        Data_Pool_Nr)
+    -- Create_All_Color
+    CurrentMacroNr, LayX, LayNr = PC_Create_All_Call_Layout(CurrentMacroNr, LayNr, LayY, RefX, LayH, LayW, TLayNr,
+        SelectedGrp, SelectedGrpName, prefix, All_Call_Ref, All_Call_Y, AppImp, Data_Pool_Nr)
+    -- end Create_All_Color
+    -- PC_Create_Macro_Priority
+    CurrentMacroNr, LayX, LayNr = PC_Create_Macro_Priority(CurrentMacroNr, TLayNr, LayNr, LayX, LayY, LayW, LayH, prefix,
+        Sequence_Ref, Sequence_Ref_End, Data_Pool_Nr)
+    -- end PC_Create_Macro_Priority
+    -- add Favourites
+    local Macro_Num_Start
+    local Macro_Num_End
+    -- LayNr = math.floor(LayNr + 1)
+    CurrentMacroNr, Macro_Num_End = Create_Favourite_Macro(prefix, CurrentMacroNr, TLayNr, Data_Pool_Nr, Favourite_Nr)
+    Macro_Num_Start = CurrentMacroNr + 1
+    Create_Favourite_Layout(LayNr, CurrentMacroNr, LayH, LayW, TLayNr, Data_Pool_Nr, Ligne_Inc, Favourite_Nr)
+    -- end Favourites
 
     -- SeqNrEnd = CurrentSeqNr - 1
 
@@ -313,7 +274,7 @@ function PC_Construct_Layout(displayHandle, TLay, SeqNrStart, MacroNrStart, Matr
         CurrentMacroNr .. "\"); else Cmd(\"Off macro " .. CurrentMacroNr .. "\"); end'" .. ' /nu'
     Cmd('Store Macro ' .. CurrentMacroNr .. ' \'' .. 'ERASE\'')
     Cmd('ChangeDestination Macro ' .. CurrentMacroNr .. '')
-    for i = 1, 9 do
+    for i = 1, 10 do
         Cmd('Insert')
     end
     Cmd('ChangeDestination Root')
@@ -326,9 +287,11 @@ function PC_Construct_Layout(displayHandle, TLay, SeqNrStart, MacroNrStart, Matr
     Macro_Pool[CurrentMacroNr][5]:Set('Command', 'Delete Appearance ' .. prefix .. '*' .. ' /nc')
     Macro_Pool[CurrentMacroNr][6]:Set('Command', 'Delete Preset 25. ' .. prefix .. '*' .. ' /nc')
     Macro_Pool[CurrentMacroNr][7]:Set('Command',
+        'Delete DataPool ' .. Data_Pool_Nr .. ' Macro ' .. Macro_Num_Start .. ' Thru ' .. Macro_Num_End .. ' /nc')
+    Macro_Pool[CurrentMacroNr][8]:Set('Command',
         'Delete Preset 25. ' .. Preset_Ref .. 'Thru Preset 25.' .. Preset_Ref_End .. ' /nc')
-    Macro_Pool[CurrentMacroNr][8]:Set('Command', 'Delete  Macro ' .. prefix .. '*' .. ' /nc')
-    Macro_Pool[CurrentMacroNr][9]:Set('Command', 'Delete  Macro ' .. CurrentMacroNr .. ' /nc')
+    Macro_Pool[CurrentMacroNr][9]:Set('Command', 'Delete  Macro ' .. prefix .. '*' .. ' /nc')
+    Macro_Pool[CurrentMacroNr][10]:Set('Command', 'Delete  Macro ' .. CurrentMacroNr .. ' /nc')
     -- end Macro Del PC prefix
 
     -- dimension of layout & scal it

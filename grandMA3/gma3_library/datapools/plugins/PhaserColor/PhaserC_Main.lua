@@ -164,6 +164,7 @@ local function Main(displayHandle)
     local colorGroups = Root().ColorTheme.ColorGroups.PoolWindow.Groups
     local colorText = Root().ColorTheme.colorGroups.Global.Text
     local colorAlertText = Root().ColorTheme.colorGroups.Global.AlertText
+    local colorFavorite = Root().ColorTheme.colorGroups.Global.Collected
 
     -- Get the overlay.
     local display = GetDisplayByIndex(displayIndex)
@@ -173,13 +174,13 @@ local function Main(displayHandle)
     screenOverlay:ClearUIChildren()
 
     -- Create the dialog base.
-    local dialogWidth = 800
+    local dialogWidth = 1024
     local baseInput = screenOverlay:Append("BaseInput")
     baseInput.Name = "PhaserC_Main_Box"
     baseInput.H = "0"
     baseInput.W = dialogWidth
-    baseInput.MaxSize = string.format("%s,%s", display.W * 0.8, display.H)
-    baseInput.MinSize = string.format("%s,0", dialogWidth - 100)
+    baseInput.MaxSize = string.format("%s,%s", display.W * 0.55, display.H)
+    baseInput.MinSize = string.format("%s,0", dialogWidth)
     baseInput.Columns = 1
     baseInput.Rows = 2
     baseInput[1][1].SizePolicy = "Fixed"
@@ -244,7 +245,7 @@ local function Main(displayHandle)
     -- This is row 2 of the dlgFrame.
     local inputsGrid = dlgFrame:Append("UILayoutGrid")
     inputsGrid.Columns = 10
-    inputsGrid.Rows = 10
+    inputsGrid.Rows = 11
     inputsGrid.Anchors = { left = 0, right = 0, top = 1, bottom = 1 }
     inputsGrid.Margin = { left = 0, right = 0, top = 0, bottom = 5 }
 
@@ -636,6 +637,56 @@ local function Main(displayHandle)
 
     TopInc = TopInc + 1
 
+    -- Create the UI elements for the 11 input.
+    local input11Icon = inputsGrid:Append("Button")
+    input11Icon.Text = ""
+    input11Icon.Anchors = { left = 0, right = 0, top = TopInc, bottom = TopInc }
+    input11Icon.Icon = "star"
+    input11Icon.Margin = { left = 0, right = 2, top = TopInc, bottom = 2 }
+    input11Icon.HasHover = "No";
+    input11Icon.BackColor = colorFavorite
+
+    local input11Label = inputsGrid:Append("UIObject")
+    input11Label.Text = "Nb Favorites"
+    input11Label.TextalignmentH = "Left"
+    input11Label.Anchors = { left = 1, right = 3, top = TopInc, bottom = TopInc }
+    input11Label.Padding = "5,5"
+    input11Label.Margin = { left = 2, right = 2, top = TopInc, bottom = 2 }
+    input11Label.HasHover = "No";
+    input11Label.Font = "2"
+    input11Label.BackColor = colorFavorite
+
+    local input11LineEdit = inputsGrid:Append("LineEdit")
+    input11LineEdit.Prompt = "Nb: "
+    input11LineEdit.TextAutoAdjust = "Yes"
+    input11LineEdit.Anchors = { left = 4, right = 9, top = TopInc, bottom = TopInc }
+    input11LineEdit.Padding = "5,5"
+    input11LineEdit.Margin = { left = 2, right = 0, top = TopInc, bottom = 2 }
+    input11LineEdit.Filter = "0123456789"
+    input11LineEdit.VkPluginName = "TextInputNumOnly"
+    input11LineEdit.Content = Favourite_Nr
+    input11LineEdit.MaxTextLength = 6
+    input11LineEdit.HideFocusFrame = "Yes"
+    input11LineEdit.PluginComponent = myHandle
+    input11LineEdit.TextChanged = "OnInput11TextChanged"
+    input11LineEdit.Font = "2"
+    input11LineEdit.BackColor = colorFavorite
+    input11LineEdit.Visible = "No"
+
+    local input11Sujestion = inputsGrid:Append("Button")
+    input11Sujestion.Text = ""
+    input11Sujestion.Anchors = { left = 8, right = 9, top = TopInc, bottom = TopInc }
+    input11Sujestion.Margin = { left = 2, right = 0, top = TopInc, bottom = 2 }
+    input11Sujestion.Icon = "zoom"
+    input11Sujestion.Name = 'Favorite_Select'
+    input11Sujestion.PluginComponent = thiscomponent
+    input11Sujestion.Clicked = 'mypopup'
+    input11Sujestion.HasHover = "yes"
+    input11Sujestion.backColor = colorFavorite
+    input11Sujestion.Visible = "No"
+
+    TopInc = TopInc + 1
+
     -- Create the UI elements for the 9 input button.
     local input9Icon = inputsGrid:Append("Button")
     input9Icon.Text = ""
@@ -736,7 +787,7 @@ local function Main(displayHandle)
         end
         Obj.Delete(screenOverlay, Obj.Index(baseInput))
         PC_Construct_Layout(displayHandle, TLay, SeqNrStart, MacroNrStart, MatrickNrStart, MatrickNr, TLayNr, AppNr,
-            All_5_Current, All_5_NrStart, ColPath, SelectedGelNr, SelectedGrp, SelectedGrpNo, TLayNrRef, NaLay, MaxColLgn)
+            All_5_Current, All_5_NrStart, ColPath, SelectedGelNr, SelectedGrp, SelectedGrpNo, TLayNrRef, NaLay, MaxColLgn, Favourite_Nr)
     end
 
     signalTable.OnInput1TextChanged = function(caller)
@@ -810,7 +861,7 @@ local function Main(displayHandle)
         end
         MacroNrStart = caller.Content:gsub("'", "")
         MacroNrStart = tonumber(MacroNrStart)
-        MacroNrRange = MacroNrStart + tonumber((4 * (NGel + 2)) + (Nr_SelectedGrp * 19) + 6)
+        MacroNrRange = MacroNrStart + tonumber((4 * (NGel + 2)) + (Nr_SelectedGrp * 19) + 6 + Favourite_Nr)
         for k in ipairs(MacroNr) do
             if MacroNrStart <= tonumber(MacroNr[k].NO) then
                 if MacroNrRange >= tonumber(MacroNr[k].NO) then
@@ -951,6 +1002,44 @@ local function Main(displayHandle)
         end
     end
 
+    signalTable.OnInput11TextChanged = function(caller)
+        local checks = false
+        if caller.Content == "" or caller.Content == "0" then
+            OkButton.Visible = "No"
+            input11LineEdit.TextColor = colorAlertText
+            checks = true
+        end
+        Favourite_Nr = caller.Content:gsub("'", "")
+        Favourite_Nr = tonumber(Favourite_Nr)
+        if Favourite_Nr == nil then
+            Favourite_Nr = 1
+        end
+        MacroNrRange = MacroNrStart + tonumber((4 * (NGel + 2)) + (Nr_SelectedGrp * 19) + 6 + Favourite_Nr)
+        for k in ipairs(MacroNr) do
+            if MacroNrStart <= tonumber(MacroNr[k].NO) then
+                if MacroNrRange >= tonumber(MacroNr[k].NO) then
+                    OkButton.Visible = "No"
+                    input4LineEdit.TextColor = colorAlertText
+                    input11LineEdit.TextColor = colorAlertText
+                    checks = true
+                end
+            end
+        end
+
+        if checks == true then
+            OkButton.Visible = "No"
+            input4LineEdit.TextColor = colorAlertText
+            input11LineEdit.TextColor = colorAlertText
+        end
+        if checks == false then
+            input4LineEdit.TextColor = colorText
+            input11LineEdit.TextColor = colorText
+            if check_grp == true and check_gel == true then
+                OkButton.Visible = "Yes"
+            end
+        end
+    end
+
     function signalTable.mypopup(caller)
         local itemlist = popuplists[caller.Name]
         local _, choice = PopupInput { title = caller.Name, caller = caller:GetDisplay(), items = itemlist, selectedValue = caller.Text }
@@ -997,6 +1086,7 @@ local function Main(displayHandle)
                 input6LineEdit.Visible = "Yes"
                 input7LineEdit.Visible = "Yes"
                 input8LineEdit.Visible = "Yes"
+                input11LineEdit.Visible = "Yes"
                 input1Sujestion.Visible = "Yes"
                 input2Sujestion.Visible = "Yes"
                 input3Sujestion.Visible = "Yes"
@@ -1004,6 +1094,7 @@ local function Main(displayHandle)
                 input5Sujestion.Visible = "Yes"
                 input6Sujestion.Visible = "Yes"
                 input7Sujestion.Visible = "Yes"
+                input11Sujestion.Visible = "Yes"
             end
         elseif caller.Name == "Name_Select" then
             input1LineEdit.Content = choice
@@ -1019,6 +1110,8 @@ local function Main(displayHandle)
             input6LineEdit.Content = choice
         elseif caller.Name == "Matrick_Select" then
             input7LineEdit.Content = choice
+        elseif caller.Name == "Favorite_Select" then
+            input11LineEdit.Content = choice
         end
     end
 end
