@@ -641,7 +641,7 @@ local function Main(displayHandle)
 
     TopInc = TopInc + 1
 
-    -- Create the UI elements for the 8 input.
+    -- Create the UI elements for the 11 input.
     local input11Icon = inputsGrid:Append("Button")
     input11Icon.Text = ""
     input11Icon.Anchors = { left = 0, right = 0, top = TopInc, bottom = TopInc }
