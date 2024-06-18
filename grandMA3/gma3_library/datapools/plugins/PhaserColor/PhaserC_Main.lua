@@ -1,6 +1,6 @@
 --[[
 Releases:
-* 2.0.0.9
+* 2.0.1.0
 
 Created by Richard Fontaine "RIRI", April 2024.
 --]]
@@ -11,7 +11,7 @@ local signalTable, thiscomponent = select(3, ...)
 local myHandle = select(4, ...)
 
 local function Main(displayHandle)
-    Cmd ('Set CurrentUserProfile Property KeyboardShortcutsActive 0')
+    Cmd('Set CurrentUserProfile Property KeyboardShortcutsActive 0')
     local list = false
     local FixtureGroups = DataPool().Groups:Children()
     local SelectedGrp = {}
@@ -45,17 +45,20 @@ local function Main(displayHandle)
     local MatrickNr = DataPool().MAtricks:Children()
     local MatrickNrStart
     local MatrickNrRange
+    local Favourite_Nr = 16
+    local TopInc = 0
 
     local popuplists = {
-        Grp_Select     = {},
-        Gel_Select     = {},
-        Name_Select    = { 'Phaser 1234 Color', 'Phaser 1234 Kolor', 'Phaser 1234 Co', '1234 Ko', 'OneToFour', 'OTF Kolor' },
-        Lay_Select     = { 1, 11, 101, 201, 301, 401, 501, 601, 701, 801, 901, 1001, 2001 },
-        Seq_Select     = { 1, 11, 101, 201, 301, 401, 501, 601, 701, 801, 901, 1001, 2001 },
-        Macro_Select   = { 1, 11, 101, 201, 301, 401, 501, 601, 701, 801, 901, 1001, 2001 },
-        Appear_Select  = { 1, 11, 101, 201, 301, 401, 501, 601, 701, 801, 901, 1001, 2001 },
-        Preset_Select  = { 1, 11, 101, 201, 301, 401, 501, 601, 701, 801, 901, 1001, 2001 },
-        Matrick_Select = { 1, 11, 101, 201, 301, 401, 501, 601, 701, 801, 901, 1001, 2001 }
+        Grp_Select      = {},
+        Gel_Select      = {},
+        Name_Select     = { 'Phaser 1234 Color', 'Phaser 1234 Kolor', 'Phaser 1234 Co', '1234 Ko', 'OneToFour', 'OTF Kolor' },
+        Lay_Select      = { 1, 11, 101, 201, 301, 401, 501, 601, 701, 801, 901, 1001, 2001 },
+        Seq_Select      = { 1, 11, 101, 201, 301, 401, 501, 601, 701, 801, 901, 1001, 2001 },
+        Macro_Select    = { 1, 11, 101, 201, 301, 401, 501, 601, 701, 801, 901, 1001, 2001 },
+        Appear_Select   = { 1, 11, 101, 201, 301, 401, 501, 601, 701, 801, 901, 1001, 2001 },
+        Preset_Select   = { 1, 11, 101, 201, 301, 401, 501, 601, 701, 801, 901, 1001, 2001 },
+        Matrick_Select  = { 1, 11, 101, 201, 301, 401, 501, 601, 701, 801, 901, 1001, 2001 },
+        Favorite_Select = { 10, 16, 20, 30, 32, 40, 50, 60, 64, 70, 80, 90, 100, 110, 120, 124 }
     }
 
     if list == false then
@@ -248,8 +251,8 @@ local function Main(displayHandle)
     -- Create the UI elements for the 1 input.
     local input1Icon = inputsGrid:Append("Button")
     input1Icon.Text = ""
-    input1Icon.Anchors = { left = 0, right = 0, top = 0, bottom = 0 }
-    input1Icon.Margin = { left = 0, right = 2, top = 0, bottom = 2 }
+    input1Icon.Anchors = { left = 0, right = 0, top = TopInc, bottom = TopInc }
+    input1Icon.Margin = { left = 0, right = 2, top = TopInc, bottom = 2 }
     input1Icon.Icon = "object_layout"
     input1Icon.HasHover = "No";
     input1Icon.BackColor = colorLayouts
@@ -257,9 +260,9 @@ local function Main(displayHandle)
     local input1Label = inputsGrid:Append("UIObject")
     input1Label.Text = "Layout Name"
     input1Label.TextalignmentH = "Left"
-    input1Label.Anchors = { left = 1, right = 3, top = 0, bottom = 0 }
+    input1Label.Anchors = { left = 1, right = 3, top = TopInc, bottom = TopInc }
     input1Label.Padding = "5,5"
-    input1Label.Margin = { left = 2, right = 2, top = 0, bottom = 2 }
+    input1Label.Margin = { left = 2, right = 2, top = TopInc, bottom = 2 }
     input1Label.HasHover = "No"
     input1Label.BackColor = colorLayouts
     input1Label.Font = "2"
@@ -267,9 +270,9 @@ local function Main(displayHandle)
     local input1LineEdit = inputsGrid:Append("LineEdit")
     input1LineEdit.Prompt = "Name: "
     input1LineEdit.TextAutoAdjust = "Yes"
-    input1LineEdit.Anchors = { left = 4, right = 7, top = 0, bottom = 0 }
+    input1LineEdit.Anchors = { left = 4, right = 7, top = TopInc, bottom = TopInc }
     input1LineEdit.Padding = "5,5"
-    input1LineEdit.Margin = { left = 2, right = 2, top = 0, bottom = 2 }
+    input1LineEdit.Margin = { left = 2, right = 2, top = TopInc, bottom = 2 }
     input1LineEdit.VkPluginName = "TextInput"
     input1LineEdit.Content = "Phaser Colors"
     input1LineEdit.MaxTextLength = 16
@@ -282,8 +285,8 @@ local function Main(displayHandle)
 
     local input1Sujestion = inputsGrid:Append("Button")
     input1Sujestion.Text = ""
-    input1Sujestion.Anchors = { left = 8, right = 9, top = 0, bottom = 0 }
-    input1Sujestion.Margin = { left = 2, right = 0, top = 0, bottom = 2 }
+    input1Sujestion.Anchors = { left = 8, right = 9, top = TopInc, bottom = TopInc }
+    input1Sujestion.Margin = { left = 2, right = 0, top = TopInc, bottom = 2 }
     input1Sujestion.Icon = "zoom"
     input1Sujestion.Name = 'Name_Select'
     input1Sujestion.PluginComponent = thiscomponent
@@ -292,21 +295,23 @@ local function Main(displayHandle)
     input1Sujestion.backColor = colorLayouts
     input1Sujestion.Visible = "No"
 
+    TopInc = TopInc + 1
+
     -- Create the UI elements for the 2 input.
     local input2Icon = inputsGrid:Append("Button")
     input2Icon.Text = ""
-    input2Icon.Anchors = { left = 0, right = 0, top = 1, bottom = 1 }
+    input2Icon.Anchors = { left = 0, right = 0, top = TopInc, bottom = TopInc }
     input2Icon.Icon = "object_layout"
-    input2Icon.Margin = { left = 0, right = 2, top = 2, bottom = 2 }
+    input2Icon.Margin = { left = 0, right = 2, top = TopInc, bottom = 2 }
     input2Icon.HasHover = "No";
     input2Icon.BackColor = colorLayouts
 
     local input2Label = inputsGrid:Append("UIObject")
     input2Label.Text = "Layout Nr"
     input2Label.TextalignmentH = "Left"
-    input2Label.Anchors = { left = 1, right = 3, top = 1, bottom = 1 }
+    input2Label.Anchors = { left = 1, right = 3, top = TopInc, bottom = TopInc }
     input2Label.Padding = "5,5"
-    input2Label.Margin = { left = 2, right = 2, top = 2, bottom = 2 }
+    input2Label.Margin = { left = 2, right = 2, top = TopInc, bottom = 2 }
     input2Label.HasHover = "No";
     input2Label.BackColor = colorLayouts
     input2Label.Font = "2"
@@ -314,9 +319,9 @@ local function Main(displayHandle)
     local input2LineEdit = inputsGrid:Append("LineEdit")
     input2LineEdit.Prompt = "Nr: "
     input2LineEdit.TextAutoAdjust = "Yes"
-    input2LineEdit.Anchors = { left = 4, right = 7, top = 1, bottom = 1 }
+    input2LineEdit.Anchors = { left = 4, right = 7, top = TopInc, bottom = TopInc }
     input2LineEdit.Padding = "5,5"
-    input2LineEdit.Margin = { left = 2, right = 0, top = 2, bottom = 2 }
+    input2LineEdit.Margin = { left = 2, right = 0, top = TopInc, bottom = 2 }
     input2LineEdit.Filter = "0123456789."
     input2LineEdit.VkPluginName = "TextInputNumOnly"
     input2LineEdit.Content = TLayNr
@@ -330,8 +335,8 @@ local function Main(displayHandle)
 
     local input2Sujestion = inputsGrid:Append("Button")
     input2Sujestion.Text = ""
-    input2Sujestion.Anchors = { left = 8, right = 9, top = 1, bottom = 1 }
-    input2Sujestion.Margin = { left = 2, right = 0, top = 2, bottom = 2 }
+    input2Sujestion.Anchors = { left = 8, right = 9, top = TopInc, bottom = TopInc }
+    input2Sujestion.Margin = { left = 2, right = 0, top = TopInc, bottom = 2 }
     input2Sujestion.Icon = "zoom"
     input2Sujestion.Name = 'Lay_Select'
     input2Sujestion.PluginComponent = thiscomponent
@@ -340,21 +345,23 @@ local function Main(displayHandle)
     input2Sujestion.backColor = colorLayouts
     input2Sujestion.Visible = "No"
 
+    TopInc = TopInc + 1
+
     -- Create the UI elements for the 3 input.
     local input3Icon = inputsGrid:Append("Button")
     input3Icon.Text = ""
-    input3Icon.Anchors = { left = 0, right = 0, top = 2, bottom = 2 }
+    input3Icon.Anchors = { left = 0, right = 0, top = TopInc, bottom = TopInc }
     input3Icon.Icon = "object_sequence"
-    input3Icon.Margin = { left = 0, right = 2, top = 2, bottom = 2 }
+    input3Icon.Margin = { left = 0, right = 2, top = TopInc, bottom = 2 }
     input3Icon.HasHover = "No";
     input3Icon.BackColor = colorSequences
 
     local input3Label = inputsGrid:Append("UIObject")
     input3Label.Text = "Sequence Nr"
     input3Label.TextalignmentH = "Left"
-    input3Label.Anchors = { left = 1, right = 3, top = 2, bottom = 2 }
+    input3Label.Anchors = { left = 1, right = 3, top = TopInc, bottom = TopInc }
     input3Label.Padding = "5,5"
-    input3Label.Margin = { left = 2, right = 2, top = 2, bottom = 2 }
+    input3Label.Margin = { left = 2, right = 2, top = TopInc, bottom = 2 }
     input3Label.HasHover = "No";
     input3Label.BackColor = colorPartlySelectedPreset
     input3Label.Font = "2"
@@ -363,9 +370,9 @@ local function Main(displayHandle)
     local input3LineEdit = inputsGrid:Append("LineEdit")
     input3LineEdit.Prompt = "Nr: "
     input3LineEdit.TextAutoAdjust = "Yes"
-    input3LineEdit.Anchors = { left = 4, right = 7, top = 2, bottom = 2 }
+    input3LineEdit.Anchors = { left = 4, right = 7, top = TopInc, bottom = TopInc }
     input3LineEdit.Padding = "5,5"
-    input3LineEdit.Margin = { left = 2, right = 0, top = 2, bottom = 2 }
+    input3LineEdit.Margin = { left = 2, right = 0, top = TopInc, bottom = 2 }
     input3LineEdit.VkPluginName = "TextInputNumOnly"
     input3LineEdit.Content = SeqNrStart
     input3LineEdit.MaxTextLength = 10
@@ -379,8 +386,8 @@ local function Main(displayHandle)
 
     local input3Sujestion = inputsGrid:Append("Button")
     input3Sujestion.Text = ""
-    input3Sujestion.Anchors = { left = 8, right = 9, top = 2, bottom = 2 }
-    input3Sujestion.Margin = { left = 2, right = 0, top = 2, bottom = 2 }
+    input3Sujestion.Anchors = { left = 8, right = 9, top = TopInc, bottom = TopInc }
+    input3Sujestion.Margin = { left = 2, right = 0, top = TopInc, bottom = 2 }
     input3Sujestion.Icon = "zoom"
     input3Sujestion.Name = 'Seq_Select'
     input3Sujestion.PluginComponent = thiscomponent
@@ -389,21 +396,23 @@ local function Main(displayHandle)
     input3Sujestion.backColor = colorSequences
     input3Sujestion.Visible = "No"
 
+    TopInc = TopInc + 1
+
     -- Create the UI elements for the 4 input.
     local input4Icon = inputsGrid:Append("Button")
     input4Icon.Text = ""
-    input4Icon.Anchors = { left = 0, right = 0, top = 3, bottom = 3 }
+    input4Icon.Anchors = { left = 0, right = 0, top = TopInc, bottom = TopInc }
     input4Icon.Icon = "object_macro"
-    input4Icon.Margin = { left = 0, right = 2, top = 3, bottom = 2 }
+    input4Icon.Margin = { left = 0, right = 2, top = TopInc, bottom = 2 }
     input4Icon.HasHover = "No";
     input4Icon.BackColor = colorMacro
 
     local input4Label = inputsGrid:Append("UIObject")
     input4Label.Text = "Macro Nr"
     input4Label.TextalignmentH = "Left"
-    input4Label.Anchors = { left = 1, right = 3, top = 3, bottom = 3 }
+    input4Label.Anchors = { left = 1, right = 3, top = TopInc, bottom = TopInc }
     input4Label.Padding = "5,5"
-    input4Label.Margin = { left = 2, right = 2, top = 3, bottom = 2 }
+    input4Label.Margin = { left = 2, right = 2, top = TopInc, bottom = 2 }
     input4Label.HasHover = "No";
     input4Label.Font = "2"
     input4Label.BackColor = colorMacro
@@ -411,9 +420,9 @@ local function Main(displayHandle)
     local input4LineEdit = inputsGrid:Append("LineEdit")
     input4LineEdit.Prompt = "Nr: "
     input4LineEdit.TextAutoAdjust = "Yes"
-    input4LineEdit.Anchors = { left = 4, right = 7, top = 3, bottom = 3 }
+    input4LineEdit.Anchors = { left = 4, right = 7, top = TopInc, bottom = TopInc }
     input4LineEdit.Padding = "5,5"
-    input4LineEdit.Margin = { left = 2, right = 0, top = 3, bottom = 2 }
+    input4LineEdit.Margin = { left = 2, right = 0, top = TopInc, bottom = 2 }
     input4LineEdit.Filter = "0123456789"
     input4LineEdit.VkPluginName = "TextInputNumOnly"
     input4LineEdit.Content = MacroNrStart
@@ -427,8 +436,8 @@ local function Main(displayHandle)
 
     local input4Sujestion = inputsGrid:Append("Button")
     input4Sujestion.Text = ""
-    input4Sujestion.Anchors = { left = 8, right = 9, top = 3, bottom = 3 }
-    input4Sujestion.Margin = { left = 2, right = 0, top = 2, bottom = 2 }
+    input4Sujestion.Anchors = { left = 8, right = 9, top = TopInc, bottom = TopInc }
+    input4Sujestion.Margin = { left = 2, right = 0, top = TopInc, bottom = 2 }
     input4Sujestion.Icon = "zoom"
     input4Sujestion.Name = 'Macro_Select'
     input4Sujestion.PluginComponent = thiscomponent
@@ -437,21 +446,23 @@ local function Main(displayHandle)
     input4Sujestion.backColor = colorMacro
     input4Sujestion.Visible = "No"
 
+    TopInc = TopInc + 1
+
     -- Create the UI elements for the 5 input.
     local input5Icon = inputsGrid:Append("Button")
     input5Icon.Text = ""
-    input5Icon.Anchors = { left = 0, right = 0, top = 4, bottom = 4 }
+    input5Icon.Anchors = { left = 0, right = 0, top = TopInc, bottom = TopInc }
     input5Icon.Icon = "object_appear."
-    input5Icon.Margin = { left = 0, right = 2, top = 4, bottom = 2 }
+    input5Icon.Margin = { left = 0, right = 2, top = TopInc, bottom = 2 }
     input5Icon.HasHover = "No";
     input5Icon.BackColor = colorAppearances
 
     local input5Label = inputsGrid:Append("UIObject")
     input5Label.Text = "Appear. Nr"
     input5Label.TextalignmentH = "Left"
-    input5Label.Anchors = { left = 1, right = 3, top = 4, bottom = 4 }
+    input5Label.Anchors = { left = 1, right = 3, top = TopInc, bottom = TopInc }
     input5Label.Padding = "5,5"
-    input5Label.Margin = { left = 2, right = 2, top = 4, bottom = 2 }
+    input5Label.Margin = { left = 2, right = 2, top = TopInc, bottom = 2 }
     input5Label.HasHover = "No";
     input5Label.Font = "2"
     input5Label.BackColor = colorAppearances
@@ -459,9 +470,9 @@ local function Main(displayHandle)
     local input5LineEdit = inputsGrid:Append("LineEdit")
     input5LineEdit.Prompt = "Nr: "
     input5LineEdit.TextAutoAdjust = "Yes"
-    input5LineEdit.Anchors = { left = 4, right = 7, top = 4, bottom = 4 }
+    input5LineEdit.Anchors = { left = 4, right = 7, top = TopInc, bottom = TopInc }
     input5LineEdit.Padding = "5,5"
-    input5LineEdit.Margin = { left = 2, right = 0, top = 4, bottom = 2 }
+    input5LineEdit.Margin = { left = 2, right = 0, top = TopInc, bottom = 2 }
     input5LineEdit.Filter = "0123456789"
     input5LineEdit.VkPluginName = "TextInputNumOnly"
     input5LineEdit.Content = AppNr
@@ -475,8 +486,8 @@ local function Main(displayHandle)
 
     local input5Sujestion = inputsGrid:Append("Button")
     input5Sujestion.Text = ""
-    input5Sujestion.Anchors = { left = 8, right = 9, top = 4, bottom = 4 }
-    input5Sujestion.Margin = { left = 2, right = 0, top = 2, bottom = 2 }
+    input5Sujestion.Anchors = { left = 8, right = 9, top = TopInc, bottom = TopInc }
+    input5Sujestion.Margin = { left = 2, right = 0, top = TopInc, bottom = 2 }
     input5Sujestion.Icon = "zoom"
     input5Sujestion.Name = 'Appear_Select'
     input5Sujestion.PluginComponent = thiscomponent
@@ -485,21 +496,23 @@ local function Main(displayHandle)
     input5Sujestion.backColor = colorAppearances
     input5Sujestion.Visible = "No"
 
+    TopInc = TopInc + 1
+
     -- Create the UI elements for the 6 input.
     local input6Icon = inputsGrid:Append("Button")
     input6Icon.Text = ""
-    input6Icon.Anchors = { left = 0, right = 0, top = 5, bottom = 5 }
+    input6Icon.Anchors = { left = 0, right = 0, top = TopInc, bottom = TopInc }
     input6Icon.Icon = "object_preset"
-    input6Icon.Margin = { left = 0, right = 2, top = 5, bottom = 2 }
+    input6Icon.Margin = { left = 0, right = 2, top = TopInc, bottom = 2 }
     input6Icon.HasHover = "No";
     input6Icon.BackColor = colorPresets
 
     local input6Label = inputsGrid:Append("UIObject")
     input6Label.Text = "Preset All 5 Nr"
     input6Label.TextalignmentH = "Left"
-    input6Label.Anchors = { left = 1, right = 3, top = 5, bottom = 5 }
+    input6Label.Anchors = { left = 1, right = 3, top = TopInc, bottom = TopInc }
     input6Label.Padding = "5,5"
-    input6Label.Margin = { left = 2, right = 2, top = 5, bottom = 2 }
+    input6Label.Margin = { left = 2, right = 2, top = TopInc, bottom = 2 }
     input6Label.HasHover = "No";
     input6Label.Font = "2"
     input6Label.BackColor = colorPresets
@@ -507,9 +520,9 @@ local function Main(displayHandle)
     local input6LineEdit = inputsGrid:Append("LineEdit")
     input6LineEdit.Prompt = "Nr: "
     input6LineEdit.TextAutoAdjust = "Yes"
-    input6LineEdit.Anchors = { left = 4, right = 7, top = 5, bottom = 5 }
+    input6LineEdit.Anchors = { left = 4, right = 7, top = TopInc, bottom = TopInc }
     input6LineEdit.Padding = "5,5"
-    input6LineEdit.Margin = { left = 2, right = 0, top = 5, bottom = 2 }
+    input6LineEdit.Margin = { left = 2, right = 0, top = TopInc, bottom = 2 }
     input6LineEdit.Filter = "0123456789"
     input6LineEdit.VkPluginName = "TextInputNumOnly"
     input6LineEdit.Content = All_5_NrStart
@@ -523,8 +536,8 @@ local function Main(displayHandle)
 
     local input6Sujestion = inputsGrid:Append("Button")
     input6Sujestion.Text = ""
-    input6Sujestion.Anchors = { left = 8, right = 9, top = 5, bottom = 5 }
-    input6Sujestion.Margin = { left = 2, right = 0, top = 2, bottom = 2 }
+    input6Sujestion.Anchors = { left = 8, right = 9, top = TopInc, bottom = TopInc }
+    input6Sujestion.Margin = { left = 2, right = 0, top = TopInc, bottom = 2 }
     input6Sujestion.Icon = "zoom"
     input6Sujestion.Name = 'Preset_Select'
     input6Sujestion.PluginComponent = thiscomponent
@@ -533,21 +546,23 @@ local function Main(displayHandle)
     input6Sujestion.backColor = colorPresets
     input6Sujestion.Visible = "No"
 
+    TopInc = TopInc + 1
+
     -- Create the UI elements for the 7 input.
     local input7Icon = inputsGrid:Append("Button")
     input7Icon.Text = ""
-    input7Icon.Anchors = { left = 0, right = 0, top = 6, bottom = 6 }
+    input7Icon.Anchors = { left = 0, right = 0, top = TopInc, bottom = TopInc }
     input7Icon.Icon = "object_matricks"
-    input7Icon.Margin = { left = 0, right = 2, top = 6, bottom = 2 }
+    input7Icon.Margin = { left = 0, right = 2, top = TopInc, bottom = 2 }
     input7Icon.HasHover = "No";
     input7Icon.BackColor = colorMatricks
 
     local input7Label = inputsGrid:Append("UIObject")
     input7Label.Text = "Matrick Nr"
     input7Label.TextalignmentH = "Left"
-    input7Label.Anchors = { left = 1, right = 3, top = 6, bottom = 6 }
+    input7Label.Anchors = { left = 1, right = 3, top = TopInc, bottom = TopInc }
     input7Label.Padding = "5,5"
-    input7Label.Margin = { left = 2, right = 2, top = 6, bottom = 2 }
+    input7Label.Margin = { left = 2, right = 2, top = TopInc, bottom = 2 }
     input7Label.HasHover = "No";
     input7Label.Font = "2"
     input7Label.BackColor = colorMatricks
@@ -555,9 +570,9 @@ local function Main(displayHandle)
     local input7LineEdit = inputsGrid:Append("LineEdit")
     input7LineEdit.Prompt = "Nr: "
     input7LineEdit.TextAutoAdjust = "Yes"
-    input7LineEdit.Anchors = { left = 4, right = 7, top = 6, bottom = 6 }
+    input7LineEdit.Anchors = { left = 4, right = 7, top = TopInc, bottom = TopInc }
     input7LineEdit.Padding = "5,5"
-    input7LineEdit.Margin = { left = 2, right = 0, top = 6, bottom = 2 }
+    input7LineEdit.Margin = { left = 2, right = 0, top = TopInc, bottom = 2 }
     input7LineEdit.Filter = "0123456789"
     input7LineEdit.VkPluginName = "TextInputNumOnly"
     input7LineEdit.Content = MatrickNrStart
@@ -571,8 +586,8 @@ local function Main(displayHandle)
 
     local input7Sujestion = inputsGrid:Append("Button")
     input7Sujestion.Text = ""
-    input7Sujestion.Anchors = { left = 8, right = 9, top = 6, bottom = 6 }
-    input7Sujestion.Margin = { left = 2, right = 0, top = 2, bottom = 2 }
+    input7Sujestion.Anchors = { left = 8, right = 9, top = TopInc, bottom = TopInc }
+    input7Sujestion.Margin = { left = 2, right = 0, top = TopInc, bottom = 2 }
     input7Sujestion.Icon = "zoom"
     input7Sujestion.Name = 'Matrick_Select'
     input7Sujestion.PluginComponent = thiscomponent
@@ -581,21 +596,23 @@ local function Main(displayHandle)
     input7Sujestion.backColor = colorMatricks
     input7Sujestion.Visible = "No"
 
+    TopInc = TopInc + 1
+
     -- Create the UI elements for the 8 input.
     local input8Icon = inputsGrid:Append("Button")
     input8Icon.Text = ""
-    input8Icon.Anchors = { left = 0, right = 0, top = 7, bottom = 7 }
+    input8Icon.Anchors = { left = 0, right = 0, top = TopInc, bottom = TopInc }
     input8Icon.Icon = "settings"
-    input8Icon.Margin = { left = 0, right = 2, top = 7, bottom = 2 }
+    input8Icon.Margin = { left = 0, right = 2, top = TopInc, bottom = 2 }
     input8Icon.HasHover = "No";
     input8Icon.BackColor = colorPartlySelected
 
     local input8Label = inputsGrid:Append("UIObject")
     input8Label.Text = "Nb color / line"
     input8Label.TextalignmentH = "Left"
-    input8Label.Anchors = { left = 1, right = 3, top = 7, bottom = 7 }
+    input8Label.Anchors = { left = 1, right = 3, top = TopInc, bottom = TopInc }
     input8Label.Padding = "5,5"
-    input8Label.Margin = { left = 2, right = 2, top = 7, bottom = 2 }
+    input8Label.Margin = { left = 2, right = 2, top = TopInc, bottom = 2 }
     input8Label.HasHover = "No";
     input8Label.Font = "2"
     input8Label.BackColor = colorPartlySelected
@@ -603,9 +620,9 @@ local function Main(displayHandle)
     local input8LineEdit = inputsGrid:Append("LineEdit")
     input8LineEdit.Prompt = "Nb: "
     input8LineEdit.TextAutoAdjust = "Yes"
-    input8LineEdit.Anchors = { left = 4, right = 9, top = 7, bottom = 7 }
+    input8LineEdit.Anchors = { left = 4, right = 9, top = TopInc, bottom = TopInc }
     input8LineEdit.Padding = "5,5"
-    input8LineEdit.Margin = { left = 2, right = 0, top = 7, bottom = 2 }
+    input8LineEdit.Margin = { left = 2, right = 0, top = TopInc, bottom = 2 }
     input8LineEdit.Filter = "0123456789"
     input8LineEdit.VkPluginName = "TextInputNumOnly"
     input8LineEdit.Content = "15"
@@ -617,12 +634,14 @@ local function Main(displayHandle)
     input8LineEdit.BackColor = colorPartlySelected
     input8LineEdit.Visible = "No"
 
+    TopInc = TopInc + 1
+
     -- Create the UI elements for the 9 input button.
     local input9Icon = inputsGrid:Append("Button")
     input9Icon.Text = ""
-    input9Icon.Anchors = { left = 0, right = 0, top = 8, bottom = 8 }
+    input9Icon.Anchors = { left = 0, right = 0, top = TopInc, bottom = TopInc }
     input9Icon.Icon = "object_gels"
-    input9Icon.Margin = { left = 0, right = 2, top = 8, bottom = 2 }
+    input9Icon.Margin = { left = 0, right = 2, top = TopInc, bottom = 2 }
     input9Icon.HasHover = "No";
     input9Icon.BackColor = colorPartlySelectedPreset
     input9Icon.Font = "2"
@@ -630,17 +649,17 @@ local function Main(displayHandle)
     local input9Label = inputsGrid:Append("UIObject")
     input9Label.Text = "Gel  "
     input9Label.TextalignmentH = "Left"
-    input9Label.Anchors = { left = 1, right = 3, top = 8, bottom = 8 }
+    input9Label.Anchors = { left = 1, right = 3, top = TopInc, bottom = TopInc }
     input9Label.Padding = "5,5"
-    input9Label.Margin = { left = 2, right = 2, top = 8, bottom = 2 }
+    input9Label.Margin = { left = 2, right = 2, top = TopInc, bottom = 2 }
     input9Label.HasHover = "No";
     input9Label.Font = "2"
     input9Label.BackColor = colorPartlySelectedPreset
 
     local input9Button = inputsGrid:Append('Button')
-    input9Button.Anchors = { left = 4, right = 9, top = 8, bottom = 8 }
+    input9Button.Anchors = { left = 4, right = 9, top = TopInc, bottom = TopInc }
     input9Button.Padding = "5,5"
-    input9Button.Margin = { left = 2, right = 0, top = 8, bottom = 2 }
+    input9Button.Margin = { left = 2, right = 0, top = TopInc, bottom = 2 }
     input9Button.Name = 'Gel_Select'
     input9Button.Text = "Please select Gel"
     input9Button.PluginComponent = thiscomponent
@@ -648,20 +667,22 @@ local function Main(displayHandle)
     input9Button.BackColor = colorPartlySelectedPreset
     input9Button.Font = "2"
 
+    TopInc = TopInc + 1
+
     -- Create the UI elements for the 10 input button.
     local input10Icon = inputsGrid:Append("Button")
     input10Icon.Text = ""
-    input10Icon.Anchors = { left = 0, right = 0, top = 9, bottom = 9 }
+    input10Icon.Anchors = { left = 0, right = 0, top = TopInc, bottom = TopInc }
     input10Icon.Icon = "object_group2"
-    input10Icon.Margin = { left = 0, right = 2, top = 9, bottom = 2 }
+    input10Icon.Margin = { left = 0, right = 2, top = TopInc, bottom = 2 }
     input10Icon.HasHover = "No";
     input10Icon.BackColor = colorGroups
     input10Icon.Font = "2"
 
     local input10Button = inputsGrid:Append('Button')
-    input10Button.Anchors = { left = 1, right = 9, top = 9, bottom = 9 }
+    input10Button.Anchors = { left = 1, right = 9, top = TopInc, bottom = TopInc }
     input10Button.Padding = "5,5"
-    input10Button.Margin = { left = 2, right = 0, top = 9, bottom = 2 }
+    input10Button.Margin = { left = 2, right = 0, top = TopInc, bottom = 2 }
     input10Button.Name = 'Grp_Select'
     input10Button.Text = 'Please add Group'
     input10Button.PluginComponent = thiscomponent
@@ -669,6 +690,8 @@ local function Main(displayHandle)
     input10Button.BackColor = colorGroups
     input10Button.Font = "2"
     input10Button.Visible = "No"
+
+    TopInc = TopInc + 1
 
     -- Create the button grid.
     -- This is row 3 of the dlgFrame.
