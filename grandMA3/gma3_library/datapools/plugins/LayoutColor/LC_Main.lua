@@ -1,6 +1,6 @@
 --[[
 Releases:
-* 2.0.1.2
+* 2.0.1.3
 
 Created by Richard Fontaine "RIRI", June 2024.
 --]]
@@ -11,7 +11,7 @@ local signalTable, thiscomponent = select(3, ...)
 local myHandle = select(4, ...)
 
 local function Main(displayHandle)
-    Cmd ('Set CurrentUserProfile Property KeyboardShortcutsActive 0')
+    Cmd('Set CurrentUserProfile Property KeyboardShortcutsActive 0')
     local list = false
     local FixtureGroups = DataPool().Groups:Children()
     local SelectedGrp = {}
@@ -49,16 +49,16 @@ local function Main(displayHandle)
     local TopInc = 0
 
     local popuplists = {
-        Grp_Select     = {},
-        Gel_Select     = {},
-        Name_Select    = { 'Layout Color', 'Layout Kolor', 'L Co', 'L Ko', 'Color', 'Kolor' },
-        Lay_Select     = { 1, 11, 101, 201, 301, 401, 501, 601, 701, 801, 901, 1001, 2001 },
-        Seq_Select     = { 1, 11, 101, 201, 301, 401, 501, 601, 701, 801, 901, 1001, 2001 },
-        Macro_Select   = { 1, 11, 101, 201, 301, 401, 501, 601, 701, 801, 901, 1001, 2001 },
-        Appear_Select  = { 1, 11, 101, 201, 301, 401, 501, 601, 701, 801, 901, 1001, 2001 },
-        Preset_Select  = { 1, 11, 101, 201, 301, 401, 501, 601, 701, 801, 901, 1001, 2001 },
-        Matrick_Select = { 1, 11, 101, 201, 301, 401, 501, 601, 701, 801, 901, 1001, 2001 },
-        Favorite_Select= { 10, 16, 20, 30, 32, 40, 50, 60, 64, 70, 80, 90, 100, 110, 120, 124}
+        Grp_Select      = {},
+        Gel_Select      = {},
+        Name_Select     = { 'Layout Color', 'Layout Kolor', 'L Co', 'L Ko', 'Color', 'Kolor' },
+        Lay_Select      = { 1, 11, 101, 201, 301, 401, 501, 601, 701, 801, 901, 1001, 2001 },
+        Seq_Select      = { 1, 11, 101, 201, 301, 401, 501, 601, 701, 801, 901, 1001, 2001 },
+        Macro_Select    = { 1, 11, 101, 201, 301, 401, 501, 601, 701, 801, 901, 1001, 2001 },
+        Appear_Select   = { 1, 11, 101, 201, 301, 401, 501, 601, 701, 801, 901, 1001, 2001 },
+        Preset_Select   = { 1, 11, 101, 201, 301, 401, 501, 601, 701, 801, 901, 1001, 2001 },
+        Matrick_Select  = { 1, 11, 101, 201, 301, 401, 501, 601, 701, 801, 901, 1001, 2001 },
+        Favorite_Select = { 10, 16, 20, 30, 32, 40, 50, 60, 64, 70, 80, 90, 100, 110, 120, 124 }
     }
 
     if list == false then
@@ -638,7 +638,7 @@ local function Main(displayHandle)
     input8LineEdit.Font = "2"
     input8LineEdit.BackColor = colorPartlySelected
     input8LineEdit.Visible = "No"
-    
+
     TopInc = TopInc + 1
 
     -- Create the UI elements for the 8 input.
@@ -792,7 +792,8 @@ local function Main(displayHandle)
         end
         Obj.Delete(screenOverlay, Obj.Index(baseInput))
         Construct_Layout(displayHandle, TLay, SeqNrStart, MacroNrStart, MatrickNrStart, MatrickNr, TLayNr, AppNr,
-            All_5_Current, All_5_NrStart, ColPath, SelectedGelNr, SelectedGrp, SelectedGrpNo, TLayNrRef, NaLay, MaxColLgn, Favourite_Nr)
+            All_5_Current, All_5_NrStart, ColPath, SelectedGelNr, SelectedGrp, SelectedGrpNo, TLayNrRef, NaLay, MaxColLgn,
+            Favourite_Nr)
     end
 
     signalTable.OnInput1TextChanged = function(caller)
@@ -866,7 +867,7 @@ local function Main(displayHandle)
         end
         MacroNrStart = caller.Content:gsub("'", "")
         MacroNrStart = tonumber(MacroNrStart)
-        MacroNrRange = MacroNrStart + 45
+        MacroNrRange = MacroNrStart + 42 + Favourite_Nr + Nr_SelectedGrp
         for k in ipairs(MacroNr) do
             if MacroNrStart <= tonumber(MacroNr[k].NO) then
                 if MacroNrRange >= tonumber(MacroNr[k].NO) then
@@ -1010,17 +1011,31 @@ local function Main(displayHandle)
     signalTable.OnInput11TextChanged = function(caller)
         local checks = false
         if caller.Content == "" or caller.Content == "0" then
+            OkButton.Visible = "No"
+            input11LineEdit.TextColor = colorAlertText
             checks = true
         end
         Favourite_Nr = caller.Content:gsub("'", "")
         Favourite_Nr = tonumber(Favourite_Nr)
-        Printf(Favourite_Nr)
+        MacroNrRange = MacroNrStart + 42 + Favourite_Nr + Nr_SelectedGrp
+        for k in ipairs(MacroNr) do
+            if MacroNrStart <= tonumber(MacroNr[k].NO) then
+                if MacroNrRange >= tonumber(MacroNr[k].NO) then
+                    OkButton.Visible = "No"
+                    input4LineEdit.TextColor = colorAlertText
+                    input11LineEdit.TextColor = colorAlertText
+                    checks = true
+                end
+            end
+        end
 
         if checks == true then
             OkButton.Visible = "No"
+            input4LineEdit.TextColor = colorAlertText
             input11LineEdit.TextColor = colorAlertText
         end
         if checks == false then
+            input4LineEdit.TextColor = colorText
             input11LineEdit.TextColor = colorText
             if check_grp == true and check_gel == true then
                 OkButton.Visible = "Yes"
