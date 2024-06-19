@@ -26,11 +26,12 @@ function Create_Favourite_Macro(prefix, CurrentMacroNr, TLayNr, Data_Pool_Nr, Fa
     return CurrentMacroNr, macro_num
 end
 
-function Create_Favourite_Layout(LayNr, CurrentMacroNr, LayH, LayW, TLayNr, Data_Pool_Nr, Ligne_Inc, Favourite_Nr)
-    local LayX = -80 -- position of te first object by x-axis
-    local LayY = 700 -- position of te first0 object by y-axis
+function Create_Favourite_Layout(LayNr, CurrentMacroNr, LayH, LayW, TLayNr, Data_Pool_Nr, Ligne_Inc, Favourite_Nr, LayX)
+    -- local LayX = -80 -- position of te first object by x-axis
+    LayX = LayX + 120
+    local LayY = 560 -- position of te first0 object by y-axis
     if Ligne_Inc then
-        LayY = 800
+        LayY = 560
     end
     local object_type = 'Macro'
     local line_num = 1
@@ -49,7 +50,7 @@ function Create_Favourite_Layout(LayNr, CurrentMacroNr, LayH, LayW, TLayNr, Data
     LayNr = LayNr + 1
     pool_obj_num = pool_obj_num + 1
     Cmd('assign ' .. object_type .. ' ' .. pool_obj_num .. ' Thru ' .. last_pool_obj .. ' at Layout ' .. TLayNr .. ' /nu')
-    LayX = 160
+    LayX = LayX + 240
     while line_num <= Favourite_Nr do
         layout_pool[TLayNr][LayNr]:Set('posx', LayX)
         layout_pool[TLayNr][LayNr]:Set('posy', LayY)

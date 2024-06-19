@@ -191,7 +191,7 @@ function PC_Create_Group_Sequence(SelectedGrp, SelectedGrpName, Phaser_Off, Curr
     for g in ipairs(SelectedGrp) do
         Cmd("ClearAll /nu")
         Cmd("Store Sequence " ..
-            CurrentSeqNr .. " \"" .. prefix .. SelectedGrpName[g] .. "\"")
+            CurrentSeqNr .. " \"o" .. prefix .. SelectedGrpName[g] .. "\"")
         Cmd("Store Sequence " .. CurrentSeqNr .. " Cue 1 Part 0.1")
         Cmd("Assign Group " .. SelectedGrpNo[g] .. " At Sequence " .. CurrentSeqNr .. " Cue 1 Part 0.1")
         Cmd('Assign Preset 25.' .. Phaser_Off .. " At Sequence " .. CurrentSeqNr .. 'cue 1 part 0.1')
@@ -372,7 +372,8 @@ end
 
 function PC_Create_Layout_FixGroup(CurrentMacroNr, CurrentSeqNr, LayNr, LayY, RefX, LayH, LayW, TLayNr, NaLay,
                                    SelectedGrp, SelectedGrpName, Argument_Matricks, surfix, prefix, AppImp, Argument_Ref,
-                                   AppRef, Preset_25_Ref, Phaser_Off, Phaser_Ref, All_Call_Ref, All_Call_Y, Data_Pool_Nr)
+                                   AppRef, Preset_25_Ref, Phaser_Off, Phaser_Ref, All_Call_Ref, All_Call_Y, Data_Pool_Nr,
+                                   Ligne_Inc)
     local Macro_Pool = DataPool().Macros
     LayY = math.floor(LayY - 20) -- Add offset for Layout Element distance
     LayY = math.floor(LayY - LayH)
@@ -386,7 +387,7 @@ function PC_Create_Layout_FixGroup(CurrentMacroNr, CurrentSeqNr, LayNr, LayY, Re
     for g in ipairs(SelectedGrp) do
         All_Call_Ref[g][1] = CurrentSeqNr
         Cmd('Store Sequence ' .. CurrentSeqNr ..
-            ' \'' .. prefix .. ' ' .. SelectedGrpName[g] .. '_Select\'')
+            ' \'o' .. prefix .. ' ' .. SelectedGrpName[g] .. '_Select\'')
         Cmd('Store Sequence ' .. CurrentSeqNr .. ' Cue 2')
         Cmd('Set Sequence ' .. CurrentSeqNr .. ' Cue 1 Property Appearance  ' .. AppRef .. '')
         Cmd('Set Sequence ' .. CurrentSeqNr .. ' Cue 2 Property Appearance  ' .. AppRef + 1 .. '')
@@ -409,7 +410,7 @@ function PC_Create_Layout_FixGroup(CurrentMacroNr, CurrentSeqNr, LayNr, LayY, Re
             All_Call_Ref[g][i + 1] = CurrentSeqNr
             -- Create Seq
             Cmd('Store Sequence ' .. CurrentSeqNr ..
-                ' \'' .. prefix .. ' ' .. SelectedGrpName[g] .. ' ' .. AppImp[i].Name .. '\'')
+                ' \'o' .. prefix .. ' ' .. SelectedGrpName[g] .. ' ' .. AppImp[i].Name .. '\'')
             -- Create Macros
             Cmd('Store Macro ' .. CurrentMacroNr ..
                 ' \'' .. prefix .. ' ' .. SelectedGrpName[g] .. ' ' .. AppImp[i].Name .. '\'')
@@ -418,7 +419,7 @@ function PC_Create_Layout_FixGroup(CurrentMacroNr, CurrentSeqNr, LayNr, LayY, Re
             Cmd('ChangeDestination Root')
             Macro_Pool[CurrentMacroNr][1]:Set('Command', 'Assign DataPool ' .. Data_Pool_Nr ..
                 '  Preset 25.' .. Preset_25_Ref[i] .. ' At DataPool ' .. Data_Pool_Nr ..
-                '  Sequence ' .. prefix .. SelectedGrpName[g] .. ' Cue 1 Part 0.1')
+                '  Sequence o' .. prefix .. SelectedGrpName[g] .. ' Cue 1 Part 0.1')
             -- end Create Macros
 
             Cmd('Set Sequence ' .. CurrentSeqNr ..
@@ -452,7 +453,7 @@ function PC_Create_Layout_FixGroup(CurrentMacroNr, CurrentSeqNr, LayNr, LayY, Re
             All_Call_Ref[g][i + 1] = CurrentSeqNr
             -- Create Seq
             Cmd('Store Sequence ' .. CurrentSeqNr ..
-                ' \'' .. prefix .. ' ' .. SelectedGrpName[g] .. ' ' .. AppImp[i].Name .. '\'')
+                ' \'o' .. prefix .. ' ' .. SelectedGrpName[g] .. ' ' .. AppImp[i].Name .. '\'')
             -- Create Macros
             Cmd('Store Macro ' .. CurrentMacroNr ..
                 ' \'' .. prefix .. ' ' .. SelectedGrpName[g] .. ' ' .. AppImp[i].Name .. '\'')
@@ -461,7 +462,7 @@ function PC_Create_Layout_FixGroup(CurrentMacroNr, CurrentSeqNr, LayNr, LayY, Re
             Cmd('ChangeDestination Root')
             Macro_Pool[CurrentMacroNr][1]:Set('Command', 'Assign DataPool ' ..
                 Data_Pool_Nr .. '  MAtricks ' .. prefix .. surfix[1] .. Argument_Matricks[i - 9].Name ..
-                ' At DataPool ' .. Data_Pool_Nr .. '  Sequence ' .. prefix .. SelectedGrpName[g] .. ' Cue 1 Part 0.1')
+                ' At DataPool ' .. Data_Pool_Nr .. '  Sequence o' .. prefix .. SelectedGrpName[g] .. ' Cue 1 Part 0.1')
             -- end Create Macros
 
             Cmd('Set Sequence ' .. CurrentSeqNr ..
@@ -494,7 +495,7 @@ function PC_Create_Layout_FixGroup(CurrentMacroNr, CurrentSeqNr, LayNr, LayY, Re
 
     -- Create Seq 100 50 0
     Cmd('Store Sequence ' .. CurrentSeqNr ..
-        ' \'' .. prefix .. ' 100 50 0 \'')
+        ' \'o' .. prefix .. ' 100 50 0 \'')
     Cmd('Store Sequence ' .. CurrentSeqNr .. 'Cue 2 Thru 3')
     Cmd('Set Sequence ' .. CurrentSeqNr .. 'Property PreferCueAppearance 1')
     -- Create Macros
@@ -546,6 +547,11 @@ function PC_Create_Layout_FixGroup(CurrentMacroNr, CurrentSeqNr, LayNr, LayY, Re
         Data_Pool_Nr .. ' Macro ' .. CurrentMacroNr .. '\' Property Appearance  ' .. prefix .. 'zero')
     -- end Create Seq 100 50 0
     -- Assign Seq to Layout
+    if Ligne_Inc then
+        LayY = -540
+    else
+        LayY = -60
+    end
     Cmd('Assign Sequence ' .. CurrentSeqNr .. ' At Layout ' .. TLayNr)
     Cmd('Set Layout ' .. TLayNr .. '.' .. LayNr ..
         ' PosX ' .. LayX .. ' PosY ' .. LayY ..
@@ -639,7 +645,7 @@ end
 
 function PC_Create_Macro_Priority(CurrentMacroNr, TLayNr, LayNr, LayX, LayY, LayW, LayH, prefix, Sequence_Ref,
                                   Sequence_Ref_End, Data_Pool_Nr)
-    LayY = 440
+    LayY = 560
     local Macro_Pool = DataPool().Macros
     CurrentMacroNr = math.floor(CurrentMacroNr)
     Cmd('Store Macro ' .. CurrentMacroNr .. ' \'' .. 'Priority\'')
