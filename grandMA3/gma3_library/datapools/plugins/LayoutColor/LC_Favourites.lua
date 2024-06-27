@@ -27,8 +27,9 @@ function Create_Favourite_Macro(prefix, CurrentMacroNr, TLayNr, Data_Pool_Nr, Fa
 end
 
 function Create_Favourite_Layout(LayNr, CurrentMacroNr, LayH, LayW, TLayNr, Data_Pool_Nr, Ligne_Inc, Favourite_Nr)
-    local LayX = -80 -- position of te first object by x-axis
-    local LayY = 700 -- position of te first0 object by y-axis
+    local LayX = 0 - 80 -- position of te first object by x-axis
+    -- local LayX = 0 -- position of te first object by x-axis
+    local LayY = 700   -- position of te first0 object by y-axis
     if Ligne_Inc then
         LayY = 800
     end
@@ -36,7 +37,7 @@ function Create_Favourite_Layout(LayNr, CurrentMacroNr, LayH, LayW, TLayNr, Data
     local line_num = 1
     local pool_obj_num = CurrentMacroNr - Favourite_Nr -- pool number of the first object
     Printf('pool object ' .. pool_obj_num)
-    local obj_count = Favourite_Nr                         -- amout of objects to be aligned
+    local obj_count = Favourite_Nr                     -- amout of objects to be aligned
     local last_pool_obj = pool_obj_num + obj_count     -- last object of the pool to be aligned
     local layout_pool = ShowData().datapools[Data_Pool_Nr].Layouts
     Cmd('assign ' .. object_type .. ' ' .. pool_obj_num .. ' at Layout ' .. TLayNr .. ' /nu')
