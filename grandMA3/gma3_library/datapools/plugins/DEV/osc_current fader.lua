@@ -34,7 +34,11 @@ local function poll(exec_no)
         history_Name[exec_no] = Name
         Echo("n° : " .. exec_no .. " Name : " ..Name)
     end
-
+    local fader_function
+    -- if exec ~= nil and exec.Object ~= nil then
+        -- fader_function = ObjectList(exec).fader.name
+        -- Echo("n° : " .. exec_no .. " function : " ..fader_function)
+    -- end
 
 
     local last_value = history_fader[exec_no]
