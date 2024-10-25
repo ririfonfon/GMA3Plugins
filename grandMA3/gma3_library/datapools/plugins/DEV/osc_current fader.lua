@@ -6,7 +6,8 @@ local executor_table = {
 }
 
 local osc_config = 1
-local history_fader, history_status, history_Name = {}, {}, {}
+local history_fader, history_status, history_Name, history_key, history_fade_func, history_c_r, history_c_g, history_c_b =
+    {}, {}, {}, {}, {}, {}, {}, {}
 local osc_template = 'SendOSC %i "/%s%i,i,%i"'
 local osc_string_template = 'SendOSC %i "/%s%i,s,%s"'
 local enabled = false
@@ -30,16 +31,33 @@ local function poll(exec_no)
     local last_Name = history_Name[exec_no]
     if Name ~= last_Name then
         if Name == nil then Name = exec_no end
-        send_string_osc('PageCurrent/Fader_Label', exec_no , Name)
+        send_string_osc('PageCurrent/Fader_Label', exec_no, Name)
         history_Name[exec_no] = Name
-        Echo("n° : " .. exec_no .. " Name : " ..Name)
+        Echo("n° : " .. exec_no .. " Name : " .. Name)
     end
-    local fader_function
-    -- if exec ~= nil and exec.Object ~= nil then
-        -- fader_function = ObjectList(exec).fader.name
-        -- Echo("n° : " .. exec_no .. " function : " ..fader_function)
-    -- end
+    local key
+    if exec ~= nil then
+        key = exec.key
+    end
+    local last_key = history_key[exec_no]
+    if key ~= last_key then
+        if key == nil then key = "." end
+        send_string_osc('PageCurrent/Key_Label', exec_no, key)
+        history_key[exec_no] = key
+        Echo("n° : " .. exec_no .. " key_function : " .. key)
+    end
 
+    local fader
+    if exec ~= nil then
+        fader = exec.fader
+    end
+    local last_fader = history_fade_func[exec_no]
+    if fader ~= last_fader then
+        if fader == nil then fader = "." end
+        send_string_osc('PageCurrent/Fader_Func', exec_no, fader)
+        history_fade_func[exec_no] = fader
+        Echo("n° : " .. exec_no .. " fader_function : " .. fader)
+    end
 
     local last_value = history_fader[exec_no]
     local status = exec and exec.Object and exec.Object:HasActivePlayback() and 1 or 0
@@ -52,6 +70,38 @@ local function poll(exec_no)
         send_osc('PageCurrent/Key', exec_no, status)
         history_status[exec_no] = status
     end
+
+    -- local color_r, color_g, color_b
+    -- if exec ~= nil and exec.Object ~= nil and exec.Object.Appearance ~= nil then
+    --     color_r = exec.Object.Appearance.ImageR
+    --     color_g = exec.Object.Appearance.ImageG
+    --     color_b = exec.Object.Appearance.ImageB
+    -- end
+    -- if exec == nil or exec.Object == nil or exec.Object.Appearance == nil then
+    --     color_r = 255
+    --     color_g = 255
+    --     color_b = 255
+    --     Echo('àààààààààààààààààààààààààààààààààààààààààààààààà')
+    -- end
+    -- local last_color_r = history_c_r[exec_no]
+    -- local last_color_g = history_c_g[exec_no]
+    -- local last_color_b = history_c_b[exec_no]
+    -- if color_r ~= last_color_r then
+    --     send_osc('PageCurrent/Fader_Color_R', exec_no, color_r)
+    --     history_c_r[exec_no] = color_r
+    --     Echo("n° : " .. exec_no .. " color r : " .. color_r)
+    -- end
+    -- if color_g ~= last_color_g then
+    --     send_osc('PageCurrent/Fader_Color_G', exec_no, color_g)
+    --     history_c_g[exec_no] = color_g
+    --     Echo("n° : " .. exec_no .. " color g : " .. color_g)
+    -- end
+    -- if color_b ~= last_color_b then
+    --     send_osc('PageCurrent/Fader_Color_B', exec_no, color_b)
+    --     history_c_b[exec_no] = color_b
+    --     Echo("n° : " .. exec_no .. " color b : " .. color_b)
+    -- end
+
 end
 
 local function mainloop()
