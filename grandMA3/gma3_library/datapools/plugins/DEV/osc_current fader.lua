@@ -28,15 +28,18 @@ end
 local function poll(exec_no)
     local Seq = DataPool().Sequences:Children()
     local SeqNr = Seq[1]
+    local Cue_Nr
+    local Cue_Nr_Name
 
     if list == false then
         Echo('good **********************************')
         Echo('SeqNr .... : ' .. SeqNr.name)
         for k in ipairs(SeqNr) do
-            -- Echo('SeqNr de : ' .. k .. ' est ' .. SeqNr[k].name)
             if SeqNr[k].No ~= nil then
-                local Cue_Nr = string.format("%.2f", SeqNr[k].No / 1000)
+                Cue_Nr = string.format("%.2f", SeqNr[k].No / 1000)
                 Echo(' Cue : ' .. Cue_Nr .. ' est ' .. SeqNr[k].name)
+                local cue_floor = math.floor (SeqNr[k].No / 1000)
+                Echo('floor : ' .. cue_floor)
             end
         end
         list = true
