@@ -6,25 +6,15 @@ local executor_table = {
 }
 
 local osc_config = 1
-local h_fader, h_status, h_Name, h_key, h_fade_func, h_c_r, h_c_g, h_c_b =
-    {}, {}, {}, {}, {}, {}, {}, {}
+local h_fader, h_status, h_Name, h_key, h_fade_func, conduite_cue, h_c_r, h_c_g, h_c_b =
+    {}, {}, {}, {}, {}, {}, {}, {}, {}
 local h_page, h_pname = nil, nil
 local osc_template = 'SendOSC %i "/%s%i,i,%i"'
 local osc_string_template = 'SendOSC %i "/%s%i,s,%s"'
 local enabled = false
 local Printf, Echo, GetExecutor, Cmd, ipairs, mfloor = Printf, Echo, GetExecutor, Cmd, ipairs, math.floor
 
--- local Master = Root().ShowData.Masters.Grand.Master
--- local list = false
-
--- if list == false then
---     Echo('good **********************************')
---     Echo('Master .... : ' .. Master)
---     for k in ipairs(Master) do
---         Echo('Master de : ' .. k .. " est " .. Master[k].name)
---     end
---     list = true
--- end
+local list = false
 
 
 
@@ -36,6 +26,26 @@ local function send_string_osc(etype, exec_no, value)
 end
 
 local function poll(exec_no)
+    local Seq = DataPool().Sequences:Children()
+    local SeqNr = Seq[1]
+
+    if list == false then
+        Echo('good **********************************')
+        Echo('SeqNr .... : ' .. SeqNr.name)
+        for k in ipairs(SeqNr) do
+            -- Echo('SeqNr de : ' .. k .. ' est ' .. SeqNr[k].name)
+            if SeqNr[k].No ~= nil then
+                local Cue_Nr = string.format("%.2f", SeqNr[k].No / 1000)
+                Echo(' Cue : ' .. Cue_Nr .. ' est ' .. SeqNr[k].name)
+            end
+        end
+        list = true
+    end
+
+
+
+
+
     local exec = GetExecutor(exec_no)
     local value = exec and mfloor(exec:GetFader {}) or -1
     local Text = exec and exec:GetFaderText {} or -1
