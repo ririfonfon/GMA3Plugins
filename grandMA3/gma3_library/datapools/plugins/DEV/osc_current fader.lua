@@ -39,6 +39,7 @@ local function poll(exec_no)
                 Cue_Nr = string.format("%.2f", SeqNr[k].No / 1000)
                 Echo(' Cue : ' .. Cue_Nr .. ' est ' .. SeqNr[k].name)
                 local cue_floor = math.floor (SeqNr[k].No / 1000)
+                cue_floor = tonumber(Cue_Nr)
                 Echo('floor : ' .. cue_floor)
             end
         end
