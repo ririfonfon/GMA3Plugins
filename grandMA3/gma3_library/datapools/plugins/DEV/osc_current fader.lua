@@ -15,6 +15,7 @@ local enabled = false
 local Printf, Echo, GetExecutor, Cmd, ipairs, mfloor = Printf, Echo, GetExecutor, Cmd, ipairs, math.floor
 
 local list = false
+local refresh = true
 
 
 
@@ -26,6 +27,23 @@ local function send_string_osc(etype, exec_no, value)
 end
 
 local function poll(exec_no)
+    local targetPage = CurrentExecPage()
+    local pagenumber = targetPage.No
+    local pname = targetPage.name
+    local last_pagenumber = h_page
+    local last_pname = h_pname
+    if pagenumber ~= last_pagenumber or refresh == true then
+        send_osc('PageNumber', 0, pagenumber)
+        h_page = pagenumber
+        Echo('page : ' .. pagenumber)
+        refresh = true
+    end
+    if pname ~= last_pname or refresh == true then
+        send_string_osc('PageName', 0, pname)
+        h_pname = pname
+        Echo('page name : ' .. pname)
+    end
+
     local Seq = DataPool().Sequences:Children()
     local SeqNr = Seq[1]
     local Cue_Nr
@@ -59,7 +77,7 @@ local function poll(exec_no)
     end
     local last_Name = h_Name[exec_no]
     if Name == nil then Name = exec_no end
-    if Name ~= last_Name then
+    if Name ~= last_Name or refresh == true then
         send_string_osc('PageCurrent/Fader_Label', exec_no, Name)
         h_Name[exec_no] = Name
         Echo("n° : " .. exec_no .. " Name : " .. Name)
@@ -70,7 +88,7 @@ local function poll(exec_no)
     end
     local last_key = h_key[exec_no]
     if key == nil then key = "" end
-    if key ~= last_key then
+    if key ~= last_key or refresh == true then
         send_string_osc('PageCurrent/Key_Label', exec_no, key)
         h_key[exec_no] = key
         Echo("n° : " .. exec_no .. " key_Label : " .. key)
@@ -82,7 +100,7 @@ local function poll(exec_no)
     end
     local last_fader = h_fade_func[exec_no]
     if fader == nil then fader = "" end
-    if fader ~= last_fader then
+    if fader ~= last_fader or refresh == true then
         send_string_osc('PageCurrent/Fader_Func', exec_no, fader)
         h_fade_func[exec_no] = fader
         Echo("n° : " .. exec_no .. " fader_function : " .. fader)
@@ -91,30 +109,15 @@ local function poll(exec_no)
     local last_value = h_fader[exec_no]
     local status = exec and exec.Object and exec.Object:HasActivePlayback() and 1 or 0
     local last_status = h_status[exec_no]
-    if value ~= last_value then
+    if value ~= last_value or refresh == true then
         send_osc('PageCurrent/Fader', exec_no, value)
         h_fader[exec_no] = value
     end
-    if status ~= last_status then
+    if status ~= last_status or refresh == true then
         send_osc('PageCurrent/Key', exec_no, status)
         h_status[exec_no] = status
     end
 
-    local targetPage = CurrentExecPage()
-    local pagenumber = targetPage.No
-    local pname = targetPage.name
-    local last_pagenumber = h_page
-    local last_pname = h_pname
-    if pagenumber ~= last_pagenumber then
-        send_osc('PageNumber', 0, pagenumber)
-        h_page = pagenumber
-        Echo('page : ' .. pagenumber)
-    end
-    if pname ~= last_pname then
-        send_string_osc('PageName', 0, pname)
-        h_pname = pname
-        Echo('page name : ' .. pname)
-    end
 
     -- local color_r, color_g, color_b
     -- if exec ~= nil and exec.Object ~= nil and exec.Object.Appearance ~= nil then
@@ -146,6 +149,10 @@ local function poll(exec_no)
     --     h_c_b[exec_no] = color_b
     --     Echo("n° : " .. exec_no .. " color b : " .. color_b)
     -- end
+
+    if refresh == true then
+        refresh = false
+    end
 end
 
 local function mainloop()
