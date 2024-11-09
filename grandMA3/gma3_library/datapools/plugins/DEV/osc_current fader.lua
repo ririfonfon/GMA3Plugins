@@ -51,7 +51,8 @@ local function poll(exec_no)
     end
 
     local Seq = DataPool().Sequences:Children()
-    local Seq_Conduite = Seq[1]
+    local id_seq = SelectedSequence().No
+    local Seq_Conduite = Seq[id_seq]
     local Cue_Nr
     local Cue_Name
     local Current_Cue_name = SelectedSequence().currentcue[1].name
@@ -74,10 +75,8 @@ local function poll(exec_no)
                 conduite_cue_nr[k] = Cue_Nr
                 conduite_cue_name[k] = Cue_Name
                 cue_end = k
-                Echo('k ' .. k .. ' nr ' ..Cue_Nr)
             end
         end
-        Echo('00000000000000000000 : ' .. cue_end)
         list = true
     end
 
