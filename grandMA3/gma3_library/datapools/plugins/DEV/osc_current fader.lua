@@ -31,7 +31,7 @@ local function send_cue_osc(etype, value)
     Cmd(osc_cue_template:format(osc_config, etype, value))
 end
 
-local Current_Cue_number, last_Current_Cue_number
+local Current_Cue_number, last_Current_Cue_number, cue_end
 local function poll(exec_no)
     local targetPage = CurrentExecPage()
     local pagenumber = targetPage.No
@@ -66,37 +66,43 @@ local function poll(exec_no)
     end
 
     if list == false then
-        Echo('good **********************************')
-        Echo('Seq_Conduite .... : ' .. Seq_Conduite.name)
         for k in ipairs(Seq_Conduite) do
             if Seq_Conduite[k].No ~= nil then
                 Cue_Nr = math.floor(Seq_Conduite[k].No / 1000)
                 Cue_Nr = tonumber(Cue_Nr)
                 Cue_Name = Seq_Conduite[k].name
-                Echo(' Cue : ' .. Cue_Nr .. ' est ' .. Cue_Name)
                 conduite_cue_nr[k] = Cue_Nr
                 conduite_cue_name[k] = Cue_Name
+                cue_end = k
+                Echo('k ' .. k .. ' nr ' ..Cue_Nr)
             end
         end
+        Echo('00000000000000000000 : ' .. cue_end)
         list = true
     end
 
     if last_Current_Cue_number ~= Current_Cue_number then
         send_cue_osc('cue', Current_Cue_number)
-        send_cue_osc('cue_name' , Current_Cue_name)
+        send_cue_osc('cue_name', Current_Cue_name)
         for k in ipairs(Seq_Conduite) do
             if Seq_Conduite[k].No ~= nil then
                 Cue_Nr = math.floor(Seq_Conduite[k].No / 1000)
                 Cue_Nr = tonumber(Cue_Nr)
                 Cue_Name = Seq_Conduite[k].name
                 if Cue_Name == Current_Cue_name then
-                    send_cue_osc('precue', conduite_cue_nr[k-1])
-                    send_cue_osc('nextcue', conduite_cue_nr[k+1])
-                    send_cue_osc('precue_name', conduite_cue_name[k-1])
-                    send_cue_osc('nextcue_name', conduite_cue_name[k+1])
-
+                    local precue_v = k - 1
+                    local nextcue_v = k + 1
+                    if precue_v < 3 then
+                        precue_v = cue_end
+                    end
+                    if nextcue_v > cue_end then
+                        nextcue_v = 3
+                    end
+                    send_cue_osc('precue', conduite_cue_nr[precue_v])
+                    send_cue_osc('nextcue', conduite_cue_nr[nextcue_v])
+                    send_cue_osc('precue_name', conduite_cue_name[precue_v])
+                    send_cue_osc('nextcue_name', conduite_cue_name[nextcue_v])
                 end
-
             end
         end
         last_Current_Cue_number = Current_Cue_number
