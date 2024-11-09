@@ -6,11 +6,12 @@ local executor_table = {
 }
 
 local osc_config = 1
-local h_fader, h_status, h_Name, h_key, h_fade_func, conduite_cue, h_c_r, h_c_g, h_c_b =
-    {}, {}, {}, {}, {}, {}, {}, {}, {}
+local h_fader, h_status, h_Name, h_key, h_fade_func, conduite_cue_nr, conduite_cue_name, h_c_r, h_c_g, h_c_b =
+    {}, {}, {}, {}, {}, {}, {}, {}, {}, {}
 local h_page, h_pname = nil, nil
 local osc_template = 'SendOSC %i "/%s%i,i,%i"'
 local osc_string_template = 'SendOSC %i "/%s%i,s,%s"'
+local osc_cue_template = 'SendOSC %i "/%s,s,%s"'
 local enabled = false
 local Printf, Echo, GetExecutor, Cmd, ipairs, mfloor = Printf, Echo, GetExecutor, Cmd, ipairs, math.floor
 
@@ -26,6 +27,11 @@ local function send_string_osc(etype, exec_no, value)
     Cmd(osc_string_template:format(osc_config, etype, exec_no, value))
 end
 
+local function send_cue_osc(etype, value)
+    Cmd(osc_cue_template:format(osc_config, etype, value))
+end
+
+local Current_Cue_number, last_Current_Cue_number
 local function poll(exec_no)
     local targetPage = CurrentExecPage()
     local pagenumber = targetPage.No
@@ -45,24 +51,57 @@ local function poll(exec_no)
     end
 
     local Seq = DataPool().Sequences:Children()
-    local SeqNr = Seq[1]
+    local Seq_Conduite = Seq[1]
     local Cue_Nr
-    local Cue_Nr_Name
+    local Cue_Name
+    local Current_Cue_name = SelectedSequence().currentcue[1].name
+
+    for key, value in ipairs(SelectedSequence():Children()) do
+        if value.No then
+            if value.Name == Current_Cue_name then
+                Current_Cue_number = math.floor(value.No / 1000)
+                Current_Cue_number = tonumber(Current_Cue_number)
+            end
+        end
+    end
 
     if list == false then
         Echo('good **********************************')
-        Echo('SeqNr .... : ' .. SeqNr.name)
-        for k in ipairs(SeqNr) do
-            if SeqNr[k].No ~= nil then
-                Cue_Nr = string.format("%.2f", SeqNr[k].No / 1000)
-                Echo(' Cue : ' .. Cue_Nr .. ' est ' .. SeqNr[k].name)
-                local cue_floor = math.floor (SeqNr[k].No / 1000)
-                cue_floor = tonumber(Cue_Nr)
-                Echo('floor : ' .. cue_floor)
+        Echo('Seq_Conduite .... : ' .. Seq_Conduite.name)
+        for k in ipairs(Seq_Conduite) do
+            if Seq_Conduite[k].No ~= nil then
+                Cue_Nr = math.floor(Seq_Conduite[k].No / 1000)
+                Cue_Nr = tonumber(Cue_Nr)
+                Cue_Name = Seq_Conduite[k].name
+                Echo(' Cue : ' .. Cue_Nr .. ' est ' .. Cue_Name)
+                conduite_cue_nr[k] = Cue_Nr
+                conduite_cue_name[k] = Cue_Name
             end
         end
         list = true
     end
+
+    if last_Current_Cue_number ~= Current_Cue_number then
+        send_cue_osc('cue', Current_Cue_number)
+        send_cue_osc('cue_name' , Current_Cue_name)
+        for k in ipairs(Seq_Conduite) do
+            if Seq_Conduite[k].No ~= nil then
+                Cue_Nr = math.floor(Seq_Conduite[k].No / 1000)
+                Cue_Nr = tonumber(Cue_Nr)
+                Cue_Name = Seq_Conduite[k].name
+                if Cue_Name == Current_Cue_name then
+                    send_cue_osc('precue', conduite_cue_nr[k-1])
+                    send_cue_osc('nextcue', conduite_cue_nr[k+1])
+                    send_cue_osc('precue_name', conduite_cue_name[k-1])
+                    send_cue_osc('nextcue_name', conduite_cue_name[k+1])
+
+                end
+
+            end
+        end
+        last_Current_Cue_number = Current_Cue_number
+    end
+
 
 
 
