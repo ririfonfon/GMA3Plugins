@@ -15,7 +15,6 @@ local osc_cue_template = 'SendOSC %i "/%s,s,%s"'
 local enabled = false
 local Printf, Echo, GetExecutor, Cmd, ipairs, mfloor = Printf, Echo, GetExecutor, Cmd, ipairs, math.floor
 
-local list = false
 local refresh = true
 
 
@@ -31,7 +30,7 @@ local function send_cue_osc(etype, value)
     Cmd(osc_cue_template:format(osc_config, etype, value))
 end
 
-local Current_Cue_number, last_Current_Cue_number, cue_end
+local Current_Cue_number, last_Current_Cue_number, cue_end, last_Current_Seq_Name, Current_Cue_name
 local function poll(exec_no)
     local targetPage = CurrentExecPage()
     local pagenumber = targetPage.No
@@ -52,10 +51,16 @@ local function poll(exec_no)
 
     local Seq = DataPool().Sequences:Children()
     local id_seq = SelectedSequence().No
+    id_seq = tonumber(id_seq)
+    local Current_Seq_Name = SelectedSequence().name
     local Seq_Conduite = Seq[id_seq]
     local Cue_Nr
     local Cue_Name
-    local Current_Cue_name = SelectedSequence().currentcue[1].name
+    if SelectedSequence().currentcue ~= nil then
+        Current_Cue_name = SelectedSequence().currentcue[1].name
+    else
+        Current_Cue_name = 'none'
+    end
 
     for key, value in ipairs(SelectedSequence():Children()) do
         if value.No then
@@ -66,8 +71,10 @@ local function poll(exec_no)
         end
     end
 
-    if list == false then
+    if last_Current_Seq_Name ~= Current_Seq_Name then
+        conduite_cue_name, conduite_cue_nr = {}, {}
         for k in ipairs(Seq_Conduite) do
+            Echo('KKK : ' .. k)
             if Seq_Conduite[k].No ~= nil then
                 Cue_Nr = math.floor(Seq_Conduite[k].No / 1000)
                 Cue_Nr = tonumber(Cue_Nr)
@@ -77,7 +84,7 @@ local function poll(exec_no)
                 cue_end = k
             end
         end
-        list = true
+        last_Current_Seq_Name = Current_Seq_Name
     end
 
     if last_Current_Cue_number ~= Current_Cue_number then
