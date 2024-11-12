@@ -74,7 +74,6 @@ local function poll(exec_no)
     if last_Current_Seq_Name ~= Current_Seq_Name then
         conduite_cue_name, conduite_cue_nr = {}, {}
         for k in ipairs(Seq_Conduite) do
-            Echo('KKK : ' .. k)
             if Seq_Conduite[k].No ~= nil then
                 Cue_Nr = math.floor(Seq_Conduite[k].No / 1000)
                 Cue_Nr = tonumber(Cue_Nr)
@@ -85,6 +84,7 @@ local function poll(exec_no)
             end
         end
         last_Current_Seq_Name = Current_Seq_Name
+        send_cue_osc('Select_seq_name', Current_Seq_Name)
     end
 
     if last_Current_Cue_number ~= Current_Cue_number then
