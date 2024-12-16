@@ -170,36 +170,36 @@ local function poll(exec_no)
     end
 
 
-    -- local color_r, color_g, color_b
-    -- if exec ~= nil and exec.Object ~= nil and exec.Object.Appearance ~= nil then
-    --     color_r = exec.Object.Appearance.ImageR
-    --     color_g = exec.Object.Appearance.ImageG
-    --     color_b = exec.Object.Appearance.ImageB
-    -- end
-    -- if exec == nil or exec.Object == nil or exec.Object.Appearance == nil then
-    --     color_r = 255
-    --     color_g = 255
-    --     color_b = 255
-    --     Echo('àààààààààààààààààààààààààààààààààààààààààààààààà')
-    -- end
-    -- local last_color_r = h_c_r[exec_no]
-    -- local last_color_g = h_c_g[exec_no]
-    -- local last_color_b = h_c_b[exec_no]
-    -- if color_r ~= last_color_r then
-    --     send_osc('PageCurrent/Fader_Color_R', exec_no, color_r)
-    --     h_c_r[exec_no] = color_r
-    --     Echo("n° : " .. exec_no .. " color r : " .. color_r)
-    -- end
-    -- if color_g ~= last_color_g then
-    --     send_osc('PageCurrent/Fader_Color_G', exec_no, color_g)
-    --     h_c_g[exec_no] = color_g
-    --     Echo("n° : " .. exec_no .. " color g : " .. color_g)
-    -- end
-    -- if color_b ~= last_color_b then
-    --     send_osc('PageCurrent/Fader_Color_B', exec_no, color_b)
-    --     h_c_b[exec_no] = color_b
-    --     Echo("n° : " .. exec_no .. " color b : " .. color_b)
-    -- end
+    local color_r, color_g, color_b
+    if exec ~= nil and exec.Object ~= nil and exec.Object.Appearance ~= nil then
+        color_r = exec.Object.Appearance.ImageR
+        color_g = exec.Object.Appearance.ImageG
+        color_b = exec.Object.Appearance.ImageB
+    end
+    if exec == nil or exec.Object == nil or exec.Object.Appearance == nil then
+        color_r = 255
+        color_g = 255
+        color_b = 255
+        -- Echo('àààààààààà : ' .. exec_no)
+    end
+    local last_color_r = h_c_r[exec_no]
+    local last_color_g = h_c_g[exec_no]
+    local last_color_b = h_c_b[exec_no]
+    if color_r ~= last_color_r then
+        send_osc('PageCurrent/Fader_Color_R', exec_no, color_r)
+        h_c_r[exec_no] = color_r
+        Echo("n° : " .. exec_no .. " color r : " .. color_r)
+    end
+    if color_g ~= last_color_g then
+        send_osc('PageCurrent/Fader_Color_G', exec_no, color_g)
+        h_c_g[exec_no] = color_g
+        Echo("n° : " .. exec_no .. " color g : " .. color_g)
+    end
+    if color_b ~= last_color_b then
+        send_osc('PageCurrent/Fader_Color_B', exec_no, color_b)
+        h_c_b[exec_no] = color_b
+        Echo("n° : " .. exec_no .. " color b : " .. color_b)
+    end
 
     if refresh == true then
         refresh = false
