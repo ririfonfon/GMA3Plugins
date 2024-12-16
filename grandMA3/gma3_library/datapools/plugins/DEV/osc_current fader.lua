@@ -180,7 +180,6 @@ local function poll(exec_no)
         color_r = 255
         color_g = 255
         color_b = 255
-        -- Echo('àààààààààà : ' .. exec_no)
     end
     local last_color_r = h_c_r[exec_no]
     local last_color_g = h_c_g[exec_no]
