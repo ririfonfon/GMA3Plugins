@@ -40,13 +40,13 @@ local function poll(exec_no)
     if pagenumber ~= last_pagenumber or refresh == true then
         send_osc('PageNumber', 0, pagenumber)
         h_page = pagenumber
-        Echo('page : ' .. pagenumber)
+        -- Echo('page : ' .. pagenumber)
         refresh = true
     end
     if pname ~= last_pname or refresh == true then
         send_string_osc('PageName', 0, pname)
         h_pname = pname
-        Echo('page name : ' .. pname)
+        -- Echo('page name : ' .. pname)
     end
 
     local Seq = DataPool().Sequences:Children()
@@ -131,7 +131,7 @@ local function poll(exec_no)
     if Name ~= last_Name or refresh == true then
         send_string_osc('PageCurrent/Fader_Label', exec_no, Name)
         h_Name[exec_no] = Name
-        Echo("n° : " .. exec_no .. " Name : " .. Name)
+        -- Echo("n° : " .. exec_no .. " Name : " .. Name)
     end
     local key
     if exec ~= nil then
@@ -142,7 +142,7 @@ local function poll(exec_no)
     if key ~= last_key or refresh == true then
         send_string_osc('PageCurrent/Key_Label', exec_no, key)
         h_key[exec_no] = key
-        Echo("n° : " .. exec_no .. " key_Label : " .. key)
+        -- Echo("n° : " .. exec_no .. " key_Label : " .. key)
     end
 
     local fader
@@ -154,7 +154,7 @@ local function poll(exec_no)
     if fader ~= last_fader or refresh == true then
         send_string_osc('PageCurrent/Fader_Func', exec_no, fader)
         h_fade_func[exec_no] = fader
-        Echo("n° : " .. exec_no .. " fader_function : " .. fader)
+        -- Echo("n° : " .. exec_no .. " fader_function : " .. fader)
     end
 
     local last_value = h_fader[exec_no]
