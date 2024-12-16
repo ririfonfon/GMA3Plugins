@@ -65,7 +65,7 @@ local function poll(exec_no)
     for key, value in ipairs(SelectedSequence():Children()) do
         if value.No then
             if value.Name == Current_Cue_name then
-                Current_Cue_number = math.floor(value.No / 1000)
+                Current_Cue_number = value.No / 1000
                 Current_Cue_number = tonumber(Current_Cue_number)
             end
         end
@@ -75,7 +75,7 @@ local function poll(exec_no)
         conduite_cue_name, conduite_cue_nr = {}, {}
         for k in ipairs(Seq_Conduite) do
             if Seq_Conduite[k].No ~= nil then
-                Cue_Nr = math.floor(Seq_Conduite[k].No / 1000)
+                Cue_Nr = Seq_Conduite[k].No / 1000
                 Cue_Nr = tonumber(Cue_Nr)
                 Cue_Name = Seq_Conduite[k].name
                 conduite_cue_nr[k] = Cue_Nr
@@ -92,7 +92,7 @@ local function poll(exec_no)
         send_cue_osc('cue_name', Current_Cue_name)
         for k in ipairs(Seq_Conduite) do
             if Seq_Conduite[k].No ~= nil then
-                Cue_Nr = math.floor(Seq_Conduite[k].No / 1000)
+                Cue_Nr = Seq_Conduite[k].No / 1000
                 Cue_Nr = tonumber(Cue_Nr)
                 Cue_Name = Seq_Conduite[k].name
                 if Cue_Name == Current_Cue_name then
