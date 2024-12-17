@@ -32,6 +32,7 @@ end
 
 local Current_Cue_number, last_Current_Cue_number, cue_end, last_Current_Seq_Name, Current_Cue_name
 local function poll(exec_no)
+    --------------------------------------------PAGE
     local targetPage = CurrentExecPage()
     local pagenumber = targetPage.No
     local pname = targetPage.name
@@ -40,15 +41,18 @@ local function poll(exec_no)
     if pagenumber ~= last_pagenumber or refresh == true then
         send_osc('PageNumber', 0, pagenumber)
         h_page = pagenumber
-        -- Echo('page : ' .. pagenumber)
         refresh = true
     end
     if pname ~= last_pname or refresh == true then
         send_string_osc('PageName', 0, pname)
         h_pname = pname
-        -- Echo('page name : ' .. pname)
     end
 
+
+
+
+
+    --------------------------------------------SELECTED SEQ
     local Seq = DataPool().Sequences:Children()
     local id_seq = SelectedSequence().No
     id_seq = tonumber(id_seq)
@@ -61,7 +65,6 @@ local function poll(exec_no)
     else
         Current_Cue_name = 'none'
     end
-
     for key, value in ipairs(SelectedSequence():Children()) do
         if value.No then
             if value.Name == Current_Cue_name then
@@ -70,7 +73,6 @@ local function poll(exec_no)
             end
         end
     end
-
     if last_Current_Seq_Name ~= Current_Seq_Name then
         conduite_cue_name, conduite_cue_nr = {}, {}
         for k in ipairs(Seq_Conduite) do
@@ -86,7 +88,6 @@ local function poll(exec_no)
         last_Current_Seq_Name = Current_Seq_Name
         send_cue_osc('Select_seq_name', Current_Seq_Name)
     end
-
     if last_Current_Cue_number ~= Current_Cue_number then
         send_cue_osc('cue', Current_Cue_number)
         send_cue_osc('cue_name', Current_Cue_name)
@@ -118,10 +119,11 @@ local function poll(exec_no)
 
 
 
-
+    --------------------------------------------FADER BUTTON ROT
     local exec = GetExecutor(exec_no)
     local value = exec and mfloor(exec:GetFader {}) or -1
     local Text = exec and exec:GetFaderText {} or -1
+
     local Name
     if exec ~= nil and exec.Object ~= nil then
         Name = exec.Object.name
@@ -133,6 +135,7 @@ local function poll(exec_no)
         h_Name[exec_no] = Name
         -- Echo("n° : " .. exec_no .. " Name : " .. Name)
     end
+
     local key
     if exec ~= nil then
         key = exec.key
@@ -170,12 +173,23 @@ local function poll(exec_no)
     end
 
 
+    -- if exec == nil then
+    --     Echo(exec_no .. ' have no : exec')
+    -- end
+    -- if exec ~= nil and exec.Object == nil then
+    --     Echo(exec_no .. ' have no :  object')
+    -- end
+    -- if exec ~= nil and exec.Object ~= nil and exec.Object.Appearance == nil then
+    --     Echo(exec_no .. ' have no : Appearance')
+    -- end
+    
     local color_r, color_g, color_b
     if exec ~= nil and exec.Object ~= nil and exec.Object.Appearance ~= nil then
         color_r = exec.Object.Appearance.ImageR
         color_g = exec.Object.Appearance.ImageG
         color_b = exec.Object.Appearance.ImageB
     end
+ 
     if exec == nil or exec.Object == nil or exec.Object.Appearance == nil then
         color_r = 255
         color_g = 255
