@@ -61,7 +61,7 @@ local function poll(exec_no)
     local Cue_Nr
     local Cue_Name
     if SelectedSequence().currentcue ~= nil then
-        Current_Cue_name = SelectedSequence().currentcue[1].name
+        Current_Cue_name = SelectedSequence().currentcue.name
     else
         Current_Cue_name = 'none'
     end
@@ -115,7 +115,15 @@ local function poll(exec_no)
         last_Current_Cue_number = Current_Cue_number
     end
 
-
+    if refresh then
+        send_cue_osc('Select_seq_name', Current_Seq_Name)
+        send_cue_osc('cue', Current_Cue_number)
+        send_cue_osc('cue_name', Current_Cue_name)
+        -- send_cue_osc('precue', conduite_cue_nr[precue_v])
+        -- send_cue_osc('nextcue', conduite_cue_nr[nextcue_v])
+        -- send_cue_osc('precue_name', conduite_cue_name[precue_v])
+        -- send_cue_osc('nextcue_name', conduite_cue_name[nextcue_v])
+    end
 
 
 
@@ -182,14 +190,14 @@ local function poll(exec_no)
     -- if exec ~= nil and exec.Object ~= nil and exec.Object.Appearance == nil then
     --     Echo(exec_no .. ' have no : Appearance')
     -- end
-    
+
     local color_r, color_g, color_b
     if exec ~= nil and exec.Object ~= nil and exec.Object.Appearance ~= nil then
         color_r = exec.Object.Appearance.ImageR
         color_g = exec.Object.Appearance.ImageG
         color_b = exec.Object.Appearance.ImageB
     end
- 
+
     if exec == nil or exec.Object == nil or exec.Object.Appearance == nil then
         color_r = 255
         color_g = 255
