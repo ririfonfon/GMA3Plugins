@@ -73,7 +73,7 @@ local function poll(exec_no)
             end
         end
     end
-    if last_Current_Seq_Name ~= Current_Seq_Name then
+    if last_Current_Seq_Name ~= Current_Seq_Name or refresh == true then
         conduite_cue_name, conduite_cue_nr = {}, {}
         for k in ipairs(Seq_Conduite) do
             if Seq_Conduite[k].No ~= nil then
@@ -88,7 +88,7 @@ local function poll(exec_no)
         last_Current_Seq_Name = Current_Seq_Name
         send_cue_osc('Select_seq_name', Current_Seq_Name)
     end
-    if last_Current_Cue_number ~= Current_Cue_number then
+    if last_Current_Cue_number ~= Current_Cue_number or refresh == true then
         send_cue_osc('cue', Current_Cue_number)
         send_cue_osc('cue_name', Current_Cue_name)
         for k in ipairs(Seq_Conduite) do
