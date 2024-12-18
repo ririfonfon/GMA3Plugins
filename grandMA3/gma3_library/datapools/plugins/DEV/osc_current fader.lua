@@ -232,187 +232,187 @@ local function poll(exec_no)
     local last_color_b = h_c_b[exec_no]
     if color_r ~= last_color_r then
         send_osc('PageCurrent/Fader_Color_R', exec_no, color_r)
-        if exec_height > 1 then
-            send_osc('PageCurrent/Fader_Color_R', exec_no + 100, color_r)
-            if exec_width > 1 then
-                send_osc('PageCurrent/Fader_Color_R', exec_no + 101, color_r)
-            end
-            if exec_width > 2 then
-                send_osc('PageCurrent/Fader_Color_R', exec_no + 102, color_r)
-            end
-            if exec_width > 3 then
-                send_osc('PageCurrent/Fader_Color_R', exec_no + 103, color_r)
-            end
-            if exec_width > 4 then
-                send_osc('PageCurrent/Fader_Color_R', exec_no + 104, color_r)
-            end
-        end
-        if exec_height > 2 then
-            send_osc('PageCurrent/Fader_Color_R', exec_no + 200, color_r)
-            if exec_width > 1 then
-                send_osc('PageCurrent/Fader_Color_R', exec_no + 201, color_r)
-            end
-            if exec_width > 2 then
-                send_osc('PageCurrent/Fader_Color_R', exec_no + 202, color_r)
-            end
-            if exec_width > 3 then
-                send_osc('PageCurrent/Fader_Color_R', exec_no + 203, color_r)
-            end
-            if exec_width > 4 then
-                send_osc('PageCurrent/Fader_Color_R', exec_no + 204, color_r)
-            end
-        end
-        if exec_height > 3 then
-            send_osc('PageCurrent/Fader_Color_R', exec_no + 300, color_r)
-            if exec_width > 1 then
-                send_osc('PageCurrent/Fader_Color_R', exec_no + 301, color_r)
-            end
-            if exec_width > 2 then
-                send_osc('PageCurrent/Fader_Color_R', exec_no + 302, color_r)
-            end
-            if exec_width > 3 then
-                send_osc('PageCurrent/Fader_Color_R', exec_no + 303, color_r)
-            end
-            if exec_width > 4 then
-                send_osc('PageCurrent/Fader_Color_R', exec_no + 304, color_r)
-            end
-        end
-        if exec_width > 1 then
-            send_osc('PageCurrent/Fader_Color_R', exec_no + 1, color_r)
-        end
-        if exec_width > 2 then
-            send_osc('PageCurrent/Fader_Color_R', exec_no + 2, color_r)
-        end
-        if exec_width > 3 then
-            send_osc('PageCurrent/Fader_Color_R', exec_no + 3, color_r)
-        end
-        if exec_width > 4 then
-            send_osc('PageCurrent/Fader_Color_R', exec_no + 4, color_r)
-        end
+        -- if exec_height > 1 then
+        --     send_osc('PageCurrent/Fader_Color_R', exec_no + 100, color_r)
+        --     if exec_width > 1 then
+        --         send_osc('PageCurrent/Fader_Color_R', exec_no + 101, color_r)
+        --     end
+        --     if exec_width > 2 then
+        --         send_osc('PageCurrent/Fader_Color_R', exec_no + 102, color_r)
+        --     end
+        --     if exec_width > 3 then
+        --         send_osc('PageCurrent/Fader_Color_R', exec_no + 103, color_r)
+        --     end
+        --     if exec_width > 4 then
+        --         send_osc('PageCurrent/Fader_Color_R', exec_no + 104, color_r)
+        --     end
+        -- end
+        -- if exec_height > 2 then
+        --     send_osc('PageCurrent/Fader_Color_R', exec_no + 200, color_r)
+        --     if exec_width > 1 then
+        --         send_osc('PageCurrent/Fader_Color_R', exec_no + 201, color_r)
+        --     end
+        --     if exec_width > 2 then
+        --         send_osc('PageCurrent/Fader_Color_R', exec_no + 202, color_r)
+        --     end
+        --     if exec_width > 3 then
+        --         send_osc('PageCurrent/Fader_Color_R', exec_no + 203, color_r)
+        --     end
+        --     if exec_width > 4 then
+        --         send_osc('PageCurrent/Fader_Color_R', exec_no + 204, color_r)
+        --     end
+        -- end
+        -- if exec_height > 3 then
+        --     send_osc('PageCurrent/Fader_Color_R', exec_no + 300, color_r)
+        --     if exec_width > 1 then
+        --         send_osc('PageCurrent/Fader_Color_R', exec_no + 301, color_r)
+        --     end
+        --     if exec_width > 2 then
+        --         send_osc('PageCurrent/Fader_Color_R', exec_no + 302, color_r)
+        --     end
+        --     if exec_width > 3 then
+        --         send_osc('PageCurrent/Fader_Color_R', exec_no + 303, color_r)
+        --     end
+        --     if exec_width > 4 then
+        --         send_osc('PageCurrent/Fader_Color_R', exec_no + 304, color_r)
+        --     end
+        -- end
+        -- if exec_width > 1 then
+        --     send_osc('PageCurrent/Fader_Color_R', exec_no + 1, color_r)
+        -- end
+        -- if exec_width > 2 then
+        --     send_osc('PageCurrent/Fader_Color_R', exec_no + 2, color_r)
+        -- end
+        -- if exec_width > 3 then
+        --     send_osc('PageCurrent/Fader_Color_R', exec_no + 3, color_r)
+        -- end
+        -- if exec_width > 4 then
+        --     send_osc('PageCurrent/Fader_Color_R', exec_no + 4, color_r)
+        -- end
         h_c_r[exec_no] = color_r
         Echo("n° : " .. exec_no .. " color r : " .. color_r)
     end
     if color_g ~= last_color_g then
         send_osc('PageCurrent/Fader_Color_G', exec_no, color_g)
-        if exec_height > 1 then
-            send_osc('PageCurrent/Fader_Color_G', exec_no + 100, color_g)
-            if exec_width > 1 then
-                send_osc('PageCurrent/Fader_Color_G', exec_no + 101, color_g)
-            end
-            if exec_width > 2 then
-                send_osc('PageCurrent/Fader_Color_G', exec_no + 102, color_g)
-            end
-            if exec_width > 3 then
-                send_osc('PageCurrent/Fader_Color_G', exec_no + 103, color_g)
-            end
-            if exec_width > 4 then
-                send_osc('PageCurrent/Fader_Color_G', exec_no + 104, color_g)
-            end
-        end
-        if exec_height > 2 then
-            send_osc('PageCurrent/Fader_Color_G', exec_no + 200, color_g)
-            if exec_width > 1 then
-                send_osc('PageCurrent/Fader_Color_G', exec_no + 201, color_g)
-            end
-            if exec_width > 2 then
-                send_osc('PageCurrent/Fader_Color_G', exec_no + 202, color_g)
-            end
-            if exec_width > 3 then
-                send_osc('PageCurrent/Fader_Color_G', exec_no + 203, color_g)
-            end
-            if exec_width > 4 then
-                send_osc('PageCurrent/Fader_Color_G', exec_no + 204, color_g)
-            end
-        end
-        if exec_height > 3 then
-            send_osc('PageCurrent/Fader_Color_G', exec_no + 300, color_g)
-            if exec_width > 1 then
-                send_osc('PageCurrent/Fader_Color_G', exec_no + 301, color_g)
-            end
-            if exec_width > 2 then
-                send_osc('PageCurrent/Fader_Color_G', exec_no + 302, color_g)
-            end
-            if exec_width > 3 then
-                send_osc('PageCurrent/Fader_Color_G', exec_no + 303, color_g)
-            end
-            if exec_width > 4 then
-                send_osc('PageCurrent/Fader_Color_G', exec_no + 304, color_g)
-            end
-        end
-        if exec_width > 1 then
-            send_osc('PageCurrent/Fader_Color_G', exec_no + 1, color_g)
-        end
-        if exec_width > 2 then
-            send_osc('PageCurrent/Fader_Color_G', exec_no + 2, color_g)
-        end
-        if exec_width > 3 then
-            send_osc('PageCurrent/Fader_Color_G', exec_no + 3, color_g)
-        end
-        if exec_width > 4 then
-            send_osc('PageCurrent/Fader_Color_G', exec_no + 4, color_g)
-        end
+        -- if exec_height > 1 then
+        --     send_osc('PageCurrent/Fader_Color_G', exec_no + 100, color_g)
+        --     if exec_width > 1 then
+        --         send_osc('PageCurrent/Fader_Color_G', exec_no + 101, color_g)
+        --     end
+        --     if exec_width > 2 then
+        --         send_osc('PageCurrent/Fader_Color_G', exec_no + 102, color_g)
+        --     end
+        --     if exec_width > 3 then
+        --         send_osc('PageCurrent/Fader_Color_G', exec_no + 103, color_g)
+        --     end
+        --     if exec_width > 4 then
+        --         send_osc('PageCurrent/Fader_Color_G', exec_no + 104, color_g)
+        --     end
+        -- end
+        -- if exec_height > 2 then
+        --     send_osc('PageCurrent/Fader_Color_G', exec_no + 200, color_g)
+        --     if exec_width > 1 then
+        --         send_osc('PageCurrent/Fader_Color_G', exec_no + 201, color_g)
+        --     end
+        --     if exec_width > 2 then
+        --         send_osc('PageCurrent/Fader_Color_G', exec_no + 202, color_g)
+        --     end
+        --     if exec_width > 3 then
+        --         send_osc('PageCurrent/Fader_Color_G', exec_no + 203, color_g)
+        --     end
+        --     if exec_width > 4 then
+        --         send_osc('PageCurrent/Fader_Color_G', exec_no + 204, color_g)
+        --     end
+        -- end
+        -- if exec_height > 3 then
+        --     send_osc('PageCurrent/Fader_Color_G', exec_no + 300, color_g)
+        --     if exec_width > 1 then
+        --         send_osc('PageCurrent/Fader_Color_G', exec_no + 301, color_g)
+        --     end
+        --     if exec_width > 2 then
+        --         send_osc('PageCurrent/Fader_Color_G', exec_no + 302, color_g)
+        --     end
+        --     if exec_width > 3 then
+        --         send_osc('PageCurrent/Fader_Color_G', exec_no + 303, color_g)
+        --     end
+        --     if exec_width > 4 then
+        --         send_osc('PageCurrent/Fader_Color_G', exec_no + 304, color_g)
+        --     end
+        -- end
+        -- if exec_width > 1 then
+        --     send_osc('PageCurrent/Fader_Color_G', exec_no + 1, color_g)
+        -- end
+        -- if exec_width > 2 then
+        --     send_osc('PageCurrent/Fader_Color_G', exec_no + 2, color_g)
+        -- end
+        -- if exec_width > 3 then
+        --     send_osc('PageCurrent/Fader_Color_G', exec_no + 3, color_g)
+        -- end
+        -- if exec_width > 4 then
+        --     send_osc('PageCurrent/Fader_Color_G', exec_no + 4, color_g)
+        -- end
         h_c_g[exec_no] = color_g
         Echo("n° : " .. exec_no .. " color g : " .. color_g)
     end
     if color_b ~= last_color_b then
         send_osc('PageCurrent/Fader_Color_B', exec_no, color_b)
-        if exec_height > 1 then
-            send_osc('PageCurrent/Fader_Color_B', exec_no + 100, color_b)
-            if exec_width > 1 then
-                send_osc('PageCurrent/Fader_Color_B', exec_no + 101, color_b)
-            end
-            if exec_width > 2 then
-                send_osc('PageCurrent/Fader_Color_B', exec_no + 102, color_b)
-            end
-            if exec_width > 3 then
-                send_osc('PageCurrent/Fader_Color_B', exec_no + 103, color_b)
-            end
-            if exec_width > 4 then
-                send_osc('PageCurrent/Fader_Color_B', exec_no + 104, color_b)
-            end
-        end
-        if exec_height > 2 then
-            send_osc('PageCurrent/Fader_Color_B', exec_no + 200, color_b)
-            if exec_width > 1 then
-                send_osc('PageCurrent/Fader_Color_B', exec_no + 201, color_b)
-            end
-            if exec_width > 2 then
-                send_osc('PageCurrent/Fader_Color_B', exec_no + 202, color_b)
-            end
-            if exec_width > 3 then
-                send_osc('PageCurrent/Fader_Color_B', exec_no + 203, color_b)
-            end
-            if exec_width > 4 then
-                send_osc('PageCurrent/Fader_Color_B', exec_no + 204, color_b)
-            end
-        end
-        if exec_height > 3 then
-            send_osc('PageCurrent/Fader_Color_B', exec_no + 300, color_b)
-            if exec_width > 1 then
-                send_osc('PageCurrent/Fader_Color_B', exec_no + 301, color_b)
-            end
-            if exec_width > 2 then
-                send_osc('PageCurrent/Fader_Color_B', exec_no + 302, color_b)
-            end
-            if exec_width > 3 then
-                send_osc('PageCurrent/Fader_Color_B', exec_no + 303, color_b)
-            end
-            if exec_width > 4 then
-                send_osc('PageCurrent/Fader_Color_B', exec_no + 304, color_b)
-            end
-        end
-        if exec_width > 1 then
-            send_osc('PageCurrent/Fader_Color_B', exec_no + 1, color_b)
-        end
-        if exec_width > 2 then
-            send_osc('PageCurrent/Fader_Color_B', exec_no + 2, color_b)
-        end
-        if exec_width > 3 then
-            send_osc('PageCurrent/Fader_Color_B', exec_no + 3, color_b)
-        end
-        if exec_width > 4 then
-            send_osc('PageCurrent/Fader_Color_B', exec_no + 4, color_b)
-        end
+        -- if exec_height > 1 then
+        --     send_osc('PageCurrent/Fader_Color_B', exec_no + 100, color_b)
+        --     if exec_width > 1 then
+        --         send_osc('PageCurrent/Fader_Color_B', exec_no + 101, color_b)
+        --     end
+        --     if exec_width > 2 then
+        --         send_osc('PageCurrent/Fader_Color_B', exec_no + 102, color_b)
+        --     end
+        --     if exec_width > 3 then
+        --         send_osc('PageCurrent/Fader_Color_B', exec_no + 103, color_b)
+        --     end
+        --     if exec_width > 4 then
+        --         send_osc('PageCurrent/Fader_Color_B', exec_no + 104, color_b)
+        --     end
+        -- end
+        -- if exec_height > 2 then
+        --     send_osc('PageCurrent/Fader_Color_B', exec_no + 200, color_b)
+        --     if exec_width > 1 then
+        --         send_osc('PageCurrent/Fader_Color_B', exec_no + 201, color_b)
+        --     end
+        --     if exec_width > 2 then
+        --         send_osc('PageCurrent/Fader_Color_B', exec_no + 202, color_b)
+        --     end
+        --     if exec_width > 3 then
+        --         send_osc('PageCurrent/Fader_Color_B', exec_no + 203, color_b)
+        --     end
+        --     if exec_width > 4 then
+        --         send_osc('PageCurrent/Fader_Color_B', exec_no + 204, color_b)
+        --     end
+        -- end
+        -- if exec_height > 3 then
+        --     send_osc('PageCurrent/Fader_Color_B', exec_no + 300, color_b)
+        --     if exec_width > 1 then
+        --         send_osc('PageCurrent/Fader_Color_B', exec_no + 301, color_b)
+        --     end
+        --     if exec_width > 2 then
+        --         send_osc('PageCurrent/Fader_Color_B', exec_no + 302, color_b)
+        --     end
+        --     if exec_width > 3 then
+        --         send_osc('PageCurrent/Fader_Color_B', exec_no + 303, color_b)
+        --     end
+        --     if exec_width > 4 then
+        --         send_osc('PageCurrent/Fader_Color_B', exec_no + 304, color_b)
+        --     end
+        -- end
+        -- if exec_width > 1 then
+        --     send_osc('PageCurrent/Fader_Color_B', exec_no + 1, color_b)
+        -- end
+        -- if exec_width > 2 then
+        --     send_osc('PageCurrent/Fader_Color_B', exec_no + 2, color_b)
+        -- end
+        -- if exec_width > 3 then
+        --     send_osc('PageCurrent/Fader_Color_B', exec_no + 3, color_b)
+        -- end
+        -- if exec_width > 4 then
+        --     send_osc('PageCurrent/Fader_Color_B', exec_no + 4, color_b)
+        -- end
         h_c_b[exec_no] = color_b
         Echo("n° : " .. exec_no .. " color b : " .. color_b)
     end
