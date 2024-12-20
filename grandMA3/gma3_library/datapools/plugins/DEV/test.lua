@@ -6,8 +6,8 @@ local executor_table = {
 }
 
 local osc_config = 1
-local h_fader, h_status, h_Name, h_key, h_fade_func, conduite_cue_nr, conduite_cue_name, h_c_r, h_c_g, h_c_b, ticket =
-    {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}
+local h_fader, h_status, h_Name, h_key, h_fade_func, conduite_cue_nr, conduite_cue_name, h_c_r, h_c_g, h_c_b, ticket, ticket_old =
+    {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}
 local h_page, h_pname = nil, nil
 local osc_template = 'SendOSC %i "/%s%i,i,%i"'
 local osc_string_template = 'SendOSC %i "/%s%i,s,%s"'
@@ -20,18 +20,29 @@ local refresh = true
 
 
 local function send_osc(etype, exec_no, value)
-    -- Cmd(osc_template:format(osc_config, etype, exec_no, value))
+    Cmd(osc_template:format(osc_config, etype, exec_no, value))
+    -- coroutine.yield(0.00001)
 end
 local function send_string_osc(etype, exec_no, value)
     Cmd(osc_string_template:format(osc_config, etype, exec_no, value))
+    -- coroutine.yield(0.00001)
 end
 
 local function send_cue_osc(etype, value)
     Cmd(osc_cue_template:format(osc_config, etype, value))
+    -- coroutine.yield(0.00001)
+end
+
+local function ticket_on(n_exec, color_r, color_g, color_b)
+    ticket[n_exec] = true
+    h_c_r[n_exec] = color_r
+    h_c_g[n_exec] = color_g
+    h_c_b[n_exec] = color_b
+    -- Echo(' ticket on  n° : ' .. n_exec .. ' r : ' .. color_r .. ' g : ' .. color_g .. ' b : ' .. color_b)
 end
 
 local Current_Cue_number, last_Current_Cue_number, cue_end, last_Current_Seq_Name, Current_Cue_name
-local CueList, Current_Cuelist_Name, Current_Cuelist_Number = {}, {}, {}
+-- local CueList, Current_Cuelist_Name, Current_Cuelist_Number = {}, {}, {}
 local function poll(exec_no)
     --------------------------------------------PAGE
     local targetPage = CurrentExecPage()
@@ -44,6 +55,7 @@ local function poll(exec_no)
         h_page = pagenumber
         refresh = true
         ticket = {}
+        ticket_old = {}
     end
     if pname ~= last_pname or refresh == true then
         send_string_osc('PageName', 0, pname)
@@ -206,21 +218,14 @@ local function poll(exec_no)
     end
 
 
-    -- if exec == nil then
-    --     Echo(exec_no .. ' have no : exec')
-    -- end
-    -- if exec ~= nil and exec.Object == nil then
-    --     Echo(exec_no .. ' have no :  object')
-    -- end
-    -- if exec ~= nil and exec.Object ~= nil and exec.Object.Appearance == nil then
-    --     Echo(exec_no .. ' have no : Appearance')
-    -- end
+    --------------------------------------------FADER BUTTON COLOR
 
     local color_r, color_g, color_b
     if exec ~= nil and exec.Object ~= nil and exec.Object.Appearance ~= nil then
         color_r = exec.Object.Appearance.ImageR
         color_g = exec.Object.Appearance.ImageG
         color_b = exec.Object.Appearance.ImageB
+        -- Echo(exec_no .. ' *****************OBJECT')
     end
 
     if exec == nil or exec.Object == nil or exec.Object.Appearance == nil then
@@ -235,91 +240,98 @@ local function poll(exec_no)
     local last_color_g = h_c_g[exec_no]
     local last_color_b = h_c_b[exec_no]
 
-    if ticket[exec_no] ~= nil then
-        last_color_r, last_color_g, last_color_b = 0, 0, 0
+    if ticket[exec_no] ~= nil and ticket_old[exec_no] ~= true then
+        last_color_r = -1
+        last_color_g = -1
+        last_color_b = -1
         color_r = h_c_r[exec_no]
         color_g = h_c_g[exec_no]
         color_b = h_c_b[exec_no]
-        ticket[exec_no] = nil
+        ticket_old[exec_no] = 1000
+        -- Echo(exec_no .. ' ***************TICKET&TICKET_OLD')
     end
-    if color_r ~= last_color_r then
-        send_osc('PageCurrent/Fader_Color_R', exec_no, color_r)
-        h_c_r[exec_no] = color_r
-        Echo("*n° : " .. exec_no .. " color r : " .. color_r)
-        if exec_height > 1 then
-            for h = 1, exec_height - 1 do
-                h_c_r[exec_no + h * 100] = color_r
-                ticket[exec_no + h * 100] = true
-                Echo("n° : " .. exec_no + h * 100 .. " color r : " .. color_r)
-                if exec_width > 1 then
-                    for w = 1, exec_width - 1 do
-                        h_c_r[exec_no + h * 100 + w] = color_r
-                        ticket[exec_no + h * 100 + w] = true
-                        Echo("n° : " .. exec_no + h * 100 + w .. " color r : " .. color_r)
+
+    if ticket_old[exec_no] ~= true then
+        local send_color = false
+        if ticket_old[exec_no] == 1000 then
+            ticket_old[exec_no] = true
+        end
+        if color_r ~= last_color_r then
+            -- Echo(exec_no .. ' color')
+            -- Echo(color_r .. ' color')
+            send_osc('PageCurrent/Fader_Color_R', exec_no, color_r)
+            h_c_r[exec_no] = color_r
+            -- Echo("*n° : " .. exec_no .. " color r : " .. color_r)
+            if exec_height > 1 then
+                for h = 1, exec_height - 1 do
+                    ticket_on(exec_no + h * 100, color_r, color_g, color_b)
+                    if exec_width > 1 then
+                        for w = 1, exec_width - 1 do
+                            ticket_on(exec_no + h * 100 + w, color_r, color_g, color_b)
+                        end
                     end
+                end
+            end
+
+            if exec_width > 1 then
+                for w = 1, exec_width - 1 do
+                    ticket_on(exec_no + w, color_r, color_g, color_b)
+                end
+            end
+        end
+        if color_g ~= last_color_g then
+            send_osc('PageCurrent/Fader_Color_G', exec_no, color_g)
+            h_c_g[exec_no] = color_g
+            -- Echo("*n° : " .. exec_no .. " color g : " .. color_g)
+            if exec_height > 1 then
+                for h = 1, exec_height - 1 do
+                    ticket_on(exec_no + h * 100, color_r, color_g, color_b)
+                    if exec_width > 1 then
+                        for w = 1, exec_width - 1 do
+                            ticket_on(exec_no + h * 100 + w, color_r, color_g, color_b)
+                        end
+                    end
+                end
+            end
+
+            if exec_width > 1 then
+                for w = 1, exec_width - 1 do
+                    ticket_on(exec_no + w, color_r, color_g, color_b)
+                end
+            end
+        end
+        if color_b ~= last_color_b then
+            send_osc('PageCurrent/Fader_Color_B', exec_no, color_b)
+            h_c_b[exec_no] = color_b
+            -- Echo("*n° : " .. exec_no .. " color b : " .. color_b)
+            if exec_height > 1 then
+                for h = 1, exec_height - 1 do
+                    ticket_on(exec_no + h * 100, color_r, color_g, color_b)
+                    if exec_width > 1 then
+                        for w = 1, exec_width - 1 do
+                            ticket_on(exec_no + h * 100 + w, color_r, color_g, color_b)
+                        end
+                    end
+                end
+            end
+
+            if exec_width > 1 then
+                for w = 1, exec_width - 1 do
+                    ticket_on(exec_no + w, color_r, color_g, color_b)
                 end
             end
         end
 
-        if exec_width > 1 then
-            for w = 1, exec_width - 1 do
-                h_c_r[exec_no + w] = color_r
-                ticket[exec_no + w] = true
-                Echo("n° : " .. exec_no + w .. " color r : " .. color_r)
-            end
-        end
-    end
-    if color_g ~= last_color_g then
-        send_osc('PageCurrent/Fader_Color_G', exec_no, color_g)
-        h_c_g[exec_no] = color_g
-        Echo("*n° : " .. exec_no .. " color g : " .. color_g)
-        if exec_height > 1 then
-            for h = 1, exec_height - 1 do
-                h_c_g[exec_no + h * 100] = color_g
-                ticket[exec_no + h * 100] = true
-                Echo("n° : " .. exec_no + h * 100 .. " color g : " .. color_g)
-                if exec_width > 1 then
-                    for w = 1, exec_width - 1 do
-                        h_c_g[exec_no + h * 100 + w] = color_g
-                        ticket[exec_no + h * 100 + w] = true
-                        Echo("n° : " .. exec_no + h * 100 + w .. " color g : " .. color_g)
-                    end
+        if ticket[exec_no] ~= true then
+            if ticket_old[exec_no] ~= true then
+                if exec == nil or exec.Object == nil or exec.Object.Appearance == nil then
+                    send_osc('PageCurrent/Fader_Color_R', exec_no, 255)
+                    send_osc('PageCurrent/Fader_Color_G', exec_no, 255)
+                    send_osc('PageCurrent/Fader_Color_B', exec_no, 255)
+                    exec_height = 1
+                    exec_width = 1
+                    ticket_old[exec_no] = true
                 end
-            end
-        end
-
-        if exec_width > 1 then
-            for w = 1, exec_width - 1 do
-                h_c_g[exec_no + w] = color_g
-                ticket[exec_no + w] = true
-                Echo("n° : " .. exec_no + w .. " color g : " .. color_g)
-            end
-        end
-    end
-    if color_b ~= last_color_b then
-        send_osc('PageCurrent/Fader_Color_B', exec_no, color_b)
-        h_c_b[exec_no] = color_b
-        Echo("*n° : " .. exec_no .. " color b : " .. color_b)
-        if exec_height > 1 then
-            for h = 1, exec_height - 1 do
-                h_c_b[exec_no + h * 100] = color_b
-                ticket[exec_no + h * 100] = true
-                Echo("n° : " .. exec_no + h * 100 .. " color b : " .. color_b)
-                if exec_width > 1 then
-                    for w = 1, exec_width - 1 do
-                        h_c_b[exec_no + h * 100 + w] = color_b
-                        ticket[exec_no + h * 100 + w] = true
-                        Echo("n° : " .. exec_no + h * 100 + w .. " color b : " .. color_b)
-                    end
-                end
-            end
-        end
-
-        if exec_width > 1 then
-            for w = 1, exec_width do
-                h_c_b[exec_no + w] = color_b
-                ticket[exec_no + w] = true
-                Echo("n° : " .. exec_no + w .. " color b : " .. color_b)
             end
         end
     end
@@ -332,8 +344,8 @@ end
 local function mainloop()
     while enabled do
         for _, exec_no in ipairs(executor_table) do poll(exec_no) end
-        coroutine.yield(0.1)
-        -- coroutine.yield(0.5)
+        -- coroutine.yield(0.1)
+        coroutine.yield(0.5)
     end
 end
 
