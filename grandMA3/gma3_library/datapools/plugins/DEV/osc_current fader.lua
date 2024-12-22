@@ -6,8 +6,8 @@ local executor_table = {
 }
 
 local osc_config = 1
-local h_fader, h_status, h_Name, h_key, h_fade_func, conduite_cue_nr, conduite_cue_name, h_c_r, h_c_g, h_c_b, ticket, ticket_old =
-    {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}
+local h_fader, h_status, h_Name, h_key, h_fade_func, conduite_cue_nr, conduite_cue_name, h_c_r, h_c_g,
+h_c_b, ticket, ticket_old, ticket_name, ticket_old_name = {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}
 local h_page, h_pname = nil, nil
 local osc_template = 'SendOSC %i "/%s%i,i,%i"'
 local osc_string_template = 'SendOSC %i "/%s%i,s,%s"'
@@ -33,25 +33,26 @@ end
 
 local function send_color_osc(etype, exec_no, value_r, value_g, value_b)
     local r_hex = string.format("%X", value_r)
-    if string.len( r_hex ) < 2 then
+    if string.len(r_hex) < 2 then
         r_hex = '0' .. r_hex
     end
     local g_hex = string.format("%X", value_g)
-    if string.len( g_hex ) < 2 then
+    if string.len(g_hex) < 2 then
         g_hex = '0' .. g_hex
     end
     local b_hex = string.format("%X", value_b)
-    if string.len( b_hex ) < 2 then
+    if string.len(b_hex) < 2 then
         b_hex = '0' .. b_hex
     end
     Cmd(osc_color_template:format(osc_config, etype, exec_no, r_hex, g_hex, b_hex, 'FF'))
 end
 
-local function ticket_on(n_exec, color_r, color_g, color_b)
+local function ticket_on(n_exec, color_r, color_g, color_b, Name)
     ticket[n_exec] = true
     h_c_r[n_exec] = color_r
     h_c_g[n_exec] = color_g
     h_c_b[n_exec] = color_b
+    ticket_name[n_exec] = Name
     -- Echo(' ticket on  n° : ' .. n_exec .. ' r : ' .. color_r .. ' g : ' .. color_g .. ' b : ' .. color_b)
 end
 
@@ -70,6 +71,8 @@ local function poll(exec_no)
         refresh = true
         ticket = {}
         ticket_old = {}
+        ticket_name = {}
+        ticket_old_name = {}
     end
     if pname ~= last_pname or refresh == true then
         send_string_osc('PageName', 0, pname)
@@ -189,10 +192,20 @@ local function poll(exec_no)
 
     local last_Name = h_Name[exec_no]
     if Name == nil then Name = exec_no end
-    if Name ~= last_Name or refresh == true then
-        send_string_osc('PageCurrent/Fader_Label', exec_no, Name)
-        h_Name[exec_no] = Name
-        -- Echo("n° : " .. exec_no .. " Name : " .. Name)
+    if ticket[exec_no] ~= nil and ticket_old_name[exec_no] ~= true then
+        last_Name = ''
+        Name = ticket_name[exec_no]
+        ticket_old_name[exec_no] = 1000
+    end
+    if ticket_old_name[exec_no] ~= true then
+        if ticket_old_name[exec_no] == 1000 then
+            ticket_old_name[exec_no] = true
+        end
+        if Name ~= last_Name or refresh == true then
+            send_string_osc('PageCurrent/Fader_Label', exec_no, Name)
+            h_Name[exec_no] = Name
+            -- Echo("n° : " .. exec_no .. " Name : " .. Name)
+        end
     end
 
     local key
@@ -279,10 +292,10 @@ local function poll(exec_no)
             -- Echo("*n° : " .. exec_no .. " color r : " .. color_r)
             if exec_height > 1 then
                 for h = 1, exec_height - 1 do
-                    ticket_on(exec_no + h * 100, color_r, color_g, color_b)
+                    ticket_on(exec_no + h * 100, color_r, color_g, color_b, Name)
                     if exec_width > 1 then
                         for w = 1, exec_width - 1 do
-                            ticket_on(exec_no + h * 100 + w, color_r, color_g, color_b)
+                            ticket_on(exec_no + h * 100 + w, color_r, color_g, color_b, Name)
                         end
                     end
                 end
@@ -290,7 +303,7 @@ local function poll(exec_no)
 
             if exec_width > 1 then
                 for w = 1, exec_width - 1 do
-                    ticket_on(exec_no + w, color_r, color_g, color_b)
+                    ticket_on(exec_no + w, color_r, color_g, color_b, Name)
                 end
             end
         end
@@ -301,10 +314,10 @@ local function poll(exec_no)
             -- Echo("*n° : " .. exec_no .. " color g : " .. color_g)
             if exec_height > 1 then
                 for h = 1, exec_height - 1 do
-                    ticket_on(exec_no + h * 100, color_r, color_g, color_b)
+                    ticket_on(exec_no + h * 100, color_r, color_g, color_b, Name)
                     if exec_width > 1 then
                         for w = 1, exec_width - 1 do
-                            ticket_on(exec_no + h * 100 + w, color_r, color_g, color_b)
+                            ticket_on(exec_no + h * 100 + w, color_r, color_g, color_b, Name)
                         end
                     end
                 end
@@ -312,7 +325,7 @@ local function poll(exec_no)
 
             if exec_width > 1 then
                 for w = 1, exec_width - 1 do
-                    ticket_on(exec_no + w, color_r, color_g, color_b)
+                    ticket_on(exec_no + w, color_r, color_g, color_b, Name)
                 end
             end
         end
@@ -323,10 +336,10 @@ local function poll(exec_no)
             -- Echo("*n° : " .. exec_no .. " color b : " .. color_b)
             if exec_height > 1 then
                 for h = 1, exec_height - 1 do
-                    ticket_on(exec_no + h * 100, color_r, color_g, color_b)
+                    ticket_on(exec_no + h * 100, color_r, color_g, color_b, Name)
                     if exec_width > 1 then
                         for w = 1, exec_width - 1 do
-                            ticket_on(exec_no + h * 100 + w, color_r, color_g, color_b)
+                            ticket_on(exec_no + h * 100 + w, color_r, color_g, color_b, Name)
                         end
                     end
                 end
@@ -334,7 +347,7 @@ local function poll(exec_no)
 
             if exec_width > 1 then
                 for w = 1, exec_width - 1 do
-                    ticket_on(exec_no + w, color_r, color_g, color_b)
+                    ticket_on(exec_no + w, color_r, color_g, color_b, Name)
                 end
             end
         end
