@@ -57,7 +57,7 @@ local function ticket_on(n_exec, color_r, color_g, color_b, Name)
 end
 
 local Current_Cue_number, last_Current_Cue_number, cue_end, last_Current_Seq_Name, Current_Cue_name
--- local CueList, Current_Cuelist_Name, Current_Cuelist_Number = {}, {}, {}
+local CueList, Current_Cuelist_Name, Current_Cuelist_Number = {}, {}, {}
 local function poll(exec_no)
     --------------------------------------------PAGE
     local targetPage = CurrentExecPage()
@@ -183,7 +183,7 @@ local function poll(exec_no)
         Number = exec.Object.No
         for k in ipairs(Seq[Number]) do
             if Seq[Number][k].No ~= nil then
-
+                -- Echo(k .. ' de ' .. Number .. ' name ' .. Name .. ' seq num .no ' .. Seq[Number][k].No)
             end
         end
     end
