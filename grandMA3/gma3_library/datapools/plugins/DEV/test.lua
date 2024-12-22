@@ -73,6 +73,9 @@ local function poll(exec_no)
         ticket_old = {}
         ticket_name = {}
         ticket_old_name = {}
+        h_c_r = {}
+        h_c_g = {}
+        h_c_b = {}
     end
     if pname ~= last_pname or refresh == true then
         send_string_osc('PageName', 0, pname)
