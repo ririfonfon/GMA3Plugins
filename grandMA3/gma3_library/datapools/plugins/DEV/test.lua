@@ -186,21 +186,20 @@ local function poll(exec_no)
                 -- Echo(k .. ' de ' .. Number .. ' name ' .. Name .. ' seq num .no ' .. Seq[Number][k].No)
             end
         end
-    end
 
-    CueList[exec_no] = GetObject('seq ' .. Number) or error('seq not found')
+        CueList[exec_no] = GetObject('seq ' .. Number) or error('seq not found')
 
-    if CueList[exec_no] ~= nil then
-        Echo(Name .. ' n° ' .. exec_no)
-        Current_Cuelist_Number[exec_no] = CueList[exec_no]:CurrentChild() or error('no active cue found')
-        if Current_Cuelist_Number[exec_no] ~= nil then
-            Echo(' current cuelist number de ' .. exec_no .. ' = ' .. Current_Cuelist_Number[exec_no])
+        if CueList[exec_no] ~= nil then
+            Echo(Name .. ' n° ' .. exec_no)
+            Current_Cuelist_Number[exec_no] = CueList[exec_no]:CurrentChild()
+            if Current_Cuelist_Number[exec_no] == nil then
+                Current_Cuelist_Number[exec_no] = 0
+            end
+            if Current_Cuelist_Number[exec_no] ~= nil then
+                Echo(' current cuelist number de ' .. exec_no .. ' = ' .. Current_Cuelist_Number[exec_no])
+            end
         end
     end
-
-    -- local myseq = GetObject('seq 3') or error('sequence not found')
-    -- local mycue = myseq:CurrentChild() or error('no active cue found')
-    -- Echo(mycue.No)
 
     local last_Name = h_Name[exec_no]
     if Name == nil then Name = exec_no end
