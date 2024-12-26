@@ -57,7 +57,8 @@ local function ticket_on(n_exec, color_r, color_g, color_b, Name)
 end
 
 local Current_Cue_number, last_Current_Cue_number, cue_end, last_Current_Seq_Name, Current_Cue_name
-local CueList, Current_Cuelist_Name, Current_Cuelist_Number = {}, {}, {}
+local Cuezero, Cuelist, Cuelist_Name, Cuelist_Number, Cuelist_Seq_Name, Last_Cuelist, Last_Cuelist_Seq_Name, Last_Cuelist_Name, Cuelist_Number_End =
+    {}, {}, {}, {}, {}, {}, {}, {}, {}
 local function poll(exec_no)
     --------------------------------------------PAGE
     local targetPage = CurrentExecPage()
@@ -76,6 +77,7 @@ local function poll(exec_no)
         h_c_r = {}
         h_c_g = {}
         h_c_b = {}
+        Cuezero = {}
     end
     if pname ~= last_pname or refresh == true then
         send_string_osc('PageName', 0, pname)
@@ -171,7 +173,6 @@ local function poll(exec_no)
         else
             exec_width = 0
         end
-        -- Echo('exec : ' .. exec .. ' height : ' .. exec_height .. ' width : ' .. exec_width)
     end
     local value = exec and mfloor(exec:GetFader {}) or -1
     local Text = exec and exec:GetFaderText {} or -1
@@ -179,27 +180,48 @@ local function poll(exec_no)
 
     local Name, Number
     if exec ~= nil and exec.Object ~= nil then
+        -- if exec == nil then
+        --     if Cuezero[exec_no] == nil then
+        --         Name = exec_no
+        --         Number = ''
+        --         Cuezero[exec_no] = true
+        --         Echo(exec_no .. '************************************************')
+        --         send_cue_osc('Cue' .. exec_no .. 'Nr', '')
+        --         send_cue_osc('Cue' .. exec_no .. 'Name', '')
+        --     end
+        -- else
+        -- if exec.Objetc ~= nil then
+
         Name = exec.Object.name
         Number = exec.Object.No
-        for k in ipairs(Seq[Number]) do
-            if Seq[Number][k].No ~= nil then
-                -- Echo(k .. ' de ' .. Number .. ' name ' .. Name .. ' seq num .no ' .. Seq[Number][k].No)
+
+        if Last_Cuelist_Seq_Name[exec_no] ~= Name then
+            Cuelist_Name[exec_no], Cuelist_Number[exec_no], Cuelist_Number_End[exec_no] = {}, {}, {}
+
+            for k in ipairs(Seq[Number]) do
+                if Seq[Number][k].No ~= nil then
+                    local n_c = Seq[Number][k].No / 1000
+                    n_c = tonumber(n_c)
+                    Cuelist_Number[exec_no][k] = n_c
+                    Cuelist_Name[exec_no][k] = Seq[Number][k].name
+                    Cuelist_Number_End[exec_no] = k
+                end
             end
+            Last_Cuelist_Seq_Name[exec_no] = Name
         end
 
-        CueList[exec_no] = GetObject('seq ' .. Number) or error('seq not found')
+        Cuelist[exec_no] = GetObject('seq ' .. Number).currentcue
 
-        if CueList[exec_no] ~= nil then
-            Echo(Name .. ' n° ' .. exec_no)
-            Current_Cuelist_Number[exec_no] = CueList[exec_no]:CurrentChild()
-            if Current_Cuelist_Number[exec_no] == nil then
-                Current_Cuelist_Number[exec_no] = 0
-            end
-            if Current_Cuelist_Number[exec_no] ~= nil then
-                Echo(' current cuelist number de ' .. exec_no .. ' = ' .. Current_Cuelist_Number[exec_no])
+        if Cuelist[exec_no] ~= nil then
+            if Last_Cuelist[exec_no] ~= Cuelist[exec_no] then
+                send_cue_osc('Cue' .. exec_no .. 'Nr', tonumber(Cuelist[exec_no].No / 1000))
+                send_cue_osc('Cue' .. exec_no .. 'Name', Cuelist[exec_no].name)
+                Last_Cuelist[exec_no] = Cuelist[exec_no]
             end
         end
     end
+    -- end
+    -- end
 
     local last_Name = h_Name[exec_no]
     if Name == nil then Name = exec_no end
