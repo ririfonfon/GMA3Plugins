@@ -180,18 +180,6 @@ local function poll(exec_no)
 
     local Name, Number
     if exec ~= nil and exec.Object ~= nil then
-        -- if exec == nil then
-        --     if Cuezero[exec_no] == nil then
-        --         Name = exec_no
-        --         Number = ''
-        --         Cuezero[exec_no] = true
-        --         Echo(exec_no .. '************************************************')
-        --         send_cue_osc('Cue' .. exec_no .. 'Nr', '')
-        --         send_cue_osc('Cue' .. exec_no .. 'Name', '')
-        --     end
-        -- else
-        -- if exec.Objetc ~= nil then
-
         Name = exec.Object.name
         Number = exec.Object.No
 
@@ -234,7 +222,18 @@ local function poll(exec_no)
     end
 
     local last_Name = h_Name[exec_no]
-    if Name == nil then Name = exec_no end
+    local clean_cue = false
+    if Name == nil then
+        Name = exec_no
+        clean_cue = true
+    end
+    if clean_cue == true and Cuezero[exec_no] == nil then
+        send_cue_osc('Cue' .. exec_no .. 'Nr', '')
+        send_cue_osc('Cue' .. exec_no .. 'Name', '')
+        send_cue_osc('2Cue' .. exec_no .. 'Nr', '')
+        send_cue_osc('2Cue' .. exec_no .. 'Name', '')
+        Cuezero[exec_no] = true
+    end
     if ticket[exec_no] ~= nil and ticket_old_name[exec_no] ~= true then
         last_Name = ''
         Name = ticket_name[exec_no]
@@ -249,6 +248,7 @@ local function poll(exec_no)
             h_Name[exec_no] = Name
         end
     end
+
 
     local key
     if exec ~= nil then
