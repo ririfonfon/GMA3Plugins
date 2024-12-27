@@ -16,6 +16,11 @@ local osc_color_template = 'SendOSC %i "/%s%i,s,%s%s%s%s"'
 local enabled = false
 local Printf, Echo, GetExecutor, Cmd, ipairs, mfloor = Printf, Echo, GetExecutor, Cmd, ipairs, math.floor
 
+local function delay()
+    for i = 1, 100000, 1 do
+
+    end
+end
 local refresh = true
 
 
@@ -29,6 +34,7 @@ end
 
 local function send_cue_osc(etype, value)
     Cmd(osc_cue_template:format(osc_config, etype, value))
+    -- delay()
 end
 
 local function send_color_osc(etype, exec_no, value_r, value_g, value_b)
@@ -53,8 +59,8 @@ local function ticket_on(n_exec, color_r, color_g, color_b, Name)
     h_c_g[n_exec] = color_g
     h_c_b[n_exec] = color_b
     ticket_name[n_exec] = Name
-    -- Echo(' ticket on  n° : ' .. n_exec .. ' r : ' .. color_r .. ' g : ' .. color_g .. ' b : ' .. color_b)
 end
+
 
 local Current_Cue_number, last_Current_Cue_number, cue_end, last_Current_Seq_Name, Current_Cue_name
 local Cuezero, Cuelist, Cuelist_Name, Cuelist_Number, Cuelist_Seq_Name, Last_Cuelist, Last_Cuelist_Seq_Name, Last_Cuelist_Name, Cuelist_Number_End =
@@ -78,13 +84,17 @@ local function poll(exec_no)
         h_c_g = {}
         h_c_b = {}
         Cuezero = {}
+        Cuelist_Name = {}
+        Cuelist_Number = {}
+        Cuelist_Number_End = {}
+        Last_Cuelist_Seq_Name = {}
+        Cuelist = {}
+        Last_Cuelist = {}
     end
     if pname ~= last_pname or refresh == true then
         send_string_osc('PageName', 0, pname)
         h_pname = pname
     end
-
-
 
 
 
