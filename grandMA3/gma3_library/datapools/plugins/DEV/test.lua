@@ -223,8 +223,8 @@ local function poll(exec_no)
                             if next_number > Cuelist_Number_End[exec_no] then
                                 next_number = 3
                             end
-                            send_cue_osc('2Cue'..exec_no..'Nr', Cuelist_Number[exec_no][next_number])
-                            send_cue_osc('2Cue'..exec_no..'Name', Cuelist_Name[exec_no][next_number])
+                            send_cue_osc('2Cue' .. exec_no .. 'Nr', Cuelist_Number[exec_no][next_number])
+                            send_cue_osc('2Cue' .. exec_no .. 'Name', Cuelist_Name[exec_no][next_number])
                         end
                     end
                 end
@@ -232,8 +232,6 @@ local function poll(exec_no)
             end
         end
     end
-    -- end
-    -- end
 
     local last_Name = h_Name[exec_no]
     if Name == nil then Name = exec_no end
@@ -249,7 +247,6 @@ local function poll(exec_no)
         if Name ~= last_Name or refresh == true then
             send_string_osc('PageCurrent/Fader_Label', exec_no, Name)
             h_Name[exec_no] = Name
-            -- Echo("n° : " .. exec_no .. " Name : " .. Name)
         end
     end
 
@@ -262,7 +259,6 @@ local function poll(exec_no)
     if key ~= last_key or refresh == true then
         send_string_osc('PageCurrent/Key_Label', exec_no, key)
         h_key[exec_no] = key
-        -- Echo("n° : " .. exec_no .. " key_Label : " .. key)
     end
 
     local fader
@@ -274,7 +270,6 @@ local function poll(exec_no)
     if fader ~= last_fader or refresh == true then
         send_string_osc('PageCurrent/Fader_Func', exec_no, fader)
         h_fade_func[exec_no] = fader
-        -- Echo("n° : " .. exec_no .. " fader_function : " .. fader)
     end
 
     local last_value = h_fader[exec_no]
@@ -297,7 +292,6 @@ local function poll(exec_no)
         color_r = exec.Object.Appearance.ImageR
         color_g = exec.Object.Appearance.ImageG
         color_b = exec.Object.Appearance.ImageB
-        -- Echo(exec_no .. ' *****************OBJECT')
     end
 
     if exec == nil or exec.Object == nil or exec.Object.Appearance == nil then
@@ -320,7 +314,6 @@ local function poll(exec_no)
         color_g = h_c_g[exec_no]
         color_b = h_c_b[exec_no]
         ticket_old[exec_no] = 1000
-        -- Echo(exec_no .. ' ***************TICKET&TICKET_OLD')
     end
 
     if ticket_old[exec_no] ~= true then
@@ -329,12 +322,8 @@ local function poll(exec_no)
             ticket_old[exec_no] = true
         end
         if color_r ~= last_color_r then
-            -- Echo(exec_no .. ' color')
-            -- Echo(color_r .. ' color')
-            -- send_osc('PageCurrent/Fader_Color_R', exec_no, color_r)
             send_color = true
             h_c_r[exec_no] = color_r
-            -- Echo("*n° : " .. exec_no .. " color r : " .. color_r)
             if exec_height > 1 then
                 for h = 1, exec_height - 1 do
                     ticket_on(exec_no + h * 100, color_r, color_g, color_b, Name)
@@ -353,10 +342,8 @@ local function poll(exec_no)
             end
         end
         if color_g ~= last_color_g then
-            -- send_osc('PageCurrent/Fader_Color_G', exec_no, color_g)
             send_color = true
             h_c_g[exec_no] = color_g
-            -- Echo("*n° : " .. exec_no .. " color g : " .. color_g)
             if exec_height > 1 then
                 for h = 1, exec_height - 1 do
                     ticket_on(exec_no + h * 100, color_r, color_g, color_b, Name)
@@ -375,10 +362,8 @@ local function poll(exec_no)
             end
         end
         if color_b ~= last_color_b then
-            -- send_osc('PageCurrent/Fader_Color_B', exec_no, color_b)
             send_color = true
             h_c_b[exec_no] = color_b
-            -- Echo("*n° : " .. exec_no .. " color b : " .. color_b)
             if exec_height > 1 then
                 for h = 1, exec_height - 1 do
                     ticket_on(exec_no + h * 100, color_r, color_g, color_b, Name)
@@ -401,19 +386,6 @@ local function poll(exec_no)
             send_color_osc('PageCurrent/Fader_Color', exec_no, color_r, color_g, color_b)
             send_color = false
         end
-
-        -- if ticket[exec_no] ~= true then
-        --     if ticket_old[exec_no] ~= true then
-        --         if exec == nil or exec.Object == nil or exec.Object.Appearance == nil then
-        --             send_osc('PageCurrent/Fader_Color_R', exec_no, 255)
-        --             send_osc('PageCurrent/Fader_Color_G', exec_no, 255)
-        --             send_osc('PageCurrent/Fader_Color_B', exec_no, 255)
-        --             exec_height = 1
-        --             exec_width = 1
-        --             ticket_old[exec_no] = true
-        --         end
-        --     end
-        -- end
     end
 
     if refresh == true then
@@ -425,7 +397,6 @@ local function mainloop()
     while enabled do
         for _, exec_no in ipairs(executor_table) do poll(exec_no) end
         coroutine.yield(0.1)
-        -- coroutine.yield(0.5)
     end
 end
 
