@@ -99,12 +99,9 @@ local function poll(exec_no)
 
 
     --------------------------------------------SELECTED SEQ
-    local Seq = DataPool().Sequences:Children()
-    local id_seq = SelectedSequence().No
-    id_seq = tonumber(id_seq)
+    local id_seq = tonumber(SelectedSequence().No)
     local Current_Seq_Name = SelectedSequence().name
     local Seq_Conduite = GetObject('Seq ' .. id_seq)
-    -- local Seq_Conduite = Seq[id_seq]
     local Cue_Nr
     local Cue_Name
     if SelectedSequence().currentcue ~= nil then
