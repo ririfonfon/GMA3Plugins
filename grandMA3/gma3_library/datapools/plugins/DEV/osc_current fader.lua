@@ -16,6 +16,11 @@ local osc_color_template = 'SendOSC %i "/%s%i,s,%s%s%s%s"'
 local enabled = false
 local Printf, Echo, GetExecutor, Cmd, ipairs, mfloor = Printf, Echo, GetExecutor, Cmd, ipairs, math.floor
 
+local function delay()
+    for i = 1, 100000, 1 do
+
+    end
+end
 local refresh = true
 
 
@@ -29,6 +34,7 @@ end
 
 local function send_cue_osc(etype, value)
     Cmd(osc_cue_template:format(osc_config, etype, value))
+    -- delay()
 end
 
 local function send_color_osc(etype, exec_no, value_r, value_g, value_b)
@@ -53,11 +59,12 @@ local function ticket_on(n_exec, color_r, color_g, color_b, Name)
     h_c_g[n_exec] = color_g
     h_c_b[n_exec] = color_b
     ticket_name[n_exec] = Name
-    -- Echo(' ticket on  n° : ' .. n_exec .. ' r : ' .. color_r .. ' g : ' .. color_g .. ' b : ' .. color_b)
 end
 
+
 local Current_Cue_number, last_Current_Cue_number, cue_end, last_Current_Seq_Name, Current_Cue_name
--- local CueList, Current_Cuelist_Name, Current_Cuelist_Number = {}, {}, {}
+local Cuezero, Cuelist, Cuelist_Name, Cuelist_Number, Cuelist_Seq_Name, Last_Cuelist, Last_Cuelist_Seq_Name, Last_Cuelist_Name, Cuelist_Number_End =
+    {}, {}, {}, {}, {}, {}, {}, {}, {}
 local function poll(exec_no)
     --------------------------------------------PAGE
     local targetPage = CurrentExecPage()
@@ -76,13 +83,18 @@ local function poll(exec_no)
         h_c_r = {}
         h_c_g = {}
         h_c_b = {}
+        Cuezero = {}
+        Cuelist_Name = {}
+        Cuelist_Number = {}
+        Cuelist_Number_End = {}
+        Last_Cuelist_Seq_Name = {}
+        Cuelist = {}
+        Last_Cuelist = {}
     end
     if pname ~= last_pname or refresh == true then
         send_string_osc('PageName', 0, pname)
         h_pname = pname
     end
-
-
 
 
 
@@ -171,7 +183,6 @@ local function poll(exec_no)
         else
             exec_width = 0
         end
-        -- Echo('exec : ' .. exec .. ' height : ' .. exec_height .. ' width : ' .. exec_width)
     end
     local value = exec and mfloor(exec:GetFader {}) or -1
     local Text = exec and exec:GetFaderText {} or -1
@@ -180,21 +191,60 @@ local function poll(exec_no)
     local Name, Number
     if exec ~= nil and exec.Object ~= nil then
         Name = exec.Object.name
-        Number = exec.Object.No
-        for k in ipairs(Seq[Number]) do
-            if Seq[Number][k].No ~= nil then
+        Number = tonumber(exec.Object.No)
+        local myseq = GetObject('Seq ' .. Number)
+        if string.find(exec.Object:AddrNative(DataPool()), exec.Object.name) then
+            if Last_Cuelist_Seq_Name[exec_no] ~= Name then
+                Cuelist_Name[exec_no], Cuelist_Number[exec_no], Cuelist_Number_End[exec_no] = {}, {}, {}
+                for k in ipairs(myseq) do
+                    if myseq[k].No ~= nil then
+                        local n_c = myseq[k].No / 1000
+                        n_c = tonumber(n_c)
+                        Cuelist_Number[exec_no][k] = n_c
+                        Cuelist_Name[exec_no][k] = myseq[k].name
+                        Cuelist_Number_End[exec_no] = k
+                    end
+                end
+                Last_Cuelist_Seq_Name[exec_no] = Name
+            end
 
+            Cuelist[exec_no] = GetObject('seq ' .. Number).currentcue
+
+            if Cuelist[exec_no] ~= nil then
+                if Last_Cuelist[exec_no] ~= Cuelist[exec_no] then
+                    send_cue_osc('Cue' .. exec_no .. 'Nr', tonumber(Cuelist[exec_no].No / 1000))
+                    send_cue_osc('Cue' .. exec_no .. 'Name', Cuelist[exec_no].name)
+                    for k in ipairs(myseq) do
+                        if myseq[k].No ~= nil then
+                            if myseq[k].name == Cuelist[exec_no].name then
+                                local next_number = k + 1
+                                if next_number > Cuelist_Number_End[exec_no] then
+                                    next_number = 3
+                                end
+                                send_cue_osc('2Cue' .. exec_no .. 'Nr', Cuelist_Number[exec_no][next_number])
+                                send_cue_osc('2Cue' .. exec_no .. 'Name', Cuelist_Name[exec_no][next_number])
+                            end
+                        end
+                    end
+                    Last_Cuelist[exec_no] = Cuelist[exec_no]
+                end
             end
         end
     end
 
-    -- if Seq[Number].currentcue ~= nil then
-    --     Current_Cuelist_Name =Seq[Number].currentcue.name
-    --     Current_Cuelist_Number = Seq[Number].currentcue.No
-    -- end
-
     local last_Name = h_Name[exec_no]
-    if Name == nil then Name = exec_no end
+    local clean_cue = false
+    if Name == nil then
+        Name = exec_no
+        clean_cue = true
+    end
+    if clean_cue == true and Cuezero[exec_no] == nil then
+        send_cue_osc('Cue' .. exec_no .. 'Nr', '')
+        send_cue_osc('Cue' .. exec_no .. 'Name', '')
+        send_cue_osc('2Cue' .. exec_no .. 'Nr', '')
+        send_cue_osc('2Cue' .. exec_no .. 'Name', '')
+        Cuezero[exec_no] = true
+    end
     if ticket[exec_no] ~= nil and ticket_old_name[exec_no] ~= true then
         last_Name = ''
         Name = ticket_name[exec_no]
@@ -207,9 +257,9 @@ local function poll(exec_no)
         if Name ~= last_Name or refresh == true then
             send_string_osc('PageCurrent/Fader_Label', exec_no, Name)
             h_Name[exec_no] = Name
-            -- Echo("n° : " .. exec_no .. " Name : " .. Name)
         end
     end
+
 
     local key
     if exec ~= nil then
@@ -220,7 +270,6 @@ local function poll(exec_no)
     if key ~= last_key or refresh == true then
         send_string_osc('PageCurrent/Key_Label', exec_no, key)
         h_key[exec_no] = key
-        -- Echo("n° : " .. exec_no .. " key_Label : " .. key)
     end
 
     local fader
@@ -232,7 +281,6 @@ local function poll(exec_no)
     if fader ~= last_fader or refresh == true then
         send_string_osc('PageCurrent/Fader_Func', exec_no, fader)
         h_fade_func[exec_no] = fader
-        -- Echo("n° : " .. exec_no .. " fader_function : " .. fader)
     end
 
     local last_value = h_fader[exec_no]
@@ -255,7 +303,6 @@ local function poll(exec_no)
         color_r = exec.Object.Appearance.ImageR
         color_g = exec.Object.Appearance.ImageG
         color_b = exec.Object.Appearance.ImageB
-        -- Echo(exec_no .. ' *****************OBJECT')
     end
 
     if exec == nil or exec.Object == nil or exec.Object.Appearance == nil then
@@ -278,7 +325,6 @@ local function poll(exec_no)
         color_g = h_c_g[exec_no]
         color_b = h_c_b[exec_no]
         ticket_old[exec_no] = 1000
-        -- Echo(exec_no .. ' ***************TICKET&TICKET_OLD')
     end
 
     if ticket_old[exec_no] ~= true then
@@ -287,12 +333,8 @@ local function poll(exec_no)
             ticket_old[exec_no] = true
         end
         if color_r ~= last_color_r then
-            -- Echo(exec_no .. ' color')
-            -- Echo(color_r .. ' color')
-            -- send_osc('PageCurrent/Fader_Color_R', exec_no, color_r)
             send_color = true
             h_c_r[exec_no] = color_r
-            -- Echo("*n° : " .. exec_no .. " color r : " .. color_r)
             if exec_height > 1 then
                 for h = 1, exec_height - 1 do
                     ticket_on(exec_no + h * 100, color_r, color_g, color_b, Name)
@@ -311,10 +353,8 @@ local function poll(exec_no)
             end
         end
         if color_g ~= last_color_g then
-            -- send_osc('PageCurrent/Fader_Color_G', exec_no, color_g)
             send_color = true
             h_c_g[exec_no] = color_g
-            -- Echo("*n° : " .. exec_no .. " color g : " .. color_g)
             if exec_height > 1 then
                 for h = 1, exec_height - 1 do
                     ticket_on(exec_no + h * 100, color_r, color_g, color_b, Name)
@@ -333,10 +373,8 @@ local function poll(exec_no)
             end
         end
         if color_b ~= last_color_b then
-            -- send_osc('PageCurrent/Fader_Color_B', exec_no, color_b)
             send_color = true
             h_c_b[exec_no] = color_b
-            -- Echo("*n° : " .. exec_no .. " color b : " .. color_b)
             if exec_height > 1 then
                 for h = 1, exec_height - 1 do
                     ticket_on(exec_no + h * 100, color_r, color_g, color_b, Name)
@@ -359,19 +397,6 @@ local function poll(exec_no)
             send_color_osc('PageCurrent/Fader_Color', exec_no, color_r, color_g, color_b)
             send_color = false
         end
-
-        -- if ticket[exec_no] ~= true then
-        --     if ticket_old[exec_no] ~= true then
-        --         if exec == nil or exec.Object == nil or exec.Object.Appearance == nil then
-        --             send_osc('PageCurrent/Fader_Color_R', exec_no, 255)
-        --             send_osc('PageCurrent/Fader_Color_G', exec_no, 255)
-        --             send_osc('PageCurrent/Fader_Color_B', exec_no, 255)
-        --             exec_height = 1
-        --             exec_width = 1
-        --             ticket_old[exec_no] = true
-        --         end
-        --     end
-        -- end
     end
 
     if refresh == true then
@@ -383,7 +408,6 @@ local function mainloop()
     while enabled do
         for _, exec_no in ipairs(executor_table) do poll(exec_no) end
         coroutine.yield(0.1)
-        -- coroutine.yield(0.5)
     end
 end
 
