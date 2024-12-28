@@ -191,42 +191,43 @@ local function poll(exec_no)
     local Name, Number
     if exec ~= nil and exec.Object ~= nil then
         Name = exec.Object.name
-        Number = exec.Object.No
-
-        if Last_Cuelist_Seq_Name[exec_no] ~= Name then
-            Cuelist_Name[exec_no], Cuelist_Number[exec_no], Cuelist_Number_End[exec_no] = {}, {}, {}
-
-            for k in ipairs(Seq[Number]) do
-                if Seq[Number][k].No ~= nil then
-                    local n_c = Seq[Number][k].No / 1000
-                    n_c = tonumber(n_c)
-                    Cuelist_Number[exec_no][k] = n_c
-                    Cuelist_Name[exec_no][k] = Seq[Number][k].name
-                    Cuelist_Number_End[exec_no] = k
-                end
-            end
-            Last_Cuelist_Seq_Name[exec_no] = Name
-        end
-
-        Cuelist[exec_no] = GetObject('seq ' .. Number).currentcue
-
-        if Cuelist[exec_no] ~= nil then
-            if Last_Cuelist[exec_no] ~= Cuelist[exec_no] then
-                send_cue_osc('Cue' .. exec_no .. 'Nr', tonumber(Cuelist[exec_no].No / 1000))
-                send_cue_osc('Cue' .. exec_no .. 'Name', Cuelist[exec_no].name)
-                for k in ipairs(Seq[Number]) do
-                    if Seq[Number][k].No ~= nil then
-                        if Seq[Number][k].name == Cuelist[exec_no].name then
-                            local next_number = k + 1
-                            if next_number > Cuelist_Number_End[exec_no] then
-                                next_number = 3
-                            end
-                            send_cue_osc('2Cue' .. exec_no .. 'Nr', Cuelist_Number[exec_no][next_number])
-                            send_cue_osc('2Cue' .. exec_no .. 'Name', Cuelist_Name[exec_no][next_number])
-                        end
+        Number = tonumber(exec.Object.No)
+        local myseq = GetObject('Seq ' .. Number)
+        if string.find(exec.Object:AddrNative(DataPool()), exec.Object.name) then
+            if Last_Cuelist_Seq_Name[exec_no] ~= Name then
+                Cuelist_Name[exec_no], Cuelist_Number[exec_no], Cuelist_Number_End[exec_no] = {}, {}, {}
+                for k in ipairs(myseq) do
+                    if myseq[k].No ~= nil then
+                        local n_c = myseq[k].No / 1000
+                        n_c = tonumber(n_c)
+                        Cuelist_Number[exec_no][k] = n_c
+                        Cuelist_Name[exec_no][k] = myseq[k].name
+                        Cuelist_Number_End[exec_no] = k
                     end
                 end
-                Last_Cuelist[exec_no] = Cuelist[exec_no]
+                Last_Cuelist_Seq_Name[exec_no] = Name
+            end
+
+            Cuelist[exec_no] = GetObject('seq ' .. Number).currentcue
+
+            if Cuelist[exec_no] ~= nil then
+                if Last_Cuelist[exec_no] ~= Cuelist[exec_no] then
+                    send_cue_osc('Cue' .. exec_no .. 'Nr', tonumber(Cuelist[exec_no].No / 1000))
+                    send_cue_osc('Cue' .. exec_no .. 'Name', Cuelist[exec_no].name)
+                    for k in ipairs(myseq) do
+                        if myseq[k].No ~= nil then
+                            if myseq[k].name == Cuelist[exec_no].name then
+                                local next_number = k + 1
+                                if next_number > Cuelist_Number_End[exec_no] then
+                                    next_number = 3
+                                end
+                                send_cue_osc('2Cue' .. exec_no .. 'Nr', Cuelist_Number[exec_no][next_number])
+                                send_cue_osc('2Cue' .. exec_no .. 'Name', Cuelist_Name[exec_no][next_number])
+                            end
+                        end
+                    end
+                    Last_Cuelist[exec_no] = Cuelist[exec_no]
+                end
             end
         end
     end
