@@ -1,6 +1,6 @@
 --[[
     Releases:
-    * 2.0.1.2
+    * 2.0.2.0
 
     Created by Richard Fontaine "RIRI", June 2024.
     --]]
@@ -204,8 +204,7 @@ function Create_Appearances_Sequences(CurrentMacroNr, SelectedGelNr, SelectedGrp
         -- add matrick group
         Cmd('ClearAll /nu')
         Cmd('Store Sequence ' .. CurrentSeqNr .. ' \'' .. prefix .. "Tricks" .. SelectedGrpName[g]:gsub('\'', ''))
-        Cmd('Set Sequence ' .. CurrentSeqNr .. ' Cue \'' .. prefix .. "Tricks" .. SelectedGrpName[g]:gsub('\'', '') ..
-            '\' Property Command=\'Assign DataPool ' ..
+        Cmd('Set Sequence ' .. CurrentSeqNr .. ' Cue 1 Property Command=\'Assign DataPool ' ..
             Data_Pool_Nr .. ' MaTricks ' .. prefix .. SelectedGrpName[g]:gsub('\'', '') ..
             ' At DataPool ' .. Data_Pool_Nr .. ' Sequence ' .. FirstSeqColor .. ' Thru ' .. LastSeqColor ..
             ' Cue 1 part 0.1 ;  Assign DataPool ' ..
@@ -221,9 +220,7 @@ function Create_Appearances_Sequences(CurrentMacroNr, SelectedGelNr, SelectedGrp
         Cmd('ClearAll /nu')
         Cmd('Store Sequence ' .. CurrentSeqNr .. ' \'' .. prefix .. "Tricksh" .. SelectedGrpName[g]:gsub('\'', '') ..
             '\'')
-        Cmd('Set Sequence ' .. CurrentSeqNr .. ' Cue \'' .. prefix .. "Tricksh" ..
-            SelectedGrpName[g]:gsub('\'', '') ..
-            '\' Property Command=\'Assign DataPool ' .. Data_Pool_Nr .. ' MaTricks ' .. MatrickNrStart ..
+        Cmd('Set Sequence ' .. CurrentSeqNr .. ' Cue 1 Property Command=\'Assign DataPool ' .. Data_Pool_Nr .. ' MaTricks ' .. MatrickNrStart ..
             ' At DataPool ' .. Data_Pool_Nr .. ' Sequence ' .. FirstSeqColor .. ' Thru ' .. LastSeqColor ..
             ' Cue 1 part 0.1 ; Assign DataPool ' ..
             Data_Pool_Nr ..
@@ -302,8 +299,7 @@ function Create_Fade_Sequences(MakeX, FirstSeqTime, LastSeqTime, CurrentSeqNr, C
         Cmd('Store Sequence ' ..
             CurrentSeqNr .. ' \'' .. prefix .. Argument_Fade[1].name .. surfix[a] .. '\'')
         Cmd('Set Sequence ' .. CurrentSeqNr .. ' Cue 1 Property Appearance=' .. AppImp[1].Nr)
-        Cmd('Set Sequence ' .. CurrentSeqNr .. ' Cue \'' .. prefix .. Argument_Fade[1].name .. surfix[a] ..
-            '\' Property Command=\'Off DataPool ' ..
+        Cmd('Set Sequence ' .. CurrentSeqNr .. ' Cue 1 Property Command=\'Off DataPool ' ..
             Data_Pool_Nr .. ' Sequence ' .. FirstSeqTime .. ' Thru ' .. LastSeqTime .. ' - ' .. CurrentSeqNr ..
             ' ; Set Sequence ' ..
             SeqNrStart .. ' Thru ' .. SeqNrEnd .. ' UseExecutorTime=' .. Argument_Fade[1].UseExTime .. '')
@@ -347,13 +343,11 @@ function Create_Fade_Sequences(MakeX, FirstSeqTime, LastSeqTime, CurrentSeqNr, C
         -- Add Cmd to Squence
         Cmd('Set Sequence ' .. CurrentSeqNr .. ' Cue 1 Property Appearance=' .. AppImp[ia].Nr)
         if i == 6 then
-            Cmd('Set Sequence ' .. CurrentSeqNr .. ' Cue \'' .. prefix .. Argument_Fade[i].name .. surfix[a] ..
-                '\' Property Command=\'Go DataPool ' .. Data_Pool_Nr .. ' Macro ' .. CurrentMacroNr .. '')
+            Cmd('Set Sequence ' .. CurrentSeqNr .. ' Cue 1 Property Command=\'Go DataPool ' .. Data_Pool_Nr .. ' Macro ' .. CurrentMacroNr .. '')
         else
             Create_Macro_Fade_E(CurrentMacroNr, prefix, Argument_Fade, i, surfix, a, FirstSeqTime,
                 LastSeqTime, CurrentSeqNr, SeqNrStart, SeqNrEnd, MatrickNrStart, TLayNr, Fade_Element, Data_Pool_Nr)
-            Cmd('Set Sequence ' .. CurrentSeqNr .. ' Cue \'' .. prefix .. Argument_Fade[i].name .. surfix[a] ..
-                '\' Property Command=\'Go DataPool ' .. Data_Pool_Nr .. ' Macro ' .. CurrentMacroNr + i - 1 .. '')
+            Cmd('Set Sequence ' .. CurrentSeqNr .. ' Cue 1 Property Command=\'Go DataPool ' .. Data_Pool_Nr .. ' Macro ' .. CurrentMacroNr + i - 1 .. '')
         end
         Cmd('Set Sequence ' .. CurrentSeqNr .. ' Property Appearance=' .. AppImp[ib].Nr)
         Command_Ext_Suite(CurrentSeqNr)
@@ -416,11 +410,9 @@ function Create_Delay_From_Sequences(First_Id_Lay, LayNr, CurrentSeqNr, Current_
         if i == 5 then
             Cmd('Set DataPool ' ..
                 Data_Pool_Nr ..
-                ' Sequence ' .. CurrentSeqNr .. ' Cue \'' .. prefix .. Argument_Delay[i].name .. surfix[a] ..
-                '\' Property Command=\'Go DataPool ' .. Data_Pool_Nr .. ' Macro ' .. CurrentMacroNr .. '')
+                ' Sequence ' .. CurrentSeqNr .. ' Cue 1 Property Command=\'Go DataPool ' .. Data_Pool_Nr .. ' Macro ' .. CurrentMacroNr .. '')
         else
-            Cmd('Set Sequence ' .. CurrentSeqNr .. ' Cue \'' .. prefix .. Argument_Delay[i].name .. surfix[a] ..
-                '\' Property Command=\'Off DataPool ' .. Data_Pool_Nr .. ' Sequence ' ..
+            Cmd('Set Sequence ' .. CurrentSeqNr .. ' Cue 1 Property Command=\'Off DataPool ' .. Data_Pool_Nr .. ' Sequence ' ..
                 FirstSeqDelayFrom .. ' Thru ' .. LastSeqDelayFrom .. ' - ' .. CurrentSeqNr ..
                 ' ; Set DataPool ' .. Data_Pool_Nr .. ' Matricks ' ..
                 MatrickNrStart .. ' Property "DelayFrom' .. surfix[a] .. '" ' .. Argument_Delay[i].Time ..
@@ -488,11 +480,9 @@ function Create_Delay_To_Sequences(a, First_Id_Lay, LayNr, CurrentSeqNr, Current
         -- Add Cmd to Squence
         Cmd('Set Sequence ' .. CurrentSeqNr .. ' Cue 1 Property Appearance=' .. AppImp[ia].Nr)
         if i == 5 then
-            Cmd('Set Sequence ' .. CurrentSeqNr .. ' Cue \'' .. prefix .. Argument_DelayTo[i].name .. surfix[a] ..
-                '\' Property Command=\'Go DataPool ' .. Data_Pool_Nr .. ' Macro ' .. CurrentMacroNr .. '')
+            Cmd('Set Sequence ' .. CurrentSeqNr .. ' Cue 1 Property Command=\'Go DataPool ' .. Data_Pool_Nr .. ' Macro ' .. CurrentMacroNr .. '')
         else
-            Cmd('Set Sequence ' .. CurrentSeqNr .. ' Cue \'' .. prefix .. Argument_DelayTo[i].name .. surfix[a] ..
-                '\' Property Command=\'Off DataPool ' .. Data_Pool_Nr .. ' Sequence ' ..
+            Cmd('Set Sequence ' .. CurrentSeqNr .. ' Cue 1 Property Command=\'Off DataPool ' .. Data_Pool_Nr .. ' Sequence ' ..
                 FirstSeqDelayTo .. ' Thru ' .. LastSeqDelayTo .. ' - ' .. CurrentSeqNr ..
                 ' ; Set DataPool ' .. Data_Pool_Nr .. ' Matricks ' ..
                 MatrickNrStart .. ' Property "DelayTo' .. surfix[a] .. '" ' .. Argument_DelayTo[i].Time ..
@@ -550,8 +540,7 @@ function Create_Phase_Sequence(LayY, LayX, LayW, a, First_Id_Lay, LayNr, Current
     Cmd('Store Sequence ' .. CurrentSeqNr .. ' \'' .. prefix .. 'Phase Input' .. surfix[a] .. '\'')
     -- Add Cmd to Squence
     Cmd('Set Sequence ' .. CurrentSeqNr .. ' Cue 1 Property Appearance=' .. AppImp[63].Nr)
-    Cmd('Set Sequence ' .. CurrentSeqNr .. ' Cue \'' .. prefix .. 'Phase Input' .. surfix[a] ..
-        '\' Property Command=\'Go DataPool ' .. Data_Pool_Nr .. ' Macro ' .. CurrentMacroNr .. '')
+    Cmd('Set Sequence ' .. CurrentSeqNr .. ' Cue 1 Property Command=\'Go DataPool ' .. Data_Pool_Nr .. ' Macro ' .. CurrentMacroNr .. '')
     Cmd('Set Sequence ' .. CurrentSeqNr .. ' Property Appearance=' .. AppImp[64].Nr)
     Command_Ext_Suite(CurrentSeqNr)
 
@@ -612,11 +601,9 @@ function Create_Group_Sequence(CurrentMacroNr, FirstSeqGrp, CurrentSeqNr, LastSe
         -- Add Cmd to Squence
         Cmd('Set Sequence ' .. CurrentSeqNr .. ' Cue 1 Property Appearance=' .. AppImp[ia].Nr)
         if i == 5 then
-            Cmd('Set Sequence ' .. CurrentSeqNr .. ' Cue \'' .. prefix .. Argument_Xgrp[i].name .. surfix[a] ..
-                '\' Property Command=\'Go DataPool ' .. Data_Pool_Nr .. ' Macro ' .. CurrentMacroNr .. '')
+            Cmd('Set Sequence ' .. CurrentSeqNr .. ' Cue 1 Property Command=\'Go DataPool ' .. Data_Pool_Nr .. ' Macro ' .. CurrentMacroNr .. '')
         else
-            Cmd('Set Sequence ' .. CurrentSeqNr .. ' Cue \'' .. prefix .. Argument_Xgrp[i].name .. surfix[a] ..
-                '\' Property Command=\'Off DataPool ' .. Data_Pool_Nr .. ' Sequence ' ..
+            Cmd('Set Sequence ' .. CurrentSeqNr .. ' Cue 1 Property Command=\'Off DataPool ' .. Data_Pool_Nr .. ' Sequence ' ..
                 FirstSeqGrp .. ' Thru ' .. LastSeqGrp .. ' - ' .. CurrentSeqNr ..
                 ' ; Set DataPool ' .. Data_Pool_Nr .. ' Matricks ' .. MatrickNrStart .. ' Property "' .. surfix[a] ..
                 'Group" ' .. Argument_Xgrp[i].Time ..
@@ -686,12 +673,10 @@ function Create_Block_Sequence(CurrentMacroNr, FirstSeqBlock, CurrentSeqNr, Last
         Cmd('Set Sequence ' .. CurrentSeqNr .. ' Cue 1 Property Appearance=' .. AppImp[ia].Nr)
         if i == 5 then
             Cmd('Set Sequence ' ..
-                CurrentSeqNr .. ' Cue \'' .. prefix .. Argument_Xblock[i].name .. surfix[a] ..
-                '\' Property Command=\'Go DataPool ' .. Data_Pool_Nr .. ' Macro ' .. CurrentMacroNr .. '')
+                CurrentSeqNr .. ' Cue 1 Property Command=\'Go DataPool ' .. Data_Pool_Nr .. ' Macro ' .. CurrentMacroNr .. '')
         else
             Cmd('Set Sequence ' ..
-                CurrentSeqNr .. ' Cue \'' .. prefix .. Argument_Xblock[i].name .. surfix[a] ..
-                '\' Property Command=\'Off DataPool ' .. Data_Pool_Nr .. ' Sequence ' ..
+                CurrentSeqNr .. ' Cue 1 Property Command=\'Off DataPool ' .. Data_Pool_Nr .. ' Sequence ' ..
                 FirstSeqBlock .. ' Thru ' .. LastSeqBlock .. ' - ' .. CurrentSeqNr ..
                 ' ; Set DataPool ' .. Data_Pool_Nr .. ' Matricks ' .. MatrickNrStart ..
                 ' Property "' .. surfix[a] .. 'Block" ' .. Argument_Xblock[i].Time ..
@@ -759,11 +744,9 @@ function Create_Wings_Sequence(CurrentMacroNr, FirstSeqWings, CurrentSeqNr, Last
             CurrentSeqNr .. ' \'' .. prefix .. Argument_Xwings[i].name .. surfix[a] .. '\'')
         Cmd('Set Sequence ' .. CurrentSeqNr .. ' Cue 1 Property Appearance=' .. AppImp[ia].Nr)
         if i == 5 then
-            Cmd('Set Sequence ' .. CurrentSeqNr .. ' Cue \'' .. prefix .. Argument_Xwings[i].name .. surfix[a] ..
-                '\' Property Command=\'Go DataPool ' .. Data_Pool_Nr .. ' Macro ' .. CurrentMacroNr .. '')
+            Cmd('Set Sequence ' .. CurrentSeqNr .. ' Cue 1 Property Command=\'Go DataPool ' .. Data_Pool_Nr .. ' Macro ' .. CurrentMacroNr .. '')
         else
-            Cmd('Set Sequence ' .. CurrentSeqNr .. ' Cue \'' .. prefix .. Argument_Xwings[i].name .. surfix[a] ..
-                '\' Property Command=\'Off DataPool ' .. Data_Pool_Nr .. ' Sequence ' ..
+            Cmd('Set Sequence ' .. CurrentSeqNr .. ' Cue 1 Property Command=\'Off DataPool ' .. Data_Pool_Nr .. ' Sequence ' ..
                 FirstSeqWings .. ' Thru ' .. LastSeqWings .. ' - ' .. CurrentSeqNr ..
                 ' ; Set DataPool ' .. Data_Pool_Nr .. ' Matricks ' .. MatrickNrStart .. ' Property "' .. surfix[a] ..
                 'Wings" ' .. Argument_Xwings[i].Time ..
@@ -834,15 +817,13 @@ function Create_XYZ_Sequence(CurrentMacroNr, First_Id_Lay, prefix, surfix, Call_
     Cmd('ClearAll /nu')
     Cmd('Store Sequence ' .. CurrentSeqNr .. ' \'' .. prefix .. surfix[a] .. '_Call\'')
     Cmd('Set Sequence ' .. CurrentSeqNr .. ' Cue 1 Property Appearance=' .. AppImp[66 + tonumber(a * 2 - 1)].Nr)
-    Cmd('Set Sequence ' .. CurrentSeqNr .. ' Cue \'' .. prefix .. surfix[a] ..
-        '_Call\' Property Command=\'Go DataPool ' .. Data_Pool_Nr .. ' Macro ' .. CurrentMacroNr .. '')
+    Cmd('Set Sequence ' .. CurrentSeqNr .. ' Cue 1 Property Command=\'Go DataPool ' .. Data_Pool_Nr .. ' Macro ' .. CurrentMacroNr .. '')
     Cmd('Set Sequence ' .. CurrentSeqNr .. ' Property Appearance=' .. AppImp[67 + tonumber(a * 2 - 1)].Nr)
     Command_Ext_Suite(CurrentSeqNr)
     Cmd('ClearAll /nu')
     Cmd('Store Sequence ' .. CurrentSeqNr + 1 .. ' \'' .. prefix .. surfix[a] .. '_Reset\'')
     Cmd("Set Sequence " .. CurrentSeqNr + 1 .. " Cue 1 Property Appearance=" .. prefix:gsub('o', '') .. "'skull_on'")
-    Cmd('Set Sequence ' .. CurrentSeqNr + 1 .. ' Cue \'' .. prefix .. surfix[a] ..
-        '_Reset\' Property Command=\'Go DataPool ' .. Data_Pool_Nr .. ' Macro ' .. CurrentMacroNr + 1 .. '')
+    Cmd('Set Sequence ' .. CurrentSeqNr + 1 .. ' Cue 1 Property Command=\'Go DataPool ' .. Data_Pool_Nr .. ' Macro ' .. CurrentMacroNr + 1 .. '')
     Cmd("Set Sequence " .. CurrentSeqNr + 1 .. " Property Appearance=" .. prefix:gsub('o', '') .. "'skull_off'")
     Command_Ext_Suite(CurrentSeqNr + 1)
     if MakeX == false then
@@ -906,8 +887,12 @@ function Create_All_Color(TCol, CurrentSeqNr, prefix, TLayNr, LayNr, NrNeed, Lay
         Cmd("ClearAll /nu")
         Cmd('Store Sequence ' .. CurrentSeqNr .. ' \'' .. prefix .. 'ALL' .. StringColName .. 'ALL\'')
         Cmd('Set Sequence ' .. CurrentSeqNr .. ' Cue 1 Property Appearance=' .. NrNeed + 1)
-        Cmd('Set Sequence ' .. CurrentSeqNr .. ' Cue ' .. prefix .. 'ALL' .. StringColName ..
-            'ALL Property Command= \'Go+ DataPool ' .. Data_Pool_Nr .. ' Sequence ' ..
+        -- Cmd('Set Sequence ' .. CurrentSeqNr .. ' Cue ' .. prefix .. 'ALL' .. StringColName ..
+        --     'ALL Property Command= \'Go+ DataPool ' .. Data_Pool_Nr .. ' Sequence ' ..
+        --     prefix .. StringColName .. '* ; Off DataPool ' .. Data_Pool_Nr .. ' Sequence ' ..
+        --     CurrentSeqNr .. '\'')
+        Cmd('Set Sequence ' ..
+            CurrentSeqNr .. ' Cue 1 Property Command= \'Go+ DataPool ' .. Data_Pool_Nr .. ' Sequence ' ..
             prefix .. StringColName .. '* ; Off DataPool ' .. Data_Pool_Nr .. ' Sequence ' ..
             CurrentSeqNr .. '\'')
         Cmd('Set Sequence ' .. CurrentSeqNr .. ' Property Appearance=' .. NrNeed + 1)
@@ -952,21 +937,42 @@ function Command_Title(title, TLayNr, LayNr, LayX, LayY, Pw, Ph, align)
         Cmd('Set Layout ' .. TLayNr .. '.' .. LayNr .. ' Property CustomTextAlignmentV \'Bottom')
     end
     Cmd('Set Layout ' .. TLayNr .. '.' .. LayNr .. ' Property VisibilityBorder=0')
-    Cmd('Set Layout ' ..
-        TLayNr ..
+    Cmd('Set Layout ' .. TLayNr ..
         '.' .. LayNr .. ' Property PosX ' .. LayX .. ' PosY ' .. LayY .. ' PositionW ' .. Pw .. ' PositionH ' .. Ph .. '')
 end -- end function Command_Title(...)
 
 function Command_Ext_Suite(CurrentSeqNr)
     Cmd('Set Sequence ' .. CurrentSeqNr .. ' Property prefercueappearance=on')
-    Cmd('Set Sequence ' .. CurrentSeqNr .. ' AutoStart=1 AutoStop=1 MasterGoMode=None AutoFix=0 AutoStomp=0')
-    Cmd('Set Sequence ' .. CurrentSeqNr ..
-        ' Tracking=0 WrapAround=1 ReleaseFirstCue=0 RestartMode=1 CommandEnable=1 XFadeReload=0')
-    Cmd('Set Sequence ' .. CurrentSeqNr .. ' OutputFilter="" Priority=0 SoftLTP=1 PlaybackMaster="" XfadeMode=0')
-    Cmd('Set Sequence ' .. CurrentSeqNr .. ' RateMaster="" RateScale=0 SpeedMaster="" SpeedScale=0 SpeedfromRate=0')
-    Cmd('Set Sequence ' .. CurrentSeqNr ..
-        ' InputFilter="" SwapProtect=0 KillProtect=0 IncludeLinkLastGo=1 UseExecutorTime=0 OffwhenOverridden=1 Lock=0')
-    Cmd('Set Sequence ' .. CurrentSeqNr .. ' SequMIB=0 SequMIBMode=1')
+    Cmd('Set Sequence ' .. CurrentSeqNr .. ' Property AutoStart=1')
+    Cmd('Set Sequence ' .. CurrentSeqNr .. ' Property AutoStop=1')
+    Cmd('Set Sequence ' .. CurrentSeqNr .. ' Property MasterGoMode=None')
+    Cmd('Set Sequence ' .. CurrentSeqNr .. ' Property AutoFix=0')
+    Cmd('Set Sequence ' .. CurrentSeqNr .. ' Property AutoStomp=0')
+    Cmd('Set Sequence ' .. CurrentSeqNr .. ' Property Tracking=0')
+    Cmd('Set Sequence ' .. CurrentSeqNr .. ' Property WrapAround=1')
+    Cmd('Set Sequence ' .. CurrentSeqNr .. ' Property ReleaseFirstCue=0')
+    Cmd('Set Sequence ' .. CurrentSeqNr .. ' Property RestartMode=1')
+    Cmd('Set Sequence ' .. CurrentSeqNr .. ' Property CueCommand=Enable')
+    Cmd('Set Sequence ' .. CurrentSeqNr .. ' Property XFadeReload=0')
+    Cmd('Set Sequence ' .. CurrentSeqNr .. ' Property OutputFilter=""')
+    Cmd('Set Sequence ' .. CurrentSeqNr .. ' Property Priority=0')
+    Cmd('Set Sequence ' .. CurrentSeqNr .. ' Property SoftLTP=1')
+    Cmd('Set Sequence ' .. CurrentSeqNr .. ' Property PlaybackMaster=""')
+    Cmd('Set Sequence ' .. CurrentSeqNr .. ' Property XfadeMode=0')
+    Cmd('Set Sequence ' .. CurrentSeqNr .. ' Property RateMaster=""')
+    Cmd('Set Sequence ' .. CurrentSeqNr .. ' Property RateScale=0')
+    Cmd('Set Sequence ' .. CurrentSeqNr .. ' Property SpeedMaster=""')
+    Cmd('Set Sequence ' .. CurrentSeqNr .. ' Property SpeedScale=0')
+    Cmd('Set Sequence ' .. CurrentSeqNr .. ' Property SpeedfromRate=0')
+    Cmd('Set Sequence ' .. CurrentSeqNr .. ' Property InputFilter=""')
+    Cmd('Set Sequence ' .. CurrentSeqNr .. ' Property SwapProtect=0')
+    Cmd('Set Sequence ' .. CurrentSeqNr .. ' Property KillProtect=0')
+    Cmd('Set Sequence ' .. CurrentSeqNr .. ' Property IncludeLinkLastGo=1')
+    Cmd('Set Sequence ' .. CurrentSeqNr .. ' Property UseExecutorTime=0')
+    Cmd('Set Sequence ' .. CurrentSeqNr .. ' Property OffwhenOverridden=1')
+    Cmd('Set Sequence ' .. CurrentSeqNr .. ' Property Lock=0')
+    Cmd('Set Sequence ' .. CurrentSeqNr .. ' Property SequMIB=0')
+    Cmd('Set Sequence ' .. CurrentSeqNr .. ' Property SequMIBMode=1')
 end -- end function Command_Ext_Suite(...)
 
 --end LC_Cmd.lua

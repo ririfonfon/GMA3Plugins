@@ -1,6 +1,6 @@
 --[[
 Releases:
-* 2.0.1.2
+* 2.0.2.0
 
 Created by Richard Fontaine "RIRI", June 2024.
 --]]
@@ -420,10 +420,7 @@ function Construct_Layout(displayHandle, TLay, SeqNrStart, MacroNrStart, Matrick
     Cmd('ClearAll /nu')
     Cmd('Store Sequence ' .. CurrentSeqNr .. ' \'' .. prefix .. 'KILL_ALL\'')
     Cmd("Set Seq " .. CurrentSeqNr .. " cue 1 Property Appearance=" .. prefix .. "'skull_on'")
-    Cmd('Set Seq ' ..
-        CurrentSeqNr ..
-        ' cue \'' ..
-        prefix .. 'KILL_ALL\' Property Command=\'Off DataPool ' .. Data_Pool_Nr .. ' Sequence \'' .. prefix .. '*')
+    Cmd('Set Seq ' .. CurrentSeqNr ..' cue 1 Property Command=\'Off DataPool ' .. Data_Pool_Nr .. ' Sequence \'' .. prefix .. '*')
     Cmd("Set Seq " .. CurrentSeqNr .. " Property Appearance=" .. prefix .. "'skull_off'")
     Command_Ext_Suite(CurrentSeqNr)
     Cmd("Assign Seq " .. CurrentSeqNr .. " at Layout " .. TLayNr)
