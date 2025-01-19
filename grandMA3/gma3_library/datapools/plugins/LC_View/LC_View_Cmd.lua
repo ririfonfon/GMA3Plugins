@@ -396,6 +396,7 @@ function Favourites(layout, macrostore, data_pool, prefix)
         macropool[macronum][i]:Set('command', 'go DataPool ' .. data_pool ..
             ' Sequence ' .. string.char(34) .. '' .. sequences[seqnumber].name .. '' .. string.char(34) .. '')
     end
+    Cmd('Go+ DataPool ' .. data_pool .. ' macro 335')
 end
 
 -- end LC_View_Cmd.lua
