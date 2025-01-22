@@ -8,17 +8,19 @@ function Create_Favourite_Macro(prefix, CurrentMacroNr, TLayNr, Data_Pool_Nr, Fa
     local macro_num = CurrentMacroNr + 1
     CurrentMacroNr = macro_num + Favourite_Nr
     local macropool = ShowData().DataPools[Data_Pool_Nr].Macros
-    Cmd('Store Macro ' .. macro_num .. '.1 Thru 6' .. ' /nu')
+    Cmd('Store Macro ' .. macro_num .. '.1 Thru 8' .. ' /nu')
     Cmd('Store Macro ' .. (macro_num + 1) .. ' Thru ' .. CurrentMacroNr .. ' /nu')
     macropool[macro_num]:Set('name', prefix .. ' Store Favo ')
-    macropool[macro_num][1]:Set('Command', 'SetUserVariable "LC_Favourites" "')
-    macropool[macro_num][1]:Set('execute', false)
-    macropool[macro_num][1]:Set('addtocmdline', true)
-    macropool[macro_num][2]:Set('Command', 'SetUserVariable "LC_Fonction" 10')
-    macropool[macro_num][3]:Set('Command', 'SetUserVariable "LC_Layout" ' .. TLayNr .. '')
-    macropool[macro_num][4]:Set('Command', 'SetUserVariable "LC_DataPool" ' .. Data_Pool_Nr .. '')
-    macropool[macro_num][5]:Set('Command', 'SetUserVariable "LC_Prefix" ' .. prefix .. '')
-    macropool[macro_num][6]:Set('Command', 'Call DataPool ' .. Data_Pool_Nr .. ' Plugin "LC_View"')
+    macropool[macro_num][1]:Set('Command', 'Set DataPool ' .. Data_Pool_Nr .. ' Macro ' .. macro_num .. ' Property "Apperance" "LC_Red"')
+    macropool[macro_num][2]:Set('Command', 'SetUserVariable "LC_Favourites" "')
+    macropool[macro_num][2]:Set('execute', false)
+    macropool[macro_num][2]:Set('addtocmdline', true)
+    macropool[macro_num][3]:Set('Command', 'SetUserVariable "LC_Fonction" 10')
+    macropool[macro_num][4]:Set('Command', 'SetUserVariable "LC_Layout" ' .. TLayNr .. '')
+    macropool[macro_num][5]:Set('Command', 'SetUserVariable "LC_DataPool" ' .. Data_Pool_Nr .. '')
+    macropool[macro_num][6]:Set('Command', 'SetUserVariable "LC_Prefix" ' .. prefix .. '')
+    macropool[macro_num][7]:Set('Command', 'SetUserVariable "LC_Macro" ' .. macro_num .. '')
+    macropool[macro_num][8]:Set('Command', 'Call DataPool ' .. Data_Pool_Nr .. ' Plugin "DEV LC_View"')
     macropool[macro_num]:Set('Appearance', 'LC_Black')
     for i = macro_num + 1, CurrentMacroNr do
         macropool[i]:Set('Appearance', 'LC_Favo')

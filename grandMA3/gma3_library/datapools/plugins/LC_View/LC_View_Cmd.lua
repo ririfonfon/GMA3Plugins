@@ -364,7 +364,7 @@ function PriorityNumber(layout, element, seq_call, data_pool)
     end
 end
 
-function Favourites(layout, macrostore, data_pool, prefix)
+function Favourites(layout, macrostore, data_pool, prefix, macro)
     local sequences = ObjectList('DataPool ' .. data_pool ..
         ' Sequence ' .. string.char(34) .. '' .. prefix .. '*' .. string.char(34) .. '')
     local macropool = ShowData().DataPools[data_pool].Macros
@@ -396,7 +396,7 @@ function Favourites(layout, macrostore, data_pool, prefix)
         macropool[macronum][i]:Set('command', 'go DataPool ' .. data_pool ..
             ' Sequence ' .. string.char(34) .. '' .. sequences[seqnumber].name .. '' .. string.char(34) .. '')
     end
-    Cmd('Go+ DataPool ' .. data_pool .. ' macro 335')
+    Cmd('Set DataPool ' .. data_pool .. ' Macro ' .. macro .. ' Property "Apperance" "LC_Black"')
 end
 
 -- end LC_View_Cmd.lua

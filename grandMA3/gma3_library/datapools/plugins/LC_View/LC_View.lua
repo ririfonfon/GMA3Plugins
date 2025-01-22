@@ -8,7 +8,7 @@ Created by Richard Fontaine "RIRI", March 2024.
 local function main()
 
     local Select = UserVars()
-    local axes, layout, element, matrick, seq_call, matrickthru, macrostore, data_pool, prefix = 0,0,0,0,0,0,0,0,0
+    local axes, layout, element, matrick, seq_call, matrickthru, macrostore, data_pool, prefix, macro = 0,0,0,0,0,0,0,0,0,0
     local sel = tonumber(GetVar(Select, "LC_Fonction"))
     if GetVar(Select, "LC_Axes") then
         axes = tonumber(GetVar(Select, "LC_Axes"))
@@ -37,6 +37,9 @@ local function main()
     if GetVar(Select,"LC_Prefix") then
         prefix = GetVar(Select, "LC_Prefix")
     end
+    if GetVar(Select,"LC_Macro") then
+        macro = GetVar(Select, "LC_Macro")
+    end
 
     if (sel == 1) then
         Fade(axes,layout,element,matrick,data_pool)
@@ -57,7 +60,7 @@ local function main()
     elseif (sel == 9) then
         PriorityNumber(layout,element,seq_call,data_pool)
     elseif (sel == 10) then
-        Favourites(layout,macrostore,data_pool,prefix)
+        Favourites(layout,macrostore,data_pool,prefix,macro)
     end
 
     DelVar(Select, "LC_Fonction")
@@ -70,6 +73,7 @@ local function main()
     DelVar(Select, "LC_Datapool")
     DelVar(Select, "LC_Favourites")
     DelVar(Select, "LC_Prefix")
+    DelVar(Select, "LC_Macro")
 end
 return main
 
