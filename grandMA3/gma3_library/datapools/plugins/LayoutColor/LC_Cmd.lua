@@ -887,10 +887,6 @@ function Create_All_Color(TCol, CurrentSeqNr, prefix, TLayNr, LayNr, NrNeed, Lay
         Cmd("ClearAll /nu")
         Cmd('Store Sequence ' .. CurrentSeqNr .. ' \'' .. prefix .. 'ALL' .. StringColName .. 'ALL\'')
         Cmd('Set Sequence ' .. CurrentSeqNr .. ' Cue 1 Property Appearance=' .. NrNeed + 1)
-        -- Cmd('Set Sequence ' .. CurrentSeqNr .. ' Cue ' .. prefix .. 'ALL' .. StringColName ..
-        --     'ALL Property Command= \'Go+ DataPool ' .. Data_Pool_Nr .. ' Sequence ' ..
-        --     prefix .. StringColName .. '* ; Off DataPool ' .. Data_Pool_Nr .. ' Sequence ' ..
-        --     CurrentSeqNr .. '\'')
         Cmd('Set Sequence ' ..
             CurrentSeqNr .. ' Cue 1 Property Command= \'Go+ DataPool ' .. Data_Pool_Nr .. ' Sequence ' ..
             prefix .. StringColName .. '* ; Off DataPool ' .. Data_Pool_Nr .. ' Sequence ' ..
@@ -952,7 +948,7 @@ function Command_Ext_Suite(CurrentSeqNr)
     Cmd('Set Sequence ' .. CurrentSeqNr .. ' Property WrapAround=1')
     Cmd('Set Sequence ' .. CurrentSeqNr .. ' Property ReleaseFirstCue=0')
     Cmd('Set Sequence ' .. CurrentSeqNr .. ' Property RestartMode=1')
-    Cmd('Set Sequence ' .. CurrentSeqNr .. ' Property CueCommand=Enable')
+    Cmd('Set Sequence ' .. CurrentSeqNr .. ' Property CueCommand=0')
     Cmd('Set Sequence ' .. CurrentSeqNr .. ' Property XFadeReload=0')
     Cmd('Set Sequence ' .. CurrentSeqNr .. ' Property OutputFilter=""')
     Cmd('Set Sequence ' .. CurrentSeqNr .. ' Property Priority=0')
