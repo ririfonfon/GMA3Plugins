@@ -20,7 +20,7 @@ function Create_Favourite_Macro(prefix, CurrentMacroNr, TLayNr, Data_Pool_Nr, Fa
     macropool[macro_num][5]:Set('Command', 'SetUserVariable "LC_DataPool" ' .. Data_Pool_Nr .. '')
     macropool[macro_num][6]:Set('Command', 'SetUserVariable "LC_Prefix" ' .. prefix .. '')
     macropool[macro_num][7]:Set('Command', 'SetUserVariable "LC_Macro" ' .. macro_num .. '')
-    macropool[macro_num][8]:Set('Command', 'Call DataPool ' .. Data_Pool_Nr .. ' Plugin "DEV LC_View"')
+    macropool[macro_num][8]:Set('Command', 'Call DataPool ' .. Data_Pool_Nr .. ' Plugin "LC_View"')
     macropool[macro_num]:Set('Appearance', 'LC_Black')
     for i = macro_num + 1, CurrentMacroNr do
         macropool[i]:Set('Appearance', 'LC_Favo')
