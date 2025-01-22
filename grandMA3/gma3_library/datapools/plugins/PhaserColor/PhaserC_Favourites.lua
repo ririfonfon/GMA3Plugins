@@ -1,17 +1,17 @@
 --[[
     Releases:
-    * 2.0.1.2
+    * 2.1.1.2
 
     Created by Richard Fontaine "RIRI", June 2024.
     --]]
-function Create_Favourite_Macro(prefix, CurrentMacroNr, TLayNr, Data_Pool_Nr, Favourite_Nr)
+function Create_PC_Favourite_Macro(prefix, CurrentMacroNr, TLayNr, Data_Pool_Nr, Favourite_Nr)
     local macro_num = CurrentMacroNr + 1
     CurrentMacroNr = macro_num + Favourite_Nr
     local macropool = ShowData().DataPools[Data_Pool_Nr].Macros
     Cmd('Store Macro ' .. macro_num .. '.1 Thru 8' .. ' /nu')
     Cmd('Store Macro ' .. (macro_num + 1) .. ' Thru ' .. CurrentMacroNr .. ' /nu')
     macropool[macro_num]:Set('name', prefix .. ' Store Favo ')
-    macropool[macro_num][1]:Set('Command', 'Set DataPool ' .. Data_Pool_Nr .. ' Macro ' .. macro_num .. ' Property "Apperance" "LC_Red"')
+    macropool[macro_num][1]:Set('Command', 'Set DataPool ' .. Data_Pool_Nr .. ' Macro ' .. macro_num .. ' Property "Appearance" "LC_Red"')
     macropool[macro_num][2]:Set('Command', 'SetUserVariable "LC_Favourites" "')
     macropool[macro_num][2]:Set('execute', false)
     macropool[macro_num][2]:Set('addtocmdline', true)
@@ -28,7 +28,7 @@ function Create_Favourite_Macro(prefix, CurrentMacroNr, TLayNr, Data_Pool_Nr, Fa
     return CurrentMacroNr, macro_num
 end
 
-function Create_Favourite_Layout(LayNr, CurrentMacroNr, LayH, LayW, TLayNr, Data_Pool_Nr, Ligne_Inc, Favourite_Nr, LayX)
+function Create_PC_Favourite_Layout(LayNr, CurrentMacroNr, LayH, LayW, TLayNr, Data_Pool_Nr, Ligne_Inc, Favourite_Nr, LayX)
     -- local LayX = -80 -- position of te first object by x-axis
     LayX = LayX + 120
     local LayY = 560 -- position of te first0 object by y-axis

@@ -1,6 +1,6 @@
 --[[
 Releases:
-* 2.0.1.0
+* 2.1.1.2
 
 Created by Richard Fontaine "RIRI", April 2024.
 --]]
@@ -244,9 +244,9 @@ function PC_Construct_Layout(displayHandle, TLay, SeqNrStart, MacroNrStart, Matr
     -- add Favourites
     local Macro_Num_Start
     local Macro_Num_End
-    CurrentMacroNr, Macro_Num_End = Create_Favourite_Macro(prefix, CurrentMacroNr, TLayNr, Data_Pool_Nr, Favourite_Nr)
+    CurrentMacroNr, Macro_Num_End = Create_PC_Favourite_Macro(prefix, CurrentMacroNr, TLayNr, Data_Pool_Nr, Favourite_Nr)
     Macro_Num_Start = CurrentMacroNr + 1
-    Create_Favourite_Layout(LayNr, CurrentMacroNr, LayH, LayW, TLayNr, Data_Pool_Nr, Ligne_Inc, Favourite_Nr, LayX)
+    Create_PC_Favourite_Layout(LayNr, CurrentMacroNr, LayH, LayW, TLayNr, Data_Pool_Nr, Ligne_Inc, Favourite_Nr, LayX)
 
     Cmd("ClearAll /nu")
     -- Macro Del PC prefix

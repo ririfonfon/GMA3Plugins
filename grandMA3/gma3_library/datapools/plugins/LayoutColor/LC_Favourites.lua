@@ -1,6 +1,6 @@
 --[[
     Releases:
-    * 2.0.2.0
+    * 2.1.1.2
 
     Created by Richard Fontaine "RIRI", June 2024.
     --]]
@@ -11,7 +11,7 @@ function Create_Favourite_Macro(prefix, CurrentMacroNr, TLayNr, Data_Pool_Nr, Fa
     Cmd('Store Macro ' .. macro_num .. '.1 Thru 8' .. ' /nu')
     Cmd('Store Macro ' .. (macro_num + 1) .. ' Thru ' .. CurrentMacroNr .. ' /nu')
     macropool[macro_num]:Set('name', prefix .. ' Store Favo ')
-    macropool[macro_num][1]:Set('Command', 'Set DataPool ' .. Data_Pool_Nr .. ' Macro ' .. macro_num .. ' Property "Apperance" "LC_Red"')
+    macropool[macro_num][1]:Set('Command', 'Set DataPool ' .. Data_Pool_Nr .. ' Macro ' .. macro_num .. ' Property "Appearance" "LC_Red"')
     macropool[macro_num][2]:Set('Command', 'SetUserVariable "LC_Favourites" "')
     macropool[macro_num][2]:Set('execute', false)
     macropool[macro_num][2]:Set('addtocmdline', true)

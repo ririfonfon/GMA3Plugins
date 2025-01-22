@@ -1,6 +1,6 @@
 --[[
 Releases:
-* 2.0.1.0
+* 2.1.1.2
 
 Created by Richard Fontaine "RIRI", March 2024.
 --]]
@@ -396,7 +396,7 @@ function Favourites(layout, macrostore, data_pool, prefix, macro)
         macropool[macronum][i]:Set('command', 'go DataPool ' .. data_pool ..
             ' Sequence ' .. string.char(34) .. '' .. sequences[seqnumber].name .. '' .. string.char(34) .. '')
     end
-    Cmd('Set DataPool ' .. data_pool .. ' Macro ' .. macro .. ' Property "Apperance" "LC_Black"')
+    Cmd('Set DataPool ' .. data_pool .. ' Macro ' .. macro .. ' Property "Appearance" "LC_Black"')
 end
 
 -- end LC_View_Cmd.lua
