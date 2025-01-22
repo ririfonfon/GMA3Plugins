@@ -11,7 +11,7 @@ local signalTable, thiscomponent = select(3, ...)
 local myHandle = select(4, ...)
 
 local function Main(displayHandle)
-    Cmd('Set CurrentUserProfile Property KeyboardShortcutsActive 0')
+    Cmd('Set UserProfile *.15 Property "keyboardshortcutsactive" false')
     local list = false
     local FixtureGroups = DataPool().Groups:Children()
     local SelectedGrp = {}
