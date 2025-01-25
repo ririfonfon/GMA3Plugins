@@ -99,6 +99,10 @@ local function poll(exec_no)
 
 
     --------------------------------------------SELECTED SEQ
+    
+    if SelectedSequence() == nil then
+        Cmd('Select Sequence 1')
+    end
     local id_seq = tonumber(SelectedSequence().No)
     local Current_Seq_Name = SelectedSequence().name
     local Seq_Conduite = GetObject('Seq ' .. id_seq)
