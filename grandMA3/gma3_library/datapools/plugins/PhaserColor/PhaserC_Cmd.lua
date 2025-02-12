@@ -393,7 +393,7 @@ function PC_Create_Layout_FixGroup(CurrentMacroNr, CurrentSeqNr, LayNr, LayY, Re
 
         Cmd('Assign Sequence ' .. CurrentSeqNr .. ' at Layout ' .. TLayNr)
         Cmd("Set Layout " .. TLayNr .. "." .. LayNr ..
-            " Action=0  PosX " .. LayX ..
+            " PosX " .. LayX ..
             " PosY " .. LayY ..
             " PositionW " .. LayW ..
             " PositionH " .. LayH ..
