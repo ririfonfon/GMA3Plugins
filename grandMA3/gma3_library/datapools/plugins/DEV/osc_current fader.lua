@@ -1,3 +1,10 @@
+--[[
+Releases:
+* 2.2.5.2
+
+Created by Richard Fontaine "RIRI", May 2025.
+--]]
+
 local executor_table = {
     101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115, 181, 182, 183, 184, 185,
     201, 202, 203, 204, 205, 206, 207, 208, 209, 210, 211, 212, 213, 214, 215, 281, 282, 283, 284, 285,
@@ -214,7 +221,14 @@ local function poll(exec_no)
 
             if Cuelist[exec_no] ~= nil then
                 if Last_Cuelist[exec_no] ~= Cuelist[exec_no] then
-                    send_cue_osc('Cue' .. exec_no .. 'Nr', tonumber(Cuelist[exec_no].No / 1000))
+                    if Cuelist[exec_no].No == nil then
+                        send_cue_osc('Cue' .. exec_no .. 'Nr', '***')
+                    else
+                        send_cue_osc('Cue' .. exec_no .. 'Nr', tonumber(Cuelist[exec_no].No / 1000))
+                    end
+                    if Cuelist[exec_no].name == nil then
+                        Cuelist[exec_no].name = 'none'
+                    end
                     send_cue_osc('Cue' .. exec_no .. 'Name', Cuelist[exec_no].name)
                     for k in ipairs(myseq) do
                         if myseq[k].No ~= nil then
