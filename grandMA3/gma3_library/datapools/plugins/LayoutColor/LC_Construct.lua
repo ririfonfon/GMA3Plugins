@@ -1,6 +1,6 @@
 --[[
 Releases:
-* 2.1.1.2
+* 2.2.2.5
 
 Created by Richard Fontaine "RIRI", June 2024.
 --]]
@@ -284,9 +284,11 @@ function Construct_Layout(displayHandle, TLay, SeqNrStart, MacroNrStart, Matrick
 
     -- check Symbols
     CheckSymbols(displayHandle, Img, ImgImp, check, add_check, long_imgimp, ImgNr)
+    
 
     -- Create MAtricks
     MatrickNr = Create_Matricks(MatrickNrStart, prefix, NaLay, SelectedGrp, SelectedGrpName, MatrickNr)
+    
 
 
     -- Create new Layout View
@@ -298,23 +300,27 @@ function Construct_Layout(displayHandle, TLay, SeqNrStart, MacroNrStart, Matrick
 
     -- Create Appearances Tricks Ref
     AppNr, AppTricks = Create_Appear_Tricks(AppTricks, AppNr, prefix)
+    
     -- end Appearances Tricks Ref
 
     -- Create Appearances
     NrAppear = Create_Appearances(SelectedGrp, AppNr, prefix, TCol, NrAppear, StColCode, StColName, StringColName)
+    
     -- end Appearances
 
     -- Create Preset 25
     All_5_NrEnd, All_5_Current = Create_Preset_25(TCol, StColName, StringColName, SelectedGelNr, prefix, All_5_NrEnd,
         All_5_Current)
-    -- endCreate Preset 25
+        
+        -- endCreate Preset 25
 
     -- Appearances/Sequences
     LayY, NrNeed, LayNr, CurrentSeqNr, CurrentMacroNr, ColLgnCount, Ligne_Inc = Create_Appearances_Sequences(
         CurrentMacroNr, SelectedGelNr, SelectedGrp, RefX, LayY, LayH, NrAppear, AppNr, NrNeed, TLayNr, LayW, LayNr,
         CurrentSeqNr, MaxColLgn, TCol, SelectedGrpNo, prefix, All_5_NrStart, MatrickNrStart, SelectedGrpName, AppTricks,
         Data_Pool_Nr)
-    -- end Appearances/Sequences
+        
+        -- end Appearances/Sequences
 
     -- Create Appearances/Function
     for q in pairs(AppImp) do
@@ -323,6 +329,7 @@ function Construct_Layout(displayHandle, TLay, SeqNrStart, MacroNrStart, Matrick
             '" "Appearance"=' .. AppImp[q].StApp .. '' .. AppImp[q].RGBref .. '')
         NrNeed = math.floor(NrNeed + 1)
     end
+    
     -- end Create Appearances/Function
 
     SeqNrEnd = CurrentSeqNr - 1
@@ -338,55 +345,63 @@ function Construct_Layout(displayHandle, TLay, SeqNrStart, MacroNrStart, Matrick
             FirstSeqTime, LastSeqTime, CurrentSeqNr, CurrentMacroNr, prefix, surfix, First_Id_Lay, LayNr, MatrickNrStart,
             TLayNr, Fade_Element, Argument_Fade, AppImp, LayX, LayY, LayW, LayH, SeqNrStart, SeqNrEnd, Current_Id_Lay,
             Delay_F_Element, a, Data_Pool_Nr)
-        -- end Create Sequence FADE
+            
+            -- end Create Sequence FADE
 
         -- Create Sequences Delayfrom
         Current_Id_Lay, First_Id_Lay, LayX, LayNr, Delay_T_Element, CurrentSeqNr, CurrentMacroNr =
             Create_Delay_From_Sequences(First_Id_Lay, LayNr, CurrentSeqNr, Current_Id_Lay, prefix, surfix, Argument_Delay,
                 AppImp, CurrentMacroNr, a, MatrickNrStart, TLayNr, Delay_F_Element, MatrickNr, MakeX, LayX, LayY, LayW,
                 LayH, Delay_T_Element, Data_Pool_Nr)
-        -- end Create Sequences Delayfrom
+                
+                -- end Create Sequences Delayfrom
 
         -- Create Sequences DelayTo
         First_Id_Lay, Current_Id_Lay, LayX, LayNr, Phase_Element, CurrentSeqNr, CurrentMacroNr =
             Create_Delay_To_Sequences(a, First_Id_Lay, LayNr, CurrentSeqNr, Current_Id_Lay, prefix, Argument_DelayTo,
                 surfix, MatrickNrStart, TLayNr, Delay_T_Element, MatrickNr, AppImp, LayX, LayY, LayW, LayH, Phase_Element,
                 CurrentMacroNr, MakeX, Data_Pool_Nr)
-        -- end Create Sequences DelayTo
+                
+                -- end Create Sequences DelayTo
 
         -- Create_Sequence_Phase
         Current_Id_Lay, CurrentMacroNr, LayY, LayX, LayNr, CurrentSeqNr, Group_Element = Create_Phase_Sequence(LayY, LayX,
             LayW, a, First_Id_Lay, LayNr, CurrentSeqNr, Current_Id_Lay, CurrentMacroNr, prefix, surfix, MatrickNrStart,
             TLayNr, Phase_Element, MatrickNr, AppImp, MakeX, LayH, RefX, Group_Element, Data_Pool_Nr)
-        -- end Sequences Phase
+            
+            -- end Sequences Phase
 
         -- Create_sequence_xgroup
         CurrentSeqNr, Block_Element, LayNr, LayX, Current_Id_Lay, First_Id_Lay, CurrentMacroNr, LastSeqGrp, FirstSeqGrp =
             Create_Group_Sequence(CurrentMacroNr, FirstSeqGrp, CurrentSeqNr, LastSeqGrp, prefix, surfix, a,
                 MatrickNrStart, TLayNr, Group_Element, MatrickNr, LayNr, LayX, LayY, First_Id_Lay, Current_Id_Lay,
                 Argument_Xgrp, AppImp, LayW, LayH, Block_Element, MakeX, Data_Pool_Nr)
-        -- end Sequences XGroup
+                
+                -- end Sequences XGroup
 
         -- Create_Block_Sequence
         CurrentSeqNr, Wings_Element, LayNr, LayX, Current_Id_Lay, First_Id_Lay, CurrentMacroNr, FirstSeqBlock, LastSeqBlock =
             Create_Block_Sequence(CurrentMacroNr, FirstSeqBlock, CurrentSeqNr, LastSeqBlock, prefix, surfix, a,
                 MatrickNrStart, TLayNr, Block_Element, MatrickNr, MakeX, LayNr, LayX, LayY, First_Id_Lay, Current_Id_Lay,
                 Argument_Xblock, AppImp, Wings_Element, LayW, LayH, Data_Pool_Nr)
-        -- end Create_Block_Sequence
+                
+                -- end Create_Block_Sequence
 
         -- Create_Wings_Sequence
         CurrentSeqNr, LayNr, LayX, Current_Id_Lay, First_Id_Lay, LastSeqWings, FirstSeqWings, CurrentMacroNr =
             Create_Wings_Sequence(CurrentMacroNr, FirstSeqWings, CurrentSeqNr, LastSeqWings, prefix, surfix, a,
                 MatrickNrStart, TLayNr, Wings_Element, MatrickNr, MakeX, LayNr, LayX, LayY, First_Id_Lay, Current_Id_Lay,
                 Argument_Xwings, AppImp, LayW, LayH, Data_Pool_Nr)
-        -- end Create_Wings_Sequence
+                
+                -- end Create_Wings_Sequence
 
         -- Create_XYZ_Sequence
         First_Id_Lay, LayNr, CurrentMacroNr = Create_XYZ_Sequence(CurrentMacroNr, First_Id_Lay, prefix, surfix, Call_inc,
             CallT, MatrickNrStart, a, CurrentSeqNr, TLayNr, Fade_Element, Delay_F_Element, Delay_T_Element, Phase_Element,
             Group_Element, Block_Element, Wings_Element, MatrickNr, AppImp, MakeX, LayNr, LayX, LayY, LayW, LayH,
             Data_Pool_Nr)
-        -- Create_XYZ_Sequence
+            
+            -- Create_XYZ_Sequence
 
         LayNr = math.floor(LayNr + 1)
         CurrentSeqNr = math.floor(CurrentSeqNr + 2)
@@ -404,6 +419,7 @@ function Construct_Layout(displayHandle, TLay, SeqNrStart, MacroNrStart, Matrick
             Group_Element, Block_Element, Wings_Element, Data_Pool_Nr)
         Cmd('ChangeDestination Root')
     end
+    
     -- end line macro X Y Z Call
 
     -- add Kill all LCx_
@@ -433,7 +449,8 @@ function Construct_Layout(displayHandle, TLay, SeqNrStart, MacroNrStart, Matrick
     -- Create_All_Color
     LayNr, LayX, First_All_Color = Create_All_Color(TCol, CurrentSeqNr, prefix, TLayNr, LayNr, NrNeed, LayX, LayY,
         LayW, LayH, MaxColLgn, RefX, AppNr, Data_Pool_Nr)
-    -- Create_All_Color
+        
+        -- Create_All_Color
 
     -- add Macro priority
     for k in pairs(DataPool().Layouts:Children()) do
@@ -481,6 +498,7 @@ function Construct_Layout(displayHandle, TLay, SeqNrStart, MacroNrStart, Matrick
     CurrentMacroNr, Macro_Num_End = Create_Favourite_Macro(prefix, CurrentMacroNr, TLayNr, Data_Pool_Nr, Favourite_Nr)
     Macro_Num_Start = CurrentMacroNr + 1
     Create_Favourite_Layout(LayNr, CurrentMacroNr, LayH, LayW, TLayNr, Data_Pool_Nr, Ligne_Inc, Favourite_Nr)
+    
     -- end Favourites
 
     -- Macro Del LC prefix
