@@ -420,9 +420,22 @@ local function poll(exec_no)
     end
 end
 
+local state = 0
+local function ping()
+    state = state + 1
+    if state > 20 then
+        state = 0
+    end
+    if state == 0 then
+        send_osc('PageCurrent/Ping', 0, 1)
+    elseif state == 10 then
+        send_osc('PageCurrent/Ping', 0, 0)
+    end
+end
 local function mainloop()
     while enabled do
         for _, exec_no in ipairs(executor_table) do poll(exec_no) end
+        ping()
         coroutine.yield(0.1)
     end
 end
