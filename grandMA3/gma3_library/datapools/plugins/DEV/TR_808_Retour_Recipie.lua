@@ -8,7 +8,7 @@
 
 local function main()
     local Select = UserVars()
-    local TR_Sub, TR_Layout, TR_Pool, TR_Fonction, grp_name
+    local TR_Sub, TR_Layout, TR_Pool, TR_Fonction, Target
     if GetVar(Select, "TR_Fonction") then
         TR_Fonction = tonumber(GetVar(Select, "TR_Fonction"))
         Printf("TR_Fonction: %i", TR_Fonction)
@@ -25,25 +25,34 @@ local function main()
         TR_Pool = tonumber(GetVar(Select, "TR_Pool"))
         Printf("TR_Pool: %i", TR_Pool)
     end
-
+    local SeqNr = ShowData().DataPools[TR_Pool].Sequences:Children()
     if (TR_Fonction == 1) then
-        -- local SeqNr = ShowData().DataPools.TR_808_GMA3.Sequences:Children()
-        local SeqNr = ShowData().DataPools[TR_Pool].Sequences:Children()
         for k in ipairs(SeqNr) do
-            -- Printf("Checking Sequence: %s", SeqNr[k].name)
             if TR_Sub == SeqNr[k].name then
                 if (SeqNr[k][3][1][1].Selection == nil ) then
-                    grp_name = "Group"
+                    Target = "Group"
                 else
-                    grp_name = SeqNr[k][3][1][1].Selection.Name
+                    Target = SeqNr[k][3][1][1].Selection.Name
                 end
-                Printf("Group Name: %s", grp_name)
+                Printf("Group Name: %s", Target)
                 Cmd('Set DataPool ' ..
-                TR_Pool .. ' Layout ' .. TR_Layout .. ' Property CustomTextText=\' ' .. grp_name .. ' \'')
+                TR_Pool .. ' Layout ' .. TR_Layout .. ' Property CustomTextText=\' ' .. Target .. ' \'')
             end
         end
         Printf("no_group")
     elseif (TR_Fonction == 2) then
+        for k in ipairs(SeqNr) do
+            if TR_Sub == SeqNr[k].name then
+                if (SeqNr[k][3][1][1].Selection == nil ) then
+                    Target = "Value"
+                else
+                    Target = SeqNr[k][3][1][1].Values.Name
+                end
+                Printf("Group Name: %s", Target)
+                Cmd('Set DataPool ' ..
+                TR_Pool .. ' Layout ' .. TR_Layout .. ' Property CustomTextText=\' ' .. Target .. ' \'')
+            end
+        end
 
     elseif (TR_Fonction == 3) then
 
