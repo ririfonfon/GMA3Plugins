@@ -48,14 +48,24 @@ local function main()
                 else
                     Target = SeqNr[k][3][1][1].Values.Name
                 end
-                Printf("Group Name: %s", Target)
+                Printf("Value Name: %s", Target)
                 Cmd('Set DataPool ' ..
                 TR_Pool .. ' Layout ' .. TR_Layout .. ' Property CustomTextText=\' ' .. Target .. ' \'')
             end
         end
-
     elseif (TR_Fonction == 3) then
-
+        for k in ipairs(SeqNr) do
+            if TR_Sub == SeqNr[k].name then
+                if (SeqNr[k][3][1][1].Selection == nil ) then
+                    Target = "Value"
+                else
+                    Target = SeqNr[k][3][1][1].MATricks.Name
+                end
+                Printf("MATricks Name: %s", Target)
+                Cmd('Set DataPool ' ..
+                TR_Pool .. ' Layout ' .. TR_Layout .. ' Property CustomTextText=\' ' .. Target .. ' \'')
+            end
+        end
     end
 
 
