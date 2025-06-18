@@ -18,8 +18,8 @@ local function main()
         Printf("TR_Sub: %s", TR_Sub)
     end
     if GetVar(Select, "TR_Layout") then
-        TR_Layout = GetVar(Select, "TR_Layout")
-        Printf("TR_Layout: %s", TR_Layout)
+        TR_Layout = tonumber(GetVar(Select, "TR_Layout"))
+        Printf("TR_Layout: %i", TR_Layout)
     end
     if GetVar(Select, "TR_Pool") then
         TR_Pool = tonumber(GetVar(Select, "TR_Pool"))
@@ -32,9 +32,9 @@ local function main()
         for k in ipairs(SeqNr) do
             Printf("Checking Sequence: %s", SeqNr[k].name)
             if TR_Sub == SeqNr[k].name then
-                local grp_name = SeqNr[k][3][1][1].Groups.Name
+                local grp_name = SeqNr[k][3][1][1].Selection.Name
                 Printf("Group Name: %s", grp_name)
-                Cmd('Set Layout ' .. TR_Layout .. ' Property CustomTextText=\' ' .. grp_name .. ' \'')
+                Cmd('Set DataPool ' .. TR_Pool .. ' Layout ' .. TR_Layout .. ' Property CustomTextText=\' ' .. grp_name .. ' \'')
             end
         end
         Printf("no_group")
