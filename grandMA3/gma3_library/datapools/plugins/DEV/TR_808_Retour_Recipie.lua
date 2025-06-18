@@ -8,7 +8,7 @@
 
 local function main()
     local Select = UserVars()
-    local TR_Sub, TR_Layout, TR_Pool, TR_Fonction
+    local TR_Sub, TR_Layout, TR_Pool, TR_Fonction, grp_name
     if GetVar(Select, "TR_Fonction") then
         TR_Fonction = tonumber(GetVar(Select, "TR_Fonction"))
         Printf("TR_Fonction: %i", TR_Fonction)
@@ -30,11 +30,16 @@ local function main()
         -- local SeqNr = ShowData().DataPools.TR_808_GMA3.Sequences:Children()
         local SeqNr = ShowData().DataPools[TR_Pool].Sequences:Children()
         for k in ipairs(SeqNr) do
-            Printf("Checking Sequence: %s", SeqNr[k].name)
+            -- Printf("Checking Sequence: %s", SeqNr[k].name)
             if TR_Sub == SeqNr[k].name then
-                local grp_name = SeqNr[k][3][1][1].Selection.Name
+                if (SeqNr[k][3][1][1].Selection == nil ) then
+                    grp_name = "Group"
+                else
+                    grp_name = SeqNr[k][3][1][1].Selection.Name
+                end
                 Printf("Group Name: %s", grp_name)
-                Cmd('Set DataPool ' .. TR_Pool .. ' Layout ' .. TR_Layout .. ' Property CustomTextText=\' ' .. grp_name .. ' \'')
+                Cmd('Set DataPool ' ..
+                TR_Pool .. ' Layout ' .. TR_Layout .. ' Property CustomTextText=\' ' .. grp_name .. ' \'')
             end
         end
         Printf("no_group")
