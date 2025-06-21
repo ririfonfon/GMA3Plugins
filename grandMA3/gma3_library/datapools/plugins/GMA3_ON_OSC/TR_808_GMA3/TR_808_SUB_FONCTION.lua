@@ -31,7 +31,7 @@ end
 
 function Favourites(layout, macrostore, data_pool, tag, macro)
     local sequences = ObjectList('DataPool ' .. data_pool ..
-        ' Sequence ' .. string.char(34) .. '' .. tag .. '*' .. string.char(34) .. '')
+        ' Sequence ' .. string.char(34) .. 'SUB*' .. string.char(34) .. '')
     local macropool = ShowData().DataPools[data_pool].Macros
     local layoutspool = ShowData().DataPools[data_pool].Layouts
     local activeseq = {}
