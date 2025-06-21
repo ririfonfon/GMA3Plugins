@@ -9,11 +9,11 @@ return function()
          local object_tag = exec.Object.Tags 
          Printf(exec .. object_tag) 
             if object_tag ~= nil and object_tag == '' .. tag ..':0' then 
-                Cmd('Assign ' .. fonction .. 'Executor ' .. exec )
+                Cmd('Assign ' .. fonction .. ' Executor ' .. exec )
             end
         end
     end
     DelVar(Select, "Tag")
-    DelVar(Select, "function")
+    DelVar(Select, "Function")
 end
 -- end tag.lua
