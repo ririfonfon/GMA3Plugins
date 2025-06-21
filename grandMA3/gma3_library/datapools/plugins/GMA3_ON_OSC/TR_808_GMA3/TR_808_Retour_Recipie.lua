@@ -29,41 +29,57 @@ local function main()
     if (TR_Fonction == 1) then
         for k in ipairs(SeqNr) do
             if TR_Sub == SeqNr[k].name then
-                if (SeqNr[k][3][1][1].Selection == nil ) then
+                if (SeqNr[k][3][1][1].Selection == nil) then
                     Target = "Group"
                 else
                     Target = SeqNr[k][3][1][1].Selection.Name
                 end
                 Printf("Group Name: %s", Target)
                 Cmd('Set DataPool ' ..
-                TR_Pool .. ' Layout ' .. TR_Layout .. ' Property CustomTextText=\' ' .. Target .. ' \'')
+                    TR_Pool .. ' Layout ' .. TR_Layout .. ' Property CustomTextText=\' ' .. Target .. ' \'')
             end
         end
         Printf("no_group")
     elseif (TR_Fonction == 2) then
         for k in ipairs(SeqNr) do
             if TR_Sub == SeqNr[k].name then
-                if (SeqNr[k][3][1][1].Selection == nil ) then
+                if (SeqNr[k][3][1][1].Selection == nil) then
                     Target = "Value"
                 else
                     Target = SeqNr[k][3][1][1].Values.Name
                 end
                 Printf("Value Name: %s", Target)
                 Cmd('Set DataPool ' ..
-                TR_Pool .. ' Layout ' .. TR_Layout .. ' Property CustomTextText=\' ' .. Target .. ' \'')
+                    TR_Pool .. ' Layout ' .. TR_Layout .. ' Property CustomTextText=\' ' .. Target .. ' \'')
             end
         end
     elseif (TR_Fonction == 3) then
         for k in ipairs(SeqNr) do
             if TR_Sub == SeqNr[k].name then
-                if (SeqNr[k][3][1][1].Selection == nil ) then
+                if (SeqNr[k][3][1][1].Selection == nil) then
                     Target = "Value"
                 else
                     Target = SeqNr[k][3][1][1].MATricks.Name
                 end
                 Printf("MATricks Name: %s", Target)
                 Cmd('Set DataPool ' ..
-                TR_Pool .. ' Layout ' .. TR_Layout .. ' Property CustomTextText=\' ' .. Target .. ' \'')
+                    TR_Pool .. ' Layout ' .. TR_Layout .. ' Property CustomTextText=\' ' .. Target .. ' \'')
+            end
+        end
+    elseif (TR_Fonction == 4) then
+        for k in ipairs(SeqNr) do
+            local nr_seq = tonumber(SeqNr[k].No)
+            local Cue_Target = GetObject('Sequence ' .. nr_seq)
+            -- Printf("Cue_Target: %i", tonumber(Cue_Target.No))
+            if TR_Sub == SeqNr[k].name then
+                Printf("Seq Nr: %i", nr_seq)
+                Printf("ok")
+                for i in ipairs(Cue_Target) do
+                    Printf("Cue : %i ", i)
+                    if Cue_Target[i].No ~= nil then
+                        Printf("Target : %i", tonumber(Cue_Target[i].No / 1000))
+                    end
+                end
             end
         end
     end
