@@ -28,6 +28,7 @@ local function main()
         Printf("TR_Pool: %i", TR_Pool)
     end
     local SeqNr = ShowData().DataPools[TR_Pool].Sequences:Children()
+    local Macro_Pool = ShowData().DataPool[TR_Pool].Macros
     if (TR_Fonction == 1) then
         for k in ipairs(SeqNr) do
             if TR_Sub == SeqNr[k].name then
@@ -84,6 +85,11 @@ local function main()
                         if (cue_number ~= 0) then
                             local cue_part = SeqNr[k][2+cue_number][1][1]:Get('Enabled', Enums.Roles.Display) or 'None'
                             Printf("Cue Part: %s", cue_part)
+                            if (cue_part == 'Yes') then
+                               Printf('YES')
+                            else
+                                Printf('NO')
+                            end
                         end
                     end
                 end
