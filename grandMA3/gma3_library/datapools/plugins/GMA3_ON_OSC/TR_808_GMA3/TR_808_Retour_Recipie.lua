@@ -5,6 +5,8 @@
     Created by Richard Fontaine "RIRI", june 2025.
 
 --]]
+local Printf, Echo, GetExecutor, Cmd, ipairs, mfloor = Printf, Echo, GetExecutor, Cmd, ipairs, math.floor
+
 
 local function main()
     local Select = UserVars()
@@ -69,15 +71,20 @@ local function main()
     elseif (TR_Fonction == 4) then
         for k in ipairs(SeqNr) do
             local nr_seq = tonumber(SeqNr[k].No)
-            local Cue_Target = GetObject('Sequence ' .. nr_seq)
-            -- Printf("Cue_Target: %i", tonumber(Cue_Target.No))
             if TR_Sub == SeqNr[k].name then
                 Printf("Seq Nr: %i", nr_seq)
                 Printf("ok")
-                for i in ipairs(Cue_Target) do
-                    Printf("Cue : %i ", i)
-                    if Cue_Target[i].No ~= nil then
-                        Printf("Target : %i", tonumber(Cue_Target[i].No / 1000))
+                local current_cue = tonumber(SeqNr[k].CurrentCue.No // 1000)
+                Printf("Current Cue: %i", current_cue)
+                for key, value in ipairs(SeqNr[k]:Children()) do
+                    if value.No  then
+                        Printf("Name: %s", value.Name)
+                        local cue_number = tonumber(value.No // 1000)
+                        Printf("Cue Number: %i", cue_number)
+                        if (cue_number ~= 0) then
+                            local cue_part = SeqNr[k][2+cue_number][1][1]:Get('Enabled', Enums.Roles.Display) or 'None'
+                            Printf("Cue Part: %s", cue_part)
+                        end
                     end
                 end
             end
