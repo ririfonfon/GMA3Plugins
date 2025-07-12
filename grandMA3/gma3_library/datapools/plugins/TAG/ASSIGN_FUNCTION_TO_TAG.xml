@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<GMA3 DataVersion="2.2.5.2">
+    <UserPlugin Name="ASSIGN_FUNCTION_TO_TAG" Guid="A7 7A 1F AB 56 C8 80 10 1E 58 C2 A2 E2 84 3F 9A" Appearance="DARK VIOLET" Author="RIRI" Version="0.0.0.2">
+        <DependencyExport Size="1">
+            <Dependency RelAddr="ShowData.Appearances.&apos;DARK VIOLET&apos;" RelAddrNum="14.4.49" Address="ShowData.Appearances.&apos;DARK VIOLET&apos;" AddressNum="14.4.49">
+                <Appearance Name="DARK VIOLET" Guid="0D 49 20 00 34 C7 CE 44 30 14 00 C2 6E 21 FC 85" Color="0.7568629980,0.0000000000,1.0000000000,0.2901960015" />
+            </Dependency>
+        </DependencyExport>
+        <ComponentLua Name="ASSIGN_FUNCTION_TO_TAG" Guid="A7 7A 1F AB 0E 85 80 10 42 77 20 8D 8B 8D C9 9F">
+            <FileContent Size="1">
+                <Block Base64="LS1bWw0KUmVsZWFzZXM6DQoqIDAuMC4wLjINCg0KdXNlIDoNCjEgTWFjcm9MaW5lIDEgU2V0VXNlclZhcmlhYmxlICJUYWciICJ4eHh4Ig0KMiBNYWNyb0xpbmUgMiBTZXRVc2VyVmFyaWFibGUgIkZ1bmN0aW9uIiAieHh4eCINCjMgTWFjcm9MaW5lIDMgUGx1Z2luICJBU1NJR05fRlVOQ1RJT05fVE9fVEFHIg0KDQoNCkNyZWF0ZWQgYnkgUmljaGFyZCBGb250YWluZSAiUklSSSIsIGp1bmUgMjAyNS4NCi0tXV0KDQpyZXR1cm4gZnVuY3Rpb24oKQ0KICAgIGxvY2FsIFNlbGVjdCA9IFVzZXJWYXJzKCkNCiAgICBsb2NhbCB0YWcgPSBHZXRWYXIoU2VsZWN0LCAiVGFnIikNCiAgICBsb2NhbCBmb25jdGlvbiA9IEdldFZhcihTZWxlY3QsICJGdW5jdGlvbiIpDQoNCiAgICBmb3IgZXhlY19ubyA9IDEwMSwgNDkwIGRvDQogICAgICAgIGxvY2FsIGV4ZWMgPSBHZXRFeGVjdXRvcihleGVjX25vKQ0KICAgICAgICBpZiBleGVjIH49IG5pbCBhbmQgZXhlYy5PYmplY3Qgfj0gbmlsIHRoZW4NCiAgICAgICAgICAgIGxvY2FsIG9iamVjdF90YWcgPSBleGVjLk9iamVjdC5UYWdzDQogICAgICAgICAgICBQcmludGYoZXhlYyAuLiAnICcgLi4gb2JqZWN0X3RhZyAuLiAnICcgLi4gdGFnIC4uICcgJyAuLiBmb25jdGlvbikNCiAgICAgICAgICAgIGlmIG9iamVjdF90YWcgfj0gbmlsIGFuZCBvYmplY3RfdGFnID09ICcnIC4uIHRhZyAuLiAnOjAnIHRoZW4NCiAgICAgICAgICAgICAgICBDbWQoJ0Fzc2lnbiAnIC4uIGZvbmN0aW9uIC4uICcgRXhlY3V0b3IgJyAuLiBleGVjKQ0KICAgICAgICAgICAgZW5kDQogICAgICAgIGVuZA0KICAgIGVuZA0KICAgIERlbFZhcihTZWxlY3QsICJUYWciKQ0KICAgIERlbFZhcihTZWxlY3QsICJGdW5jdGlvbiIpDQplbmQNCi0tIGVuZCB0YWcubHVhDQo=" />
+            </FileContent>
+        </ComponentLua>
+    </UserPlugin>
+</GMA3>
