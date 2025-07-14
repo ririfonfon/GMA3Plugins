@@ -11,20 +11,20 @@ local Printf, Echo, GetExecutor, Cmd, ipairs, mfloor = Printf, Echo, GetExecutor
 local function main()
     local Select = UserVars()
     local TR_Solo
-    if GetVAr(Select, "TR_SOLO") then
+    if GetVar(Select, "TR_SOLO") then
         TR_Solo = GetVar(Select, "TR_SOLO")
-        Printf("TR_Solo: %s", TR_Solo)
+        Printf("TR_Solo: %i", TR_Solo)
     else
         TR_Solo = "0"
         Printf("TR_Solo not set, defaulting to: %s", TR_Solo)
     end
     if GetVar(Select, "TR_PLUS") then
         TR_Solo = mfloor(tonumber(TR_Solo) + 1)
-        Printf("TR_Solo incremented to: %s", TR_Solo)
+        Printf("TR_Solo incremented to: %i", TR_Solo)
     end
     if GetVar(Select, "TR_MOINS") then
         TR_Solo = mfloor(tonumber(TR_Solo) - 1)
-        Printf("TR_Solo decremented to: %s", TR_Solo)
+        Printf("TR_Solo decremented to: %i", TR_Solo)
     end
     SetVar(Select, "TR_SOLO", TR_Solo)
     if TR_Solo < 1 then
