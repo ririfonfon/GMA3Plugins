@@ -10,7 +10,7 @@ local Printf, Echo, GetExecutor, Cmd, ipairs, mfloor = Printf, Echo, GetExecutor
 
 local function main()
     local Select = UserVars()
-    local TR_Sub, TR_Layout, TR_Pool, TR_Fonction, Target
+    local TR_Sub, TR_Layout, TR_Pool, TR_Fonction, Target, TR_Lay
     if GetVar(Select, "TR_Fonction") then
         TR_Fonction = tonumber(GetVar(Select, "TR_Fonction"))
         Printf("TR_Fonction: %i", TR_Fonction)
@@ -20,15 +20,16 @@ local function main()
         Printf("TR_Sub: %s", TR_Sub)
     end
     if GetVar(Select, "TR_Layout") then
-        TR_Layout = tonumber(GetVar(Select, "TR_Layout"))
-        Printf("TR_Layout: %i", TR_Layout)
+        TR_Lay = (GetVar(Select, "TR_Layout"))
+        TR_Layout = string.gsub( TR_Lay,"_","." )
+        Printf("TR_Layout: %s", TR_Layout)
     end
     if GetVar(Select, "TR_Pool") then
         TR_Pool = tonumber(GetVar(Select, "TR_Pool"))
         Printf("TR_Pool: %i", TR_Pool)
     end
     local SeqNr = ShowData().DataPools[TR_Pool].Sequences:Children()
-    local Macro_Pool = ShowData().DataPool[TR_Pool].Macros
+    -- local Macro_Pool = ShowData().DataPool[TR_Pool].Macros
     if (TR_Fonction == 1) then
         for k in ipairs(SeqNr) do
             if TR_Sub == SeqNr[k].name then
