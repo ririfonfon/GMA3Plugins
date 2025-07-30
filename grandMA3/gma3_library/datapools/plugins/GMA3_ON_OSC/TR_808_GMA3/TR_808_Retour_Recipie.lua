@@ -12,7 +12,7 @@ local function main()
     local Select = UserVars()
     local TR_Sub, TR_Layout, TR_Pool, TR_Fonction, Target, TR_Lay
     if GetVar(Select, "TR_Fonction") then
-        TR_Fonction = tonumber(GetVar(Select, "TR_Fonction"))
+        TR_Fonction = GetVar(Select, "TR_Fonction")
         Printf("TR_Fonction: %i", TR_Fonction)
     end
     if GetVar(Select, "TR_Sub") then
@@ -20,12 +20,12 @@ local function main()
         Printf("TR_Sub: %s", TR_Sub)
     end
     if GetVar(Select, "TR_Layout") then
-        TR_Lay = (GetVar(Select, "TR_Layout"))
-        TR_Layout = string.gsub( TR_Lay,"_","." )
+        TR_Lay = GetVar(Select, "TR_Layout")
+        TR_Layout = string.gsub(TR_Lay, "_", ".")
         Printf("TR_Layout: %s", TR_Layout)
     end
     if GetVar(Select, "TR_Pool") then
-        TR_Pool = tonumber(GetVar(Select, "TR_Pool"))
+        TR_Pool = GetVar(Select, "TR_Pool")
         Printf("TR_Pool: %i", TR_Pool)
     end
     local SeqNr = ShowData().DataPools[TR_Pool].Sequences:Children()
@@ -79,15 +79,15 @@ local function main()
                 local current_cue = tonumber(SeqNr[k].CurrentCue.No // 1000)
                 Printf("Current Cue: %i", current_cue)
                 for key, value in ipairs(SeqNr[k]:Children()) do
-                    if value.No  then
+                    if value.No then
                         Printf("Name: %s", value.Name)
                         local cue_number = tonumber(value.No // 1000)
                         Printf("Cue Number: %i", cue_number)
                         if (cue_number ~= 0) then
-                            local cue_part = SeqNr[k][2+cue_number][1][1]:Get('Enabled', Enums.Roles.Display) or 'None'
+                            local cue_part = SeqNr[k][2 + cue_number][1][1]:Get('Enabled', Enums.Roles.Display) or 'None'
                             Printf("Cue Part: %s", cue_part)
                             if (cue_part == 'Yes') then
-                               Printf('YES')
+                                Printf('YES')
                             else
                                 Printf('NO')
                             end
