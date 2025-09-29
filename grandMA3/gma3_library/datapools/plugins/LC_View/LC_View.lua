@@ -1,29 +1,29 @@
 --[[
 Releases:
-* 2.1.1.2
+* 2.1.1.3
 
-Created by Richard Fontaine "RIRI", March 2024.
+Created by Richard Fontaine "RIRI", September 2025.
 --]]
 
 local function main()
 
     local Select = UserVars()
     local axes, layout, element, matrick, seq_call, matrickthru, macrostore, data_pool, prefix, macro = 0,0,0,0,0,0,0,0,0,0
-    local sel = tonumber(GetVar(Select, "LC_Fonction"))
+    local sel = tonumber((GetVar(Select, "LC_Fonction")))
     if GetVar(Select, "LC_Axes") then
-        axes = tonumber(GetVar(Select, "LC_Axes"))
+        axes = tonumber((GetVar(Select, "LC_Axes")))
     end
     if GetVar(Select, "LC_Layout") then
-        layout = tonumber(GetVar(Select, "LC_Layout"))
+        layout = tonumber((GetVar(Select, "LC_Layout")))
     end
     if GetVar(Select, "LC_Element") then
-        element = tonumber(GetVar(Select, "LC_Element"))
+        element = tonumber((GetVar(Select, "LC_Element")))
     end
     if GetVar(Select, "LC_Matrick") then
-        matrick = tonumber(GetVar(Select, "LC_Matrick"))
+        matrick = tonumber((GetVar(Select, "LC_Matrick")))
     end
     if GetVar(Select, "LC_Matrick_Thru") then
-        matrickthru = tonumber(GetVar(Select, "LC_Matrick_Thru"))
+        matrickthru = tonumber((GetVar(Select, "LC_Matrick_Thru")))
     end
     if GetVar(Select, "LC_Sequence") then
         seq_call = GetVar(Select, "LC_Sequence")
