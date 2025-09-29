@@ -1,8 +1,8 @@
 --[[
     Releases:
-    * 2.1.1.2
+    * 2.3.1.1
 
-    Created by Richard Fontaine "RIRI", June 2024.
+    Created by Richard Fontaine "RIRI", September 2025.
     --]]
 
 function CheckSymbols(displayHandle, Img, ImgImp, check, add_check, long_imgimp, ImgNr)
@@ -284,7 +284,7 @@ function Create_Fade_Sequences(MakeX, FirstSeqTime, LastSeqTime, CurrentSeqNr, C
     Cmd("Insert")
     Cmd('set 4 Command=\'SetUserVariable "LC_Fonction" 1')
     Cmd("Insert")
-    Cmd('set 5 Command=\'SetUserVariable "LC_Axes" "' .. a .. '"')
+    Cmd('set 5 Command=\'SetUserVariable "LC_Axes" ' .. a .. '')
     Cmd("Insert")
     Cmd('set 6 Command=\'SetUserVariable "LC_Layout" ' .. TLayNr .. '')
     Cmd("Insert")
