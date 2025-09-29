@@ -1,8 +1,8 @@
 --[[
 Releases:
-* 2.1.1.2
+* 2.1.1.3
 
-Created by Richard Fontaine "RIRI", March 2024.
+Created by Richard Fontaine "RIRI", september 2025.
 --]]
 
 
@@ -30,6 +30,7 @@ function Fade(axes, layout, element, matrick_call, data_pool)
         fx = tonumber(MATricks[matrick]:Get('FadeFromZ', Enums.Roles.Display)) or 'None'
         tx = tonumber(MATricks[matrick]:Get('FadeToZ', Enums.Roles.Display)) or 'None'
     end
+
     local text
     if (fx ~= "None") then
         if (tx ~= "None") then
