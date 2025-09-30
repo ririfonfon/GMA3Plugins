@@ -152,7 +152,8 @@ function Create_Appearances_Sequences(CurrentMacroNr, SelectedGelNr, SelectedGrp
             " Action=0 Appearance=" .. AppNr ..
             " PosX " .. LayX .. " PosY " .. LayY ..
             " PositionW " .. LayW .. " PositionH " .. LayH ..
-            " VisibilityObjectname=1 VisibilityBar=0 VisibilityIndicatorBar=0 VisibilitySelectionRelevance=1 VisibilityBorder=0")
+            " VisibilityObjectname=1 VisibilityBar=0 VisibilityIndicatorBar=0 VisibilitySelectionRelevance=1 VisibilityBorder=0 VisibilityIcon=0")
+            -- " VisibilityObjectname=1 VisibilityBar=0 VisibilityIndicatorBar=0 VisibilitySelectionRelevance=1 VisibilityBorder=0 VisibilityIcon=0")
         LayNr = math.floor(LayNr + 1)
         LayX = math.floor(LayX + LayW + 20)
         local FirstSeqColor = CurrentSeqNr
@@ -184,7 +185,7 @@ function Create_Appearances_Sequences(CurrentMacroNr, SelectedGelNr, SelectedGrp
             Cmd("Set Layout " .. TLayNr .. "." .. LayNr ..
                 " Property PosX " .. LayX .. " PosY " .. LayY ..
                 " PositionW " .. LayW .. " PositionH " .. LayH ..
-                " VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0 VisibilityBorder=0")
+                " VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0 VisibilityBorder=0 VisibilityIcon=0")
             NrNeed = math.floor(NrNeed + 2); -- Set App Nr to next color
             if (col_count ~= MaxColLgn) then
                 LayX = math.floor(LayX + LayW + 20)
@@ -215,7 +216,7 @@ function Create_Appearances_Sequences(CurrentMacroNr, SelectedGelNr, SelectedGrp
         Cmd("Set Layout " .. TLayNr .. "." .. LayNr ..
             " PosX " .. LayX .. " PosY " .. LayY ..
             " PositionW " .. LayW - 35 .. " PositionH " .. LayH - 35 ..
-            " VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0 VisibilityBorder=0")
+            " VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0 VisibilityBorder=0 VisibilityIcon=0")
         CurrentSeqNr = math.floor(CurrentSeqNr + 1)
         Cmd('ClearAll /nu')
         Cmd('Store Sequence ' .. CurrentSeqNr .. ' \'' .. prefix .. "Tricksh" .. SelectedGrpName[g]:gsub('\'', '') ..
@@ -239,7 +240,7 @@ function Create_Appearances_Sequences(CurrentMacroNr, SelectedGelNr, SelectedGrp
         Cmd('Set Layout ' .. TLayNr .. '.' .. LayNr ..
             ' PosX ' .. LayX .. ' PosY ' .. LayY ..
             ' PositionW ' .. LayW - 35 .. ' PositionH ' .. LayH - 35 ..
-            ' VisibilityObjectname= 0 VisibilityBar=0 VisibilityIndicatorBar=0 VisibilityBorder=0')
+            ' VisibilityObjectname= 0 VisibilityBar=0 VisibilityIndicatorBar=0 VisibilityBorder=0 VisibilityIcon=0')
         CurrentMacroNr = math.floor(CurrentMacroNr + 1)
         LayNr = math.floor(LayNr + 1)
         CurrentSeqNr = math.floor(CurrentSeqNr + 1)
@@ -309,7 +310,7 @@ function Create_Fade_Sequences(MakeX, FirstSeqTime, LastSeqTime, CurrentSeqNr, C
         Cmd('Set Layout ' .. TLayNr .. '.' .. LayNr ..
             ' Property PosX ' .. LayX .. ' PosY ' .. LayY ..
             ' PositionW ' .. LayW .. ' PositionH ' .. LayH ..
-            ' VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0 VisibilityBorder=0')
+            ' VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0 VisibilityBorder=0 VisibilityIcon=0')
 
         LayNr = math.floor(LayNr + 1)
         Command_Title('Ex.Time', TLayNr, LayNr, LayX, LayY, 700, 140, 1)
@@ -359,7 +360,7 @@ function Create_Fade_Sequences(MakeX, FirstSeqTime, LastSeqTime, CurrentSeqNr, C
             Cmd('Set Layout ' .. TLayNr .. '.' .. LayNr ..
                 ' Property PosX ' .. LayX .. ' PosY ' .. LayY ..
                 ' PositionW ' .. LayW .. ' PositionH ' .. LayH ..
-                ' VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0 VisibilityBorder=0')
+                ' VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0 VisibilityBorder=0 VisibilityIcon=0')
             LayX = math.floor(LayX + LayW + 20)
             LayNr = math.floor(LayNr + 1)
             Delay_F_Element = math.floor(LayNr + 1)
@@ -431,7 +432,7 @@ function Create_Delay_From_Sequences(First_Id_Lay, LayNr, CurrentSeqNr, Current_
             Cmd("Set Layout " .. TLayNr .. "." .. LayNr ..
                 " Property PosX " .. LayX .. " PosY " .. LayY ..
                 " PositionW " .. LayW .. " PositionH " .. LayH ..
-                " VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0 VisibilityBorder=0")
+                " VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0 VisibilityBorder=0 VisibilityIcon=0")
             LayX = math.floor(LayX + LayW + 20)
             LayNr = math.floor(LayNr + 1)
             Delay_T_Element = math.floor(LayNr + 1)
@@ -502,7 +503,7 @@ function Create_Delay_To_Sequences(a, First_Id_Lay, LayNr, CurrentSeqNr, Current
             Cmd('Set Layout ' .. TLayNr .. '.' .. LayNr ..
                 ' Property PosX ' .. LayX .. ' PosY ' .. LayY ..
                 ' PositionW ' .. LayW .. ' PositionH ' .. LayH ..
-                ' VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0 VisibilityBorder=0')
+                ' VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0 VisibilityBorder=0 VisibilityIcon=0')
             LayX = math.floor(LayX + LayW + 20)
             LayNr = math.floor(LayNr + 1)
             Phase_Element = math.floor(LayNr + 2)
@@ -550,7 +551,7 @@ function Create_Phase_Sequence(LayY, LayX, LayW, a, First_Id_Lay, LayNr, Current
         Cmd('Set Layout ' .. TLayNr .. '.' .. LayNr ..
             ' Property PosX ' .. LayX .. ' PosY ' .. LayY ..
             ' PositionW ' .. LayW .. ' PositionH ' .. LayH ..
-            ' VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0 VisibilityBorder=0')
+            ' VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0 VisibilityBorder=0 VisibilityIcon=0')
         LayX = math.floor(LayX + LayW + 20)
         LayNr = math.floor(LayNr + 1)
         Command_Title('PHASE', TLayNr, LayNr, LayX - 120, LayY - 30, 700, 170, 4)
@@ -623,7 +624,7 @@ function Create_Group_Sequence(CurrentMacroNr, FirstSeqGrp, CurrentSeqNr, LastSe
             Cmd('Set Layout ' .. TLayNr .. '.' .. LayNr ..
                 ' Property PosX ' .. LayX .. ' PosY ' .. LayY ..
                 ' PositionW ' .. LayW .. ' PositionH ' .. LayH ..
-                ' VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0 VisibilityBorder=0')
+                ' VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0 VisibilityBorder=0 VisibilityIcon=0')
             LayX = math.floor(LayX + LayW + 20)
             LayNr = math.floor(LayNr + 1)
             Block_Element = math.floor(LayNr + 1)
@@ -696,7 +697,7 @@ function Create_Block_Sequence(CurrentMacroNr, FirstSeqBlock, CurrentSeqNr, Last
             Cmd('Set Layout ' .. TLayNr .. '.' .. LayNr ..
                 ' Property PosX ' .. LayX .. ' PosY ' .. LayY ..
                 ' PositionW ' .. LayW .. ' PositionH ' .. LayH ..
-                ' VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0 VisibilityBorder=0')
+                ' VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0 VisibilityBorder=0 VisibilityIcon=0')
             LayX = math.floor(LayX + LayW + 20)
             LayNr = math.floor(LayNr + 1)
             Wings_Element = math.floor(LayNr + 1)
@@ -765,7 +766,7 @@ function Create_Wings_Sequence(CurrentMacroNr, FirstSeqWings, CurrentSeqNr, Last
             Cmd('Set Layout ' .. TLayNr .. '.' .. LayNr ..
                 ' Property PosX ' .. LayX .. ' PosY ' .. LayY ..
                 ' PositionW ' .. LayW .. ' PositionH ' .. LayH ..
-                ' VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0 VisibilityBorder=0')
+                ' VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0 VisibilityBorder=0 VisibilityIcon=0')
             LayX = math.floor(LayX + LayW + 20)
             LayNr = math.floor(LayNr + 1)
         end
@@ -836,34 +837,34 @@ function Create_XYZ_Sequence(CurrentMacroNr, First_Id_Lay, prefix, surfix, Call_
         Cmd('Set Layout ' .. TLayNr .. '.' .. LayNr ..
             ' Property PosX ' .. First_Id_Lay[32] .. ' PosY ' .. First_Id_Lay[33] + 170 ..
             ' PositionW ' .. LayW - 35 .. ' PositionH ' .. LayH - 35 ..
-            ' VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0 VisibilityBorder=0')
+            ' VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0 VisibilityBorder=0 VisibilityIcon=0')
         Cmd('Assign Sequence ' .. CurrentSeqNr + 1 .. ' at Layout ' .. TLayNr)
         Cmd('Set Layout ' .. TLayNr .. '.' .. LayNr + 1 ..
             ' Property PosX ' .. First_Id_Lay[32] + 85 .. ' PosY ' .. First_Id_Lay[33] + 170 ..
             ' PositionW ' .. LayW - 35 .. ' PositionH ' .. LayH - 35 ..
-            ' VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0 VisibilityBorder=0')
+            ' VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0 VisibilityBorder=0 VisibilityIcon=0')
     elseif a == 2 then
         Cmd('Assign Sequence ' .. CurrentSeqNr .. ' at Layout ' .. TLayNr)
         Cmd('Set Layout ' .. TLayNr .. '.' .. LayNr ..
             ' Property PosX ' .. First_Id_Lay[32] .. ' PosY ' .. First_Id_Lay[33] + 90 ..
             ' PositionW ' .. LayW - 35 .. ' PositionH ' .. LayH - 35 ..
-            ' VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0 VisibilityBorder=0')
+            ' VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0 VisibilityBorder=0 VisibilityIcon=0')
         Cmd('Assign Sequence ' .. CurrentSeqNr + 1 .. ' at Layout ' .. TLayNr)
         Cmd('Set Layout ' .. TLayNr .. '.' .. LayNr + 1 ..
             ' Property PosX ' .. First_Id_Lay[32] + 85 .. ' PosY ' .. First_Id_Lay[33] + 90 ..
             ' PositionW ' .. LayW - 35 .. ' PositionH ' .. LayH - 35 ..
-            ' VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0 VisibilityBorder=0')
+            ' VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0 VisibilityBorder=0 VisibilityIcon=0')
     elseif a == 3 then
         Cmd('Assign Sequence ' .. CurrentSeqNr .. ' at Layout ' .. TLayNr)
         Cmd('Set Layout ' .. TLayNr .. '.' .. LayNr ..
             ' Property PosX ' .. First_Id_Lay[32] .. ' PosY ' .. First_Id_Lay[33] + 10 ..
             ' PositionW ' .. LayW - 35 .. ' PositionH ' .. LayH - 35 ..
-            ' VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0 VisibilityBorder=0')
+            ' VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0 VisibilityBorder=0 VisibilityIcon=0')
         Cmd('Assign Sequence ' .. CurrentSeqNr + 1 .. ' at Layout ' .. TLayNr)
         Cmd('Set Layout ' .. TLayNr .. '.' .. LayNr + 1 ..
             ' Property PosX ' .. First_Id_Lay[32] + 85 .. ' PosY ' .. First_Id_Lay[33] + 10 ..
             ' PositionW ' .. LayW - 35 .. ' PositionH ' .. LayH - 35 ..
-            ' VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0 VisibilityBorder=0')
+            ' VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0 VisibilityBorder=0 VisibilityIcon=0')
     end
     return First_Id_Lay, LayNr, CurrentMacroNr
 end -- end Create_XYZ_Sequence
@@ -897,7 +898,7 @@ function Create_All_Color(TCol, CurrentSeqNr, prefix, TLayNr, LayNr, NrNeed, Lay
         Cmd("Set Layout " .. TLayNr .. "." .. LayNr ..
             " Property PosX " .. LayX .. " PosY " .. LayY ..
             " PositionW " .. LayW .. " PositionH " .. LayH ..
-            " VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0 VisibilityBorder=0")
+            " VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0 VisibilityBorder=0 VisibilityIcon=0")
 
         if (col_count ~= MaxColLgn) then
             LayX = math.floor(LayX + LayW + 20)
@@ -932,7 +933,7 @@ function Command_Title(title, TLayNr, LayNr, LayX, LayY, Pw, Ph, align)
         Cmd('Set Layout ' .. TLayNr .. '.' .. LayNr .. ' Property CustomTextAlignmentH \'Left')
         Cmd('Set Layout ' .. TLayNr .. '.' .. LayNr .. ' Property CustomTextAlignmentV \'Bottom')
     end
-    Cmd('Set Layout ' .. TLayNr .. '.' .. LayNr .. ' Property VisibilityBorder=0')
+    Cmd('Set Layout ' .. TLayNr .. '.' .. LayNr .. ' Property VisibilityBorder=0 VisibilityIcon=0')
     Cmd('Set Layout ' .. TLayNr ..
         '.' .. LayNr .. ' Property PosX ' .. LayX .. ' PosY ' .. LayY .. ' PositionW ' .. Pw .. ' PositionH ' .. Ph .. '')
 end -- end function Command_Title(...)
