@@ -427,7 +427,7 @@ function Construct_Layout(displayHandle, TLay, SeqNrStart, MacroNrStart, Matrick
     Cmd('Set Layout ' .. TLayNr .. '.' .. LayNr ..
         ' Property PosX ' .. LayX .. ' PosY ' .. LayY ..
         ' PositionW ' .. LayW .. ' PositionH ' .. LayH ..
-        ' VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0 VisibilityBorder=0')
+        ' VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0 VisibilityBorder=0 VisibilityIcon=0')
     -- end Kill all LCx_
 
     -- Create_All_Color
