@@ -149,10 +149,10 @@ function Create_Appearances_Sequences(CurrentMacroNr, SelectedGelNr, SelectedGrp
         NrNeed = math.floor(AppNr + 1)
         Cmd("Assign Group " .. SelectedGrp[g] .. " at Layout " .. TLayNr)
         Cmd("Set Layout " .. TLayNr .. "." .. LayNr ..
-            " Action=0 Appearance=" .. AppNr ..
+            " Appearance=" .. AppNr ..
             " PosX " .. LayX .. " PosY " .. LayY ..
             " PositionW " .. LayW .. " PositionH " .. LayH ..
-            " VisibilityObjectname=1 VisibilityBar=0 VisibilityIndicatorBar=0 VisibilitySelectionRelevance=1 VisibilityBorder=0 VisibilityIcon=0")
+            " Action='Layout Default' VisibilityObjectname=1 VisibilityBar=0 VisibilityIndicatorBar=0 VisibilitySelectionRelevance=1 VisibilityBorder=0 VisibilityIcon=0")
             -- " VisibilityObjectname=1 VisibilityBar=0 VisibilityIndicatorBar=0 VisibilitySelectionRelevance=1 VisibilityBorder=0 VisibilityIcon=0")
         LayNr = math.floor(LayNr + 1)
         LayX = math.floor(LayX + LayW + 20)
@@ -185,7 +185,7 @@ function Create_Appearances_Sequences(CurrentMacroNr, SelectedGelNr, SelectedGrp
             Cmd("Set Layout " .. TLayNr .. "." .. LayNr ..
                 " Property PosX " .. LayX .. " PosY " .. LayY ..
                 " PositionW " .. LayW .. " PositionH " .. LayH ..
-                " VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0 VisibilityBorder=0 VisibilityIcon=0")
+                " Action='Layout Default' VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0 VisibilityBorder=0 VisibilityIcon=0")
             NrNeed = math.floor(NrNeed + 2); -- Set App Nr to next color
             if (col_count ~= MaxColLgn) then
                 LayX = math.floor(LayX + LayW + 20)
@@ -624,7 +624,7 @@ function Create_Group_Sequence(CurrentMacroNr, FirstSeqGrp, CurrentSeqNr, LastSe
             Cmd('Set Layout ' .. TLayNr .. '.' .. LayNr ..
                 ' Property PosX ' .. LayX .. ' PosY ' .. LayY ..
                 ' PositionW ' .. LayW .. ' PositionH ' .. LayH ..
-                ' VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0 VisibilityBorder=0 VisibilityIcon=0')
+                " Action='Layout Default' VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0 VisibilityBorder=0 VisibilityIcon=0")
             LayX = math.floor(LayX + LayW + 20)
             LayNr = math.floor(LayNr + 1)
             Block_Element = math.floor(LayNr + 1)
