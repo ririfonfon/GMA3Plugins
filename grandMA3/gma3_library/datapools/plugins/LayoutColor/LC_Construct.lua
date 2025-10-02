@@ -5,10 +5,6 @@ Releases:
 Created by Richard Fontaine "RIRI", June 2024.
 --]]
 
-local Cmd = function(...)
-    return CmdIndirectWait(...)
-end
-
 function Construct_Layout(displayHandle, TLay, SeqNrStart, MacroNrStart, MatrickNrStart, MatrickNr, TLayNr, AppNr,
                           All_5_Current, All_5_NrStart, ColPath, SelectedGelNr, SelectedGrp, SelectedGrpNo, TLayNrRef,
                           NaLay, MaxColLgn, Favourite_Nr)
@@ -294,8 +290,8 @@ function Construct_Layout(displayHandle, TLay, SeqNrStart, MacroNrStart, Matrick
 
 
     -- Create new Layout View
-    Cmd("Store Layout " .. TLayNr .. " \"" .. prefix .. NaLay .. "")
-    Cmd('Select Layout ' .. TLayNr)
+    CmdIndirectWait("Store Layout " .. TLayNr .. " \"" .. prefix .. NaLay .. "")
+    CmdIndirectWait('Select Layout ' .. TLayNr)
 
     SelectedGelNr = tonumber(SelectedGelNr)
     TCol = ColPath:Children()[SelectedGelNr]
@@ -324,7 +320,7 @@ function Construct_Layout(displayHandle, TLay, SeqNrStart, MacroNrStart, Matrick
     -- Create Appearances/Function
     for q in pairs(AppImp) do
         AppImp[q].Nr = math.floor(NrNeed)
-        Cmd('Store App ' .. AppImp[q].Nr .. ' "' .. prefix .. AppImp[q].Name ..
+        CmdIndirectWait('Store App ' .. AppImp[q].Nr .. ' "' .. prefix .. AppImp[q].Name ..
             '" "Appearance"=' .. AppImp[q].StApp .. '' .. AppImp[q].RGBref .. '')
         NrNeed = math.floor(NrNeed + 1)
     end
@@ -401,13 +397,13 @@ function Construct_Layout(displayHandle, TLay, SeqNrStart, MacroNrStart, Matrick
 
     -- add line macro X Y Z Call
     for i = 1, 3 do
-        Cmd('ChangeDestination Macro ' .. First_Id_Lay[33 + i])
-        Cmd('Insert')
-        Cmd('Set 32 Command=\'Off DataPool ' .. Data_Pool_Nr .. ' Sequence ' .. First_Id_Lay[29] ..
+        CmdIndirectWait('ChangeDestination Macro ' .. First_Id_Lay[33 + i])
+       Cmd('Insert')
+        CmdIndirectWait('Set 32 Command=\'Off DataPool ' .. Data_Pool_Nr .. ' Sequence ' .. First_Id_Lay[29] ..
             ' + ' .. First_Id_Lay[30] .. ' + ' .. First_Id_Lay[31] .. ' - ' .. First_Id_Lay[28 + i])
         Add_Macro_Call(i, TLayNr, Fade_Element, MatrickNrStart, Delay_F_Element, Delay_T_Element, Phase_Element,
             Group_Element, Block_Element, Wings_Element, Data_Pool_Nr)
-        Cmd('ChangeDestination Root')
+        CmdIndirectWait('ChangeDestination Root')
     end
     -- end line macro X Y Z Call
 
@@ -422,15 +418,15 @@ function Construct_Layout(displayHandle, TLay, SeqNrStart, MacroNrStart, Matrick
     LayY = math.floor(LayY + (120 * ColLgnCount))
     LayX = RefX
     LayNr = math.floor(LayNr + 1)
-    Cmd('ClearAll /nu')
-    Cmd('Store Sequence ' .. CurrentSeqNr .. ' \'' .. prefix .. 'KILL_ALL\'')
-    Cmd("Set Seq " .. CurrentSeqNr .. " cue 1 Property Appearance=" .. prefix .. "'skull_on'")
-    Cmd('Set Seq ' ..
+    CmdIndirectWait('ClearAll /nu')
+    CmdIndirectWait('Store Sequence ' .. CurrentSeqNr .. ' \'' .. prefix .. 'KILL_ALL\'')
+    CmdIndirectWait("Set Seq " .. CurrentSeqNr .. " cue 1 Property Appearance=" .. prefix .. "'skull_on'")
+    CmdIndirectWait('Set Seq ' ..
     CurrentSeqNr .. ' cue 1 Property Command=\'Off DataPool ' .. Data_Pool_Nr .. ' Sequence \'' .. prefix .. '*')
-    Cmd("Set Seq " .. CurrentSeqNr .. " Property Appearance=" .. prefix .. "'skull_off'")
+    CmdIndirectWait("Set Seq " .. CurrentSeqNr .. " Property Appearance=" .. prefix .. "'skull_off'")
     Command_Ext_Suite(CurrentSeqNr)
-    Cmd("Assign Seq " .. CurrentSeqNr .. " at Layout " .. TLayNr)
-    Cmd('Set Layout ' .. TLayNr .. '.' .. LayNr ..
+    CmdIndirectWait("Assign Seq " .. CurrentSeqNr .. " at Layout " .. TLayNr)
+    CmdIndirectWait('Set Layout ' .. TLayNr .. '.' .. LayNr ..
         ' Property PosX ' .. LayX .. ' PosY ' .. LayY ..
         ' PositionW ' .. LayW .. ' PositionH ' .. LayH ..
         ' VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0 VisibilityBorder=0 VisibilityIcon=0')
@@ -455,18 +451,18 @@ function Construct_Layout(displayHandle, TLay, SeqNrStart, MacroNrStart, Matrick
         LayY = 800
     end
     CurrentMacroNr = math.floor(CurrentMacroNr)
-    Cmd('Store Macro ' .. CurrentMacroNr .. ' \'' .. 'Priority\'')
-    Cmd('ChangeDestination Macro ' .. CurrentMacroNr .. '')
+    CmdIndirectWait('Store Macro ' .. CurrentMacroNr .. ' \'' .. 'Priority\'')
+    CmdIndirectWait('ChangeDestination Macro ' .. CurrentMacroNr .. '')
     for i = 1, 7 do
-        Cmd('Insert')
+       Cmd('Insert')
     end
-    Cmd('Assign Macro ' .. CurrentMacroNr .. ' at Layout ' .. TLayNr)
-    Cmd('Set Layout ' .. TLayNr .. '.' .. LayNr ..
+    CmdIndirectWait('Assign Macro ' .. CurrentMacroNr .. ' at Layout ' .. TLayNr)
+    CmdIndirectWait('Set Layout ' .. TLayNr .. '.' .. LayNr ..
         ' Property PosX ' .. LayX .. ' PosY ' .. LayY ..
         ' PositionW ' .. LayW .. ' PositionH ' .. LayH ..
         ' VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0 VisibilityBorder=0')
-    Cmd('Set Layout ' .. TLayNr .. "." .. LayNr .. ' Property "Appearance" "p_super_png" ')
-    Cmd('ChangeDestination Root')
+    CmdIndirectWait('Set Layout ' .. TLayNr .. "." .. LayNr .. ' Property "Appearance" "p_super_png" ')
+    CmdIndirectWait('ChangeDestination Root')
     local Color_message = 'SetUserVariable "LC_Sequence" "' .. First_All_Color .. '"'
     Color_message = string.gsub(Color_message, "'", "")
     Macro_Pool[CurrentMacroNr]:Set('name', '' .. prefix .. 'Priority')
@@ -493,14 +489,14 @@ function Construct_Layout(displayHandle, TLay, SeqNrStart, MacroNrStart, Matrick
     CurrentMacroNr = math.floor(CurrentMacroNr + 2)
     condition_string = "Lua 'if Confirm(\"Delete Layout Color LC" ..
         prefix:gsub('%D*', '') ..
-        "?\") then; Cmd(\"Go macro " ..
-        CurrentMacroNr .. "\"); else Cmd(\"Off macro " .. CurrentMacroNr .. "\"); end'" .. ' /nu'
-    Cmd('Store Macro ' .. CurrentMacroNr .. ' \'' .. 'ERASE\'')
-    Cmd('ChangeDestination Macro ' .. CurrentMacroNr .. '')
+        "?\") then; CmdIndirectWait(\"Go macro " ..
+        CurrentMacroNr .. "\"); else CmdIndirectWait(\"Off macro " .. CurrentMacroNr .. "\"); end'" .. ' /nu'
+    CmdIndirectWait('Store Macro ' .. CurrentMacroNr .. ' \'' .. 'ERASE\'')
+    CmdIndirectWait('ChangeDestination Macro ' .. CurrentMacroNr .. '')
     for i = 1, 11 do
-        Cmd('Insert')
+       Cmd('Insert')
     end
-    Cmd('ChangeDestination Root')
+    CmdIndirectWait('ChangeDestination Root')
     Macro_Pool[CurrentMacroNr]:Set('name', 'Erase [' .. prefix:gsub('_', '') .. ']')
     Macro_Pool[CurrentMacroNr][1]:Set('Command', condition_string)
     Macro_Pool[CurrentMacroNr][1]:Set('Wait', 'Go')
@@ -533,8 +529,8 @@ function Construct_Layout(displayHandle, TLay, SeqNrStart, MacroNrStart, Matrick
     end
     UsedW = DataPool().Layouts:Children()[TLayNrRef].UsedW / 2
     UsedH = DataPool().Layouts:Children()[TLayNrRef].UsedH / 2
-    Cmd("Set Layout " .. TLayNr .. " DimensionW " .. UsedW .. " DimensionH " .. UsedH)
-    Cmd('Select Layout ' .. TLayNr)
+    CmdIndirectWait("Set Layout " .. TLayNr .. " DimensionW " .. UsedW .. " DimensionH " .. UsedH)
+    CmdIndirectWait('Select Layout ' .. TLayNr)
 end -- end Construct_Layout
 
 --end LC_Construct.lua
