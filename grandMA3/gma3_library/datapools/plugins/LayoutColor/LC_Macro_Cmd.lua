@@ -1,9 +1,14 @@
 --[[
     Releases:
     * 2.3.1.1
-    
+
     Created by Richard Fontaine "RIRI", September 2025.
     --]]
+
+local Cmd = function(...)
+    -- coroutine.yield(0.001)
+    return CmdIndirectWait(...)
+end
 
 function Create_Macro_Reset(CurrentMacroNr, prefix, surfix, MatrickNrStart, a, CurrentSeqNr, First_Id_Lay, TLayNr,
                             Fade_Element, Delay_F_Element, Delay_T_Element, Phase_Element, Group_Element, Block_Element,
@@ -12,31 +17,31 @@ function Create_Macro_Reset(CurrentMacroNr, prefix, surfix, MatrickNrStart, a, C
     Cmd('ChangeDestination Macro ' .. CurrentMacroNr + 1 .. '')
     Cmd('Insert')
     Cmd('set 1 Command=\'Set DataPool ' ..
-    Data_Pool_Nr .. '  Matricks ' .. MatrickNrStart .. ' Property "FadeFrom' .. surfix[a] .. '" None')
+        Data_Pool_Nr .. '  Matricks ' .. MatrickNrStart .. ' Property "FadeFrom' .. surfix[a] .. '" None')
     Cmd('Insert')
     Cmd('set 2 Command=\'Set DataPool ' ..
-    Data_Pool_Nr .. '  Matricks ' .. MatrickNrStart .. ' Property "FadeTo' .. surfix[a] .. '" None')
+        Data_Pool_Nr .. '  Matricks ' .. MatrickNrStart .. ' Property "FadeTo' .. surfix[a] .. '" None')
     Cmd('Insert')
     Cmd('set 3 Command=\'Set DataPool ' ..
-    Data_Pool_Nr .. '  Matricks ' .. MatrickNrStart .. ' Property "DelayFrom' .. surfix[a] .. '" None')
+        Data_Pool_Nr .. '  Matricks ' .. MatrickNrStart .. ' Property "DelayFrom' .. surfix[a] .. '" None')
     Cmd('Insert')
     Cmd('set 4 Command=\'Set DataPool ' ..
-    Data_Pool_Nr .. '  Matricks ' .. MatrickNrStart .. ' Property "DelayTo' .. surfix[a] .. '" None')
+        Data_Pool_Nr .. '  Matricks ' .. MatrickNrStart .. ' Property "DelayTo' .. surfix[a] .. '" None')
     Cmd('Insert')
     Cmd('set 5 Command=\'Set DataPool ' ..
-    Data_Pool_Nr .. '  Matricks ' .. MatrickNrStart .. ' Property "PhaseFrom' .. surfix[a] .. '" None')
+        Data_Pool_Nr .. '  Matricks ' .. MatrickNrStart .. ' Property "PhaseFrom' .. surfix[a] .. '" None')
     Cmd('Insert')
     Cmd('set 6 Command=\'Set DataPool ' ..
-    Data_Pool_Nr .. '  Matricks ' .. MatrickNrStart .. ' Property "PhaseTo' .. surfix[a] .. '" None')
+        Data_Pool_Nr .. '  Matricks ' .. MatrickNrStart .. ' Property "PhaseTo' .. surfix[a] .. '" None')
     Cmd('Insert')
     Cmd('set 7 Command=\'Set DataPool ' ..
-    Data_Pool_Nr .. '  Matricks ' .. MatrickNrStart .. ' Property "' .. surfix[a] .. 'Group" None')
+        Data_Pool_Nr .. '  Matricks ' .. MatrickNrStart .. ' Property "' .. surfix[a] .. 'Group" None')
     Cmd('Insert')
     Cmd('set 8 Command=\'Set DataPool ' ..
-    Data_Pool_Nr .. '  Matricks ' .. MatrickNrStart .. ' Property "' .. surfix[a] .. 'Block" None')
+        Data_Pool_Nr .. '  Matricks ' .. MatrickNrStart .. ' Property "' .. surfix[a] .. 'Block" None')
     Cmd('Insert')
     Cmd('set 9 Command=\'Set DataPool ' ..
-    Data_Pool_Nr .. '  Matricks ' .. MatrickNrStart .. ' Property "' .. surfix[a] .. 'Wings" None')
+        Data_Pool_Nr .. '  Matricks ' .. MatrickNrStart .. ' Property "' .. surfix[a] .. 'Wings" None')
     Cmd('Insert')
     Cmd('set 10 Command=\'Off DataPool ' ..
         Data_Pool_Nr .. ' Sequence ' .. First_Id_Lay[a + 1] .. ' Thru ' .. First_Id_Lay[a + 1] + 4)
@@ -178,10 +183,10 @@ function Create_Macro_Delay_From(CurrentMacroNr, prefix, surfix, a, FirstSeq, La
     Cmd('ChangeDestination Macro ' .. CurrentMacroNr .. '')
     Cmd('Insert')
     Cmd('set 1 Command=\'Off DataPool ' ..
-    Data_Pool_Nr .. '  Sequence ' .. FirstSeq .. ' thru ' .. LastSeq .. ' - ' .. LastSeq .. '')
+        Data_Pool_Nr .. '  Sequence ' .. FirstSeq .. ' thru ' .. LastSeq .. ' - ' .. LastSeq .. '')
     Cmd("Insert")
     Cmd('set 2 Command=\'Edit DataPool ' ..
-    Data_Pool_Nr .. ' Matricks ' .. MatrickNrStart .. ' Property "DelayFrom' .. surfix[a] .. '"')
+        Data_Pool_Nr .. ' Matricks ' .. MatrickNrStart .. ' Property "DelayFrom' .. surfix[a] .. '"')
     Cmd("Insert")
     Cmd('set 3 Command=\'SetUserVariable "LC_Fonction" ' .. fonct .. '')
     Cmd("Insert")
@@ -207,10 +212,10 @@ function Create_Macro_Delay_To(CurrentMacroNr, prefix, surfix, a, FirstSeq, Last
     Cmd('ChangeDestination Macro ' .. CurrentMacroNr .. '')
     Cmd('Insert')
     Cmd('set 1 Command=\'Off DataPool ' ..
-    Data_Pool_Nr .. '  Sequence ' .. FirstSeq .. ' thru ' .. LastSeq .. ' - ' .. LastSeq .. '')
+        Data_Pool_Nr .. '  Sequence ' .. FirstSeq .. ' thru ' .. LastSeq .. ' - ' .. LastSeq .. '')
     Cmd("Insert")
     Cmd('set 2 Command=\'Edit DataPool ' ..
-    Data_Pool_Nr .. ' Matricks ' .. MatrickNrStart .. ' Property "DelayTo' .. surfix[a] .. '"')
+        Data_Pool_Nr .. ' Matricks ' .. MatrickNrStart .. ' Property "DelayTo' .. surfix[a] .. '"')
     Cmd("Insert")
     Cmd('set 3 Command=\'SetUserVariable "LC_Fonction" ' .. fonct .. '')
     Cmd("Insert")
@@ -236,10 +241,10 @@ function Create_Macro_Phase(CurrentMacroNr, prefix, surfix, a, MatrickNrStart, f
     Cmd('ChangeDestination Macro ' .. CurrentMacroNr .. '')
     Cmd('Insert')
     Cmd('set 1 Command=\'Edit DataPool ' ..
-    Data_Pool_Nr .. ' Matricks ' .. MatrickNrStart .. ' Property "PhaseFrom' .. surfix[a] .. '"')
+        Data_Pool_Nr .. ' Matricks ' .. MatrickNrStart .. ' Property "PhaseFrom' .. surfix[a] .. '"')
     Cmd("Insert")
     Cmd('set 2 Command=\'Edit DataPool ' ..
-    Data_Pool_Nr .. ' Matricks ' .. MatrickNrStart .. ' Property "PhaseTo' .. surfix[a] .. '"')
+        Data_Pool_Nr .. ' Matricks ' .. MatrickNrStart .. ' Property "PhaseTo' .. surfix[a] .. '"')
     Cmd("Insert")
     Cmd('set 3 Command=\'SetUserVariable "LC_Fonction" ' .. fonct .. '')
     Cmd("Insert")
@@ -265,10 +270,10 @@ function Create_Macro_Group(CurrentMacroNr, prefix, surfix, a, FirstSeq, LastSeq
     Cmd('ChangeDestination Macro ' .. CurrentMacroNr .. '')
     Cmd('Insert')
     Cmd('set 1 Command=\'Off DataPool ' ..
-    Data_Pool_Nr .. '  Sequence ' .. FirstSeq .. ' thru ' .. LastSeq .. ' - ' .. LastSeq .. '')
+        Data_Pool_Nr .. '  Sequence ' .. FirstSeq .. ' thru ' .. LastSeq .. ' - ' .. LastSeq .. '')
     Cmd('Insert')
     Cmd('set 2 Command=\'Edit DataPool ' ..
-    Data_Pool_Nr .. ' Matricks ' .. MatrickNrStart .. ' Property "' .. surfix[a] .. 'Group" ')
+        Data_Pool_Nr .. ' Matricks ' .. MatrickNrStart .. ' Property "' .. surfix[a] .. 'Group" ')
     Cmd("Insert")
     Cmd('set 3 Command=\'SetUserVariable "LC_Fonction" ' .. fonct .. '')
     Cmd("Insert")
@@ -294,10 +299,10 @@ function Create_Macro_Block(CurrentMacroNr, prefix, surfix, a, FirstSeq, LastSeq
     Cmd('ChangeDestination Macro ' .. CurrentMacroNr .. '')
     Cmd('Insert')
     Cmd('set 1 Command=\'Off DataPool ' ..
-    Data_Pool_Nr .. '  Sequence ' .. FirstSeq .. ' thru ' .. LastSeq .. ' - ' .. LastSeq .. '')
+        Data_Pool_Nr .. '  Sequence ' .. FirstSeq .. ' thru ' .. LastSeq .. ' - ' .. LastSeq .. '')
     Cmd('Insert')
     Cmd('set 2 Command=\'Edit DataPool ' ..
-    Data_Pool_Nr .. ' Matricks ' .. MatrickNrStart .. ' Property "' .. surfix[a] .. 'Block" ')
+        Data_Pool_Nr .. ' Matricks ' .. MatrickNrStart .. ' Property "' .. surfix[a] .. 'Block" ')
     Cmd("Insert")
     Cmd('set 3 Command=\'SetUserVariable "LC_Fonction" ' .. fonct .. '')
     Cmd("Insert")
@@ -323,10 +328,10 @@ function Create_Macro_Wings(CurrentMacroNr, prefix, surfix, a, FirstSeq, LastSeq
     Cmd('ChangeDestination Macro ' .. CurrentMacroNr .. '')
     Cmd('Insert')
     Cmd('set 1 Command=\'Off DataPool ' ..
-    Data_Pool_Nr .. '  Sequence ' .. FirstSeq .. ' thru ' .. LastSeq .. ' - ' .. LastSeq .. '')
+        Data_Pool_Nr .. '  Sequence ' .. FirstSeq .. ' thru ' .. LastSeq .. ' - ' .. LastSeq .. '')
     Cmd('Insert')
     Cmd('set 2 Command=\'Edit DataPool ' ..
-    Data_Pool_Nr .. ' Matricks ' .. MatrickNrStart .. ' Property "' .. surfix[a] .. 'Wings" ')
+        Data_Pool_Nr .. ' Matricks ' .. MatrickNrStart .. ' Property "' .. surfix[a] .. 'Wings" ')
     Cmd("Insert")
     Cmd('set 3 Command=\'SetUserVariable "LC_Fonction" ' .. fonct .. '')
     Cmd("Insert")
@@ -352,7 +357,7 @@ function Create_Macro_Fade_E(CurrentMacroNr, prefix, Argument_Fade, i, surfix, a
     Cmd('ChangeDestination Macro ' .. CurrentMacroNr + i - 1 .. '')
     Cmd('Insert')
     Cmd('set  1 Command=\'Off DataPool ' ..
-    Data_Pool_Nr .. '  Sequence ' .. FirstSeqTime .. ' thru ' .. LastSeqTime .. ' - ' .. CurrentSeqNr .. '')
+        Data_Pool_Nr .. '  Sequence ' .. FirstSeqTime .. ' thru ' .. LastSeqTime .. ' - ' .. CurrentSeqNr .. '')
     Cmd('Insert')
     Cmd('set  2 Command=\'Set DataPool ' .. Data_Pool_Nr .. '  Sequence ' ..
         SeqNrStart .. ' thru ' .. SeqNrEnd .. ' UseExecutorTime=' .. Argument_Fade[i].UseExTime .. '')
