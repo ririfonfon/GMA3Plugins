@@ -5,6 +5,10 @@ Releases:
 Created by Richard Fontaine "RIRI", June 2024.
 --]]
 
+local Cmd = function(...)
+    return CmdIndirectWait(...)
+end
+
 function Construct_Layout(displayHandle, TLay, SeqNrStart, MacroNrStart, MatrickNrStart, MatrickNr, TLayNr, AppNr,
                           All_5_Current, All_5_NrStart, ColPath, SelectedGelNr, SelectedGrp, SelectedGrpNo, TLayNrRef,
                           NaLay, MaxColLgn, Favourite_Nr)
@@ -291,6 +295,7 @@ function Construct_Layout(displayHandle, TLay, SeqNrStart, MacroNrStart, Matrick
 
     -- Create new Layout View
     Cmd("Store Layout " .. TLayNr .. " \"" .. prefix .. NaLay .. "")
+    Cmd('Select Layout ' .. TLayNr)
 
     SelectedGelNr = tonumber(SelectedGelNr)
     TCol = ColPath:Children()[SelectedGelNr]
@@ -420,7 +425,8 @@ function Construct_Layout(displayHandle, TLay, SeqNrStart, MacroNrStart, Matrick
     Cmd('ClearAll /nu')
     Cmd('Store Sequence ' .. CurrentSeqNr .. ' \'' .. prefix .. 'KILL_ALL\'')
     Cmd("Set Seq " .. CurrentSeqNr .. " cue 1 Property Appearance=" .. prefix .. "'skull_on'")
-    Cmd('Set Seq ' .. CurrentSeqNr ..' cue 1 Property Command=\'Off DataPool ' .. Data_Pool_Nr .. ' Sequence \'' .. prefix .. '*')
+    Cmd('Set Seq ' ..
+    CurrentSeqNr .. ' cue 1 Property Command=\'Off DataPool ' .. Data_Pool_Nr .. ' Sequence \'' .. prefix .. '*')
     Cmd("Set Seq " .. CurrentSeqNr .. " Property Appearance=" .. prefix .. "'skull_off'")
     Command_Ext_Suite(CurrentSeqNr)
     Cmd("Assign Seq " .. CurrentSeqNr .. " at Layout " .. TLayNr)
