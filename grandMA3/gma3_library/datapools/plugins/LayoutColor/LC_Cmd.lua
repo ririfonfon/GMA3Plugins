@@ -5,11 +5,6 @@
     Created by Richard Fontaine "RIRI", September 2025.
     --]]
 
-local Cmd = function(...)
-    -- coroutine.yield(0.001)
-    return CmdIndirectWait(...)
-end
-
 function CheckSymbols(displayHandle, Img, ImgImp, check, add_check, long_imgimp, ImgNr)
     for k in pairs(Img) do
         for q in pairs(ImgImp) do
@@ -52,13 +47,13 @@ function CheckSymbols(displayHandle, Img, ImgImp, check, add_check, long_imgimp,
         end
 
         -- grab the export path for the selected drive and append the file name
-        Cmd("select Drive " .. selectedDrive .. "")
+        CmdIndirectWait("select Drive " .. selectedDrive .. "")
 
         -- Import Symbols
         for k in pairs(ImgImp) do
             if (check[k] == nil) then
                 ImgNr = math.floor(ImgNr + 1);
-                Cmd("Store Image 2." ..
+                CmdIndirectWait("Store Image 2." ..
                     ImgNr ..
                     " " ..
                     ImgImp[k].Name .. " Filename=" .. ImgImp[k].FileName .. " filepath=" .. ImgImp[k].Filepath .. "")
@@ -68,18 +63,19 @@ function CheckSymbols(displayHandle, Img, ImgImp, check, add_check, long_imgimp,
 end -- end CheckSymbols
 
 function Create_Matricks(MatrickNrStart, prefix, NaLay, SelectedGrp, SelectedGrpName, MatrickNr)
-    Cmd('Store MAtricks ' .. MatrickNrStart .. ' /nu')
-    Cmd('Set Matricks ' .. MatrickNrStart .. ' name = ' .. prefix .. NaLay .. ' /nu')
+    CmdIndirectWait('Store MAtricks ' .. MatrickNrStart .. ' /nu')
+    CmdIndirectWait('Set Matricks ' .. MatrickNrStart .. ' name = ' .. prefix .. NaLay .. ' /nu')
     MatrickNr = math.floor(MatrickNrStart + 1)
     for g in pairs(SelectedGrp) do
-        Cmd('Store MAtricks ' .. MatrickNr .. ' /nu')
-        Cmd('Set Matricks ' .. MatrickNr .. ' name = ' .. prefix .. SelectedGrpName[g]:gsub('\'', '') .. ' /nu')
-        Cmd('Set Matricks ' .. MatrickNr .. ' Property "FadeFromx" 0')
-        Cmd('Set Matricks ' .. MatrickNr .. ' Property "FadeFromy" 0')
-        Cmd('Set Matricks ' .. MatrickNr .. ' Property "FadeFromz" 0')
-        Cmd('Set Matricks ' .. MatrickNr .. ' Property "FadeTox" 0')
-        Cmd('Set Matricks ' .. MatrickNr .. ' Property "FadeToy" 0')
-        Cmd('Set Matricks ' .. MatrickNr .. ' Property "FadeToz" 0')
+        CmdIndirectWait('Store MAtricks ' .. MatrickNr .. ' /nu')
+        CmdIndirectWait('Set Matricks ' ..
+        MatrickNr .. ' name = ' .. prefix .. SelectedGrpName[g]:gsub('\'', '') .. ' /nu')
+        CmdIndirectWait('Set Matricks ' .. MatrickNr .. ' Property "FadeFromx" 0')
+        CmdIndirectWait('Set Matricks ' .. MatrickNr .. ' Property "FadeFromy" 0')
+        CmdIndirectWait('Set Matricks ' .. MatrickNr .. ' Property "FadeFromz" 0')
+        CmdIndirectWait('Set Matricks ' .. MatrickNr .. ' Property "FadeTox" 0')
+        CmdIndirectWait('Set Matricks ' .. MatrickNr .. ' Property "FadeToy" 0')
+        CmdIndirectWait('Set Matricks ' .. MatrickNr .. ' Property "FadeToz" 0')
         MatrickNr = math.floor(MatrickNr + 1)
     end
     return MatrickNr
@@ -88,7 +84,7 @@ end -- end Create_Matricks
 function Create_Appear_Tricks(AppTricks, AppNr, prefix)
     for q in pairs(AppTricks) do
         AppTricks[q].Nr = math.floor(AppNr)
-        Cmd('Store App ' ..
+        CmdIndirectWait('Store App ' ..
             AppTricks[q].Nr ..
             ' "' ..
             prefix .. AppTricks[q].Name .. '" "Appearance"=' .. AppTricks[q].StApp .. '' .. AppTricks[q].RGBref .. '')
@@ -104,7 +100,8 @@ function Create_Appearances(SelectedGrp, AppNr, prefix, TCol, NrAppear, StColCod
     local StAppOff = '\"Showdata.MediaPools.Symbols.off\"'
     for g in ipairs(SelectedGrp) do
         AppNr = math.floor(AppNr);
-        Cmd('Store App ' .. AppNr .. ' \'' .. prefix .. ' Label\' Appearance=' .. StAppOn .. ' color=\'0,0,0,1\'')
+        CmdIndirectWait('Store App ' ..
+        AppNr .. ' \'' .. prefix .. ' Label\' Appearance=' .. StAppOn .. ' color=\'0,0,0,1\'')
         NrAppear = math.floor(AppNr + 1)
         for col in ipairs(TCol) do
             StColCode = "\"" .. TCol[col].r .. "," .. TCol[col].g .. "," .. TCol[col].b .. ",1\""
@@ -112,10 +109,10 @@ function Create_Appearances(SelectedGrp, AppNr, prefix, TCol, NrAppear, StColCod
             StringColName = string.gsub(StColName, " ", "_")
             StAppNameOn = "\"" .. prefix .. StringColName .. " on\""
             StAppNameOff = "\"" .. prefix .. StringColName .. " Off\""
-            Cmd("Store App " ..
+            CmdIndirectWait("Store App " ..
                 NrAppear .. " " .. StAppNameOn .. " Appearance=" .. StAppOn .. " color=" .. StColCode .. "")
             NrAppear = math.floor(NrAppear + 1)
-            Cmd("Store App " ..
+            CmdIndirectWait("Store App " ..
                 NrAppear .. " " .. StAppNameOff .. " Appearance=" .. StAppOff .. " color=" .. StColCode .. "")
             NrAppear = math.floor(NrAppear + 1)
         end
@@ -124,15 +121,15 @@ function Create_Appearances(SelectedGrp, AppNr, prefix, TCol, NrAppear, StColCod
 end -- end Create_Appearances
 
 function Create_Preset_25(TCol, StColName, StringColName, SelectedGelNr, prefix, All_5_NrEnd, All_5_Current)
-    Cmd("ClearAll /nu")
-    Cmd('Set Preset 25 Property PresetMode "Universal"')
-    Cmd('Fixture Thru')
+    CmdIndirectWait("ClearAll /nu")
+    CmdIndirectWait('Set Preset 25 Property PresetMode "Universal"')
+    CmdIndirectWait('Fixture Thru')
     for col in ipairs(TCol) do
         StColName = TCol[col].name
         StringColName = string.gsub(StColName, " ", "_")
-        Cmd('At Gel ' .. SelectedGelNr .. "." .. col .. '')
-        Cmd('Store Preset 25.' .. All_5_Current .. '')
-        Cmd('Label Preset 25.' .. All_5_Current .. " " .. prefix .. StringColName .. " ")
+        CmdIndirectWait('At Gel ' .. SelectedGelNr .. "." .. col .. '')
+        CmdIndirectWait('Store Preset 25.' .. All_5_Current .. '')
+        CmdIndirectWait('Label Preset 25.' .. All_5_Current .. " " .. prefix .. StringColName .. " ")
         All_5_NrEnd = All_5_Current
         All_5_Current = math.floor(All_5_Current + 1)
     end
@@ -152,8 +149,8 @@ function Create_Appearances_Sequences(CurrentMacroNr, SelectedGelNr, SelectedGrp
         LayY = math.floor(LayY - LayH) -- Max Y Position minus hight from element. 0 are at the Bottom!
         NrAppear = math.floor(AppNr + 1)
         NrNeed = math.floor(AppNr + 1)
-        Cmd("Assign Group " .. SelectedGrp[g] .. " at Layout " .. TLayNr)
-        Cmd("Set Layout " .. TLayNr .. "." .. LayNr ..
+        CmdIndirectWait("Assign Group " .. SelectedGrp[g] .. " at Layout " .. TLayNr)
+        CmdIndirectWait("Set Layout " .. TLayNr .. "." .. LayNr ..
             " Appearance=" .. AppNr ..
             " PosX " .. LayX .. " PosY " .. LayY ..
             " PositionW " .. LayW .. " PositionH " .. LayH ..
@@ -173,21 +170,22 @@ function Create_Appearances_Sequences(CurrentMacroNr, SelectedGelNr, SelectedGrp
             -- Create Sequences
             local GrpNo = SelectedGrpNo[g]
             GrpNo = string.gsub(GrpNo, "'", "")
-            Cmd("ClearAll /nu")
-            -- Cmd("Group " .. SelectedGrp[g] .. " at Gel " .. ColNr .. "")
-            Cmd("Store Sequence " ..
+            CmdIndirectWait("ClearAll /nu")
+            -- CmdIndirectWait("Group " .. SelectedGrp[g] .. " at Gel " .. ColNr .. "")
+            CmdIndirectWait("Store Sequence " ..
                 CurrentSeqNr .. " \"" .. prefix .. StringColName .. " " .. SelectedGrp[g]:gsub('\'', '') .. "\"")
-            Cmd("Store Sequence " .. CurrentSeqNr .. " Cue 1 Part 0.1")
-            Cmd("Assign Group " .. GrpNo .. " At Sequence " .. CurrentSeqNr .. " Cue 1 Part 0.1")
-            Cmd('Assign Values Preset 25.' ..
+            CmdIndirectWait("Store Sequence " .. CurrentSeqNr .. " Cue 1 Part 0.1")
+            CmdIndirectWait("Assign Group " .. GrpNo .. " At Sequence " .. CurrentSeqNr .. " Cue 1 Part 0.1")
+            CmdIndirectWait('Assign Values Preset 25.' ..
                 All_5_NrStart + col - 1 .. "At Sequence " .. CurrentSeqNr .. 'Cue 1 part 0.1')
-            Cmd('Assign MAtricks ' .. MatrickNrStart .. ' At Sequence ' .. CurrentSeqNr .. ' Cue 1 Part 0.1 /nu')
-            Cmd('Set Sequence ' .. CurrentSeqNr .. ' Cue 1 Property Appearance=' .. NrNeed)
-            Cmd('Set Sequence ' .. CurrentSeqNr .. ' Property Appearance=' .. NrNeed + 1)
+            CmdIndirectWait('Assign MAtricks ' ..
+            MatrickNrStart .. ' At Sequence ' .. CurrentSeqNr .. ' Cue 1 Part 0.1 /nu')
+            CmdIndirectWait('Set Sequence ' .. CurrentSeqNr .. ' Cue 1 Property Appearance=' .. NrNeed)
+            CmdIndirectWait('Set Sequence ' .. CurrentSeqNr .. ' Property Appearance=' .. NrNeed + 1)
             Command_Ext_Suite(CurrentSeqNr)
             -- Add Squences to Layout
-            Cmd("Assign Sequence " .. CurrentSeqNr .. " at Layout " .. TLayNr)
-            Cmd("Set Layout " .. TLayNr .. "." .. LayNr ..
+            CmdIndirectWait("Assign Sequence " .. CurrentSeqNr .. " at Layout " .. TLayNr)
+            CmdIndirectWait("Set Layout " .. TLayNr .. "." .. LayNr ..
                 " Property PosX " .. LayX .. " PosY " .. LayY ..
                 " PositionW " .. LayW .. " PositionH " .. LayH ..
                 " Action='Layout Default' VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0 VisibilityBorder=0 VisibilityIcon=0")
@@ -208,43 +206,45 @@ function Create_Appearances_Sequences(CurrentMacroNr, SelectedGelNr, SelectedGrp
             CurrentSeqNr = math.floor(CurrentSeqNr + 1)
         end -- end COLOR SEQ
         -- add matrick group
-        Cmd('ClearAll /nu')
-        Cmd('Store Sequence ' .. CurrentSeqNr .. ' \'' .. prefix .. "Tricks" .. SelectedGrpName[g]:gsub('\'', ''))
-        Cmd('Set Sequence ' .. CurrentSeqNr .. ' Cue 1 Property Command=\'Assign DataPool ' ..
+        CmdIndirectWait('ClearAll /nu')
+        CmdIndirectWait('Store Sequence ' ..
+        CurrentSeqNr .. ' \'' .. prefix .. "Tricks" .. SelectedGrpName[g]:gsub('\'', ''))
+        CmdIndirectWait('Set Sequence ' .. CurrentSeqNr .. ' Cue 1 Property Command=\'Assign DataPool ' ..
             Data_Pool_Nr .. ' MaTricks ' .. prefix .. SelectedGrpName[g]:gsub('\'', '') ..
             ' At DataPool ' .. Data_Pool_Nr .. ' Sequence ' .. FirstSeqColor .. ' Thru ' .. LastSeqColor ..
             ' Cue 1 part 0.1 ;  Assign DataPool ' ..
             Data_Pool_Nr ..
             ' Sequence ' .. CurrentSeqNr + 1 .. ' At DataPool ' .. Data_Pool_Nr .. ' Layout ' .. TLayNr .. '.' .. LayNr)
-        Cmd('Set Sequence ' .. CurrentSeqNr .. ' Property Appearance=' .. AppTricks[2].Nr)
-        Cmd("Assign Sequence " .. CurrentSeqNr .. " at Layout " .. TLayNr)
-        Cmd("Set Layout " .. TLayNr .. "." .. LayNr ..
+        CmdIndirectWait('Set Sequence ' .. CurrentSeqNr .. ' Property Appearance=' .. AppTricks[2].Nr)
+        CmdIndirectWait("Assign Sequence " .. CurrentSeqNr .. " at Layout " .. TLayNr)
+        CmdIndirectWait("Set Layout " .. TLayNr .. "." .. LayNr ..
             " PosX " .. LayX .. " PosY " .. LayY ..
             " PositionW " .. LayW - 35 .. " PositionH " .. LayH - 35 ..
             " VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0 VisibilityBorder=0 VisibilityIcon=0")
         CurrentSeqNr = math.floor(CurrentSeqNr + 1)
-        Cmd('ClearAll /nu')
-        Cmd('Store Sequence ' .. CurrentSeqNr .. ' \'' .. prefix .. "Tricksh" .. SelectedGrpName[g]:gsub('\'', '') ..
+        CmdIndirectWait('ClearAll /nu')
+        CmdIndirectWait('Store Sequence ' ..
+            CurrentSeqNr .. ' \'' .. prefix .. "Tricksh" .. SelectedGrpName[g]:gsub('\'', '') ..
             '\'')
-        Cmd('Set Sequence ' ..
+        CmdIndirectWait('Set Sequence ' ..
             CurrentSeqNr ..
             ' Cue 1 Property Command=\'Assign DataPool ' .. Data_Pool_Nr .. ' MaTricks ' .. MatrickNrStart ..
             ' At DataPool ' .. Data_Pool_Nr .. ' Sequence ' .. FirstSeqColor .. ' Thru ' .. LastSeqColor ..
             ' Cue 1 part 0.1 ; Assign DataPool ' ..
             Data_Pool_Nr ..
             ' Sequence ' .. CurrentSeqNr - 1 .. ' At DataPool ' .. Data_Pool_Nr .. ' Layout ' .. TLayNr .. '.' .. LayNr)
-        Cmd('Set Sequence ' .. CurrentSeqNr .. ' Property Appearance=' .. AppTricks[1].Nr)
+        CmdIndirectWait('Set Sequence ' .. CurrentSeqNr .. ' Property Appearance=' .. AppTricks[1].Nr)
         LayNr = math.floor(LayNr + 1)
         LayX = math.floor(LayX + LayW - 35 + 20)
-        Cmd('Store Macro ' .. CurrentMacroNr .. ' \'' .. prefix .. SelectedGrpName[g]:gsub('\'', ''))
-        Cmd('ChangeDestination Macro ' .. CurrentMacroNr .. '')
+        CmdIndirectWait('Store Macro ' .. CurrentMacroNr .. ' \'' .. prefix .. SelectedGrpName[g]:gsub('\'', ''))
+        CmdIndirectWait('ChangeDestination Macro ' .. CurrentMacroNr .. '')
         Cmd('Insert')
-        Cmd('set 1 Command=\'Edit DataPool ' ..
+        CmdIndirectWait('set 1 Command=\'Edit DataPool ' ..
             Data_Pool_Nr .. ' Matrick ' .. prefix .. SelectedGrpName[g]:gsub('\'', ''))
-        Cmd('ChangeDestination Root')
-        Cmd('Assign Macro ' .. CurrentMacroNr .. " at layout " .. TLayNr)
-        Cmd('set Macro ' .. CurrentMacroNr .. ' Property Appearance=' .. AppTricks[3].Nr)
-        Cmd('Set Layout ' .. TLayNr .. '.' .. LayNr ..
+        CmdIndirectWait('ChangeDestination Root')
+        CmdIndirectWait('Assign Macro ' .. CurrentMacroNr .. " at layout " .. TLayNr)
+        CmdIndirectWait('set Macro ' .. CurrentMacroNr .. ' Property Appearance=' .. AppTricks[3].Nr)
+        CmdIndirectWait('Set Layout ' .. TLayNr .. '.' .. LayNr ..
             ' PosX ' .. LayX .. ' PosY ' .. LayY ..
             ' PositionW ' .. LayW - 35 .. ' PositionH ' .. LayH - 35 ..
             ' VisibilityObjectname= 0 VisibilityBar=0 VisibilityIndicatorBar=0 VisibilityBorder=0 VisibilityIcon=0')
@@ -272,49 +272,49 @@ function Create_Fade_Sequences(MakeX, FirstSeqTime, LastSeqTime, CurrentSeqNr, C
         LastSeqTime = math.floor(CurrentSeqNr + 4)
     end
     -- Create Macro Time Input
-    Cmd('Store Macro ' .. CurrentMacroNr .. ' \'' .. prefix .. 'Time Input' .. surfix[a] .. '')
-    Cmd('ChangeDestination Macro ' .. CurrentMacroNr .. '')
+    CmdIndirectWait('Store Macro ' .. CurrentMacroNr .. ' \'' .. prefix .. 'Time Input' .. surfix[a] .. '')
+    CmdIndirectWait('ChangeDestination Macro ' .. CurrentMacroNr .. '')
     Cmd('Insert')
     if MakeX then
-        Cmd('set 1 Command=\'Off DataPool ' .. Data_Pool_Nr .. ' Sequence ' ..
+        CmdIndirectWait('set 1 Command=\'Off DataPool ' .. Data_Pool_Nr .. ' Sequence ' ..
             FirstSeqTime .. ' Thru ' .. LastSeqTime .. ' - ' .. LastSeqTime .. '')
         Fade_Element = math.floor(LayNr + 3)
     else
-        Cmd('set 1 Command=\'Off DataPool ' .. Data_Pool_Nr .. ' Sequence ' ..
+        CmdIndirectWait('set 1 Command=\'Off DataPool ' .. Data_Pool_Nr .. ' Sequence ' ..
             First_Id_Lay[37] .. ' + ' .. FirstSeqTime .. ' Thru ' .. LastSeqTime .. ' - ' .. LastSeqTime .. '')
     end
     Cmd('Insert')
-    Cmd('set 2 Command=\'Edit DataPool ' ..
+    CmdIndirectWait('set 2 Command=\'Edit DataPool ' ..
         Data_Pool_Nr .. ' Matricks ' .. MatrickNrStart .. ' Property "FadeFrom' .. surfix[a] .. '"')
-    Cmd("Insert")
-    Cmd('set 3 Command=\'Edit DataPool ' ..
+    CmdIndirectWait("Insert")
+    CmdIndirectWait('set 3 Command=\'Edit DataPool ' ..
         Data_Pool_Nr .. ' Matricks ' .. MatrickNrStart .. ' Property "FadeTo' .. surfix[a] .. '"')
-    Cmd("Insert")
-    Cmd('set 4 Command=\'SetUserVariable "LC_Fonction" 1')
-    Cmd("Insert")
-    Cmd('set 5 Command=\'SetUserVariable "LC_Axes" ' .. a .. '')
-    Cmd("Insert")
-    Cmd('set 6 Command=\'SetUserVariable "LC_Layout" ' .. TLayNr .. '')
-    Cmd("Insert")
-    Cmd('set 7 Command=\'SetUserVariable "LC_Element" ' .. Fade_Element .. '')
-    Cmd("Insert")
-    Cmd('set 8 Command=\'SetUserVariable "LC_Matrick" ' .. MatrickNrStart .. '')
-    Cmd("Insert")
-    Cmd('set 9 Command=\'Call DataPool ' .. Data_Pool_Nr .. ' Plugin "LC_View"')
-    Cmd('ChangeDestination Root')
+    CmdIndirectWait("Insert")
+    CmdIndirectWait('set 4 Command=\'SetUserVariable "LC_Fonction" 1')
+    CmdIndirectWait("Insert")
+    CmdIndirectWait('set 5 Command=\'SetUserVariable "LC_Axes" ' .. a .. '')
+    CmdIndirectWait("Insert")
+    CmdIndirectWait('set 6 Command=\'SetUserVariable "LC_Layout" ' .. TLayNr .. '')
+    CmdIndirectWait("Insert")
+    CmdIndirectWait('set 7 Command=\'SetUserVariable "LC_Element" ' .. Fade_Element .. '')
+    CmdIndirectWait("Insert")
+    CmdIndirectWait('set 8 Command=\'SetUserVariable "LC_Matrick" ' .. MatrickNrStart .. '')
+    CmdIndirectWait("Insert")
+    CmdIndirectWait('set 9 Command=\'Call DataPool ' .. Data_Pool_Nr .. ' Plugin "LC_View"')
+    CmdIndirectWait('ChangeDestination Root')
     if a == 1 then
-        Cmd('ClearAll /nu')
-        Cmd('Store Sequence ' ..
+        CmdIndirectWait('ClearAll /nu')
+        CmdIndirectWait('Store Sequence ' ..
             CurrentSeqNr .. ' \'' .. prefix .. Argument_Fade[1].name .. surfix[a] .. '\'')
-        Cmd('Set Sequence ' .. CurrentSeqNr .. ' Cue 1 Property Appearance=' .. AppImp[1].Nr)
-        Cmd('Set Sequence ' .. CurrentSeqNr .. ' Cue 1 Property Command=\'Off DataPool ' ..
+        CmdIndirectWait('Set Sequence ' .. CurrentSeqNr .. ' Cue 1 Property Appearance=' .. AppImp[1].Nr)
+        CmdIndirectWait('Set Sequence ' .. CurrentSeqNr .. ' Cue 1 Property Command=\'Off DataPool ' ..
             Data_Pool_Nr .. ' Sequence ' .. FirstSeqTime .. ' Thru ' .. LastSeqTime .. ' - ' .. CurrentSeqNr ..
             ' ; Set Sequence ' ..
             SeqNrStart .. ' Thru ' .. SeqNrEnd .. ' UseExecutorTime=' .. Argument_Fade[1].UseExTime .. '')
-        Cmd('Set Sequence ' .. CurrentSeqNr .. ' Property Appearance=' .. AppImp[2].Nr)
+        CmdIndirectWait('Set Sequence ' .. CurrentSeqNr .. ' Property Appearance=' .. AppImp[2].Nr)
         Command_Ext_Suite(CurrentSeqNr)
-        Cmd('Assign Sequence ' .. CurrentSeqNr .. ' at Layout ' .. TLayNr)
-        Cmd('Set Layout ' .. TLayNr .. '.' .. LayNr ..
+        CmdIndirectWait('Assign Sequence ' .. CurrentSeqNr .. ' at Layout ' .. TLayNr)
+        CmdIndirectWait('Set Layout ' .. TLayNr .. '.' .. LayNr ..
             ' Property PosX ' .. LayX .. ' PosY ' .. LayY ..
             ' PositionW ' .. LayW .. ' PositionH ' .. LayH ..
             ' VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0 VisibilityBorder=0 VisibilityIcon=0')
@@ -345,30 +345,30 @@ function Create_Fade_Sequences(MakeX, FirstSeqTime, LastSeqTime, CurrentSeqNr, C
             Current_Id_Lay = First_Id_Lay[1]
         end
         -- Create Sequences
-        Cmd('ClearAll /nu')
-        Cmd('Store Sequence ' ..
+        CmdIndirectWait('ClearAll /nu')
+        CmdIndirectWait('Store Sequence ' ..
             CurrentSeqNr .. ' \'' .. prefix .. Argument_Fade[i].name .. surfix[a] .. '\'')
-        -- Add Cmd to Squence
-        Cmd('Set Sequence ' .. CurrentSeqNr .. ' Cue 1 Property Appearance=' .. AppImp[ia].Nr)
+        -- Add CmdIndirectWait to Squence
+        CmdIndirectWait('Set Sequence ' .. CurrentSeqNr .. ' Cue 1 Property Appearance=' .. AppImp[ia].Nr)
         if i == 6 then
-            Cmd('Set Sequence ' ..
+            CmdIndirectWait('Set Sequence ' ..
                 CurrentSeqNr ..
                 ' Cue 1 Property Command=\'Go DataPool ' .. Data_Pool_Nr .. ' Macro ' .. CurrentMacroNr .. '')
         else
             Create_Macro_Fade_E(CurrentMacroNr, prefix, Argument_Fade, i, surfix, a, FirstSeqTime,
                 LastSeqTime, CurrentSeqNr, SeqNrStart, SeqNrEnd, MatrickNrStart, TLayNr, Fade_Element, Data_Pool_Nr)
-            Cmd('Set Sequence ' ..
+            CmdIndirectWait('Set Sequence ' ..
                 CurrentSeqNr ..
                 ' Cue 1 Property Command=\'Go DataPool ' .. Data_Pool_Nr .. ' Macro ' .. CurrentMacroNr + i - 1 .. '')
         end
-        Cmd('Set Sequence ' .. CurrentSeqNr .. ' Property Appearance=' .. AppImp[ib].Nr)
+        CmdIndirectWait('Set Sequence ' .. CurrentSeqNr .. ' Property Appearance=' .. AppImp[ib].Nr)
         Command_Ext_Suite(CurrentSeqNr)
         -- end Sequences
 
         -- Add Squences to Layout
         if MakeX then
-            Cmd('Assign Sequence ' .. CurrentSeqNr .. ' at Layout ' .. TLayNr)
-            Cmd('Set Layout ' .. TLayNr .. '.' .. LayNr ..
+            CmdIndirectWait('Assign Sequence ' .. CurrentSeqNr .. ' at Layout ' .. TLayNr)
+            CmdIndirectWait('Set Layout ' .. TLayNr .. '.' .. LayNr ..
                 ' Property PosX ' .. LayX .. ' PosY ' .. LayY ..
                 ' PositionW ' .. LayW .. ' PositionH ' .. LayH ..
                 ' VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0 VisibilityBorder=0 VisibilityIcon=0')
@@ -415,18 +415,19 @@ function Create_Delay_From_Sequences(First_Id_Lay, LayNr, CurrentSeqNr, Current_
             end
             Current_Id_Lay = First_Id_Lay[5]
         end
-        Cmd('ClearAll /nu')
-        Cmd('Store Sequence ' .. CurrentSeqNr .. ' \'' .. prefix .. Argument_Delay[i].name .. surfix[a] .. '\'')
-        -- Add Cmd to Squence
-        Cmd('Set Sequence ' .. CurrentSeqNr .. ' Cue 1 Property Appearance=' .. AppImp[ia].Nr)
+        CmdIndirectWait('ClearAll /nu')
+        CmdIndirectWait('Store Sequence ' ..
+        CurrentSeqNr .. ' \'' .. prefix .. Argument_Delay[i].name .. surfix[a] .. '\'')
+        -- Add CmdIndirectWait to Squence
+        CmdIndirectWait('Set Sequence ' .. CurrentSeqNr .. ' Cue 1 Property Appearance=' .. AppImp[ia].Nr)
         if i == 5 then
-            Cmd('Set DataPool ' ..
+            CmdIndirectWait('Set DataPool ' ..
                 Data_Pool_Nr ..
                 ' Sequence ' ..
                 CurrentSeqNr ..
                 ' Cue 1 Property Command=\'Go DataPool ' .. Data_Pool_Nr .. ' Macro ' .. CurrentMacroNr .. '')
         else
-            Cmd('Set Sequence ' ..
+            CmdIndirectWait('Set Sequence ' ..
                 CurrentSeqNr .. ' Cue 1 Property Command=\'Off DataPool ' .. Data_Pool_Nr .. ' Sequence ' ..
                 FirstSeqDelayFrom .. ' Thru ' .. LastSeqDelayFrom .. ' - ' .. CurrentSeqNr ..
                 ' ; Set DataPool ' .. Data_Pool_Nr .. ' Matricks ' ..
@@ -438,12 +439,12 @@ function Create_Delay_From_Sequences(First_Id_Lay, LayNr, CurrentSeqNr, Current_
                 ' ; SetUserVariable "LC_Matrick_Thru" ' .. MatrickNr ..
                 ' ; Call DataPool ' .. Data_Pool_Nr .. ' Plugin "LC_View" ')
         end
-        Cmd('Set Sequence ' .. CurrentSeqNr .. ' Property Appearance=' .. AppImp[ib].Nr)
+        CmdIndirectWait('Set Sequence ' .. CurrentSeqNr .. ' Property Appearance=' .. AppImp[ib].Nr)
         Command_Ext_Suite(CurrentSeqNr)
         -- Add Squences to Layout
         if MakeX then
-            Cmd("Assign Sequence " .. CurrentSeqNr .. " at Layout " .. TLayNr)
-            Cmd("Set Layout " .. TLayNr .. "." .. LayNr ..
+            CmdIndirectWait("Assign Sequence " .. CurrentSeqNr .. " at Layout " .. TLayNr)
+            CmdIndirectWait("Set Layout " .. TLayNr .. "." .. LayNr ..
                 " Property PosX " .. LayX .. " PosY " .. LayY ..
                 " PositionW " .. LayW .. " PositionH " .. LayH ..
                 " VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0 VisibilityBorder=0 VisibilityIcon=0")
@@ -489,17 +490,17 @@ function Create_Delay_To_Sequences(a, First_Id_Lay, LayNr, CurrentSeqNr, Current
             end
             Current_Id_Lay = First_Id_Lay[9]
         end
-        Cmd('ClearAll /nu')
-        Cmd('Store Sequence ' ..
+        CmdIndirectWait('ClearAll /nu')
+        CmdIndirectWait('Store Sequence ' ..
             CurrentSeqNr .. ' \'' .. prefix .. Argument_DelayTo[i].name .. surfix[a] .. '\'')
-        -- Add Cmd to Squence
-        Cmd('Set Sequence ' .. CurrentSeqNr .. ' Cue 1 Property Appearance=' .. AppImp[ia].Nr)
+        -- Add CmdIndirectWait to Squence
+        CmdIndirectWait('Set Sequence ' .. CurrentSeqNr .. ' Cue 1 Property Appearance=' .. AppImp[ia].Nr)
         if i == 5 then
-            Cmd('Set Sequence ' ..
+            CmdIndirectWait('Set Sequence ' ..
                 CurrentSeqNr ..
                 ' Cue 1 Property Command=\'Go DataPool ' .. Data_Pool_Nr .. ' Macro ' .. CurrentMacroNr .. '')
         else
-            Cmd('Set Sequence ' ..
+            CmdIndirectWait('Set Sequence ' ..
                 CurrentSeqNr .. ' Cue 1 Property Command=\'Off DataPool ' .. Data_Pool_Nr .. ' Sequence ' ..
                 FirstSeqDelayTo .. ' Thru ' .. LastSeqDelayTo .. ' - ' .. CurrentSeqNr ..
                 ' ; Set DataPool ' .. Data_Pool_Nr .. ' Matricks ' ..
@@ -511,13 +512,13 @@ function Create_Delay_To_Sequences(a, First_Id_Lay, LayNr, CurrentSeqNr, Current
                 ' ; SetUserVariable "LC_Matrick_Thru" ' .. MatrickNr ..
                 ' ; Call DataPool ' .. Data_Pool_Nr .. ' Plugin "LC_View" ')
         end
-        Cmd('Set Sequence ' .. CurrentSeqNr .. ' Property Appearance=' .. AppImp[ib].Nr)
+        CmdIndirectWait('Set Sequence ' .. CurrentSeqNr .. ' Property Appearance=' .. AppImp[ib].Nr)
         Command_Ext_Suite(CurrentSeqNr)
         -- end Sequences
         -- Add Squences to Layout
         if MakeX then
-            Cmd('Assign Sequence ' .. CurrentSeqNr .. ' at Layout ' .. TLayNr)
-            Cmd('Set Layout ' .. TLayNr .. '.' .. LayNr ..
+            CmdIndirectWait('Assign Sequence ' .. CurrentSeqNr .. ' at Layout ' .. TLayNr)
+            CmdIndirectWait('Set Layout ' .. TLayNr .. '.' .. LayNr ..
                 ' Property PosX ' .. LayX .. ' PosY ' .. LayY ..
                 ' PositionW ' .. LayW .. ' PositionH ' .. LayH ..
                 ' VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0 VisibilityBorder=0 VisibilityIcon=0')
@@ -554,19 +555,19 @@ function Create_Phase_Sequence(LayY, LayX, LayW, a, First_Id_Lay, LayNr, Current
         Data_Pool_Nr)
 
     -- Create Sequences Phase
-    Cmd('ClearAll /nu')
-    Cmd('Store Sequence ' .. CurrentSeqNr .. ' \'' .. prefix .. 'Phase Input' .. surfix[a] .. '\'')
-    -- Add Cmd to Squence
-    Cmd('Set Sequence ' .. CurrentSeqNr .. ' Cue 1 Property Appearance=' .. AppImp[63].Nr)
-    Cmd('Set Sequence ' ..
+    CmdIndirectWait('ClearAll /nu')
+    CmdIndirectWait('Store Sequence ' .. CurrentSeqNr .. ' \'' .. prefix .. 'Phase Input' .. surfix[a] .. '\'')
+    -- Add CmdIndirectWait to Squence
+    CmdIndirectWait('Set Sequence ' .. CurrentSeqNr .. ' Cue 1 Property Appearance=' .. AppImp[63].Nr)
+    CmdIndirectWait('Set Sequence ' ..
         CurrentSeqNr .. ' Cue 1 Property Command=\'Go DataPool ' .. Data_Pool_Nr .. ' Macro ' .. CurrentMacroNr .. '')
-    Cmd('Set Sequence ' .. CurrentSeqNr .. ' Property Appearance=' .. AppImp[64].Nr)
+    CmdIndirectWait('Set Sequence ' .. CurrentSeqNr .. ' Property Appearance=' .. AppImp[64].Nr)
     Command_Ext_Suite(CurrentSeqNr)
 
     -- Add Squences to Layout
     if MakeX then
-        Cmd('Assign Sequence ' .. CurrentSeqNr .. ' at Layout ' .. TLayNr)
-        Cmd('Set Layout ' .. TLayNr .. '.' .. LayNr ..
+        CmdIndirectWait('Assign Sequence ' .. CurrentSeqNr .. ' at Layout ' .. TLayNr)
+        CmdIndirectWait('Set Layout ' .. TLayNr .. '.' .. LayNr ..
             ' Property PosX ' .. LayX .. ' PosY ' .. LayY ..
             ' PositionW ' .. LayW .. ' PositionH ' .. LayH ..
             ' VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0 VisibilityBorder=0 VisibilityIcon=0')
@@ -615,16 +616,17 @@ function Create_Group_Sequence(CurrentMacroNr, FirstSeqGrp, CurrentSeqNr, LastSe
             end
             Current_Id_Lay = First_Id_Lay[17]
         end
-        Cmd('ClearAll /nu')
-        Cmd('Store Sequence ' .. CurrentSeqNr .. ' \'' .. prefix .. Argument_Xgrp[i].name .. surfix[a] .. '\'')
-        -- Add Cmd to Squence
-        Cmd('Set Sequence ' .. CurrentSeqNr .. ' Cue 1 Property Appearance=' .. AppImp[ia].Nr)
+        CmdIndirectWait('ClearAll /nu')
+        CmdIndirectWait('Store Sequence ' ..
+        CurrentSeqNr .. ' \'' .. prefix .. Argument_Xgrp[i].name .. surfix[a] .. '\'')
+        -- Add CmdIndirectWait to Squence
+        CmdIndirectWait('Set Sequence ' .. CurrentSeqNr .. ' Cue 1 Property Appearance=' .. AppImp[ia].Nr)
         if i == 5 then
-            Cmd('Set Sequence ' ..
+            CmdIndirectWait('Set Sequence ' ..
                 CurrentSeqNr ..
                 ' Cue 1 Property Command=\'Go DataPool ' .. Data_Pool_Nr .. ' Macro ' .. CurrentMacroNr .. '')
         else
-            Cmd('Set Sequence ' ..
+            CmdIndirectWait('Set Sequence ' ..
                 CurrentSeqNr .. ' Cue 1 Property Command=\'Off DataPool ' .. Data_Pool_Nr .. ' Sequence ' ..
                 FirstSeqGrp .. ' Thru ' .. LastSeqGrp .. ' - ' .. CurrentSeqNr ..
                 ' ; Set DataPool ' .. Data_Pool_Nr .. ' Matricks ' .. MatrickNrStart .. ' Property "' .. surfix[a] ..
@@ -636,13 +638,13 @@ function Create_Group_Sequence(CurrentMacroNr, FirstSeqGrp, CurrentSeqNr, LastSe
                 ' ; SetUserVariable "LC_Matrick_Thru" ' .. MatrickNr ..
                 ' ; Call DataPool ' .. Data_Pool_Nr .. ' Plugin "LC_View" ')
         end
-        Cmd('Set Sequence ' .. CurrentSeqNr .. ' Property Appearance=' .. AppImp[ib].Nr)
+        CmdIndirectWait('Set Sequence ' .. CurrentSeqNr .. ' Property Appearance=' .. AppImp[ib].Nr)
         Command_Ext_Suite(CurrentSeqNr)
         -- end Sequences
         -- Add Squences to Layout
         if MakeX then
-            Cmd('Assign Sequence ' .. CurrentSeqNr .. ' at Layout ' .. TLayNr)
-            Cmd('Set Layout ' .. TLayNr .. '.' .. LayNr ..
+            CmdIndirectWait('Assign Sequence ' .. CurrentSeqNr .. ' at Layout ' .. TLayNr)
+            CmdIndirectWait('Set Layout ' .. TLayNr .. '.' .. LayNr ..
                 ' Property PosX ' .. LayX .. ' PosY ' .. LayY ..
                 ' PositionW ' .. LayW .. ' PositionH ' .. LayH ..
                 " Action='Layout Default' VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0 VisibilityBorder=0 VisibilityIcon=0")
@@ -688,17 +690,17 @@ function Create_Block_Sequence(CurrentMacroNr, FirstSeqBlock, CurrentSeqNr, Last
             end
             Current_Id_Lay = First_Id_Lay[21]
         end
-        Cmd('ClearAll /nu')
-        Cmd('Store Sequence ' ..
+        CmdIndirectWait('ClearAll /nu')
+        CmdIndirectWait('Store Sequence ' ..
             CurrentSeqNr .. ' \'' .. prefix .. Argument_Xblock[i].name .. surfix[a] .. '\'')
-        -- Add Cmd to Squence
-        Cmd('Set Sequence ' .. CurrentSeqNr .. ' Cue 1 Property Appearance=' .. AppImp[ia].Nr)
+        -- Add CmdIndirectWait to Squence
+        CmdIndirectWait('Set Sequence ' .. CurrentSeqNr .. ' Cue 1 Property Appearance=' .. AppImp[ia].Nr)
         if i == 5 then
-            Cmd('Set Sequence ' ..
+            CmdIndirectWait('Set Sequence ' ..
                 CurrentSeqNr ..
                 ' Cue 1 Property Command=\'Go DataPool ' .. Data_Pool_Nr .. ' Macro ' .. CurrentMacroNr .. '')
         else
-            Cmd('Set Sequence ' ..
+            CmdIndirectWait('Set Sequence ' ..
                 CurrentSeqNr .. ' Cue 1 Property Command=\'Off DataPool ' .. Data_Pool_Nr .. ' Sequence ' ..
                 FirstSeqBlock .. ' Thru ' .. LastSeqBlock .. ' - ' .. CurrentSeqNr ..
                 ' ; Set DataPool ' .. Data_Pool_Nr .. ' Matricks ' .. MatrickNrStart ..
@@ -710,13 +712,13 @@ function Create_Block_Sequence(CurrentMacroNr, FirstSeqBlock, CurrentSeqNr, Last
                 ' ; SetUserVariable "LC_Matrick_Thru" ' .. MatrickNr ..
                 ' ; Call DataPool ' .. Data_Pool_Nr .. ' Plugin "LC_View" ')
         end
-        Cmd('Set Sequence ' .. CurrentSeqNr .. ' Property Appearance=' .. AppImp[ib].Nr)
+        CmdIndirectWait('Set Sequence ' .. CurrentSeqNr .. ' Property Appearance=' .. AppImp[ib].Nr)
         Command_Ext_Suite(CurrentSeqNr)
         -- end Sequences
         -- Add Squences to Layout
         if MakeX then
-            Cmd('Assign Sequence ' .. CurrentSeqNr .. ' at Layout ' .. TLayNr)
-            Cmd('Set Layout ' .. TLayNr .. '.' .. LayNr ..
+            CmdIndirectWait('Assign Sequence ' .. CurrentSeqNr .. ' at Layout ' .. TLayNr)
+            CmdIndirectWait('Set Layout ' .. TLayNr .. '.' .. LayNr ..
                 ' Property PosX ' .. LayX .. ' PosY ' .. LayY ..
                 ' PositionW ' .. LayW .. ' PositionH ' .. LayH ..
                 ' VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0 VisibilityBorder=0 VisibilityIcon=0')
@@ -762,16 +764,16 @@ function Create_Wings_Sequence(CurrentMacroNr, FirstSeqWings, CurrentSeqNr, Last
             end
             Current_Id_Lay = First_Id_Lay[25]
         end
-        Cmd('ClearAll /nu')
-        Cmd('Store Sequence ' ..
+        CmdIndirectWait('ClearAll /nu')
+        CmdIndirectWait('Store Sequence ' ..
             CurrentSeqNr .. ' \'' .. prefix .. Argument_Xwings[i].name .. surfix[a] .. '\'')
-        Cmd('Set Sequence ' .. CurrentSeqNr .. ' Cue 1 Property Appearance=' .. AppImp[ia].Nr)
+        CmdIndirectWait('Set Sequence ' .. CurrentSeqNr .. ' Cue 1 Property Appearance=' .. AppImp[ia].Nr)
         if i == 5 then
-            Cmd('Set Sequence ' ..
+            CmdIndirectWait('Set Sequence ' ..
                 CurrentSeqNr ..
                 ' Cue 1 Property Command=\'Go DataPool ' .. Data_Pool_Nr .. ' Macro ' .. CurrentMacroNr .. '')
         else
-            Cmd('Set Sequence ' ..
+            CmdIndirectWait('Set Sequence ' ..
                 CurrentSeqNr .. ' Cue 1 Property Command=\'Off DataPool ' .. Data_Pool_Nr .. ' Sequence ' ..
                 FirstSeqWings .. ' Thru ' .. LastSeqWings .. ' - ' .. CurrentSeqNr ..
                 ' ; Set DataPool ' .. Data_Pool_Nr .. ' Matricks ' .. MatrickNrStart .. ' Property "' .. surfix[a] ..
@@ -783,12 +785,12 @@ function Create_Wings_Sequence(CurrentMacroNr, FirstSeqWings, CurrentSeqNr, Last
                 ' ; SetUserVariable "LC_Matrick_Thru" ' .. MatrickNr ..
                 ' ; Call DataPool ' .. Data_Pool_Nr .. ' Plugin "LC_View" ')
         end -- end Sequences
-        Cmd('Set Sequence ' .. CurrentSeqNr .. ' Property Appearance=' .. AppImp[ib].Nr)
+        CmdIndirectWait('Set Sequence ' .. CurrentSeqNr .. ' Property Appearance=' .. AppImp[ib].Nr)
         Command_Ext_Suite(CurrentSeqNr)
         -- Add Squences to Layout
         if MakeX then
-            Cmd('Assign Sequence ' .. CurrentSeqNr .. ' at Layout ' .. TLayNr)
-            Cmd('Set Layout ' .. TLayNr .. '.' .. LayNr ..
+            CmdIndirectWait('Assign Sequence ' .. CurrentSeqNr .. ' at Layout ' .. TLayNr)
+            CmdIndirectWait('Set Layout ' .. TLayNr .. '.' .. LayNr ..
                 ' Property PosX ' .. LayX .. ' PosY ' .. LayY ..
                 ' PositionW ' .. LayW .. ' PositionH ' .. LayH ..
                 ' VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0 VisibilityBorder=0 VisibilityIcon=0')
@@ -807,8 +809,8 @@ function Create_XYZ_Sequence(CurrentMacroNr, First_Id_Lay, prefix, surfix, Call_
     prefix = 'o' .. prefix
     CurrentMacroNr = math.floor(CurrentMacroNr + 1)
     First_Id_Lay[33 + a] = CurrentMacroNr
-    Cmd('Store Macro ' .. CurrentMacroNr .. ' \'' .. prefix .. surfix[a] .. '_Call\'')
-    Cmd('ChangeDestination Macro ' .. CurrentMacroNr .. '')
+    CmdIndirectWait('Store Macro ' .. CurrentMacroNr .. ' \'' .. prefix .. surfix[a] .. '_Call\'')
+    CmdIndirectWait('ChangeDestination Macro ' .. CurrentMacroNr .. '')
     for m = 1, 31 do
         if m == 1 or m == 6 or m == 11 or m == 16 or m == 17 or m == 22 or m == 27 then
             Call_inc = 0
@@ -829,31 +831,34 @@ function Create_XYZ_Sequence(CurrentMacroNr, First_Id_Lay, prefix, surfix, Call_
             CallT = 25
         end
         Cmd('Insert')
-        Cmd('Set ' .. m .. ' Command=\'Assign DataPool ' .. Data_Pool_Nr .. ' Sequence ' ..
+        CmdIndirectWait('Set ' .. m .. ' Command=\'Assign DataPool ' .. Data_Pool_Nr .. ' Sequence ' ..
             First_Id_Lay[CallT + a] + Call_inc .. ' At DataPool ' .. Data_Pool_Nr .. ' Layout ' ..
             TLayNr .. '.' .. First_Id_Lay[CallT] + Call_inc)
         Call_inc = math.floor(Call_inc + 1)
     end
-    Cmd('ChangeDestination Root')
+    CmdIndirectWait('ChangeDestination Root')
     Create_Macro_Reset(CurrentMacroNr, prefix, surfix, MatrickNrStart, a, CurrentSeqNr, First_Id_Lay, TLayNr,
         Fade_Element, Delay_F_Element, Delay_T_Element, Phase_Element, Group_Element, Block_Element,
         Wings_Element, MatrickNr, Data_Pool_Nr)
 
     First_Id_Lay[28 + a] = CurrentSeqNr
-    Cmd('ClearAll /nu')
-    Cmd('Store Sequence ' .. CurrentSeqNr .. ' \'' .. prefix .. surfix[a] .. '_Call\'')
-    Cmd('Set Sequence ' .. CurrentSeqNr .. ' Cue 1 Property Appearance=' .. AppImp[66 + tonumber(a * 2 - 1)].Nr)
-    Cmd('Set Sequence ' ..
+    CmdIndirectWait('ClearAll /nu')
+    CmdIndirectWait('Store Sequence ' .. CurrentSeqNr .. ' \'' .. prefix .. surfix[a] .. '_Call\'')
+    CmdIndirectWait('Set Sequence ' ..
+    CurrentSeqNr .. ' Cue 1 Property Appearance=' .. AppImp[66 + tonumber(a * 2 - 1)].Nr)
+    CmdIndirectWait('Set Sequence ' ..
         CurrentSeqNr .. ' Cue 1 Property Command=\'Go DataPool ' .. Data_Pool_Nr .. ' Macro ' .. CurrentMacroNr .. '')
-    Cmd('Set Sequence ' .. CurrentSeqNr .. ' Property Appearance=' .. AppImp[67 + tonumber(a * 2 - 1)].Nr)
+    CmdIndirectWait('Set Sequence ' .. CurrentSeqNr .. ' Property Appearance=' .. AppImp[67 + tonumber(a * 2 - 1)].Nr)
     Command_Ext_Suite(CurrentSeqNr)
-    Cmd('ClearAll /nu')
-    Cmd('Store Sequence ' .. CurrentSeqNr + 1 .. ' \'' .. prefix .. surfix[a] .. '_Reset\'')
-    Cmd("Set Sequence " .. CurrentSeqNr + 1 .. " Cue 1 Property Appearance=" .. prefix:gsub('o', '') .. "'skull_on'")
-    Cmd('Set Sequence ' ..
+    CmdIndirectWait('ClearAll /nu')
+    CmdIndirectWait('Store Sequence ' .. CurrentSeqNr + 1 .. ' \'' .. prefix .. surfix[a] .. '_Reset\'')
+    CmdIndirectWait("Set Sequence " ..
+    CurrentSeqNr + 1 .. " Cue 1 Property Appearance=" .. prefix:gsub('o', '') .. "'skull_on'")
+    CmdIndirectWait('Set Sequence ' ..
         CurrentSeqNr + 1 ..
         ' Cue 1 Property Command=\'Go DataPool ' .. Data_Pool_Nr .. ' Macro ' .. CurrentMacroNr + 1 .. '')
-    Cmd("Set Sequence " .. CurrentSeqNr + 1 .. " Property Appearance=" .. prefix:gsub('o', '') .. "'skull_off'")
+    CmdIndirectWait("Set Sequence " ..
+    CurrentSeqNr + 1 .. " Property Appearance=" .. prefix:gsub('o', '') .. "'skull_off'")
     Command_Ext_Suite(CurrentSeqNr + 1)
     if MakeX == false then
         LayNr = math.floor(LayNr + 1)
@@ -861,35 +866,35 @@ function Create_XYZ_Sequence(CurrentMacroNr, First_Id_Lay, prefix, surfix, Call_
     if a == 1 then
         First_Id_Lay[32] = LayX
         First_Id_Lay[33] = LayY
-        Cmd('Assign Sequence ' .. CurrentSeqNr .. ' at Layout ' .. TLayNr)
-        Cmd('Set Layout ' .. TLayNr .. '.' .. LayNr ..
+        CmdIndirectWait('Assign Sequence ' .. CurrentSeqNr .. ' at Layout ' .. TLayNr)
+        CmdIndirectWait('Set Layout ' .. TLayNr .. '.' .. LayNr ..
             ' Property PosX ' .. First_Id_Lay[32] .. ' PosY ' .. First_Id_Lay[33] + 170 ..
             ' PositionW ' .. LayW - 35 .. ' PositionH ' .. LayH - 35 ..
             ' VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0 VisibilityBorder=0 VisibilityIcon=0')
-        Cmd('Assign Sequence ' .. CurrentSeqNr + 1 .. ' at Layout ' .. TLayNr)
-        Cmd('Set Layout ' .. TLayNr .. '.' .. LayNr + 1 ..
+        CmdIndirectWait('Assign Sequence ' .. CurrentSeqNr + 1 .. ' at Layout ' .. TLayNr)
+        CmdIndirectWait('Set Layout ' .. TLayNr .. '.' .. LayNr + 1 ..
             ' Property PosX ' .. First_Id_Lay[32] + 85 .. ' PosY ' .. First_Id_Lay[33] + 170 ..
             ' PositionW ' .. LayW - 35 .. ' PositionH ' .. LayH - 35 ..
             ' VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0 VisibilityBorder=0 VisibilityIcon=0')
     elseif a == 2 then
-        Cmd('Assign Sequence ' .. CurrentSeqNr .. ' at Layout ' .. TLayNr)
-        Cmd('Set Layout ' .. TLayNr .. '.' .. LayNr ..
+        CmdIndirectWait('Assign Sequence ' .. CurrentSeqNr .. ' at Layout ' .. TLayNr)
+        CmdIndirectWait('Set Layout ' .. TLayNr .. '.' .. LayNr ..
             ' Property PosX ' .. First_Id_Lay[32] .. ' PosY ' .. First_Id_Lay[33] + 90 ..
             ' PositionW ' .. LayW - 35 .. ' PositionH ' .. LayH - 35 ..
             ' VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0 VisibilityBorder=0 VisibilityIcon=0')
-        Cmd('Assign Sequence ' .. CurrentSeqNr + 1 .. ' at Layout ' .. TLayNr)
-        Cmd('Set Layout ' .. TLayNr .. '.' .. LayNr + 1 ..
+        CmdIndirectWait('Assign Sequence ' .. CurrentSeqNr + 1 .. ' at Layout ' .. TLayNr)
+        CmdIndirectWait('Set Layout ' .. TLayNr .. '.' .. LayNr + 1 ..
             ' Property PosX ' .. First_Id_Lay[32] + 85 .. ' PosY ' .. First_Id_Lay[33] + 90 ..
             ' PositionW ' .. LayW - 35 .. ' PositionH ' .. LayH - 35 ..
             ' VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0 VisibilityBorder=0 VisibilityIcon=0')
     elseif a == 3 then
-        Cmd('Assign Sequence ' .. CurrentSeqNr .. ' at Layout ' .. TLayNr)
-        Cmd('Set Layout ' .. TLayNr .. '.' .. LayNr ..
+        CmdIndirectWait('Assign Sequence ' .. CurrentSeqNr .. ' at Layout ' .. TLayNr)
+        CmdIndirectWait('Set Layout ' .. TLayNr .. '.' .. LayNr ..
             ' Property PosX ' .. First_Id_Lay[32] .. ' PosY ' .. First_Id_Lay[33] + 10 ..
             ' PositionW ' .. LayW - 35 .. ' PositionH ' .. LayH - 35 ..
             ' VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0 VisibilityBorder=0 VisibilityIcon=0')
-        Cmd('Assign Sequence ' .. CurrentSeqNr + 1 .. ' at Layout ' .. TLayNr)
-        Cmd('Set Layout ' .. TLayNr .. '.' .. LayNr + 1 ..
+        CmdIndirectWait('Assign Sequence ' .. CurrentSeqNr + 1 .. ' at Layout ' .. TLayNr)
+        CmdIndirectWait('Set Layout ' .. TLayNr .. '.' .. LayNr + 1 ..
             ' Property PosX ' .. First_Id_Lay[32] + 85 .. ' PosY ' .. First_Id_Lay[33] + 10 ..
             ' PositionW ' .. LayW - 35 .. ' PositionH ' .. LayH - 35 ..
             ' VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0 VisibilityBorder=0 VisibilityIcon=0')
@@ -913,17 +918,17 @@ function Create_All_Color(TCol, CurrentSeqNr, prefix, TLayNr, LayNr, NrNeed, Lay
         if col == 1 then
             First_All_Color = prefix .. 'ALL' .. StringColName .. 'ALL\''
         end
-        Cmd("ClearAll /nu")
-        Cmd('Store Sequence ' .. CurrentSeqNr .. ' \'' .. prefix .. 'ALL' .. StringColName .. 'ALL\'')
-        Cmd('Set Sequence ' .. CurrentSeqNr .. ' Cue 1 Property Appearance=' .. NrNeed + 1)
-        Cmd('Set Sequence ' ..
+        CmdIndirectWait("ClearAll /nu")
+        CmdIndirectWait('Store Sequence ' .. CurrentSeqNr .. ' \'' .. prefix .. 'ALL' .. StringColName .. 'ALL\'')
+        CmdIndirectWait('Set Sequence ' .. CurrentSeqNr .. ' Cue 1 Property Appearance=' .. NrNeed + 1)
+        CmdIndirectWait('Set Sequence ' ..
             CurrentSeqNr .. ' Cue 1 Property Command= \'Go+ DataPool ' .. Data_Pool_Nr .. ' Sequence ' ..
             prefix .. StringColName .. '* ; Off DataPool ' .. Data_Pool_Nr .. ' Sequence ' ..
             CurrentSeqNr .. '\'')
-        Cmd('Set Sequence ' .. CurrentSeqNr .. ' Property Appearance=' .. NrNeed + 1)
+        CmdIndirectWait('Set Sequence ' .. CurrentSeqNr .. ' Property Appearance=' .. NrNeed + 1)
         Command_Ext_Suite(CurrentSeqNr)
-        Cmd("Assign Sequence " .. CurrentSeqNr .. " at Layout " .. TLayNr)
-        Cmd("Set Layout " .. TLayNr .. "." .. LayNr ..
+        CmdIndirectWait("Assign Sequence " .. CurrentSeqNr .. " at Layout " .. TLayNr)
+        CmdIndirectWait("Set Layout " .. TLayNr .. "." .. LayNr ..
             " Property PosX " .. LayX .. " PosY " .. LayY ..
             " PositionW " .. LayW .. " PositionH " .. LayH ..
             " VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0 VisibilityBorder=0 VisibilityIcon=0")
@@ -948,56 +953,56 @@ function Create_All_Color(TCol, CurrentSeqNr, prefix, TLayNr, LayNr, NrNeed, Lay
 end -- end Create_All_Color
 
 function Command_Title(title, TLayNr, LayNr, LayX, LayY, Pw, Ph, align)
-    Cmd('Store Layout ' .. TLayNr .. '.' .. LayNr .. ' Property CustomTextText=\' ' .. title .. ' \'')
-    Cmd('Set Layout ' .. TLayNr .. '.' .. LayNr .. ' Property CustomTextSize \'24')
-    Cmd('Set Layout ' .. TLayNr .. '.' .. LayNr .. ' Property CustomTextAlignmentV \'Top')
+    CmdIndirectWait('Store Layout ' .. TLayNr .. '.' .. LayNr .. ' Property CustomTextText=\' ' .. title .. ' \'')
+    CmdIndirectWait('Set Layout ' .. TLayNr .. '.' .. LayNr .. ' Property CustomTextSize \'24')
+    CmdIndirectWait('Set Layout ' .. TLayNr .. '.' .. LayNr .. ' Property CustomTextAlignmentV \'Top')
     if (align == 1) then
-        Cmd('Set Layout ' .. TLayNr .. '.' .. LayNr .. ' Property CustomTextAlignmentH \'Left')
+        CmdIndirectWait('Set Layout ' .. TLayNr .. '.' .. LayNr .. ' Property CustomTextAlignmentH \'Left')
     elseif (align == 2) then
-        Cmd('Set Layout ' .. TLayNr .. '.' .. LayNr .. ' Property CustomTextAlignmentH \'Center')
+        CmdIndirectWait('Set Layout ' .. TLayNr .. '.' .. LayNr .. ' Property CustomTextAlignmentH \'Center')
     elseif (align == 3) then
-        Cmd('Set Layout ' .. TLayNr .. '.' .. LayNr .. ' Property CustomTextAlignmentH \'Right')
+        CmdIndirectWait('Set Layout ' .. TLayNr .. '.' .. LayNr .. ' Property CustomTextAlignmentH \'Right')
     elseif (align == 4) then
-        Cmd('Set Layout ' .. TLayNr .. '.' .. LayNr .. ' Property CustomTextAlignmentH \'Left')
-        Cmd('Set Layout ' .. TLayNr .. '.' .. LayNr .. ' Property CustomTextAlignmentV \'Bottom')
+        CmdIndirectWait('Set Layout ' .. TLayNr .. '.' .. LayNr .. ' Property CustomTextAlignmentH \'Left')
+        CmdIndirectWait('Set Layout ' .. TLayNr .. '.' .. LayNr .. ' Property CustomTextAlignmentV \'Bottom')
     end
-    Cmd('Set Layout ' .. TLayNr .. '.' .. LayNr .. ' Property VisibilityBorder=0 VisibilityIcon=0')
-    Cmd('Set Layout ' .. TLayNr ..
+    CmdIndirectWait('Set Layout ' .. TLayNr .. '.' .. LayNr .. ' Property VisibilityBorder=0 VisibilityIcon=0')
+    CmdIndirectWait('Set Layout ' .. TLayNr ..
         '.' .. LayNr .. ' Property PosX ' .. LayX .. ' PosY ' .. LayY .. ' PositionW ' .. Pw .. ' PositionH ' .. Ph .. '')
 end -- end function Command_Title(...)
 
 function Command_Ext_Suite(CurrentSeqNr)
-    Cmd('Set Sequence ' .. CurrentSeqNr .. ' Property prefercueappearance=on')
-    Cmd('Set Sequence ' .. CurrentSeqNr .. ' Property AutoStart=1')
-    Cmd('Set Sequence ' .. CurrentSeqNr .. ' Property AutoStop=1')
-    Cmd('Set Sequence ' .. CurrentSeqNr .. ' Property MasterGoMode=None')
-    Cmd('Set Sequence ' .. CurrentSeqNr .. ' Property AutoFix=0')
-    Cmd('Set Sequence ' .. CurrentSeqNr .. ' Property AutoStomp=0')
-    Cmd('Set Sequence ' .. CurrentSeqNr .. ' Property Tracking=0')
-    Cmd('Set Sequence ' .. CurrentSeqNr .. ' Property WrapAround=1')
-    Cmd('Set Sequence ' .. CurrentSeqNr .. ' Property ReleaseFirstCue=0')
-    Cmd('Set Sequence ' .. CurrentSeqNr .. ' Property RestartMode=1')
-    Cmd('Set Sequence ' .. CurrentSeqNr .. ' Property CueCommand=0')
-    Cmd('Set Sequence ' .. CurrentSeqNr .. ' Property XFadeReload=0')
-    Cmd('Set Sequence ' .. CurrentSeqNr .. ' Property OutputFilter=""')
-    Cmd('Set Sequence ' .. CurrentSeqNr .. ' Property Priority=0')
-    Cmd('Set Sequence ' .. CurrentSeqNr .. ' Property SoftLTP=1')
-    Cmd('Set Sequence ' .. CurrentSeqNr .. ' Property PlaybackMaster=""')
-    Cmd('Set Sequence ' .. CurrentSeqNr .. ' Property XfadeMode=0')
-    Cmd('Set Sequence ' .. CurrentSeqNr .. ' Property RateMaster=""')
-    Cmd('Set Sequence ' .. CurrentSeqNr .. ' Property RateScale=0')
-    Cmd('Set Sequence ' .. CurrentSeqNr .. ' Property SpeedMaster=""')
-    Cmd('Set Sequence ' .. CurrentSeqNr .. ' Property SpeedScale=0')
-    Cmd('Set Sequence ' .. CurrentSeqNr .. ' Property SpeedfromRate=0')
-    Cmd('Set Sequence ' .. CurrentSeqNr .. ' Property InputFilter=""')
-    Cmd('Set Sequence ' .. CurrentSeqNr .. ' Property SwapProtect=0')
-    Cmd('Set Sequence ' .. CurrentSeqNr .. ' Property KillProtect=0')
-    Cmd('Set Sequence ' .. CurrentSeqNr .. ' Property IncludeLinkLastGo=1')
-    Cmd('Set Sequence ' .. CurrentSeqNr .. ' Property UseExecutorTime=0')
-    Cmd('Set Sequence ' .. CurrentSeqNr .. ' Property OffwhenOverridden=1')
-    Cmd('Set Sequence ' .. CurrentSeqNr .. ' Property Lock=0')
-    Cmd('Set Sequence ' .. CurrentSeqNr .. ' Property SequMIB=0')
-    Cmd('Set Sequence ' .. CurrentSeqNr .. ' Property SequMIBMode=1')
+    CmdIndirectWait('Set Sequence ' .. CurrentSeqNr .. ' Property prefercueappearance=on')
+    CmdIndirectWait('Set Sequence ' .. CurrentSeqNr .. ' Property AutoStart=1')
+    CmdIndirectWait('Set Sequence ' .. CurrentSeqNr .. ' Property AutoStop=1')
+    CmdIndirectWait('Set Sequence ' .. CurrentSeqNr .. ' Property MasterGoMode=None')
+    CmdIndirectWait('Set Sequence ' .. CurrentSeqNr .. ' Property AutoFix=0')
+    CmdIndirectWait('Set Sequence ' .. CurrentSeqNr .. ' Property AutoStomp=0')
+    CmdIndirectWait('Set Sequence ' .. CurrentSeqNr .. ' Property Tracking=0')
+    CmdIndirectWait('Set Sequence ' .. CurrentSeqNr .. ' Property WrapAround=1')
+    CmdIndirectWait('Set Sequence ' .. CurrentSeqNr .. ' Property ReleaseFirstCue=0')
+    CmdIndirectWait('Set Sequence ' .. CurrentSeqNr .. ' Property RestartMode=1')
+    CmdIndirectWait('Set Sequence ' .. CurrentSeqNr .. ' Property CueCommand=0')
+    CmdIndirectWait('Set Sequence ' .. CurrentSeqNr .. ' Property XFadeReload=0')
+    CmdIndirectWait('Set Sequence ' .. CurrentSeqNr .. ' Property OutputFilter=""')
+    CmdIndirectWait('Set Sequence ' .. CurrentSeqNr .. ' Property Priority=0')
+    CmdIndirectWait('Set Sequence ' .. CurrentSeqNr .. ' Property SoftLTP=1')
+    CmdIndirectWait('Set Sequence ' .. CurrentSeqNr .. ' Property PlaybackMaster=""')
+    CmdIndirectWait('Set Sequence ' .. CurrentSeqNr .. ' Property XfadeMode=0')
+    CmdIndirectWait('Set Sequence ' .. CurrentSeqNr .. ' Property RateMaster=""')
+    CmdIndirectWait('Set Sequence ' .. CurrentSeqNr .. ' Property RateScale=0')
+    CmdIndirectWait('Set Sequence ' .. CurrentSeqNr .. ' Property SpeedMaster=""')
+    CmdIndirectWait('Set Sequence ' .. CurrentSeqNr .. ' Property SpeedScale=0')
+    CmdIndirectWait('Set Sequence ' .. CurrentSeqNr .. ' Property SpeedfromRate=0')
+    CmdIndirectWait('Set Sequence ' .. CurrentSeqNr .. ' Property InputFilter=""')
+    CmdIndirectWait('Set Sequence ' .. CurrentSeqNr .. ' Property SwapProtect=0')
+    CmdIndirectWait('Set Sequence ' .. CurrentSeqNr .. ' Property KillProtect=0')
+    CmdIndirectWait('Set Sequence ' .. CurrentSeqNr .. ' Property IncludeLinkLastGo=1')
+    CmdIndirectWait('Set Sequence ' .. CurrentSeqNr .. ' Property UseExecutorTime=0')
+    CmdIndirectWait('Set Sequence ' .. CurrentSeqNr .. ' Property OffwhenOverridden=1')
+    CmdIndirectWait('Set Sequence ' .. CurrentSeqNr .. ' Property Lock=0')
+    CmdIndirectWait('Set Sequence ' .. CurrentSeqNr .. ' Property SequMIB=0')
+    CmdIndirectWait('Set Sequence ' .. CurrentSeqNr .. ' Property SequMIBMode=1')
 end -- end function Command_Ext_Suite(...)
 
 --end LC_Cmd.lua
