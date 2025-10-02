@@ -5,17 +5,12 @@
     Created by Richard Fontaine "RIRI", June 2024.
     --]]
 
-local Cmd = function(...)
-    -- coroutine.yield(0.001)
-    return CmdIndirectWait(...)
-end
-
 function Create_Favourite_Macro(prefix, CurrentMacroNr, TLayNr, Data_Pool_Nr, Favourite_Nr)
     local macro_num = CurrentMacroNr + 1
     CurrentMacroNr = macro_num + Favourite_Nr
     local macropool = ShowData().DataPools[Data_Pool_Nr].Macros
-    Cmd('Store Macro ' .. macro_num .. '.1 Thru 8' .. ' /nu')
-    Cmd('Store Macro ' .. (macro_num + 1) .. ' Thru ' .. CurrentMacroNr .. ' /nu')
+    CmdIndirectWait('Store Macro ' .. macro_num .. '.1 Thru 8' .. ' /nu')
+    CmdIndirectWait('Store Macro ' .. (macro_num + 1) .. ' Thru ' .. CurrentMacroNr .. ' /nu')
     macropool[macro_num]:Set('name', prefix .. ' Store Favo ')
     macropool[macro_num][1]:Set('Command',
         'Set DataPool ' .. Data_Pool_Nr .. ' Macro ' .. macro_num .. ' Property "Appearance" "LC_Red"')
@@ -49,7 +44,7 @@ function Create_Favourite_Layout(LayNr, CurrentMacroNr, LayH, LayW, TLayNr, Data
     local obj_count = Favourite_Nr                     -- amout of objects to be aligned
     local last_pool_obj = pool_obj_num + obj_count     -- last object of the pool to be aligned
     local layout_pool = ShowData().datapools[Data_Pool_Nr].Layouts
-    Cmd('assign ' .. object_type .. ' ' .. pool_obj_num .. ' at Layout ' .. TLayNr .. ' /nu')
+    CmdIndirectWait('assign ' .. object_type .. ' ' .. pool_obj_num .. ' at Layout ' .. TLayNr .. ' /nu')
     layout_pool[TLayNr][LayNr]:Set('posx', LayX)
     layout_pool[TLayNr][LayNr]:Set('posy', LayY)
     layout_pool[TLayNr][LayNr]:Set('VisibilityBar', false)
@@ -58,7 +53,7 @@ function Create_Favourite_Layout(LayNr, CurrentMacroNr, LayH, LayW, TLayNr, Data
     layout_pool[TLayNr][LayNr]:Set('visibilityborder', false)
     LayNr = LayNr + 1
     pool_obj_num = pool_obj_num + 1
-    Cmd('assign ' .. object_type .. ' ' .. pool_obj_num .. ' Thru ' .. last_pool_obj .. ' at Layout ' .. TLayNr .. ' /nu')
+    CmdIndirectWait('assign ' .. object_type .. ' ' .. pool_obj_num .. ' Thru ' .. last_pool_obj .. ' at Layout ' .. TLayNr .. ' /nu')
     LayX = 160
     while line_num <= Favourite_Nr do
         layout_pool[TLayNr][LayNr]:Set('posx', LayX)
