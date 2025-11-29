@@ -1,6 +1,6 @@
 --[[
     Releases:
-    * 0.0.0.1
+    * 0.0.0.2
 
     Created by Richard Fontaine "RIRI", june 2025.
 
@@ -61,9 +61,13 @@ local function main()
         for k in ipairs(SeqNr) do
             if TR_Sub == SeqNr[k].name then
                 if (SeqNr[k][3][1][1].Selection == nil) then
-                    Target = "Value"
+                    Target = "None"
                 else
-                    Target = SeqNr[k][3][1][1].MATricks.Name
+                    if (SeqNr[k][3][1][1].MATricks == nil) then
+                        Target = "None"
+                    else
+                        Target = SeqNr[k][3][1][1].MATricks.Name
+                    end
                 end
                 Printf("MATricks Name: %s", Target)
                 Cmd('Set DataPool ' ..
