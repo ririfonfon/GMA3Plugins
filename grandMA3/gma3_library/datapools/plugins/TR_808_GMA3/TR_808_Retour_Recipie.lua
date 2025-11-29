@@ -47,7 +47,7 @@ local function main()
     elseif (TR_Fonction == 2) then
         for k in ipairs(SeqNr) do
             if TR_Sub == SeqNr[k].name then
-                if (SeqNr[k][3][1][1].Selection == nil) then
+                if (SeqNr[k][3][1][1].Values == nil) then
                     Target = "Value"
                 else
                     Target = SeqNr[k][3][1][1].Values.Name
@@ -60,14 +60,10 @@ local function main()
     elseif (TR_Fonction == 3) then
         for k in ipairs(SeqNr) do
             if TR_Sub == SeqNr[k].name then
-                if (SeqNr[k][3][1][1].Selection == nil) then
-                    Target = "None"
+                if (SeqNr[k][3][1][1].MATricks == nil) then
+                    Target = "MaTricks"
                 else
-                    if (SeqNr[k][3][1][1].MATricks == nil) then
-                        Target = "None"
-                    else
-                        Target = SeqNr[k][3][1][1].MATricks.Name
-                    end
+                    Target = SeqNr[k][3][1][1].MATricks.Name
                 end
                 Printf("MATricks Name: %s", Target)
                 Cmd('Set DataPool ' ..
