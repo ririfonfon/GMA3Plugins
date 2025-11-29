@@ -12,7 +12,7 @@ local function main()
     local Select = UserVars()
     local TR_Sub, TR_Layout, TR_Pool, TR_Fonction, Target, TR_Lay
     if GetVar(Select, "TR_Fonction") then
-        TR_Fonction = GetVar(Select, "TR_Fonction")
+        TR_Fonction = tonumber((GetVar(Select, "TR_Fonction")))
         Printf("TR_Fonction: %i", TR_Fonction)
     end
     if GetVar(Select, "TR_Sub") then
