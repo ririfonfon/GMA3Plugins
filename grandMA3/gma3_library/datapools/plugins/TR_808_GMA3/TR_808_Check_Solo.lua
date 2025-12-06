@@ -15,6 +15,7 @@ local function main()
         TR_Solo = GetVar(Select, "TR_SOLO")
         Printf("TR_Solo: %i", TR_Solo)
     else
+        SetVar(Select, "TR_SOLO", 0)
         TR_Solo = "0"
         Printf("TR_Solo not set, defaulting to: %s", TR_Solo)
     end
@@ -29,6 +30,7 @@ local function main()
     SetVar(Select, "TR_SOLO", TR_Solo)
     if TR_Solo < 1 then
         Cmd('Go+ DataPool "TR_808_GMA3" Macro "NO_SOLO"')
+        SetVar(Select, "TR_SOLO", 0)
         Printf("TR_Solo is 0.")
     end
 
