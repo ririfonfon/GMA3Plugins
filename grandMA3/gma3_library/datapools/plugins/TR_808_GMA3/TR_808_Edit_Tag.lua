@@ -5,7 +5,8 @@
     Created by Richard Fontaine "RIRI", december 2025.
 
 --]]
-local Printf, Echo, GetExecutor, Cmd, ipairs, mfloor = Printf, Echo, GetExecutor, Cmd, ipairs, math.floor
+local Printf, Echo, GetExecutor, CmdIndirectWait, ipairs, mfloor = Printf, Echo, GetExecutor, CmdIndirectWait, ipairs,
+    math.floor
 
 
 local function main()
@@ -55,20 +56,27 @@ local function main()
         for k in ipairs(SeqNr) do
             local tag = string.format(SeqNr[k]:Get('Tags') or 'None')
             if (string.find(tag, TR_Tag)) then
-                -- Printf("Sequence Name: %s", SeqNr[k].Name)
-                -- Printf("Tag Name: %s", tag)
-                Cmd('Set ' .. SeqNr[k] .. ' Cue 1 Thru 16 Part 0.1 Property FadeFromX ' .. TR_F_fx)
-                Cmd('Set ' .. SeqNr[k] .. ' Cue 1 Thru 16 Part 0.1 Property FadeToX ' .. TR_F_tx)
+                Printf("Sequence Name: %s", SeqNr[k].Name)
+                Printf("Tag Name: %s", tag)
+                Printf("k : %i", k)
+                CmdIndirectWait('Set ' .. SeqNr[k] .. ' Cue 1 Thru 16 Part 0.1 Property FadeFromX ' .. TR_F_fx)
+                CmdIndirectWait('Set ' .. SeqNr[k] .. ' Cue 1 Thru 16 Part 0.1 Property FadeToX ' .. TR_F_tx)
+                CmdIndirectWait('GO+ DataPool ' .. TR_Pool .. ' Macro ' .. k .. '.3 Thru Macro ' .. k .. '.7')
+                coroutine.yield(0.1)
             end
         end
     elseif (TR_Fonction == 2) then
         for k in ipairs(SeqNr) do
             local tag = string.format(SeqNr[k]:Get('Tags') or 'None')
             if (string.find(tag, TR_Tag)) then
-                -- Printf("Sequence Name: %s", SeqNr[k].Name)
-                -- Printf("Tag Name: %s", tag)
-                Cmd('Set ' .. SeqNr[k] .. ' Cue 1 Thru 16 Part 0.1 Property DelayFromX ' .. TR_D_fx)
-                Cmd('Set ' .. SeqNr[k] .. ' Cue 1 Thru 16 Part 0.1 Property DelayToX ' .. TR_D_tx)
+                Printf("Sequence Name: %s", SeqNr[k].Name)
+                Printf("Tag Name: %s", tag)
+                Printf("k : %i", k)
+                CmdIndirectWait('Set ' .. SeqNr[k] .. ' Cue 1 Thru 16 Part 0.1 Property DelayFromX ' .. TR_D_fx)
+                CmdIndirectWait('Set ' .. SeqNr[k] .. ' Cue 1 Thru 16 Part 0.1 Property DelayToX ' .. TR_D_tx)
+                CmdIndirectWait('GO+ DataPool ' .. TR_Pool .. ' Macro ' .. (k + 12) .. '.3 Thru Macro ' .. (k + 12) ..
+                    '.7')
+                coroutine.yield(0.1)
             end
         end
     elseif (TR_Fonction == 3) then
