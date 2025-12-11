@@ -5,7 +5,7 @@
     Created by Richard Fontaine "RIRI", june 2025.
 
 --]]
-local Printf, Echo, GetExecutor, Cmd, ipairs, mfloor = Printf, Echo, GetExecutor, Cmd, ipairs, math.floor
+local Printf, Echo, GetExecutor, CmdIndirectWait, ipairs, mfloor = Printf, Echo, GetExecutor, CmdIndirectWait, ipairs, math.floor
 
 
 local function main()
@@ -39,7 +39,7 @@ local function main()
                     Target = SeqNr[k][3][1][1].Selection.Name
                 end
                 Printf("Group Name: %s", Target)
-                Cmd('Set DataPool ' ..
+                CmdIndirectWait('Set DataPool ' ..
                     TR_Pool .. ' Layout ' .. TR_Layout .. ' Property CustomTextText=\' ' .. Target .. ' \'')
             end
         end
@@ -53,7 +53,7 @@ local function main()
                     Target = SeqNr[k][3][1][1].Values.Name
                 end
                 Printf("Value Name: %s", Target)
-                Cmd('Set DataPool ' ..
+                CmdIndirectWait('Set DataPool ' ..
                     TR_Pool .. ' Layout ' .. TR_Layout .. ' Property CustomTextText=\' ' .. Target .. ' \'')
             end
         end
@@ -66,7 +66,7 @@ local function main()
                     Target = SeqNr[k][3][1][1].MATricks.Name
                 end
                 Printf("MATricks Name: %s", Target)
-                Cmd('Set DataPool ' ..
+                CmdIndirectWait('Set DataPool ' ..
                     TR_Pool .. ' Layout ' .. TR_Layout .. ' Property CustomTextText=\' ' .. Target .. ' \'')
             end
         end
@@ -96,6 +96,42 @@ local function main()
                 end
             end
         end
+    elseif (TR_Fonction == 5) then
+        for k in ipairs(SeqNr) do
+            if TR_Sub == SeqNr[k].name then
+                if (SeqNr[k][3][1][1].FadeFromX == nil) then
+                    Target = "N/"
+                else
+                    Target = tostring(SeqNr[k][3][1][1].FadeFromX) .. "/"
+                end
+                if (SeqNr[k][3][1][1].FadeToX == nil) then
+                    Target = Target .. "N"
+                else
+                    Target = Target .. tostring(SeqNr[k][3][1][1].FadeToX)
+                end
+                Printf("Value FadefromX/FadeToX: %s", Target)
+                CmdIndirectWait('Set DataPool ' ..
+                    TR_Pool .. ' Layout ' .. TR_Layout .. ' Property CustomTextText=\' ' .. Target .. ' \'')
+            end
+        end
+    elseif (TR_Fonction == 6) then
+        for k in ipairs(SeqNr) do
+            if TR_Sub == SeqNr[k].name then
+                if (SeqNr[k][3][1][1].DelayFromX == nil) then
+                    Target = "N/"
+                else
+                    Target = tostring(SeqNr[k][3][1][1].DelayFromX) .. "/"
+                end
+                if (SeqNr[k][3][1][1].DelayToX == nil) then
+                    Target = Target .. "N"
+                else
+                    Target = Target .. tostring(SeqNr[k][3][1][1].DelayToX)
+                end
+                Printf("Value FadefromX/FadeToX: %s", Target)
+                CmdIndirectWait('Set DataPool ' ..
+                    TR_Pool .. ' Layout ' .. TR_Layout .. ' Property CustomTextText=\' ' .. Target .. ' \'')
+            end
+        end    
     end
 
 
