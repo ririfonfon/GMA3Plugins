@@ -61,7 +61,7 @@ local function main()
                 Printf("k : %i", k)
                 CmdIndirectWait('Set ' .. SeqNr[k] .. ' Cue 1 Thru 16 Part 0.1 Property FadeFromX ' .. TR_F_fx)
                 CmdIndirectWait('Set ' .. SeqNr[k] .. ' Cue 1 Thru 16 Part 0.1 Property FadeToX ' .. TR_F_tx)
-                CmdIndirectWait('GO+ DataPool ' .. TR_Pool .. ' Macro ' .. k .. '.3 Thru Macro ' .. k .. '.7')
+                CmdIndirectWait('GO+ DataPool ' .. TR_Pool .. ' Macro "FADE_' .. SeqNr[k].Name .. '".3 Thru Macro "FADE_' .. SeqNr[k].Name .. '".7')
                 coroutine.yield(0.1)
             end
         end
@@ -74,8 +74,7 @@ local function main()
                 Printf("k : %i", k)
                 CmdIndirectWait('Set ' .. SeqNr[k] .. ' Cue 1 Thru 16 Part 0.1 Property DelayFromX ' .. TR_D_fx)
                 CmdIndirectWait('Set ' .. SeqNr[k] .. ' Cue 1 Thru 16 Part 0.1 Property DelayToX ' .. TR_D_tx)
-                CmdIndirectWait('GO+ DataPool ' .. TR_Pool .. ' Macro ' .. (k + 12) .. '.3 Thru Macro ' .. (k + 12) ..
-                    '.7')
+                CmdIndirectWait('GO+ DataPool ' .. TR_Pool .. ' Macro "DELAY_' .. SeqNr[k].Name .. '".3 Thru Macro "DELAY_' .. SeqNr[k].Name .. '".7')
                 coroutine.yield(0.1)
             end
         end
