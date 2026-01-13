@@ -14,7 +14,7 @@ local function main()
     local Select = UserVars()
     local TR_Pool, TR_Varia_Call, TR_Cible
     Printf(
-    "*******************************************************TR_Variation called************************************************")
+        "*******************************************************TR_Variation called************************************************")
     if GetVar(Select, "TR_Varia_Call") then
         TR_Varia_Call = GetVar(Select, "TR_Varia_Call")
         Printf("TR_Varia_Call : %s", TR_Varia_Call)
@@ -40,10 +40,10 @@ local function main()
         if tag_pool[t].Name == TR_Cible then
             local target = tag_pool[t]:CmdlineChildren()
             for r in ipairs(target) do
-            tar[r] = target[r].No
+                tar[r] = target[r].No
             end
             for s in ipairs(tar) do
-                CmdIndirectWait('Assign Off DataPool ' .. TR_Pool .. ' Sequence '.. tar[s] ..' At Tag ' .. TR_Cible)
+                CmdIndirectWait('Assign Off DataPool ' .. TR_Pool .. ' Sequence ' .. tar[s] .. ' At Tag ' .. TR_Cible)
             end
         end
     end
@@ -52,10 +52,10 @@ local function main()
         if tag_pool[t].Name == TR_Varia_Call then
             local target = tag_pool[t]:CmdlineChildren()
             for r in ipairs(target) do
-            tar[r] = target[r].No
+                tar[r] = target[r].No
             end
             for s in ipairs(tar) do
-                CmdIndirectWait('Assign DataPool ' .. TR_Pool .. ' Sequence '.. tar[s] ..' At Tag ' .. TR_Cible)
+                CmdIndirectWait('Assign DataPool ' .. TR_Pool .. ' Sequence ' .. tar[s] .. ' At Tag ' .. TR_Cible)
             end
         end
     end
