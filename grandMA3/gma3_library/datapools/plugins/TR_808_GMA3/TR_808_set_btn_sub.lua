@@ -1,15 +1,16 @@
 local function main()
     local inputs = {
-        { name = "Sequence Number", value = "1224", whiteFilter = "0123456789" },
+        { name = "Sequence Number", value = "", whiteFilter = "0123456789" },
     }
     local selectors = {
-        { name = "Radio Selector", selectedValue = 3, values = { ["a"] = 1, ["b"] = 2, ["c"] = 3, ["d"] = 4, ["e"] = 5, ["f"] = 6, ["g"] = 7, ["h"] = 8 }, type = 1 }
+        { name = "Varia Selector", selectedValue = 3, values = { ["a"] = 1, ["b"] = 2, ["c"] = 3, ["d"] = 4, ["e"] = 5, ["f"] = 6, ["g"] = 7, ["h"] = 8 },                                                                                                   type = 1 },
+        { name = "Sub Selector",   selectedValue = 1, values = { ["Sub 1"] = 1, ["Sub 2"] = 2, ["Sub 3"] = 3, ["Sub 4"] = 4, ["Sub 5"] = 5, ["Sub 6"] = 6, ["Sub 7"] = 7, ["Sub 8"] = 8, ["Sub 9"] = 9, ["Sub 10"] = 10, ["Sub 11"] = 11, ["Sub 12"] = 12 }, type = 1 }
     }
 
-    local SeqNum, radioSel
+    local SeqNum, VariaSel, SeqEnd, subSel
+    local count, c = 1 , 1
     local varia_min = { 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h' }
     local varia_mag = { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H' }
-
     -- open messagebox:
     local resultTable =
         MessageBox(
@@ -32,30 +33,42 @@ local function main()
     -- print results:
 
     for k, v in pairs(resultTable.inputs) do
-        Printf("Input '%s' = '%s'", k, v)
+        -- Printf("Input '%s' = '%s'", k, v)
         SeqNum = tonumber(v)
+        SeqEnd = SeqNum + 15
     end
     for k, v in pairs(resultTable.selectors) do
         Printf("Selector '%s' = '%d'", k, v)
-        radioSel = v
+        if c == 1 then
+            VariaSel = v
+        elseif c == 2 then
+            subSel = v
+        end
+        c = c + 1
     end
 
-    Printf("SeqNum: %d", SeqNum)
-    Printf("varia_min[radioSel]: %s", varia_min[radioSel])
-    Printf("varia_mag[radioSel]: %s", varia_mag[radioSel])
-
-    CmdIndirectWait("Set DataPool 41 Sequence " ..
-    SeqNum ..
-    " Cue 1 Property Command=\"Set #[DataPool 'TR_808_GMA3'.'Sequences'.'" ..
-    varia_mag[radioSel] 
-    .. "_SUB_#1'] Cue 1 Part 0.1 Property 'Enabled' 1; Set #[DataPool 'TR_808_GMA3'.'Macros'.'" .. 
-    varia_min[radioSel] .."_Rec_Sub_#1'].1 'Enabled' 1")
-    CmdIndirectWait("Set DataPool 41 Sequence " ..
-    SeqNum ..
-    " Cue 2 Property Command=\"Set #[DataPool 'TR_808_GMA3'.'Sequences'.'" ..
-    varia_mag[radioSel] 
-    .. "_SUB_#1'] Cue 1 Part 0.1 Property 'Enabled' 0; Set #[DataPool 'TR_808_GMA3'.'Macros'.'" .. 
-    varia_min[radioSel] .."_Rec_Sub_#1'].1 'Enabled' 0")
+    -- Printf("SeqNum: %d", SeqNum)
+    -- Printf("varia_min[VariaSel]: %s", varia_min[VariaSel])
+    -- Printf("varia_mag[VariaSel]: %s", varia_mag[VariaSel])
+    for i = SeqNum, SeqEnd, 1 do
+        CmdIndirectWait("Set DataPool 41 Sequence " ..
+            i ..
+            " Cue 1 Property Command=\"Set #[DataPool 'TR_808_GMA3'.'Sequences'.'" ..
+            varia_mag[VariaSel]
+            ..
+            "_SUB_#" ..
+            subSel .. "'] Cue " .. count .. " Part 0.1 Property 'Enabled' 1; Set #[DataPool 'TR_808_GMA3'.'Macros'.'" ..
+            varia_min[VariaSel] .. "_Rec_Sub_#" .. subSel .. "']." .. count .. " 'Enabled' 1")
+        CmdIndirectWait("Set DataPool 41 Sequence " ..
+        i ..
+            " Cue 2 Property Command=\"Set #[DataPool 'TR_808_GMA3'.'Sequences'.'" ..
+            varia_mag[VariaSel]
+            ..
+            "_SUB_#" ..
+            subSel .. "'] Cue " .. count .. " Part 0.1 Property 'Enabled' 0; Set #[DataPool 'TR_808_GMA3'.'Macros'.'" ..
+            varia_min[VariaSel] .. "_Rec_Sub_#" .. subSel .. "']." .. count .. " 'Enabled' 0")
+        count = count + 1
+    end
 end
 
 return main
