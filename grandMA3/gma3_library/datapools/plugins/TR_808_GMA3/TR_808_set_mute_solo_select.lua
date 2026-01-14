@@ -56,7 +56,7 @@ local function main()
             varia_min[VariaSel] .. "_NO_SOLO']." .. subSel .. " 'Enabled' 0")
         CmdIndirectWait("Set DataPool 41 Sequence " .. i ..
             " Cue 2 Property Command=\"Go+ #[DataPool 'TR_808_GMA3'.'Macros'.'" ..
-            varia_min[VariaSel] .. "_Rec_Sub_#" .. subSel ..
+            varia_min[VariaSel] .. "_Rec_Sub#" .. subSel ..
             "']; Set #[DataPool 'TR_808_GMA3'.'Macros'.'" ..
             varia_min[VariaSel] .. "_NO_SOLO']." .. subSel .. " 'Enabled' 1")
         subSel = subSel + 1
@@ -69,10 +69,10 @@ local function main()
     for i = SeqNum, SeqEnd, 1 do
         CmdIndirectWait("Set DataPool 41 Sequence " .. i ..
             " Cue 1 Property Command=\"Go+ #[DataPool 'TR_808_GMA3'.'Macros'.'" ..
-            varia_min[VariaSel] .. "_On_Solo_Sub_#" .. subSel .. "']")
+            varia_min[VariaSel] .. "_On_Solo_Sub#" .. subSel .. "']")
         CmdIndirectWait("Set DataPool 41 Sequence " .. i ..
             " Cue 2 Property Command=\"Go+ #[DataPool 'TR_808_GMA3'.'Macros'.'" ..
-            varia_min[VariaSel] .. "_Off_Solo_Sub_#" .. subSel .. "']")
+            varia_min[VariaSel] .. "_Off_Solo_Sub#" .. subSel .. "']")
         subSel = subSel + 1
     end
 
@@ -83,10 +83,10 @@ local function main()
     for i = SeqNum, SeqEnd, 1 do
         CmdIndirectWait("Set DataPool 41 Sequence " .. i ..
             " Cue 1 Property Command=\"Go+ #[DataPool 'TR_808_GMA3'.'Macros'.'" ..
-            varia_min[VariaSel] .. "_Tag_SUB_#" .. subSel .. "']")
+            varia_min[VariaSel] .. "_Tag_Sub#" .. subSel .. "']")
         CmdIndirectWait("Set DataPool 41 Sequence " .. i ..
             " Cue 2 Property Command=\"Go+ #[DataPool 'TR_808_GMA3'.'Macros'.'" ..
-            varia_min[VariaSel] .. "_Off_Tag SUB_#" .. subSel .. "']")
+            varia_min[VariaSel] .. "_Off_Tag_Sub#" .. subSel .. "']")
         subSel = subSel + 1
     end
 
