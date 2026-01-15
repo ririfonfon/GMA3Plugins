@@ -122,6 +122,11 @@ local function main()
         CmdIndirectWait("Assign DataPool 41.6." .. i .. " At DataPool 41.13.1." .. target_pool .. "")
         target_pool = target_pool + 1
     end
+    -- select_l_seq all
+    SeqNum = seq_select_l[VariaSel] + 13
+    CmdIndirectWait("Assign DataPool 41.6." .. SeqNum .. " At DataPool 41.13.1." .. target_pool .. "")
+    target_pool = target_pool + 1
+
     -- fade_macro
     SeqNum = macro_fade[VariaSel]
     SeqEnd = SeqNum + 11
