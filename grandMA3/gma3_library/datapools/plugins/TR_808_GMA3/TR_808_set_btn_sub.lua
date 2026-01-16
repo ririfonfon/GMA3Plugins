@@ -61,7 +61,7 @@ local function main()
                 "_SUB_#" ..
                 subSel ..
                 "'] Cue " .. count .. " Part 0.1 Property 'Enabled' 1; Set #[DataPool 'TR_808_GMA3'.'Macros'.'" ..
-                varia_min[VariaSel] .. "_Rec_Sub_#" .. subSel .. "']." .. count .. " 'Enabled' 1")
+                varia_min[VariaSel] .. "_Rec_Sub#" .. subSel .. "']." .. count .. " 'Enabled' 1")
             CmdIndirectWait("Set DataPool 41 Sequence " ..
                 i ..
                 " Cue 2 Property Command=\"Set #[DataPool 'TR_808_GMA3'.'Sequences'.'" ..
@@ -70,7 +70,7 @@ local function main()
                 "_SUB_#" ..
                 subSel ..
                 "'] Cue " .. count .. " Part 0.1 Property 'Enabled' 0; Set #[DataPool 'TR_808_GMA3'.'Macros'.'" ..
-                varia_min[VariaSel] .. "_Rec_Sub_#" .. subSel .. "']." .. count .. " 'Enabled' 0")
+                varia_min[VariaSel] .. "_Rec_Sub#" .. subSel .. "']." .. count .. " 'Enabled' 0")
             count = count + 1
         end
         SeqNum = SeqEnd + 2
