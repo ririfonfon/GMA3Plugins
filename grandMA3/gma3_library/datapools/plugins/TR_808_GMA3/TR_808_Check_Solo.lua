@@ -1,6 +1,6 @@
 --[[
     Releases:
-    * 0.0.0.2
+    * 0.0.0.3
 
     Created by Richard Fontaine "RIRI", july 2025.
 
@@ -26,16 +26,7 @@ local function main()
             P_A_TR_Solo = "0"
             Printf("A_TR_Solo not set, defaulting to: %s", P_A_TR_Solo)
         end
-        if GetVar(Select, "A_TR_PLUS") == 1 then
-            Printf("A_TR_PLUS : %i", GetVar(Select, "A_TR_PLUS"))
-            P_A_TR_Solo = mfloor(tonumber(P_A_TR_Solo) + 1)
-            Printf("P_A_TR_Solo incremented to: %i", P_A_TR_Solo)
-        end
-        if GetVar(Select, "A_TR_MOINS") == 1 then
-            Printf("A_TR_MOINS : %i", GetVar(Select, "A_TR_MOINS"))
-            P_A_TR_Solo = mfloor(tonumber(P_A_TR_Solo) - 1)
-            Printf("P_A_TR_Solo decremented to: %i", P_A_TR_Solo)
-        end
+
         SetVar(Select, "A_TR_Solo", P_A_TR_Solo)
         if P_A_TR_Solo < 1 then
             Cmd('Go+ DataPool "TR_808_GMA3" Macro "a_NO_SOLO"')
@@ -43,8 +34,6 @@ local function main()
             Printf("A_TR_Solo is 0.")
         end
 
-        SetVar(Select, "A_TR_PLUS", 0)
-        SetVar(Select, "A_TR_MOINS", 0)
         SetVar(Select, "Order", "Z")
     elseif P_Order == "B" then
         if GetVar(Select, "B_TR_Solo") then
@@ -55,14 +44,7 @@ local function main()
             P_B_TR_Solo = "0"
             Printf("B_TR_Solo not set, defaulting to: %s", P_B_TR_Solo)
         end
-        if GetVar(Select, "B_TR_PLUS") == 1 then
-            P_B_TR_Solo = mfloor(tonumber(P_B_TR_Solo) + 1)
-            Printf("P_B_TR_Solo incremented to: %i", P_B_TR_Solo)
-        end
-        if GetVar(Select, "B_TR_MOINS") == 1 then
-            P_B_TR_Solo = mfloor(tonumber(P_B_TR_Solo) - 1)
-            Printf("P_B_TR_Solo decremented to: %i", P_B_TR_Solo)
-        end
+
         SetVar(Select, "B_TR_Solo", P_B_TR_Solo)
         if P_B_TR_Solo < 1 then
             Cmd('Go+ DataPool "TR_808_GMA3" Macro "b_NO_SOLO"')
@@ -70,8 +52,6 @@ local function main()
             Printf("B_TR_Solo is 0.")
         end
 
-        SetVar(Select, "B_TR_PLUS", 0)
-        SetVar(Select, "B_TR_MOINS", 0)
         SetVar(Select, "Order", "Z")
     elseif P_Order == "C" then
         if GetVar(Select, "C_TR_Solo") then
@@ -82,14 +62,7 @@ local function main()
             P_C_TR_Solo = "0"
             Printf("C_TR_Solo not set, defaulting to: %s", P_C_TR_Solo)
         end
-        if GetVar(Select, "C_TR_PLUS") == 1 then
-            P_C_TR_Solo = mfloor(tonumber(P_C_TR_Solo) + 1)
-            Printf("P_C_TR_Solo incremented to: %i", P_C_TR_Solo)
-        end
-        if GetVar(Select, "C_TR_MOINS") == 1 then
-            P_C_TR_Solo = mfloor(tonumber(P_C_TR_Solo) - 1)
-            Printf("P_C_TR_Solo decremented to: %i", P_C_TR_Solo)
-        end
+
         SetVar(Select, "C_TR_Solo", P_C_TR_Solo)
         if P_C_TR_Solo < 1 then
             Cmd('Go+ DataPool "TR_808_GMA3" Macro "c_NO_SOLO"')
@@ -97,8 +70,6 @@ local function main()
             Printf("C_TR_Solo is 0.")
         end
 
-        SetVar(Select, "C_TR_PLUS", 0)
-        SetVar(Select, "C_TR_MOINS", 0)
         SetVar(Select, "Order", "Z")
     elseif P_Order == "D" then
         if GetVar(Select, "D_TR_Solo") then
@@ -109,14 +80,7 @@ local function main()
             P_D_TR_Solo = "0"
             Printf("D_TR_Solo not set, defaulting to: %s", P_D_TR_Solo)
         end
-        if GetVar(Select, "D_TR_PLUS") == 1 then
-            P_D_TR_Solo = mfloor(tonumber(P_D_TR_Solo) + 1)
-            Printf("P_D_TR_Solo incremented to: %i", P_D_TR_Solo)
-        end
-        if GetVar(Select, "D_TR_MOINS") == 1 then
-            P_D_TR_Solo = mfloor(tonumber(P_D_TR_Solo) - 1)
-            Printf("P_D_TR_Solo decremented to: %i", P_D_TR_Solo)
-        end
+
         SetVar(Select, "D_TR_Solo", P_D_TR_Solo)
         if P_D_TR_Solo < 1 then
             Cmd('Go+ DataPool "TR_808_GMA3" Macro "d_NO_SOLO"')
@@ -124,8 +88,6 @@ local function main()
             Printf("D_TR_Solo is 0.")
         end
 
-        SetVar(Select, "D_TR_PLUS", 0)
-        SetVar(Select, "D_TR_MOINS", 0)
         SetVar(Select, "Order", "Z")
     elseif P_Order == "E" then
         if GetVar(Select, "E_TR_Solo") then
@@ -136,14 +98,7 @@ local function main()
             P_E_TR_Solo = "0"
             Printf("E_TR_Solo not set, defaulting to: %s", P_E_TR_Solo)
         end
-        if GetVar(Select, "E_TR_PLUS") == 1 then
-            P_E_TR_Solo = mfloor(tonumber(P_E_TR_Solo) + 1)
-            Printf("P_E_TR_Solo incremented to: %i", P_E_TR_Solo)
-        end
-        if GetVar(Select, "E_TR_MOINS") == 1 then
-            P_E_TR_Solo = mfloor(tonumber(P_E_TR_Solo) - 1)
-            Printf("P_E_TR_Solo decremented to: %i", P_E_TR_Solo)
-        end
+
         SetVar(Select, "E_TR_Solo", P_E_TR_Solo)
         if P_E_TR_Solo < 1 then
             Cmd('Go+ DataPool "TR_808_GMA3" Macro "e_NO_SOLO"')
@@ -151,8 +106,6 @@ local function main()
             Printf("E_TR_Solo is 0.")
         end
 
-        SetVar(Select, "E_TR_PLUS", 0)
-        SetVar(Select, "E_TR_MOINS", 0)
         SetVar(Select, "Order", "Z")
     elseif P_Order == "F" then
         if GetVar(Select, "F_TR_Solo") then
@@ -163,22 +116,14 @@ local function main()
             P_F_TR_Solo = "0"
             Printf("F_TR_Solo not set, defaulting to: %s", P_F_TR_Solo)
         end
-        if GetVar(Select, "F_TR_PLUS") == 1 then
-            P_F_TR_Solo = mfloor(tonumber(P_F_TR_Solo) + 1)
-            Printf("P_F_TR_Solo incremented to: %i", P_F_TR_Solo)
-        end
-        if GetVar(Select, "F_TR_MOINS") == 1 then
-            P_F_TR_Solo = mfloor(tonumber(P_F_TR_Solo) - 1)
-            Printf("P_F_TR_Solo decremented to: %i", P_F_TR_Solo)
-        end
+
         SetVar(Select, "F_TR_Solo", P_F_TR_Solo)
         if P_F_TR_Solo < 1 then
             Cmd('Go+ DataPool "TR_808_GMA3" Macro "f_NO_SOLO"')
             SetVar(Select, "F_TR_Solo", 0)
             Printf("F_TR_Solo is 0.")
         end
-        DelVar(Select, "F_TR_PLUS")
-        DelVar(Select, "F_TR_MOINS")
+
         SetVar(Select, "Order", "Z")
     elseif P_Order == "G" then
         if GetVar(Select, "G_TR_Solo") then
@@ -189,22 +134,14 @@ local function main()
             P_G_TR_Solo = "0"
             Printf("G_TR_Solo not set, defaulting to: %s", P_G_TR_Solo)
         end
-        if GetVar(Select, "G_TR_PLUS") == 1 then
-            P_G_TR_Solo = mfloor(tonumber(P_G_TR_Solo) + 1)
-            Printf("P_G_TR_Solo incremented to: %i", P_G_TR_Solo)
-        end
-        if GetVar(Select, "G_TR_MOINS") == 1 then
-            P_G_TR_Solo = mfloor(tonumber(P_G_TR_Solo) - 1)
-            Printf("P_G_TR_Solo decremented to: %i", P_G_TR_Solo)
-        end
+
         SetVar(Select, "G_TR_Solo", P_G_TR_Solo)
         if P_G_TR_Solo < 1 then
             Cmd('Go+ DataPool "TR_808_GMA3" Macro "g_NO_SOLO"')
             SetVar(Select, "G_TR_Solo", 0)
             Printf("G_TR_Solo is 0.")
         end
-        SetVar(Select, "G_TR_PLUS", 0)
-        SetVar(Select, "G_TR_MOINS", 0)
+
         SetVar(Select, "Order", "Z")
     elseif P_Order == "H" then
         if GetVar(Select, "H_TR_Solo") then
@@ -215,14 +152,7 @@ local function main()
             P_H_TR_Solo = "0"
             Printf("H_TR_Solo not set, defaulting to: %s", P_H_TR_Solo)
         end
-        if GetVar(Select, "H_TR_PLUS") == 1 then
-            P_H_TR_Solo = mfloor(tonumber(P_H_TR_Solo) + 1)
-            Printf("P_H_TR_Solo incremented to: %i", P_H_TR_Solo)
-        end
-        if GetVar(Select, "H_TR_MOINS") == 1 then
-            P_H_TR_Solo = mfloor(tonumber(P_H_TR_Solo) - 1)
-            Printf("P_H_TR_Solo decremented to: %i", P_H_TR_Solo)
-        end
+
         SetVar(Select, "H_TR_Solo", P_H_TR_Solo)
         if P_H_TR_Solo < 1 then
             Cmd('Go+ DataPool "TR_808_GMA3" Macro "h_NO_SOLO"')
@@ -230,8 +160,6 @@ local function main()
             Printf("H_TR_Solo is 0.")
         end
 
-        SetVar(Select, "H_TR_PLUS", 0)
-        SetVar(Select, "H_TR_MOINS", 0)
         SetVar(Select, "Order", "Z")
     end
 end
