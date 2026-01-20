@@ -5,7 +5,7 @@ local function main()
     }
 
     local SeqNum, VariaSel, SeqEnd, subSel, target_pool
-    local count, c = 1, 1
+    local count = 1
     local varia_min = { 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h' }
     local varia_mag = { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H' }
     local varia_place = { 55, 346, 637, 928, 1219, 1510, 1801, 2092 }
@@ -43,24 +43,21 @@ local function main()
 
     for k, v in pairs(resultTable.selectors) do
         Printf("Selector '%s' = '%d'", k, v)
-        if c == 1 then
+        if k == "Varia Selector" then
             VariaSel = v
-        elseif c == 2 then
+        elseif k == "Sub Selector" then
             subSel = v
         end
-        c = c + 1
     end
-    
+
     -- btn_sub_seq
     SeqNum = seq_btn[subSel]
     SeqEnd = SeqNum + 15
-    
+
     for e = 1, 12, 1 do
         for i = SeqNum, SeqEnd, 1 do
-            -- Printf("Assign DataPool 41 Sequence " ..
-            -- i .. " At Tag '" .. varia_min[subSel] .. "_btn_sub_#" .. count .. "'")
             CmdIndirectWait("Assign DataPool 41 Sequence " ..
-            i .. " At Tag '" .. varia_min[subSel] .. "_btn_sub_#" .. count .. "'")
+                i .. " At Tag '" .. varia_min[subSel] .. "_btn_sub_#" .. count .. "'")
         end
         count = count + 1
         SeqNum = SeqEnd + 2
