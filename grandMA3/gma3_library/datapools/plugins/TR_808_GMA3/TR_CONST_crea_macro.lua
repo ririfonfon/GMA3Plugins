@@ -1,7 +1,7 @@
 local function main()
     local inputs = {
-        { name = " a macro Number",      value = "", whiteFilter = "0123456789" },
-        { name = " b lay object Number", value = "", whiteFilter = "0123456789" },
+        { name = "macro Number",      value = "", whiteFilter = "0123456789" },
+        { name = "lay object Number", value = "", whiteFilter = "0123456789" },
     }
     local selectors = {
         { name = "Varia Selector", selectedValue = 4, values = { ["a"] = 1, ["b"] = 2, ["c"] = 3, ["d"] = 4, ["e"] = 5, ["f"] = 6, ["g"] = 7, ["h"] = 8 },                                                   type = 1 },
@@ -9,7 +9,7 @@ local function main()
     }
 
     local MacroNum, VariaSel, MacroEnd, subSel, lay_object
-    local count, c, f = 1, 1, 1
+    local count = 1
     local varia_min = { 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h' }
     local varia_mag = { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H' }
     -- open messagebox:
@@ -35,22 +35,20 @@ local function main()
 
     for k, v in pairs(resultTable.inputs) do
         Printf("Input '%s' = '%s'", k, v)
-        if f == 1 then
+        if k == "lay object Number" then
             lay_object = tonumber(v)
-        elseif f == 2 then
+        elseif k == "macro Number" then
             MacroNum = tonumber(v)
             MacroEnd = MacroNum + 11
         end
-        f = f + 1
     end
     for k, v in pairs(resultTable.selectors) do
         Printf("Selector '%s' = '%d'", k, v)
-        if c == 1 then
+        if k == "Varia Selector" then
             VariaSel = v
-        elseif c == 2 then
+        elseif k == "Sub Selector" then
             subSel = v
         end
-        c = c + 1
     end
 
 
