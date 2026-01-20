@@ -1,6 +1,6 @@
 local function main()
     local inputs = {
-        { name = " a macro Number", value = "225", whiteFilter = "0123456789" },
+        { name = " a macro Number", value = "", whiteFilter = "0123456789" },
     }
     local selectors = {
         { name = "Varia Selector", selectedValue = 1, values = { ["a"] = 1, ["b"] = 2, ["c"] = 3, ["d"] = 4, ["e"] = 5, ["f"] = 6, ["g"] = 7, ["h"] = 8 },                                                   type = 1 },
@@ -48,43 +48,54 @@ local function main()
         c = c + 1
     end
 
-    local i = MacroNum
-    -- for i = MacroNum, MacroEnd, 1 do
-    CmdIndirect('Store DataPool 41 Macro ' .. i .. ' \'' .. varia_min[VariaSel] .. '_On_Solo_Sub#' .. subSel)
-    CmdIndirectWait('ChangeDestination DataPool 41 Macro ' .. i .. '')
-    CmdIndirectWait('Insert')
-    CmdIndirectWait("set 1 Command=\"SetUserVariable 'Order' '" .. varia_mag[VariaSel] .. "'")
-    CmdIndirectWait('Insert')
-    -- CmdIndirectWait("set 2 Command=\"Lua 'local result = tonumber((GetVar(UserVars() , '" ..
-    -- varia_mag[VariaSel] .. "_TR_Solo')) + 1 )   SetVar(UserVars(), '" .. varia_mag[VariaSel] .. "_TR_Solo', result)")
-
-    local char = [[Lua " local result = tonumber((GetVar(UserVars() , 'A_TR_Solo')) + 1 )   SetVar(UserVars(), 'A_TR_Solo', result)"]]
-    CmdIndirectWait("set 2 Command=\"" .. char .. "\"")
-
-    -- local char = string.char(76,117,97,34)
-    -- Printf("char: %s", char)
-    -- CmdIndirectWait("set 2 Command=\"" .. char .. "local result = tonumber((GetVar(UserVars() , '" ..
-    --     varia_mag[VariaSel] .. "_TR_Solo')) + 1 )   SetVar(UserVars(), '" .. varia_mag[VariaSel] .. "_TR_Solo', result)")
-
-    CmdIndirectWait('Insert')
-    CmdIndirectWait("set 3 Command=\"Set #[DataPool 'TR_808_GMA3'.'Macros'.'" ..
-        varia_min[VariaSel] .. "_SOLO']." .. count .. " 'Enabled' 0")
-    CmdIndirectWait('Insert')
-    CmdIndirectWait("set 4 Command=\"Go+ #[DataPool 'TR_808_GMA3'.'Macros'.'" ..
-        varia_min[VariaSel] .. "_SOLO']")
-    CmdIndirectWait('Insert')
-    CmdIndirectWait("set 5 Command=\"Go+ #[DataPool 'TR_808_GMA3'.'Macros'.'" ..
-        varia_min[VariaSel] .. "_Rec_Sub_#" .. subSel .. "']")
-    CmdIndirectWait('Insert')
-    CmdIndirectWait("set 6 Command=\"Call #[DataPool 'TR_808_GMA3'.'Plugins'.'TR_808_CHECK_SOLO']")
-    subSel = subSel + 1
-    count = count + 1
-    -- end
+    -- local i = MacroNum
+    CmdIndirectWait('Delete DataPool 41 Macro ' .. MacroNum .. ' Thru ' .. MacroEnd ..'')
+    for i = MacroNum, MacroEnd, 1 do
+        CmdIndirect('Store DataPool 41 Macro ' .. i .. ' \'' .. varia_min[VariaSel] .. '_On_Solo_Sub_#' .. subSel)
+        CmdIndirectWait('ChangeDestination DataPool 41 Macro ' .. i .. '')
+        CmdIndirectWait('Insert')
+        CmdIndirectWait("set 1 Command=\"SetUserVariable 'Order' '" .. varia_mag[VariaSel] .. "'")
+        CmdIndirectWait('Insert')
+        CmdIndirectWait("set 2 Command=\"SetUserVariable 'math_" .. varia_min[VariaSel] .. "' 'plus'")
+        CmdIndirectWait('Insert')
+        CmdIndirectWait("set 3 Command=\"Set #[DataPool 'TR_808_GMA3'.'Macros'.'" ..
+            varia_min[VariaSel] .. "_SOLO']." .. count .. " 'Enabled' 0")
+        CmdIndirectWait('Insert')
+        CmdIndirectWait("set 4 Command=\"Go+ #[DataPool 'TR_808_GMA3'.'Macros'.'" ..
+            varia_min[VariaSel] .. "_SOLO']")
+        CmdIndirectWait('Insert')
+        CmdIndirectWait("set 5 Command=\"Go+ #[DataPool 'TR_808_GMA3'.'Macros'.'" ..
+            varia_min[VariaSel] .. "_Rec_Sub_#" .. subSel .. "']")
+        CmdIndirectWait('Insert')
+        CmdIndirectWait("set 6 Command=\"Call #[DataPool 'TR_808_GMA3'.'Plugins'.'TR_808_CHECK_SOLO']")
+        subSel = subSel + 1
+        count = count + 1
+    end
 
     MacroNum = MacroEnd + 6
     MacroEnd = MacroNum + 11
     subSel = 1
     count = 1
+
+    CmdIndirectWait('Delete DataPool 41 Macro ' .. MacroNum .. ' Thru ' .. MacroEnd ..'')
+    for i = MacroNum, MacroEnd, 1 do
+        CmdIndirect('Store DataPool 41 Macro ' .. i .. ' \'' .. varia_min[VariaSel] .. '_Off_Solo_Sub_#' .. subSel)
+        CmdIndirectWait('ChangeDestination DataPool 41 Macro ' .. i .. '')
+        CmdIndirectWait('Insert')
+        CmdIndirectWait("set 1 Command=\"SetUserVariable 'Order' '" .. varia_mag[VariaSel] .. "'")
+        CmdIndirectWait('Insert')
+        CmdIndirectWait("set 2 Command=\"SetUserVariable 'math_" .. varia_min[VariaSel] .. "' 'minus'")
+        CmdIndirectWait('Insert')
+        CmdIndirectWait("set 3 Command=\"Set #[DataPool 'TR_808_GMA3'.'Macros'.'" ..
+            varia_min[VariaSel] .. "_SOLO']." .. count .. " 'Enabled' 1")
+        CmdIndirectWait('Insert')
+        CmdIndirectWait("set 4 Command=\"Go+ #[DataPool 'TR_808_GMA3'.'Macros'.'" ..
+            varia_min[VariaSel] .. "_SOLO']")
+        CmdIndirectWait('Insert')
+        CmdIndirectWait("set 5 Command=\"Call #[DataPool 'TR_808_GMA3'.'Plugins'.'TR_808_CHECK_SOLO']")
+        subSel = subSel + 1
+        count = count + 1
+    end
 
     CmdIndirectWait('ChangeDestination Root')
 end
