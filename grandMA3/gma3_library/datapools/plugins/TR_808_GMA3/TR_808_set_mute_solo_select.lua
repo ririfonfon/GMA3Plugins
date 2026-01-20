@@ -3,12 +3,11 @@ local function main()
         { name = "Sequence Number", value = "", whiteFilter = "0123456789" },
     }
     local selectors = {
-        { name = "Varia Selector", selectedValue = 6, values = { ["a"] = 1, ["b"] = 2, ["c"] = 3, ["d"] = 4, ["e"] = 5, ["f"] = 6, ["g"] = 7, ["h"] = 8 },                                                   type = 1 },
+        { name = "Varia Selector", selectedValue = 1, values = { ["a"] = 1, ["b"] = 2, ["c"] = 3, ["d"] = 4, ["e"] = 5, ["f"] = 6, ["g"] = 7, ["h"] = 8 },                                                   type = 1 },
         { name = "Sub Selector",   selectedValue = 1, values = { ["1"] = 1, ["2"] = 2, ["3"] = 3, ["4"] = 4, ["5"] = 5, ["6"] = 6, ["7"] = 7, ["8"] = 8, ["9"] = 9, ["10"] = 10, ["11"] = 11, ["12"] = 12 }, type = 1 }
     }
 
     local SeqNum, VariaSel, SeqEnd, subSel
-    local count, c = 1, 1
     local varia_min = { 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h' }
     local varia_mag = { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H' }
     -- open messagebox:
@@ -39,12 +38,11 @@ local function main()
     end
     for k, v in pairs(resultTable.selectors) do
         Printf("Selector '%s' = '%d'", k, v)
-        if c == 1 then
+        if k == "Varia Selector" then
             VariaSel = v
-        elseif c == 2 then
+        elseif k == "Sub Selector" then
             subSel = v
         end
-        c = c + 1
     end
 
     -- Printf("count: %d", count)
@@ -53,12 +51,12 @@ local function main()
             " Cue 1 Property Command=\"Set #[DataPool 'TR_808_GMA3'.'Sequences'.'" ..
             varia_mag[VariaSel] .. "_SUB_#" .. subSel ..
             "'] Cue 1 Thru 16 Part 0.1 Property 'Enabled' 0; Set #[DataPool 'TR_808_GMA3'.'Macros'.'" ..
-            varia_min[VariaSel] .. "_NO_SOLO']." .. subSel .. " 'Enabled' 0")
+            varia_min[VariaSel] .. "_No_Solo']." .. subSel .. " 'Enabled' 0")
         CmdIndirectWait("Set DataPool 41 Sequence " .. i ..
             " Cue 2 Property Command=\"Go+ #[DataPool 'TR_808_GMA3'.'Macros'.'" ..
-            varia_min[VariaSel] .. "_Rec_Sub#" .. subSel ..
+            varia_min[VariaSel] .. "_Rec_Sub_#" .. subSel ..
             "']; Set #[DataPool 'TR_808_GMA3'.'Macros'.'" ..
-            varia_min[VariaSel] .. "_NO_SOLO']." .. subSel .. " 'Enabled' 1")
+            varia_min[VariaSel] .. "_No_Solo']." .. subSel .. " 'Enabled' 1")
         subSel = subSel + 1
     end
 
@@ -69,10 +67,10 @@ local function main()
     for i = SeqNum, SeqEnd, 1 do
         CmdIndirectWait("Set DataPool 41 Sequence " .. i ..
             " Cue 1 Property Command=\"Go+ #[DataPool 'TR_808_GMA3'.'Macros'.'" ..
-            varia_min[VariaSel] .. "_On_Solo_Sub#" .. subSel .. "']")
+            varia_min[VariaSel] .. "_On_Solo_Sub_#" .. subSel .. "']")
         CmdIndirectWait("Set DataPool 41 Sequence " .. i ..
             " Cue 2 Property Command=\"Go+ #[DataPool 'TR_808_GMA3'.'Macros'.'" ..
-            varia_min[VariaSel] .. "_Off_Solo_Sub#" .. subSel .. "']")
+            varia_min[VariaSel] .. "_Off_Solo_Sub_#" .. subSel .. "']")
         subSel = subSel + 1
     end
 
@@ -83,10 +81,10 @@ local function main()
     for i = SeqNum, SeqEnd, 1 do
         CmdIndirectWait("Set DataPool 41 Sequence " .. i ..
             " Cue 1 Property Command=\"Go+ #[DataPool 'TR_808_GMA3'.'Macros'.'" ..
-            varia_min[VariaSel] .. "_Tag_Sub#" .. subSel .. "']")
+            varia_min[VariaSel] .. "_Tag_Sub_#" .. subSel .. "']")
         CmdIndirectWait("Set DataPool 41 Sequence " .. i ..
             " Cue 2 Property Command=\"Go+ #[DataPool 'TR_808_GMA3'.'Macros'.'" ..
-            varia_min[VariaSel] .. "_Off_Tag_Sub#" .. subSel .. "']")
+            varia_min[VariaSel] .. "_Off_Tag_Sub_#" .. subSel .. "']")
         subSel = subSel + 1
     end
 
