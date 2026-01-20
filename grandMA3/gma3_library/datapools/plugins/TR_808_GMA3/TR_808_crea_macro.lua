@@ -130,12 +130,20 @@ local function main()
     subSel = 1
 
     for i = MacroNum, MacroEnd, 1 do
-        CmdIndirect('Store DataPool 41 Macro ' .. i .. ' \'' .. varia_min[VariaSel] .. '_Tag_Sub#' .. subSel)
+        CmdIndirect('Store DataPool 41 Macro ' .. i .. ' \'' .. varia_min[VariaSel] .. '_Tag_Sub_#' .. subSel)
         CmdIndirectWait('ChangeDestination DataPool 41 Macro ' .. i .. '')
         CmdIndirectWait('Insert')
         CmdIndirectWait("set 1 Command=\"Assign #[DataPool 'TR_808_GMA3'.'Sequences'.'" ..
             varia_mag[VariaSel] .. "_SUB_#" ..
             subSel .. "'] at #[Tag 'Selected_" .. varia_mag[VariaSel] .. "']")
+        CmdIndirectWait('Insert')
+        CmdIndirectWait("set 2 Command=\"Assign #[DataPool 'TR_808_GMA3'.'Sequences'.'" ..
+            varia_min[VariaSel] .. "_btn_mute_#" ..
+            subSel .. "'] at #[Tag 'Select_Mute_" .. varia_mag[VariaSel] .. "']")
+        CmdIndirectWait('Insert')
+        CmdIndirectWait("set 3 Command=\"Assign #[DataPool 'TR_808_GMA3'.'Sequences'.'" ..
+            varia_min[VariaSel] .. "_btn_solo_#" ..
+            subSel .. "'] at #[Tag 'Select_Solo_" .. varia_mag[VariaSel] .. "']")
         subSel = subSel + 1
     end
 
@@ -144,12 +152,20 @@ local function main()
     subSel = 1
 
     for i = MacroNum, MacroEnd, 1 do
-        CmdIndirect('Store DataPool 41 Macro ' .. i .. ' \'' .. varia_min[VariaSel] .. '_Off_Tag_Sub#' .. subSel)
+        CmdIndirect('Store DataPool 41 Macro ' .. i .. ' \'' .. varia_min[VariaSel] .. '_Off_Tag_Sub_#' .. subSel)
         CmdIndirectWait('ChangeDestination DataPool 41 Macro ' .. i .. '')
         CmdIndirectWait('Insert')
         CmdIndirectWait("set 1 Command=\"Assign Off #[DataPool 'TR_808_GMA3'.'Sequences'.'" ..
             varia_mag[VariaSel] .. "_SUB_#" ..
             subSel .. "'] at #[Tag 'Selected_" .. varia_mag[VariaSel] .. "']")
+        CmdIndirectWait('Insert')
+        CmdIndirectWait("set 2 Command=\"Assign Off #[DataPool 'TR_808_GMA3'.'Sequences'.'" ..
+            varia_min[VariaSel] .. "_btn_mute_#" ..
+            subSel .. "'] at #[Tag 'Select_Mute_" .. varia_mag[VariaSel] .. "']")
+        CmdIndirectWait('Insert')
+        CmdIndirectWait("set 3 Command=\"Assign Off #[DataPool 'TR_808_GMA3'.'Sequences'.'" ..
+            varia_min[VariaSel] .. "_btn_solo_#" ..
+            subSel .. "'] at #[Tag 'Select_Solo_" .. varia_mag[VariaSel] .. "']")
         subSel = subSel + 1
     end
 
