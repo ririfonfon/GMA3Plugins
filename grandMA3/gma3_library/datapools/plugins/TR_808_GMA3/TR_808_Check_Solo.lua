@@ -26,15 +26,21 @@ local function main()
             P_A_TR_Solo = "0"
             Printf("A_TR_Solo not set, defaulting to: %s", P_A_TR_Solo)
         end
+        if GetVar(Select, "math_a") == "plus" then
+            P_A_TR_Solo = P_A_TR_Solo + 1
+        elseif GetVar(Select, "math_a") == "minus" then
+            P_A_TR_Solo = P_A_TR_Solo - 1
+        end
 
-        SetVar(Select, "A_TR_Solo", P_A_TR_Solo)
         if P_A_TR_Solo < 1 then
+            P_A_TR_Solo = 0
             Cmd('Go+ DataPool "TR_808_GMA3" Macro "a_NO_SOLO"')
-            SetVar(Select, "A_TR_Solo", 0)
             Printf("A_TR_Solo is 0.")
         end
 
+        SetVar(Select, "A_TR_Solo", P_A_TR_Solo)
         SetVar(Select, "Order", "Z")
+        SetVar(Select, "math_a", "none")
     elseif P_Order == "B" then
         if GetVar(Select, "B_TR_Solo") then
             P_B_TR_Solo = GetVar(Select, "B_TR_Solo")
@@ -44,15 +50,21 @@ local function main()
             P_B_TR_Solo = "0"
             Printf("B_TR_Solo not set, defaulting to: %s", P_B_TR_Solo)
         end
+        if GetVar(Select, "math_b") == "plus" then
+            P_B_TR_Solo = P_B_TR_Solo + 1
+        elseif GetVar(Select, "math_b") == "minus" then
+            P_B_TR_Solo = P_B_TR_Solo - 1
+        end
 
-        SetVar(Select, "B_TR_Solo", P_B_TR_Solo)
         if P_B_TR_Solo < 1 then
+            P_B_TR_Solo = 0
             Cmd('Go+ DataPool "TR_808_GMA3" Macro "b_NO_SOLO"')
-            SetVar(Select, "B_TR_Solo", 0)
             Printf("B_TR_Solo is 0.")
         end
 
+        SetVar(Select, "B_TR_Solo", P_B_TR_Solo)
         SetVar(Select, "Order", "Z")
+        SetVar(Select, "math_b", "none")
     elseif P_Order == "C" then
         if GetVar(Select, "C_TR_Solo") then
             P_C_TR_Solo = GetVar(Select, "C_TR_Solo")
@@ -62,15 +74,21 @@ local function main()
             P_C_TR_Solo = "0"
             Printf("C_TR_Solo not set, defaulting to: %s", P_C_TR_Solo)
         end
-
-        SetVar(Select, "C_TR_Solo", P_C_TR_Solo)
+        if GetVar(Select, "math_c") == "plus" then
+            P_C_TR_Solo = P_C_TR_Solo + 1
+        elseif GetVar(Select, "math_c") == "minus" then
+            P_C_TR_Solo = P_C_TR_Solo - 1
+        end
+        
         if P_C_TR_Solo < 1 then
+            P_C_TR_Solo = 0
             Cmd('Go+ DataPool "TR_808_GMA3" Macro "c_NO_SOLO"')
-            SetVar(Select, "C_TR_Solo", 0)
             Printf("C_TR_Solo is 0.")
         end
-
+        
+        SetVar(Select, "C_TR_Solo", P_C_TR_Solo)
         SetVar(Select, "Order", "Z")
+        SetVar(Select, "math_c", "none")
     elseif P_Order == "D" then
         if GetVar(Select, "D_TR_Solo") then
             P_D_TR_Solo = GetVar(Select, "D_TR_Solo")
@@ -80,15 +98,21 @@ local function main()
             P_D_TR_Solo = "0"
             Printf("D_TR_Solo not set, defaulting to: %s", P_D_TR_Solo)
         end
-
-        SetVar(Select, "D_TR_Solo", P_D_TR_Solo)
-        if P_D_TR_Solo < 1 then
-            Cmd('Go+ DataPool "TR_808_GMA3" Macro "d_NO_SOLO"')
-            SetVar(Select, "D_TR_Solo", 0)
-            Printf("D_TR_Solo is 0.")
+        if GetVar(Select, "math_d") == "plus" then
+            P_D_TR_Solo = P_D_TR_Solo + 1
+        elseif GetVar(Select, "math_d") == "minus" then
+            P_D_TR_Solo = P_D_TR_Solo - 1
         end
 
+        if P_D_TR_Solo < 1 then
+            P_D_TR_Solo = 0
+            Cmd('Go+ DataPool "TR_808_GMA3" Macro "d_NO_SOLO"')
+            Printf("D_TR_Solo is 0.")
+        end
+        
+        SetVar(Select, "D_TR_Solo", P_D_TR_Solo)
         SetVar(Select, "Order", "Z")
+        SetVar(Select, "math_d", "none")
     elseif P_Order == "E" then
         if GetVar(Select, "E_TR_Solo") then
             P_E_TR_Solo = GetVar(Select, "E_TR_Solo")
@@ -98,15 +122,21 @@ local function main()
             P_E_TR_Solo = "0"
             Printf("E_TR_Solo not set, defaulting to: %s", P_E_TR_Solo)
         end
-
-        SetVar(Select, "E_TR_Solo", P_E_TR_Solo)
-        if P_E_TR_Solo < 1 then
-            Cmd('Go+ DataPool "TR_808_GMA3" Macro "e_NO_SOLO"')
-            SetVar(Select, "E_TR_Solo", 0)
-            Printf("E_TR_Solo is 0.")
+        if GetVar(Select, "math_e") == "plus" then
+            P_E_TR_Solo = P_E_TR_Solo + 1
+        elseif GetVar(Select, "math_e") == "minus" then
+            P_E_TR_Solo = P_E_TR_Solo - 1
         end
 
+        if P_E_TR_Solo < 1 then
+            P_E_TR_Solo = 0
+            Cmd('Go+ DataPool "TR_808_GMA3" Macro "e_NO_SOLO"')
+            Printf("E_TR_Solo is 0.")
+        end
+        
+        SetVar(Select, "E_TR_Solo", P_E_TR_Solo)
         SetVar(Select, "Order", "Z")
+        SetVar(Select, "math_e", "none")
     elseif P_Order == "F" then
         if GetVar(Select, "F_TR_Solo") then
             P_F_TR_Solo = GetVar(Select, "F_TR_Solo")
@@ -116,14 +146,19 @@ local function main()
             P_F_TR_Solo = "0"
             Printf("F_TR_Solo not set, defaulting to: %s", P_F_TR_Solo)
         end
-
-        SetVar(Select, "F_TR_Solo", P_F_TR_Solo)
-        if P_F_TR_Solo < 1 then
-            Cmd('Go+ DataPool "TR_808_GMA3" Macro "f_NO_SOLO"')
-            SetVar(Select, "F_TR_Solo", 0)
-            Printf("F_TR_Solo is 0.")
+        if GetVar(Select, "math_f") == "plus" then
+            P_F_TR_Solo = P_F_TR_Solo + 1
+        elseif GetVar(Select, "math_f") == "minus" then
+            P_F_TR_Solo = P_F_TR_Solo - 1
         end
 
+        if P_F_TR_Solo < 1 then
+            P_F_TR_Solo = 0
+            Cmd('Go+ DataPool "TR_808_GMA3" Macro "f_NO_SOLO"')
+            Printf("F_TR_Solo is 0.")
+        end
+        
+        SetVar(Select, "F_TR_Solo", P_F_TR_Solo)
         SetVar(Select, "Order", "Z")
     elseif P_Order == "G" then
         if GetVar(Select, "G_TR_Solo") then
@@ -134,15 +169,21 @@ local function main()
             P_G_TR_Solo = "0"
             Printf("G_TR_Solo not set, defaulting to: %s", P_G_TR_Solo)
         end
-
-        SetVar(Select, "G_TR_Solo", P_G_TR_Solo)
-        if P_G_TR_Solo < 1 then
-            Cmd('Go+ DataPool "TR_808_GMA3" Macro "g_NO_SOLO"')
-            SetVar(Select, "G_TR_Solo", 0)
-            Printf("G_TR_Solo is 0.")
+        if GetVar(Select, "math_g") == "plus" then
+            P_G_TR_Solo = P_G_TR_Solo + 1
+        elseif GetVar(Select, "math_g") == "minus" then
+            P_G_TR_Solo = P_G_TR_Solo - 1
         end
 
+        if P_G_TR_Solo < 1 then
+            P_G_TR_Solo = 0
+            Cmd('Go+ DataPool "TR_808_GMA3" Macro "g_NO_SOLO"')
+            Printf("G_TR_Solo is 0.")
+        end
+        
+        SetVar(Select, "G_TR_Solo", P_G_TR_Solo)
         SetVar(Select, "Order", "Z")
+        SetVar(Select, "math_g", "none")
     elseif P_Order == "H" then
         if GetVar(Select, "H_TR_Solo") then
             P_H_TR_Solo = GetVar(Select, "H_TR_Solo")
@@ -152,15 +193,21 @@ local function main()
             P_H_TR_Solo = "0"
             Printf("H_TR_Solo not set, defaulting to: %s", P_H_TR_Solo)
         end
-
-        SetVar(Select, "H_TR_Solo", P_H_TR_Solo)
-        if P_H_TR_Solo < 1 then
-            Cmd('Go+ DataPool "TR_808_GMA3" Macro "h_NO_SOLO"')
-            SetVar(Select, "H_TR_Solo", 0)
-            Printf("H_TR_Solo is 0.")
+        if GetVar(Select, "math_h") == "plus" then
+            P_H_TR_Solo = P_H_TR_Solo + 1
+        elseif GetVar(Select, "math_h") == "minus" then
+            P_H_TR_Solo = P_H_TR_Solo - 1
         end
 
+        if P_H_TR_Solo < 1 then
+            P_H_TR_Solo = 0
+            Cmd('Go+ DataPool "TR_808_GMA3" Macro "h_NO_SOLO"')
+            Printf("H_TR_Solo is 0.")
+        end
+        
+        SetVar(Select, "H_TR_Solo", P_H_TR_Solo)
         SetVar(Select, "Order", "Z")
+        SetVar(Select, "math_h", "none")
     end
 end
 
