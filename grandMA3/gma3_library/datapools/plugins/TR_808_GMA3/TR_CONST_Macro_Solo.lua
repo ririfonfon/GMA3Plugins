@@ -41,12 +41,13 @@ local function main()
     for k, v in pairs(resultTable.selectors) do
         Printf("Selector '%s' = '%d'", k, v)
         if c == 1 then
-            VariaSel = v
-        elseif c == 2 then
             subSel = v
+        elseif c == 2 then
+            VariaSel = tonumber(v)
         end
         c = c + 1
     end
+    Printf("VariaSel: %d", VariaSel)
 
     -- local i = MacroNum
     CmdIndirectWait('Delete DataPool 41 Macro ' .. MacroNum .. ' Thru ' .. MacroEnd ..'')
