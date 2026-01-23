@@ -1,6 +1,6 @@
 --[[
 Releases:
-* 2.1.1.2
+* 2.3.2.0
 
 Created by Richard Fontaine "RIRI", June 2024.
 --]]
@@ -12,6 +12,10 @@ local myHandle = select(4, ...)
 
 local function Main(displayHandle)
     Cmd('Set UserProfile *.15 Property "keyboardshortcutsactive" false')
+
+
+
+
     local list = false
     local FixtureGroups = DataPool().Groups:Children()
     local SelectedGrp = {}
@@ -49,6 +53,7 @@ local function Main(displayHandle)
     local TopInc = 0
 
     local popuplists = {
+        list_pool       = {},
         Grp_Select      = {},
         Gel_Select      = {},
         Name_Select     = { 'Layout Color', 'Layout Kolor', 'L Co', 'L Ko', 'Color', 'Kolor' },
@@ -60,6 +65,13 @@ local function Main(displayHandle)
         Matrick_Select  = { 1, 11, 101, 201, 301, 401, 501, 601, 701, 801, 901, 1001, 2001 },
         Favorite_Select = { 10, 16, 20, 30, 32, 40, 50, 60, 64, 70, 80, 90, 100, 110, 120, 124 }
     }
+
+    local Pool_check = Root().ShowData.DataPools:Children()
+    for k in ipairs(Pool_check) do
+        table.insert(popuplists.list_pool, "'" .. Pool_check[k].name .. "'")
+    end
+    local check_pool = false
+    local pool_selected = 1
 
     if list == false then
         for k in ipairs(FixtureGroups) do
@@ -732,7 +744,7 @@ local function Main(displayHandle)
     input10Icon.Font = "2"
 
     local input10Button = inputsGrid:Append('Button')
-    input10Button.Anchors = { left = 1, right = 9, top = TopInc, bottom = TopInc }
+    input10Button.Anchors = { left = 4, right = 9, top = TopInc, bottom = TopInc }
     input10Button.Padding = "5,5"
     input10Button.Margin = { left = 2, right = 0, top = TopInc, bottom = 2 }
     input10Button.Name = 'Grp_Select'
@@ -742,6 +754,18 @@ local function Main(displayHandle)
     input10Button.BackColor = colorGroups
     input10Button.Font = "2"
     input10Button.Visible = "No"
+
+    local input10Sujestion = inputsGrid:Append("Button")
+    input10Sujestion.Text = "Select Pool"
+    input10Sujestion.Anchors = { left = 1, right = 3, top = TopInc, bottom = TopInc }
+    input10Sujestion.Margin = { left = 2, right = 0, top = TopInc, bottom = 2 }
+    input10Sujestion.Name = 'list_pool'
+    input10Sujestion.PluginComponent = thiscomponent
+    input10Sujestion.Clicked = 'mypopup'
+    input10Sujestion.HasHover = "yes"
+    input10Sujestion.backColor = colorGroups
+    input10Sujestion.Font = "2"
+    input10Sujestion.Visible = "No"
 
     TopInc = TopInc + 1
 
@@ -1058,6 +1082,30 @@ local function Main(displayHandle)
                 NGel = k
             end
             check_gel = true
+            input10Sujestion.Visible = "Yes"
+        elseif caller.Name == "list_pool" then
+            caller.Text = choice or caller.Text
+            for k in ipairs(Pool_check) do
+                if Pool_check[k].name == caller.Text:gsub("'", "") then
+                    pool_selected = tonumber(k)
+                    Printf("Pool selected: " .. pool_selected)
+                end
+            end
+            FixtureGroups = Root().ShowData.DataPools[pool_selected].Groups:Children()
+                local lo
+            for k in ipairs(popuplists.Grp_Select) do
+                lo = tonumber(k)
+            end
+            Printf("lo : " .. lo)
+            for k = lo, 0, -1 do
+                table.remove(popuplists.Grp_Select, k)
+            end
+
+            for k in ipairs(FixtureGroups) do
+                Printf("NEW Adding Group to list: " .. FixtureGroups[k].name)
+                table.insert(popuplists.Grp_Select, "'" .. FixtureGroups[k].name .. "'")
+            end
+            check_pool = true
             input10Button.Visible = "Yes"
         elseif caller.Name == "Grp_Select" then
             for k in ipairs(popuplists.Grp_Select) do
