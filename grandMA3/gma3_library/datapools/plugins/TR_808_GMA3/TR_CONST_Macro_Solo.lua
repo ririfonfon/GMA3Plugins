@@ -53,8 +53,8 @@ local function main()
     local MacroObject = Root().ShowData.DataPools[DataPoolNum].Macros
 
 
-    -- CmdIndirectWait('Delete DataPool 41 Macro ' .. MacroNum .. ' Thru ' .. MacroEnd .. '')
     for i = MacroNum, MacroEnd, 1 do
+        MacroObject:Delete(i)
         MacroObject:Create(i)
         MacroObject[i]:Set('Name', '' .. varia_min[VariaSel] .. '_On_Solo_Sub_#' .. subSel)
         for a = 1, 6 do
@@ -78,8 +78,8 @@ local function main()
     subSel = 1
     count = 1
 
-    -- CmdIndirectWait('Delete DataPool 41 Macro ' .. MacroNum .. ' Thru ' .. MacroEnd .. '')
     for i = MacroNum, MacroEnd, 1 do
+        MacroObject:Delete(i)
         MacroObject:Create(i)
         MacroObject[i]:Set('Name', '' .. varia_min[VariaSel] .. '_Off_Solo_Sub_#' .. subSel)
         for a = 1, 5 do
