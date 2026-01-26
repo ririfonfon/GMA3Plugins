@@ -7,9 +7,9 @@ Created by Richard Fontaine "RIRI", June 2024.
 
 function Construct_Layout(displayHandle, TLay, SeqNrStart, MacroNrStart, MatrickNrStart, MatrickNr, TLayNr, AppNr,
                           All_5_Current, All_5_NrStart, ColPath, SelectedGelNr, SelectedGrp, SelectedGrpNo, TLayNrRef,
-                          NaLay, MaxColLgn, Favourite_Nr)
-    local Macro_Pool = DataPool().Macros
-    local Data_Pool_Nr = DataPool().No
+                          NaLay, MaxColLgn, Favourite_Nr, pool_construct)
+    local Macro_Pool = Root().DataPools[pool_construct].Macros
+    local Data_Pool_Nr = Root().DataPools[pool_construct].No
     local All_5_NrEnd
     local Img = Root().ShowData.MediaPools.Symbols:Children()
     local ImgNr
@@ -286,11 +286,14 @@ function Construct_Layout(displayHandle, TLay, SeqNrStart, MacroNrStart, Matrick
     CheckSymbols(displayHandle, Img, ImgImp, check, add_check, long_imgimp, ImgNr)
 
     -- Create MAtricks
-    MatrickNr = Create_Matricks(MatrickNrStart, prefix, NaLay, SelectedGrp, SelectedGrpName, MatrickNr)
+    MatrickNr = Create_Matricks(MatrickNrStart, prefix, NaLay, SelectedGrp, SelectedGrpName, MatrickNr, pool_construct)
 
 
     -- Create new Layout View
-    CmdIndirectWait("Store Layout " .. TLayNr .. " \"" .. prefix .. NaLay .. "")
+    local LayoutObject = Root().ShowData.DataPools[pool_construct].Layouts:Children()
+    LayoutObject:Create(TLayNr)
+    LayoutObject:Set('Name', '' .. prefix .. NaLay)
+    -- CmdIndirectWait("Store Layout " .. TLayNr .. " \"" .. prefix .. NaLay .. "")
     CmdIndirectWait('Select Layout ' .. TLayNr)
 
     SelectedGelNr = tonumber(SelectedGelNr)
@@ -307,7 +310,7 @@ function Construct_Layout(displayHandle, TLay, SeqNrStart, MacroNrStart, Matrick
 
     -- Create Preset 25
     All_5_NrEnd, All_5_Current = Create_Preset_25(TCol, StColName, StringColName, SelectedGelNr, prefix, All_5_NrEnd,
-        All_5_Current)
+        All_5_Current, pool_construct)
     -- endCreate Preset 25
 
     -- Appearances/Sequences
@@ -398,7 +401,7 @@ function Construct_Layout(displayHandle, TLay, SeqNrStart, MacroNrStart, Matrick
     -- add line macro X Y Z Call
     for i = 1, 3 do
         CmdIndirectWait('ChangeDestination Macro ' .. First_Id_Lay[33 + i])
-       Cmd('Insert')
+        Cmd('Insert')
         CmdIndirectWait('Set 32 Command=\'Off DataPool ' .. Data_Pool_Nr .. ' Sequence ' .. First_Id_Lay[29] ..
             ' + ' .. First_Id_Lay[30] .. ' + ' .. First_Id_Lay[31] .. ' - ' .. First_Id_Lay[28 + i])
         Add_Macro_Call(i, TLayNr, Fade_Element, MatrickNrStart, Delay_F_Element, Delay_T_Element, Phase_Element,
@@ -422,7 +425,7 @@ function Construct_Layout(displayHandle, TLay, SeqNrStart, MacroNrStart, Matrick
     CmdIndirectWait('Store Sequence ' .. CurrentSeqNr .. ' \'' .. prefix .. 'KILL_ALL\'')
     CmdIndirectWait("Set Seq " .. CurrentSeqNr .. " cue 1 Property Appearance=" .. prefix .. "'skull_on'")
     CmdIndirectWait('Set Seq ' ..
-    CurrentSeqNr .. ' cue 1 Property Command=\'Off DataPool ' .. Data_Pool_Nr .. ' Sequence \'' .. prefix .. '*')
+        CurrentSeqNr .. ' cue 1 Property Command=\'Off DataPool ' .. Data_Pool_Nr .. ' Sequence \'' .. prefix .. '*')
     CmdIndirectWait("Set Seq " .. CurrentSeqNr .. " Property Appearance=" .. prefix .. "'skull_off'")
     Command_Ext_Suite(CurrentSeqNr)
     CmdIndirectWait("Assign Seq " .. CurrentSeqNr .. " at Layout " .. TLayNr)
@@ -454,7 +457,7 @@ function Construct_Layout(displayHandle, TLay, SeqNrStart, MacroNrStart, Matrick
     CmdIndirectWait('Store Macro ' .. CurrentMacroNr .. ' \'' .. 'Priority\'')
     CmdIndirectWait('ChangeDestination Macro ' .. CurrentMacroNr .. '')
     for i = 1, 7 do
-       Cmd('Insert')
+        Cmd('Insert')
     end
     CmdIndirectWait('Assign Macro ' .. CurrentMacroNr .. ' at Layout ' .. TLayNr)
     CmdIndirectWait('Set Layout ' .. TLayNr .. '.' .. LayNr ..
@@ -494,7 +497,7 @@ function Construct_Layout(displayHandle, TLay, SeqNrStart, MacroNrStart, Matrick
     CmdIndirectWait('Store Macro ' .. CurrentMacroNr .. ' \'' .. 'ERASE\'')
     CmdIndirectWait('ChangeDestination Macro ' .. CurrentMacroNr .. '')
     for i = 1, 11 do
-       Cmd('Insert')
+        Cmd('Insert')
     end
     CmdIndirectWait('ChangeDestination Root')
     Macro_Pool[CurrentMacroNr]:Set('name', 'Erase [' .. prefix:gsub('_', '') .. ']')
