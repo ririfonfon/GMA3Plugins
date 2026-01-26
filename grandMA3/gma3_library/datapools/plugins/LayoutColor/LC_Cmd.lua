@@ -62,46 +62,69 @@ function CheckSymbols(displayHandle, Img, ImgImp, check, add_check, long_imgimp,
     end
 end -- end CheckSymbols
 
-function Create_Matricks(MatrickNrStart, prefix, NaLay, SelectedGrp, SelectedGrpName, MatrickNr)
-    CmdIndirectWait('Store MAtricks ' .. MatrickNrStart .. ' /nu')
-    CmdIndirectWait('Set Matricks ' .. MatrickNrStart .. ' name = ' .. prefix .. NaLay .. ' /nu')
+function Create_Matricks(MatrickNrStart, prefix, NaLay, SelectedGrp, SelectedGrpName, MatrickNr, pool_construct)
+    local MatrickObject = Root().ShowData.DataPools[pool_construct].Matricks:Children()
+    MatrickObject:Create(MatrickNrStart)
+    MatrickObject[MatrickNrStart]:Set('Name', '' .. prefix .. NaLay)
     MatrickNr = math.floor(MatrickNrStart + 1)
     for g in pairs(SelectedGrp) do
-        CmdIndirectWait('Store MAtricks ' .. MatrickNr .. ' /nu')
-        CmdIndirectWait('Set Matricks ' ..
-        MatrickNr .. ' name = ' .. prefix .. SelectedGrpName[g]:gsub('\'', '') .. ' /nu')
-        CmdIndirectWait('Set Matricks ' .. MatrickNr .. ' Property "FadeFromx" 0')
-        CmdIndirectWait('Set Matricks ' .. MatrickNr .. ' Property "FadeFromy" 0')
-        CmdIndirectWait('Set Matricks ' .. MatrickNr .. ' Property "FadeFromz" 0')
-        CmdIndirectWait('Set Matricks ' .. MatrickNr .. ' Property "FadeTox" 0')
-        CmdIndirectWait('Set Matricks ' .. MatrickNr .. ' Property "FadeToy" 0')
-        CmdIndirectWait('Set Matricks ' .. MatrickNr .. ' Property "FadeToz" 0')
+        MatrickObject:Create(MatrickNr)
+        MatrickObject[MatrickNr]:Set('Name', '' .. prefix .. SelectedGrpName[g]:gsub('\'', ''))
+        MatrickObject[MatrickNr]:Set('FadeFromx', 0)
+        MatrickObject[MatrickNr]:Set('FadeFromy', 0)
+        MatrickObject[MatrickNr]:Set('FadeFromz', 0)
+        MatrickObject[MatrickNr]:Set('FadeTox', 0)
+        MatrickObject[MatrickNr]:Set('FadeToy', 0)
+        MatrickObject[MatrickNr]:Set('FadeToz', 0)
         MatrickNr = math.floor(MatrickNr + 1)
+
+        -- CmdIndirectWait('Store MAtricks ' .. MatrickNrStart .. ' /nu')
+        -- CmdIndirectWait('Set Matricks ' .. MatrickNrStart .. ' name = ' .. prefix .. NaLay .. ' /nu')
+        -- CmdIndirectWait('Store MAtricks ' .. MatrickNr .. ' /nu')
+        -- CmdIndirectWait('Set Matricks ' ..
+        -- MatrickNr .. ' name = ' .. prefix .. SelectedGrpName[g]:gsub('\'', '') .. ' /nu')
+        -- CmdIndirectWait('Set Matricks ' .. MatrickNr .. ' Property "FadeFromx" 0')
+        -- CmdIndirectWait('Set Matricks ' .. MatrickNr .. ' Property "FadeFromy" 0')
+        -- CmdIndirectWait('Set Matricks ' .. MatrickNr .. ' Property "FadeFromz" 0')
+        -- CmdIndirectWait('Set Matricks ' .. MatrickNr .. ' Property "FadeTox" 0')
+        -- CmdIndirectWait('Set Matricks ' .. MatrickNr .. ' Property "FadeToy" 0')
+        -- CmdIndirectWait('Set Matricks ' .. MatrickNr .. ' Property "FadeToz" 0')
     end
     return MatrickNr
 end -- end Create_Matricks
 
 function Create_Appear_Tricks(AppTricks, AppNr, prefix)
+    local AppObject = Root().ShowData.Apperances:Children()
     for q in pairs(AppTricks) do
         AppTricks[q].Nr = math.floor(AppNr)
-        CmdIndirectWait('Store App ' ..
-            AppTricks[q].Nr ..
-            ' "' ..
-            prefix .. AppTricks[q].Name .. '" "Appearance"=' .. AppTricks[q].StApp .. '' .. AppTricks[q].RGBref .. '')
+        AppObject:Create(AppTricks[q].Nr)
+        AppObject[AppTricks[q].Nr]:Set('Name', '' .. prefix .. AppTricks[q].Name)
+        AppObject[AppTricks[q].Nr]:Set('Apperances', '' .. AppTricks[q].StApp .. AppTricks[q].RGBref)
+
+        -- CmdIndirectWait('Store App ' ..
+        --     AppTricks[q].Nr ..
+        --     ' "' ..
+        --     prefix .. AppTricks[q].Name .. '" "Appearance"=' .. AppTricks[q].StApp .. '' .. AppTricks[q].RGBref .. '')
         AppNr = math.floor(AppNr + 1)
     end
     return AppNr, AppTricks
 end -- end Create_Appear_Tricks
 
 function Create_Appearances(SelectedGrp, AppNr, prefix, TCol, NrAppear, StColCode, StColName, StringColName)
+    local AppObject = Root().ShowData.Apperances:Children()
     local StAppNameOn
     local StAppNameOff
     local StAppOn = '\"Showdata.MediaPools.Symbols.on\"'
     local StAppOff = '\"Showdata.MediaPools.Symbols.off\"'
     for g in ipairs(SelectedGrp) do
-        AppNr = math.floor(AppNr);
-        CmdIndirectWait('Store App ' ..
-        AppNr .. ' \'' .. prefix .. ' Label\' Appearance=' .. StAppOn .. ' color=\'0,0,0,1\'')
+        AppNr = math.floor(AppNr)
+        AppObject:Create(AppNr)
+        AppObject[AppNr]:Set('Name', '' .. prefix .. ' Label')
+        AppObject[AppNr]:Set('Apperances', StAppOn)
+        AppObject[AppNr]:Set('color', 0, 0, 0, 1)
+
+        -- CmdIndirectWait('Store App ' ..
+        --     AppNr .. ' \'' .. prefix .. ' Label\' Appearance=' .. StAppOn .. ' color=\'0,0,0,1\'')
         NrAppear = math.floor(AppNr + 1)
         for col in ipairs(TCol) do
             StColCode = "\"" .. TCol[col].r .. "," .. TCol[col].g .. "," .. TCol[col].b .. ",1\""
@@ -109,20 +132,39 @@ function Create_Appearances(SelectedGrp, AppNr, prefix, TCol, NrAppear, StColCod
             StringColName = string.gsub(StColName, " ", "_")
             StAppNameOn = "\"" .. prefix .. StringColName .. " on\""
             StAppNameOff = "\"" .. prefix .. StringColName .. " Off\""
-            CmdIndirectWait("Store App " ..
-                NrAppear .. " " .. StAppNameOn .. " Appearance=" .. StAppOn .. " color=" .. StColCode .. "")
+            AppObject:Create(NrAppear)
+            AppObject[NrAppear]:Set('Name', StAppNameOn)
+            AppObject[NrAppear]:Set('Apperances', StAppOn)
+            AppObject[NrAppear]:Set('color', StColCode)
+
+            -- CmdIndirectWait("Store App " ..
+            --     NrAppear .. " " .. StAppNameOn .. " Appearance=" .. StAppOn .. " color=" .. StColCode .. "")
             NrAppear = math.floor(NrAppear + 1)
-            CmdIndirectWait("Store App " ..
-                NrAppear .. " " .. StAppNameOff .. " Appearance=" .. StAppOff .. " color=" .. StColCode .. "")
+            AppObject:Create(NrAppear)
+            AppObject[NrAppear]:Set('Name', StAppNameOff)
+            AppObject[NrAppear]:Set('Apperances', StAppOff)
+            AppObject[NrAppear]:Set('color', StColCode)
+
+            -- CmdIndirectWait("Store App " ..
+            --     NrAppear .. " " .. StAppNameOff .. " Appearance=" .. StAppOff .. " color=" .. StColCode .. "")
             NrAppear = math.floor(NrAppear + 1)
         end
     end
     return NrAppear
 end -- end Create_Appearances
 
-function Create_Preset_25(TCol, StColName, StringColName, SelectedGelNr, prefix, All_5_NrEnd, All_5_Current)
+function Create_Preset_25(TCol, StColName, StringColName, SelectedGelNr, prefix, All_5_NrEnd, All_5_Current,
+                          pool_construct)
+    local Preset25 = Root().ShowData.DataPools[pool_construct].PresetPools:Children()
+    local Preset25Object = Root().ShowData.DataPools[pool_construct].PresetPools[25]:Children()
+    for k in ipairs(Preset25) do
+        if Preset25[k].Name == 'All 5' then
+            Preset25[k]:Set('PresetMode', 'Universal')
+        end
+    end
+
     CmdIndirectWait("ClearAll /nu")
-    CmdIndirectWait('Set Preset 25 Property PresetMode "Universal"')
+    -- CmdIndirectWait('Set Preset 25 Property PresetMode "Universal"')
     CmdIndirectWait('Fixture Thru')
     for col in ipairs(TCol) do
         StColName = TCol[col].name
@@ -179,7 +221,7 @@ function Create_Appearances_Sequences(CurrentMacroNr, SelectedGelNr, SelectedGrp
             CmdIndirectWait('Assign Values Preset 25.' ..
                 All_5_NrStart + col - 1 .. "At Sequence " .. CurrentSeqNr .. 'Cue 1 part 0.1')
             CmdIndirectWait('Assign MAtricks ' ..
-            MatrickNrStart .. ' At Sequence ' .. CurrentSeqNr .. ' Cue 1 Part 0.1 /nu')
+                MatrickNrStart .. ' At Sequence ' .. CurrentSeqNr .. ' Cue 1 Part 0.1 /nu')
             CmdIndirectWait('Set Sequence ' .. CurrentSeqNr .. ' Cue 1 Property Appearance=' .. NrNeed)
             CmdIndirectWait('Set Sequence ' .. CurrentSeqNr .. ' Property Appearance=' .. NrNeed + 1)
             Command_Ext_Suite(CurrentSeqNr)
@@ -208,7 +250,7 @@ function Create_Appearances_Sequences(CurrentMacroNr, SelectedGelNr, SelectedGrp
         -- add matrick group
         CmdIndirectWait('ClearAll /nu')
         CmdIndirectWait('Store Sequence ' ..
-        CurrentSeqNr .. ' \'' .. prefix .. "Tricks" .. SelectedGrpName[g]:gsub('\'', ''))
+            CurrentSeqNr .. ' \'' .. prefix .. "Tricks" .. SelectedGrpName[g]:gsub('\'', ''))
         CmdIndirectWait('Set Sequence ' .. CurrentSeqNr .. ' Cue 1 Property Command=\'Assign DataPool ' ..
             Data_Pool_Nr .. ' MaTricks ' .. prefix .. SelectedGrpName[g]:gsub('\'', '') ..
             ' At DataPool ' .. Data_Pool_Nr .. ' Sequence ' .. FirstSeqColor .. ' Thru ' .. LastSeqColor ..
@@ -417,7 +459,7 @@ function Create_Delay_From_Sequences(First_Id_Lay, LayNr, CurrentSeqNr, Current_
         end
         CmdIndirectWait('ClearAll /nu')
         CmdIndirectWait('Store Sequence ' ..
-        CurrentSeqNr .. ' \'' .. prefix .. Argument_Delay[i].name .. surfix[a] .. '\'')
+            CurrentSeqNr .. ' \'' .. prefix .. Argument_Delay[i].name .. surfix[a] .. '\'')
         -- Add CmdIndirectWait to Squence
         CmdIndirectWait('Set Sequence ' .. CurrentSeqNr .. ' Cue 1 Property Appearance=' .. AppImp[ia].Nr)
         if i == 5 then
@@ -618,7 +660,7 @@ function Create_Group_Sequence(CurrentMacroNr, FirstSeqGrp, CurrentSeqNr, LastSe
         end
         CmdIndirectWait('ClearAll /nu')
         CmdIndirectWait('Store Sequence ' ..
-        CurrentSeqNr .. ' \'' .. prefix .. Argument_Xgrp[i].name .. surfix[a] .. '\'')
+            CurrentSeqNr .. ' \'' .. prefix .. Argument_Xgrp[i].name .. surfix[a] .. '\'')
         -- Add CmdIndirectWait to Squence
         CmdIndirectWait('Set Sequence ' .. CurrentSeqNr .. ' Cue 1 Property Appearance=' .. AppImp[ia].Nr)
         if i == 5 then
@@ -845,7 +887,7 @@ function Create_XYZ_Sequence(CurrentMacroNr, First_Id_Lay, prefix, surfix, Call_
     CmdIndirectWait('ClearAll /nu')
     CmdIndirectWait('Store Sequence ' .. CurrentSeqNr .. ' \'' .. prefix .. surfix[a] .. '_Call\'')
     CmdIndirectWait('Set Sequence ' ..
-    CurrentSeqNr .. ' Cue 1 Property Appearance=' .. AppImp[66 + tonumber(a * 2 - 1)].Nr)
+        CurrentSeqNr .. ' Cue 1 Property Appearance=' .. AppImp[66 + tonumber(a * 2 - 1)].Nr)
     CmdIndirectWait('Set Sequence ' ..
         CurrentSeqNr .. ' Cue 1 Property Command=\'Go DataPool ' .. Data_Pool_Nr .. ' Macro ' .. CurrentMacroNr .. '')
     CmdIndirectWait('Set Sequence ' .. CurrentSeqNr .. ' Property Appearance=' .. AppImp[67 + tonumber(a * 2 - 1)].Nr)
@@ -853,12 +895,12 @@ function Create_XYZ_Sequence(CurrentMacroNr, First_Id_Lay, prefix, surfix, Call_
     CmdIndirectWait('ClearAll /nu')
     CmdIndirectWait('Store Sequence ' .. CurrentSeqNr + 1 .. ' \'' .. prefix .. surfix[a] .. '_Reset\'')
     CmdIndirectWait("Set Sequence " ..
-    CurrentSeqNr + 1 .. " Cue 1 Property Appearance=" .. prefix:gsub('o', '') .. "'skull_on'")
+        CurrentSeqNr + 1 .. " Cue 1 Property Appearance=" .. prefix:gsub('o', '') .. "'skull_on'")
     CmdIndirectWait('Set Sequence ' ..
         CurrentSeqNr + 1 ..
         ' Cue 1 Property Command=\'Go DataPool ' .. Data_Pool_Nr .. ' Macro ' .. CurrentMacroNr + 1 .. '')
     CmdIndirectWait("Set Sequence " ..
-    CurrentSeqNr + 1 .. " Property Appearance=" .. prefix:gsub('o', '') .. "'skull_off'")
+        CurrentSeqNr + 1 .. " Property Appearance=" .. prefix:gsub('o', '') .. "'skull_off'")
     Command_Ext_Suite(CurrentSeqNr + 1)
     if MakeX == false then
         LayNr = math.floor(LayNr + 1)
