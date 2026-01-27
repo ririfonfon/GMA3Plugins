@@ -5,11 +5,12 @@ Releases:
 Created by Richard Fontaine "RIRI", June 2024.
 --]]
 
-function Construct_Layout(displayHandle, TLay, SeqNrStart, MacroNrStart, MatrickNrStart, MatrickNr, TLayNr, AppNr,
+function Construct_Layout(TLay, SeqNrStart, MacroNrStart, MatrickNrStart, MatrickNr, TLayNr, AppNr,
                           All_5_Current, All_5_NrStart, ColPath, SelectedGelNr, SelectedGrp, SelectedGrpNo, TLayNrRef,
                           NaLay, MaxColLgn, Favourite_Nr, pool_construct)
-    local Macro_Pool = Root().DataPools[pool_construct].Macros
-    local Data_Pool_Nr = Root().DataPools[pool_construct].No
+
+    local Macro_Pool = Root().ShowData.DataPools[pool_construct].Macros
+    local Data_Pool_Nr = Root().ShowData.DataPools[pool_construct].No
     local All_5_NrEnd
     local Img = Root().ShowData.MediaPools.Symbols:Children()
     local ImgNr
@@ -283,16 +284,16 @@ function Construct_Layout(displayHandle, TLay, SeqNrStart, MacroNrStart, Matrick
     CurrentMacroNr = MacroNrStart
 
     -- check Symbols
-    CheckSymbols(displayHandle, Img, ImgImp, check, add_check, long_imgimp, ImgNr)
+    CheckSymbols(Img, ImgImp, check, add_check, long_imgimp, ImgNr)
 
     -- Create MAtricks
     MatrickNr = Create_Matricks(MatrickNrStart, prefix, NaLay, SelectedGrp, SelectedGrpName, MatrickNr, pool_construct)
 
 
     -- Create new Layout View
-    local LayoutObject = Root().ShowData.DataPools[pool_construct].Layouts:Children()
+    local LayoutObject = Root().ShowData.DataPools[pool_construct].Layouts
     LayoutObject:Create(TLayNr)
-    LayoutObject:Set('Name', '' .. prefix .. NaLay)
+    LayoutObject[TLayNr]:Set('Name', '' .. prefix .. NaLay)
     -- CmdIndirectWait("Store Layout " .. TLayNr .. " \"" .. prefix .. NaLay .. "")
     CmdIndirectWait('Select Layout ' .. TLayNr)
 
