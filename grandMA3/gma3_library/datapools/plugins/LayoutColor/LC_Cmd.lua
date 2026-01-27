@@ -5,7 +5,8 @@
     Created by Richard Fontaine "RIRI", September 2025.
     --]]
 
-function CheckSymbols(displayHandle, Img, ImgImp, check, add_check, long_imgimp, ImgNr)
+-- function CheckSymbols(displayHandle, Img, ImgImp, check, add_check, long_imgimp, ImgNr)
+function CheckSymbols(Img, ImgImp, check, add_check, long_imgimp, ImgNr)
     for k in pairs(Img) do
         for q in pairs(ImgImp) do
             if ('"' .. Img[k].name .. '"' == ImgImp[q].Name) then
@@ -63,7 +64,8 @@ function CheckSymbols(displayHandle, Img, ImgImp, check, add_check, long_imgimp,
 end -- end CheckSymbols
 
 function Create_Matricks(MatrickNrStart, prefix, NaLay, SelectedGrp, SelectedGrpName, MatrickNr, pool_construct)
-    local MatrickObject = Root().ShowData.DataPools[pool_construct].Matricks:Children()
+    local MatrickObject = Root().ShowData.DataPools[pool_construct].Matricks
+    MatrickObject:Acquire()
     MatrickObject:Create(MatrickNrStart)
     MatrickObject[MatrickNrStart]:Set('Name', '' .. prefix .. NaLay)
     MatrickNr = math.floor(MatrickNrStart + 1)
@@ -77,34 +79,18 @@ function Create_Matricks(MatrickNrStart, prefix, NaLay, SelectedGrp, SelectedGrp
         MatrickObject[MatrickNr]:Set('FadeToy', 0)
         MatrickObject[MatrickNr]:Set('FadeToz', 0)
         MatrickNr = math.floor(MatrickNr + 1)
-
-        -- CmdIndirectWait('Store MAtricks ' .. MatrickNrStart .. ' /nu')
-        -- CmdIndirectWait('Set Matricks ' .. MatrickNrStart .. ' name = ' .. prefix .. NaLay .. ' /nu')
-        -- CmdIndirectWait('Store MAtricks ' .. MatrickNr .. ' /nu')
-        -- CmdIndirectWait('Set Matricks ' ..
-        -- MatrickNr .. ' name = ' .. prefix .. SelectedGrpName[g]:gsub('\'', '') .. ' /nu')
-        -- CmdIndirectWait('Set Matricks ' .. MatrickNr .. ' Property "FadeFromx" 0')
-        -- CmdIndirectWait('Set Matricks ' .. MatrickNr .. ' Property "FadeFromy" 0')
-        -- CmdIndirectWait('Set Matricks ' .. MatrickNr .. ' Property "FadeFromz" 0')
-        -- CmdIndirectWait('Set Matricks ' .. MatrickNr .. ' Property "FadeTox" 0')
-        -- CmdIndirectWait('Set Matricks ' .. MatrickNr .. ' Property "FadeToy" 0')
-        -- CmdIndirectWait('Set Matricks ' .. MatrickNr .. ' Property "FadeToz" 0')
     end
     return MatrickNr
 end -- end Create_Matricks
 
 function Create_Appear_Tricks(AppTricks, AppNr, prefix)
-    local AppObject = Root().ShowData.Apperances:Children()
+    local AppObject = Root().ShowData.Appearances
     for q in pairs(AppTricks) do
         AppTricks[q].Nr = math.floor(AppNr)
         AppObject:Create(AppTricks[q].Nr)
-        AppObject[AppTricks[q].Nr]:Set('Name', '' .. prefix .. AppTricks[q].Name)
-        AppObject[AppTricks[q].Nr]:Set('Apperances', '' .. AppTricks[q].StApp .. AppTricks[q].RGBref)
-
-        -- CmdIndirectWait('Store App ' ..
-        --     AppTricks[q].Nr ..
-        --     ' "' ..
-        --     prefix .. AppTricks[q].Name .. '" "Appearance"=' .. AppTricks[q].StApp .. '' .. AppTricks[q].RGBref .. '')
+        AppObject[AppTricks[q].Nr]:Set('Name', prefix .. AppTricks[q].Name)
+        AppObject[AppTricks[q].Nr]:Set('Appearance',AppTricks[q].StApp:gsub('"', ''))
+        AppObject[AppTricks[q].Nr]:Set('Color',AppTricks[q].RGBref:gsub('"', ''))
         AppNr = math.floor(AppNr + 1)
     end
     return AppNr, AppTricks
@@ -165,10 +151,10 @@ function Create_Preset_25(TCol, StColName, StringColName, SelectedGelNr, prefix,
         StColName = TCol[col].name
         StringColName = string.gsub(StColName, " ", "_")
         local convert = prefix .. StringColName
-        local Name = string.gsub(convert , " ","_")
+        local Name = string.gsub(convert, " ", "_")
         CmdIndirectWait('At Gel ' .. SelectedGelNr .. "." .. col .. '')
-        CmdIndirectWait('Store DataPool ' .. pool_construct ..' Preset 25.' .. All_5_Current .. '')
-        CmdIndirectWait('Label DataPool ' .. pool_construct ..' Preset 25.' .. All_5_Current .. " " .. Name .. " ")
+        CmdIndirectWait('Store DataPool ' .. pool_construct .. ' Preset 25.' .. All_5_Current .. '')
+        CmdIndirectWait('Label DataPool ' .. pool_construct .. ' Preset 25.' .. All_5_Current .. " " .. Name .. " ")
         All_5_NrEnd = All_5_Current
         All_5_Current = math.floor(All_5_Current + 1)
     end
