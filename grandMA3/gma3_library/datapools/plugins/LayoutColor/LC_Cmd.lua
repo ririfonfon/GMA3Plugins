@@ -1,6 +1,6 @@
 --[[
     Releases:
-    * 2.3.1.1
+    * 2.3.1.2
 
     Created by Richard Fontaine "RIRI", September 2025.
     --]]
@@ -17,10 +17,8 @@ local function Check_Size_Pool(id, PoolObject)
         local newsize = math.min(maxsize, math.ceil(id / 1000) * 1000)
         PoolObject:Resize(newsize)
     end
-    -- return PoolObject:Create(id)
 end
 
--- function CheckSymbols(displayHandle, Img, ImgImp, check, add_check, long_imgimp, ImgNr)
 function CheckSymbols(Img, ImgImp, check, add_check, long_imgimp, ImgNr)
     for k in pairs(Img) do
         for q in pairs(ImgImp) do
@@ -114,7 +112,7 @@ function Create_Appear_Tricks(AppTricks, AppNr, prefix)
     return AppNr, AppTricks
 end -- end Create_Appear_Tricks
 
-function Create_Appearances(SelectedGrp, AppNr, prefix, TCol, NrAppear, StColCode, StColName, StringColName)
+function Create_Appearances(AppNr, prefix, TCol, NrAppear, StColCode, StColName, StringColName)
     local AppObject = Root().ShowData.Appearances
     AppObject:Acquire()
     local StAppNameOn
@@ -122,36 +120,36 @@ function Create_Appearances(SelectedGrp, AppNr, prefix, TCol, NrAppear, StColCod
     local StAppOn = '\"Showdata.MediaPools.Symbols.on\"'
     local StAppOff = '\"Showdata.MediaPools.Symbols.off\"'
     NrAppear = math.floor(AppNr)
-    for g in ipairs(SelectedGrp) do
+    -- for g in ipairs(SelectedGrp) do
+    Check_Size_Pool(NrAppear, AppObject)
+    AppObject:Create(NrAppear)
+    AppObject[NrAppear]:Set('Name', '' .. prefix .. '_Label')
+    AppObject[NrAppear]:Set('Appearance', StAppOn:gsub('"', ''))
+    AppObject[NrAppear]:Set('Color', '0, 0, 0, 1')
+
+    NrAppear = math.floor(NrAppear + 1)
+    for col in ipairs(TCol) do
+        StColCode = TCol[col].r .. "," .. TCol[col].g .. "," .. TCol[col].b .. ", 1"
+        StColName = TCol[col].name
+        StringColName = StColName:gsub(' ', '_')
+        StAppNameOn = prefix .. StringColName .. "_On"
+        StAppNameOff = prefix .. StringColName .. "_Off"
         Check_Size_Pool(NrAppear, AppObject)
         AppObject:Create(NrAppear)
-        AppObject[NrAppear]:Set('Name', '' .. prefix .. ' Label')
+        AppObject[NrAppear]:Set('Name', StAppNameOn:gsub('"', ''))
         AppObject[NrAppear]:Set('Appearance', StAppOn:gsub('"', ''))
-        AppObject[NrAppear]:Set('Color', '0, 0, 0, 1')
+        AppObject[NrAppear]:Set('Color', StColCode:gsub('"', ''))
 
         NrAppear = math.floor(NrAppear + 1)
-        for col in ipairs(TCol) do
-            StColCode = TCol[col].r .. "," .. TCol[col].g .. "," .. TCol[col].b .. ", 1"
-            StColName = TCol[col].name
-            StringColName = StColName:gsub(' ', '_')
-            StAppNameOn = prefix .. StringColName .. "_On"
-            StAppNameOff = prefix .. StringColName .. "_Off"
-            Check_Size_Pool(NrAppear, AppObject)
-            AppObject:Create(NrAppear)
-            AppObject[NrAppear]:Set('Name', StAppNameOn:gsub('"', ''))
-            AppObject[NrAppear]:Set('Appearance', StAppOn:gsub('"', ''))
-            AppObject[NrAppear]:Set('Color', StColCode:gsub('"', ''))
+        Check_Size_Pool(NrAppear, AppObject)
+        AppObject:Create(NrAppear)
+        AppObject[NrAppear]:Set('Name', StAppNameOff:gsub('"', ''))
+        AppObject[NrAppear]:Set('Appearance', StAppOff:gsub('"', ''))
+        AppObject[NrAppear]:Set('Color', StColCode:gsub('"', ''))
 
-            NrAppear = math.floor(NrAppear + 1)
-            Check_Size_Pool(NrAppear, AppObject)
-            AppObject:Create(NrAppear)
-            AppObject[NrAppear]:Set('Name', StAppNameOff:gsub('"', ''))
-            AppObject[NrAppear]:Set('Appearance', StAppOff:gsub('"', ''))
-            AppObject[NrAppear]:Set('Color', StColCode:gsub('"', ''))
-
-            NrAppear = math.floor(NrAppear + 1)
-        end
+        NrAppear = math.floor(NrAppear + 1)
     end
+    -- end
     return NrAppear
 end -- end Create_Appearances
 
@@ -159,7 +157,6 @@ function Create_Preset_25(TCol, StColName, StringColName, SelectedGelNr, prefix,
                           pool_construct)
     local Preset25Object = Root().ShowData.DataPools[pool_construct].PresetPools[25]
     Preset25Object:Set('PresetMode', 'Universal')
-    -- CmdIndirectWait('Set Preset 25 Property PresetMode "Universal"')
 
     CmdIndirectWait("ClearAll /nu")
     CmdIndirectWait('Fixture Thru')
@@ -174,12 +171,14 @@ function Create_Preset_25(TCol, StColName, StringColName, SelectedGelNr, prefix,
         All_5_NrEnd = All_5_Current
         All_5_Current = math.floor(All_5_Current + 1)
     end
+    CmdIndirectWait("ClearAll /nu")
     return All_5_NrEnd, All_5_Current
 end -- end Create_Preset_25
 
 function Create_Appearances_Sequences(CurrentMacroNr, SelectedGelNr, SelectedGrp, RefX, LayY, LayH, NrAppear, AppNr,
                                       NrNeed, TLayNr, LayW, LayNr, CurrentSeqNr, MaxColLgn, TCol, SelectedGrpNo, prefix,
-                                      All_5_NrStart, MatrickNrStart, SelectedGrpName, AppTricks, Data_Pool_Nr)
+                                      All_5_NrStart, MatrickNrStart, SelectedGrpName, AppTricks, Data_Pool_Nr,
+                                      Groups_Pool)
     local LastSeqColor
     local ColLgnCount = 0
     local Ligne_Inc = false
@@ -190,11 +189,10 @@ function Create_Appearances_Sequences(CurrentMacroNr, SelectedGelNr, SelectedGrp
         LayY = math.floor(LayY - LayH) -- Max Y Position minus hight from element. 0 are at the Bottom!
         NrAppear = math.floor(AppNr + 1)
         NrNeed = math.floor(AppNr + 1)
-        CmdIndirectWait("Assign Group " .. SelectedGrp[g] .. " at Layout " .. TLayNr)
-        CmdIndirectWait("Set Layout " .. TLayNr .. "." .. LayNr ..
-            " Appearance=" .. AppNr ..
-            " PosX " .. LayX .. " PosY " .. LayY ..
-            " PositionW " .. LayW .. " PositionH " .. LayH ..
+        CmdIndirectWait("Assign DataPool " .. Groups_Pool .. " Group " .. SelectedGrp[g] ..
+            " at DataPool " .. Groups_Pool .. " Layout " .. TLayNr)
+        CmdIndirectWait("Set Layout " .. TLayNr .. "." .. LayNr .. " Appearance=" .. AppNr ..
+            " PosX " .. LayX .. " PosY " .. LayY .. " PositionW " .. LayW .. " PositionH " .. LayH ..
             " Action='Layout Default' VisibilityObjectname=1 VisibilityBar=0 VisibilityIndicatorBar=0 VisibilitySelectionRelevance=1 VisibilityBorder=0 VisibilityIcon=0")
         -- " VisibilityObjectname=1 VisibilityBar=0 VisibilityIndicatorBar=0 VisibilitySelectionRelevance=1 VisibilityBorder=0 VisibilityIcon=0")
         LayNr = math.floor(LayNr + 1)
