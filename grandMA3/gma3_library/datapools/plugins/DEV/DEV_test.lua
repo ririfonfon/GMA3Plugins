@@ -278,21 +278,21 @@ local function main()
 
     -- fix prefix
     local prefix_index = 1
-    local old_prefix_index
     local prefix = 'LC' .. tostring(prefix_index) .. '_'
-    local exit = false
-    repeat
-        old_prefix_index = prefix_index
-        for k in pairs(TLay) do
-            if string.match(TLay[k].name, prefix) then
-                prefix_index = math.floor(prefix_index + 1)
-            end
-        end
-        prefix = 'LC' .. tostring(prefix_index) .. '_'
-        if old_prefix_index == prefix_index then
-            exit = true
-        end
-    until exit == true
+    -- local old_prefix_index
+    -- local exit = false
+    -- repeat
+    --     old_prefix_index = prefix_index
+    --     for k in pairs(TLay) do
+    --         if string.match(TLay[k].name, prefix) then
+    --             prefix_index = math.floor(prefix_index + 1)
+    --         end
+    --     end
+    --     prefix = 'LC' .. tostring(prefix_index) .. '_'
+    --     if old_prefix_index == prefix_index then
+    --         exit = true
+    --     end
+    -- until exit == true
     -- fix name SelectedGrp
     for g in pairs(SelectedGrp) do
         SelectedGrpName[g] = SelectedGrp[g]:gsub(' ', '_')
@@ -302,18 +302,18 @@ local function main()
     CurrentSeqNr = SeqNrStart
     CurrentMacroNr = MacroNrStart
 
-    -- check Symbols
-    CheckSymbols(Img, ImgImp, check, add_check, long_imgimp, ImgNr)
+    -- -- check Symbols
+    -- CheckSymbols(Img, ImgImp, check, add_check, long_imgimp, ImgNr)
 
-    -- Create MAtricks
-    MatrickNr = Create_Matricks(MatrickNrStart, prefix, NaLay, SelectedGrp, SelectedGrpName, MatrickNr, pool_construct)
+    -- -- Create MAtricks
+    -- MatrickNr = Create_Matricks(MatrickNrStart, prefix, NaLay, SelectedGrp, SelectedGrpName, MatrickNr, pool_construct)
 
-    -- Create new Layout View
-    local LayoutObject = Root().ShowData.DataPools[pool_construct].Layouts
-    LayoutObject:Create(TLayNr)
-    LayoutObject[TLayNr]:Set('Name', '' .. prefix .. NaLay)
-    -- CmdIndirectWait("Store Layout " .. TLayNr .. " \"" .. prefix .. NaLay .. "")
-    CmdIndirectWait('Select Layout ' .. TLayNr)
+    -- -- Create new Layout View
+    -- local LayoutObject = Root().ShowData.DataPools[pool_construct].Layouts
+    -- LayoutObject:Create(TLayNr)
+    -- LayoutObject[TLayNr]:Set('Name', '' .. prefix .. NaLay)
+    -- -- CmdIndirectWait("Store Layout " .. TLayNr .. " \"" .. prefix .. NaLay .. "")
+    -- CmdIndirectWait('Select Layout ' .. TLayNr)
 
     SelectedGelNr = tonumber(SelectedGelNr)
     TCol = ColPath:Children()[SelectedGelNr]
@@ -322,5 +322,10 @@ local function main()
     -- Create Appearances Tricks Ref
     AppNr, AppTricks = Create_Appear_Tricks(AppTricks, AppNr, prefix)
     -- end Appearances Tricks Ref
+
+     -- Create Appearances
+    NrAppear = Create_Appearances(SelectedGrp, AppNr, prefix, TCol, NrAppear, StColCode, StColName, StringColName)
+    -- end Appearances
+
 end
 return main
