@@ -30,20 +30,43 @@ local function main()
     -- AppObject[1003]:Set('Appearance','Showdata.MediaPools.Symbols.[arrow_right_black_png]')
 
     local SelectedGrp = { 'PIXEL RGB', 'SPOT CONTRE', 'MEGA POINTE SOL', 'RIVALE UP', 'BMFL', 'FLOOR PLATE STRIKE' }
-    local LayoutObject = Root().ShowData.DataPools[pool_construct].Layouts[2]
+    local LayoutObject = Root().ShowData.DataPools[pool_construct].Layouts
     local GroupObject = Root().ShowData.DataPools[2].Groups
     -- Check_Size_Pool(2, LayoutObject)
-    if LayoutObject:Count() < 2 then
-    LayoutObject:Acquire()
-    LayoutObject:Create(2)
+    if LayoutObject[2]:Count() < 2 then
+        LayoutObject[2]:Acquire()
     end
-    LayoutObject[2]:Set('Object', GroupObject[2])
-    LayoutObject[2]:Set('PosX', 120 )
-    LayoutObject[2]:Set('Width', 100 )
-    LayoutObject[2]:Set('Height', 100 )
-    LayoutObject[2]:Set('VISIBILITYSELECTIONRELEVANCE', 'Yes' )
-    LayoutObject[2]:Set('Appearance', AppObject[988] )
-    -- LayoutObject[2].Appearance='Appearance 988'
+    -- work
+    LayoutObject[2][2]:Set('Note', 'GroupObject[2]')
+    LayoutObject[2][2]:Set('AppearanceRotation', '90°')
+    LayoutObject[2][2]:Set('Mirror', 'Vertical')
+    LayoutObject[2][2]:Set('Object', GroupObject[2])
+    LayoutObject[2][2]:Set('Action', 'Layout') -- 0=None ,'<Layout>','Black' or 2,'Flash' or 1, 3 Object default
+    LayoutObject[2][2]:Set('Selected', 'No')
+    LayoutObject[2][2]:Set('PosX', 120)
+    LayoutObject[2][2]:Set('PosY', 120)
+    LayoutObject[2][2]:Set('Width', 100)
+    LayoutObject[2][2]:Set('Height', 100)
+    LayoutObject[2][2]:Set('VisibilityElement', 'Visible')
+    LayoutObject[2][2]:Set('VisibilityBar', 'Visible')
+    LayoutObject[2][2]:Set('VisibilityObjectName', 'Visible')
+    LayoutObject[2][2]:Set('VisibilityID', 'Hidden')
+    LayoutObject[2][2]:Set('VisibilityCID', 'Hidden')
+    LayoutObject[2][2]:Set('VisibilityValue', 'Hidden')
+    LayoutObject[2][2]:Set('VisibilityIcon', 'Hidden')
+    LayoutObject[2][2]:Set('VisibilityIndicatorBar', 'Hidden')
+    LayoutObject[2][2]:Set('VisibilitySelectionRelevance', 'Yes')
+    LayoutObject[2][2]:Set('VisibilityBorder', 'Visible')
+    LayoutObject[2][2]:Set('BorderSize', 2)
+    LayoutObject[2][2]:Set('BorderColor', '808080FF')
+    LayoutObject[2][2]:Set('Appearance', 'None')
+    LayoutObject[2][2]:Set('Appearance', 'Default')
+    -- not work
+    LayoutObject[2][2]:Set('Tags', 'Solo')
+    LayoutObject[2][2]:Set('Name', 'GroupObject[2]')
+    -- LayoutObject[2][2]:Set('Appearance', AppObject[986])
+    -- LayoutObject[2][2]:Set('Appearance', 23)
+
 
 end
 return main
