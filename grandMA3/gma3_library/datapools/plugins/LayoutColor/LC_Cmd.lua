@@ -123,7 +123,7 @@ function Create_Appearances(AppNr, prefix, TCol, NrAppear, StColCode, StColName,
     -- for g in ipairs(SelectedGrp) do
     Check_Size_Pool(NrAppear, AppObject)
     AppObject:Create(NrAppear)
-    AppObject[NrAppear]:Set('Name', '' .. prefix .. '_Label')
+    AppObject[NrAppear]:Set('Name', '' .. prefix .. 'Label')
     AppObject[NrAppear]:Set('Appearance', StAppOn:gsub('"', ''))
     AppObject[NrAppear]:Set('Color', '0, 0, 0, 1')
 
