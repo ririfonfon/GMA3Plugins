@@ -25,6 +25,10 @@ local function main()
     if AppNr == nil then
         AppNr = 1
     end
+    local MaxColLgn = 50
+    local All_5_NrStart = 1
+    local Groups_Pool = 2
+
 
 
 
@@ -319,13 +323,25 @@ local function main()
     TCol = ColPath:Children()[SelectedGelNr]
     MaxColLgn = tonumber(MaxColLgn)
 
-    -- Create Appearances Tricks Ref
-    AppNr, AppTricks = Create_Appear_Tricks(AppTricks, AppNr, prefix)
-    -- end Appearances Tricks Ref
+    -- -- Create Appearances Tricks Ref
+    -- AppNr, AppTricks = Create_Appear_Tricks(AppTricks, AppNr, prefix)
+    -- -- end Appearances Tricks Ref
 
-     -- Create Appearances
-    NrAppear = Create_Appearances(SelectedGrp, AppNr, prefix, TCol, NrAppear, StColCode, StColName, StringColName)
-    -- end Appearances
+    --  -- Create Appearances
+    -- NrAppear = Create_Appearances(SelectedGrp, AppNr, prefix, TCol, NrAppear, StColCode, StColName, StringColName)
+    -- -- end Appearances
+
+    --  -- Create Preset 25
+    -- All_5_NrEnd, All_5_Current = Create_Preset_25(TCol, StColName, StringColName, SelectedGelNr, prefix, All_5_NrEnd,
+    --     All_5_Current, pool_construct)
+    -- -- endCreate Preset 25
+
+    -- Appearances/Sequences
+    LayY, NrNeed, LayNr, CurrentSeqNr, CurrentMacroNr, ColLgnCount, Ligne_Inc = Create_Appearances_Sequences(
+        CurrentMacroNr, SelectedGelNr, SelectedGrp, RefX, LayY, LayH, NrAppear, AppNr, NrNeed, TLayNr, LayW, LayNr,
+        CurrentSeqNr, MaxColLgn, TCol, SelectedGrpNo, prefix, All_5_NrStart, MatrickNrStart, SelectedGrpName, AppTricks,
+        Data_Pool_Nr)
+    -- end Appearances/Sequences
 
 end
 return main
