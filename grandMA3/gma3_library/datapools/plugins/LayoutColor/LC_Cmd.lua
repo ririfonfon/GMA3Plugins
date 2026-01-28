@@ -5,6 +5,21 @@
     Created by Richard Fontaine "RIRI", September 2025.
     --]]
 
+local function Check_Size_Pool(id, PoolObject)
+    if not id then return PoolObject:Acquire() end
+    local idtype = math.type(id) or type(id)
+    if idtype ~= 'integer' then error('wrong argument expected integer got ' .. idtype) end
+    if IsObjectValid(PoolObject[id]) then error('id is already used : ' .. id) end
+    local maxsize = PoolObject:MaxCount()
+    if id < 1 or id > maxsize then error('id out of range') end
+    local poolsize = PoolObject:Count()
+    if id > poolsize then
+        local newsize = math.min(maxsize, math.ceil(id / 1000) * 1000)
+        PoolObject:Resize(newsize)
+    end
+    -- return PoolObject:Create(id)
+end
+
 -- function CheckSymbols(displayHandle, Img, ImgImp, check, add_check, long_imgimp, ImgNr)
 function CheckSymbols(Img, ImgImp, check, add_check, long_imgimp, ImgNr)
     for k in pairs(Img) do
@@ -65,11 +80,13 @@ end -- end CheckSymbols
 
 function Create_Matricks(MatrickNrStart, prefix, NaLay, SelectedGrp, SelectedGrpName, MatrickNr, pool_construct)
     local MatrickObject = Root().ShowData.DataPools[pool_construct].Matricks
+    Check_Size_Pool(MatrickNrStart, MatrickObject)
     MatrickObject:Acquire()
     MatrickObject:Create(MatrickNrStart)
     MatrickObject[MatrickNrStart]:Set('Name', '' .. prefix .. NaLay)
     MatrickNr = math.floor(MatrickNrStart + 1)
     for g in pairs(SelectedGrp) do
+        Check_Size_Pool(MatrickNr, MatrickObject)
         MatrickObject:Create(MatrickNr)
         MatrickObject[MatrickNr]:Set('Name', '' .. prefix .. SelectedGrpName[g]:gsub('\'', ''))
         MatrickObject[MatrickNr]:Set('FadeFromx', 0)
@@ -87,52 +104,51 @@ function Create_Appear_Tricks(AppTricks, AppNr, prefix)
     local AppObject = Root().ShowData.Appearances
     for q in pairs(AppTricks) do
         AppTricks[q].Nr = math.floor(AppNr)
+        Check_Size_Pool(AppTricks[q].Nr, AppObject)
         AppObject:Create(AppTricks[q].Nr)
         AppObject[AppTricks[q].Nr]:Set('Name', prefix .. AppTricks[q].Name)
-        AppObject[AppTricks[q].Nr]:Set('Appearance',AppTricks[q].StApp:gsub('"', ''))
-        AppObject[AppTricks[q].Nr]:Set('Color',AppTricks[q].RGBref:gsub('"', ''))
+        AppObject[AppTricks[q].Nr]:Set('Appearance', AppTricks[q].StApp:gsub('"', ''))
+        AppObject[AppTricks[q].Nr]:Set('Color', AppTricks[q].RGBref:gsub('"', ''))
         AppNr = math.floor(AppNr + 1)
     end
     return AppNr, AppTricks
 end -- end Create_Appear_Tricks
 
 function Create_Appearances(SelectedGrp, AppNr, prefix, TCol, NrAppear, StColCode, StColName, StringColName)
-    local AppObject = Root().ShowData.Apperances:Children()
+    local AppObject = Root().ShowData.Appearances
+    AppObject:Acquire()
     local StAppNameOn
     local StAppNameOff
     local StAppOn = '\"Showdata.MediaPools.Symbols.on\"'
     local StAppOff = '\"Showdata.MediaPools.Symbols.off\"'
+    NrAppear = math.floor(AppNr)
     for g in ipairs(SelectedGrp) do
-        AppNr = math.floor(AppNr)
-        AppObject:Create(AppNr)
-        AppObject[AppNr]:Set('Name', '' .. prefix .. ' Label')
-        AppObject[AppNr]:Set('Apperances', StAppOn)
-        AppObject[AppNr]:Set('color', 0, 0, 0, 1)
+        Check_Size_Pool(NrAppear, AppObject)
+        AppObject:Create(NrAppear)
+        AppObject[NrAppear]:Set('Name', '' .. prefix .. ' Label')
+        AppObject[NrAppear]:Set('Appearance', StAppOn:gsub('"', ''))
+        AppObject[NrAppear]:Set('Color', '0, 0, 0, 1')
 
-        -- CmdIndirectWait('Store App ' ..
-        --     AppNr .. ' \'' .. prefix .. ' Label\' Appearance=' .. StAppOn .. ' color=\'0,0,0,1\'')
-        NrAppear = math.floor(AppNr + 1)
+        NrAppear = math.floor(NrAppear + 1)
         for col in ipairs(TCol) do
-            StColCode = "\"" .. TCol[col].r .. "," .. TCol[col].g .. "," .. TCol[col].b .. ",1\""
+            StColCode = TCol[col].r .. "," .. TCol[col].g .. "," .. TCol[col].b .. ", 1"
             StColName = TCol[col].name
-            StringColName = string.gsub(StColName, " ", "_")
-            StAppNameOn = "\"" .. prefix .. StringColName .. " On\""
-            StAppNameOff = "\"" .. prefix .. StringColName .. " Off\""
+            StringColName = StColName:gsub(' ', '_')
+            StAppNameOn = prefix .. StringColName .. "_On"
+            StAppNameOff = prefix .. StringColName .. "_Off"
+            Check_Size_Pool(NrAppear, AppObject)
             AppObject:Create(NrAppear)
-            AppObject[NrAppear]:Set('Name', StAppNameOn)
-            AppObject[NrAppear]:Set('Apperances', StAppOn)
-            AppObject[NrAppear]:Set('color', StColCode)
+            AppObject[NrAppear]:Set('Name', StAppNameOn:gsub('"', ''))
+            AppObject[NrAppear]:Set('Appearance', StAppOn:gsub('"', ''))
+            AppObject[NrAppear]:Set('Color', StColCode:gsub('"', ''))
 
-            -- CmdIndirectWait("Store App " ..
-            --     NrAppear .. " " .. StAppNameOn .. " Appearance=" .. StAppOn .. " color=" .. StColCode .. "")
             NrAppear = math.floor(NrAppear + 1)
+            Check_Size_Pool(NrAppear, AppObject)
             AppObject:Create(NrAppear)
-            AppObject[NrAppear]:Set('Name', StAppNameOff)
-            AppObject[NrAppear]:Set('Apperances', StAppOff)
-            AppObject[NrAppear]:Set('color', StColCode)
+            AppObject[NrAppear]:Set('Name', StAppNameOff:gsub('"', ''))
+            AppObject[NrAppear]:Set('Appearance', StAppOff:gsub('"', ''))
+            AppObject[NrAppear]:Set('Color', StColCode:gsub('"', ''))
 
-            -- CmdIndirectWait("Store App " ..
-            --     NrAppear .. " " .. StAppNameOff .. " Appearance=" .. StAppOff .. " color=" .. StColCode .. "")
             NrAppear = math.floor(NrAppear + 1)
         end
     end
