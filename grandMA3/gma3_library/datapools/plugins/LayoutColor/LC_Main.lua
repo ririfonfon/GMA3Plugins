@@ -157,7 +157,7 @@ local function Main(displayHandle)
         table.insert(popuplists.list_pool, "'" .. Pool_check[k].name .. "'")
         table.insert(popuplists.DataPool_Select, "'" .. Pool_check[k].name .. "'")
     end
-    local pool_selected = 1
+    local Groups_Pool = 1
     local pool_construct = 1
 
     if list == false then
@@ -889,7 +889,7 @@ local function Main(displayHandle)
         Obj.Delete(screenOverlay, Obj.Index(baseInput))
         Construct_Layout(TLay, SeqNrStart, MacroNrStart, MatrickNrStart, MatrickNr, TLayNr, AppNr,
             All_5_Current, All_5_NrStart, ColPath, SelectedGelNr, SelectedGrp, SelectedGrpNo, TLayNrRef, NaLay, MaxColLgn,
-            Favourite_Nr, pool_construct)
+            Favourite_Nr, pool_construct, Groups_Pool)
     end
 
     signalTable.OnInput1TextChanged = function(caller)
@@ -1163,11 +1163,11 @@ local function Main(displayHandle)
             caller.Text = choice or caller.Text
             for k in ipairs(Pool_check) do
                 if Pool_check[k].name == caller.Text:gsub("'", "") then
-                    pool_selected = tonumber(k)
-                    Printf("Pool selected: " .. pool_selected)
+                    Groups_Pool = tonumber(k)
+                    Printf("Pool selected: " .. Groups_Pool)
                 end
             end
-            FixtureGroups = Root().ShowData.DataPools[pool_selected].Groups:Children()
+            FixtureGroups = Root().ShowData.DataPools[Groups_Pool].Groups:Children()
             local lo
             for k in ipairs(popuplists.Grp_Select) do
                 lo = tonumber(k)
