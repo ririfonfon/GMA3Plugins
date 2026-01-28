@@ -7,7 +7,7 @@ Created by Richard Fontaine "RIRI", June 2024.
 
 function Construct_Layout(TLay, SeqNrStart, MacroNrStart, MatrickNrStart, MatrickNr, TLayNr, AppNr,
                           All_5_Current, All_5_NrStart, ColPath, SelectedGelNr, SelectedGrp, SelectedGrpNo, TLayNrRef,
-                          NaLay, MaxColLgn, Favourite_Nr, pool_construct)
+                          NaLay, MaxColLgn, Favourite_Nr, pool_construct, Groups_Pool)
 
     local Macro_Pool = Root().ShowData.DataPools[pool_construct].Macros
     local Data_Pool_Nr = Root().ShowData.DataPools[pool_construct].No
@@ -306,7 +306,7 @@ function Construct_Layout(TLay, SeqNrStart, MacroNrStart, MatrickNrStart, Matric
     -- end Appearances Tricks Ref
 
     -- Create Appearances
-    NrAppear = Create_Appearances(SelectedGrp, AppNr, prefix, TCol, NrAppear, StColCode, StColName, StringColName)
+    NrAppear = Create_Appearances(AppNr, prefix, TCol, NrAppear, StColCode, StColName, StringColName)
     -- end Appearances
 
     -- Create Preset 25
@@ -318,7 +318,7 @@ function Construct_Layout(TLay, SeqNrStart, MacroNrStart, MatrickNrStart, Matric
     LayY, NrNeed, LayNr, CurrentSeqNr, CurrentMacroNr, ColLgnCount, Ligne_Inc = Create_Appearances_Sequences(
         CurrentMacroNr, SelectedGelNr, SelectedGrp, RefX, LayY, LayH, NrAppear, AppNr, NrNeed, TLayNr, LayW, LayNr,
         CurrentSeqNr, MaxColLgn, TCol, SelectedGrpNo, prefix, All_5_NrStart, MatrickNrStart, SelectedGrpName, AppTricks,
-        Data_Pool_Nr)
+        Data_Pool_Nr, Groups_Pool)
     -- end Appearances/Sequences
 
     -- Create Appearances/Function
