@@ -1,3 +1,16 @@
+local function Check_Size_Pool(id, PoolObject)
+    if not id then return PoolObject:Acquire() end
+    local idtype = math.type(id) or type(id)
+    if idtype ~= 'integer' then error('wrong argument expected integer got ' .. idtype) end
+    if IsObjectValid(PoolObject[id]) then error('id is already used : ' .. id) end
+    local maxsize = PoolObject:MaxCount()
+    if id < 1 or id > maxsize then error('id out of range') end
+    local poolsize = PoolObject:Count()
+    if id > poolsize then
+        local newsize = math.min(maxsize, math.ceil(id / 1000) * 1000)
+        PoolObject:Resize(newsize)
+    end
+end
 local function main()
     local inputs = {
         { name = "macro Number", value = "", whiteFilter = "0123456789" },
@@ -43,33 +56,50 @@ local function main()
             VariaSel = v
         end
     end
+    local MacroObject = Root().ShowData.DataPools[41].Macros
+
+
     MacroEnd = MacroNum + (8 - VariaSel)
 
 
     for i = MacroNum, MacroEnd, 1 do
-        CmdIndirect('Store DataPool 41 Macro ' .. i .. ' \'all_sub_varia_' .. varia_min[VariaSel])
-        CmdIndirectWait('ChangeDestination DataPool 41 Macro ' .. i .. '')
-        CmdIndirectWait('Insert')
-        CmdIndirectWait("set 1 Command=\"Go+ #[DataPool 'TR_808_GMA3'.'Macros'.'Clear_sub']")
+        Check_Size_Pool(i, MacroObject)
+        MacroObject:Create(i)
+        MacroObject[i]:Set('Name', 'all_sub_varia_' .. varia_min[VariaSel])
+        MacroObject[i]:Acquire()
+        MacroObject[i][1]:Set('Command', "Go+ #[DataPool 'TR_808_GMA3'.'Macros'.'Clear_sub']")
+
+        -- CmdIndirect('Store DataPool 41 Macro ' .. i .. ' \'all_sub_varia_' .. varia_min[VariaSel])
+        -- CmdIndirectWait('ChangeDestination DataPool 41 Macro ' .. i .. '')
+        -- CmdIndirectWait('Insert')
+        -- CmdIndirectWait("set 1 Command=\"Go+ #[DataPool 'TR_808_GMA3'.'Macros'.'Clear_sub']")
         for a = 2, 13 do
-            CmdIndirectWait('Insert')
-            CmdIndirectWait("set " ..
-                a .. " Command=\"Set #[DataPool 'TR_808_GMA3'.'Macros'.'all_sub_#" .. count .. "']." ..
+            MacroObject[i]:Acquire()
+            MacroObject[i][a]:Set('Command', "Set #[DataPool 'TR_808_GMA3'.'Macros'.'all_sub_#" .. count .. "']." ..
                 VariaSel .. " 'Enabled' 1")
+
+            -- CmdIndirectWait('Insert')
+            -- CmdIndirectWait("set " ..
+            --     a .. " Command=\"Set #[DataPool 'TR_808_GMA3'.'Macros'.'all_sub_#" .. count .. "']." ..
+            --     VariaSel .. " 'Enabled' 1")
             count = count + 1
         end
         count = 1
         for a = 14, 25 do
-            CmdIndirectWait('Insert')
-            CmdIndirectWait("set " ..
-                a .. " Command=\"Set #[DataPool 'TR_808_GMA3'.'Macros'.'none_sub_#" .. count .. "']." ..
+            MacroObject[i]:Acquire()
+            MacroObject[i][a]:Set('Command', "Set #[DataPool 'TR_808_GMA3'.'Macros'.'none_sub_#" .. count .. "']." ..
                 VariaSel .. " 'Enabled' 1")
+
+            -- CmdIndirectWait('Insert')
+            -- CmdIndirectWait("set " ..
+            --     a .. " Command=\"Set #[DataPool 'TR_808_GMA3'.'Macros'.'none_sub_#" .. count .. "']." ..
+            --     VariaSel .. " 'Enabled' 1")
             count = count + 1
         end
         count = 1
         VariaSel = VariaSel + 1
     end
-    CmdIndirectWait('ChangeDestination Root')
+    -- CmdIndirectWait('ChangeDestination Root')
 end
 
 return main
