@@ -13,6 +13,11 @@ local function Check_Size_Pool(id, PoolObject)
 end
 local function main()
     local pool_construct = 42
+    local AppObject = Root().ShowData.Appearances
+    local SelectedGrp = { 'PIXEL RGB', 'SPOT CONTRE', 'MEGA POINTE SOL', 'RIVALE UP', 'BMFL', 'FLOOR PLATE STRIKE' }
+    local LayoutObject = Root().ShowData.DataPools[pool_construct].Layouts
+    local GroupObject = Root().ShowData.DataPools[2].Groups
+    local TagsObject = Root().ShowData.Tags
 
     -- local MatrickNrStart = 1001
     -- local MatrickObject = Root().ShowData.DataPools[pool_construct].Matricks
@@ -24,14 +29,10 @@ local function main()
     -- MatrickObject[MatrickNrStart]:Set('Name', 'test')
 
 
-    local AppObject = Root().ShowData.Appearances
     -- AppObject:Create(1002)
     -- AppObject[1002]:Set('Name','LC2_tricks_on')
     -- AppObject[1003]:Set('Appearance','Showdata.MediaPools.Symbols.[arrow_right_black_png]')
 
-    local SelectedGrp = { 'PIXEL RGB', 'SPOT CONTRE', 'MEGA POINTE SOL', 'RIVALE UP', 'BMFL', 'FLOOR PLATE STRIKE' }
-    local LayoutObject = Root().ShowData.DataPools[pool_construct].Layouts
-    local GroupObject = Root().ShowData.DataPools[2].Groups
     -- Check_Size_Pool(2, LayoutObject)
     if LayoutObject[2]:Count() < 2 then
         LayoutObject[2]:Acquire()
@@ -63,7 +64,7 @@ local function main()
     -- LayoutObject[2][2]:Set('Appearance', 'None')
     -- LayoutObject[2][2]:Set('Appearance', 'Default')
     -- not work
-    LayoutObject[2][2]:Set('Tags', 'Solo')
+    LayoutObject[2][2]:Set('Tags', TagsObject[22]:AddrNative())
     LayoutObject[2][2]:Set('NAME', 'GroupObject[2]')
     -- local AppearanceHandle = GetObject ('Appearance 1.986')
     -- LayoutObject[2][2]:Set('Appearance', AppObject[1].No .. "'" .. AppObject[1].Name .. "'")
