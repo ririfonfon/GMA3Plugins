@@ -5,30 +5,44 @@
     Created by Richard Fontaine "RIRI", june 2025.
 
 --]]
-local Printf, Echo, GetExecutor, CmdIndirectWait, ipairs, mfloor = Printf, Echo, GetExecutor, CmdIndirectWait, ipairs, math.floor
+local Printf, Echo, GetExecutor, CmdIndirectWait, ipairs, mfloor = Printf, Echo, GetExecutor, CmdIndirectWait, ipairs,
+    math.floor
 
 
 local function main()
     local Select = UserVars()
-    local TR_Sub, TR_Layout, TR_Pool, TR_Fonction, Target, TR_Lay
+    local TR_Sub, TR_Layout, TR_Pool, TR_Fonction, Target, TR_Lay, TR_N_Layout, TR_N_Object
     if GetVar(Select, "TR_Fonction") then
         TR_Fonction = tonumber((GetVar(Select, "TR_Fonction")))
-        Printf("TR_Fonction: %i", TR_Fonction)
+        -- Printf("TR_Fonction: %i", TR_Fonction)
     end
     if GetVar(Select, "TR_Sub") then
         TR_Sub = GetVar(Select, "TR_Sub")
-        Printf("TR_Sub: %s", TR_Sub)
+        -- Printf("TR_Sub: %s", TR_Sub)
     end
     if GetVar(Select, "TR_Layout") then
         TR_Lay = GetVar(Select, "TR_Layout")
         TR_Layout = string.gsub(TR_Lay, "_", ".")
-        Printf("TR_Layout: %s", TR_Layout)
+        -- Printf("TR_Layout: %s", TR_Layout)
+        -- Printf('******************')
+        local a = 1
+        for number in string.gmatch(TR_Layout, "%d+") do
+            if a == 1 then
+                TR_N_Layout = tonumber(number)
+            elseif a == 2 then
+                TR_N_Object = tonumber(number)
+            end
+            a = a + 1
+        end
+        -- Printf('N_Lay : ' .. TR_N_Layout)
+        -- Printf('N_Obj : ' .. TR_N_Object)
     end
     if GetVar(Select, "TR_Pool") then
         TR_Pool = GetVar(Select, "TR_Pool")
-        Printf("TR_Pool: %i", TR_Pool)
+        -- Printf("TR_Pool: %i", TR_Pool)
     end
     local SeqNr = ShowData().DataPools[TR_Pool].Sequences:Children()
+    local LayoutObject = Root().ShowData.DataPools[TR_Pool].Layouts
     -- local Macro_Pool = ShowData().DataPool[TR_Pool].Macros
     if (TR_Fonction == 1) then
         for k in ipairs(SeqNr) do
@@ -38,12 +52,13 @@ local function main()
                 else
                     Target = SeqNr[k][3][1][1].Selection.Name
                 end
-                Printf("Group Name: %s", Target)
-                CmdIndirectWait('Set DataPool ' ..
-                    TR_Pool .. ' Layout ' .. TR_Layout .. ' Property CustomTextText=\' ' .. Target .. ' \'')
+                -- Printf("Group Name: %s", Target)
+                LayoutObject[TR_N_Layout][TR_N_Object]:Set('CustomTextText', Target)
+                -- CmdIndirectWait('Set DataPool ' ..
+                --     TR_Pool .. ' Layout ' .. TR_Layout .. ' Property CustomTextText=\' ' .. Target .. ' \'')
             end
         end
-        Printf("no_group")
+        -- Printf("no_group")
     elseif (TR_Fonction == 2) then
         for k in ipairs(SeqNr) do
             if TR_Sub == SeqNr[k].name then
@@ -52,9 +67,10 @@ local function main()
                 else
                     Target = SeqNr[k][3][1][1].Values.Name
                 end
-                Printf("Value Name: %s", Target)
-                CmdIndirectWait('Set DataPool ' ..
-                    TR_Pool .. ' Layout ' .. TR_Layout .. ' Property CustomTextText=\' ' .. Target .. ' \'')
+                -- Printf("Value Name: %s", Target)
+                LayoutObject[TR_N_Layout][TR_N_Object]:Set('CustomTextText', Target)
+                -- CmdIndirectWait('Set DataPool ' ..
+                --     TR_Pool .. ' Layout ' .. TR_Layout .. ' Property CustomTextText=\' ' .. Target .. ' \'')
             end
         end
     elseif (TR_Fonction == 3) then
@@ -65,9 +81,10 @@ local function main()
                 else
                     Target = SeqNr[k][3][1][1].MATricks.Name
                 end
-                Printf("MATricks Name: %s", Target)
-                CmdIndirectWait('Set DataPool ' ..
-                    TR_Pool .. ' Layout ' .. TR_Layout .. ' Property CustomTextText=\' ' .. Target .. ' \'')
+                -- Printf("MATricks Name: %s", Target)
+                LayoutObject[TR_N_Layout][TR_N_Object]:Set('CustomTextText', Target)
+                -- CmdIndirectWait('Set DataPool ' ..
+                --     TR_Pool .. ' Layout ' .. TR_Layout .. ' Property CustomTextText=\' ' .. Target .. ' \'')
             end
         end
     elseif (TR_Fonction == 4) then
@@ -109,9 +126,10 @@ local function main()
                 else
                     Target = Target .. tostring(SeqNr[k][3][1][1].FadeToX)
                 end
-                Printf("Value FadefromX/FadeToX: %s", Target)
-                CmdIndirectWait('Set DataPool ' ..
-                    TR_Pool .. ' Layout ' .. TR_Layout .. ' Property CustomTextText=\' ' .. Target .. ' \'')
+                -- Printf("Value FadefromX/FadeToX: %s", Target)
+                LayoutObject[TR_N_Layout][TR_N_Object]:Set('CustomTextText', Target)
+                -- CmdIndirectWait('Set DataPool ' ..
+                --     TR_Pool .. ' Layout ' .. TR_Layout .. ' Property CustomTextText=\' ' .. Target .. ' \'')
             end
         end
     elseif (TR_Fonction == 6) then
@@ -127,11 +145,12 @@ local function main()
                 else
                     Target = Target .. tostring(SeqNr[k][3][1][1].DelayToX)
                 end
-                Printf("Value FadefromX/FadeToX: %s", Target)
-                CmdIndirectWait('Set DataPool ' ..
-                    TR_Pool .. ' Layout ' .. TR_Layout .. ' Property CustomTextText=\' ' .. Target .. ' \'')
+                -- Printf("Value FadefromX/FadeToX: %s", Target)
+                LayoutObject[TR_N_Layout][TR_N_Object]:Set('CustomTextText', Target)
+                -- CmdIndirectWait('Set DataPool ' ..
+                --     TR_Pool .. ' Layout ' .. TR_Layout .. ' Property CustomTextText=\' ' .. Target .. ' \'')
             end
-        end    
+        end
     end
 
 
