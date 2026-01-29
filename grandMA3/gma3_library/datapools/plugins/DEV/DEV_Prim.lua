@@ -59,13 +59,15 @@ local function main()
     LayoutObject[2][2]:Set('VisibilityBorder', 'Visible')
     LayoutObject[2][2]:Set('BorderSize', 2)
     LayoutObject[2][2]:Set('BorderColor', '808080FF')
-    LayoutObject[2][2]:Set('Appearance', 'None')
-    LayoutObject[2][2]:Set('Appearance', 'Default')
+    -- LayoutObject[2][2]:Set('Appearance', 'None')
+    -- LayoutObject[2][2]:Set('Appearance', 'Default')
     -- not work
     LayoutObject[2][2]:Set('Tags', 'Solo')
-    LayoutObject[2][2]:Set('Name', 'GroupObject[2]')
+    LayoutObject[2][2]:Set('NAME', 'GroupObject[2]')
     -- LayoutObject[2][2]:Set('Appearance', AppObject[986])
-    -- LayoutObject[2][2]:Set('Appearance', 23)
+    -- LayoutObject[2][2]:Set('Appearance', AppObject[1].No .. "'" .. AppObject[1].Name .. "'")
+    -- LayoutObject[2][2]:Set('Appearance', "'" .. AppObject[1].Name .. "'")
+    -- LayoutObject[2][2]:Set('Appearance', 1)
 
 
 end
