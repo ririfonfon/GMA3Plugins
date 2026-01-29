@@ -1,6 +1,6 @@
 local function main()
     local inputs = {
-        { name = "Macro Number", value = "",   whiteFilter = "0123456789" },
+        { name = "Macro Number",    value = "",   whiteFilter = "0123456789" },
         { name = "DataPool Number", value = "41", whiteFilter = "0123456789" },
     }
     local selectors = {
@@ -58,17 +58,17 @@ local function main()
         MacroObject:Create(i)
         MacroObject[i]:Set('Name', '' .. varia_min[VariaSel] .. '_On_Solo_Sub_#' .. subSel)
         for a = 1, 6 do
-        MacroObject[i]:Insert (a)
+            MacroObject[i]:Insert(a)
         end
-        MacroObject[i][1]:Set('Command',"SetUserVariable 'Order' '" .. varia_mag[VariaSel] .. "'")
-        MacroObject[i][2]:Set('Command',"SetUserVariable 'math_" .. varia_min[VariaSel] .. "' 'plus'")
-        MacroObject[i][3]:Set('Command',"Set #[DataPool 'TR_808_GMA3'.'Macros'.'" ..
+        MacroObject[i][1]:Set('Command', "SetUserVariable 'Order' '" .. varia_mag[VariaSel] .. "'")
+        MacroObject[i][2]:Set('Command', "SetUserVariable 'math_" .. varia_min[VariaSel] .. "' 'plus'")
+        MacroObject[i][3]:Set('Command', "Set #[DataPool 'TR_808_GMA3'.'Macros'.'" ..
             varia_min[VariaSel] .. "_SOLO']." .. count .. " 'Enabled' 0")
-        MacroObject[i][4]:Set('Command',"Go+ #[DataPool 'TR_808_GMA3'.'Macros'.'" ..
+        MacroObject[i][4]:Set('Command', "Go+ #[DataPool 'TR_808_GMA3'.'Macros'.'" ..
             varia_min[VariaSel] .. "_SOLO']")
-        MacroObject[i][5]:Set('Command',"Go+ #[DataPool 'TR_808_GMA3'.'Macros'.'" ..
+        MacroObject[i][5]:Set('Command', "Go+ #[DataPool 'TR_808_GMA3'.'Macros'.'" ..
             varia_min[VariaSel] .. "_Rec_Sub_#" .. subSel .. "']")
-        MacroObject[i][6]:Set('Command',"Call #[DataPool 'TR_808_GMA3'.'Plugins'.'TR_808_CHECK_SOLO']")
+        MacroObject[i][6]:Set('Command', "Call #[DataPool 'TR_808_GMA3'.'Plugins'.'TR_808_CHECK_SOLO']")
         subSel = subSel + 1
         count = count + 1
     end
@@ -83,19 +83,18 @@ local function main()
         MacroObject:Create(i)
         MacroObject[i]:Set('Name', '' .. varia_min[VariaSel] .. '_Off_Solo_Sub_#' .. subSel)
         for a = 1, 5 do
-        MacroObject[i]:Insert (a)
+            MacroObject[i]:Insert(a)
         end
-        MacroObject[i][1]:Set('Command',"SetUserVariable 'Order' '" .. varia_mag[VariaSel] .. "'")
-        MacroObject[i][2]:Set('Command',"SetUserVariable 'math_" .. varia_min[VariaSel] .. "' 'minus'")
-        MacroObject[i][3]:Set('Command',"Set #[DataPool 'TR_808_GMA3'.'Macros'.'" ..
+        MacroObject[i][1]:Set('Command', "SetUserVariable 'Order' '" .. varia_mag[VariaSel] .. "'")
+        MacroObject[i][2]:Set('Command', "SetUserVariable 'math_" .. varia_min[VariaSel] .. "' 'minus'")
+        MacroObject[i][3]:Set('Command', "Set #[DataPool 'TR_808_GMA3'.'Macros'.'" ..
             varia_min[VariaSel] .. "_SOLO']." .. count .. " 'Enabled' 1")
-        MacroObject[i][4]:Set('Command',"Go+ #[DataPool 'TR_808_GMA3'.'Macros'.'" ..
+        MacroObject[i][4]:Set('Command', "Go+ #[DataPool 'TR_808_GMA3'.'Macros'.'" ..
             varia_min[VariaSel] .. "_SOLO']")
-       MacroObject[i][5]:Set('Command',"Call #[DataPool 'TR_808_GMA3'.'Plugins'.'TR_808_CHECK_SOLO']")
+        MacroObject[i][5]:Set('Command', "Call #[DataPool 'TR_808_GMA3'.'Plugins'.'TR_808_CHECK_SOLO']")
         subSel = subSel + 1
         count = count + 1
     end
-
 end
 
 return main
