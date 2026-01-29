@@ -57,12 +57,12 @@ local function main()
         CmdIndirectWait('ChangeDestination DataPool 41 Macro ' .. i .. '')
         CmdIndirectWait('Insert')
         CmdIndirectWait("set 1 Command=\"Edit #[DataPool 'TR_808_GMA3'.'Sequences'.'" ..
-            varia_mag[VariaSel] .. "_SUB_#" ..
+            varia_min[VariaSel] .. "_Sub_#" ..
             subSel .. "'] Cue 1 Thru 16 Part 0.1 Property 'Selection'")
         CmdIndirectWait('Insert')
         CmdIndirectWait("set 2 Command=\"SetUserVariable 'TR_Fonction' 1")
         CmdIndirectWait('Insert')
-        CmdIndirectWait("set 3 Command=\"SetUserVariable 'TR_Sub' '" .. varia_mag[VariaSel] .. "_SUB_#" .. subSel .. "'")
+        CmdIndirectWait("set 3 Command=\"SetUserVariable 'TR_Sub' '" .. varia_min[VariaSel] .. "_Sub_#" .. subSel .. "'")
         CmdIndirectWait('Insert')
         CmdIndirectWait("set 4 Command=\"SetUserVariable 'TR_Layout' '1_" .. lay_object .. "'")
         CmdIndirectWait('Insert')
@@ -82,12 +82,12 @@ local function main()
         CmdIndirectWait('ChangeDestination DataPool 41 Macro ' .. i .. '')
         CmdIndirectWait('Insert')
         CmdIndirectWait("set 1 Command=\"Edit #[DataPool 'TR_808_GMA3'.'Sequences'.'" ..
-            varia_mag[VariaSel] .. "_SUB_#" ..
+            varia_min[VariaSel] .. "_Sub_#" ..
             subSel .. "'] Cue 1 Thru 16 Part 0.1 Property 'Values'")
         CmdIndirectWait('Insert')
         CmdIndirectWait("set 2 Command=\"SetUserVariable 'TR_Fonction' 2")
         CmdIndirectWait('Insert')
-        CmdIndirectWait("set 3 Command=\"SetUserVariable 'TR_Sub' '" .. varia_mag[VariaSel] .. "_SUB_#" .. subSel .. "'")
+        CmdIndirectWait("set 3 Command=\"SetUserVariable 'TR_Sub' '" .. varia_min[VariaSel] .. "_Sub_#" .. subSel .. "'")
         CmdIndirectWait('Insert')
         CmdIndirectWait("set 4 Command=\"SetUserVariable 'TR_Layout' '1_" .. lay_object .. "'")
         CmdIndirectWait('Insert')
@@ -107,12 +107,12 @@ local function main()
         CmdIndirectWait('ChangeDestination DataPool 41 Macro ' .. i .. '')
         CmdIndirectWait('Insert')
         CmdIndirectWait("set 1 Command=\"Edit #[DataPool 'TR_808_GMA3'.'Sequences'.'" ..
-            varia_mag[VariaSel] .. "_SUB_#" ..
+            varia_min[VariaSel] .. "_Sub_#" ..
             subSel .. "'] Cue 1 Thru 16 Part 0.1 Property 'MAtricks'")
         CmdIndirectWait('Insert')
         CmdIndirectWait("set 2 Command=\"SetUserVariable 'TR_Fonction' 3")
         CmdIndirectWait('Insert')
-        CmdIndirectWait("set 3 Command=\"SetUserVariable 'TR_Sub' '" .. varia_mag[VariaSel] .. "_SUB_#" .. subSel .. "'")
+        CmdIndirectWait("set 3 Command=\"SetUserVariable 'TR_Sub' '" .. varia_min[VariaSel] .. "_Sub_#" .. subSel .. "'")
         CmdIndirectWait('Insert')
         CmdIndirectWait("set 4 Command=\"SetUserVariable 'TR_Layout' '1_" .. lay_object .. "'")
         CmdIndirectWait('Insert')
@@ -132,7 +132,7 @@ local function main()
         CmdIndirectWait('ChangeDestination DataPool 41 Macro ' .. i .. '')
         CmdIndirectWait('Insert')
         CmdIndirectWait("set 1 Command=\"Assign #[DataPool 'TR_808_GMA3'.'Sequences'.'" ..
-            varia_mag[VariaSel] .. "_SUB_#" ..
+            varia_min[VariaSel] .. "_Sub_#" ..
             subSel .. "'] at #[Tag 'Selected_" .. varia_mag[VariaSel] .. "']")
         CmdIndirectWait('Insert')
         CmdIndirectWait("set 2 Command=\"Assign #[DataPool 'TR_808_GMA3'.'Sequences'.'" ..
@@ -154,7 +154,7 @@ local function main()
         CmdIndirectWait('ChangeDestination DataPool 41 Macro ' .. i .. '')
         CmdIndirectWait('Insert')
         CmdIndirectWait("set 1 Command=\"Assign Off #[DataPool 'TR_808_GMA3'.'Sequences'.'" ..
-            varia_mag[VariaSel] .. "_SUB_#" ..
+            varia_min[VariaSel] .. "_Sub_#" ..
             subSel .. "'] at #[Tag 'Selected_" .. varia_mag[VariaSel] .. "']")
         CmdIndirectWait('Insert')
         CmdIndirectWait("set 2 Command=\"Assign Off #[DataPool 'TR_808_GMA3'.'Sequences'.'" ..
@@ -190,20 +190,20 @@ local function main()
     lay_object = lay_object + 13
 
     for i = MacroNum, MacroEnd, 1 do
-        CmdIndirect('Store DataPool 41 Macro ' .. i .. ' \'Fade_' .. varia_mag[VariaSel] .. '_Sub#' .. subSel)
+        CmdIndirect('Store DataPool 41 Macro ' .. i .. ' \'Fade_' .. varia_min[VariaSel] .. '_Sub#' .. subSel)
         CmdIndirectWait('ChangeDestination DataPool 41 Macro ' .. i .. '')
         CmdIndirectWait('Insert')
         CmdIndirectWait("set 1 Command=\"Edit #[DataPool 'TR_808_GMA3'.'Sequences'.'" ..
-            varia_mag[VariaSel] .. "_SUB_#" ..
+            varia_min[VariaSel] .. "_Sub_#" ..
             subSel .. "'] Cue 1 Thru 16 Part 0.1 Property 'FadeFromX'")
         CmdIndirectWait('Insert')
         CmdIndirectWait("set 2 Command=\"Edit #[DataPool 'TR_808_GMA3'.'Sequences'.'" ..
-            varia_mag[VariaSel] .. "_SUB_#" ..
+            varia_min[VariaSel] .. "_Sub_#" ..
             subSel .. "'] Cue 1 Thru 16 Part 0.1 Property 'FadeToX'")
         CmdIndirectWait('Insert')
         CmdIndirectWait("set 3 Command=\"SetUserVariable 'TR_Fonction' 5")
         CmdIndirectWait('Insert')
-        CmdIndirectWait("set 4 Command=\"SetUserVariable 'TR_Sub' '" .. varia_mag[VariaSel] .. "_SUB_#" .. subSel .. "'")
+        CmdIndirectWait("set 4 Command=\"SetUserVariable 'TR_Sub' '" .. varia_min[VariaSel] .. "_Sub_#" .. subSel .. "'")
         CmdIndirectWait('Insert')
         CmdIndirectWait("set 5 Command=\"SetUserVariable 'TR_Layout' '1_" .. lay_object .. "'")
         CmdIndirectWait('Insert')
@@ -237,20 +237,20 @@ local function main()
     subSel = 1
 
     for i = MacroNum, MacroEnd, 1 do
-        CmdIndirect('Store DataPool 41 Macro ' .. i .. ' \'Delay_' .. varia_mag[VariaSel] .. '_Sub#' .. subSel)
+        CmdIndirect('Store DataPool 41 Macro ' .. i .. ' \'Delay_' .. varia_min[VariaSel] .. '_Sub#' .. subSel)
         CmdIndirectWait('ChangeDestination DataPool 41 Macro ' .. i .. '')
         CmdIndirectWait('Insert')
         CmdIndirectWait("set 1 Command=\"Edit #[DataPool 'TR_808_GMA3'.'Sequences'.'" ..
-            varia_mag[VariaSel] .. "_SUB_#" ..
+            varia_min[VariaSel] .. "_Sub_#" ..
             subSel .. "'] Cue 1 Thru 16 Part 0.1 Property 'DelayFromX'")
         CmdIndirectWait('Insert')
         CmdIndirectWait("set 2 Command=\"Edit #[DataPool 'TR_808_GMA3'.'Sequences'.'" ..
-            varia_mag[VariaSel] .. "_SUB_#" ..
+            varia_min[VariaSel] .. "_Sub_#" ..
             subSel .. "'] Cue 1 Thru 16 Part 0.1 Property 'DelayToX'")
         CmdIndirectWait('Insert')
         CmdIndirectWait("set 3 Command=\"SetUserVariable 'TR_Fonction' 6")
         CmdIndirectWait('Insert')
-        CmdIndirectWait("set 4 Command=\"SetUserVariable 'TR_Sub' '" .. varia_mag[VariaSel] .. "_SUB_#" .. subSel .. "'")
+        CmdIndirectWait("set 4 Command=\"SetUserVariable 'TR_Sub' '" .. varia_min[VariaSel] .. "_Sub_#" .. subSel .. "'")
         CmdIndirectWait('Insert')
         CmdIndirectWait("set 5 Command=\"SetUserVariable 'TR_Layout' '1_" .. lay_object .. "'")
         CmdIndirectWait('Insert')
@@ -268,7 +268,7 @@ local function main()
     for j = 1, 12, 1 do
         CmdIndirectWait('Insert')
         CmdIndirectWait("set " .. j .. " Command=\"Set #[DataPool 'TR_808_GMA3'.'Sequences'.'" ..
-            varia_mag[VariaSel] .. "_SUB_#" .. j .. "'] Cue 1 Thru 16 Part 0.1 Property 'Enabled' 0")
+            varia_min[VariaSel] .. "_Sub_#" .. j .. "'] Cue 1 Thru 16 Part 0.1 Property 'Enabled' 0")
     end
 
 
@@ -282,7 +282,7 @@ local function main()
         for j = 1, 16, 1 do
             CmdIndirectWait('Insert')
             CmdIndirectWait("set " .. j .. " Command=\"Set #[DataPool 'TR_808_GMA3'.'Sequences'.'" ..
-                varia_mag[VariaSel] .. "_SUB_#" ..
+                varia_min[VariaSel] .. "_Sub_#" ..
                 subSel .. "'] Cue " .. j .. " Part 0.1 Property 'Enabled' 0")
             CmdIndirectWait("set " .. j .. " Enabled=0")
         end
