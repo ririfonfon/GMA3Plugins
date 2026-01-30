@@ -158,7 +158,7 @@ local function Main(displayHandle)
         table.insert(popuplists.DataPool_Select, "'" .. Pool_check[k].name .. "'")
     end
     local Groups_Pool = 1
-    local pool_construct = 1
+    local Construct_Pool = 1
 
     if list == false then
         for k in ipairs(FixtureGroups) do
@@ -889,7 +889,7 @@ local function Main(displayHandle)
         Obj.Delete(screenOverlay, Obj.Index(baseInput))
         Construct_Layout(TLay, SeqNrStart, MacroNrStart, MatrickNrStart, MatrickNr, TLayNr, AppNr,
             All_5_Current, All_5_NrStart, ColPath, SelectedGelNr, SelectedGrp, SelectedGrpNo, TLayNrRef, NaLay, MaxColLgn,
-            Favourite_Nr, pool_construct, Groups_Pool)
+            Favourite_Nr, Construct_Pool, Groups_Pool)
     end
 
     signalTable.OnInput1TextChanged = function(caller)
@@ -1206,15 +1206,15 @@ local function Main(displayHandle)
             caller.Text = choice or caller.Text
             for k in ipairs(Pool_check) do
                 if Pool_check[k].name == caller.Text:gsub("'", "") then
-                    pool_construct = tonumber(k)
-                    Printf("Pool construct: " .. pool_construct)
+                    Construct_Pool = tonumber(k)
+                    Printf("Pool construct: " .. Construct_Pool)
                 end
             end
-            TLay = Root().ShowData.DataPools[pool_construct].Layouts:Children()
-            SeqNr = Root().ShowData.DataPools[pool_construct].Sequences:Children()
-            MacroNr = Root().ShowData.DataPools[pool_construct].Macros:Children()
-            All_5_Nr = Root().ShowData.DataPools[pool_construct].PresetPools[25]:Children()
-            MatrickNr = Root().ShowData.DataPools[pool_construct].Matricks:Children()
+            TLay = Root().ShowData.DataPools[Construct_Pool].Layouts:Children()
+            SeqNr = Root().ShowData.DataPools[Construct_Pool].Sequences:Children()
+            MacroNr = Root().ShowData.DataPools[Construct_Pool].Macros:Children()
+            All_5_Nr = Root().ShowData.DataPools[Construct_Pool].PresetPools[25]:Children()
+            MatrickNr = Root().ShowData.DataPools[Construct_Pool].Matricks:Children()
             TLay, TLayNr, TLayNrRef, SeqNr, SeqNrStart, MacroNr,
             MacroNrStart, All_5_Nr, All_5_NrStart, All_5_Current, MatrickNr, MatrickNrStart = list_input(popuplists, TLay,
                 TLayNr, TLayNrRef, SeqNr, SeqNrStart, MacroNr,
