@@ -13,10 +13,10 @@ local function Check_Size_Pool(id, PoolObject)
 end
 local function main()
     local inputs = {
-        { name = "Sequence Number", value = "", whiteFilter = "0123456789" },
+        { name = "Sequence Number", value = "154", whiteFilter = "0123456789" },
     }
     local selectors = {
-        { name = "Varia Selector", selectedValue = 6, values = { ["a"] = 1, ["b"] = 2, ["c"] = 3, ["d"] = 4, ["e"] = 5, ["f"] = 6, ["g"] = 7, ["h"] = 8 },                                                   type = 1 },
+        { name = "Varia Selector", selectedValue = 1, values = { ["a"] = 1, ["b"] = 2, ["c"] = 3, ["d"] = 4, ["e"] = 5, ["f"] = 6, ["g"] = 7, ["h"] = 8 },                                                   type = 1 },
         { name = "Sub Selector",   selectedValue = 1, values = { ["1"] = 1, ["2"] = 2, ["3"] = 3, ["4"] = 4, ["5"] = 5, ["6"] = 6, ["7"] = 7, ["8"] = 8, ["9"] = 9, ["10"] = 10, ["11"] = 11, ["12"] = 12 }, type = 1 }
     }
 
@@ -59,7 +59,7 @@ local function main()
         end
     end
 
-    local Construct_Pool = 41
+    local Construct_Pool = 43
     local SequenceObject = Root().ShowData.DataPools[Construct_Pool].Sequences
     local PoolObject = Root().ShowData.DataPools
 
