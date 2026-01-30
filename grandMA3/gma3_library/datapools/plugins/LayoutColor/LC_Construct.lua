@@ -7,10 +7,10 @@ Created by Richard Fontaine "RIRI", June 2024.
 
 function Construct_Layout(TLay, SeqNrStart, MacroNrStart, MatrickNrStart, MatrickNr, TLayNr, AppNr,
                           All_5_Current, All_5_NrStart, ColPath, SelectedGelNr, SelectedGrp, SelectedGrpNo, TLayNrRef,
-                          NaLay, MaxColLgn, Favourite_Nr, pool_construct, Groups_Pool)
+                          NaLay, MaxColLgn, Favourite_Nr, Construct_Pool, Groups_Pool)
 
-    local Macro_Pool = Root().ShowData.DataPools[pool_construct].Macros
-    local Data_Pool_Nr = Root().ShowData.DataPools[pool_construct].No
+    local Macro_Pool = Root().ShowData.DataPools[Construct_Pool].Macros
+    local Data_Pool_Nr = Root().ShowData.DataPools[Construct_Pool].No
     local All_5_NrEnd
     local Img = Root().ShowData.MediaPools.Symbols:Children()
     local ImgNr
@@ -287,11 +287,11 @@ function Construct_Layout(TLay, SeqNrStart, MacroNrStart, MatrickNrStart, Matric
     CheckSymbols(Img, ImgImp, check, add_check, long_imgimp, ImgNr)
 
     -- Create MAtricks
-    MatrickNr = Create_Matricks(MatrickNrStart, prefix, NaLay, SelectedGrp, SelectedGrpName, MatrickNr, pool_construct)
+    MatrickNr = Create_Matricks(MatrickNrStart, prefix, NaLay, SelectedGrp, SelectedGrpName, MatrickNr, Construct_Pool)
 
 
     -- Create new Layout View
-    local LayoutObject = Root().ShowData.DataPools[pool_construct].Layouts
+    local LayoutObject = Root().ShowData.DataPools[Construct_Pool].Layouts
     LayoutObject:Create(TLayNr)
     LayoutObject[TLayNr]:Set('Name', '' .. prefix .. NaLay)
     -- CmdIndirectWait("Store Layout " .. TLayNr .. " \"" .. prefix .. NaLay .. "")
@@ -311,7 +311,7 @@ function Construct_Layout(TLay, SeqNrStart, MacroNrStart, MatrickNrStart, Matric
 
     -- Create Preset 25
     All_5_NrEnd, All_5_Current = Create_Preset_25(TCol, StColName, StringColName, SelectedGelNr, prefix, All_5_NrEnd,
-        All_5_Current, pool_construct)
+        All_5_Current, Construct_Pool)
     -- endCreate Preset 25
 
     -- Appearances/Sequences
