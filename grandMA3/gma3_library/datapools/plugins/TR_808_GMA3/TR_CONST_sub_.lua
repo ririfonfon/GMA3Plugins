@@ -1,0 +1,94 @@
+local function Check_Size_Pool(id, PoolObject)
+    if not id then
+        Printf('Acquire')
+        return PoolObject:Acquire()
+    end
+    local idtype = math.type(id) or type(id)
+    if idtype ~= 'integer' then error('wrong argument expected integer got ' .. idtype) end
+    if IsObjectValid(PoolObject[id]) then error('id is already used : ' .. id) end
+    local maxsize = PoolObject:MaxCount()
+    if id < 1 or id > maxsize then error('id out of range') end
+    local poolsize = PoolObject:Count()
+    if id > poolsize then
+        local newsize = math.min(maxsize, math.ceil(id / 1000) * 1000)
+        PoolObject:Resize(newsize)
+    end
+end
+local function main()
+    local inputs = {
+        { name = "Sequence Number", value = "1", whiteFilter = "0123456789" },
+    }
+    local selectors = {
+        { name = "Varia Selector", selectedValue = 1, values = { ["a"] = 1, ["b"] = 2, ["c"] = 3, ["d"] = 4, ["e"] = 5, ["f"] = 6, ["g"] = 7, ["h"] = 8 },                                                   type = 1 },
+        { name = "Sub Selector",   selectedValue = 1, values = { ["1"] = 1, ["2"] = 2, ["3"] = 3, ["4"] = 4, ["5"] = 5, ["6"] = 6, ["7"] = 7, ["8"] = 8, ["9"] = 9, ["10"] = 10, ["11"] = 11, ["12"] = 12 }, type = 1 }
+    }
+
+    local SeqNum, VariaSel, SeqEnd, subSel
+    local count = 1
+    local varia_min = { 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h' }
+    local varia_mag = { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H' }
+    -- open messagebox:
+    local resultTable =
+        MessageBox(
+            {
+                title = "set btn sequence number    ",
+                message = "Please enter the sequence number to set.",
+                message_align_h = Enums.AlignmentH.Left,
+                message_align_v = Enums.AlignmentV.Top,
+                commands = { { value = 1, name = "Ok" }, { value = 0, name = "Cancel" } },
+                inputs = inputs,
+                selectors = selectors,
+                backColor = "Global.Default",
+                icon = "logo_small",
+                titleTextColor = "Global.AlertText",
+                messageTextColor = "Global.Text",
+                autoCloseOnInput = true
+            }
+        )
+
+    -- print results:
+
+    for k, v in pairs(resultTable.inputs) do
+        -- Printf("Input '%s' = '%s'", k, v)
+        SeqNum = tonumber(v)
+        SeqEnd = SeqNum + 11
+    end
+    for k, v in pairs(resultTable.selectors) do
+        -- Printf("Selector '%s' = '%d'", k, v)
+        if k == "Varia Selector" then
+            VariaSel = v
+        elseif k == "Sub Selector" then
+            subSel = v
+        end
+    end
+
+    local Construct_Pool = 44
+    local SequenceObject = Root().ShowData.DataPools[Construct_Pool].Sequences
+    local PoolObject = Root().ShowData.DataPools
+    local AppObject = Root().ShowData.Appearances
+    -- local i = SeqNum
+
+    for e = 1, 8, 1 do
+        for i = SeqNum, SeqEnd, 1 do
+            Check_Size_Pool(i, SequenceObject)
+            SequenceObject:Create(i)
+            SequenceObject[i]:Set('Name', varia_min[VariaSel] .. '_Sub_#' .. subSel)
+            for a = 3, 18, 1 do
+                SequenceObject[i]:Insert()
+                SequenceObject[i][a]:Set('No', a - 2)
+                SequenceObject[i][a]:Create(1)
+                SequenceObject[i][a][1]:Insert()
+                SequenceObject[i][a][1]:Create(1)
+                SequenceObject[i][a][1][1]:Set('SelectionMode', 'Strict')
+                SequenceObject[i][a][1][1]:Set('Enabled', 'No')
+            end
+            subSel = subSel + 1
+        end
+        SeqNum = SeqEnd + 6
+        SeqEnd = SeqNum + 11
+        subSel = 1
+        VariaSel = VariaSel + 1
+    end
+end
+
+return main
