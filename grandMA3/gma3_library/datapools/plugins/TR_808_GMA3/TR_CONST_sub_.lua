@@ -62,7 +62,7 @@ local function main()
         end
     end
 
-    local Construct_Pool = 44
+    local Construct_Pool = 43
     local SequenceObject = Root().ShowData.DataPools[Construct_Pool].Sequences
     local PoolObject = Root().ShowData.DataPools
     local AppObject = Root().ShowData.Appearances
