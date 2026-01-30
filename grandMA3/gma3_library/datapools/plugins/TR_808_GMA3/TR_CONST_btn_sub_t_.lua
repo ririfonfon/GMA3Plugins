@@ -1,5 +1,8 @@
 local function Check_Size_Pool(id, PoolObject)
-    if not id then return PoolObject:Acquire() end
+    if not id then
+        Printf('Acquire')
+        return PoolObject:Acquire()
+    end
     local idtype = math.type(id) or type(id)
     if idtype ~= 'integer' then error('wrong argument expected integer got ' .. idtype) end
     if IsObjectValid(PoolObject[id]) then error('id is already used : ' .. id) end
@@ -51,7 +54,7 @@ local function main()
         SeqEnd = SeqNum + 15
     end
     for k, v in pairs(resultTable.selectors) do
-        Printf("Selector '%s' = '%d'", k, v)
+        -- Printf("Selector '%s' = '%d'", k, v)
         if k == "Varia Selector" then
             VariaSel = v
         elseif k == "Sub Selector" then
@@ -62,40 +65,41 @@ local function main()
     local Construct_Pool = 43
     local SequenceObject = Root().ShowData.DataPools[Construct_Pool].Sequences
     local PoolObject = Root().ShowData.DataPools
-
-    for e = 1, 12, 1 do
-        -- Printf("count: %d", count)
-        for i = SeqNum, SeqEnd, 1 do
-            Check_Size_Pool(i, SequenceObject)
-            SequenceObject:Create(i)
-            SequenceObject[i]:Set('Name', varia_min[VariaSel] .. '_btn_sub_' .. subSel .. '_t_' .. count)
-            SequenceObject[i]:Insert(1)
-            SequenceObject[i][1]:Set('Command', "Set #[DataPool '" .. PoolObject[Construct_Pool].Name ..
-                "'.'Sequences'.'" .. varia_min[VariaSel] .. "_Sub_#" .. subSel .. "'] Cue " ..
-                count .. " Part 0.1 Property 'Enabled' 1; Set #[DataPool '" .. PoolObject[Construct_Pool].Name ..
-                "'.'Macros'.'" .. varia_min[VariaSel] .. "_Rec_Sub#" .. subSel .. "']." .. count .. " 'Enabled' 1")
-            SequenceObject[i]:Insert(2)
-            SequenceObject[i][2]:Set('Command', "Set #[DataPool '" .. PoolObject[Construct_Pool].Name ..
-                "'.'Sequences'.'" .. varia_min[VariaSel] .. "_Sub_#" .. subSel .. "'] Cue " ..
-                count .. " Part 0.1 Property 'Enabled' 0; Set #[DataPool '" .. PoolObject[Construct_Pool].Name ..
-                "'.'Macros'.'" .. varia_min[VariaSel] .. "_Rec_Sub#" .. subSel .. "']." .. count .. " 'Enabled' 0")
-
-            -- CmdIndirectWait("Set DataPool 41 Sequence " .. i ..
-            --     " Cue 1 Property Command=\"Set #[DataPool 'TR_808_GMA3'.'Sequences'.'" ..
-            --     varia_mag[VariaSel] .. "_SUB_#" .. subSel .. "'] Cue " .. count ..
-            --     " Part 0.1 Property 'Enabled' 1; Set #[DataPool 'TR_808_GMA3'.'Macros'.'" ..
-            --     varia_min[VariaSel] .. "_Rec_Sub#" .. subSel .. "']." .. count .. " 'Enabled' 1")
-            -- CmdIndirectWait("Set DataPool 41 Sequence " .. i ..
-            --     " Cue 2 Property Command=\"Set #[DataPool 'TR_808_GMA3'.'Sequences'.'" ..
-            --     varia_mag[VariaSel] .. "_SUB_#" .. subSel .. "'] Cue " .. count ..
-            --     " Part 0.1 Property 'Enabled' 0; Set #[DataPool 'TR_808_GMA3'.'Macros'.'" ..
-            --     varia_min[VariaSel] .. "_Rec_Sub#" .. subSel .. "']." .. count .. " 'Enabled' 0")
-            count = count + 1
+    local AppObject = Root().ShowData.Appearances
+    for v = 1, 8 do
+        for e = 1, 12, 1 do
+            for i = SeqNum, SeqEnd, 1 do
+                Check_Size_Pool(i, SequenceObject)
+                SequenceObject:Create(i)
+                SequenceObject[i]:Set('Name', varia_min[VariaSel] .. '_btn_sub_' .. subSel .. '_t_' .. count)
+                SequenceObject[i]:Set('Appearance', AppObject[270])
+                SequenceObject[i]:Insert()
+                SequenceObject[i][3]:Set('No', 1)
+                SequenceObject[i][3]:Create(1)
+                SequenceObject[i][3][1]:Set('Appearance', AppObject[271])
+                SequenceObject[i][3][1]:Set('Command', "Set #[DataPool '" .. PoolObject[Construct_Pool].Name ..
+                    "'.'Sequences'.'" .. varia_min[VariaSel] .. "_Sub_#" .. subSel .. "'] Cue " ..
+                    count .. " Part 0.1 Property 'Enabled' 1; Set #[DataPool '" .. PoolObject[Construct_Pool].Name ..
+                    "'.'Macros'.'" .. varia_min[VariaSel] .. "_Rec_Sub#" .. subSel .. "']." .. count .. " 'Enabled' 1")
+                SequenceObject[i]:Insert()
+                SequenceObject[i][4]:Set('No', 2)
+                SequenceObject[i][4]:Create(1)
+                SequenceObject[i][4][1]:Set('Appearance', AppObject[270])
+                SequenceObject[i][4][1]:Set('Command', "Set #[DataPool '" .. PoolObject[Construct_Pool].Name ..
+                    "'.'Sequences'.'" .. varia_min[VariaSel] .. "_Sub_#" .. subSel .. "'] Cue " ..
+                    count .. " Part 0.1 Property 'Enabled' 0; Set #[DataPool '" .. PoolObject[Construct_Pool].Name ..
+                    "'.'Macros'.'" .. varia_min[VariaSel] .. "_Rec_Sub#" .. subSel .. "']." .. count .. " 'Enabled' 0")
+                count = count + 1
+            end
+            SeqNum = SeqEnd + 2
+            SeqEnd = SeqNum + 15
+            count = 1
+            subSel = subSel + 1
         end
         SeqNum = SeqEnd + 2
         SeqEnd = SeqNum + 15
-        count = 1
-        subSel = subSel + 1
+        VariaSel = VariaSel + 1
+        subSel = 1
     end
 end
 
