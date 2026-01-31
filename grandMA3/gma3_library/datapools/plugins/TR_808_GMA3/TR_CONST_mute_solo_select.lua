@@ -184,7 +184,7 @@ local function main()
     SequenceObject[mute_all][4]:Create(1)
     SequenceObject[mute_all][4][1]:Set('Appearance', AppObject[320])
     SequenceObject[mute_all][4][1]:Set('Command',
-        "Go+ #[DataPool '" .. PoolObject[Construct_Pool].Name .. "'.'Macros'.'Off Mute']")
+        "Go+ #[DataPool '" .. PoolObject[Construct_Pool].Name .. "'.'Macros'.'Off_Mute']")
 
     Check_Size_Pool(solo_all, SequenceObject)
     SequenceObject:Create(solo_all)
@@ -202,7 +202,7 @@ local function main()
     SequenceObject[solo_all][4]:Create(1)
     SequenceObject[solo_all][4][1]:Set('Appearance', AppObject[318])
     SequenceObject[solo_all][4][1]:Set('Command',
-        "Go+ #[DataPool '" .. PoolObject[Construct_Pool].Name .. "'.'Macros'.'Off Select']")
+        "Go+ #[DataPool '" .. PoolObject[Construct_Pool].Name .. "'.'Macros'.'Off_Select']")
 end
 
 return main
