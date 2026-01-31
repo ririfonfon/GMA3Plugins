@@ -13,10 +13,10 @@ local function Check_Size_Pool(id, PoolObject)
 end
 local function main()
     local inputs = {
-        { name = "macro Number", value = "", whiteFilter = "0123456789" },
+        { name = "macro Number", value = "1", whiteFilter = "0123456789" },
     }
     local selectors = {
-        { name = "Varia Selector", selectedValue = 4, values = { ["a"] = 1, ["b"] = 2, ["c"] = 3, ["d"] = 4, ["e"] = 5, ["f"] = 6, ["g"] = 7, ["h"] = 8 }, type = 1 },
+        { name = "Varia Selector", selectedValue = 1, values = { ["a"] = 1, ["b"] = 2, ["c"] = 3, ["d"] = 4, ["e"] = 5, ["f"] = 6, ["g"] = 7, ["h"] = 8 }, type = 1 },
     }
 
     local MacroNum, VariaSel, MacroEnd, subSel, lay_object
@@ -56,50 +56,91 @@ local function main()
             VariaSel = v
         end
     end
-    local MacroObject = Root().ShowData.DataPools[41].Macros
+
+    local Construct_Pool = 43
+    local MacroObject = Root().ShowData.DataPools[Construct_Pool].Macros
+    local PoolObject = Root().ShowData.DataPools
+
+    Check_Size_Pool(MacroNum, MacroObject)
+    MacroObject:Create(MacroNum)
+    MacroObject[MacroNum]:Set('Name', 'Clear_sub')
+    for a = 1, 12 do
+        MacroObject[MacroNum]:Acquire()
+        MacroObject[MacroNum][a]:Set('Command',
+            "Set #[DataPool '" ..
+            PoolObject[Construct_Pool].Name .. "'.'Macros'.'all_sub_#" .. count .. "'].1 Thru 8 'Enabled' 0")
+        count = count + 1
+    end
+    count = 1
+    for a = 13, 24 do
+        MacroObject[MacroNum]:Acquire()
+        MacroObject[MacroNum][a]:Set('Command',
+            "Set #[DataPool '" ..
+            PoolObject[Construct_Pool].Name .. "'.'Macros'.'none_sub_#" .. count .. "'].1 Thru 8 'Enabled' 0")
+        count = count + 1
+    end
+    MacroObject[MacroNum]:Acquire()
+    MacroObject[MacroNum][25]:Set('Command',
+        "Set #[DataPool '" .. PoolObject[Construct_Pool].Name .. "'.'Macros'.'Mute'].1 Thru 8 'Enabled' 0")
+    MacroObject[MacroNum]:Acquire()
+    MacroObject[MacroNum][26]:Set('Command',
+        "Set #[DataPool '" .. PoolObject[Construct_Pool].Name .. "'.'Macros'.'Off_Mute'].1 Thru 8 'Enabled' 0")
+    MacroObject[MacroNum]:Acquire()
+    MacroObject[MacroNum][27]:Set('Command',
+        "Set #[DataPool '" .. PoolObject[Construct_Pool].Name .. "'.'Macros'.'Select'].1 Thru 8 'Enabled' 0")
+    MacroObject[MacroNum]:Acquire()
+    MacroObject[MacroNum][28]:Set('Command',
+        "Set #[DataPool '" .. PoolObject[Construct_Pool].Name .. "'.'Macros'.'Off_Select'].1 Thru 8 'Enabled' 0")
 
 
+
+
+
+    MacroNum = MacroNum + 1
     MacroEnd = MacroNum + (8 - VariaSel)
-
 
     for i = MacroNum, MacroEnd, 1 do
         Check_Size_Pool(i, MacroObject)
         MacroObject:Create(i)
         MacroObject[i]:Set('Name', 'all_sub_varia_' .. varia_min[VariaSel])
         MacroObject[i]:Acquire()
-        MacroObject[i][1]:Set('Command', "Go+ #[DataPool 'TR_808_GMA3'.'Macros'.'Clear_sub']")
-
-        -- CmdIndirect('Store DataPool 41 Macro ' .. i .. ' \'all_sub_varia_' .. varia_min[VariaSel])
-        -- CmdIndirectWait('ChangeDestination DataPool 41 Macro ' .. i .. '')
-        -- CmdIndirectWait('Insert')
-        -- CmdIndirectWait("set 1 Command=\"Go+ #[DataPool 'TR_808_GMA3'.'Macros'.'Clear_sub']")
+        MacroObject[i][1]:Set('Command',
+            "Go+ #[DataPool '" .. PoolObject[Construct_Pool].Name .. "'.'Macros'.'Clear_sub']")
         for a = 2, 13 do
             MacroObject[i]:Acquire()
-            MacroObject[i][a]:Set('Command', "Set #[DataPool 'TR_808_GMA3'.'Macros'.'all_sub_#" .. count .. "']." ..
+            MacroObject[i][a]:Set('Command',
+                "Set #[DataPool '" .. PoolObject[Construct_Pool].Name .. "'.'Macros'.'all_sub_#" .. count .. "']." ..
                 VariaSel .. " 'Enabled' 1")
-
-            -- CmdIndirectWait('Insert')
-            -- CmdIndirectWait("set " ..
-            --     a .. " Command=\"Set #[DataPool 'TR_808_GMA3'.'Macros'.'all_sub_#" .. count .. "']." ..
-            --     VariaSel .. " 'Enabled' 1")
             count = count + 1
         end
         count = 1
         for a = 14, 25 do
             MacroObject[i]:Acquire()
-            MacroObject[i][a]:Set('Command', "Set #[DataPool 'TR_808_GMA3'.'Macros'.'none_sub_#" .. count .. "']." ..
+            MacroObject[i][a]:Set('Command',
+                "Set #[DataPool '" .. PoolObject[Construct_Pool].Name .. "'.'Macros'.'none_sub_#" .. count .. "']." ..
                 VariaSel .. " 'Enabled' 1")
-
-            -- CmdIndirectWait('Insert')
-            -- CmdIndirectWait("set " ..
-            --     a .. " Command=\"Set #[DataPool 'TR_808_GMA3'.'Macros'.'none_sub_#" .. count .. "']." ..
-            --     VariaSel .. " 'Enabled' 1")
             count = count + 1
         end
+        MacroObject[i]:Acquire()
+        MacroObject[i][26]:Set('Command',
+            "Set #[DataPool '" .. PoolObject[Construct_Pool].Name ..
+            "'.'Macros'.'Mute']." .. VariaSel .. " 'Enabled' 1")
+        MacroObject[i]:Acquire()
+        MacroObject[i][27]:Set('Command',
+            "Set #[DataPool '" .. PoolObject[Construct_Pool].Name ..
+            "'.'Macros'.'Off_Mute']." .. VariaSel .. " 'Enabled' 1")
+        MacroObject[i]:Acquire()
+        MacroObject[i][28]:Set('Command',
+            "Set #[DataPool '" .. PoolObject[Construct_Pool].Name ..
+            "'.'Macros'.'Select']." .. VariaSel .. " 'Enabled' 1")
+        MacroObject[i]:Acquire()
+        MacroObject[i][29]:Set('Command',
+            "Set #[DataPool '" .. PoolObject[Construct_Pool].Name ..
+            "'.'Macros'.'Off_Select']." .. VariaSel .. " 'Enabled' 1")
+
         count = 1
         VariaSel = VariaSel + 1
     end
-    -- CmdIndirectWait('ChangeDestination Root')
 end
 
 return main
