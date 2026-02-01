@@ -58,7 +58,7 @@ local function main()
         end
     end
 
-    local Construct_Pool = 43
+    local Construct_Pool = 41
     local MacroObject = Root().ShowData.DataPools[Construct_Pool].Macros
     local PoolObject = Root().ShowData.DataPools
 
@@ -69,6 +69,7 @@ local function main()
     count = 1
 
     for i = MacroNum, MacroEnd, 1 do
+        MacroObject:Delete(i)
         Check_Size_Pool(i, MacroObject)
         MacroObject:Create(i)
         MacroObject[i]:Set('Name', 'Tempo_#' .. count)
@@ -85,6 +86,7 @@ local function main()
     end
 
     count = 1
+    MacroObject:Delete(Reset)
     Check_Size_Pool(Reset, MacroObject)
     MacroObject:Create(Reset)
     MacroObject[Reset]:Set('Name', 'Tempo_Reset')
