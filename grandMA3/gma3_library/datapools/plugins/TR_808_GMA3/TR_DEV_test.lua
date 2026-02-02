@@ -1,13 +1,28 @@
+local function Check_Size_Pool(id, PoolObject)
+    if not id then
+        Printf('Acquire')
+        return PoolObject:Acquire()
+    end
+    local idtype = math.type(id) or type(id)
+    if idtype ~= 'integer' then error('wrong argument expected integer got ' .. idtype) end
+    if IsObjectValid(PoolObject[id]) then error('id is already used : ' .. id) end
+    local maxsize = PoolObject:MaxCount()
+    if id < 1 or id > maxsize then error('id out of range') end
+    local poolsize = PoolObject:Count()
+    if id > poolsize then
+        local newsize = math.min(maxsize, math.ceil(id / 1000) * 1000)
+        PoolObject:Resize(newsize)
+    end
+end
 local function main()
     local inputs = {
-        { name = "macro Number",    value = "85", whiteFilter = "0123456789" },
-        { name = "DataPool Number", value = "41", whiteFilter = "0123456789" },
+        { name = "TAG Number", value = "214", whiteFilter = "0123456789" },
     }
     local selectors = {
         { name = "Varia Selector", selectedValue = 1, values = { ["a"] = 1, ["b"] = 2, ["c"] = 3, ["d"] = 4, ["e"] = 5, ["f"] = 6, ["g"] = 7, ["h"] = 8 }, type = 1 },
     }
 
-    local MacroNum, VariaSel, MacroEnd, subSel, lay_object, DataPoolNum
+    local TagNum, VariaSel, MacroEnd, subSel, lay_object, DataPoolNum
     local count = 1
     local varia_min = { 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h' }
     local varia_mag = { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H' }
@@ -34,10 +49,8 @@ local function main()
 
     for k, v in pairs(resultTable.inputs) do
         Printf("Input '%s' = '%s'", k, v)
-        if k == "macro Number" then
-            MacroNum = tonumber(v)
-        elseif k == "DataPool Number" then
-            DataPoolNum = tonumber(v)
+        if k == "TAG Number" then
+            TagNum = tonumber(v)
         end
     end
     for k, v in pairs(resultTable.selectors) do
@@ -46,19 +59,19 @@ local function main()
             VariaSel = v
         end
     end
-    local MacroObject = Root().ShowData.DataPools[DataPoolNum].Macros
-    MacroObject:Create(MacroNum)
-    MacroObject[MacroNum]:Set('Name', 'test_varia_' .. varia_min[VariaSel])
-    for i = 1, 8 do
-        MacroObject[MacroNum]:Insert (i)
-        MacroObject[MacroNum][i]:Set('Command',
-            "Set #[DataPool 'TR_808_GMA3'.'Macros'.'test_varia_" ..
-            varia_min[VariaSel] .. "']." .. i .. " 'Enabled' 1")
-    end
+    local TagObject = Root().ShowData.Tags
+    local Construct_Pool = 43
+    local SequenceObject = Root().ShowData.DataPools[Construct_Pool].Sequences
+    local PoolObject = Root().ShowData.DataPools
 
-    Printf("Macro %d created in DataPool %d", MacroNum, DataPoolNum)
+    Check_Size_Pool(TagNum, TagObject)
+    -- TagObject:Create(TagNum)
+    local nr = TagObject:Acquire()
+    TagObject[nr.No]:Set('Name', 'test')
+    -- TagObject[TagNum]:Set('TagType', 'Kill Instant')
+    -- TagObject[TagNum]:Set('TagType', 'Kill Delayed')
+    -- TagObject[TagNum]:Set('TagType', 'None')
+
 end
 
 return main
-
--- GetObject('Macro 85.1').Command = 'SetUservariable "A_TR_Solo" +1$A_TR_Solo'
