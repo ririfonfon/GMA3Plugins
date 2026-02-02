@@ -90,6 +90,8 @@ local function main()
                     "'.'Sequences'.'" .. varia_min[VariaSel] .. "_Sub_#" .. subSel .. "' Cue " ..
                     count .. " Part 0.1 Property 'Enabled' 0; Set DataPool '" .. PoolObject[Construct_Pool].Name ..
                     "'.'Macros'.'" .. varia_min[VariaSel] .. "_Rec_Sub#" .. subSel .. "'." .. count .. " 'Enabled' 0")
+                Cmd("Assign DataPool '" .. PoolObject[Construct_Pool].Name .. "' Sequence " ..
+                    i .. " At Tag '" .. varia_min[VariaSel] .. "_btn_sub_#" .. subSel .. "'")
                 count = count + 1
             end
             SeqNum = SeqEnd + 2
