@@ -76,19 +76,19 @@ local function main()
         SequenceObject[i][3]:Set('No', 1)
         SequenceObject[i][3]:Create(1)
         SequenceObject[i][3][1]:Set('Appearance', AppObject[319])
-        SequenceObject[i][3][1]:Set('Command', "Set #[DataPool '" .. PoolObject[Construct_Pool].Name ..
+        SequenceObject[i][3][1]:Set('Command', "Set DataPool '" .. PoolObject[Construct_Pool].Name ..
             "'.'Sequences'.'" .. varia_mag[VariaSel] .. "_SUB_#" .. subSel ..
-            "'] Cue 1 Thru 16 Part 0.1 Property 'Enabled' 0; Set #[DataPool '" ..
+            "' Cue 1 Thru 16 Part 0.1 Property 'Enabled' 0; Set DataPool '" ..
             PoolObject[Construct_Pool].Name .. "'.'Macros'.'" ..
-            varia_min[VariaSel] .. "_No_Solo']." .. subSel .. " 'Enabled' 0")
+            varia_min[VariaSel] .. "_No_Solo'." .. subSel .. " 'Enabled' 0")
         SequenceObject[i]:Insert()
         SequenceObject[i][4]:Set('No', 2)
         SequenceObject[i][4]:Create(1)
         SequenceObject[i][4][1]:Set('Appearance', AppObject[320])
-        SequenceObject[i][4][1]:Set('Command', "Go+ #[DataPool '" .. PoolObject[Construct_Pool].Name ..
-            "'.'Macros'.'" .. varia_min[VariaSel] .. "_Rec_Sub_#" .. subSel .. "']; Set #[DataPool '" ..
+        SequenceObject[i][4][1]:Set('Command', "Go+ DataPool '" .. PoolObject[Construct_Pool].Name ..
+            "'.'Macros'.'" .. varia_min[VariaSel] .. "_Rec_Sub_#" .. subSel .. "'; Set DataPool '" ..
             PoolObject[Construct_Pool].Name .. "'.'Macros'.'" ..
-            varia_min[VariaSel] .. "_No_Solo']." .. subSel .. " 'Enabled' 1")
+            varia_min[VariaSel] .. "_No_Solo'." .. subSel .. " 'Enabled' 1")
         subSel = subSel + 1
     end
 
@@ -109,14 +109,14 @@ local function main()
         SequenceObject[i][3]:Set('No', 1)
         SequenceObject[i][3]:Create(1)
         SequenceObject[i][3][1]:Set('Appearance', AppObject[317])
-        SequenceObject[i][3][1]:Set('Command', "Go+ #[DataPool '" .. PoolObject[Construct_Pool].Name .. "'.'Macros'.'" ..
-            varia_min[VariaSel] .. "_On_Solo_Sub_#" .. subSel .. "']")
+        SequenceObject[i][3][1]:Set('Command', "Go+ DataPool '" .. PoolObject[Construct_Pool].Name .. "'.'Macros'.'" ..
+            varia_min[VariaSel] .. "_On_Solo_Sub_#" .. subSel .. "'")
         SequenceObject[i]:Insert()
         SequenceObject[i][4]:Set('No', 2)
         SequenceObject[i][4]:Create(1)
         SequenceObject[i][4][1]:Set('Appearance', AppObject[318])
-        SequenceObject[i][4][1]:Set('Command', "Go+ #[DataPool '" .. PoolObject[Construct_Pool].Name .. "'.'Macros'.'" ..
-            varia_min[VariaSel] .. "_Off_Solo_Sub_#" .. subSel .. "']")
+        SequenceObject[i][4][1]:Set('Command', "Go+ DataPool '" .. PoolObject[Construct_Pool].Name .. "'.'Macros'.'" ..
+            varia_min[VariaSel] .. "_Off_Solo_Sub_#" .. subSel .. "'")
         subSel = subSel + 1
     end
 
@@ -136,14 +136,14 @@ local function main()
         SequenceObject[i][3]:Set('No', 1)
         SequenceObject[i][3]:Create(1)
         SequenceObject[i][3][1]:Set('Appearance', AppObject[322])
-        SequenceObject[i][3][1]:Set('Command', "Go+ #[DataPool '" .. PoolObject[Construct_Pool].Name .. "'.'Macros'.'" ..
-            varia_min[VariaSel] .. "_Tag_Sub_#" .. subSel .. "']")
+        SequenceObject[i][3][1]:Set('Command', "Go+ DataPool '" .. PoolObject[Construct_Pool].Name .. "'.'Macros'.'" ..
+            varia_min[VariaSel] .. "_Tag_Sub_#" .. subSel .. "'")
         SequenceObject[i]:Insert()
         SequenceObject[i][4]:Set('No', 2)
         SequenceObject[i][4]:Create(1)
         SequenceObject[i][4][1]:Set('Appearance', AppObject[321])
-        SequenceObject[i][4][1]:Set('Command', "Go+ #[DataPool '" .. PoolObject[Construct_Pool].Name .. "'.'Macros'.'" ..
-            varia_min[VariaSel] .. "_Off_Tag_Sub_#" .. subSel .. "']")
+        SequenceObject[i][4][1]:Set('Command', "Go+ DataPool '" .. PoolObject[Construct_Pool].Name .. "'.'Macros'.'" ..
+            varia_min[VariaSel] .. "_Off_Tag_Sub_#" .. subSel .. "'")
         subSel = subSel + 1
     end
 
@@ -159,14 +159,14 @@ local function main()
     SequenceObject[SeqNum][3]:Set('No', 1)
     SequenceObject[SeqNum][3]:Create(1)
     SequenceObject[SeqNum][3][1]:Set('Appearance', AppObject[319])
-    SequenceObject[SeqNum][3][1]:Set('Command', "Goto Cue 1 #[DataPool '" .. PoolObject[Construct_Pool].Name ..
-        "'] Sequence Thru if #[Tag'Select_" .. varia_mag[VariaSel] .. "']")
+    SequenceObject[SeqNum][3][1]:Set('Command', "Goto Cue 1 DataPool '" .. PoolObject[Construct_Pool].Name ..
+        "' Sequence Thru if Tag'Select_" .. varia_mag[VariaSel] .. "'")
     SequenceObject[SeqNum]:Insert()
     SequenceObject[SeqNum][4]:Set('No', 2)
     SequenceObject[SeqNum][4]:Create(1)
     SequenceObject[SeqNum][4][1]:Set('Appearance', AppObject[320])
-    SequenceObject[SeqNum][4][1]:Set('Command', "Goto Cue 2 #[DataPool '" .. PoolObject[Construct_Pool].Name ..
-        "'] Sequence Thru if #[Tag'Select_" .. varia_mag[VariaSel] .. "']")
+    SequenceObject[SeqNum][4][1]:Set('Command', "Goto Cue 2 DataPool '" .. PoolObject[Construct_Pool].Name ..
+        "' Sequence Thru if Tag'Select_" .. varia_mag[VariaSel] .. "'")
 
     Check_Size_Pool(mute_all, SequenceObject)
     SequenceObject:Create(mute_all)
@@ -178,13 +178,13 @@ local function main()
     SequenceObject[mute_all][3]:Create(1)
     SequenceObject[mute_all][3][1]:Set('Appearance', AppObject[319])
     SequenceObject[mute_all][3][1]:Set('Command',
-        "Go+ #[DataPool '" .. PoolObject[Construct_Pool].Name .. "'.'Macros'.'Mute']")
+        "Go+ DataPool '" .. PoolObject[Construct_Pool].Name .. "'.'Macros'.'Mute'")
     SequenceObject[mute_all]:Insert()
     SequenceObject[mute_all][4]:Set('No', 2)
     SequenceObject[mute_all][4]:Create(1)
     SequenceObject[mute_all][4][1]:Set('Appearance', AppObject[320])
     SequenceObject[mute_all][4][1]:Set('Command',
-        "Go+ #[DataPool '" .. PoolObject[Construct_Pool].Name .. "'.'Macros'.'Off_Mute']")
+        "Go+ DataPool '" .. PoolObject[Construct_Pool].Name .. "'.'Macros'.'Off_Mute'")
 
     Check_Size_Pool(solo_all, SequenceObject)
     SequenceObject:Create(solo_all)
@@ -196,13 +196,13 @@ local function main()
     SequenceObject[solo_all][3]:Create(1)
     SequenceObject[solo_all][3][1]:Set('Appearance', AppObject[317])
     SequenceObject[solo_all][3][1]:Set('Command',
-        "Go+ #[DataPool '" .. PoolObject[Construct_Pool].Name .. "'.'Macros'.'Select']")
+        "Go+ DataPool '" .. PoolObject[Construct_Pool].Name .. "'.'Macros'.'Select'")
     SequenceObject[solo_all]:Insert()
     SequenceObject[solo_all][4]:Set('No', 2)
     SequenceObject[solo_all][4]:Create(1)
     SequenceObject[solo_all][4][1]:Set('Appearance', AppObject[318])
     SequenceObject[solo_all][4][1]:Set('Command',
-        "Go+ #[DataPool '" .. PoolObject[Construct_Pool].Name .. "'.'Macros'.'Off_Select']")
+        "Go+ DataPool '" .. PoolObject[Construct_Pool].Name .. "'.'Macros'.'Off_Select'")
 end
 
 return main
