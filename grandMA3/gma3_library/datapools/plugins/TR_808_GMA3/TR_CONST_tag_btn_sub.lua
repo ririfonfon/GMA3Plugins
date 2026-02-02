@@ -40,7 +40,6 @@ local function main()
             }
         )
 
-
     for k, v in pairs(resultTable.selectors) do
         Printf("Selector '%s' = '%d'", k, v)
         if k == "Varia Selector" then
@@ -63,10 +62,6 @@ local function main()
         SeqNum = SeqEnd + 2
         SeqEnd = SeqNum + 15
     end
-
-
-
-    Printf("************************* ok done *************************")
 end
 
 return main
