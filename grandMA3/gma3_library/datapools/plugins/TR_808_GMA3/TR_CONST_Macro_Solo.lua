@@ -61,13 +61,13 @@ local function main()
         end
         MacroObject[i][1]:Set('Command', "SetUserVariable 'Order' '" .. varia_mag[VariaSel] .. "'")
         MacroObject[i][2]:Set('Command', "SetUserVariable 'math_" .. varia_min[VariaSel] .. "' 'plus'")
-        MacroObject[i][3]:Set('Command', "Set DataPool '" .. PoolObject[Construct_Pool].Name .. "'.'Macros'.'" ..
+        MacroObject[i][3]:Set('Command', "Set DataPool '" .. PoolObject[Construct_Pool].Name .. "' Macro '" ..
             varia_min[VariaSel] .. "_SOLO'." .. count .. " 'Enabled' 0")
-        MacroObject[i][4]:Set('Command', "Go+ DataPool '" .. PoolObject[Construct_Pool].Name .. "'.'Macros'.'" ..
+        MacroObject[i][4]:Set('Command', "Go+ DataPool '" .. PoolObject[Construct_Pool].Name .. "' Macro '" ..
             varia_min[VariaSel] .. "_SOLO'")
-        MacroObject[i][5]:Set('Command', "Go+ DataPool '" .. PoolObject[Construct_Pool].Name .. "'.'Macros'.'" ..
+        MacroObject[i][5]:Set('Command', "Go+ DataPool '" .. PoolObject[Construct_Pool].Name .. "' Macro '" ..
             varia_min[VariaSel] .. "_Rec_Sub_#" .. subSel .. "'")
-        MacroObject[i][6]:Set('Command', "Call DataPool '" .. PoolObject[Construct_Pool].Name .. "'.'Plugins'.'TR_808_CHECK_SOLO'")
+        MacroObject[i][6]:Set('Command', "Call DataPool '" .. PoolObject[Construct_Pool].Name .. "' Plugin 'TR_808_CHECK_SOLO'")
         subSel = subSel + 1
         count = count + 1
     end
@@ -86,11 +86,11 @@ local function main()
         end
         MacroObject[i][1]:Set('Command', "SetUserVariable 'Order' '" .. varia_mag[VariaSel] .. "'")
         MacroObject[i][2]:Set('Command', "SetUserVariable 'math_" .. varia_min[VariaSel] .. "' 'minus'")
-        MacroObject[i][3]:Set('Command', "Set DataPool '" .. PoolObject[Construct_Pool].Name .. "'.'Macros'.'" ..
+        MacroObject[i][3]:Set('Command', "Set DataPool '" .. PoolObject[Construct_Pool].Name .. "' Macro '" ..
             varia_min[VariaSel] .. "_SOLO'." .. count .. " 'Enabled' 1")
-        MacroObject[i][4]:Set('Command', "Go+ DataPool '" .. PoolObject[Construct_Pool].Name .. "'.'Macros'.'" ..
+        MacroObject[i][4]:Set('Command', "Go+ DataPool '" .. PoolObject[Construct_Pool].Name .. "' Macro '" ..
             varia_min[VariaSel] .. "_SOLO'")
-        MacroObject[i][5]:Set('Command', "Call DataPool '" .. PoolObject[Construct_Pool].Name .. "'.'Plugins'.'TR_808_CHECK_SOLO'")
+        MacroObject[i][5]:Set('Command', "Call DataPool '" .. PoolObject[Construct_Pool].Name .. "' Plugin 'TR_808_CHECK_SOLO'")
         subSel = subSel + 1
         count = count + 1
     end

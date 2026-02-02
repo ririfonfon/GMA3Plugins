@@ -67,28 +67,28 @@ local function main()
     for a = 1, 12 do
         MacroObject[MacroNum]:Acquire()
         MacroObject[MacroNum][a]:Set('Command', "Set DataPool '" ..
-            PoolObject[Construct_Pool].Name .. "'.'Macros'.'all_sub_#" .. count .. "'.1 Thru 8 'Enabled' 0")
+            PoolObject[Construct_Pool].Name .. "' Macro 'all_sub_#" .. count .. "'.1 Thru 8 'Enabled' 0")
         count = count + 1
     end
     count = 1
     for a = 13, 24 do
         MacroObject[MacroNum]:Acquire()
         MacroObject[MacroNum][a]:Set('Command', "Set DataPool '" ..
-            PoolObject[Construct_Pool].Name .. "'.'Macros'.'none_sub_#" .. count .. "'.1 Thru 8 'Enabled' 0")
+            PoolObject[Construct_Pool].Name .. "' Macro 'none_sub_#" .. count .. "'.1 Thru 8 'Enabled' 0")
         count = count + 1
     end
     MacroObject[MacroNum]:Acquire()
     MacroObject[MacroNum][25]:Set('Command',
-        "Set DataPool '" .. PoolObject[Construct_Pool].Name .. "'.'Macros'.'Mute'.1 Thru 8 'Enabled' 0")
+        "Set DataPool '" .. PoolObject[Construct_Pool].Name .. "' Macro 'Mute'.1 Thru 8 'Enabled' 0")
     MacroObject[MacroNum]:Acquire()
     MacroObject[MacroNum][26]:Set('Command',
-        "Set DataPool '" .. PoolObject[Construct_Pool].Name .. "'.'Macros'.'Off_Mute'.1 Thru 8 'Enabled' 0")
+        "Set DataPool '" .. PoolObject[Construct_Pool].Name .. "' Macro 'Off_Mute'.1 Thru 8 'Enabled' 0")
     MacroObject[MacroNum]:Acquire()
     MacroObject[MacroNum][27]:Set('Command',
-        "Set DataPool '" .. PoolObject[Construct_Pool].Name .. "'.'Macros'.'Select'.1 Thru 8 'Enabled' 0")
+        "Set DataPool '" .. PoolObject[Construct_Pool].Name .. "' Macro 'Select'.1 Thru 8 'Enabled' 0")
     MacroObject[MacroNum]:Acquire()
     MacroObject[MacroNum][28]:Set('Command',
-        "Set DataPool '" .. PoolObject[Construct_Pool].Name .. "'.'Macros'.'Off_Select'.1 Thru 8 'Enabled' 0")
+        "Set DataPool '" .. PoolObject[Construct_Pool].Name .. "' Macro 'Off_Select'.1 Thru 8 'Enabled' 0")
 
 
 
@@ -103,11 +103,11 @@ local function main()
         MacroObject[i]:Set('Name', 'all_sub_varia_' .. varia_min[VariaSel])
         MacroObject[i]:Acquire()
         MacroObject[i][1]:Set('Command',
-            "Go+ DataPool '" .. PoolObject[Construct_Pool].Name .. "'.'Macros'.'Clear_sub'")
+            "Go+ DataPool '" .. PoolObject[Construct_Pool].Name .. "' Macro 'Clear_sub'")
         for a = 2, 13 do
             MacroObject[i]:Acquire()
             MacroObject[i][a]:Set('Command',
-                "Set DataPool '" .. PoolObject[Construct_Pool].Name .. "'.'Macros'.'all_sub_#" .. count .. "'." ..
+                "Set DataPool '" .. PoolObject[Construct_Pool].Name .. "' Macro 'all_sub_#" .. count .. "'." ..
                 VariaSel .. " 'Enabled' 1")
             count = count + 1
         end
@@ -115,26 +115,26 @@ local function main()
         for a = 14, 25 do
             MacroObject[i]:Acquire()
             MacroObject[i][a]:Set('Command',
-                "Set DataPool '" .. PoolObject[Construct_Pool].Name .. "'.'Macros'.'none_sub_#" .. count .. "'." ..
+                "Set DataPool '" .. PoolObject[Construct_Pool].Name .. "' Macro 'none_sub_#" .. count .. "'." ..
                 VariaSel .. " 'Enabled' 1")
             count = count + 1
         end
         MacroObject[i]:Acquire()
         MacroObject[i][26]:Set('Command',
             "Set DataPool '" .. PoolObject[Construct_Pool].Name ..
-            "'.'Macros'.'Mute'." .. VariaSel .. " 'Enabled' 1")
+            "' Macro 'Mute'." .. VariaSel .. " 'Enabled' 1")
         MacroObject[i]:Acquire()
         MacroObject[i][27]:Set('Command',
             "Set DataPool '" .. PoolObject[Construct_Pool].Name ..
-            "'.'Macros'.'Off_Mute'." .. VariaSel .. " 'Enabled' 1")
+            "' Macro 'Off_Mute'." .. VariaSel .. " 'Enabled' 1")
         MacroObject[i]:Acquire()
         MacroObject[i][28]:Set('Command',
             "Set DataPool '" .. PoolObject[Construct_Pool].Name ..
-            "'.'Macros'.'Select'." .. VariaSel .. " 'Enabled' 1")
+            "' Macro 'Select'." .. VariaSel .. " 'Enabled' 1")
         MacroObject[i]:Acquire()
         MacroObject[i][29]:Set('Command',
             "Set DataPool '" .. PoolObject[Construct_Pool].Name ..
-            "'.'Macros'.'Off_Select'." .. VariaSel .. " 'Enabled' 1")
+            "' Macro 'Off_Select'." .. VariaSel .. " 'Enabled' 1")
 
         count = 1
         VariaSel = VariaSel + 1

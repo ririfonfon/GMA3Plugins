@@ -90,7 +90,7 @@ local function main()
             for a = 1, 6 do
                 MacroObject[i]:Insert(a)
             end
-            MacroObject[i][1]:Set('Command', "Edit DataPool '" .. PoolObject[Construct_Pool].Name .. "'.'Sequences'.'" ..
+            MacroObject[i][1]:Set('Command', "Edit DataPool '" .. PoolObject[Construct_Pool].Name .. "' Sequence '" ..
                 varia_min[VariaSel] .. "_Sub_#" .. subSel .. "' Cue 1 Thru 16 Part 0.1 Property 'Selection'")
             MacroObject[i][2]:Set('Command', "SetUserVariable 'TR_Fonction' 1")
             MacroObject[i][3]:Set('Command',
@@ -98,7 +98,7 @@ local function main()
             MacroObject[i][4]:Set('Command', "SetUserVariable 'TR_Layout' '1_" .. lay_object .. "'")
             MacroObject[i][5]:Set('Command', "SetUserVariable 'TR_Pool' 41")
             MacroObject[i][6]:Set('Command',
-                "Call DataPool '" .. PoolObject[Construct_Pool].Name .. "'.'Plugins'.'TR_808_Retour_Recipie'")
+                "Call DataPool '" .. PoolObject[Construct_Pool].Name .. "' Plugin 'TR_808_Retour_Recipie'")
             subSel = subSel + 1
             lay_object = lay_object + 1
         end
@@ -115,7 +115,7 @@ local function main()
             for a = 1, 6 do
                 MacroObject[i]:Insert(a)
             end
-            MacroObject[i][1]:Set('Command', "Edit DataPool '" .. PoolObject[Construct_Pool].Name .. "'.'Sequences'.'" ..
+            MacroObject[i][1]:Set('Command', "Edit DataPool '" .. PoolObject[Construct_Pool].Name .. "' Sequence '" ..
                 varia_min[VariaSel] .. "_Sub_#" .. subSel .. "' Cue 1 Thru 16 Part 0.1 Property 'Values'")
             MacroObject[i][2]:Set('Command', "SetUserVariable 'TR_Fonction' 2")
             MacroObject[i][3]:Set('Command',
@@ -123,7 +123,7 @@ local function main()
             MacroObject[i][4]:Set('Command', "SetUserVariable 'TR_Layout' '1_" .. lay_object .. "'")
             MacroObject[i][5]:Set('Command', "SetUserVariable 'TR_Pool' 41")
             MacroObject[i][6]:Set('Command',
-                "Call DataPool '" .. PoolObject[Construct_Pool].Name .. "'.'Plugins'.'TR_808_Retour_Recipie'")
+                "Call DataPool '" .. PoolObject[Construct_Pool].Name .. "' Plugin 'TR_808_Retour_Recipie'")
             subSel = subSel + 1
             lay_object = lay_object + 1
         end
@@ -140,7 +140,7 @@ local function main()
             for a = 1, 6 do
                 MacroObject[i]:Insert(a)
             end
-            MacroObject[i][1]:Set('Command', "Edit DataPool '" .. PoolObject[Construct_Pool].Name .. "'.'Sequences'.'" ..
+            MacroObject[i][1]:Set('Command', "Edit DataPool '" .. PoolObject[Construct_Pool].Name .. "' Sequence '" ..
                 varia_min[VariaSel] .. "_Sub_#" .. subSel .. "' Cue 1 Thru 16 Part 0.1 Property 'MAtricks'")
             MacroObject[i][2]:Set('Command', "SetUserVariable 'TR_Fonction' 3")
             MacroObject[i][3]:Set('Command',
@@ -148,7 +148,7 @@ local function main()
             MacroObject[i][4]:Set('Command', "SetUserVariable 'TR_Layout' '1_" .. lay_object .. "'")
             MacroObject[i][5]:Set('Command', "SetUserVariable 'TR_Pool' 41")
             MacroObject[i][6]:Set('Command',
-                "Call DataPool '" .. PoolObject[Construct_Pool].Name .. "'.'Plugins'.'TR_808_Retour_Recipie'")
+                "Call DataPool '" .. PoolObject[Construct_Pool].Name .. "' Plugin 'TR_808_Retour_Recipie'")
             subSel = subSel + 1
             lay_object = lay_object + 1
         end
@@ -165,13 +165,13 @@ local function main()
                 MacroObject[i]:Insert(a)
             end
             MacroObject[i][1]:Set('Command',
-                "Assign DataPool '" .. PoolObject[Construct_Pool].Name .. "'.'Sequences'.'" ..
+                "Assign DataPool '" .. PoolObject[Construct_Pool].Name .. "' Sequence '" ..
                 varia_min[VariaSel] .. "_Sub_#" .. subSel .. "' at Tag 'Selected_" .. varia_mag[VariaSel] .. "'")
             MacroObject[i][2]:Set('Command',
-                "Assign DataPool '" .. PoolObject[Construct_Pool].Name .. "'.'Sequences'.'" ..
+                "Assign DataPool '" .. PoolObject[Construct_Pool].Name .. "' Sequence '" ..
                 varia_min[VariaSel] .. "_btn_mute_#" .. subSel .. "' at Tag 'Select_Mute_" .. varia_mag[VariaSel] .. "'")
             MacroObject[i][3]:Set('Command',
-                "Assign DataPool '" .. PoolObject[Construct_Pool].Name .. "'.'Sequences'.'" ..
+                "Assign DataPool '" .. PoolObject[Construct_Pool].Name .. "' Sequence '" ..
                 varia_min[VariaSel] .. "_btn_solo_#" .. subSel .. "' at Tag 'Select_Solo_" .. varia_mag[VariaSel] .. "'")
             subSel = subSel + 1
         end
@@ -188,13 +188,13 @@ local function main()
                 MacroObject[i]:Insert(a)
             end
             MacroObject[i][1]:Set('Command',
-                "Assign Off DataPool '" .. PoolObject[Construct_Pool].Name .. "'.'Sequences'.'" ..
+                "Assign Off DataPool '" .. PoolObject[Construct_Pool].Name .. "' Sequence '" ..
                 varia_min[VariaSel] .. "_Sub_#" .. subSel .. "' at Tag 'Selected_" .. varia_mag[VariaSel] .. "'")
             MacroObject[i][2]:Set('Command',
-                "Assign Off DataPool '" .. PoolObject[Construct_Pool].Name .. "'.'Sequences'.'" ..
+                "Assign Off DataPool '" .. PoolObject[Construct_Pool].Name .. "' Sequence '" ..
                 varia_min[VariaSel] .. "_btn_mute_#" .. subSel .. "' at Tag 'Select_Mute_" .. varia_mag[VariaSel] .. "'")
             MacroObject[i][3]:Set('Command',
-                "Assign Off DataPool '" .. PoolObject[Construct_Pool].Name .. "'.'Sequences'.'" ..
+                "Assign Off DataPool '" .. PoolObject[Construct_Pool].Name .. "' Sequence '" ..
                 varia_min[VariaSel] .. "_btn_solo_#" .. subSel .. "' at Tag 'Select_Solo_" .. varia_mag[VariaSel] .. "'")
             subSel = subSel + 1
         end
@@ -215,7 +215,7 @@ local function main()
         MacroObject[MacroNum][4]:Set('Command', "SetUserVariable 'TR_Pool' '" .. PoolObject[Construct_Pool].Name .. "'")
         MacroObject[MacroNum][5]:Set('Command', "SetUserVariable 'TR_Tag' 'Selected_" .. varia_mag[VariaSel] .. "'")
         MacroObject[MacroNum][6]:Set('Command',
-            "Call DataPool '" .. PoolObject[Construct_Pool].Name .. "'.'Plugins'.'TR_808_Edit_Tag'")
+            "Call DataPool '" .. PoolObject[Construct_Pool].Name .. "' Plugin 'TR_808_Edit_Tag'")
 
         MacroNum = MacroEnd + 6
         MacroEnd = MacroNum + 11
@@ -229,9 +229,9 @@ local function main()
             for a = 1, 7 do
                 MacroObject[i]:Insert(a)
             end
-            MacroObject[i][1]:Set('Command', "Edit DataPool '" .. PoolObject[Construct_Pool].Name .. "'.'Sequences'.'" ..
+            MacroObject[i][1]:Set('Command', "Edit DataPool '" .. PoolObject[Construct_Pool].Name .. "' Sequence '" ..
                 varia_min[VariaSel] .. "_Sub_#" .. subSel .. "' Cue 1 Thru 16 Part 0.1 Property 'FadeFromX'")
-            MacroObject[i][2]:Set('Command', "Edit DataPool '" .. PoolObject[Construct_Pool].Name .. "'.'Sequences'.'" ..
+            MacroObject[i][2]:Set('Command', "Edit DataPool '" .. PoolObject[Construct_Pool].Name .. "' Sequence '" ..
                 varia_min[VariaSel] .. "_Sub_#" .. subSel .. "' Cue 1 Thru 16 Part 0.1 Property 'FadeToX'")
             MacroObject[i][3]:Set('Command', "SetUserVariable 'TR_Fonction' 5")
             MacroObject[i][4]:Set('Command',
@@ -239,7 +239,7 @@ local function main()
             MacroObject[i][5]:Set('Command', "SetUserVariable 'TR_Layout' '1_" .. lay_object .. "'")
             MacroObject[i][6]:Set('Command', "SetUserVariable 'TR_Pool' 41")
             MacroObject[i][7]:Set('Command',
-                "Call DataPool '" .. PoolObject[Construct_Pool].Name .. "'.'Plugins'.'TR_808_Retour_Recipie'")
+                "Call DataPool '" .. PoolObject[Construct_Pool].Name .. "' Plugin 'TR_808_Retour_Recipie'")
             subSel = subSel + 1
             lay_object = lay_object + 1
         end
@@ -260,7 +260,7 @@ local function main()
         MacroObject[MacroNum][4]:Set('Command', "SetUserVariable 'TR_Pool' '" .. PoolObject[Construct_Pool].Name .. "'")
         MacroObject[MacroNum][5]:Set('Command', "SetUserVariable 'TR_Tag' 'Selected_" .. varia_mag[VariaSel] .. "'")
         MacroObject[MacroNum][6]:Set('Command',
-            "Call DataPool '" .. PoolObject[Construct_Pool].Name .. "'.'Plugins'.'TR_808_Edit_Tag'")
+            "Call DataPool '" .. PoolObject[Construct_Pool].Name .. "' Plugin 'TR_808_Edit_Tag'")
 
         MacroNum = MacroEnd + 6
         MacroEnd = MacroNum + 11
@@ -274,9 +274,9 @@ local function main()
             for a = 1, 7 do
                 MacroObject[i]:Insert(a)
             end
-            MacroObject[i][1]:Set('Command', "Edit DataPool '" .. PoolObject[Construct_Pool].Name .. "'.'Sequences'.'" ..
+            MacroObject[i][1]:Set('Command', "Edit DataPool '" .. PoolObject[Construct_Pool].Name .. "' Sequence '" ..
                 varia_min[VariaSel] .. "_Sub_#" .. subSel .. "' Cue 1 Thru 16 Part 0.1 Property 'DelayFromX'")
-            MacroObject[i][2]:Set('Command', "Edit DataPool '" .. PoolObject[Construct_Pool].Name .. "'.'Sequences'.'" ..
+            MacroObject[i][2]:Set('Command', "Edit DataPool '" .. PoolObject[Construct_Pool].Name .. "' Sequence '" ..
                 varia_min[VariaSel] .. "_Sub_#" .. subSel .. "' Cue 1 Thru 16 Part 0.1 Property 'DelayToX'")
             MacroObject[i][3]:Set('Command', "SetUserVariable 'TR_Fonction' 6")
             MacroObject[i][4]:Set('Command',
@@ -284,7 +284,7 @@ local function main()
             MacroObject[i][5]:Set('Command', "SetUserVariable 'TR_Layout' '1_" .. lay_object .. "'")
             MacroObject[i][6]:Set('Command', "SetUserVariable 'TR_Pool' 41")
             MacroObject[i][7]:Set('Command',
-                "Call DataPool '" .. PoolObject[Construct_Pool].Name .. "'.'Plugins'.'TR_808_Retour_Recipie'")
+                "Call DataPool '" .. PoolObject[Construct_Pool].Name .. "' Plugin 'TR_808_Retour_Recipie'")
             subSel = subSel + 1
             lay_object = lay_object + 1
         end
@@ -297,7 +297,7 @@ local function main()
         for j = 1, 12, 1 do
             MacroObject[MacroNum]:Insert(j)
             MacroObject[MacroNum][j]:Set('Command',
-                "Set DataPool '" .. PoolObject[Construct_Pool].Name .. "'.'Sequences'.'" ..
+                "Set DataPool '" .. PoolObject[Construct_Pool].Name .. "' Sequence '" ..
                 varia_min[VariaSel] .. "_Sub_#" .. j .. "' Cue 1 Thru 16 Part 0.1 Property 'Enabled' 0")
         end
 
@@ -313,7 +313,7 @@ local function main()
             for j = 1, 16, 1 do
                 MacroObject[i]:Insert(j)
                 MacroObject[i][j]:Set('Command',
-                    "Set DataPool '" .. PoolObject[Construct_Pool].Name .. "'.'Sequences'.'" ..
+                    "Set DataPool '" .. PoolObject[Construct_Pool].Name .. "' Sequence '" ..
                     varia_min[VariaSel] .. "_Sub_#" ..
                     subSel .. "' Cue " .. j .. " Part 0.1 Property 'Enabled' 0")
                 MacroObject[i][j]:Set('Enabled', 0)
@@ -330,7 +330,7 @@ local function main()
         for j = 1, 12, 1 do
             MacroObject[MacroNum]:Insert(j)
             MacroObject[MacroNum][j]:Set('Command',
-                "Go+ DataPool '" .. PoolObject[Construct_Pool].Name .. "'.'Macros'.'" ..
+                "Go+ DataPool '" .. PoolObject[Construct_Pool].Name .. "' Macro '" ..
                 varia_min[VariaSel] .. "_Rec_Sub#" .. j .. "'")
         end
 
@@ -347,14 +347,14 @@ local function main()
             end
             MacroObject[i][1]:Set('Command', "SetUserVariable 'Order' '" .. varia_mag[VariaSel] .. "'")
             MacroObject[i][2]:Set('Command', "SetUserVariable 'math_" .. varia_min[VariaSel] .. "' 'plus'")
-            MacroObject[i][3]:Set('Command', "Set DataPool '" .. PoolObject[Construct_Pool].Name .. "'.'Macros'.'" ..
+            MacroObject[i][3]:Set('Command', "Set DataPool '" .. PoolObject[Construct_Pool].Name .. "' Macro '" ..
                 varia_min[VariaSel] .. "_SOLO'." .. count .. " 'Enabled' 0")
-            MacroObject[i][4]:Set('Command', "Go+ DataPool '" .. PoolObject[Construct_Pool].Name .. "'.'Macros'.'" ..
+            MacroObject[i][4]:Set('Command', "Go+ DataPool '" .. PoolObject[Construct_Pool].Name .. "' Macro '" ..
                 varia_min[VariaSel] .. "_SOLO'")
-            MacroObject[i][5]:Set('Command', "Go+ DataPool '" .. PoolObject[Construct_Pool].Name .. "'.'Macros'.'" ..
+            MacroObject[i][5]:Set('Command', "Go+ DataPool '" .. PoolObject[Construct_Pool].Name .. "' Macro '" ..
                 varia_min[VariaSel] .. "_Rec_Sub_#" .. subSel .. "'")
             MacroObject[i][6]:Set('Command',
-                "Call DataPool '" .. PoolObject[Construct_Pool].Name .. "'.'Plugins'.'TR_808_CHECK_SOLO'")
+                "Call DataPool '" .. PoolObject[Construct_Pool].Name .. "' Plugin 'TR_808_CHECK_SOLO'")
             subSel = subSel + 1
             count = count + 1
         end
@@ -373,12 +373,12 @@ local function main()
             end
             MacroObject[i][1]:Set('Command', "SetUserVariable 'Order' '" .. varia_mag[VariaSel] .. "'")
             MacroObject[i][2]:Set('Command', "SetUserVariable 'math_" .. varia_min[VariaSel] .. "' 'minus'")
-            MacroObject[i][3]:Set('Command', "Set DataPool '" .. PoolObject[Construct_Pool].Name .. "'.'Macros'.'" ..
+            MacroObject[i][3]:Set('Command', "Set DataPool '" .. PoolObject[Construct_Pool].Name .. "' Macro '" ..
                 varia_min[VariaSel] .. "_SOLO'." .. count .. " 'Enabled' 1")
-            MacroObject[i][4]:Set('Command', "Go+ DataPool '" .. PoolObject[Construct_Pool].Name .. "'.'Macros'.'" ..
+            MacroObject[i][4]:Set('Command', "Go+ DataPool '" .. PoolObject[Construct_Pool].Name .. "' Macro '" ..
                 varia_min[VariaSel] .. "_SOLO'")
             MacroObject[i][5]:Set('Command',
-                "Call DataPool '" .. PoolObject[Construct_Pool].Name .. "'.'Plugins'.'TR_808_CHECK_SOLO'")
+                "Call DataPool '" .. PoolObject[Construct_Pool].Name .. "' Plugin 'TR_808_CHECK_SOLO'")
             subSel = subSel + 1
             count = count + 1
         end

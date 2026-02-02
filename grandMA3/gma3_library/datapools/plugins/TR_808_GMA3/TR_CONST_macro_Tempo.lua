@@ -58,7 +58,7 @@ local function main()
         end
     end
 
-    local Construct_Pool = 41
+    local Construct_Pool = 43
     local MacroObject = Root().ShowData.DataPools[Construct_Pool].Macros
     local PoolObject = Root().ShowData.DataPools
 
@@ -93,7 +93,7 @@ local function main()
     for a = 1, 16 do
         MacroObject[Reset]:Acquire()
         MacroObject[Reset][a]:Set('Command', "Set DataPool '" .. PoolObject[Construct_Pool].Name ..
-            "'.'Macros'.'Tempo_#" .. count .. "'.1 Thru 16 'Enabled' 0")
+            "' Macro 'Tempo_#" .. count .. "'.1 Thru 16 'Enabled' 0")
         count = count + 1
     end
 end
