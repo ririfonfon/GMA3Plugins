@@ -78,18 +78,18 @@ local function main()
                 SequenceObject[i][3]:Set('No', 1)
                 SequenceObject[i][3]:Create(1)
                 SequenceObject[i][3][1]:Set('Appearance', AppObject[271])
-                SequenceObject[i][3][1]:Set('Command', "Set #[DataPool '" .. PoolObject[Construct_Pool].Name ..
-                    "'.'Sequences'.'" .. varia_min[VariaSel] .. "_Sub_#" .. subSel .. "'] Cue " ..
-                    count .. " Part 0.1 Property 'Enabled' 1; Set #[DataPool '" .. PoolObject[Construct_Pool].Name ..
-                    "'.'Macros'.'" .. varia_min[VariaSel] .. "_Rec_Sub#" .. subSel .. "']." .. count .. " 'Enabled' 1")
+                SequenceObject[i][3][1]:Set('Command', "Set DataPool '" .. PoolObject[Construct_Pool].Name ..
+                    "'.'Sequences'.'" .. varia_min[VariaSel] .. "_Sub_#" .. subSel .. "' Cue " ..
+                    count .. " Part 0.1 Property 'Enabled' 1; Set DataPool '" .. PoolObject[Construct_Pool].Name ..
+                    "'.'Macros'.'" .. varia_min[VariaSel] .. "_Rec_Sub#" .. subSel .. "'." .. count .. " 'Enabled' 1")
                 SequenceObject[i]:Insert()
                 SequenceObject[i][4]:Set('No', 2)
                 SequenceObject[i][4]:Create(1)
                 SequenceObject[i][4][1]:Set('Appearance', AppObject[270])
-                SequenceObject[i][4][1]:Set('Command', "Set #[DataPool '" .. PoolObject[Construct_Pool].Name ..
-                    "'.'Sequences'.'" .. varia_min[VariaSel] .. "_Sub_#" .. subSel .. "'] Cue " ..
-                    count .. " Part 0.1 Property 'Enabled' 0; Set #[DataPool '" .. PoolObject[Construct_Pool].Name ..
-                    "'.'Macros'.'" .. varia_min[VariaSel] .. "_Rec_Sub#" .. subSel .. "']." .. count .. " 'Enabled' 0")
+                SequenceObject[i][4][1]:Set('Command', "Set DataPool '" .. PoolObject[Construct_Pool].Name ..
+                    "'.'Sequences'.'" .. varia_min[VariaSel] .. "_Sub_#" .. subSel .. "' Cue " ..
+                    count .. " Part 0.1 Property 'Enabled' 0; Set DataPool '" .. PoolObject[Construct_Pool].Name ..
+                    "'.'Macros'.'" .. varia_min[VariaSel] .. "_Rec_Sub#" .. subSel .. "'." .. count .. " 'Enabled' 0")
                 count = count + 1
             end
             SeqNum = SeqEnd + 2
