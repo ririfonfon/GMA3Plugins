@@ -13,7 +13,7 @@ local function Check_Size_Pool(id, PoolObject)
 end
 local function main()
     local inputs = {
-        { name = "macro Number", value = "1", whiteFilter = "0123456789" },
+        { name = "macro Number", value = "1653", whiteFilter = "0123456789" },
     }
     local selectors = {
         { name = "Varia Selector", selectedValue = 1, values = { ["a"] = 1, ["b"] = 2, ["c"] = 3, ["d"] = 4, ["e"] = 5, ["f"] = 6, ["g"] = 7, ["h"] = 8 }, type = 1 },
