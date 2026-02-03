@@ -193,7 +193,11 @@
         "cast-local-type",
         "assign-type-mismatch",
         "param-type-mismatch",
-        "undefined-global",
-        "undefined-field"
-    ]
+        "undefined-global"
+    ],
+    "grandMa3.apiVersion": "2.3",
+    "Lua.workspace.library": [
+        "c:\\Users\\ririf\\.vscode\\extensions\\carrot-industries.ma3-lua-api-1.5.0\\resources\\2.3"
+    ],
+    "grandMa3.removed-undefined-field-diagnostics": true
 }
