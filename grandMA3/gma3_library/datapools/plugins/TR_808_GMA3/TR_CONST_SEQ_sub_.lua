@@ -16,7 +16,7 @@ local function Check_Size_Pool(id, PoolObject)
 end
 local function main()
     local inputs = {
-        { name = "Sequence Number", value = "1", whiteFilter = "0123456789" },
+        { name = "Sequence Number", value = "613", whiteFilter = "0123456789" },
     }
     local selectors = {
         { name = "Varia Selector", selectedValue = 1, values = { ["a"] = 1, ["b"] = 2, ["c"] = 3, ["d"] = 4, ["e"] = 5, ["f"] = 6, ["g"] = 7, ["h"] = 8 },                                                   type = 1 },
@@ -82,6 +82,12 @@ local function main()
                 SequenceObject[i][a][1][1]:Set('SelectionMode', 'Strict')
                 SequenceObject[i][a][1][1]:Set('Enabled', 'No')
             end
+            Cmd("Assign DataPool '" .. PoolObject[Construct_Pool].Name .. "' Sequence " ..
+            i .. " At Tag 'off_temps'")
+            Cmd("Assign DataPool '" .. PoolObject[Construct_Pool].Name .. "' Sequence " ..
+            i .. " At Tag 'Varia_" .. varia_mag[VariaSel] .. "'")
+            Cmd("Assign DataPool '" .. PoolObject[Construct_Pool].Name .. "' Sequence " ..
+            i .. " At Tag 'Sub_#" .. subSel .. "'")
             subSel = subSel + 1
         end
         SeqNum = SeqEnd + 6
