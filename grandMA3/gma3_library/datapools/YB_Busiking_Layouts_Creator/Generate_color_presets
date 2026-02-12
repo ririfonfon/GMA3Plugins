@@ -1,0 +1,52 @@
+--[[ Busking Layouts Creator v 0.9.1
+Created by Yury Belousov ]]
+
+local C = Cmd
+local YB_GMA3_CP_GEN = select(3,...)
+
+function YB_GMA3_CP_GEN.generate_uinv_col_preset(user_input,name_prefix,DP)
+    local first_preset = user_input.first_preset
+    local number_of_presets = user_input.amount_of_generated_presets
+    local groups = user_input.groups_selected
+    local presets_obj = {}
+    local white_gel = '1.1'
+    local ctb_gel = '7.114'
+    local cto_gel = '7.117'
+    local preset_num = first_preset
+    local preset_pool = ShowData().DataPools[DP].PresetPools[4]
+    local MAGelPool = ShowData().GelPools[1]
+    local original_preset_mode = preset_pool:Get('presetmode')
+    local progHandle = StartProgress('Creating color Presets')
+    table.insert(YB_GMA3_CP_GEN.progress_bars,progHandle)
+    SetProgressRange(progHandle, 1, number_of_presets)
+    preset_pool:Set('presetmode',Enums.PresetMode.Universal)
+    for _,group in ipairs(groups) do
+        C(group:ToAddr())
+    end
+    C('At Gel '..white_gel..'; Store Preset 4.' .. preset_num..' /nu')
+    local preset = preset_pool[preset_num]
+    table.insert(presets_obj,preset)
+    preset:Set('name',name_prefix..MAGelPool[1].name)
+    IncProgress(progHandle,1)
+    C('At Gel '..ctb_gel..'; Store Preset 4.' .. 1+preset_num..' /nu')
+    preset = preset_pool[preset_num+1]
+    table.insert(presets_obj,preset)
+    preset:Set('name',name_prefix..'CTB')
+    IncProgress(progHandle,1)
+    C('At Gel '..cto_gel..'; Store Preset 4.' .. 2+preset_num..' /nu')
+    preset = preset_pool[preset_num+2]
+    table.insert(presets_obj,preset)
+    preset:Set('name',name_prefix..'CTO')
+    IncProgress(progHandle,1)
+    for i = 2, 13 do
+        C('At Gel 1.' .. i .. '; Store Preset 4.' .. i+1+preset_num..'  /nu')
+        preset = preset_pool[i+1+preset_num]
+        table.insert(presets_obj,preset)
+        preset:Set('name',name_prefix..MAGelPool[i].name)
+        IncProgress(progHandle,1)
+    end
+    C('ClearAll  /nu')
+    preset_pool:Set('presetmode',original_preset_mode)
+    StopProgress(progHandle)
+    return presets_obj
+end
