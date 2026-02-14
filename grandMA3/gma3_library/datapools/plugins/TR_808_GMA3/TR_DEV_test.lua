@@ -64,12 +64,12 @@ local function main()
     local SequenceObject = Root().ShowData.DataPools[Construct_Pool].Sequences
     local PoolObject = Root().ShowData.DataPools
 
-    Check_Size_Pool(TagNum, TagObject)
-    TagObject:Create(TagNum)
+    -- Check_Size_Pool(TagNum, TagObject)
+    -- TagObject:Create(TagNum)
     -- local nr = TagObject:Acquire()
     -- TagObject[nr.No]:Set('Name', 'test')
-    TagObject[TagNum]:Set('Name', 'test')
-    TagObject[TagNum]:Set('TagType', 'Kill Instant')
+    -- TagObject[TagNum]:Set('Name', 'test')
+    -- TagObject[TagNum]:Set('TagType', 'Kill Instant')
     -- TagObject[TagNum]:Set('TagType', 'Kill Delayed')
     -- TagObject[TagNum]:Set('TagType', 'None')
     -- TagObject[TagNum]:Insert(1)
@@ -77,9 +77,11 @@ local function main()
     -- TagObject[TagNum][1]:Set('DATAPOOL',PoolObject)
     -- TagObject[TagNum][1]:Set('CLASS','Sequence')
     -- TagObject[TagNum][1]:Set('No',1)
-    SequenceObject[1]:Set('tags',TagObject[TagNum]:Index()..':0')
-    SequenceObject[2]:Set('tags',TagObject[TagNum]:Index()..':0')
+    SequenceObject[1]:Set('Tags', TagObject[TagNum]:Index() .. ':0')
+    SequenceObject[2]:Set('Tags', TagObject[TagNum]:Index() .. ':0')
+    -- SequenceObject[2]:Set('tags', '0:0')
 
+    
 end
 
 return main
