@@ -26,7 +26,7 @@ return function()
     local taglist = getTags(myobj)   -- get tags as table with taghandle as keys
     -- taglist[GetObject('Tag 230')] = nil -- example remove a tag from taglist
     -- taglist[GetObject('Tag 2')] = '0'    -- example add a tag to taglist as kill protect = No
-    taglist[TagObject[230]] = nil -- example remove a tag from taglist
+    taglist[TagObject[216]] = nil -- example remove a tag from taglist
     taglist[TagObject[215]] = '0'    -- example add a tag to taglist as kill protect = No
     setTags(myobj, taglist)          --update object with new taglist
 end
