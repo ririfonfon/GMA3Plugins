@@ -125,6 +125,7 @@ local function Main(displayHandle)
     local MacroNrStart
     local MacroNrRange
     local App = Root().ShowData.Appearances:Children()
+    local AppearObject = Root().ShowData.Appearances
     local AppNr
     local AppNrRange
     local All_5_Nr = DataPool().PresetPools[25]:Children()
@@ -195,6 +196,7 @@ local function Main(displayHandle)
 
     -- Get the colors.
     local colorTransparent = Root().ColorTheme.ColorGroups.Global.Transparent
+    local colorTransparent50 = Root().ColorTheme.ColorGroups.Global.Transparent50
     local colorBackground = Root().ColorTheme.ColorGroups.Button.Background
     local colorBackgroundPlease = Root().ColorTheme.ColorGroups.Button.BackgroundPlease
     local colorPartlySelected = Root().ColorTheme.ColorGroups.Global.PartlySelected
@@ -224,6 +226,11 @@ local function Main(displayHandle)
     -- Create the dialog base.
     local dialogWidth = 1024
     local baseInput = screenOverlay:Append("BaseInput")
+    local myicon = baseInput:Append("AppearancePreview")
+    myicon.Appearance = GetObject('Layout_Color')
+    myicon.BackColor, myicon.W = colorTransparent, 1000
+    myicon.X, myicon.Y = 0, 0
+    myicon.Interactive = 'No'
     baseInput.Name = "LC_Main_Box"
     baseInput.H = "0"
     baseInput.W = dialogWidth
@@ -287,7 +294,7 @@ local function Main(displayHandle)
     subTitle.Padding = { left = 0, right = 0, top = 5, bottom = 5 }
     subTitle.Font = "2"
     subTitle.HasHover = "No"
-    subTitle.BackColor = colorTransparent
+    subTitle.BackColor = colorTransparent50
 
     -- Create the inputs grid.
     -- This is row 2 of the dlgFrame.
@@ -963,7 +970,8 @@ local function Main(displayHandle)
         end
         MacroNrStart = caller.Content:gsub("'", "")
         MacroNrStart = tonumber(MacroNrStart)
-        MacroNrRange = MacroNrStart + 42 + Favourite_Nr + Nr_SelectedGrp Printf("MacroNrStart " .. MacroNrStart)
+        MacroNrRange = MacroNrStart + 42 + Favourite_Nr + Nr_SelectedGrp
+        Printf("MacroNrStart " .. MacroNrStart)
         for k in ipairs(MacroNr) do
             if MacroNrStart <= tonumber(MacroNr[k].NO) then
                 if MacroNrRange >= tonumber(MacroNr[k].NO) then
