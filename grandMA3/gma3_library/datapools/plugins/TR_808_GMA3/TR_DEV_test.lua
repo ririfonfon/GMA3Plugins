@@ -60,6 +60,7 @@ local function main()
     --     end
     -- end
     local TagObject = Root().ShowData.Tags
+    local TagObject_C = Root().ShowData.Tags:Children()
     local Construct_Pool = 43
     local SequenceObject = Root().ShowData.DataPools[Construct_Pool].Sequences
     local PoolObject = Root().ShowData.DataPools
@@ -77,11 +78,12 @@ local function main()
     -- TagObject[TagNum][1]:Set('DATAPOOL',PoolObject)
     -- TagObject[TagNum][1]:Set('CLASS','Sequence')
     -- TagObject[TagNum][1]:Set('No',1)
-    SequenceObject[1]:Set('Tags', TagObject[TagNum]:Index() .. ':0')
-    SequenceObject[2]:Set('Tags', TagObject[TagNum]:Index() .. ':0')
-    -- SequenceObject[2]:Set('tags', '0:0')
-
-    
+    -- SequenceObject[1]:Set('Tags', TagObject[TagNum]:Index() .. ':0')
+    -- SequenceObject[2]:Set('Tags', TagObject[TagNum]:Index() .. ':0')
+    -- SequenceObject[2]:Set('tags', '0:0') -- example remove all tags from object
+    for k, v in pairs(TagObject_C) do
+        Printf('Tag ' .. k .. ' - ' .. TagObject_C[k].Name )
+    end
 end
 
 return main
