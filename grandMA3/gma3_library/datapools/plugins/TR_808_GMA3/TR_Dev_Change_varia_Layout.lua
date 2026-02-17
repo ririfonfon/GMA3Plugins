@@ -72,7 +72,8 @@ local function main()
         end
         SeqNum = SeqEnd + 2
         SeqEnd = SeqNum + 15
-    end
+    end --  41.6 sequence 41.13 Layout
+
 
     -- mute_seq
     SeqNum = seq_mute[VariaSel]
