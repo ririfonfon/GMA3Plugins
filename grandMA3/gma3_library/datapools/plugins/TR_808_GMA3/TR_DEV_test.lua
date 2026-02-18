@@ -24,7 +24,7 @@ local function main()
     local SequenceObject = Root().ShowData.DataPools[Construct_Pool].Sequences
     local PoolObject = Root().ShowData.DataPools
     local AppearanceObject = Root().ShowData.Appearances:Children()
-    local Nr
+    local Nr, deb
 
     -- Check_Size_Pool(Layout_Nr, Layout_Object)
 
@@ -45,14 +45,19 @@ local function main()
     -- Nr = Layout_Object[Layout_Nr]:Acquire()
     -- Printf('Nr = ' .. Nr.No)
     -- Layout_Object[Layout_Nr][Nr.No]:Set('visibilityelement', 'Hidden')
-    -- for i in pairs (AppearanceObject) do
-    --     Printf('AppearanceObject ' .. i .. ' = ' .. AppearanceObject[i].Name)
-    -- end
-    local deb = AppearanceObject[145]
+    for i in pairs(AppearanceObject) do
+        if AppearanceObject[i].Name ~= nil then
+            if AppearanceObject[i].Name == '[[panelBaseGma3_png]]' then
+                Printf('AppearanceObject ' .. i .. ' = ' .. AppearanceObject[i].Name)
+                deb = AppearanceObject[i]
+            end
+        end
+    end
     Printf('deb = ' .. deb)
     Printf('deb nr = ' .. deb.No)
     Printf('deb name = ' .. deb.Name)
-    
+    Printf('deb addr = ' .. deb:AddrNative())
+
 
     Nr = Layout_Object[Layout_Nr][1]:Get('Appearance')
     if Nr ~= nil then
@@ -61,7 +66,7 @@ local function main()
         Printf('Nr is nil')
     end
     Layout_Object[Layout_Nr][2]:Set('Appearance', Nr)
-    Layout_Object[Layout_Nr][3]:Set('Appearance', deb:AddrNative())
+    Layout_Object[Layout_Nr][4]:Set('Appearance', deb:AddrNative())
 end
 
 return main
