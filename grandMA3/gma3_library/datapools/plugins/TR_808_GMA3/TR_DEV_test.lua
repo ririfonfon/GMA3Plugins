@@ -25,48 +25,127 @@ local function main()
     local PoolObject = Root().ShowData.DataPools
     local AppearanceObject = Root().ShowData.Appearances:Children()
     local Nr, deb
+    local App_Panel_Name = { '[[panelBaseGma3_png]]', '[[01_panel_scale_2_png]]', '[[01_panel_scale_3_png]]',
+        '[[01_panel_scale_4_png]]',
+    }
+    local Addr_Nat_Panel = { 0, 0, 0, 0 }
+    local App_Panel_Height = { 1205, 800, 800, 800 }
+    local App_Panel_Width = { 2000, 2000, 2000, 2000 }
 
-    -- Check_Size_Pool(Layout_Nr, Layout_Object)
-
-    -- Layout_Object:Create(Layout_Nr)
-    -- Layout_Object[Layout_Nr]:Set('Name', 'TR-808_Build')
-    -- Nr = Layout_Object[Layout_Nr]:Acquire()
-    -- Printf('Nr = ' .. Nr.No)
-    -- -- Layout_Object[Layout_Nr][Nr.No]:Set('Appearance', AppearanceObject[266])
-    -- Layout_Object[Layout_Nr][Nr.No]:Set('Appearance', '[[panelBaseGma3_png]]')
-    -- Nr = Layout_Object[Layout_Nr]:Acquire()
-    -- Printf('Nr = ' .. Nr.No)
-    -- Layout_Object[Layout_Nr][Nr.No]:Set('posx', 10)
-    -- Layout_Object[Layout_Nr][Nr.No]:Set('posy', 10)
-    -- Nr = Layout_Object[Layout_Nr]:Acquire()
-    -- Printf('Nr = ' .. Nr.No)
-    -- Layout_Object[Layout_Nr][Nr.No]:Set('width', 2000)
-    -- Layout_Object[Layout_Nr][Nr.No]:Set('height', 800)
-    -- Nr = Layout_Object[Layout_Nr]:Acquire()
-    -- Printf('Nr = ' .. Nr.No)
-    -- Layout_Object[Layout_Nr][Nr.No]:Set('visibilityelement', 'Hidden')
-    for i in pairs(AppearanceObject) do
-        if AppearanceObject[i].Name ~= nil then
-            if AppearanceObject[i].Name == '[[panelBaseGma3_png]]' then
-                Printf('AppearanceObject ' .. i .. ' = ' .. AppearanceObject[i].Name)
-                deb = AppearanceObject[i]
+    for k in pairs(App_Panel_Name) do
+        for i in pairs(AppearanceObject) do
+            if AppearanceObject[i].Name ~= nil then
+                if AppearanceObject[i].Name == App_Panel_Name[k] then
+                    Printf('AppearanceObject ' .. i .. ' = ' .. AppearanceObject[i].Name)
+                    Addr_Nat_Panel[k] = AppearanceObject[i]:AddrNative()
+                    Printf('Addr_Nat_Panel ' .. k .. ' = ' .. Addr_Nat_Panel[k])
+                end
             end
         end
     end
-    Printf('deb = ' .. deb)
-    Printf('deb nr = ' .. deb.No)
-    Printf('deb name = ' .. deb.Name)
-    Printf('deb addr = ' .. deb:AddrNative())
 
 
-    Nr = Layout_Object[Layout_Nr][1]:Get('Appearance')
-    if Nr ~= nil then
-        Printf('Nr = ' .. Nr)
-    else
-        Printf('Nr is nil')
-    end
-    Layout_Object[Layout_Nr][2]:Set('Appearance', Nr)
-    Layout_Object[Layout_Nr][4]:Set('Appearance', deb:AddrNative())
+    Check_Size_Pool(Layout_Nr, Layout_Object)
+
+    Layout_Object:Create(Layout_Nr)
+    Layout_Object[Layout_Nr]:Set('Name', 'TR-808_Build')
+    Layout_Object[Layout_Nr]:Set('ViewPosX', 0)
+    Layout_Object[Layout_Nr]:Set('ViewPosY', 0)
+    Layout_Object[Layout_Nr]:Set('ViewPosActive', 'Yes')
+    Nr = Layout_Object[Layout_Nr]:Acquire()
+    Printf('Nr = ' .. Nr.No)
+    Layout_Object[Layout_Nr][Nr.No]:Set('Name', App_Panel_Name[Nr.No])
+    Layout_Object[Layout_Nr][Nr.No]:Set('Appearance', Addr_Nat_Panel[Nr.No])
+    Layout_Object[Layout_Nr][Nr.No]:Set('posx', 0)
+    Layout_Object[Layout_Nr][Nr.No]:Set('posy', 0)
+    Layout_Object[Layout_Nr][Nr.No]:Set('width', App_Panel_Width[Nr.No])
+    Layout_Object[Layout_Nr][Nr.No]:Set('height', App_Panel_Height[Nr.No])
+    Layout_Object[Layout_Nr][Nr.No]:Set('visibilityelement', 'Visible')
+    Layout_Object[Layout_Nr][Nr.No]:Set('visibilitybar', 'Hidden')
+    Layout_Object[Layout_Nr][Nr.No]:Set('visibilityobjectname', 'Hidden')
+    Layout_Object[Layout_Nr][Nr.No]:Set('visibilityid', 'Hidden')
+    Layout_Object[Layout_Nr][Nr.No]:Set('visibilitycid', 'Hidden')
+    Layout_Object[Layout_Nr][Nr.No]:Set('visibilityvalue', 'Hidden')
+    Layout_Object[Layout_Nr][Nr.No]:Set('visibilityicon', 'Hidden')
+    Layout_Object[Layout_Nr][Nr.No]:Set('visibilityidicatorbar', 'Hidden')
+    Layout_Object[Layout_Nr][Nr.No]:Set('visibilityselectionrelevance', 'Hidden')
+    Layout_Object[Layout_Nr][Nr.No]:Set('visibilityborder', 'Hidden')
+    Layout_Object[Layout_Nr][Nr.No]:Set('fullresolution', 'Yes')
+    Layout_Object[Layout_Nr][Nr.No]:Set('Note', 'FOND')
+    Nr = Layout_Object[Layout_Nr]:Acquire()
+    Printf('Nr = ' .. Nr.No)
+    Layout_Object[Layout_Nr][Nr.No]:Set('Name', App_Panel_Name[Nr.No])
+    Layout_Object[Layout_Nr][Nr.No]:Set('Appearance', Addr_Nat_Panel[Nr.No])
+    Layout_Object[Layout_Nr][Nr.No]:Set('posx', 0)
+    Layout_Object[Layout_Nr][Nr.No]:Set('posy', -434)
+    Layout_Object[Layout_Nr][Nr.No]:Set('width', App_Panel_Width[Nr.No])
+    Layout_Object[Layout_Nr][Nr.No]:Set('height', App_Panel_Height[Nr.No])
+    Layout_Object[Layout_Nr][Nr.No]:Set('visibilityelement', 'Hidden')
+    Layout_Object[Layout_Nr][Nr.No]:Set('visibilitybar', 'Hidden')
+    Layout_Object[Layout_Nr][Nr.No]:Set('visibilityobjectname', 'Hidden')
+    Layout_Object[Layout_Nr][Nr.No]:Set('visibilityid', 'Hidden')
+    Layout_Object[Layout_Nr][Nr.No]:Set('visibilitycid', 'Hidden')
+    Layout_Object[Layout_Nr][Nr.No]:Set('visibilityvalue', 'Hidden')
+    Layout_Object[Layout_Nr][Nr.No]:Set('visibilityicon', 'Hidden')
+    Layout_Object[Layout_Nr][Nr.No]:Set('visibilityidicatorbar', 'Hidden')
+    Layout_Object[Layout_Nr][Nr.No]:Set('visibilityselectionrelevance', 'Hidden')
+    Layout_Object[Layout_Nr][Nr.No]:Set('visibilityborder', 'Hidden')
+    Layout_Object[Layout_Nr][Nr.No]:Set('fullresolution', 'Yes')
+    Layout_Object[Layout_Nr][Nr.No]:Set('Note', 'FOND')
+    Nr = Layout_Object[Layout_Nr]:Acquire()
+    Printf('Nr = ' .. Nr.No)
+    Layout_Object[Layout_Nr][Nr.No]:Set('Name', App_Panel_Name[Nr.No])
+    Layout_Object[Layout_Nr][Nr.No]:Set('Appearance', Addr_Nat_Panel[Nr.No])
+    Layout_Object[Layout_Nr][Nr.No]:Set('posx', 0)
+    Layout_Object[Layout_Nr][Nr.No]:Set('posy', -434)
+    Layout_Object[Layout_Nr][Nr.No]:Set('width', App_Panel_Width[Nr.No])
+    Layout_Object[Layout_Nr][Nr.No]:Set('height', App_Panel_Height[Nr.No])
+    Layout_Object[Layout_Nr][Nr.No]:Set('visibilityelement', 'Visible')
+    Layout_Object[Layout_Nr][Nr.No]:Set('visibilitybar', 'Hidden')
+    Layout_Object[Layout_Nr][Nr.No]:Set('visibilityobjectname', 'Hidden')
+    Layout_Object[Layout_Nr][Nr.No]:Set('visibilityid', 'Hidden')
+    Layout_Object[Layout_Nr][Nr.No]:Set('visibilitycid', 'Hidden')
+    Layout_Object[Layout_Nr][Nr.No]:Set('visibilityvalue', 'Hidden')
+    Layout_Object[Layout_Nr][Nr.No]:Set('visibilityicon', 'Hidden')
+    Layout_Object[Layout_Nr][Nr.No]:Set('visibilityidicatorbar', 'Hidden')
+    Layout_Object[Layout_Nr][Nr.No]:Set('visibilityselectionrelevance', 'Hidden')
+    Layout_Object[Layout_Nr][Nr.No]:Set('visibilityborder', 'Hidden')
+    Layout_Object[Layout_Nr][Nr.No]:Set('fullresolution', 'Yes')
+    Layout_Object[Layout_Nr][Nr.No]:Set('Note', 'FOND')
+    Nr = Layout_Object[Layout_Nr]:Acquire()
+    Printf('Nr = ' .. Nr.No)
+   Layout_Object[Layout_Nr][Nr.No]:Set('Name', App_Panel_Name[Nr.No])
+    Layout_Object[Layout_Nr][Nr.No]:Set('Appearance', Addr_Nat_Panel[Nr.No])
+    Layout_Object[Layout_Nr][Nr.No]:Set('posx', 0)
+    Layout_Object[Layout_Nr][Nr.No]:Set('posy', -434)
+    Layout_Object[Layout_Nr][Nr.No]:Set('width', App_Panel_Width[Nr.No])
+    Layout_Object[Layout_Nr][Nr.No]:Set('height', App_Panel_Height[Nr.No])
+    Layout_Object[Layout_Nr][Nr.No]:Set('visibilityelement', 'Hidden')
+    Layout_Object[Layout_Nr][Nr.No]:Set('visibilitybar', 'Hidden')
+    Layout_Object[Layout_Nr][Nr.No]:Set('visibilityobjectname', 'Hidden')
+    Layout_Object[Layout_Nr][Nr.No]:Set('visibilityid', 'Hidden')
+    Layout_Object[Layout_Nr][Nr.No]:Set('visibilitycid', 'Hidden')
+    Layout_Object[Layout_Nr][Nr.No]:Set('visibilityvalue', 'Hidden')
+    Layout_Object[Layout_Nr][Nr.No]:Set('visibilityicon', 'Hidden')
+    Layout_Object[Layout_Nr][Nr.No]:Set('visibilityidicatorbar', 'Hidden')
+    Layout_Object[Layout_Nr][Nr.No]:Set('visibilityselectionrelevance', 'Hidden')
+    Layout_Object[Layout_Nr][Nr.No]:Set('visibilityborder', 'Hidden')
+    Layout_Object[Layout_Nr][Nr.No]:Set('fullresolution', 'Yes')
+    Layout_Object[Layout_Nr][Nr.No]:Set('Note', 'FOND')
+
+
+
+
+
+
+    -- Nr = Layout_Object[Layout_Nr][1]:Get('Appearance')
+    -- if Nr ~= nil then
+    --     Printf('Nr = ' .. Nr)
+    -- else
+    --     Printf('Nr is nil')
+    -- end
+    -- Layout_Object[Layout_Nr][2]:Set('Appearance', Nr)
+    -- Layout_Object[Layout_Nr][4]:Set('Appearance', deb:AddrNative())
 end
 
 return main
