@@ -31,7 +31,7 @@ end
 local function main()
     local Construct_Pool = 43
     local Layout_Nr = 1
-    local object_start = { 0, 34, 17, 25, 51, 30, 765, 68, 88,105,122, 102, 116, 190,207, 189, 206 }
+    local object_start = { 0, 34, 17, 25, 51, 30, 1601, 1618, 82, 99, 765, 68, 88, 105, 122, 102, 116, 190, 207, 189, 206 }
     local Layout_Object = Root().ShowData.DataPools[Construct_Pool].Layouts
     -- local Layout_Object_C = Root().ShowData.DataPools[Construct_Pool].Layouts:Children()
     local TagObject = Root().ShowData.Tags
@@ -61,8 +61,8 @@ local function main()
     local btn_mute_solo_all_none_y = { 135, 92, 49, 5, -38, -82, -126, -169, -212, -256, -300, -343 }
     local Select_Value_Matricks_x = { 49, 153, 256, 360, 403 }
     local Select_Value_Matricks_y = { 132, 90, 46, 2, -40, -84, -128, -172, -215, -259, -302, -346 }
-    local S_V_M_Color = { 'FF00FFFF', '00FFFFFF', 'FFFF00FF', '00FF00FF', 'FF0000FF' }
-    local S_V_M_Text = { 'Group', 'Value', 'Matricks', 'None/None', 'None/None' }
+    local S_V_M_Color = { 'FF00FFFF', '00FFFFFF', 'FFFF00FF', '00FF00FF', 'FF0000FF', '0000FFFF', 'FF0000FF' }
+    local S_V_M_Text = { 'Group', 'Value', 'Matricks', 'None/None', 'None/None', 'All', 'None' }
 
     for k in pairs(App_Panel_Name) do
         for i in pairs(AppearanceObject) do
@@ -179,6 +179,48 @@ local function main()
     Layout_Object[Layout_Nr][Nr.No]:Set('Note', 'FOND')
     Set_Def(Layout_Nr, Nr, Layout_Object)
 
+    -- all_sub_#
+    for y = 1, 2 do
+        for i = 1, 12 do
+            Nr = Layout_Object[Layout_Nr]:Acquire()
+            Layout_Object[Layout_Nr][Nr.No]:Set('Object', MacroObject[i + object_start[6 + y]])
+            Layout_Object[Layout_Nr][Nr.No]:Set('posx', btn_mute_solo_all_none_x[y + 2])
+            Layout_Object[Layout_Nr][Nr.No]:Set('posy', btn_mute_solo_all_none_y[i])
+            Layout_Object[Layout_Nr][Nr.No]:Set('width', 40)
+            Layout_Object[Layout_Nr][Nr.No]:Set('height', 34)
+            Layout_Object[Layout_Nr][Nr.No]:Set('action', 'Go+')
+            Layout_Object[Layout_Nr][Nr.No]:Set('Note', 'all_none_FOND')
+            Set_Def(Layout_Nr, Nr, Layout_Object)
+            Layout_Object[Layout_Nr][Nr.No]:Set('visibilityborder', 'Visible')
+            Layout_Object[Layout_Nr][Nr.No]:Set('bordersize', 1)
+            Layout_Object[Layout_Nr][Nr.No]:Set('bordercolor', S_V_M_Color[y + 5])
+            Layout_Object[Layout_Nr][Nr.No]:Set('customtexttext', S_V_M_Text[y + 5])
+            Layout_Object[Layout_Nr][Nr.No]:Set('customtextsize', 28)
+            Layout_Object[Layout_Nr][Nr.No]:Set('customtextalignmenth', 'Center')
+            Layout_Object[Layout_Nr][Nr.No]:Set('customtextalignmentv', 'Center')
+        end
+    end
+
+    Nr = Layout_Object[Layout_Nr]:Acquire()
+    Layout_Object[Layout_Nr][Nr.No]:Set('Object', SequenceObject[object_start[9]])
+    Layout_Object[Layout_Nr][Nr.No]:Set('posx', 459)
+    Layout_Object[Layout_Nr][Nr.No]:Set('posy', -386)
+    Layout_Object[Layout_Nr][Nr.No]:Set('width', 30)
+    Layout_Object[Layout_Nr][Nr.No]:Set('height', 30)
+    Layout_Object[Layout_Nr][Nr.No]:Set('action', 'Go+')
+    Layout_Object[Layout_Nr][Nr.No]:Set('Note', 'all_none_FOND')
+    Set_Def(Layout_Nr, Nr, Layout_Object)
+
+    Nr = Layout_Object[Layout_Nr]:Acquire()
+    Layout_Object[Layout_Nr][Nr.No]:Set('Object', SequenceObject[object_start[10]])
+    Layout_Object[Layout_Nr][Nr.No]:Set('posx', 459)
+    Layout_Object[Layout_Nr][Nr.No]:Set('posy', -386)
+    Layout_Object[Layout_Nr][Nr.No]:Set('width', 30)
+    Layout_Object[Layout_Nr][Nr.No]:Set('height', 30)
+    Layout_Object[Layout_Nr][Nr.No]:Set('action', 'Go+')
+    Layout_Object[Layout_Nr][Nr.No]:Set('Note', 'all_none_FOND')
+    Set_Def(Layout_Nr, Nr, Layout_Object)
+
 
     ---------------------------------
     ---------- ABCDEFGH -------------
@@ -188,7 +230,7 @@ local function main()
     for y = 1, 12 do
         for i = 1, 16 do
             Nr = Layout_Object[Layout_Nr]:Acquire()
-            Layout_Object[Layout_Nr][Nr.No]:Set('Object', SequenceObject[i + object_start[7]])
+            Layout_Object[Layout_Nr][Nr.No]:Set('Object', SequenceObject[i + object_start[11]])
             Layout_Object[Layout_Nr][Nr.No]:Set('posx', btn_sub_x[i])
             Layout_Object[Layout_Nr][Nr.No]:Set('posy', btn_sub_y[y])
             Layout_Object[Layout_Nr][Nr.No]:Set('width', 70)
@@ -203,7 +245,7 @@ local function main()
     for y = 1, 2 do
         for i = 1, 12 do
             Nr = Layout_Object[Layout_Nr]:Acquire()
-            Layout_Object[Layout_Nr][Nr.No]:Set('Object', SequenceObject[i + object_start[8]])
+            Layout_Object[Layout_Nr][Nr.No]:Set('Object', SequenceObject[i + object_start[12]])
             Layout_Object[Layout_Nr][Nr.No]:Set('posx', btn_mute_solo_all_none_x[y])
             Layout_Object[Layout_Nr][Nr.No]:Set('posy', btn_mute_solo_all_none_y[i])
             Layout_Object[Layout_Nr][Nr.No]:Set('width', 30)
@@ -218,7 +260,7 @@ local function main()
     for y = 1, 3 do
         for i = 1, 12 do
             Nr = Layout_Object[Layout_Nr]:Acquire()
-            Layout_Object[Layout_Nr][Nr.No]:Set('Object', MacroObject[i + object_start[8+y]])
+            Layout_Object[Layout_Nr][Nr.No]:Set('Object', MacroObject[i + object_start[12 + y]])
             Layout_Object[Layout_Nr][Nr.No]:Set('posx', Select_Value_Matricks_x[y])
             Layout_Object[Layout_Nr][Nr.No]:Set('posy', Select_Value_Matricks_y[i])
             Layout_Object[Layout_Nr][Nr.No]:Set('width', 100)
@@ -239,7 +281,7 @@ local function main()
     --- select
     for i = 1, 12 do
         Nr = Layout_Object[Layout_Nr]:Acquire()
-        Layout_Object[Layout_Nr][Nr.No]:Set('Object', SequenceObject[i + object_start[12]])
+        Layout_Object[Layout_Nr][Nr.No]:Set('Object', SequenceObject[i + object_start[16]])
         Layout_Object[Layout_Nr][Nr.No]:Set('posx', 538)
         Layout_Object[Layout_Nr][Nr.No]:Set('posy', btn_mute_solo_all_none_y[i])
         Layout_Object[Layout_Nr][Nr.No]:Set('width', 30)
@@ -250,7 +292,7 @@ local function main()
     end
 
     Nr = Layout_Object[Layout_Nr]:Acquire()
-    Layout_Object[Layout_Nr][Nr.No]:Set('Object', SequenceObject[object_start[13]])
+    Layout_Object[Layout_Nr][Nr.No]:Set('Object', SequenceObject[object_start[17]])
     Layout_Object[Layout_Nr][Nr.No]:Set('posx', 538)
     Layout_Object[Layout_Nr][Nr.No]:Set('posy', -386)
     Layout_Object[Layout_Nr][Nr.No]:Set('width', 30)
@@ -263,7 +305,7 @@ local function main()
     for y = 1, 2 do
         for i = 1, 12 do
             Nr = Layout_Object[Layout_Nr]:Acquire()
-            Layout_Object[Layout_Nr][Nr.No]:Set('Object', MacroObject[i + object_start[13+y]])
+            Layout_Object[Layout_Nr][Nr.No]:Set('Object', MacroObject[i + object_start[17 + y]])
             Layout_Object[Layout_Nr][Nr.No]:Set('posx', Select_Value_Matricks_x[y + 3])
             Layout_Object[Layout_Nr][Nr.No]:Set('posy', Select_Value_Matricks_y[i])
             Layout_Object[Layout_Nr][Nr.No]:Set('width', 40)
@@ -284,7 +326,7 @@ local function main()
 
     --- Edit_Fade_TR_INPUT
     Nr = Layout_Object[Layout_Nr]:Acquire()
-    Layout_Object[Layout_Nr][Nr.No]:Set('Object', MacroObject[object_start[16]])
+    Layout_Object[Layout_Nr][Nr.No]:Set('Object', MacroObject[object_start[20]])
     Layout_Object[Layout_Nr][Nr.No]:Set('posx', 360)
     Layout_Object[Layout_Nr][Nr.No]:Set('posy', -386)
     Layout_Object[Layout_Nr][Nr.No]:Set('width', 40)
@@ -303,7 +345,7 @@ local function main()
 
     --- Edit_Delay_TR_INPUT
     Nr = Layout_Object[Layout_Nr]:Acquire()
-    Layout_Object[Layout_Nr][Nr.No]:Set('Object', MacroObject[object_start[17]])
+    Layout_Object[Layout_Nr][Nr.No]:Set('Object', MacroObject[object_start[21]])
     Layout_Object[Layout_Nr][Nr.No]:Set('posx', 403)
     Layout_Object[Layout_Nr][Nr.No]:Set('posy', -386)
     Layout_Object[Layout_Nr][Nr.No]:Set('width', 40)
