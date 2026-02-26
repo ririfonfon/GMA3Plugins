@@ -86,7 +86,7 @@ local function main()
     local SequenceObject = Root().ShowData.DataPools[Construct_Pool].Sequences
     local PoolObject = Root().ShowData.DataPools
     local TagObject = Root().ShowData.Tags
-    local AppearanceName = {
+    local App_btn_green_red = {
         '[[17_btn_a_low_png]]', '[[38_btn_a_next_png]]', '[[17_btn_a_high_png]]',
         '[[16_btn_b_low_png]]', '[[37_btn_b_next_png]]', '[[16_btn_b_high_png]]',
         '[[15_btn_c_low_png]]', '[[36_btn_c_next_png]]', '[[15_btn_c_high_png]]',
@@ -110,22 +110,22 @@ local function main()
         Check_Size_Pool(i, SequenceObject)
         SequenceObject:Create(i)
         SequenceObject[i]:Set('Name', 'btn_' .. varia_min[VariaSel] .. '_green')
-        SequenceObject[i]:Set('Appearance', AppearanceName[number])
+        SequenceObject[i]:Set('Appearance', App_btn_green_red[number])
         SequenceObject[i]:Set('PreferCueAppearance', 1)
         SequenceObject[i]:Insert()
         SequenceObject[i][3]:Set('No', 1)
         SequenceObject[i][3]:Create(1)
-        SequenceObject[i][3][1]:Set('Appearance', AppearanceName[number + 1])
+        SequenceObject[i][3][1]:Set('Appearance', App_btn_green_red[number + 1])
         SequenceObject[i][3][1]:Set('Command',
             " Go+ DataPool '" .. PoolObject[Construct_Pool].Name .. "'  Macro 'Varia_" .. varia_mag[VariaSel] .. "'")
         SequenceObject[i]:Insert()
         SequenceObject[i][4]:Set('No', 2)
         SequenceObject[i][4]:Create(1)
-        SequenceObject[i][4][1]:Set('Appearance', AppearanceName[number + 2])
+        SequenceObject[i][4][1]:Set('Appearance', App_btn_green_red[number + 2])
         SequenceObject[i]:Insert()
         SequenceObject[i][5]:Set('No', 3)
         SequenceObject[i][5]:Create(1)
-        SequenceObject[i][5][1]:Set('Appearance', AppearanceName[number])
+        SequenceObject[i][5][1]:Set('Appearance', App_btn_green_red[number])
         myobj = SequenceObject[i]
         taglist = getTags(myobj)
         taglist[TagObject[21]] = '0'
@@ -142,12 +142,12 @@ local function main()
         Check_Size_Pool(i, SequenceObject)
         SequenceObject:Create(i)
         SequenceObject[i]:Set('Name', "Varia_" .. varia_mag[VariaSel] .. "")
-        SequenceObject[i]:Set('Appearance', AppearanceName[number])
+        SequenceObject[i]:Set('Appearance', App_btn_green_red[number])
         SequenceObject[i]:Set('PreferCueAppearance', 1)
         SequenceObject[i]:Insert()
         SequenceObject[i][3]:Set('No', 1)
         SequenceObject[i][3]:Create(1)
-        SequenceObject[i][3][1]:Set('Appearance', AppearanceName[number + 1])
+        SequenceObject[i][3][1]:Set('Appearance', App_btn_green_red[number + 1])
         SequenceObject[i][3][1]:Set('Command',
             " Go+ DataPool '" .. PoolObject[Construct_Pool].Name .. "'  Macro 'Edit_Varia_" .. varia_mag[VariaSel] .. "'")
         myobj = SequenceObject[i]
