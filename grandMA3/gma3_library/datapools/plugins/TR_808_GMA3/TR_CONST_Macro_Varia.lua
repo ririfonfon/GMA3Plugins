@@ -284,7 +284,7 @@ local function main()
         VariaSel = VariaSel + 1
     end
 
-    local varia_place = { 55, 346, 637, 928, 1219, 1510, 1801, 2092, 2383 }
+    local varia_place = { 81, 372, 663, 854, 1245, 1536, 1827, 2118, 2409}
 
     local MNum_E, MEnd_E
     MNum_E = MEnd_Play + 10
@@ -301,7 +301,7 @@ local function main()
             MacroObject[i]:Insert(a)
         end
         MacroObject[i][1]:Set('Command', "Set DataPool '" ..
-            PoolObject[Construct_Pool].Name .. "' Layout 1.55 Thru 2382 'VisibilityElement' = '0'")
+            PoolObject[Construct_Pool].Name .. "' Layout 1.81 Thru 2382 'VisibilityElement' = '0'")
         MacroObject[i][2]:Set('Command', "Set DataPool '" ..
             PoolObject[Construct_Pool].Name .. "' Layout 1." ..
             varia_place[count] .. " Thru " .. varia_place[count + 1] - 1 .. " 'VisibilityElement' = '1'")
