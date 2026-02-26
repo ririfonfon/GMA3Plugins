@@ -284,7 +284,7 @@ local function main()
         VariaSel = VariaSel + 1
     end
 
-    local varia_place = { 81, 372, 663, 854, 1245, 1536, 1827, 2118, 2409}
+    local varia_place = { 81, 372, 663, 954, 1245, 1536, 1827, 2118, 2409}
 
     local MNum_E, MEnd_E
     MNum_E = MEnd_Play + 10
