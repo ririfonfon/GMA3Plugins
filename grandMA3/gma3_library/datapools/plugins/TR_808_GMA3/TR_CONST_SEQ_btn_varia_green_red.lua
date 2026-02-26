@@ -14,6 +14,24 @@ local function Check_Size_Pool(id, PoolObject)
         PoolObject:Resize(newsize)
     end
 end
+
+local function getTags(obj)
+    local tbl = {}
+    for a, b in obj:Get('Tags', Enums.Roles.Edit):gmatch('([^:,]+):([^,]+)') do
+        tbl[StrToHandle(a)] = tonumber(b)
+        Printf(a .. ' - ' .. tbl[StrToHandle(a)])
+    end
+    return tbl
+end
+
+local function setTags(obj, tbl)
+    local str = ''
+    for a, b in pairs(tbl) do
+        str = str .. HandleToStr(a) .. ':' .. b .. ','
+    end
+    obj:Set('Tags', str)
+end
+
 local function main()
     local inputs = {
         { name = "Sequence Number", value = "18", whiteFilter = "0123456789" },
@@ -27,6 +45,7 @@ local function main()
     local count = 1
     local varia_min = { 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h' }
     local varia_mag = { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H' }
+    local taglist, myobj
 
     -- open messagebox:
     local resultTable =
@@ -67,26 +86,31 @@ local function main()
     local SequenceObject = Root().ShowData.DataPools[Construct_Pool].Sequences
     local PoolObject = Root().ShowData.DataPools
     local AppObject = Root().ShowData.Appearances
+    local TagObject = Root().ShowData.Tags
     for i = SeqNum, SeqEnd, 1 do
         Check_Size_Pool(i, SequenceObject)
         SequenceObject:Create(i)
         SequenceObject[i]:Set('Name', 'btn_' .. varia_min[VariaSel] .. '_green')
-        SequenceObject[i]:Set('Appearance', AppObject[302 - (VariaSel * 2)]) -- 302 - (1*2) = 300
+        SequenceObject[i]:Set('Appearance', AppObject[203 + (VariaSel * 2)])
         SequenceObject[i]:Set('PreferCueAppearance', 1)
         SequenceObject[i]:Insert()
         SequenceObject[i][3]:Set('No', 1)
         SequenceObject[i][3]:Create(1)
-        SequenceObject[i][3][1]:Set('Appearance', AppObject[332 - VariaSel])
+        SequenceObject[i][3][1]:Set('Appearance', AppObject[220 + VariaSel])
         SequenceObject[i][3][1]:Set('Command',
             " Go+ DataPool '" .. PoolObject[Construct_Pool].Name .. "'  Macro 'Varia_" .. varia_mag[VariaSel] .. "'")
         SequenceObject[i]:Insert()
         SequenceObject[i][4]:Set('No', 2)
         SequenceObject[i][4]:Create(1)
-        SequenceObject[i][4][1]:Set('Appearance', AppObject[301 - (VariaSel * 2)])
+        SequenceObject[i][4][1]:Set('Appearance', AppObject[204 + (VariaSel * 2)])
         SequenceObject[i]:Insert()
         SequenceObject[i][5]:Set('No', 3)
         SequenceObject[i][5]:Create(1)
-        SequenceObject[i][5][1]:Set('Appearance', AppObject[302 - (VariaSel * 2)])
+        SequenceObject[i][5][1]:Set('Appearance', AppObject[203 + (VariaSel * 2)])
+        myobj = SequenceObject[i]
+        taglist = getTags(myobj)
+        taglist[TagObject[21]] = '0'
+        setTags(myobj, taglist)
         VariaSel = VariaSel + 1
     end
 
@@ -98,14 +122,18 @@ local function main()
         Check_Size_Pool(i, SequenceObject)
         SequenceObject:Create(i)
         SequenceObject[i]:Set('Name', "Varia_" .. varia_mag[VariaSel] .. "")
-        SequenceObject[i]:Set('Appearance', AppObject[318 - (VariaSel * 2)])
+        SequenceObject[i]:Set('Appearance', AppObject[237 + (VariaSel * 2)])
         SequenceObject[i]:Set('PreferCueAppearance', 1)
         SequenceObject[i]:Insert()
         SequenceObject[i][3]:Set('No', 1)
         SequenceObject[i][3]:Create(1)
-        SequenceObject[i][3][1]:Set('Appearance', AppObject[317 - (VariaSel * 2)])
+        SequenceObject[i][3][1]:Set('Appearance', AppObject[238 + (VariaSel * 2)])
         SequenceObject[i][3][1]:Set('Command',
             " Go+ DataPool '" .. PoolObject[Construct_Pool].Name .. "'  Macro 'Edit_Varia_" .. varia_mag[VariaSel] .. "'")
+        myobj = SequenceObject[i]
+        taglist = getTags(myobj)
+        taglist[TagObject[22]] = '0'
+        setTags(myobj, taglist)
         VariaSel = VariaSel + 1
     end
 end
