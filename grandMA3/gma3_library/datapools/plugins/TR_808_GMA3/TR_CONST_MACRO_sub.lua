@@ -14,7 +14,7 @@ end
 
 local function main()
     local inputs        = {
-        { name = "macro Number",      value = "106",  whiteFilter = "0123456789" },
+        { name = "macro Number", value = "106", whiteFilter = "0123456789" },
     }
     local selectors     = {
         { name = "Varia Selector", selectedValue = 1, values = { ["a"] = 1, ["b"] = 2, ["c"] = 3, ["d"] = 4, ["e"] = 5, ["f"] = 6, ["g"] = 7, ["h"] = 8 },                                                   type = 1 },
@@ -96,7 +96,7 @@ local function main()
             MacroObject[i][3]:Set('Command',
                 "SetUserVariable 'TR_Sub' '" .. varia_min[VariaSel] .. "_Sub_#" .. subSel .. "'")
             MacroObject[i][4]:Set('Command', "SetUserVariable 'TR_Layout' '1_" .. lay_object .. "'")
-            MacroObject[i][5]:Set('Command', "SetUserVariable 'TR_Pool' 41")
+            MacroObject[i][5]:Set('Command', "SetUserVariable 'TR_Pool' '" .. PoolObject[Construct_Pool].Name .. "'")
             MacroObject[i][6]:Set('Command',
                 "Call DataPool '" .. PoolObject[Construct_Pool].Name .. "' Plugin 'TR_808_Retour_Recipie'")
             subSel = subSel + 1
@@ -121,7 +121,7 @@ local function main()
             MacroObject[i][3]:Set('Command',
                 "SetUserVariable 'TR_Sub' '" .. varia_min[VariaSel] .. "_Sub_#" .. subSel .. "'")
             MacroObject[i][4]:Set('Command', "SetUserVariable 'TR_Layout' '1_" .. lay_object .. "'")
-            MacroObject[i][5]:Set('Command', "SetUserVariable 'TR_Pool' 41")
+            MacroObject[i][5]:Set('Command', "SetUserVariable 'TR_Pool' '" .. PoolObject[Construct_Pool].Name .. "'")
             MacroObject[i][6]:Set('Command',
                 "Call DataPool '" .. PoolObject[Construct_Pool].Name .. "' Plugin 'TR_808_Retour_Recipie'")
             subSel = subSel + 1
@@ -146,7 +146,7 @@ local function main()
             MacroObject[i][3]:Set('Command',
                 "SetUserVariable 'TR_Sub' '" .. varia_min[VariaSel] .. "_Sub_#" .. subSel .. "'")
             MacroObject[i][4]:Set('Command', "SetUserVariable 'TR_Layout' '1_" .. lay_object .. "'")
-            MacroObject[i][5]:Set('Command', "SetUserVariable 'TR_Pool' 41")
+            MacroObject[i][5]:Set('Command', "SetUserVariable 'TR_Pool' '" .. PoolObject[Construct_Pool].Name .. "'")
             MacroObject[i][6]:Set('Command',
                 "Call DataPool '" .. PoolObject[Construct_Pool].Name .. "' Plugin 'TR_808_Retour_Recipie'")
             subSel = subSel + 1
@@ -220,7 +220,7 @@ local function main()
         MacroNum = MacroEnd + 6
         MacroEnd = MacroNum + 11
         subSel = 1
-                
+
         lay_object = tonumber(macro_fade[VariaSel])
         for i = MacroNum, MacroEnd, 1 do
             Check_Size_Pool(i, MacroObject)
@@ -237,7 +237,7 @@ local function main()
             MacroObject[i][4]:Set('Command',
                 "SetUserVariable 'TR_Sub' '" .. varia_min[VariaSel] .. "_Sub_#" .. subSel .. "'")
             MacroObject[i][5]:Set('Command', "SetUserVariable 'TR_Layout' '1_" .. lay_object .. "'")
-            MacroObject[i][6]:Set('Command', "SetUserVariable 'TR_Pool' 41")
+            MacroObject[i][6]:Set('Command', "SetUserVariable 'TR_Pool' '" .. PoolObject[Construct_Pool].Name .. "'")
             MacroObject[i][7]:Set('Command',
                 "Call DataPool '" .. PoolObject[Construct_Pool].Name .. "' Plugin 'TR_808_Retour_Recipie'")
             subSel = subSel + 1
@@ -266,7 +266,7 @@ local function main()
         MacroEnd = MacroNum + 11
         subSel = 1
 
-        lay_object = tonumber (macro_delay[VariaSel])
+        lay_object = tonumber(macro_delay[VariaSel])
         for i = MacroNum, MacroEnd, 1 do
             Check_Size_Pool(i, MacroObject)
             MacroObject:Create(i)
@@ -282,7 +282,7 @@ local function main()
             MacroObject[i][4]:Set('Command',
                 "SetUserVariable 'TR_Sub' '" .. varia_min[VariaSel] .. "_Sub_#" .. subSel .. "'")
             MacroObject[i][5]:Set('Command', "SetUserVariable 'TR_Layout' '1_" .. lay_object .. "'")
-            MacroObject[i][6]:Set('Command', "SetUserVariable 'TR_Pool' 41")
+            MacroObject[i][6]:Set('Command', "SetUserVariable 'TR_Pool' '" .. PoolObject[Construct_Pool].Name .. "'")
             MacroObject[i][7]:Set('Command',
                 "Call DataPool '" .. PoolObject[Construct_Pool].Name .. "' Plugin 'TR_808_Retour_Recipie'")
             subSel = subSel + 1
