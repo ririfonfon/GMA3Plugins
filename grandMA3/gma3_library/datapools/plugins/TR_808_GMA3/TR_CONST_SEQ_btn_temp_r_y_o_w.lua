@@ -18,18 +18,16 @@ local function main()
     local inputs = {
         { name = "Sequence Number", value = "1", whiteFilter = "0123456789" },
     }
-    local selectors = {
-        { name = "Varia Selector", selectedValue = 1, values = { ["a"] = 1, ["b"] = 2, ["c"] = 3, ["d"] = 4, ["e"] = 5, ["f"] = 6, ["g"] = 7, ["h"] = 8 },                                                   type = 1 },
-        { name = "Sub Selector",   selectedValue = 1, values = { ["1"] = 1, ["2"] = 2, ["3"] = 3, ["4"] = 4, ["5"] = 5, ["6"] = 6, ["7"] = 7, ["8"] = 8, ["9"] = 9, ["10"] = 10, ["11"] = 11, ["12"] = 12 }, type = 1 }
-    }
 
-    local SeqNum, VariaSel, SeqEnd, subSel
-    local count = 1
-    local varia_min = { 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h' }
-    local varia_mag = { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H' }
-    local color_btn = { 'red', 'red', 'red', 'red', 'or', 'or', 'or', 'or', 'yel', 'yel', 'yel', 'yel', 'whit', 'whit',
-        'whit', 'whit' }
-    local app_on_btn = { 278, 278, 278, 278, 280, 280, 280, 280, 274, 274, 274, 274, 276, 276, 276, 276 }
+    local SeqNum, SeqEnd
+    local count, nr = 1, 1
+
+    local color_btn = { 'red', 'red', 'or', 'or', 'yel', 'yel', 'whit', 'whit' }
+    local app_btn_r_o_y_w = {
+        '[[05_btn_orange_off_png]]', '[[05_btn_orange_on_png]]',
+        '[[06_btn_light_orange_off_png]]', '[[06_btn_light_orange_on_png]]',
+        '[[03_btn_yellow_off_png]]', '[[03_btn_yellow_on_png]]',
+        '[[04_btn_white_off_png]]', '[[04_btn_white_on_png]]', }
 
     -- open messagebox:
     local resultTable =
@@ -57,35 +55,28 @@ local function main()
         SeqNum = tonumber(v)
         SeqEnd = SeqNum + 3
     end
-    for k, v in pairs(resultTable.selectors) do
-        -- Printf("Selector '%s' = '%d'", k, v)
-        if k == "Varia Selector" then
-            VariaSel = v
-        elseif k == "Sub Selector" then
-            subSel = v
-        end
-    end
+
 
     local Construct_Pool = 43
     local SequenceObject = Root().ShowData.DataPools[Construct_Pool].Sequences
-    local AppObject = Root().ShowData.Appearances
     for e = 1, 4, 1 do
         for i = SeqNum, SeqEnd, 1 do
             Check_Size_Pool(i, SequenceObject)
             SequenceObject:Create(i)
-            SequenceObject[i]:Set('Name', 'btn_temp_' .. color_btn[count] .. "_" .. count)
-            SequenceObject[i]:Set('Appearance', AppObject[app_on_btn[count] - 1])
+            SequenceObject[i]:Set('Name', 'btn_temp_' .. color_btn[count] .. "_" .. nr)
+            SequenceObject[i]:Set('Appearance', app_btn_r_o_y_w[count]) --off state
             SequenceObject[i]:Set('PreferCueAppearance', 1)
             SequenceObject[i]:Insert()
             SequenceObject[i][3]:Set('No', 1)
             SequenceObject[i][3]:Create(1)
-            SequenceObject[i][3][1]:Set('Appearance', AppObject[app_on_btn[count]])
+            SequenceObject[i][3][1]:Set('Appearance', app_btn_r_o_y_w[count + 1]) --on state
             SequenceObject[i]:Insert()
             SequenceObject[i][4]:Set('No', 2)
             SequenceObject[i][4]:Create(1)
-            SequenceObject[i][4][1]:Set('Appearance', AppObject[app_on_btn[count] - 1])
-            count = count + 1
+            SequenceObject[i][4][1]:Set('Appearance', app_btn_r_o_y_w[count]) --off state
+            nr = nr + 1
         end
+        count = count + 2
         SeqNum = SeqEnd + 1
         SeqEnd = SeqNum + 3
     end
