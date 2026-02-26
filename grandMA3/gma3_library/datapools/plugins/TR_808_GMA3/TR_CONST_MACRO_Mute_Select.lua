@@ -90,7 +90,7 @@ local function main()
 
 Check_Size_Pool(MacroNum, MacroObject)
     MacroObject:Create(MacroNum)
-    MacroObject[MacroNum]:Set('Name', 'Off Mute')
+    MacroObject[MacroNum]:Set('Name', 'Off_Mute')
     for a = 1, 8 do
         MacroObject[MacroNum]:Acquire()
         MacroObject[MacroNum][a]:Set('Command', "Go+ Cue 2 DataPool '" ..
@@ -103,7 +103,7 @@ Check_Size_Pool(MacroNum, MacroObject)
 
     Check_Size_Pool(MacroNum, MacroObject)
     MacroObject:Create(MacroNum)
-    MacroObject[MacroNum]:Set('Name', 'Off Select')
+    MacroObject[MacroNum]:Set('Name', 'Off_Select')
     for a = 1, 8 do
         MacroObject[MacroNum]:Acquire()
         MacroObject[MacroNum][a]:Set('Command', "Go+ Cue 2 DataPool '" ..
