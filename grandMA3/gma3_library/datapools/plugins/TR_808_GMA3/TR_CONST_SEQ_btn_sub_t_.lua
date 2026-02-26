@@ -65,19 +65,19 @@ local function main()
     local Construct_Pool = 43
     local SequenceObject = Root().ShowData.DataPools[Construct_Pool].Sequences
     local PoolObject = Root().ShowData.DataPools
-    local AppObject = Root().ShowData.Appearances
+    local app_btn_sub = {'[[02_btn_grid_off_png]]','[[02_btn_grid_on_png]]'}
     for v = 1, 8 do
         for e = 1, 12, 1 do
             for i = SeqNum, SeqEnd, 1 do
                 Check_Size_Pool(i, SequenceObject)
                 SequenceObject:Create(i)
                 SequenceObject[i]:Set('Name', varia_min[VariaSel] .. '_btn_sub_' .. subSel .. '_t_' .. count)
-                SequenceObject[i]:Set('Appearance', AppObject[270])
+                SequenceObject[i]:Set('Appearance', app_btn_sub[1]) --off state
                 SequenceObject[i]:Set('PreferCueAppearance', 1)
                 SequenceObject[i]:Insert()
                 SequenceObject[i][3]:Set('No', 1)
                 SequenceObject[i][3]:Create(1)
-                SequenceObject[i][3][1]:Set('Appearance', AppObject[271])
+                SequenceObject[i][3][1]:Set('Appearance', app_btn_sub[2]) --on state
                 SequenceObject[i][3][1]:Set('Command', "Set DataPool '" .. PoolObject[Construct_Pool].Name ..
                     "' Sequence '" .. varia_min[VariaSel] .. "_Sub_#" .. subSel .. "' Cue " ..
                     count .. " Part 0.1 Property 'Enabled' 1; Set DataPool '" .. PoolObject[Construct_Pool].Name ..
@@ -85,7 +85,7 @@ local function main()
                 SequenceObject[i]:Insert()
                 SequenceObject[i][4]:Set('No', 2)
                 SequenceObject[i][4]:Create(1)
-                SequenceObject[i][4][1]:Set('Appearance', AppObject[270])
+                SequenceObject[i][4][1]:Set('Appearance', app_btn_sub[1]) --off state
                 SequenceObject[i][4][1]:Set('Command', "Set DataPool '" .. PoolObject[Construct_Pool].Name ..
                     "' Sequence '" .. varia_min[VariaSel] .. "_Sub_#" .. subSel .. "' Cue " ..
                     count .. " Part 0.1 Property 'Enabled' 0; Set DataPool '" .. PoolObject[Construct_Pool].Name ..
