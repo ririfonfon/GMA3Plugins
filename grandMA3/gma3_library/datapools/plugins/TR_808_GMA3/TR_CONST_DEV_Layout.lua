@@ -31,6 +31,7 @@ end
 local function main()
     local Construct_Pool = 43
     local Layout_Nr = 1
+    local varia_mag = { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H' }
     local object_start = { 0, 34, 17, 25, 51, 30, 1601, 1618, 82, 99,
 
         765, 782, 799, 816, 833, 850, 867, 884, 901, 918, 935, 952, -- A 11-33
@@ -62,7 +63,7 @@ local function main()
         510, 524, 1312, 1329, 1311, 1328,
 
         2312, 2329, 2346, 2363, 2380, 2397, 2414, 2431, 2448, 2465, 2482, 2499, -- H 172-194
-        554, 561, 1414, 1431, 1448,
+        544, 561, 1414, 1431, 1448,
         578, 592, 1499, 1516, 1498, 1515,
 
     }
@@ -263,147 +264,153 @@ local function main()
     ---------------------------------
     ---------- ABCDEFGH -------------
     ---------------------------------
-
-    --- btn_sub
-    for y = 1, 12 do
-        for i = 1, 16 do
-            Nr = Layout_Object[Layout_Nr]:Acquire()
-            Layout_Object[Layout_Nr][Nr.No]:Set('Object', SequenceObject[i + object_start[10 + y]])
-            Layout_Object[Layout_Nr][Nr.No]:Set('posx', btn_sub_x[i])
-            Layout_Object[Layout_Nr][Nr.No]:Set('posy', btn_sub_y[y])
-            Layout_Object[Layout_Nr][Nr.No]:Set('width', 70)
-            Layout_Object[Layout_Nr][Nr.No]:Set('height', 70)
-            Layout_Object[Layout_Nr][Nr.No]:Set('action', 'Go+')
-            Layout_Object[Layout_Nr][Nr.No]:Set('Note', 'A')
-            Set_Def(Layout_Nr, Nr, Layout_Object)
+    local inc, inc_var = 0, 1
+    for t = 1, 8 do
+        Printf(inc)
+        --- btn_sub
+        for y = 1, 12 do
+            for i = 1, 16 do
+                Nr = Layout_Object[Layout_Nr]:Acquire()
+                Layout_Object[Layout_Nr][Nr.No]:Set('Object', SequenceObject[i + object_start[10 + y + inc]])
+                Layout_Object[Layout_Nr][Nr.No]:Set('posx', btn_sub_x[i])
+                Layout_Object[Layout_Nr][Nr.No]:Set('posy', btn_sub_y[y])
+                Layout_Object[Layout_Nr][Nr.No]:Set('width', 70)
+                Layout_Object[Layout_Nr][Nr.No]:Set('height', 70)
+                Layout_Object[Layout_Nr][Nr.No]:Set('action', 'Go+')
+                Layout_Object[Layout_Nr][Nr.No]:Set('Note', varia_mag[inc_var])
+                Set_Def(Layout_Nr, Nr, Layout_Object)
+            end
         end
-    end
 
-    --- btn_mute & solo
-    for y = 1, 2 do
+        --- btn_mute & solo
+        for y = 1, 2 do
+            for i = 1, 12 do
+                Nr = Layout_Object[Layout_Nr]:Acquire()
+                Layout_Object[Layout_Nr][Nr.No]:Set('Object', SequenceObject[i + object_start[22 + y + inc]])
+                Layout_Object[Layout_Nr][Nr.No]:Set('posx', btn_mute_solo_all_none_x[y])
+                Layout_Object[Layout_Nr][Nr.No]:Set('posy', btn_mute_solo_all_none_y[i])
+                Layout_Object[Layout_Nr][Nr.No]:Set('width', 30)
+                Layout_Object[Layout_Nr][Nr.No]:Set('height', 30)
+                Layout_Object[Layout_Nr][Nr.No]:Set('action', 'Go+')
+                Layout_Object[Layout_Nr][Nr.No]:Set('Note', varia_mag[inc_var])
+                Set_Def(Layout_Nr, Nr, Layout_Object)
+            end
+        end
+
+        --- Select_sub & Value_sub & Matricks_sub ******************
+        for y = 1, 3 do
+            for i = 1, 12 do
+                Nr = Layout_Object[Layout_Nr]:Acquire()
+                Layout_Object[Layout_Nr][Nr.No]:Set('Object', MacroObject[i + object_start[24 + y + inc]])
+                Layout_Object[Layout_Nr][Nr.No]:Set('posx', Select_Value_Matricks_x[y])
+                Layout_Object[Layout_Nr][Nr.No]:Set('posy', Select_Value_Matricks_y[i])
+                Layout_Object[Layout_Nr][Nr.No]:Set('width', 100)
+                Layout_Object[Layout_Nr][Nr.No]:Set('height', 34)
+                Layout_Object[Layout_Nr][Nr.No]:Set('action', 'Go+')
+                Layout_Object[Layout_Nr][Nr.No]:Set('Note', varia_mag[inc_var])
+                Set_Def(Layout_Nr, Nr, Layout_Object)
+                Layout_Object[Layout_Nr][Nr.No]:Set('visibilityborder', 'Visible')
+                Layout_Object[Layout_Nr][Nr.No]:Set('bordersize', 1)
+                Layout_Object[Layout_Nr][Nr.No]:Set('bordercolor', S_V_M_Color[y])
+                Layout_Object[Layout_Nr][Nr.No]:Set('customtexttext', S_V_M_Text[y])
+                Layout_Object[Layout_Nr][Nr.No]:Set('customtextsize', 18)
+                Layout_Object[Layout_Nr][Nr.No]:Set('customtextalignmenth', 'Center')
+                Layout_Object[Layout_Nr][Nr.No]:Set('customtextalignmentv', 'Center')
+                MacroObject[i + object_start[24 + y]][4]:Set('Command',
+                    "SetUserVariable 'TR_Layout' '" .. Layout_Nr .. "_" .. Nr.No .. "'")
+            end
+        end
+
+        --- select
         for i = 1, 12 do
             Nr = Layout_Object[Layout_Nr]:Acquire()
-            Layout_Object[Layout_Nr][Nr.No]:Set('Object', SequenceObject[i + object_start[22 + y]])
-            Layout_Object[Layout_Nr][Nr.No]:Set('posx', btn_mute_solo_all_none_x[y])
+            Layout_Object[Layout_Nr][Nr.No]:Set('Object', SequenceObject[i + object_start[28 + inc]])
+            Layout_Object[Layout_Nr][Nr.No]:Set('posx', 538)
             Layout_Object[Layout_Nr][Nr.No]:Set('posy', btn_mute_solo_all_none_y[i])
             Layout_Object[Layout_Nr][Nr.No]:Set('width', 30)
             Layout_Object[Layout_Nr][Nr.No]:Set('height', 30)
             Layout_Object[Layout_Nr][Nr.No]:Set('action', 'Go+')
-            Layout_Object[Layout_Nr][Nr.No]:Set('Note', 'A')
+            Layout_Object[Layout_Nr][Nr.No]:Set('Note', varia_mag[inc_var])
             Set_Def(Layout_Nr, Nr, Layout_Object)
         end
-    end
 
-    --- Select_sub & Value_sub & Matricks_sub ******************
-    for y = 1, 3 do
-        for i = 1, 12 do
-            Nr = Layout_Object[Layout_Nr]:Acquire()
-            Layout_Object[Layout_Nr][Nr.No]:Set('Object', MacroObject[i + object_start[24 + y]])
-            Layout_Object[Layout_Nr][Nr.No]:Set('posx', Select_Value_Matricks_x[y])
-            Layout_Object[Layout_Nr][Nr.No]:Set('posy', Select_Value_Matricks_y[i])
-            Layout_Object[Layout_Nr][Nr.No]:Set('width', 100)
-            Layout_Object[Layout_Nr][Nr.No]:Set('height', 34)
-            Layout_Object[Layout_Nr][Nr.No]:Set('action', 'Go+')
-            Layout_Object[Layout_Nr][Nr.No]:Set('Note', 'A')
-            Set_Def(Layout_Nr, Nr, Layout_Object)
-            Layout_Object[Layout_Nr][Nr.No]:Set('visibilityborder', 'Visible')
-            Layout_Object[Layout_Nr][Nr.No]:Set('bordersize', 1)
-            Layout_Object[Layout_Nr][Nr.No]:Set('bordercolor', S_V_M_Color[y])
-            Layout_Object[Layout_Nr][Nr.No]:Set('customtexttext', S_V_M_Text[y])
-            Layout_Object[Layout_Nr][Nr.No]:Set('customtextsize', 18)
-            Layout_Object[Layout_Nr][Nr.No]:Set('customtextalignmenth', 'Center')
-            Layout_Object[Layout_Nr][Nr.No]:Set('customtextalignmentv', 'Center')
-            MacroObject[i + object_start[24 + y]][4]:Set('Command',
-                "SetUserVariable 'TR_Layout' '" .. Layout_Nr .. "_" .. Nr.No .. "'")
-        end
-    end
-
-    --- select
-    for i = 1, 12 do
+        --- select_all
         Nr = Layout_Object[Layout_Nr]:Acquire()
-        Layout_Object[Layout_Nr][Nr.No]:Set('Object', SequenceObject[i + object_start[28]])
+        Layout_Object[Layout_Nr][Nr.No]:Set('Object', SequenceObject[object_start[29 + inc]])
         Layout_Object[Layout_Nr][Nr.No]:Set('posx', 538)
-        Layout_Object[Layout_Nr][Nr.No]:Set('posy', btn_mute_solo_all_none_y[i])
+        Layout_Object[Layout_Nr][Nr.No]:Set('posy', -386)
         Layout_Object[Layout_Nr][Nr.No]:Set('width', 30)
         Layout_Object[Layout_Nr][Nr.No]:Set('height', 30)
         Layout_Object[Layout_Nr][Nr.No]:Set('action', 'Go+')
-        Layout_Object[Layout_Nr][Nr.No]:Set('Note', 'A')
+        Layout_Object[Layout_Nr][Nr.No]:Set('Note', varia_mag[inc_var])
         Set_Def(Layout_Nr, Nr, Layout_Object)
-    end
 
-    --- select_all
-    Nr = Layout_Object[Layout_Nr]:Acquire()
-    Layout_Object[Layout_Nr][Nr.No]:Set('Object', SequenceObject[object_start[29]])
-    Layout_Object[Layout_Nr][Nr.No]:Set('posx', 538)
-    Layout_Object[Layout_Nr][Nr.No]:Set('posy', -386)
-    Layout_Object[Layout_Nr][Nr.No]:Set('width', 30)
-    Layout_Object[Layout_Nr][Nr.No]:Set('height', 30)
-    Layout_Object[Layout_Nr][Nr.No]:Set('action', 'Go+')
-    Layout_Object[Layout_Nr][Nr.No]:Set('Note', 'A')
-    Set_Def(Layout_Nr, Nr, Layout_Object)
-
-    --- fade & delay ***********************
-    for y = 1, 2 do
-        for i = 1, 12 do
-            Nr = Layout_Object[Layout_Nr]:Acquire()
-            Layout_Object[Layout_Nr][Nr.No]:Set('Object', MacroObject[i + object_start[29 + y]])
-            Layout_Object[Layout_Nr][Nr.No]:Set('posx', Select_Value_Matricks_x[y + 3])
-            Layout_Object[Layout_Nr][Nr.No]:Set('posy', Select_Value_Matricks_y[i])
-            Layout_Object[Layout_Nr][Nr.No]:Set('width', 40)
-            Layout_Object[Layout_Nr][Nr.No]:Set('height', 34)
-            Layout_Object[Layout_Nr][Nr.No]:Set('action', 'Go+')
-            Layout_Object[Layout_Nr][Nr.No]:Set('Note', 'A')
-            Set_Def(Layout_Nr, Nr, Layout_Object)
-            Layout_Object[Layout_Nr][Nr.No]:Set('visibilityborder', 'Visible')
-            Layout_Object[Layout_Nr][Nr.No]:Set('bordersize', 1)
-            Layout_Object[Layout_Nr][Nr.No]:Set('bordercolor', S_V_M_Color[y + 3])
-            Layout_Object[Layout_Nr][Nr.No]:Set('customtextcolor', S_V_M_Color[y + 3])
-            Layout_Object[Layout_Nr][Nr.No]:Set('customtexttext', S_V_M_Text[y + 3])
-            Layout_Object[Layout_Nr][Nr.No]:Set('customtextsize', 28)
-            Layout_Object[Layout_Nr][Nr.No]:Set('customtextalignmenth', 'Center')
-            Layout_Object[Layout_Nr][Nr.No]:Set('customtextalignmentv', 'Center')
-            MacroObject[i + object_start[29 + y]][5]:Set('Command',
-                "SetUserVariable 'TR_Layout' '" .. Layout_Nr .. "_" .. Nr.No .. "'")
+        --- fade & delay ***********************
+        for y = 1, 2 do
+            for i = 1, 12 do
+                Nr = Layout_Object[Layout_Nr]:Acquire()
+                Layout_Object[Layout_Nr][Nr.No]:Set('Object', MacroObject[i + object_start[29 + y + inc]])
+                Layout_Object[Layout_Nr][Nr.No]:Set('posx', Select_Value_Matricks_x[y + 3])
+                Layout_Object[Layout_Nr][Nr.No]:Set('posy', Select_Value_Matricks_y[i])
+                Layout_Object[Layout_Nr][Nr.No]:Set('width', 40)
+                Layout_Object[Layout_Nr][Nr.No]:Set('height', 34)
+                Layout_Object[Layout_Nr][Nr.No]:Set('action', 'Go+')
+                Layout_Object[Layout_Nr][Nr.No]:Set('Note', varia_mag[inc_var])
+                Set_Def(Layout_Nr, Nr, Layout_Object)
+                Layout_Object[Layout_Nr][Nr.No]:Set('visibilityborder', 'Visible')
+                Layout_Object[Layout_Nr][Nr.No]:Set('bordersize', 1)
+                Layout_Object[Layout_Nr][Nr.No]:Set('bordercolor', S_V_M_Color[y + 3])
+                Layout_Object[Layout_Nr][Nr.No]:Set('customtextcolor', S_V_M_Color[y + 3])
+                Layout_Object[Layout_Nr][Nr.No]:Set('customtexttext', S_V_M_Text[y + 3])
+                Layout_Object[Layout_Nr][Nr.No]:Set('customtextsize', 28)
+                Layout_Object[Layout_Nr][Nr.No]:Set('customtextalignmenth', 'Center')
+                Layout_Object[Layout_Nr][Nr.No]:Set('customtextalignmentv', 'Center')
+                MacroObject[i + object_start[29 + y]][5]:Set('Command',
+                    "SetUserVariable 'TR_Layout' '" .. Layout_Nr .. "_" .. Nr.No .. "'")
+            end
         end
+
+        --- Edit_Fade_TR_INPUT
+        Nr = Layout_Object[Layout_Nr]:Acquire()
+        Layout_Object[Layout_Nr][Nr.No]:Set('Object', MacroObject[object_start[32 + inc]])
+        Layout_Object[Layout_Nr][Nr.No]:Set('posx', 360)
+        Layout_Object[Layout_Nr][Nr.No]:Set('posy', -386)
+        Layout_Object[Layout_Nr][Nr.No]:Set('width', 40)
+        Layout_Object[Layout_Nr][Nr.No]:Set('height', 34)
+        Layout_Object[Layout_Nr][Nr.No]:Set('action', 'Go+')
+        Layout_Object[Layout_Nr][Nr.No]:Set('Note', varia_mag[inc_var])
+        Set_Def(Layout_Nr, Nr, Layout_Object)
+        Layout_Object[Layout_Nr][Nr.No]:Set('visibilityborder', 'Visible')
+        Layout_Object[Layout_Nr][Nr.No]:Set('bordersize', 1)
+        Layout_Object[Layout_Nr][Nr.No]:Set('bordercolor', S_V_M_Color[4])
+        Layout_Object[Layout_Nr][Nr.No]:Set('customtextcolor', S_V_M_Color[4])
+        Layout_Object[Layout_Nr][Nr.No]:Set('customtexttext', 'Fade')
+        Layout_Object[Layout_Nr][Nr.No]:Set('customtextsize', 28)
+        Layout_Object[Layout_Nr][Nr.No]:Set('customtextalignmenth', 'Center')
+        Layout_Object[Layout_Nr][Nr.No]:Set('customtextalignmentv', 'Center')
+
+        --- Edit_Delay_TR_INPUT
+        Nr = Layout_Object[Layout_Nr]:Acquire()
+        Layout_Object[Layout_Nr][Nr.No]:Set('Object', MacroObject[object_start[33 + inc]])
+        Layout_Object[Layout_Nr][Nr.No]:Set('posx', 403)
+        Layout_Object[Layout_Nr][Nr.No]:Set('posy', -386)
+        Layout_Object[Layout_Nr][Nr.No]:Set('width', 40)
+        Layout_Object[Layout_Nr][Nr.No]:Set('height', 34)
+        Layout_Object[Layout_Nr][Nr.No]:Set('action', 'Go+')
+        Layout_Object[Layout_Nr][Nr.No]:Set('Note', varia_mag[inc_var])
+        Set_Def(Layout_Nr, Nr, Layout_Object)
+        Layout_Object[Layout_Nr][Nr.No]:Set('visibilityborder', 'Visible')
+        Layout_Object[Layout_Nr][Nr.No]:Set('bordersize', 1)
+        Layout_Object[Layout_Nr][Nr.No]:Set('bordercolor', S_V_M_Color[5])
+        Layout_Object[Layout_Nr][Nr.No]:Set('customtextcolor', S_V_M_Color[5])
+        Layout_Object[Layout_Nr][Nr.No]:Set('customtexttext', 'Delay')
+        Layout_Object[Layout_Nr][Nr.No]:Set('customtextsize', 28)
+        Layout_Object[Layout_Nr][Nr.No]:Set('customtextalignmenth', 'Center')
+        Layout_Object[Layout_Nr][Nr.No]:Set('customtextalignmentv', 'Center')
+
+        inc = inc + 23
+        inc_var = inc_var + 1
     end
-
-    --- Edit_Fade_TR_INPUT
-    Nr = Layout_Object[Layout_Nr]:Acquire()
-    Layout_Object[Layout_Nr][Nr.No]:Set('Object', MacroObject[object_start[32]])
-    Layout_Object[Layout_Nr][Nr.No]:Set('posx', 360)
-    Layout_Object[Layout_Nr][Nr.No]:Set('posy', -386)
-    Layout_Object[Layout_Nr][Nr.No]:Set('width', 40)
-    Layout_Object[Layout_Nr][Nr.No]:Set('height', 34)
-    Layout_Object[Layout_Nr][Nr.No]:Set('action', 'Go+')
-    Layout_Object[Layout_Nr][Nr.No]:Set('Note', 'A')
-    Set_Def(Layout_Nr, Nr, Layout_Object)
-    Layout_Object[Layout_Nr][Nr.No]:Set('visibilityborder', 'Visible')
-    Layout_Object[Layout_Nr][Nr.No]:Set('bordersize', 1)
-    Layout_Object[Layout_Nr][Nr.No]:Set('bordercolor', S_V_M_Color[4])
-    Layout_Object[Layout_Nr][Nr.No]:Set('customtextcolor', S_V_M_Color[4])
-    Layout_Object[Layout_Nr][Nr.No]:Set('customtexttext', 'Fade')
-    Layout_Object[Layout_Nr][Nr.No]:Set('customtextsize', 28)
-    Layout_Object[Layout_Nr][Nr.No]:Set('customtextalignmenth', 'Center')
-    Layout_Object[Layout_Nr][Nr.No]:Set('customtextalignmentv', 'Center')
-
-    --- Edit_Delay_TR_INPUT
-    Nr = Layout_Object[Layout_Nr]:Acquire()
-    Layout_Object[Layout_Nr][Nr.No]:Set('Object', MacroObject[object_start[33]])
-    Layout_Object[Layout_Nr][Nr.No]:Set('posx', 403)
-    Layout_Object[Layout_Nr][Nr.No]:Set('posy', -386)
-    Layout_Object[Layout_Nr][Nr.No]:Set('width', 40)
-    Layout_Object[Layout_Nr][Nr.No]:Set('height', 34)
-    Layout_Object[Layout_Nr][Nr.No]:Set('action', 'Go+')
-    Layout_Object[Layout_Nr][Nr.No]:Set('Note', 'A')
-    Set_Def(Layout_Nr, Nr, Layout_Object)
-    Layout_Object[Layout_Nr][Nr.No]:Set('visibilityborder', 'Visible')
-    Layout_Object[Layout_Nr][Nr.No]:Set('bordersize', 1)
-    Layout_Object[Layout_Nr][Nr.No]:Set('bordercolor', S_V_M_Color[5])
-    Layout_Object[Layout_Nr][Nr.No]:Set('customtextcolor', S_V_M_Color[5])
-    Layout_Object[Layout_Nr][Nr.No]:Set('customtexttext', 'Delay')
-    Layout_Object[Layout_Nr][Nr.No]:Set('customtextsize', 28)
-    Layout_Object[Layout_Nr][Nr.No]:Set('customtextalignmenth', 'Center')
-    Layout_Object[Layout_Nr][Nr.No]:Set('customtextalignmentv', 'Center')
 end
 
 return main
