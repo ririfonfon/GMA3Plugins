@@ -66,23 +66,23 @@ local function main()
     local Construct_Pool = 43
     local SequenceObject = Root().ShowData.DataPools[Construct_Pool].Sequences
     local PoolObject = Root().ShowData.DataPools
-    local AppObject = Root().ShowData.Appearances
+    local app_start_stop = {'[[07_btn_start_off_png]]','[[07_btn_start_on_png]]','Temps_#'}
 
     Check_Size_Pool(SeqNum, SequenceObject)
     SequenceObject:Create(SeqNum)
     SequenceObject[SeqNum]:Set('Name', 'btn_start_stop')
-    SequenceObject[SeqNum]:Set('Appearance', AppObject[281]) -- 302 - (1*2) = 300
+    SequenceObject[SeqNum]:Set('Appearance', app_start_stop[1]) --off state
     SequenceObject[SeqNum]:Set('PreferCueAppearance', 1)
     SequenceObject[SeqNum]:Insert()
     SequenceObject[SeqNum][3]:Set('No', 1)
     SequenceObject[SeqNum][3]:Create(1)
-    SequenceObject[SeqNum][3][1]:Set('Appearance', AppObject[282])
+    SequenceObject[SeqNum][3][1]:Set('Appearance', app_start_stop[2]) --on state
     SequenceObject[SeqNum][3][1]:Set('Command',
         " Go+ DataPool '" .. PoolObject[Construct_Pool].Name .. "'  Macro 'Varia_Play'")
     SequenceObject[SeqNum]:Insert()
     SequenceObject[SeqNum][4]:Set('No', 2)
     SequenceObject[SeqNum][4]:Create(1)
-    SequenceObject[SeqNum][4][1]:Set('Appearance', AppObject[281])
+    SequenceObject[SeqNum][4][1]:Set('Appearance', app_start_stop[1]) --off state
     SequenceObject[SeqNum][4][1]:Set('Command',
         " Go+ DataPool '" .. PoolObject[Construct_Pool].Name .. "'  Sequence Thru If Tag 'off_temps'")
 
@@ -211,7 +211,7 @@ local function main()
         SequenceObject[i]:Insert()
         SequenceObject[i][3]:Set('No', 1)
         SequenceObject[i][3]:Create(1)
-        SequenceObject[i][3][1]:Set('Appearance', AppObject[85])
+        SequenceObject[i][3][1]:Set('Appearance', app_start_stop[3]) 
         Cmd("Assign DataPool '" .. PoolObject[Construct_Pool].Name .. "' Sequence " ..
             i .. " At Tag 'off_temps'")
         Cmd("Assign DataPool '" .. PoolObject[Construct_Pool].Name .. "' Sequence " ..
