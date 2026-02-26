@@ -93,7 +93,7 @@ local function main()
 
 
 
-
+    count = 1
     MacroNum = MacroNum + 1
     MacroEnd = MacroNum + (8 - VariaSel)
 
