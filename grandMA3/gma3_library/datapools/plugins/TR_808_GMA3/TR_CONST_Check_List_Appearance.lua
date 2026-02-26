@@ -27,7 +27,7 @@ local function main()
     local MacroObject = Root().ShowData.DataPools[Construct_Pool].Macros
     local PoolObject = Root().ShowData.DataPools
     local AppearanceObject = Root().ShowData.Appearances:Children()
-    local AppearanceName = { '[[LOGO_psd]]', '[[panelBaseGma3_png]]', '[[01_panel_scale_2_png]]',
+    local AppearanceName = { '[[TR_LOGO_png]]', '[[panelBaseGma3_png]]', '[[01_panel_scale_2_png]]',
         '[[01_panel_scale_3_png]]', '[[01_panel_scale_4_png]]', '[[17_btn_a_low_png]]', '[[17_btn_a_high_png]]',
         '[[16_btn_b_low_png]]', '[[16_btn_b_high_png]]', '[[15_btn_c_low_png]]', '[[15_btn_c_high_png]]',
         '[[14_btn_d_low_png]]', '[[14_btn_d_high_png]]', '[[13_btn_e_low_png]]', '[[13_btn_e_high_png]]',
@@ -58,9 +58,10 @@ local function main()
         end
     end
     for k in pairs(AppearanceAddress) do
-        Printf(AppearanceName[k] .. ' = ' .. AppearanceAddress[k])
-        if not AppearanceAddress[k] then
-            error('Appearance not found : ' .. AppearanceName[k])
+        if AppearanceAddress[k] == false then
+            Printf('Appearance not found : ' .. k)
+        else
+            Printf(AppearanceName[k] .. ' = ' .. AppearanceAddress[k])
         end
     end
     Printf('Appearance Address Count: %d', #AppearanceAddress)
