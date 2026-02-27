@@ -1,8 +1,11 @@
+local thiscomponent = select(4, ...)
 local function main()
     local PoolObject = DataPool()
-    local PPoolObject = Root().ShowData.DataPools:Children()
     Printf(PoolObject.Name)
-    Printf(PPoolObject.Name)
+    -- local PPoolObject = Root().ShowData.DataPools:Children()
+    -- Printf(PPoolObject.Name)
+    local mydatapool = thiscomponent:FindParent(DataPool():GetClass())
+    Printf(mydatapool.Name)
 
 end
 return main
