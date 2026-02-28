@@ -265,7 +265,7 @@ local function main()
     ---------- ABCDEFGH -------------
     ---------------------------------
     local inc, inc_var = 0, 1
-    for t = 1, 8 do
+    for t = 1, 1 do
         Printf(inc)
         --- btn_sub
         for y = 1, 12 do
@@ -316,7 +316,7 @@ local function main()
                 Layout_Object[Layout_Nr][Nr.No]:Set('customtextsize', 18)
                 Layout_Object[Layout_Nr][Nr.No]:Set('customtextalignmenth', 'Center')
                 Layout_Object[Layout_Nr][Nr.No]:Set('customtextalignmentv', 'Center')
-                MacroObject[i + object_start[24 + y]][4]:Set('Command',
+                MacroObject[i + object_start[24 + y + inc]][4]:Set('Command',
                     "SetUserVariable 'TR_Layout' '" .. Layout_Nr .. "_" .. Nr.No .. "'")
             end
         end
