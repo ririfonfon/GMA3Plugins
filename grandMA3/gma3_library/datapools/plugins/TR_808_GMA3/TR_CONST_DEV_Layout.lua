@@ -365,8 +365,9 @@ local function main()
                 Layout_Object[Layout_Nr][Nr.No]:Set('customtextsize', 28)
                 Layout_Object[Layout_Nr][Nr.No]:Set('customtextalignmenth', 'Center')
                 Layout_Object[Layout_Nr][Nr.No]:Set('customtextalignmentv', 'Center')
-                MacroObject[i + object_start[29 + y]][5]:Set('Command',
+                MacroObject[i + object_start[29 + y + inc]][5]:Set('Command',
                     "SetUserVariable 'TR_Layout' '" .. Layout_Nr .. "_" .. Nr.No .. "'")
+                    Printf(Nr.No .. '  ' .. i + object_start[29 + y + inc] .. ' = ' .. MacroObject[i + object_start[29 + y + inc]].Name)
             end
         end
 
