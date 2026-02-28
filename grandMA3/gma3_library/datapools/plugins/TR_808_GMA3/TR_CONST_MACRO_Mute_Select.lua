@@ -59,7 +59,7 @@ local function main()
 
     local Construct_Pool = 43
     local MacroObject = Root().ShowData.DataPools[Construct_Pool].Macros
-    local PoolObject = Root().ShowData.DataPools
+    local Build_Pool = Root().ShowData.DataPools[Construct_Pool]
 
 
     Check_Size_Pool(MacroNum, MacroObject)
@@ -68,7 +68,7 @@ local function main()
     for a = 1, 8 do
         MacroObject[MacroNum]:Acquire()
         MacroObject[MacroNum][a]:Set('Command', "Go+ Cue 1 DataPool '" ..
-            PoolObject[Construct_Pool].Name .. "' Sequence thru if Tag 'Select_Mute_" .. varia_mag[VariaSel] .. "'")
+            Build_Pool.Name .. "' Sequence thru if Tag 'Select_Mute_" .. varia_mag[VariaSel] .. "'")
         VariaSel = VariaSel + 1
     end
     
@@ -81,7 +81,7 @@ local function main()
     for a = 1, 8 do
         MacroObject[MacroNum]:Acquire()
         MacroObject[MacroNum][a]:Set('Command', "Go+ Cue 1 DataPool '" ..
-            PoolObject[Construct_Pool].Name .. "' Sequence thru if Tag 'Select_Solo_" .. varia_mag[VariaSel] .. "'")
+            Build_Pool.Name .. "' Sequence thru if Tag 'Select_Solo_" .. varia_mag[VariaSel] .. "'")
         VariaSel = VariaSel + 1
     end
     
@@ -94,7 +94,7 @@ Check_Size_Pool(MacroNum, MacroObject)
     for a = 1, 8 do
         MacroObject[MacroNum]:Acquire()
         MacroObject[MacroNum][a]:Set('Command', "Go+ Cue 2 DataPool '" ..
-            PoolObject[Construct_Pool].Name .. "' Sequence thru if Tag 'Select_Mute_" .. varia_mag[VariaSel] .. "'")
+            Build_Pool.Name .. "' Sequence thru if Tag 'Select_Mute_" .. varia_mag[VariaSel] .. "'")
         VariaSel = VariaSel + 1
     end
     VariaSel = 1
@@ -107,7 +107,7 @@ Check_Size_Pool(MacroNum, MacroObject)
     for a = 1, 8 do
         MacroObject[MacroNum]:Acquire()
         MacroObject[MacroNum][a]:Set('Command', "Go+ Cue 2 DataPool '" ..
-            PoolObject[Construct_Pool].Name .. "' Sequence thru if Tag 'Select_Solo_" .. varia_mag[VariaSel] .. "'")
+            Build_Pool.Name .. "' Sequence thru if Tag 'Select_Solo_" .. varia_mag[VariaSel] .. "'")
         VariaSel = VariaSel + 1
     end
 end

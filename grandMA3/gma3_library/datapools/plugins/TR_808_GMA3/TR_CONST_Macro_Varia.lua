@@ -65,7 +65,7 @@ local function main()
     end
     local Construct_Pool = 43
     local MacroObject = Root().ShowData.DataPools[Construct_Pool].Macros
-    local PoolObject = Root().ShowData.DataPools
+    local Build_Pool = Root().ShowData.DataPools[Construct_Pool]
 
     local MNum_V, MEnd_V, MNum_Call, MEnd_Call, MNum_Play, MEnd_Play, nr, nr_C, nr_P
 
@@ -97,11 +97,11 @@ local function main()
             MacroObject[i]:Insert(a)
         end
         MacroObject[i][1]:Set('Command',
-            "Goto Cue 3 DataPool '" .. PoolObject[Construct_Pool].Name .. "' Sequence Thru if Tag 'Variation_Play'")
+            "Goto Cue 3 DataPool '" .. Build_Pool.Name .. "' Sequence Thru if Tag 'Variation_Play'")
         MacroObject[i][2]:Set('Command', "Goto Cue 2 DataPool '" ..
-            PoolObject[Construct_Pool].Name .. "' Sequence 'btn_" .. varia_min[VariaSel] .. "_green'")
+            Build_Pool.Name .. "' Sequence 'btn_" .. varia_min[VariaSel] .. "_green'")
         MacroObject[i][3]:Set('Command', "GO+ DataPool '" ..
-            PoolObject[Construct_Pool].Name .. "' Sequence '" .. varia_mag[VariaSel] .. "_Tempo'")
+            Build_Pool.Name .. "' Sequence '" .. varia_mag[VariaSel] .. "_Tempo'")
         subSel = subSel + 1
         count = count + 1
         VariaSel = VariaSel + 1
@@ -120,41 +120,41 @@ local function main()
             MacroObject[i]:Insert(a)
         end
         MacroObject[i][1]:Set('Command',
-            "Go+ DataPool '" .. PoolObject[Construct_Pool].Name .. "' Macro 'Tempo_Reset']")
+            "Go+ DataPool '" .. Build_Pool.Name .. "' Macro 'Tempo_Reset']")
         MacroObject[i][2]:Set('Command', "Set DataPool '" ..
-            PoolObject[Construct_Pool].Name .. "' Macro 'Tempo_#1'." .. count .. " 'Enabled' 1")
+            Build_Pool.Name .. "' Macro 'Tempo_#1'." .. count .. " 'Enabled' 1")
         MacroObject[i][3]:Set('Command', "Set DataPool '" ..
-            PoolObject[Construct_Pool].Name .. "' Macro 'Tempo_#2'." .. count .. " 'Enabled' 1")
+            Build_Pool.Name .. "' Macro 'Tempo_#2'." .. count .. " 'Enabled' 1")
         MacroObject[i][4]:Set('Command', "Set DataPool '" ..
-            PoolObject[Construct_Pool].Name .. "' Macro 'Tempo_#3'." .. count .. " 'Enabled' 1")
+            Build_Pool.Name .. "' Macro 'Tempo_#3'." .. count .. " 'Enabled' 1")
         MacroObject[i][5]:Set('Command', "Set DataPool '" ..
-            PoolObject[Construct_Pool].Name .. "' Macro 'Tempo_#4'." .. count .. " 'Enabled' 1")
+            Build_Pool.Name .. "' Macro 'Tempo_#4'." .. count .. " 'Enabled' 1")
         MacroObject[i][6]:Set('Command', "Set DataPool '" ..
-            PoolObject[Construct_Pool].Name .. "' Macro 'Tempo_#5'." .. count .. " 'Enabled' 1")
+            Build_Pool.Name .. "' Macro 'Tempo_#5'." .. count .. " 'Enabled' 1")
         MacroObject[i][7]:Set('Command', "Set DataPool '" ..
-            PoolObject[Construct_Pool].Name .. "' Macro 'Tempo_#6'." .. count .. " 'Enabled' 1")
+            Build_Pool.Name .. "' Macro 'Tempo_#6'." .. count .. " 'Enabled' 1")
         MacroObject[i][8]:Set('Command', "Set DataPool '" ..
-            PoolObject[Construct_Pool].Name .. "' Macro 'Tempo_#7'." .. count .. " 'Enabled' 1")
+            Build_Pool.Name .. "' Macro 'Tempo_#7'." .. count .. " 'Enabled' 1")
         MacroObject[i][9]:Set('Command', "Set DataPool '" ..
-            PoolObject[Construct_Pool].Name .. "' Macro 'Tempo_#8'." .. count .. " 'Enabled' 1")
+            Build_Pool.Name .. "' Macro 'Tempo_#8'." .. count .. " 'Enabled' 1")
         MacroObject[i][10]:Set('Command', "Set DataPool '" ..
-            PoolObject[Construct_Pool].Name .. "' Macro 'Tempo_#9'." .. count .. " 'Enabled' 1")
+            Build_Pool.Name .. "' Macro 'Tempo_#9'." .. count .. " 'Enabled' 1")
         MacroObject[i][11]:Set('Command', "Set DataPool '" ..
-            PoolObject[Construct_Pool].Name .. "' Macro 'Tempo_#10'." .. count .. " 'Enabled' 1")
+            Build_Pool.Name .. "' Macro 'Tempo_#10'." .. count .. " 'Enabled' 1")
         MacroObject[i][12]:Set('Command', "Set DataPool '" ..
-            PoolObject[Construct_Pool].Name .. "' Macro 'Tempo_#11'." .. count .. " 'Enabled' 1")
+            Build_Pool.Name .. "' Macro 'Tempo_#11'." .. count .. " 'Enabled' 1")
         MacroObject[i][13]:Set('Command', "Set DataPool '" ..
-            PoolObject[Construct_Pool].Name .. "' Macro 'Tempo_#12'." .. count .. " 'Enabled' 1")
+            Build_Pool.Name .. "' Macro 'Tempo_#12'." .. count .. " 'Enabled' 1")
         MacroObject[i][14]:Set('Command', "Set DataPool '" ..
-            PoolObject[Construct_Pool].Name .. "' Macro 'Tempo_#13'." .. count .. " 'Enabled' 1")
+            Build_Pool.Name .. "' Macro 'Tempo_#13'." .. count .. " 'Enabled' 1")
         MacroObject[i][15]:Set('Command', "Set DataPool '" ..
-            PoolObject[Construct_Pool].Name .. "' Macro 'Tempo_#14'." .. count .. " 'Enabled' 1")
+            Build_Pool.Name .. "' Macro 'Tempo_#14'." .. count .. " 'Enabled' 1")
         MacroObject[i][16]:Set('Command', "Set DataPool '" ..
-            PoolObject[Construct_Pool].Name .. "' Macro 'Tempo_#15'." .. count .. " 'Enabled' 1")
+            Build_Pool.Name .. "' Macro 'Tempo_#15'." .. count .. " 'Enabled' 1")
         MacroObject[i][17]:Set('Command', "Set DataPool '" ..
-            PoolObject[Construct_Pool].Name .. "' Macro 'Tempo_#16'." .. count .. " 'Enabled' 1")
+            Build_Pool.Name .. "' Macro 'Tempo_#16'." .. count .. " 'Enabled' 1")
         MacroObject[i][18]:Set('Command', "Go+ DataPool '" ..
-            PoolObject[Construct_Pool].Name .. "' Macro 'Varia_" .. varia_mag[VariaSel] .. "_Play'")
+            Build_Pool.Name .. "' Macro 'Varia_" .. varia_mag[VariaSel] .. "_Play'")
         subSel = subSel + 1
         count = count + 1
         VariaSel = VariaSel + 1
@@ -169,23 +169,23 @@ local function main()
         MacroObject[nr]:Insert(a)
     end
     MacroObject[nr][1]:Set('Command',
-        "Go+ DataPool '" .. PoolObject[Construct_Pool].Name .. "' Macro 'Varia_A_Play'")
+        "Go+ DataPool '" .. Build_Pool.Name .. "' Macro 'Varia_A_Play'")
     MacroObject[nr][2]:Set('Command',
-        "Go+ DataPool '" .. PoolObject[Construct_Pool].Name .. "' Macro 'Varia_B_Play'")
+        "Go+ DataPool '" .. Build_Pool.Name .. "' Macro 'Varia_B_Play'")
     MacroObject[nr][3]:Set('Command',
-        "Go+ DataPool '" .. PoolObject[Construct_Pool].Name .. "' Macro 'Varia_C_Play'")
+        "Go+ DataPool '" .. Build_Pool.Name .. "' Macro 'Varia_C_Play'")
     MacroObject[nr][4]:Set('Command',
-        "Go+ DataPool '" .. PoolObject[Construct_Pool].Name .. "' Macro 'Varia_D_Play'")
+        "Go+ DataPool '" .. Build_Pool.Name .. "' Macro 'Varia_D_Play'")
     MacroObject[nr][5]:Set('Command',
-        "Go+ DataPool '" .. PoolObject[Construct_Pool].Name .. "' Macro 'Varia_E_Play'")
+        "Go+ DataPool '" .. Build_Pool.Name .. "' Macro 'Varia_E_Play'")
     MacroObject[nr][6]:Set('Command',
-        "Go+ DataPool '" .. PoolObject[Construct_Pool].Name .. "' Macro 'Varia_F_Play'")
+        "Go+ DataPool '" .. Build_Pool.Name .. "' Macro 'Varia_F_Play'")
     MacroObject[nr][7]:Set('Command',
-        "Go+ DataPool '" .. PoolObject[Construct_Pool].Name .. "' Macro 'Varia_G_Play'")
+        "Go+ DataPool '" .. Build_Pool.Name .. "' Macro 'Varia_G_Play'")
     MacroObject[nr][8]:Set('Command',
-        "Go+ DataPool '" .. PoolObject[Construct_Pool].Name .. "' Macro 'Varia_H_Play'")
+        "Go+ DataPool '" .. Build_Pool.Name .. "' Macro 'Varia_H_Play'")
     MacroObject[nr][9]:Set('Command',
-        "Set DataPool '" .. PoolObject[Construct_Pool].Name .. "' Macro 'Varia_Call'.1 Thru 9 'Enabled' 0")
+        "Set DataPool '" .. Build_Pool.Name .. "' Macro 'Varia_Call'.1 Thru 9 'Enabled' 0")
 
     -- de Varia_ _ Call >>> Varia_Current
     MacroObject:Delete(nr_C)
@@ -195,29 +195,29 @@ local function main()
     for a = 1, 8 do
         MacroObject[nr_C]:Insert(a)
     end
-    MacroObject[nr_C][1]:Set('Command', "Go+ DataPool '" .. PoolObject[Construct_Pool].Name ..
-        "' Macro 'Edit_Varia_A';Go+ DataPool '" .. PoolObject[Construct_Pool].Name ..
+    MacroObject[nr_C][1]:Set('Command', "Go+ DataPool '" .. Build_Pool.Name ..
+        "' Macro 'Edit_Varia_A';Go+ DataPool '" .. Build_Pool.Name ..
         "' Sequence 'Varia_A' ")
-    MacroObject[nr_C][2]:Set('Command', "Go+ DataPool '" .. PoolObject[Construct_Pool].Name ..
-        "' Macro 'Edit_Varia_B';Go+ DataPool '" .. PoolObject[Construct_Pool].Name ..
+    MacroObject[nr_C][2]:Set('Command', "Go+ DataPool '" .. Build_Pool.Name ..
+        "' Macro 'Edit_Varia_B';Go+ DataPool '" .. Build_Pool.Name ..
         "' Sequence 'Varia_B' ")
-    MacroObject[nr_C][3]:Set('Command', "Go+ DataPool '" .. PoolObject[Construct_Pool].Name ..
-        "' Macro 'Edit_Varia_C';Go+ DataPool '" .. PoolObject[Construct_Pool].Name ..
+    MacroObject[nr_C][3]:Set('Command', "Go+ DataPool '" .. Build_Pool.Name ..
+        "' Macro 'Edit_Varia_C';Go+ DataPool '" .. Build_Pool.Name ..
         "' Sequence 'Varia_C' ")
-    MacroObject[nr_C][4]:Set('Command', "Go+ DataPool '" .. PoolObject[Construct_Pool].Name ..
-        "' Macro 'Edit_Varia_D';Go+ DataPool '" .. PoolObject[Construct_Pool].Name ..
+    MacroObject[nr_C][4]:Set('Command', "Go+ DataPool '" .. Build_Pool.Name ..
+        "' Macro 'Edit_Varia_D';Go+ DataPool '" .. Build_Pool.Name ..
         "' Sequence 'Varia_D' ")
-    MacroObject[nr_C][5]:Set('Command', "Go+ DataPool '" .. PoolObject[Construct_Pool].Name ..
-        "' Macro 'Edit_Varia_E';Go+ DataPool '" .. PoolObject[Construct_Pool].Name ..
+    MacroObject[nr_C][5]:Set('Command', "Go+ DataPool '" .. Build_Pool.Name ..
+        "' Macro 'Edit_Varia_E';Go+ DataPool '" .. Build_Pool.Name ..
         "' Sequence 'Varia_E' ")
-    MacroObject[nr_C][6]:Set('Command', "Go+ DataPool '" .. PoolObject[Construct_Pool].Name ..
-        "' Macro 'Edit_Varia_F';Go+ DataPool '" .. PoolObject[Construct_Pool].Name ..
+    MacroObject[nr_C][6]:Set('Command', "Go+ DataPool '" .. Build_Pool.Name ..
+        "' Macro 'Edit_Varia_F';Go+ DataPool '" .. Build_Pool.Name ..
         "' Sequence 'Varia_F' ")
-    MacroObject[nr_C][7]:Set('Command', "Go+ DataPool '" .. PoolObject[Construct_Pool].Name ..
-        "' Macro 'Edit_Varia_G';Go+ DataPool '" .. PoolObject[Construct_Pool].Name ..
+    MacroObject[nr_C][7]:Set('Command', "Go+ DataPool '" .. Build_Pool.Name ..
+        "' Macro 'Edit_Varia_G';Go+ DataPool '" .. Build_Pool.Name ..
         "' Sequence 'Varia_G' ")
-    MacroObject[nr_C][8]:Set('Command', "Go+ DataPool '" .. PoolObject[Construct_Pool].Name ..
-        "' Macro 'Edit_Varia_H';Go+ DataPool '" .. PoolObject[Construct_Pool].Name ..
+    MacroObject[nr_C][8]:Set('Command', "Go+ DataPool '" .. Build_Pool.Name ..
+        "' Macro 'Edit_Varia_H';Go+ DataPool '" .. Build_Pool.Name ..
         "' Sequence 'Varia_H' ")
 
 
@@ -229,28 +229,28 @@ local function main()
     for a = 1, 8 do
         MacroObject[nr_P]:Insert(a)
     end
-    MacroObject[nr_P][1]:Set('Command', "Go+ DataPool '" .. PoolObject[Construct_Pool].Name ..
+    MacroObject[nr_P][1]:Set('Command', "Go+ DataPool '" .. Build_Pool.Name ..
         "' Macro 'Varia_A_Play'")
     MacroObject[nr_P][1]:Set('Enabled', 0)
-    MacroObject[nr_P][2]:Set('Command', "Go+ DataPool '" .. PoolObject[Construct_Pool].Name ..
+    MacroObject[nr_P][2]:Set('Command', "Go+ DataPool '" .. Build_Pool.Name ..
         "' Macro 'Varia_B_Play'")
     MacroObject[nr_P][2]:Set('Enabled', 0)
-    MacroObject[nr_P][3]:Set('Command', "Go+ DataPool '" .. PoolObject[Construct_Pool].Name ..
+    MacroObject[nr_P][3]:Set('Command', "Go+ DataPool '" .. Build_Pool.Name ..
         "' Macro 'Varia_C_Play'")
     MacroObject[nr_P][3]:Set('Enabled', 0)
-    MacroObject[nr_P][4]:Set('Command', "Go+ DataPool '" .. PoolObject[Construct_Pool].Name ..
+    MacroObject[nr_P][4]:Set('Command', "Go+ DataPool '" .. Build_Pool.Name ..
         "' Macro 'Varia_D_Play'")
     MacroObject[nr_P][4]:Set('Enabled', 0)
-    MacroObject[nr_P][5]:Set('Command', "Go+ DataPool '" .. PoolObject[Construct_Pool].Name ..
+    MacroObject[nr_P][5]:Set('Command', "Go+ DataPool '" .. Build_Pool.Name ..
         "' Macro 'Varia_E_Play'")
     MacroObject[nr_P][5]:Set('Enabled', 0)
-    MacroObject[nr_P][6]:Set('Command', "Go+ DataPool '" .. PoolObject[Construct_Pool].Name ..
+    MacroObject[nr_P][6]:Set('Command', "Go+ DataPool '" .. Build_Pool.Name ..
         "' Macro 'Varia_F_Play'")
     MacroObject[nr_P][6]:Set('Enabled', 0)
-    MacroObject[nr_P][7]:Set('Command', "Go+ DataPool '" .. PoolObject[Construct_Pool].Name ..
+    MacroObject[nr_P][7]:Set('Command', "Go+ DataPool '" .. Build_Pool.Name ..
         "' Macro 'Varia_G_Play'")
     MacroObject[nr_P][7]:Set('Enabled', 0)
-    MacroObject[nr_P][8]:Set('Command', "Go+ DataPool '" .. PoolObject[Construct_Pool].Name ..
+    MacroObject[nr_P][8]:Set('Command', "Go+ DataPool '" .. Build_Pool.Name ..
         "' Macro 'Varia_H_Play'")
     MacroObject[nr_P][8]:Set('Enabled', 0)
 
@@ -268,17 +268,17 @@ local function main()
             MacroObject[i]:Insert(a)
         end
         MacroObject[i][1]:Set('Command', "Set DataPool '" ..
-            PoolObject[Construct_Pool].Name .. "' Macro 'Varia_Call'." .. count .. " 'Enabled' 1")
+            Build_Pool.Name .. "' Macro 'Varia_Call'." .. count .. " 'Enabled' 1")
         MacroObject[i][2]:Set('Command',
-            "Set DataPool '" .. PoolObject[Construct_Pool].Name .. "' Macro 'Varia_Call'.9 'Enabled' 1")
+            "Set DataPool '" .. Build_Pool.Name .. "' Macro 'Varia_Call'.9 'Enabled' 1")
         MacroObject[i][3]:Set('Command',
-            "Set DataPool '" .. PoolObject[Construct_Pool].Name .. "' Macro 'Varia_Current'.1 Thru 8 'Enabled' 0")
+            "Set DataPool '" .. Build_Pool.Name .. "' Macro 'Varia_Current'.1 Thru 8 'Enabled' 0")
         MacroObject[i][4]:Set('Command', "Set DataPool '" ..
-            PoolObject[Construct_Pool].Name .. "' Macro 'Varia_Current'." .. count .. " 'Enabled' 1")
+            Build_Pool.Name .. "' Macro 'Varia_Current'." .. count .. " 'Enabled' 1")
         MacroObject[i][5]:Set('Command',
-            "Set DataPool '" .. PoolObject[Construct_Pool].Name .. "' Macro 'Varia_Play'.1 Thru 8 'Enabled' 0")
+            "Set DataPool '" .. Build_Pool.Name .. "' Macro 'Varia_Play'.1 Thru 8 'Enabled' 0")
         MacroObject[i][6]:Set('Command', "Set DataPool '" ..
-            PoolObject[Construct_Pool].Name .. "' Macro 'Varia_Play'." .. count .. "  'Enabled' 1")
+            Build_Pool.Name .. "' Macro 'Varia_Play'." .. count .. "  'Enabled' 1")
         subSel = subSel + 1
         count = count + 1
         VariaSel = VariaSel + 1
@@ -301,12 +301,12 @@ local function main()
             MacroObject[i]:Insert(a)
         end
         MacroObject[i][1]:Set('Command', "Set DataPool '" ..
-            PoolObject[Construct_Pool].Name .. "' Layout 1.81 Thru 2382 'VisibilityElement' = '0'")
+            Build_Pool.Name .. "' Layout 1.81 Thru 2382 'VisibilityElement' = '0'")
         MacroObject[i][2]:Set('Command', "Set DataPool '" ..
-            PoolObject[Construct_Pool].Name .. "' Layout 1." ..
+            Build_Pool.Name .. "' Layout 1." ..
             varia_place[count] .. " Thru " .. varia_place[count + 1] - 1 .. " 'VisibilityElement' = '1'")
         MacroObject[i][3]:Set('Command', "Go+ DataPool '" ..
-            PoolObject[Construct_Pool].Name .. "' Macro 'all_sub_varia_" .. varia_min[VariaSel] .. "'")
+            Build_Pool.Name .. "' Macro 'all_sub_varia_" .. varia_min[VariaSel] .. "'")
 
         subSel = subSel + 1
         count = count + 1

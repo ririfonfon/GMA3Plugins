@@ -60,7 +60,7 @@ local function main()
 
     local Construct_Pool = 43
     local MacroObject = Root().ShowData.DataPools[Construct_Pool].Macros
-    local PoolObject = Root().ShowData.DataPools
+    local Build_Pool = Root().ShowData.DataPools[Construct_Pool]
 
     local Reset = MacroNum
 
@@ -75,9 +75,9 @@ local function main()
         MacroObject[i]:Set('Name', 'Tempo_#' .. count)
         for a = 1, 8 do
             MacroObject[i]:Acquire()
-            MacroObject[i][a]:Set('Command', "Goto DataPool '" .. PoolObject[Construct_Pool].Name ..
+            MacroObject[i][a]:Set('Command', "Goto DataPool '" .. Build_Pool.Name ..
                 "' Cue " .. count .. " Sequence Thru if Tag 'Varia_" .. varia_mag[VariaSel] ..
-                "; Goto DataPool '" .. PoolObject[Construct_Pool].Name .. "' Cue " .. count ..
+                "; Goto DataPool '" .. Build_Pool.Name .. "' Cue " .. count ..
                 " Sequence Thru if Tag 'Temps_" .. Tempo_Count[count] .. "'")
             VariaSel = VariaSel + 1
         end
@@ -92,7 +92,7 @@ local function main()
     MacroObject[Reset]:Set('Name', 'Tempo_Reset')
     for a = 1, 16 do
         MacroObject[Reset]:Acquire()
-        MacroObject[Reset][a]:Set('Command', "Set DataPool '" .. PoolObject[Construct_Pool].Name ..
+        MacroObject[Reset][a]:Set('Command', "Set DataPool '" .. Build_Pool.Name ..
             "' Macro 'Tempo_#" .. count .. "'.1 Thru 16 'Enabled' 0")
         count = count + 1
     end

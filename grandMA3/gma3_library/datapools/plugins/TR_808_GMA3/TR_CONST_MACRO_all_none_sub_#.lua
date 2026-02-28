@@ -60,7 +60,8 @@ local function main()
 
     local Construct_Pool = 43
     local MacroObject = Root().ShowData.DataPools[Construct_Pool].Macros
-    local PoolObject = Root().ShowData.DataPools
+    local Build_Pool = Root().ShowData.DataPools[Construct_Pool]
+
 
     for i = MacroNum, MacroEnd, 1 do
         Check_Size_Pool(i, MacroObject)
@@ -69,7 +70,7 @@ local function main()
         for a = 1, 8 do
             MacroObject[i]:Acquire()
             MacroObject[i][a]:Set('Command',
-                "Go+ Cue 1 DataPool '" .. PoolObject[Construct_Pool].Name .. "' Sequence thru if Tag '" ..
+                "Go+ Cue 1 DataPool '" .. Build_Pool.Name .. "' Sequence thru if Tag '" ..
                 varia_min[VariaSel] .. "_btn_sub_#" .. count .. "'")
             VariaSel = VariaSel + 1
         end
@@ -88,7 +89,7 @@ local function main()
         for a = 1, 8 do
             MacroObject[i]:Acquire()
             MacroObject[i][a]:Set('Command',
-                "Go+ Cue 2 DataPool '" .. PoolObject[Construct_Pool].Name .. "' Sequence thru if Tag '" ..
+                "Go+ Cue 2 DataPool '" .. Build_Pool.Name .. "' Sequence thru if Tag '" ..
                 varia_min[VariaSel] .. "_btn_sub_#" .. count .. "'")
             VariaSel = VariaSel + 1
         end
