@@ -265,7 +265,7 @@ local function main()
     ---------- ABCDEFGH -------------
     ---------------------------------
     local inc, inc_var = 0, 1
-    for t = 1, 1 do
+    for t = 1, 8 do
         Printf(inc)
         --- btn_sub
         for y = 1, 12 do
