@@ -301,7 +301,7 @@ local function main()
             MacroObject[i]:Insert(a)
         end
         MacroObject[i][1]:Set('Command', "Set DataPool '" ..
-            Build_Pool.Name .. "' Layout 1.81 Thru 2382 'VisibilityElement' = '0'")
+            Build_Pool.Name .. "' Layout 1.81 Thru 2408 'VisibilityElement' = '0'")
         MacroObject[i][2]:Set('Command', "Set DataPool '" ..
             Build_Pool.Name .. "' Layout 1." ..
             varia_place[count] .. " Thru " .. varia_place[count + 1] - 1 .. " 'VisibilityElement' = '1'")
