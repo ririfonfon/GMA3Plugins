@@ -89,7 +89,7 @@ local function main()
         for i = MacroNum, MacroEnd, 1 do
             Check_Size_Pool(i, MacroObject)
             MacroObject:Create(i)
-            MacroObject[i]:Set('Name', varia_min[VariaSel] .. '_Select_Sub#' .. subSel)
+            MacroObject[i]:Set('Name', varia_min[VariaSel] .. '_Select_Sub_#' .. subSel)
             for a = 1, 6 do
                 MacroObject[i]:Insert(a)
             end
@@ -114,7 +114,7 @@ local function main()
         for i = MacroNum, MacroEnd, 1 do
             Check_Size_Pool(i, MacroObject)
             MacroObject:Create(i)
-            MacroObject[i]:Set('Name', varia_min[VariaSel] .. '_Value_Sub#' .. subSel)
+            MacroObject[i]:Set('Name', varia_min[VariaSel] .. '_Value_Sub_#' .. subSel)
             for a = 1, 6 do
                 MacroObject[i]:Insert(a)
             end
@@ -139,7 +139,7 @@ local function main()
         for i = MacroNum, MacroEnd, 1 do
             Check_Size_Pool(i, MacroObject)
             MacroObject:Create(i)
-            MacroObject[i]:Set('Name', varia_min[VariaSel] .. '_MAtricks_Sub#' .. subSel)
+            MacroObject[i]:Set('Name', varia_min[VariaSel] .. '_MAtricks_Sub_#' .. subSel)
             for a = 1, 6 do
                 MacroObject[i]:Insert(a)
             end
@@ -228,7 +228,7 @@ local function main()
         for i = MacroNum, MacroEnd, 1 do
             Check_Size_Pool(i, MacroObject)
             MacroObject:Create(i)
-            MacroObject[i]:Set('Name', varia_min[VariaSel] .. '_Fade_Sub#' .. subSel)
+            MacroObject[i]:Set('Name', varia_min[VariaSel] .. '_Fade_Sub_#' .. subSel)
             for a = 1, 7 do
                 MacroObject[i]:Insert(a)
             end
@@ -273,7 +273,7 @@ local function main()
         for i = MacroNum, MacroEnd, 1 do
             Check_Size_Pool(i, MacroObject)
             MacroObject:Create(i)
-            MacroObject[i]:Set('Name', varia_min[VariaSel] .. '_Delay_Sub#' .. subSel)
+            MacroObject[i]:Set('Name', varia_min[VariaSel] .. '_Delay_Sub_#' .. subSel)
             for a = 1, 7 do
                 MacroObject[i]:Insert(a)
             end
@@ -312,7 +312,7 @@ local function main()
         for i = MacroNum, MacroEnd, 1 do
             Check_Size_Pool(i, MacroObject)
             MacroObject:Create(i)
-            MacroObject[i]:Set('Name', varia_min[VariaSel] .. '_Rec_Sub#' .. subSel)
+            MacroObject[i]:Set('Name', varia_min[VariaSel] .. '_Rec_Sub_#' .. subSel)
             for j = 1, 16, 1 do
                 MacroObject[i]:Insert(j)
                 MacroObject[i][j]:Set('Command',
