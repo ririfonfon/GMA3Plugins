@@ -252,7 +252,7 @@ local function main()
     -- solo_all_none
     Nr = Layout_Object[Layout_Nr]:Acquire()
     Layout_Object[Layout_Nr][Nr.No]:Set('Object', SequenceObject[object_start[10]])
-    Layout_Object[Layout_Nr][Nr.No]:Set('posx', 459)
+    Layout_Object[Layout_Nr][Nr.No]:Set('posx', 496)
     Layout_Object[Layout_Nr][Nr.No]:Set('posy', -386)
     Layout_Object[Layout_Nr][Nr.No]:Set('width', 30)
     Layout_Object[Layout_Nr][Nr.No]:Set('height', 30)
