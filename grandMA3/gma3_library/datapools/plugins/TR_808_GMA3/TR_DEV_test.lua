@@ -1,11 +1,15 @@
-local thiscomponent = select(4, ...)
 local function main()
-    local PoolObject = DataPool()
-    Printf(PoolObject.Name)
-    -- local PPoolObject = Root().ShowData.DataPools:Children()
-    -- Printf(PPoolObject.Name)
-    local mydatapool = thiscomponent:FindParent(DataPool():GetClass())
-    Printf(mydatapool.Name)
+    local Select = UserVars()
+    local Call = false
+    if GetVar(Select, "TR_Fonction") then
+        TR_Fonction = tonumber((GetVar(Select, "TR_Fonction")))
+        Call = true
+    end
 
+    if Call == false then
+        Printf('call false')
+    elseif Call == true then
+        Printf('call true')
+    end
 end
 return main
