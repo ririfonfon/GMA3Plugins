@@ -7,11 +7,7 @@
 --]]
 
 
-local Printf, Echo, GetExecutor, CmdIndirectWait, ipairs, mfloor = Printf, Echo, GetExecutor, CmdIndirectWait, ipairs,
-    math.floor
-
-
-local function main()
+local function Edit_Tag()
     local Select = UserVars()
     local TR_Tag, TR_Pool, TR_Fonction, TR_Mtrick, TR_F_fx, TR_F_tx, TR_D_fx, TR_D_tx, TR_Pool_Nr
 
@@ -94,4 +90,4 @@ local function main()
 end
 
 
-return main
+return Edit_Tag
