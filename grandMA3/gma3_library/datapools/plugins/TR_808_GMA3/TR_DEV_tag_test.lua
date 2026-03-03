@@ -21,12 +21,12 @@ return function()
     local SequenceObject = Root().ShowData.DataPools[Construct_Pool].Sequences
     local PoolObject = Root().ShowData.DataPools
 
-    local myobj = SequenceObject[1]
+    local myobj = SequenceObject[18]
     -- local myobj = GetObject('Sequence 1')
     local taglist = getTags(myobj)   -- get tags as table with taghandle as keys
     -- taglist[GetObject('Tag 230')] = nil -- example remove a tag from taglist
     -- taglist[GetObject('Tag 2')] = '0'    -- example add a tag to taglist as kill protect = No
-    taglist[TagObject[216]] = nil -- example remove a tag from taglist
-    taglist[TagObject[215]] = '0'    -- example add a tag to taglist as kill protect = No
-    setTags(myobj, taglist)          --update object with new taglist
+    -- taglist[TagObject[216]] = nil -- example remove a tag from taglist
+    -- taglist[TagObject[215]] = '0'    -- example add a tag to taglist as kill protect = No
+    -- setTags(myobj, taglist)          --update object with new taglist
 end
