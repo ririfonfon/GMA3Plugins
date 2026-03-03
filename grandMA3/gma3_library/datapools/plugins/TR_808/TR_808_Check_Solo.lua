@@ -5,10 +5,9 @@
     Created by Richard Fontaine "RIRI", july 2025.
 
 --]]
-local Printf, Echo, GetExecutor, Cmd, ipairs, mfloor = Printf, Echo, GetExecutor, Cmd, ipairs, math.floor
 
 
-local function main()
+local function Check_Solo()
     local Select = UserVars()
     local P_A_TR_Solo, P_B_TR_Solo, P_C_TR_Solo, P_D_TR_Solo, P_E_TR_Solo, P_F_TR_Solo, P_G_TR_Solo, P_H_TR_Solo, P_Order
 
@@ -212,4 +211,4 @@ local function main()
 end
 
 
-return main
+return Check_Solo
