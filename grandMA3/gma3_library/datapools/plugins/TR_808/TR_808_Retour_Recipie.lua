@@ -7,7 +7,7 @@
 --]]
 
 
-local function main()
+local function Retour_Recepie()
     local Select = UserVars()
     local TR_Sub, TR_Layout, TR_Pool, TR_Fonction, Target, TR_Lay, TR_N_Layout, TR_N_Object
     if GetVar(Select, "TR_Fonction") then
@@ -135,4 +135,4 @@ local function main()
 end
 
 
-return main
+return Retour_Recepie
