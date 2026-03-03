@@ -5,13 +5,15 @@
     Created by Richard Fontaine "RIRI", december 2025.
 
 --]]
+
+
 local Printf, Echo, GetExecutor, CmdIndirectWait, ipairs, mfloor = Printf, Echo, GetExecutor, CmdIndirectWait, ipairs,
     math.floor
 
 
 local function main()
     local Select = UserVars()
-    local TR_Tag, TR_Pool, TR_Fonction, TR_Mtrick, TR_F_fx, TR_F_tx, TR_D_fx, TR_D_tx,TR_Pool_Nr
+    local TR_Tag, TR_Pool, TR_Fonction, TR_Mtrick, TR_F_fx, TR_F_tx, TR_D_fx, TR_D_tx, TR_Pool_Nr
 
     if GetVar(Select, "TR_Fonction") then
         TR_Fonction = tonumber((GetVar(Select, "TR_Fonction")))
@@ -26,13 +28,13 @@ local function main()
 
     local Pool = ShowData().DataPools:Children()
     for _, v in pairs(Pool) do
-         if v.Name == TR_Pool then
+        if v.Name == TR_Pool then
             TR_Pool_Nr = v.No
         end
     end
     local SeqNr = ShowData().DataPools[TR_Pool].Sequences:Children()
     local MAtricksNr = ShowData().DataPools[TR_Pool].MATricks:Children()
-    
+
     for k in ipairs(MAtricksNr) do
         if (MAtricksNr[k].Name == 'TR_INPUT') then
             TR_Mtrick = k
@@ -43,18 +45,21 @@ local function main()
         end
     end
 
-    
+
     if (TR_Fonction == 1) then
         for k in ipairs(SeqNr) do
             local tag = string.format(SeqNr[k]:Get('Tags') or 'None')
             if (string.find(tag, TR_Tag)) then
-                -- Printf("Sequence Name: %s", SeqNr[k].Name)
-                -- Printf("Tag Name: %s", tag)
-                -- Printf("k : %i", k)
-                local MacroName = string.gsub (SeqNr[k].Name, "_", "_Fade_",1)
-                CmdIndirectWait('Set ' .. SeqNr[k] .. ' Cue 1 Thru 16 Part 0.1 Property FadeFromX ' .. TR_F_fx)
-                CmdIndirectWait('Set ' .. SeqNr[k] .. ' Cue 1 Thru 16 Part 0.1 Property FadeToX ' .. TR_F_tx)
-                CmdIndirectWait('GO+ DataPool ' .. TR_Pool_Nr .. ' Macro "' .. MacroName .. '".3 Thru Macro "' .. MacroName .. '".7')
+               
+                for i = 1, 16 do
+                    local Recipe = ObjectList("DataPool " .. TR_Pool_Nr ..
+                        " Sequence " .. SeqNr[k].No .. " Cue " .. i .. " Part 0")[1]
+                    Recipe[1]:Set('FadeFromX', TR_F_fx)
+                    Recipe[1]:Set('FadeToX', TR_F_tx)
+                end
+                local MacroName = string.gsub(SeqNr[k].Name, "_", "_Fade_", 1)
+                CmdIndirectWait('GO+ DataPool ' ..
+                    TR_Pool_Nr .. ' Macro "' .. MacroName .. '".3 Thru Macro "' .. MacroName .. '".7')
                 coroutine.yield(0.1)
             end
         end
@@ -62,13 +67,16 @@ local function main()
         for k in ipairs(SeqNr) do
             local tag = string.format(SeqNr[k]:Get('Tags') or 'None')
             if (string.find(tag, TR_Tag)) then
-                -- Printf("Sequence Name: %s", SeqNr[k].Name)
-                -- Printf("Tag Name: %s", tag)
-                -- Printf("k : %i", k)
-                local MacroName = string.gsub (SeqNr[k].Name, "_", "_Delay_",1)
-                CmdIndirectWait('Set ' .. SeqNr[k] .. ' Cue 1 Thru 16 Part 0.1 Property DelayFromX ' .. TR_D_fx)
-                CmdIndirectWait('Set ' .. SeqNr[k] .. ' Cue 1 Thru 16 Part 0.1 Property DelayToX ' .. TR_D_tx)
-                CmdIndirectWait('GO+ DataPool ' .. TR_Pool_Nr .. ' Macro "' .. MacroName .. '".3 Thru Macro "' .. MacroName .. '".7')
+               
+                for i = 1, 16 do
+                    local Recipe = ObjectList("DataPool " .. TR_Pool_Nr ..
+                        " Sequence " .. SeqNr[k].No .. " Cue " .. i .. " Part 0")[1]
+                    Recipe[1]:Set('DelayFromX', TR_D_fx)
+                    Recipe[1]:Set('DelayToX', TR_D_tx)
+                end
+                local MacroName = string.gsub(SeqNr[k].Name, "_", "_Delay_", 1)
+                CmdIndirectWait('GO+ DataPool ' ..
+                    TR_Pool_Nr .. ' Macro "' .. MacroName .. '".3 Thru Macro "' .. MacroName .. '".7')
                 coroutine.yield(0.1)
             end
         end
