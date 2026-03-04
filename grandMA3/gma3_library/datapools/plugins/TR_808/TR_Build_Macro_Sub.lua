@@ -1,20 +1,12 @@
+--[[
+    Releases:
+    * 0.0.0.9
+    Created by Richard Fontaine "RIRI", Mars 2026.
+--]]
+
 local thiscomponent = select(4, ...)
 
-local function Check_Size_Pool(id, PoolObject)
-    if not id then return PoolObject:Acquire() end
-    local idtype = math.type(id) or type(id)
-    if idtype ~= 'integer' then error('wrong argument expected integer got ' .. idtype) end
-    if IsObjectValid(PoolObject[id]) then error('id is already used : ' .. id) end
-    local maxsize = PoolObject:MaxCount()
-    if id < 1 or id > maxsize then error('id out of range') end
-    local poolsize = PoolObject:Count()
-    if id > poolsize then
-        local newsize = math.min(maxsize, math.ceil(id / 1000) * 1000)
-        PoolObject:Resize(newsize)
-    end
-end
-
-local function Build_Macro_Sub()
+function Build_Macro_Sub()
 
     local MacroNum = 106
     local MacroEnd = MacroNum + 11
@@ -52,7 +44,7 @@ local function Build_Macro_Sub()
             MacroObject[i][4]:Set('Command', "SetUserVariable 'TR_Layout' '1_" .. lay_object .. "'")
             MacroObject[i][5]:Set('Command', "SetUserVariable 'TR_Pool' '" .. Build_Pool.Name .. "'")
             MacroObject[i][6]:Set('Command',
-                "Call DataPool '" .. Call_Pool.Name .. "' Plugin 'TR_808_Retour_Recipie'")
+                "Call DataPool '" .. Call_Pool.Name .. "' Plugin 'TR_808'")
             subSel = subSel + 1
             lay_object = lay_object + 1
         end
@@ -77,7 +69,7 @@ local function Build_Macro_Sub()
             MacroObject[i][4]:Set('Command', "SetUserVariable 'TR_Layout' '1_" .. lay_object .. "'")
             MacroObject[i][5]:Set('Command', "SetUserVariable 'TR_Pool' '" .. Build_Pool.Name .. "'")
             MacroObject[i][6]:Set('Command',
-                "Call DataPool '" .. Call_Pool.Name .. "' Plugin 'TR_808_Retour_Recipie'")
+                "Call DataPool '" .. Call_Pool.Name .. "' Plugin 'TR_808'")
             subSel = subSel + 1
             lay_object = lay_object + 1
         end
@@ -102,7 +94,7 @@ local function Build_Macro_Sub()
             MacroObject[i][4]:Set('Command', "SetUserVariable 'TR_Layout' '1_" .. lay_object .. "'")
             MacroObject[i][5]:Set('Command', "SetUserVariable 'TR_Pool' '" .. Build_Pool.Name .. "'")
             MacroObject[i][6]:Set('Command',
-                "Call DataPool '" .. Call_Pool.Name .. "' Plugin 'TR_808_Retour_Recipie'")
+                "Call DataPool '" .. Call_Pool.Name .. "' Plugin 'TR_808'")
             subSel = subSel + 1
             lay_object = lay_object + 1
         end
@@ -169,7 +161,7 @@ local function Build_Macro_Sub()
         MacroObject[MacroNum][4]:Set('Command', "SetUserVariable 'TR_Pool' '" .. Build_Pool.Name .. "'")
         MacroObject[MacroNum][5]:Set('Command', "SetUserVariable 'TR_Tag' 'Selected_" .. varia_mag[VariaSel] .. "'")
         MacroObject[MacroNum][6]:Set('Command',
-            "Call DataPool '" .. Call_Pool.Name .. "' Plugin 'TR_808_Edit_Tag'")
+            "Call DataPool '" .. Call_Pool.Name .. "' Plugin 'TR_808'")
 
         MacroNum = MacroEnd + 6
         MacroEnd = MacroNum + 11
@@ -193,7 +185,7 @@ local function Build_Macro_Sub()
             MacroObject[i][5]:Set('Command', "SetUserVariable 'TR_Layout' '1_" .. lay_object .. "'")
             MacroObject[i][6]:Set('Command', "SetUserVariable 'TR_Pool' '" .. Build_Pool.Name .. "'")
             MacroObject[i][7]:Set('Command',
-                "Call DataPool '" .. Call_Pool.Name .. "' Plugin 'TR_808_Retour_Recipie'")
+                "Call DataPool '" .. Call_Pool.Name .. "' Plugin 'TR_808'")
             subSel = subSel + 1
             lay_object = lay_object + 1
         end
@@ -214,7 +206,7 @@ local function Build_Macro_Sub()
         MacroObject[MacroNum][4]:Set('Command', "SetUserVariable 'TR_Pool' '" .. Build_Pool.Name .. "'")
         MacroObject[MacroNum][5]:Set('Command', "SetUserVariable 'TR_Tag' 'Selected_" .. varia_mag[VariaSel] .. "'")
         MacroObject[MacroNum][6]:Set('Command',
-            "Call DataPool '" .. Call_Pool.Name .. "' Plugin 'TR_808_Edit_Tag'")
+            "Call DataPool '" .. Call_Pool.Name .. "' Plugin 'TR_808'")
 
         MacroNum = MacroEnd + 6
         MacroEnd = MacroNum + 11
@@ -238,7 +230,7 @@ local function Build_Macro_Sub()
             MacroObject[i][5]:Set('Command', "SetUserVariable 'TR_Layout' '1_" .. lay_object .. "'")
             MacroObject[i][6]:Set('Command', "SetUserVariable 'TR_Pool' '" .. Build_Pool.Name .. "'")
             MacroObject[i][7]:Set('Command',
-                "Call DataPool '" .. Call_Pool.Name .. "' Plugin 'TR_808_Retour_Recipie'")
+                "Call DataPool '" .. Call_Pool.Name .. "' Plugin 'TR_808'")
             subSel = subSel + 1
             lay_object = lay_object + 1
         end
@@ -308,7 +300,7 @@ local function Build_Macro_Sub()
             MacroObject[i][5]:Set('Command', "Go+ DataPool '" .. Build_Pool.Name .. "' Macro '" ..
                 varia_min[VariaSel] .. "_Rec_Sub_#" .. subSel .. "'")
             MacroObject[i][6]:Set('Command',
-                "Call DataPool '" .. Call_Pool.Name .. "' Plugin 'TR_808_CHECK_SOLO'")
+                "Call DataPool '" .. Call_Pool.Name .. "' Plugin 'TR_808'")
             subSel = subSel + 1
             count = count + 1
         end
@@ -332,7 +324,7 @@ local function Build_Macro_Sub()
             MacroObject[i][4]:Set('Command', "Go+ DataPool '" .. Build_Pool.Name .. "' Macro '" ..
                 varia_min[VariaSel] .. "_SOLO'")
             MacroObject[i][5]:Set('Command',
-                "Call DataPool '" .. Call_Pool.Name .. "' Plugin 'TR_808_CHECK_SOLO'")
+                "Call DataPool '" .. Call_Pool.Name .. "' Plugin 'TR_808'")
             subSel = subSel + 1
             count = count + 1
         end
@@ -343,5 +335,3 @@ local function Build_Macro_Sub()
         count = 1
     end
 end
-
-return Build_Macro_Sub

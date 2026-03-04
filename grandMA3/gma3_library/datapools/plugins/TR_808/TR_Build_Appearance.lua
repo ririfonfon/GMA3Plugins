@@ -1,7 +1,10 @@
+--[[
+    Releases:
+    * 0.0.0.9
+    Created by Richard Fontaine "RIRI", Mars 2026.
+--]]
 
-
-
-local function Build_Appearance()
+function Build_Appearance()
     
     local AppearanceObject = Root().ShowData.Appearances:Children()
     local AppearanceName = { '[[TR_LOGO_png]]', '[[panelBaseGma3_png]]', '[[01_panel_scale_2_png]]',
@@ -43,5 +46,3 @@ local function Build_Appearance()
     end
     Printf('Appearance Address Count: %d', #AppearanceAddress)
 end
-
-return Build_Appearance

@@ -1,13 +1,11 @@
 --[[
     Releases:
-    * 0.0.0.3
-
-    Created by Richard Fontaine "RIRI", july 2025.
-
+    * 0.0.0.9
+    Created by Richard Fontaine "RIRI", Mars 2026.
 --]]
 
 
-local function Check_Solo()
+function Check_Solo()
     local Select = UserVars()
     local P_A_TR_Solo, P_B_TR_Solo, P_C_TR_Solo, P_D_TR_Solo, P_E_TR_Solo, P_F_TR_Solo, P_G_TR_Solo, P_H_TR_Solo, P_Order
 
@@ -209,6 +207,3 @@ local function Check_Solo()
         SetVar(Select, "math_h", "none")
     end
 end
-
-
-return Check_Solo

@@ -1,5 +1,10 @@
+--[[
+    Releases:
+    * 0.0.0.9
+    Created by Richard Fontaine "RIRI", Mars 2026.
+--]]
 
-local function Build_Tag()
+function Build_Tag()
     local TagObject = Root().ShowData.Tags
     local TagObject_C = Root().ShowData.Tags:Children()
     local TR_TAGS_CHECKS = {}
@@ -50,5 +55,3 @@ local function Build_Tag()
         Tag_Locateur[k] = TagObject_C[k].Name
     end
 end
-
-return Build_Tag

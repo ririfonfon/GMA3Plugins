@@ -1,4 +1,10 @@
-local function Check_Size_Pool(id, PoolObject)
+--[[
+    Releases:
+    * 0.0.0.9
+    Created by Richard Fontaine "RIRI", Mars 2026.
+--]]
+
+function Check_Size_Pool(id, PoolObject)
     if not id then
         Printf('Acquire')
         return PoolObject:Acquire()
@@ -14,7 +20,7 @@ local function Check_Size_Pool(id, PoolObject)
         PoolObject:Resize(newsize)
     end
 end
-local function Build_MAtricks()
+function Build_MAtricks()
 
     local MAtricksNum = 1
     local Construct_Pool = 43
@@ -25,5 +31,3 @@ local function Build_MAtricks()
     MAtricksObject:Create(i)
     MAtricksObject[i]:Set('Name', 'TR_INPUT')
 end
-
-return Build_MAtricks

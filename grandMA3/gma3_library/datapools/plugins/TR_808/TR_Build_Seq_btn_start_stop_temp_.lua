@@ -1,20 +1,10 @@
-local function Check_Size_Pool(id, PoolObject)
-    if not id then
-        Printf('Acquire')
-        return PoolObject:Acquire()
-    end
-    local idtype = math.type(id) or type(id)
-    if idtype ~= 'integer' then error('wrong argument expected integer got ' .. idtype) end
-    if IsObjectValid(PoolObject[id]) then error('id is already used : ' .. id) end
-    local maxsize = PoolObject:MaxCount()
-    if id < 1 or id > maxsize then error('id out of range') end
-    local poolsize = PoolObject:Count()
-    if id > poolsize then
-        local newsize = math.min(maxsize, math.ceil(id / 1000) * 1000)
-        PoolObject:Resize(newsize)
-    end
-end
-local function Build_Seq_Start_Stop()
+--[[
+    Releases:
+    * 0.0.0.9
+    Created by Richard Fontaine "RIRI", Mars 2026.
+--]]
+
+function Build_Seq_Start_Stop()
 
     local SeqEnd
     local count = 1
@@ -181,5 +171,3 @@ local function Build_Seq_Start_Stop()
         count = count + 1
     end
 end
-
-return Build_Seq_Start_Stop

@@ -1,13 +1,10 @@
 --[[
     Releases:
-    * 0.0.0.1
-
-    Created by Richard Fontaine "RIRI", december 2025.
-
+    * 0.0.0.9
+    Created by Richard Fontaine "RIRI", Mars 2026.
 --]]
 
-
-local function Edit_Tag()
+function Edit_Tag()
     local Select = UserVars()
     local TR_Tag, TR_Pool, TR_Fonction, TR_Mtrick, TR_F_fx, TR_F_tx, TR_D_fx, TR_D_tx, TR_Pool_Nr
 
@@ -88,6 +85,3 @@ local function Edit_Tag()
     DelVar(Select, "TR_Tag")
     DelVar(Select, "TR_Fonction")
 end
-
-
-return Edit_Tag

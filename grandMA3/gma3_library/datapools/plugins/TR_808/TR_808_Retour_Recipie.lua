@@ -1,13 +1,10 @@
 --[[
     Releases:
-    * 0.0.0.2
-
-    Created by Richard Fontaine "RIRI", june 2025.
-
+    * 0.0.0.9
+    Created by Richard Fontaine "RIRI", Mars 2026.
 --]]
 
-
-local function Retour_Recepie()
+function Retour_Recepie()
     local Select = UserVars()
     local TR_Sub, TR_Layout, TR_Pool, TR_Fonction, Target, TR_Lay, TR_N_Layout, TR_N_Object
     if GetVar(Select, "TR_Fonction") then
@@ -133,6 +130,3 @@ local function Retour_Recepie()
     DelVar(Select, "TR_Pool")
     DelVar(Select, "TR_Fonction")
 end
-
-
-return Retour_Recepie
