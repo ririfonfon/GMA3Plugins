@@ -4,28 +4,27 @@
     Created by Richard Fontaine "RIRI", Mars 2026.
 --]]
 
-local function getTags(obj)
-    local tbl = {}
-    for a, b in obj:Get('Tags', Enums.Roles.Edit):gmatch('([^:,]+):([^,]+)') do
-        tbl[StrToHandle(a)] = tonumber(b)
-        Printf(a .. ' - ' .. tbl[StrToHandle(a)])
-    end
-    return tbl
-end
+-- local function getTags(obj)
+--     local tbl = {}
+--     for a, b in obj:Get('Tags', Enums.Roles.Edit):gmatch('([^:,]+):([^,]+)') do
+--         tbl[StrToHandle(a)] = tonumber(b)
+--         Printf(a .. ' - ' .. tbl[StrToHandle(a)])
+--     end
+--     return tbl
+-- end
 
-local function setTags(obj, tbl)
-    local str = ''
-    for a, b in pairs(tbl) do
-        str = str .. HandleToStr(a) .. ':' .. b .. ','
-    end
-    obj:Set('Tags', str)
-end
+-- local function setTags(obj, tbl)
+--     local str = ''
+--     for a, b in pairs(tbl) do
+--         str = str .. HandleToStr(a) .. ':' .. b .. ','
+--     end
+--     obj:Set('Tags', str)
+-- end
 
 function Build_Seq_Varia_G_R()
-
     local varia_min = { 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h' }
     local varia_mag = { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H' }
-    local taglist, myobj
+    -- local taglist, myobj
     local SeqNum = 18
     local SeqEnd = SeqNum + 7
     local VariaSel = 1
@@ -74,10 +73,14 @@ function Build_Seq_Varia_G_R()
         SequenceObject[i][5]:Set('No', 3)
         SequenceObject[i][5]:Create(1)
         SequenceObject[i][5][1]:Set('Appearance', App_btn_green_red[number])
-        myobj = SequenceObject[i]
-        taglist = getTags(myobj)
-        taglist[TagObject[21]] = '0' -- Variation_Play
-        setTags(myobj, taglist)
+        Cmd("Assign DataPool '" .. PoolObject[Construct_Pool].Name .. "' Sequence " ..
+            i .. " At Tag 'Variation_Play'")
+
+        -- myobj = SequenceObject[i]
+        -- taglist = getTags(myobj)
+        -- taglist[TagObject[21]] = '0' -- Variation_Play
+        -- setTags(myobj, taglist)
+
         VariaSel = VariaSel + 1
         number = number + 3
     end
@@ -98,10 +101,14 @@ function Build_Seq_Varia_G_R()
         SequenceObject[i][3][1]:Set('Appearance', App_btn_green_red[number + 1])
         SequenceObject[i][3][1]:Set('Command',
             " Go+ DataPool '" .. PoolObject[Construct_Pool].Name .. "'  Macro 'Edit_Varia_" .. varia_mag[VariaSel] .. "'")
-        myobj = SequenceObject[i]
-        taglist = getTags(myobj)
-        taglist[TagObject[22]] = '0' -- Variation
-        setTags(myobj, taglist)
+        Cmd("Assign DataPool '" .. PoolObject[Construct_Pool].Name .. "' Sequence " ..
+            i .. " At Tag 'Variation'")
+
+        -- myobj = SequenceObject[i]
+        -- taglist = getTags(myobj)
+        -- taglist[TagObject[22]] = '0' -- Variation
+        -- setTags(myobj, taglist)
+
         VariaSel = VariaSel + 1
         number = number + 2
     end
