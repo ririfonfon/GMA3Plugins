@@ -27,6 +27,7 @@ local function Build_Tag()
         'Select_Mute_D', 'Select_Mute_E', 'Select_Mute_F', 'Select_Mute_G', 'Select_Mute_H', 'Select_Solo_A',
         'Select_Solo_B', 'Select_Solo_C', 'Select_Solo_D', 'Select_Solo_E', 'Select_Solo_F', 'Select_Solo_G',
         'Select_Solo_H' }
+        local Tag_Locateur = {}
     for i = 1, #TR_TAGS, 1 do
         TR_TAGS_CHECKS[i] = false
     end
@@ -44,6 +45,9 @@ local function Build_Tag()
             local nr = TagObject:Acquire()
             TagObject[nr.No]:Set('Name', TR_TAGS[k])
         end
+    end
+    for k in pairs(TagObject_C) do
+        Tag_Locateur[k] = TagObject_C[k].Name
     end
 end
 
