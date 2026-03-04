@@ -51,7 +51,4 @@ function Build_Tag()
             TagObject[nr.No]:Set('Name', TR_TAGS[k])
         end
     end
-    for k in pairs(TagObject_C) do
-        Tag_Locateur[k] = TagObject_C[k].Name
-    end
 end
