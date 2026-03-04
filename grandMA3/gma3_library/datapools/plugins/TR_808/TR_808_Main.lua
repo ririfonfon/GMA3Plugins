@@ -4,7 +4,10 @@
     Created by Richard Fontaine "RIRI", Mars 2026.
 --]]
 
-local function main()
+local signalTable, thiscomponent = select(3, ...)
+local myHandle = select(4, ...)
+
+local function main(displayHandle)
     local Select = UserVars()
     local Call = false
     if GetVar(Select, "TR_Layout") then
@@ -12,18 +15,21 @@ local function main()
         Call = true
     end
     if GetVar(Select, "Order") then
-        Check_Solo()
-        Call = true
+        if GetVar(Select, "Order") ~= "Z" then
+            Check_Solo()
+            Call = true
+        end
     end
     if GetVar(Select, "TR_Tag") then
         Edit_Tag()
         Call = true
     end
-
-    if Call == false then
-        Printf('call false')
-    elseif Call == true then
-        Printf('call true')
+    if Call == true then
+        return
     end
+
+    Cmd('Set UserProfile *.15 Property "keyboardshortcutsactive" false')
+    
+
 end
 return main
