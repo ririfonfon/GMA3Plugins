@@ -15,23 +15,6 @@ local function Check_Size_Pool(id, PoolObject)
     end
 end
 
-local function getTags(obj)
-    local tbl = {}
-    for a, b in obj:Get('Tags', Enums.Roles.Edit):gmatch('([^:,]+):([^,]+)') do
-        tbl[StrToHandle(a)] = tonumber(b)
-        Printf(a .. ' - ' .. tbl[StrToHandle(a)])
-    end
-    return tbl
-end
-
-local function setTags(obj, tbl)
-    local str = ''
-    for a, b in pairs(tbl) do
-        str = str .. HandleToStr(a) .. ':' .. b .. ','
-    end
-    obj:Set('Tags', str)
-end
-
 local function Build_Seq_Sub()
 
     local varia_min = { 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h' }
@@ -40,12 +23,10 @@ local function Build_Seq_Sub()
     local SeqEnd = SeqNum + 11
     local VariaSel = 1
     local subSel = 1
-    local taglist, myobj
 
     local Construct_Pool = 43
     local SequenceObject = Root().ShowData.DataPools[Construct_Pool].Sequences
     local PoolObject = Root().ShowData.DataPools
-    local TagObject = Root().ShowData.Tags
 
     for e = 1, 8, 1 do
         for i = SeqNum, SeqEnd, 1 do
@@ -62,12 +43,6 @@ local function Build_Seq_Sub()
                 SequenceObject[i][a][1][1]:Set('Enabled', 'No')
             end
 
-            myobj = SequenceObject[i]
-            taglist = getTags(myobj)
-            taglist[TagObject[19]] = '0' -- off_temps
-            taglist[TagObject[23]] = '0' -- Varia_ A=23 H=30
-            taglist[TagObject[62]] = '0' -- _btn_sub_ 62 157
-            setTags(myobj, taglist)
 
             Cmd("Assign DataPool '" .. PoolObject[Construct_Pool].Name .. "' Sequence " ..
                 i .. " At Tag 'off_temps'")
