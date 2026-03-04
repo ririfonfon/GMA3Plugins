@@ -81,7 +81,7 @@ local function main()
     -- SequenceObject[1]:Set('Tags', TagObject[TagNum]:Index() .. ':0')
     -- SequenceObject[2]:Set('Tags', TagObject[TagNum]:Index() .. ':0')
     -- SequenceObject[2]:Set('tags', '0:0') -- example remove all tags from object
-    for k, v in pairs(TagObject_C) do
+    for k in pairs(TagObject_C) do
         Printf('Tag ' .. k .. ' - ' .. TagObject_C[k].Name )
     end
 end
