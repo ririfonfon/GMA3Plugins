@@ -45,13 +45,14 @@ function Build_MAtricks()
     MAtricksObject[i]:Set('Name', 'TR_INPUT')
 end
 
-function Check_DataPool(Construct_Pool)
+function Check_DataPool(Construct_Pool, Name_Construct_Pool)
     local PoolObject = Root().ShowData.DataPools
     if PoolObject[Construct_Pool] == nil then
         PoolObject:Create(Construct_Pool)
         Printf('Create')
         coroutine.yield(0.1)
     end
+    PoolObject[Construct_Pool]:Set('Name', Name_Construct_Pool)
 
     local SequenceObject = Root().ShowData.DataPools[Construct_Pool].Sequences:Children() or nil
     local MacroObject = Root().ShowData.DataPools[Construct_Pool].Macros:Children() or nil
