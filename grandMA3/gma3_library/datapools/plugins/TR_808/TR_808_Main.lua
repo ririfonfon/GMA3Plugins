@@ -33,9 +33,9 @@ local function main(displayHandle)
     local Call_Pool = myHandle:FindParent(DataPool():GetClass())
 
     local inputs = {
-        { name = "Free DataPool for TR_808", value = "46",       whiteFilter = "0123456789" },
+        { name = "Free DataPool for TR_808", value = "46",     whiteFilter = "0123456789" },
         { name = "Name of DataPool",         value = "TR_808", maxTextLength = 20 },
-        { name = "Name of Layout",          value = "TR_808", maxTextLength = 20 },
+        { name = "Name of Layout",           value = "TR_808", maxTextLength = 20 },
     }
 
 
@@ -69,9 +69,9 @@ local function main(displayHandle)
             Name_Layout = (v)
         end
     end
-   
 
-    Check_DataPool(Construct_Pool)
+
+    Check_DataPool(Construct_Pool, Name_Construct_Pool)
 
     Printf('REturn')
 end
