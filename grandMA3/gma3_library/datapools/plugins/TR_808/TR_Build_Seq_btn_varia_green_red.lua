@@ -32,7 +32,7 @@ function Build_Seq_Varia_G_R()
     local Construct_Pool = 43
     local SequenceObject = Root().ShowData.DataPools[Construct_Pool].Sequences
     local PoolObject = Root().ShowData.DataPools
-    local TagObject = Root().ShowData.Tags
+    -- local TagObject = Root().ShowData.Tags
     local App_btn_green_red = {
         '[[17_btn_a_low_png]]', '[[38_btn_a_next_png]]', '[[17_btn_a_high_png]]',
         '[[16_btn_b_low_png]]', '[[37_btn_b_next_png]]', '[[16_btn_b_high_png]]',
