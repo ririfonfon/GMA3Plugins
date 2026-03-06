@@ -19,9 +19,19 @@ return function()
         local exec = GetExecutor(exec_no)
         if exec ~= nil and exec.Object ~= nil then
             local object_tag = exec.Object.Tags
+
+
+            -- local count = Obj.PropertyCount(exec)
+            -- for i = 0, count - 1 do
+            --     local Pname = Obj.PropertyName(exec, i)
+            --     Echo(Pname)
+            -- end
+
+
             -- Printf(exec .. ' ' .. object_tag .. ' ' .. tag .. ' ' .. fonction)
             if object_tag ~= nil and object_tag == '' .. tag .. ':0' then
-                Cmd('Assign ' .. fonction .. ' Executor ' .. exec)
+                exec.Key = fonction
+                -- Cmd('Assign ' .. fonction .. ' Executor ' .. exec)
             end
         end
     end
