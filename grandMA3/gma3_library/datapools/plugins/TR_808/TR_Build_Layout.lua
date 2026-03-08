@@ -17,7 +17,7 @@ local function Set_Def(L_N, N, Obj)
     Obj[L_N][N.No]:Set('fullresolution', 'Yes')
 end
 
-function Build_Layout(Construct_Pool)
+function Build_Layout(Construct_Pool, Name_Layout)
     -- local Construct_Pool = 43
     local Layout_Nr = 1
     local varia_mag = { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H' }
@@ -99,7 +99,7 @@ function Build_Layout(Construct_Pool)
 
     Check_Size_Pool(Layout_Nr, Layout_Object)
     Layout_Object:Create(Layout_Nr)
-    Layout_Object[Layout_Nr]:Set('Name', 'TR-808_Build')
+    Layout_Object[Layout_Nr]:Set('Name', Name_Layout)
     Layout_Object[Layout_Nr]:Set('ViewPosX', 0)
     Layout_Object[Layout_Nr]:Set('ViewPosY', 0)
     Layout_Object[Layout_Nr]:Set('ViewPosActive', 'Yes')
@@ -350,7 +350,8 @@ function Build_Layout(Construct_Pool)
                 Layout_Object[Layout_Nr][Nr.No]:Set('customtextalignmentv', 'Center')
                 MacroObject[i + object_start[29 + y + inc]][5]:Set('Command',
                     "SetUserVariable 'TR_Layout' '" .. Layout_Nr .. "_" .. Nr.No .. "'")
-                    Printf(Nr.No .. '  ' .. i + object_start[29 + y + inc] .. ' = ' .. MacroObject[i + object_start[29 + y + inc]].Name)
+                Printf(Nr.No ..
+                '  ' .. i + object_start[29 + y + inc] .. ' = ' .. MacroObject[i + object_start[29 + y + inc]].Name)
             end
         end
 
