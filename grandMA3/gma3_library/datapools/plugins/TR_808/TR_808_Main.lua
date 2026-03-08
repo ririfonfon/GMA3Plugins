@@ -89,7 +89,7 @@ local function main(displayHandle)
     Build_Seq_Sub(Construct_Pool)
     Build_Seq_Btn_Sub(Construct_Pool)
 
-    Build_Layout(Construct_Pool)
+    Build_Layout(Construct_Pool, Name_Layout)
 
 
 
