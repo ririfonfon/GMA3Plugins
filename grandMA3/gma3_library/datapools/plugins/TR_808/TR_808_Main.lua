@@ -72,6 +72,26 @@ local function main(displayHandle)
 
 
     Check_DataPool(Construct_Pool, Name_Construct_Pool)
+    Build_Tag()
+    Build_Appearance()
+    Build_MAtricks(Construct_Pool)
+    Build_Macro_Varia(Construct_Pool)
+    Build_Macro_Tempo(Construct_Pool)
+    Build_Macro_Sub(Construct_Pool)
+    Build_Macro_All_None(Construct_Pool)
+    Build_Macro_All_Sub_Varia(Construct_Pool)
+    Build_Macro_Mute_Select(Construct_Pool)
+
+    Build_Seq_R_Y_O(Construct_Pool)
+    Build_Seq_Varia_G_R(Construct_Pool)
+    Build_Seq_Start_Stop(Construct_Pool)
+    Build_Seq_Mute_Solo(Construct_Pool)
+    Build_Seq_Sub(Construct_Pool)
+    Build_Seq_Btn_Sub(Construct_Pool)
+
+    Build_Layout(Construct_Pool)
+
+
 
     Printf('REturn')
 end

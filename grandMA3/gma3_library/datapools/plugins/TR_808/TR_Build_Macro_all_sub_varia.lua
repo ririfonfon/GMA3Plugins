@@ -4,13 +4,13 @@
     Created by Richard Fontaine "RIRI", Mars 2026.
 --]]
 
-function Build_Macro_All_Sub_Varia()
+function Build_Macro_All_Sub_Varia(Construct_Pool)
     local count = 1
     local varia_min = { 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h' }
     local MacroNum = 1653
     local MacroEnd
     local VariaSel = 1
-    local Construct_Pool = 43
+    -- local Construct_Pool = 43
     local MacroObject = Root().ShowData.DataPools[Construct_Pool].Macros
     local Build_Pool = Root().ShowData.DataPools[Construct_Pool]
 

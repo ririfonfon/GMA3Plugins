@@ -4,7 +4,7 @@
     Created by Richard Fontaine "RIRI", Mars 2026.
 --]]
 
-function Build_Macro_Tempo()
+function Build_Macro_Tempo(Construct_Pool)
     
     local MacroNum = 85
     local MacroEnd
@@ -13,7 +13,7 @@ function Build_Macro_Tempo()
     local varia_mag = { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H' }
     local Tempo_Count = { '01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12', '13', '14', '15', '16' }
 
-    local Construct_Pool = 43
+    -- local Construct_Pool = 43
     local MacroObject = Root().ShowData.DataPools[Construct_Pool].Macros
     local Build_Pool = Root().ShowData.DataPools[Construct_Pool]
     local Reset = MacroNum

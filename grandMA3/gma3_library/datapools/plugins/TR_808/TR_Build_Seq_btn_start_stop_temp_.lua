@@ -4,7 +4,7 @@
     Created by Richard Fontaine "RIRI", Mars 2026.
 --]]
 
-function Build_Seq_Start_Stop()
+function Build_Seq_Start_Stop(Construct_Pool)
 
     local SeqEnd
     local count = 1
@@ -13,7 +13,7 @@ function Build_Seq_Start_Stop()
     local SeqNum = 34
     local VariaSel = 1
 
-    local Construct_Pool = 43
+    -- local Construct_Pool = 43
     local SequenceObject = Root().ShowData.DataPools[Construct_Pool].Sequences
     local PoolObject = Root().ShowData.DataPools
     local app_start_stop = { '[[07_btn_start_off_png]]', '[[07_btn_start_on_png]]', 'Temps_#' }

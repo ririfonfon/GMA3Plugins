@@ -21,7 +21,7 @@
 --     obj:Set('Tags', str)
 -- end
 
-function Build_Seq_Varia_G_R()
+function Build_Seq_Varia_G_R(Construct_Pool)
     local varia_min = { 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h' }
     local varia_mag = { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H' }
     -- local taglist, myobj
@@ -29,7 +29,7 @@ function Build_Seq_Varia_G_R()
     local SeqEnd = SeqNum + 7
     local VariaSel = 1
 
-    local Construct_Pool = 43
+    -- local Construct_Pool = 43
     local SequenceObject = Root().ShowData.DataPools[Construct_Pool].Sequences
     local PoolObject = Root().ShowData.DataPools
     -- local TagObject = Root().ShowData.Tags

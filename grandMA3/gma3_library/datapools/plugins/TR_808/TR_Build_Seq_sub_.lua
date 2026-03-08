@@ -4,7 +4,7 @@
     Created by Richard Fontaine "RIRI", Mars 2026.
 --]]
 
-function Build_Seq_Sub()
+function Build_Seq_Sub(Construct_Pool)
 
     local varia_min = { 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h' }
     local varia_mag = { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H' }
@@ -13,7 +13,7 @@ function Build_Seq_Sub()
     local VariaSel = 1
     local subSel = 1
 
-    local Construct_Pool = 43
+    -- local Construct_Pool = 43
     local SequenceObject = Root().ShowData.DataPools[Construct_Pool].Sequences
     local PoolObject = Root().ShowData.DataPools
 

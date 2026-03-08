@@ -4,7 +4,7 @@
     Created by Richard Fontaine "RIRI", Mars 2026.
 --]]
 
-function Build_Seq_R_Y_O()
+function Build_Seq_R_Y_O(Construct_Pool)
 
     local count, nr = 1, 1
     local color_btn = { 'red', 'red', 'or', 'or', 'yel', 'yel', 'whit', 'whit' }
@@ -16,7 +16,7 @@ function Build_Seq_R_Y_O()
     local SeqNum = 1
     local SeqEnd = SeqNum + 3
 
-    local Construct_Pool = 43
+    -- local Construct_Pool = 43
     local SequenceObject = Root().ShowData.DataPools[Construct_Pool].Sequences
     for e = 1, 4, 1 do
         for i = SeqNum, SeqEnd, 1 do

@@ -34,15 +34,12 @@ function Check_Size_Pool(id, PoolObject)
     end
 end
 
-function Build_MAtricks()
+function Build_MAtricks(Construct_Pool)
     local MAtricksNum = 1
-    local Construct_Pool = 43
     local MAtricksObject = Root().ShowData.DataPools[Construct_Pool].MAtricks
-    local i = MAtricksNum
-
-    Check_Size_Pool(i, MAtricksObject)
-    MAtricksObject:Create(i)
-    MAtricksObject[i]:Set('Name', 'TR_INPUT')
+    Check_Size_Pool(MAtricksNum, MAtricksObject)
+    MAtricksObject:Create(MAtricksNum)
+    MAtricksObject[MAtricksNum]:Set('Name', 'TR_INPUT')
 end
 
 function Check_DataPool(Construct_Pool, Name_Construct_Pool)
@@ -68,6 +65,4 @@ function Check_DataPool(Construct_Pool, Name_Construct_Pool)
             Size_Macro = S
         end
     end
-
-    Printf('seq ' .. Size_Seq .. ' macro ' .. Size_Macro)
 end

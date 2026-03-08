@@ -4,7 +4,7 @@
     Created by Richard Fontaine "RIRI", Mars 2026.
 --]]
 
-function Build_Seq_Btn_Sub()
+function Build_Seq_Btn_Sub(Construct_Pool)
 
     local count = 1
     local varia_min = { 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h' }
@@ -13,7 +13,7 @@ function Build_Seq_Btn_Sub()
     local VariaSel = 1
     local subSel = 1
 
-    local Construct_Pool = 43
+    -- local Construct_Pool = 43
     local SequenceObject = Root().ShowData.DataPools[Construct_Pool].Sequences
     local PoolObject = Root().ShowData.DataPools
     local app_btn_sub = { '[[02_btn_grid_off_png]]', '[[02_btn_grid_on_png]]' }

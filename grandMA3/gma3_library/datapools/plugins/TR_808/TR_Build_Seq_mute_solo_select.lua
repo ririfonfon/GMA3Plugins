@@ -4,7 +4,7 @@
     Created by Richard Fontaine "RIRI", Mars 2026.
 --]]
 
-function Build_Seq_Mute_Solo()
+function Build_Seq_Mute_Solo(Construct_Pool)
 
     local varia_min = { 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h' }
     local varia_mag = { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H' }
@@ -14,7 +14,7 @@ function Build_Seq_Mute_Solo()
     local subSel = 1
 
 
-    local Construct_Pool = 43
+    -- local Construct_Pool = 43
     local SequenceObject = Root().ShowData.DataPools[Construct_Pool].Sequences
     local PoolObject = Root().ShowData.DataPools
     local app_mute = { '[[27_btn_mute_low_png]]', '[[27_btn_mute_high_png]]', }

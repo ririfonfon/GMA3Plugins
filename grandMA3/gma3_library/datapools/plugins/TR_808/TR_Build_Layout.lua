@@ -17,8 +17,8 @@ local function Set_Def(L_N, N, Obj)
     Obj[L_N][N.No]:Set('fullresolution', 'Yes')
 end
 
-function Build_Layout()
-    local Construct_Pool = 43
+function Build_Layout(Construct_Pool)
+    -- local Construct_Pool = 43
     local Layout_Nr = 1
     local varia_mag = { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H' }
     local object_start = { 0, 34, 17, 25, 51, 30, 1601, 1618, 82, 99,

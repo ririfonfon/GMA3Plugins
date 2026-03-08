@@ -4,12 +4,12 @@
     Created by Richard Fontaine "RIRI", Mars 2026.
 --]]
 
-function Build_Macro_Mute_Select()
+function Build_Macro_Mute_Select(Construct_Pool)
     
     local varia_mag = { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H' }
     local MacroNum = 1670
     local VariaSel = 1
-    local Construct_Pool = 43
+    -- local Construct_Pool = 43
     local MacroObject = Root().ShowData.DataPools[Construct_Pool].Macros
     local Build_Pool = Root().ShowData.DataPools[Construct_Pool]
 
