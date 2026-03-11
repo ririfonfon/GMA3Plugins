@@ -5,7 +5,7 @@
 --]]
 
 
-function Build_Seq_Start_Stop(Construct_Pool)
+function Build_Seq_Start_Stop(Construct_Pool, Name_Speed)
     local SeqEnd
     local count = 1
     local varia_mag = { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H' }
@@ -46,7 +46,7 @@ function Build_Seq_Start_Stop(Construct_Pool)
         SequenceObject[i]:Set('Name', varia_mag[VariaSel] .. '_Tempo')
 
         Sequence_Defo(SequenceObject, i)
-        SequenceObject[i]:Set('RATEMASTER', 'SPEED')
+        SequenceObject[i]:Set('RATEMASTER', Name_Speed)
         SequenceObject[i]:Set('RATESCALE', 'Mul4')
 
         SequenceObject[i]:Insert()
