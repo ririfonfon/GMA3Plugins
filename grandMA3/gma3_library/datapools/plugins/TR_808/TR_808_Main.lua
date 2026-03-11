@@ -110,6 +110,7 @@ local function main(displayHandle)
         if k == 'Speed Master' then
             Speed_Nr = tonumber(v)
             SpeedMaster[Speed_Nr]:Set('Name', Name_Speed)
+            Name_Speed = SpeedMaster[Speed_Nr].Name
         end
     end
 
