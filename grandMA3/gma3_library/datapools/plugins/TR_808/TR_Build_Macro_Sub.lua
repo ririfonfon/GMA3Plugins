@@ -22,7 +22,6 @@ function Build_Macro_Sub(Construct_Pool)
     local macro_fade    = { 320, 611, 902, 1193, 1484, 1775, 2066, 2357 }
     local macro_delay   = { 332, 623, 914, 1205, 1496, 1787, 2078, 2369 }
 
-    -- local Construct_Pool = 43
     local Build_Pool = Root().ShowData.DataPools[Construct_Pool]
     local Call_Pool = thiscomponent:FindParent(DataPool():GetClass())
     local MacroObject = Root().ShowData.DataPools[Construct_Pool].Macros
