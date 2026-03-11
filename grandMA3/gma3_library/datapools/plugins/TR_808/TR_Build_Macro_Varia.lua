@@ -149,27 +149,35 @@ function Build_Macro_Varia(Construct_Pool)
     MacroObject[nr_C][1]:Set('Command', "Go+ DataPool '" .. Build_Pool.Name ..
         "' Macro 'Edit_Varia_A';Go+ DataPool '" .. Build_Pool.Name ..
         "' Sequence 'Varia_A' ")
+    MacroObject[nr_C][1]:Set('Enabled', 1)
     MacroObject[nr_C][2]:Set('Command', "Go+ DataPool '" .. Build_Pool.Name ..
         "' Macro 'Edit_Varia_B';Go+ DataPool '" .. Build_Pool.Name ..
         "' Sequence 'Varia_B' ")
+    MacroObject[nr_C][2]:Set('Enabled', 0)
     MacroObject[nr_C][3]:Set('Command', "Go+ DataPool '" .. Build_Pool.Name ..
         "' Macro 'Edit_Varia_C';Go+ DataPool '" .. Build_Pool.Name ..
         "' Sequence 'Varia_C' ")
+    MacroObject[nr_C][3]:Set('Enabled', 0)
     MacroObject[nr_C][4]:Set('Command', "Go+ DataPool '" .. Build_Pool.Name ..
         "' Macro 'Edit_Varia_D';Go+ DataPool '" .. Build_Pool.Name ..
         "' Sequence 'Varia_D' ")
+    MacroObject[nr_C][4]:Set('Enabled', 0)
     MacroObject[nr_C][5]:Set('Command', "Go+ DataPool '" .. Build_Pool.Name ..
         "' Macro 'Edit_Varia_E';Go+ DataPool '" .. Build_Pool.Name ..
         "' Sequence 'Varia_E' ")
+    MacroObject[nr_C][5]:Set('Enabled', 0)
     MacroObject[nr_C][6]:Set('Command', "Go+ DataPool '" .. Build_Pool.Name ..
         "' Macro 'Edit_Varia_F';Go+ DataPool '" .. Build_Pool.Name ..
         "' Sequence 'Varia_F' ")
+    MacroObject[nr_C][6]:Set('Enabled', 0)
     MacroObject[nr_C][7]:Set('Command', "Go+ DataPool '" .. Build_Pool.Name ..
         "' Macro 'Edit_Varia_G';Go+ DataPool '" .. Build_Pool.Name ..
         "' Sequence 'Varia_G' ")
+    MacroObject[nr_C][7]:Set('Enabled', 0)
     MacroObject[nr_C][8]:Set('Command', "Go+ DataPool '" .. Build_Pool.Name ..
         "' Macro 'Edit_Varia_H';Go+ DataPool '" .. Build_Pool.Name ..
         "' Sequence 'Varia_H' ")
+    MacroObject[nr_C][8]:Set('Enabled', 0)
 
 
     -- de Varia_ _ Call >>> Varia_Play
@@ -182,7 +190,7 @@ function Build_Macro_Varia(Construct_Pool)
     end
     MacroObject[nr_P][1]:Set('Command', "Go+ DataPool '" .. Build_Pool.Name ..
         "' Macro 'Varia_A_Play'")
-    MacroObject[nr_P][1]:Set('Enabled', 0)
+    MacroObject[nr_P][1]:Set('Enabled', 1)
     MacroObject[nr_P][2]:Set('Command', "Go+ DataPool '" .. Build_Pool.Name ..
         "' Macro 'Varia_B_Play'")
     MacroObject[nr_P][2]:Set('Enabled', 0)

@@ -34,7 +34,7 @@ function Build_Seq_Start_Stop(Construct_Pool)
     SequenceObject[SeqNum][4]:Create(1)
     SequenceObject[SeqNum][4][1]:Set('Appearance', app_start_stop[1]) --off state
     SequenceObject[SeqNum][4][1]:Set('Command',
-        " Go+ DataPool '" .. PoolObject[Construct_Pool].Name .. "'  Sequence Thru If Tag 'off_temps'")
+        " Off DataPool '" .. PoolObject[Construct_Pool].Name .. "'  Sequence Thru If Tag 'off_temps'")
 
     SeqNum = SeqNum + 4
     SeqEnd = SeqNum + 7
@@ -46,7 +46,7 @@ function Build_Seq_Start_Stop(Construct_Pool)
         SequenceObject[i]:Set('Name', varia_mag[VariaSel] .. '_Tempo')
 
         Sequence_Defo(SequenceObject, i)
-        SequenceObject[i]:Set('RATEMASTER', 1)
+        SequenceObject[i]:Set('RATEMASTER', 'SPEED')
         SequenceObject[i]:Set('RATESCALE', 'Mul4')
 
         SequenceObject[i]:Insert()
@@ -152,6 +152,10 @@ function Build_Seq_Start_Stop(Construct_Pool)
         Cmd("Assign DataPool '" .. PoolObject[Construct_Pool].Name .. "' Sequence " ..
             i .. " At Tag 'tempo'")
         VariaSel = VariaSel + 1
+        for b = 1, 16 do
+            Cmd("Set " .. SequenceObject[i] .. " Cue " .. b .. " Property 'TrigType' 'Follow'")
+            Cmd("Set " .. SequenceObject[i] .. " Cue " .. b .. " Property 'CueFade' '1'")
+        end
     end
 
     SeqNum = SeqEnd + 7
@@ -170,7 +174,7 @@ function Build_Seq_Start_Stop(Construct_Pool)
         Cmd("Assign DataPool '" .. PoolObject[Construct_Pool].Name .. "' Sequence " ..
             i .. " At Tag 'off_temps'")
         Cmd("Assign DataPool '" .. PoolObject[Construct_Pool].Name .. "' Sequence " ..
-            i .. " At Tag 'tempo'")
+            i .. " At Tag 'temps'")
         Cmd("Assign DataPool '" .. PoolObject[Construct_Pool].Name .. "' Sequence " ..
             i .. " At Tag 'temps_" .. Tempo_Count[count] .. "'")
         count = count + 1
