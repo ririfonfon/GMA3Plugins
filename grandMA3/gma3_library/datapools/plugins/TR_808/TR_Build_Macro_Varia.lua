@@ -121,22 +121,31 @@ function Build_Macro_Varia(Construct_Pool)
     end
     MacroObject[nr][1]:Set('Command',
         "Go+ DataPool '" .. Build_Pool.Name .. "' Macro 'Varia_A_Play'")
+    MacroObject[nr][1]:Set('Enabled', 0)
     MacroObject[nr][2]:Set('Command',
         "Go+ DataPool '" .. Build_Pool.Name .. "' Macro 'Varia_B_Play'")
+    MacroObject[nr][2]:Set('Enabled', 0)
     MacroObject[nr][3]:Set('Command',
         "Go+ DataPool '" .. Build_Pool.Name .. "' Macro 'Varia_C_Play'")
+    MacroObject[nr][3]:Set('Enabled', 0)
     MacroObject[nr][4]:Set('Command',
         "Go+ DataPool '" .. Build_Pool.Name .. "' Macro 'Varia_D_Play'")
+    MacroObject[nr][4]:Set('Enabled', 0)
     MacroObject[nr][5]:Set('Command',
         "Go+ DataPool '" .. Build_Pool.Name .. "' Macro 'Varia_E_Play'")
+    MacroObject[nr][5]:Set('Enabled', 0)
     MacroObject[nr][6]:Set('Command',
         "Go+ DataPool '" .. Build_Pool.Name .. "' Macro 'Varia_F_Play'")
+    MacroObject[nr][6]:Set('Enabled', 0)
     MacroObject[nr][7]:Set('Command',
         "Go+ DataPool '" .. Build_Pool.Name .. "' Macro 'Varia_G_Play'")
+    MacroObject[nr][7]:Set('Enabled', 0)
     MacroObject[nr][8]:Set('Command',
         "Go+ DataPool '" .. Build_Pool.Name .. "' Macro 'Varia_H_Play'")
+    MacroObject[nr][8]:Set('Enabled', 0)
     MacroObject[nr][9]:Set('Command',
         "Set DataPool '" .. Build_Pool.Name .. "' Macro 'Varia_Call'.1 Thru 9 'Enabled' 0")
+    MacroObject[nr][9]:Set('Enabled', 0)
 
     -- de Varia_ _ Call >>> Varia_Current
     MacroObject:Delete(nr_C)
