@@ -4,8 +4,8 @@
     Created by Richard Fontaine "RIRI", Mars 2026.
 --]]
 
-function Build_Seq_Start_Stop(Construct_Pool)
 
+function Build_Seq_Start_Stop(Construct_Pool)
     local SeqEnd
     local count = 1
     local varia_mag = { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H' }
@@ -21,8 +21,8 @@ function Build_Seq_Start_Stop(Construct_Pool)
     Check_Size_Pool(SeqNum, SequenceObject)
     SequenceObject:Create(SeqNum)
     SequenceObject[SeqNum]:Set('Name', 'btn_start_stop')
+    Sequence_Defo(SequenceObject, SeqNum)
     SequenceObject[SeqNum]:Set('Appearance', app_start_stop[1]) --off state
-    SequenceObject[SeqNum]:Set('PreferCueAppearance', 1)
     SequenceObject[SeqNum]:Insert()
     SequenceObject[SeqNum][3]:Set('No', 1)
     SequenceObject[SeqNum][3]:Create(1)
@@ -44,6 +44,11 @@ function Build_Seq_Start_Stop(Construct_Pool)
         Check_Size_Pool(i, SequenceObject)
         SequenceObject:Create(i)
         SequenceObject[i]:Set('Name', varia_mag[VariaSel] .. '_Tempo')
+
+        Sequence_Defo(SequenceObject, i)
+        SequenceObject[i]:Set('RATEMASTER', 1)
+        SequenceObject[i]:Set('RATESCALE', 'Mul4')
+
         SequenceObject[i]:Insert()
         SequenceObject[i][3]:Set('No', 1)
         SequenceObject[i][3]:Create(1)
@@ -157,7 +162,7 @@ function Build_Seq_Start_Stop(Construct_Pool)
         Check_Size_Pool(i, SequenceObject)
         SequenceObject:Create(i)
         SequenceObject[i]:Set('Name', 'temps_#' .. count)
-        SequenceObject[i]:Set('PreferCueAppearance', 1)
+        Sequence_Defo(SequenceObject, i)
         SequenceObject[i]:Insert()
         SequenceObject[i][3]:Set('No', 1)
         SequenceObject[i][3]:Create(1)

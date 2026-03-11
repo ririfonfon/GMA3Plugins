@@ -23,8 +23,8 @@ function Build_Seq_Btn_Sub(Construct_Pool)
                 Check_Size_Pool(i, SequenceObject)
                 SequenceObject:Create(i)
                 SequenceObject[i]:Set('Name', varia_min[VariaSel] .. '_btn_sub_' .. subSel .. '_t_' .. count)
+                Sequence_Defo(SequenceObject,i)
                 SequenceObject[i]:Set('Appearance', app_btn_sub[1]) --off state
-                SequenceObject[i]:Set('PreferCueAppearance', 1)
                 SequenceObject[i]:Insert()
                 SequenceObject[i][3]:Set('No', 1)
                 SequenceObject[i][3]:Create(1)
@@ -32,7 +32,7 @@ function Build_Seq_Btn_Sub(Construct_Pool)
                 SequenceObject[i][3][1]:Set('Command', "Set DataPool '" .. PoolObject[Construct_Pool].Name ..
                     "' Sequence '" .. varia_min[VariaSel] .. "_Sub_#" .. subSel .. "' Cue " ..
                     count .. " Part 0.1 Property 'Enabled' 1; Set DataPool '" .. PoolObject[Construct_Pool].Name ..
-                    "' Macro '" .. varia_min[VariaSel] .. "_Rec_Sub#" .. subSel .. "'." .. count .. " 'Enabled' 1")
+                    "' Macro '" .. varia_min[VariaSel] .. "_Rec_Sub_#" .. subSel .. "'." .. count .. " 'Enabled' 1")
                 SequenceObject[i]:Insert()
                 SequenceObject[i][4]:Set('No', 2)
                 SequenceObject[i][4]:Create(1)
@@ -40,7 +40,7 @@ function Build_Seq_Btn_Sub(Construct_Pool)
                 SequenceObject[i][4][1]:Set('Command', "Set DataPool '" .. PoolObject[Construct_Pool].Name ..
                     "' Sequence '" .. varia_min[VariaSel] .. "_Sub_#" .. subSel .. "' Cue " ..
                     count .. " Part 0.1 Property 'Enabled' 0; Set DataPool '" .. PoolObject[Construct_Pool].Name ..
-                    "' Macro '" .. varia_min[VariaSel] .. "_Rec_Sub#" .. subSel .. "'." .. count .. " 'Enabled' 0")
+                    "' Macro '" .. varia_min[VariaSel] .. "_Rec_Sub_#" .. subSel .. "'." .. count .. " 'Enabled' 0")
                 Cmd("Assign DataPool '" .. PoolObject[Construct_Pool].Name .. "' Sequence " ..
                     i .. " At Tag '" .. varia_min[VariaSel] .. "_btn_sub_#" .. subSel .. "'")
                 count = count + 1

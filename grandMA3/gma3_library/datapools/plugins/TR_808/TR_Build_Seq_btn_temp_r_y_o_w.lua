@@ -5,7 +5,6 @@
 --]]
 
 function Build_Seq_R_Y_O(Construct_Pool)
-
     local count, nr = 1, 1
     local color_btn = { 'red', 'red', 'or', 'or', 'yel', 'yel', 'whit', 'whit' }
     local app_btn_r_o_y_w = {
@@ -23,8 +22,8 @@ function Build_Seq_R_Y_O(Construct_Pool)
             Check_Size_Pool(i, SequenceObject)
             SequenceObject:Create(i)
             SequenceObject[i]:Set('Name', 'btn_temp_' .. color_btn[count] .. "_" .. nr)
+            Sequence_Defo(SequenceObject, i)
             SequenceObject[i]:Set('Appearance', app_btn_r_o_y_w[count]) --off state
-            SequenceObject[i]:Set('PreferCueAppearance', 1)
             SequenceObject[i]:Insert()
             SequenceObject[i][3]:Set('No', 1)
             SequenceObject[i][3]:Create(1)

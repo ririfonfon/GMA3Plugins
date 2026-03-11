@@ -5,7 +5,6 @@
 --]]
 
 function Build_Seq_Sub(Construct_Pool)
-
     local varia_min = { 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h' }
     local varia_mag = { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H' }
     local SeqNum = 613
@@ -22,6 +21,13 @@ function Build_Seq_Sub(Construct_Pool)
             Check_Size_Pool(i, SequenceObject)
             SequenceObject:Create(i)
             SequenceObject[i]:Set('Name', varia_min[VariaSel] .. '_Sub_#' .. subSel)
+            Sequence_Defo(SequenceObject, i)
+            SequenceObject[i]:Set('AUTOSTART', 'No')
+            SequenceObject[i]:Set('AUTOSTOP', 'No')
+            SequenceObject[i]:Set('TRACKING', 'No')
+            SequenceObject[i]:Set('PRIORITY', 'HTP')
+            SequenceObject[i]:Set('SOFTLTP', 'No')
+
             for a = 3, 18, 1 do
                 SequenceObject[i]:Insert()
                 SequenceObject[i][a]:Set('No', a - 2)
