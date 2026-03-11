@@ -41,7 +41,7 @@ function Build_Appearance()
         if AppearanceAddress[k] == false then
             Printf('Appearance not found : ' .. k)
         else
-            Printf(AppearanceName[k] .. ' = ' .. AppearanceAddress[k])
+            -- Printf(AppearanceName[k] .. ' = ' .. AppearanceAddress[k])
         end
     end
     Printf('Appearance Address Count: %d', #AppearanceAddress)
