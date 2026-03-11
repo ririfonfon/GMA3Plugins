@@ -34,8 +34,8 @@ local function main(displayHandle)
 
     local inputs = {
         { name = "Free DataPool for TR_808", value = "46",     whiteFilter = "0123456789" },
-        { name = "Name of DataPool",         value = "TR_808", maxTextLength = 20 },
-        { name = "Name of Layout",           value = "TR_808", maxTextLength = 20 },
+        { name = "Name of DataPool",         value = "TR_808_test", maxTextLength = 20 },
+        { name = "Name of Layout",           value = "TR_808_test", maxTextLength = 20 },
     }
 
 
