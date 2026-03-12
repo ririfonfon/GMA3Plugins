@@ -3,19 +3,6 @@
     * 0.0.0.9
     Created by Richard Fontaine "RIRI", Mars 2026.
 --]]
-function Message_End(message)
-    local dialog = GetFocusDisplay().ScreenOverlay:Append('BaseInput')
-    dialog.H, dialog.W = 100, 400
-    local mybutton = dialog:Append('Button')
-    mybutton.Text = message
-
-    -- local AppearObject = Root().ShowData.Appearances
-    -- local myicon = dialog:Append('AppearancePreview')
-    -- myicon.Appearance = AppearObject[955]
-    -- -- myicon.Appearance = GetObject('Image 3.1')
-    -- myicon.BackColor, myicon.W = 'Global.Transparent', 60
-    -- myicon.Interactive = 'No'
-end
 
 function Check_Size_Pool(id, PoolObject)
     if not id then
@@ -23,10 +10,19 @@ function Check_Size_Pool(id, PoolObject)
         return PoolObject:Acquire()
     end
     local idtype = math.type(id) or type(id)
-    if idtype ~= 'integer' then error('wrong argument expected integer got ' .. idtype) end
-    if IsObjectValid(PoolObject[id]) then error('id is already used : ' .. id) end
+    if idtype ~= 'integer' then
+        Dialog_End('Error : wrong argument expected integer got ' .. idtype)
+        error('wrong argument expected integer got ' .. idtype)
+    end
+    if IsObjectValid(PoolObject[id]) then
+        Dialog_End('Error : id is already used : ' .. id)
+        error('id is already used : ' .. id)
+    end
     local maxsize = PoolObject:MaxCount()
-    if id < 1 or id > maxsize then error('id out of range') end
+    if id < 1 or id > maxsize then
+        Dialog_End('Error : id out of range')
+        error('id out of range')
+    end
     local poolsize = PoolObject:Count()
     if id > poolsize then
         local newsize = math.min(maxsize, math.ceil(id / 1000) * 1000)
@@ -86,8 +82,10 @@ function Check_DataPool(Construct_Pool, Name_Construct_Pool)
     local PoolObject = Root().ShowData.DataPools
     if PoolObject[Construct_Pool] == nil then
         PoolObject:Create(Construct_Pool)
-        Printf('Create')
         coroutine.yield(0.1)
+    else
+        Dialog_End("Error: the pool " .. Construct_Pool .. " not empty")
+        error("Pool Not Empty")
     end
     PoolObject[Construct_Pool]:Set('Name', Name_Construct_Pool)
 
@@ -105,4 +103,11 @@ function Check_DataPool(Construct_Pool, Name_Construct_Pool)
             Size_Macro = S
         end
     end
+end
+
+function Dialog_End(message)
+    local dialog = GetFocusDisplay().ScreenOverlay:Append('BaseInput')
+    dialog.H, dialog.W = 800, 800
+    local mybutton = dialog:Append('Button')
+    mybutton.Text = message
 end
