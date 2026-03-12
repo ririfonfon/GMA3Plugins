@@ -7,11 +7,16 @@
 
 function Check_Solo()
     local Select = UserVars()
-    local P_A_TR_Solo, P_B_TR_Solo, P_C_TR_Solo, P_D_TR_Solo, P_E_TR_Solo, P_F_TR_Solo, P_G_TR_Solo, P_H_TR_Solo, P_Order
+    local P_A_TR_Solo, P_B_TR_Solo, P_C_TR_Solo, P_D_TR_Solo, P_E_TR_Solo, P_F_TR_Solo, P_G_TR_Solo, P_H_TR_Solo, P_Order, TR_Pool
 
     if GetVar(Select, "Order") then
         P_Order = GetVar(Select, "Order")
         Printf("Order: %s", P_Order)
+    end
+    
+    if GetVar(Select, "TR_Pool") then
+        TR_Pool = GetVar(Select, "TR_Pool")
+        Printf("TR_Pool: %s", TR_Pool)
     end
 
     if P_Order == "A" then
@@ -31,7 +36,7 @@ function Check_Solo()
 
         if P_A_TR_Solo < 1 then
             P_A_TR_Solo = 0
-            Cmd('Go+ DataPool "TR_808_GMA3" Macro "a_NO_SOLO"')
+            Cmd('Go+ DataPool "'.. TR_Pool ..'" Macro "a_NO_SOLO"')
             Printf("A_TR_Solo is 0.")
         end
 
@@ -55,7 +60,7 @@ function Check_Solo()
 
         if P_B_TR_Solo < 1 then
             P_B_TR_Solo = 0
-            Cmd('Go+ DataPool "TR_808_GMA3" Macro "b_NO_SOLO"')
+            Cmd('Go+ DataPool "'.. TR_Pool ..'" Macro "b_NO_SOLO"')
             Printf("B_TR_Solo is 0.")
         end
 
@@ -79,7 +84,7 @@ function Check_Solo()
         
         if P_C_TR_Solo < 1 then
             P_C_TR_Solo = 0
-            Cmd('Go+ DataPool "TR_808_GMA3" Macro "c_NO_SOLO"')
+            Cmd('Go+ DataPool "'.. TR_Pool ..'" Macro "c_NO_SOLO"')
             Printf("C_TR_Solo is 0.")
         end
         
@@ -103,7 +108,7 @@ function Check_Solo()
 
         if P_D_TR_Solo < 1 then
             P_D_TR_Solo = 0
-            Cmd('Go+ DataPool "TR_808_GMA3" Macro "d_NO_SOLO"')
+            Cmd('Go+ DataPool "'.. TR_Pool ..'" Macro "d_NO_SOLO"')
             Printf("D_TR_Solo is 0.")
         end
         
@@ -127,7 +132,7 @@ function Check_Solo()
 
         if P_E_TR_Solo < 1 then
             P_E_TR_Solo = 0
-            Cmd('Go+ DataPool "TR_808_GMA3" Macro "e_NO_SOLO"')
+            Cmd('Go+ DataPool "'.. TR_Pool ..'" Macro "e_NO_SOLO"')
             Printf("E_TR_Solo is 0.")
         end
         
@@ -151,7 +156,7 @@ function Check_Solo()
 
         if P_F_TR_Solo < 1 then
             P_F_TR_Solo = 0
-            Cmd('Go+ DataPool "TR_808_GMA3" Macro "f_NO_SOLO"')
+            Cmd('Go+ DataPool "'.. TR_Pool ..'" Macro "f_NO_SOLO"')
             Printf("F_TR_Solo is 0.")
         end
         
@@ -174,7 +179,7 @@ function Check_Solo()
 
         if P_G_TR_Solo < 1 then
             P_G_TR_Solo = 0
-            Cmd('Go+ DataPool "TR_808_GMA3" Macro "g_NO_SOLO"')
+            Cmd('Go+ DataPool "'.. TR_Pool ..'" Macro "g_NO_SOLO"')
             Printf("G_TR_Solo is 0.")
         end
         
@@ -198,7 +203,7 @@ function Check_Solo()
 
         if P_H_TR_Solo < 1 then
             P_H_TR_Solo = 0
-            Cmd('Go+ DataPool "TR_808_GMA3" Macro "h_NO_SOLO"')
+            Cmd('Go+ DataPool "'.. TR_Pool ..'" Macro "h_NO_SOLO"')
             Printf("H_TR_Solo is 0.")
         end
         
