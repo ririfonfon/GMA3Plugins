@@ -29,8 +29,15 @@ local function main(displayHandle)
     end
 
     Cmd('Set UserProfile *.15 Property "keyboardshortcutsactive" false')
-    local Construct_Pool, Name_Construct_Pool, Name_Layout, Speed_Nr, Name_Speed
+    local Construct_Pool, Name_Construct_Pool, Name_Layout, Speed_Nr, Name_Speed, valid_name, pool_free
     local Call_Pool = myHandle:FindParent(DataPool():GetClass())
+    local PoolObject = Root().ShowData.DataPools:Children()
+    for i = 1, #PoolObject do
+        pool_free = i
+        i = i + 1
+    end
+    pool_free = pool_free + 1
+    Printf(pool_free)
     local SpeedMaster = Root().ShowData.Masters.Speed:Children()
     local Speed_Name = {}
     for sp = 1, #SpeedMaster do
@@ -40,7 +47,7 @@ local function main(displayHandle)
 
 
     local inputs = {
-        { name = "Free DataPool for TR_808", value = "46",          whiteFilter = "0123456789" },
+        { name = "Free DataPool for TR_808", value = pool_free,     whiteFilter = "0123456789" },
         { name = "Name of DataPool",         value = "TR_808_test", maxTextLength = 20 },
         { name = "Name of Layout",           value = "TR_808_test", maxTextLength = 20 },
         { name = "Name of Speed Master",     value = "TR_SPEED",    maxTextLength = 20 },
@@ -49,7 +56,7 @@ local function main(displayHandle)
     local selectors = {
         {
             name = "Speed Master",
-            -- SelectedValue = 1,
+            SelectedValue = 0,
             values = {
                 [Speed_Name[1]] = 1,
                 [Speed_Name[2]] = 2,
@@ -70,6 +77,12 @@ local function main(displayHandle)
             },
             type = 0
         },
+        {
+            name = "Change Name of Speed Master",
+            SelectedValue = 1,
+            values = { ['No'] = 1, ['Yes'] = 2 },
+            type = 1
+        },
     }
 
 
@@ -86,7 +99,7 @@ local function main(displayHandle)
                 selectors = selectors,
                 backColor = "Global.Default",
                 icon = "logo_small",
-                titleTextColor = "Global.AlertText",
+                titleTextColor = "Global.Text",
                 messageTextColor = "Global.Text",
                 autoCloseOnInput = true
             }
@@ -108,14 +121,19 @@ local function main(displayHandle)
 
     for k, v in pairs(resultTable.selectors) do
         if k == 'Speed Master' then
-            Speed_Nr = tonumber(v)
-            SpeedMaster[Speed_Nr]:Set('Name', Name_Speed)
-            Name_Speed = SpeedMaster[Speed_Nr].Name
+            if v > 0 then
+                Speed_Nr = tonumber(v)
+            else
+                Dialog_End('Error : No Speed Master selected')
+                return
+            end
+        elseif k == 'Change Name of Speed Master' then
+            valid_name = tonumber(v)
         end
     end
 
     if resultTable.result == 0 then
-        Printf('Name : ' .. Name_Speed .. ' SpeedMaster nr : ' .. Speed_Nr .. ' name : ' .. Speed_Name[Speed_Nr])
+        Dialog_End("Plugings Canceled")
         return
     end
 
@@ -132,6 +150,12 @@ local function main(displayHandle)
 
     Build_Seq_R_Y_O(Construct_Pool)
     Build_Seq_Varia_G_R(Construct_Pool)
+    if valid_name == 2 then
+        SpeedMaster[Speed_Nr]:Set('Name', Name_Speed)
+        Name_Speed = SpeedMaster[Speed_Nr].Name
+    else
+        Name_Speed = SpeedMaster[Speed_Nr].Name
+    end
     Build_Seq_Start_Stop(Construct_Pool, Name_Speed)
     Build_Seq_Mute_Solo(Construct_Pool)
     Build_Seq_Sub(Construct_Pool)
@@ -141,6 +165,6 @@ local function main(displayHandle)
 
 
 
-    Printf('REturn')
+    Dialog_End('TR-808 on GMA3 is Create in DataPool ' .. Construct_Pool .. ':' .. Name_Construct_Pool .. ' Enjoy')
 end
 return main
