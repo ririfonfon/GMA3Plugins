@@ -18,10 +18,10 @@ local function Set_Def(L_N, N, Obj)
 end
 
 function Build_Layout(Construct_Pool, Name_Layout)
-    -- local Construct_Pool = 43
+    local Build_Pool = Root().ShowData.DataPools[Construct_Pool]
     local Layout_Nr = 1
     local varia_mag = { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H' }
-    local object_start = { 0, 34, 17, 25, 51, 30, 1601, 1618, 82, 99,
+    local object_start = { 0, 34, 17, 25, 51, 30, 1635, 1618, 82, 99,
 
         765, 782, 799, 816, 833, 850, 867, 884, 901, 918, 935, 952, -- A 11-33
         68, 85, 105, 122, 139,
@@ -84,7 +84,7 @@ function Build_Layout(Construct_Pool, Name_Layout)
     local Select_Value_Matricks_x = { 49, 153, 256, 360, 403 }
     local Select_Value_Matricks_y = { 132, 90, 46, 2, -40, -84, -128, -172, -215, -259, -302, -346 }
     local S_V_M_Color = { 'FF00FFFF', '00FFFFFF', 'FFFF00FF', '00FF00FF', 'FF0000FF', '0000FFFF', 'FF0000FF' }
-    local S_V_M_Text = { 'Group', 'Value', 'Matricks', 'None/None', 'None/None', 'All', 'None' }
+    local S_V_M_Text = { 'Group', 'Value', 'Matricks', 'None/None', 'None/None', 'Inv', 'None' }
 
     for k in pairs(App_Panel_Name) do
         for i in pairs(AppearanceObject) do
@@ -351,7 +351,7 @@ function Build_Layout(Construct_Pool, Name_Layout)
                 MacroObject[i + object_start[29 + y + inc]][5]:Set('Command',
                     "SetUserVariable 'TR_Layout' '" .. Layout_Nr .. "_" .. Nr.No .. "'")
                 Printf(Nr.No ..
-                '  ' .. i + object_start[29 + y + inc] .. ' = ' .. MacroObject[i + object_start[29 + y + inc]].Name)
+                    '  ' .. i + object_start[29 + y + inc] .. ' = ' .. MacroObject[i + object_start[29 + y + inc]].Name)
             end
         end
 
@@ -396,4 +396,24 @@ function Build_Layout(Construct_Pool, Name_Layout)
         inc = inc + 23
         inc_var = inc_var + 1
     end
+
+    Nr = Layout_Object[Layout_Nr]:Acquire()
+    Layout_Object[Layout_Nr][Nr.No]:Set('Object', MacroObject[1676])
+    Layout_Object[Layout_Nr][Nr.No]:Set('posx', 579)
+    Layout_Object[Layout_Nr][Nr.No]:Set('posy', -386)
+    Layout_Object[Layout_Nr][Nr.No]:Set('width', 40)
+    Layout_Object[Layout_Nr][Nr.No]:Set('height', 34)
+    Layout_Object[Layout_Nr][Nr.No]:Set('action', 'Go+')
+    Layout_Object[Layout_Nr][Nr.No]:Set('Note', 'all_none_FOND')
+    Set_Def(Layout_Nr, Nr, Layout_Object)
+    Layout_Object[Layout_Nr][Nr.No]:Set('visibilityborder', 'Visible')
+    Layout_Object[Layout_Nr][Nr.No]:Set('bordersize', 1)
+    Layout_Object[Layout_Nr][Nr.No]:Set('bordercolor', S_V_M_Color[6])
+    Layout_Object[Layout_Nr][Nr.No]:Set('customtexttext', S_V_M_Text[6])
+    Layout_Object[Layout_Nr][Nr.No]:Set('customtextsize', 28)
+    Layout_Object[Layout_Nr][Nr.No]:Set('customtextalignmenth', 'Center')
+    Layout_Object[Layout_Nr][Nr.No]:Set('customtextalignmentv', 'Center')
+
+    Cmd ("Go+ Cue 2 DataPool '" .. Build_Pool.Name .. "' Sequence 'btn_a_green'")
+    Cmd ("Go+ DataPool '" .. Build_Pool.Name .. "' Sequence 'Varia_A'")
 end

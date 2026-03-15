@@ -10,7 +10,6 @@ function Build_Macro_All_Sub_Varia(Construct_Pool)
     local MacroNum = 1653
     local MacroEnd
     local VariaSel = 1
-    -- local Construct_Pool = 43
     local MacroObject = Root().ShowData.DataPools[Construct_Pool].Macros
     local Build_Pool = Root().ShowData.DataPools[Construct_Pool]
 
@@ -30,17 +29,32 @@ function Build_Macro_All_Sub_Varia(Construct_Pool)
             Build_Pool.Name .. "' Macro 'none_sub_#" .. count .. "'.1 Thru 8 'Enabled' 0")
         count = count + 1
     end
+    count = 1
+    for a = 25, 36 do
+        MacroObject[MacroNum]:Acquire()
+        MacroObject[MacroNum][a]:Set('Command', "Set DataPool '" ..
+            Build_Pool.Name .. "' Macro 'inv_sub_#" .. count .. "'.1 Thru 8 'Enabled' 0")
+        count = count + 1
+    end
+    count = 1
+        for a = 37, 48 do
+            MacroObject[MacroNum]:Acquire()
+            MacroObject[MacroNum][a]:Set('Command',
+                "Set DataPool '" .. Build_Pool.Name .. "' Macro 'Inv_Select'." ..
+                VariaSel .. " 'Enabled' 0")
+            count = count + 1
+        end
     MacroObject[MacroNum]:Acquire()
-    MacroObject[MacroNum][25]:Set('Command',
+    MacroObject[MacroNum][49]:Set('Command',
         "Set DataPool '" .. Build_Pool.Name .. "' Macro 'Mute'.1 Thru 8 'Enabled' 0")
     MacroObject[MacroNum]:Acquire()
-    MacroObject[MacroNum][26]:Set('Command',
+    MacroObject[MacroNum][50]:Set('Command',
         "Set DataPool '" .. Build_Pool.Name .. "' Macro 'Off_Mute'.1 Thru 8 'Enabled' 0")
     MacroObject[MacroNum]:Acquire()
-    MacroObject[MacroNum][27]:Set('Command',
+    MacroObject[MacroNum][51]:Set('Command',
         "Set DataPool '" .. Build_Pool.Name .. "' Macro 'Select'.1 Thru 8 'Enabled' 0")
     MacroObject[MacroNum]:Acquire()
-    MacroObject[MacroNum][28]:Set('Command',
+    MacroObject[MacroNum][52]:Set('Command',
         "Set DataPool '" .. Build_Pool.Name .. "' Macro 'Off_Select'.1 Thru 8 'Enabled' 0")
 
     count = 1
@@ -54,6 +68,7 @@ function Build_Macro_All_Sub_Varia(Construct_Pool)
         MacroObject[i]:Acquire()
         MacroObject[i][1]:Set('Command',
             "Go+ DataPool '" .. Build_Pool.Name .. "' Macro 'Clear_sub'")
+        MacroObject[i][1]:Set('Wait', 0.1)
         for a = 2, 13 do
             MacroObject[i]:Acquire()
             MacroObject[i][a]:Set('Command',
@@ -69,20 +84,36 @@ function Build_Macro_All_Sub_Varia(Construct_Pool)
                 VariaSel .. " 'Enabled' 1")
             count = count + 1
         end
+        count = 1
+        for a = 26, 37 do
+            MacroObject[i]:Acquire()
+            MacroObject[i][a]:Set('Command',
+                "Set DataPool '" .. Build_Pool.Name .. "' Macro 'inv_sub_#" .. count .. "'." ..
+                VariaSel .. " 'Enabled' 1")
+            count = count + 1
+        end
+        count = 1
+        for a = 38, 49 do
+            MacroObject[i]:Acquire()
+            MacroObject[i][a]:Set('Command',
+                "Set DataPool '" .. Build_Pool.Name .. "' Macro 'Inv_Select'." ..
+                VariaSel .. " 'Enabled' 1")
+            count = count + 1
+        end
         MacroObject[i]:Acquire()
-        MacroObject[i][26]:Set('Command',
+        MacroObject[i][50]:Set('Command',
             "Set DataPool '" .. Build_Pool.Name ..
             "' Macro 'Mute'." .. VariaSel .. " 'Enabled' 1")
         MacroObject[i]:Acquire()
-        MacroObject[i][27]:Set('Command',
+        MacroObject[i][51]:Set('Command',
             "Set DataPool '" .. Build_Pool.Name ..
             "' Macro 'Off_Mute'." .. VariaSel .. " 'Enabled' 1")
         MacroObject[i]:Acquire()
-        MacroObject[i][28]:Set('Command',
+        MacroObject[i][52]:Set('Command',
             "Set DataPool '" .. Build_Pool.Name ..
             "' Macro 'Select'." .. VariaSel .. " 'Enabled' 1")
         MacroObject[i]:Acquire()
-        MacroObject[i][29]:Set('Command',
+        MacroObject[i][53]:Set('Command',
             "Set DataPool '" .. Build_Pool.Name ..
             "' Macro 'Off_Select'." .. VariaSel .. " 'Enabled' 1")
 

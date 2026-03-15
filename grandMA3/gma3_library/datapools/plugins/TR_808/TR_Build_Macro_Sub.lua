@@ -7,12 +7,11 @@
 local thiscomponent = select(4, ...)
 
 function Build_Macro_Sub(Construct_Pool)
-
-    local MacroNum = 106
-    local MacroEnd = MacroNum + 11
-    local VariaSel = 1
-    local subSel = 1
-    local lay_object
+    local MacroNum      = 106
+    local MacroEnd      = MacroNum + 11
+    local VariaSel      = 1
+    local subSel        = 1
+    local lay_object, sub
     local count         = 1
     local varia_min     = { 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h' }
     local varia_mag     = { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H' }
@@ -21,10 +20,11 @@ function Build_Macro_Sub(Construct_Pool)
     local macro_matrick = { 295, 586, 877, 1168, 1459, 1750, 2041, 2332 }
     local macro_fade    = { 320, 611, 902, 1193, 1484, 1775, 2066, 2357 }
     local macro_delay   = { 332, 623, 914, 1205, 1496, 1787, 2078, 2369 }
+    local seq_btn_sub   = { 766, 987, 1208, 1429, 1650, 1871, 2092, 2313 }
 
-    local Build_Pool = Root().ShowData.DataPools[Construct_Pool]
-    local Call_Pool = thiscomponent:FindParent(DataPool():GetClass())
-    local MacroObject = Root().ShowData.DataPools[Construct_Pool].Macros
+    local Build_Pool    = Root().ShowData.DataPools[Construct_Pool]
+    local Call_Pool     = thiscomponent:FindParent(DataPool():GetClass())
+    local MacroObject   = Root().ShowData.DataPools[Construct_Pool].Macros
 
     for b = 1, 8 do
         lay_object = tonumber(macro_sel_sub[VariaSel])
@@ -106,7 +106,7 @@ function Build_Macro_Sub(Construct_Pool)
             Check_Size_Pool(i, MacroObject)
             MacroObject:Create(i)
             MacroObject[i]:Set('Name', varia_min[VariaSel] .. '_Tag_Sub_#' .. subSel)
-            for a = 1, 3 do
+            for a = 1, 4 do
                 MacroObject[i]:Insert(a)
             end
             MacroObject[i][1]:Set('Command',
@@ -118,6 +118,9 @@ function Build_Macro_Sub(Construct_Pool)
             MacroObject[i][3]:Set('Command',
                 "Assign DataPool '" .. Build_Pool.Name .. "' Sequence '" ..
                 varia_min[VariaSel] .. "_btn_solo_#" .. subSel .. "' at Tag 'Select_Solo_" .. varia_mag[VariaSel] .. "'")
+            MacroObject[i][4]:Set('Command',
+                "Set DataPool '" .. Build_Pool.Name .. "' Macro '" ..
+                varia_min[VariaSel] .. "_INV'." .. subSel .. " Property 'Enabled' 1")
             subSel = subSel + 1
         end
 
@@ -129,7 +132,7 @@ function Build_Macro_Sub(Construct_Pool)
             Check_Size_Pool(i, MacroObject)
             MacroObject:Create(i)
             MacroObject[i]:Set('Name', varia_min[VariaSel] .. '_Off_Tag_Sub_#' .. subSel)
-            for a = 1, 3 do
+            for a = 1, 4 do
                 MacroObject[i]:Insert(a)
             end
             MacroObject[i][1]:Set('Command',
@@ -141,6 +144,9 @@ function Build_Macro_Sub(Construct_Pool)
             MacroObject[i][3]:Set('Command',
                 "Assign Off DataPool '" .. Build_Pool.Name .. "' Sequence '" ..
                 varia_min[VariaSel] .. "_btn_solo_#" .. subSel .. "' at Tag 'Select_Solo_" .. varia_mag[VariaSel] .. "'")
+            MacroObject[i][4]:Set('Command',
+                "Set DataPool '" .. Build_Pool.Name .. "' Macro '" ..
+                varia_min[VariaSel] .. "_INV'." .. subSel .. " Property 'Enabled' 0")
             subSel = subSel + 1
         end
 
@@ -329,8 +335,39 @@ function Build_Macro_Sub(Construct_Pool)
             subSel = subSel + 1
             count = count + 1
         end
+
+        MacroNum = MacroEnd + 4
+
+        Check_Size_Pool(MacroNum, MacroObject)
+        MacroObject:Create(MacroNum)
+        MacroObject[MacroNum]:Set('Name', varia_min[VariaSel] .. '_INV')
+        for j = 1, 12, 1 do
+            MacroObject[MacroNum]:Insert(j)
+            MacroObject[MacroNum][j]:Set('Command',
+                "Go+ DataPool '" .. Build_Pool.Name .. "' Macro '" ..
+                varia_min[VariaSel] .. "_Inv_Sub_#" .. j)
+            MacroObject[MacroNum][j]:Set('Enabled', 0)
+        end
+
+        MacroNum = MacroEnd + 6
+        MacroEnd = MacroNum + 11
+        subSel = 1
+        sub = seq_btn_sub[VariaSel]
+
+        for i = MacroNum, MacroEnd, 1 do
+            Check_Size_Pool(i, MacroObject)
+            MacroObject:Create(i)
+            MacroObject[i]:Set('Name', varia_min[VariaSel] .. '_Inv_Sub_#' .. subSel)
+            MacroObject[i]:Insert(1)
+            MacroObject[i][1]:Set('Command', "Go+ DataPool " .. Build_Pool.Name ..
+                " Sequence " .. sub .. " Thru " .. sub + 15)
+            sub = sub + 17
+            subSel = subSel + 1
+            count = count + 1
+        end
+
         VariaSel = VariaSel + 1
-        MacroNum = MacroEnd + 23
+        MacroNum = MacroEnd + 6
         MacroEnd = MacroNum + 11
         subSel = 1
         count = 1
