@@ -314,7 +314,7 @@ function Build_Macro_Sub(Construct_Pool)
             Check_Size_Pool(i, MacroObject)
             MacroObject:Create(i)
             MacroObject[i]:Set('Name', varia_min[VariaSel] .. '_Off_Solo_Sub_#' .. subSel)
-            for a = 1, 6 do
+            for a = 1, 5 do
                 MacroObject[i]:Insert(a)
             end
             MacroObject[i][1]:Set('Command', "SetUserVariable 'Order' '" .. varia_mag[VariaSel] .. "'")
@@ -322,9 +322,9 @@ function Build_Macro_Sub(Construct_Pool)
             MacroObject[i][3]:Set('Command', "SetUserVariable 'TR_Pool' '" .. Build_Pool.Name .. "'")
             MacroObject[i][4]:Set('Command', "Set DataPool '" .. Build_Pool.Name .. "' Macro '" ..
                 varia_min[VariaSel] .. "_SOLO'." .. count .. " 'Enabled' 1")
-            MacroObject[i][5]:Set('Command', "Go+ DataPool '" .. Build_Pool.Name .. "' Macro '" ..
-                varia_min[VariaSel] .. "_SOLO'")
-            MacroObject[i][6]:Set('Command',
+            -- MacroObject[i][5]:Set('Command', "Go+ DataPool '" .. Build_Pool.Name .. "' Macro '" ..
+            --     varia_min[VariaSel] .. "_SOLO'")
+            MacroObject[i][5]:Set('Command',
                 "Call DataPool '" .. Call_Pool.Name .. "' Plugin 'TR_808_By_Riri'")
             subSel = subSel + 1
             count = count + 1
