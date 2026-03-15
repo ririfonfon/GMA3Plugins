@@ -1,6 +1,6 @@
 --[[
     Releases:
-    * 0.0.0.9
+    * 0.0.0.91
     Created by Richard Fontaine "RIRI", Mars 2026.
 --]]
 
@@ -146,7 +146,7 @@ local function main(displayHandle)
     Build_Macro_Sub(Construct_Pool)
     Build_Macro_All_None(Construct_Pool)
     Build_Macro_All_Sub_Varia(Construct_Pool)
-    Build_Macro_Mute_Select(Construct_Pool)
+    Build_Macro_Mute_Select(Construct_Pool, Call_Pool)
 
     Build_Seq_R_Y_O(Construct_Pool)
     Build_Seq_Varia_G_R(Construct_Pool)

@@ -1,10 +1,10 @@
 --[[
     Releases:
-    * 0.0.0.9
+    * 0.0.0.91
     Created by Richard Fontaine "RIRI", Mars 2026.
 --]]
 
-function Build_Macro_Mute_Select(Construct_Pool)
+function Build_Macro_Mute_Select(Construct_Pool, Call_Pool)
     local varia_min = { 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h' }
     local varia_mag = { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H' }
     local MacroNum = 1670
@@ -75,4 +75,20 @@ function Build_Macro_Mute_Select(Construct_Pool)
         MacroObject[MacroNum][a]:Set('Enabled', 0)
         VariaSel = VariaSel + 1
     end
+
+    VariaSel = 1
+    MacroNum = MacroNum + 1
+
+    Check_Size_Pool(MacroNum, MacroObject)
+    MacroObject:Create(MacroNum)
+    MacroObject[MacroNum]:Set('Name', 'Priority')
+    for a = 1, 5 do
+        MacroObject[MacroNum]:Insert(a)
+    end
+    MacroObject[MacroNum][1]:Set('Command', "Edit DataPool '" ..
+        Build_Pool.Name .. "' Sequence 'a_Sub_#1' Property 'priority'")
+    MacroObject[MacroNum][2]:Set('Command', "SetUserVariable 'TR_Fonction' 10")
+    MacroObject[MacroNum][3]:Set('Command', "SetUserVariable 'TR_Pool' '" .. Build_Pool.Name .. "'")
+    MacroObject[MacroNum][4]:Set('Command', "SetUserVariable 'TR_Layout' '1_2410")
+    MacroObject[MacroNum][5]:Set('Command', "Call DataPool '" .. Call_Pool.Name .. "' Plugin 'TR_808_By_Riri'")
 end

@@ -1,6 +1,6 @@
 --[[
     Releases:
-    * 0.0.0.9
+    * 0.0.0.91
     Created by Richard Fontaine "RIRI", Mars 2026.
 --]]
 
@@ -16,7 +16,7 @@ function Retour_Recepie()
     if GetVar(Select, "TR_Layout") then
         TR_Lay = GetVar(Select, "TR_Layout")
         TR_Layout = string.gsub(TR_Lay, "_", ".")
-       
+
         local a = 1
         for number in string.gmatch(TR_Layout, "%d+") do
             if a == 1 then
@@ -123,6 +123,54 @@ function Retour_Recepie()
                 LayoutObject[TR_N_Layout][TR_N_Object]:Set('CustomTextText', Target)
             end
         end
+    elseif (TR_Fonction == 10) then
+        local AppearanceObject = Root().ShowData.Appearances:Children()
+        local App_Panel_Name = { 'p_super_png', 'p_swap_png', 'p_htp_png', 'p_highest_png',
+            'p_high_png', 'p_ltp_png', 'p_low_png', 'p_lowest_png' }
+        local Addr_Nat_Panel = { 0, 0, 0, 0, 0, 0, 0, 0 }
+        for k in pairs(App_Panel_Name) do
+            for i in pairs(AppearanceObject) do
+                if AppearanceObject[i].Name ~= nil then
+                    if AppearanceObject[i].Name == App_Panel_Name[k] then
+                        Addr_Nat_Panel[k] = AppearanceObject[i]:AddrNative()
+                    end
+                end
+            end
+        end
+        local priority
+        for k in ipairs(SeqNr) do
+            if SeqNr[k].Name == 'a_Sub_#1' then
+                priority = SeqNr[k]:Get('Priority', Enums.Roles.Display) or 'None'
+            end
+        end
+        for k in ipairs(SeqNr) do
+            local tag = string.format(SeqNr[k]:Get('Tags') or 'None')
+            if (string.find(tag, 'SUB_#1')) or (string.find(tag, 'SUB_#2')) or (string.find(tag, 'SUB_#3')) or
+                (string.find(tag, 'SUB_#4')) or (string.find(tag, 'SUB_#5')) or (string.find(tag, 'SUB_#6')) or
+                (string.find(tag, 'SUB_#7')) or (string.find(tag, 'SUB_#8')) or (string.find(tag, 'SUB_#9')) or
+                (string.find(tag, 'SUB_#10')) or (string.find(tag, 'SUB_#11')) or (string.find(tag, 'SUB_#12'))
+            then
+                SeqNr[k]:Set('priority', priority)
+            end
+        end
+        if priority == "Super" then
+            Target = Addr_Nat_Panel[1]
+        elseif priority == "Swap" then
+            Target = Addr_Nat_Panel[2]
+        elseif priority == "HTP" then
+            Target = Addr_Nat_Panel[3]
+        elseif priority == "Highest" then
+            Target = Addr_Nat_Panel[4]
+        elseif priority == "High" then
+            Target = Addr_Nat_Panel[5]
+        elseif priority == "LTP" then
+            Target = Addr_Nat_Panel[6]
+        elseif priority == "Low" then
+            Target = Addr_Nat_Panel[7]
+        elseif priority == "Lowest" then
+            Target = Addr_Nat_Panel[8]
+        end
+        LayoutObject[TR_N_Layout][TR_N_Object]:Set('Appearance', Target)
     end
 
     DelVar(Select, "TR_Sub")

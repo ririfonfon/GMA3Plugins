@@ -1,11 +1,10 @@
 --[[
     Releases:
-    * 0.0.0.9
+    * 0.0.0.91
     Created by Richard Fontaine "RIRI", Mars 2026.
 --]]
 
 function Build_Appearance()
-    
     local AppearanceObject = Root().ShowData.Appearances:Children()
     local AppearanceName = { '[[TR_LOGO_png]]', '[[panelBaseGma3_png]]', '[[01_panel_scale_2_png]]',
         '[[01_panel_scale_3_png]]', '[[01_panel_scale_4_png]]', '[[17_btn_a_low_png]]', '[[17_btn_a_high_png]]',
@@ -23,7 +22,8 @@ function Build_Appearance()
         '[[20_btn_red_f_high_png]]', '[[19_btn_red_g_low_png]]', '[[19_btn_red_g_high_png]]', '[[18_btn_red_h_low_png]]',
         '[[18_btn_red_h_high_png]]', '[[02_btn_grid_off_png]]', '[[02_btn_grid_on_png]]', '[[27_btn_mute_low_png]]',
         '[[27_btn_mute_high_png]]', '[[26_btn_solo_low_png]]', '[[26_btn_solo_high_png]]', '[[29_btn_select_low_png]]',
-        '[[30_btn_solo_high_png]]' }
+        '[[30_btn_solo_high_png]]', 'Temps_#', 'p_super_png', 'p_swap_png', 'p_htp_png', 'p_highest_png',
+        'p_high_png', 'p_ltp_png', 'p_low_png', 'p_lowest_png' }
     local AppearanceAddress = {}
     for k in pairs(AppearanceName) do
         AppearanceAddress[k] = false

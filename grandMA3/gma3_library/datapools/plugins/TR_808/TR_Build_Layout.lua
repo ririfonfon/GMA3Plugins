@@ -1,6 +1,6 @@
 --[[
     Releases:
-    * 0.0.0.9
+    * 0.0.0.91
     Created by Richard Fontaine "RIRI", Mars 2026.
 --]]
 
@@ -64,9 +64,9 @@ function Build_Layout(Construct_Pool, Name_Layout)
     local AppearanceObject = Root().ShowData.Appearances:Children()
     local Nr
     local App_Panel_Name = { '[[panelBaseGma3_png]]', '[[01_panel_scale_2_png]]', '[[01_panel_scale_3_png]]',
-        '[[01_panel_scale_4_png]]', '[[02_btn_grid_off_png]]',
+        '[[01_panel_scale_4_png]]', '[[02_btn_grid_off_png]]','p_htp_png',
     }
-    local Addr_Nat_Panel = { 0, 0, 0, 0, 0 }
+    local Addr_Nat_Panel = { 0, 0, 0, 0, 0 ,0}
     local App_Panel_Height = { 1205, 800, 800, 800 }
     local App_Panel_Width = { 2000, 2000, 2000, 2000 }
     local App_Panel_PosY = { 0, -434, -434, -434 }
@@ -413,6 +413,17 @@ function Build_Layout(Construct_Pool, Name_Layout)
     Layout_Object[Layout_Nr][Nr.No]:Set('customtextsize', 28)
     Layout_Object[Layout_Nr][Nr.No]:Set('customtextalignmenth', 'Center')
     Layout_Object[Layout_Nr][Nr.No]:Set('customtextalignmentv', 'Center')
+
+    Nr = Layout_Object[Layout_Nr]:Acquire()
+    Layout_Object[Layout_Nr][Nr.No]:Set('Object', MacroObject[1677])
+    Layout_Object[Layout_Nr][Nr.No]:Set('posx', 1800)
+    Layout_Object[Layout_Nr][Nr.No]:Set('posy', 265)
+    Layout_Object[Layout_Nr][Nr.No]:Set('width', 60)
+    Layout_Object[Layout_Nr][Nr.No]:Set('height', 60)
+    Layout_Object[Layout_Nr][Nr.No]:Set('action', 'Go+')
+    Layout_Object[Layout_Nr][Nr.No]:Set('Note', 'all_none_FOND')
+    Layout_Object[Layout_Nr][Nr.No]:Set('Appearance', Addr_Nat_Panel[6])
+    Set_Def(Layout_Nr, Nr, Layout_Object)
 
     Cmd ("Go+ Cue 2 DataPool '" .. Build_Pool.Name .. "' Sequence 'btn_a_green'")
     Cmd ("Go+ DataPool '" .. Build_Pool.Name .. "' Sequence 'Varia_A'")
