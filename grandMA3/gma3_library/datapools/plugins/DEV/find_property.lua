@@ -1,4 +1,4 @@
---[[ Find Property Plugin v 1.4
+--[[ Find Property Plugin v 1.5
 Created by Yury Belousov ]]
 
 require("gma3_helpers")
@@ -60,8 +60,8 @@ end
 
 local function user_input()
     local inputs = {
-		{name = "Where to search", value = "showdata"},
-		{name = " What to search", value = ''}
+		{name = "Where to search", value = "showdata",maxTextLength = 100},
+		{name = " What to search", value = '',maxTextLength = 100}
 	}
 	local selectors = {
 		{ name="Search for property value ot property name?", selectedValue=1, values={['Value']=2,['Name']=1}, type=1}
@@ -82,7 +82,8 @@ local function user_input()
 			backColor = "Global.Default",
 			icon = "tools",
 			titleTextColor = "Global.Text",
-			messageTextColor = "Global.Text"
+			messageTextColor = "Global.Text",
+            autoCloseOnInput = false,
 		}
 	)
     if resultTable.success and resultTable.result == 1 then
@@ -91,28 +92,33 @@ local function user_input()
 end
 
 local function find_property_recursive(obj,what_to_search,is_strict,value_or_name)
-    if obj.name == 'manetsocket' then Echo(obj.name) end
+    what_to_search = string.lower(what_to_search)
+    -- if obj.name == 'manetsocket' then Echo(obj.name) end
     for i=0,obj:PropertyCount()-1 do
         local property_name = obj:PropertyName(i)
-        local value = string.lower(tostring(obj[property_name]))
-        local is_same
-        if value_or_name == 'value' then
-            is_same = compare(what_to_search,value,is_strict)
+        -- 2.3.1.1 crash workaround
+        if (obj.name == 'GridObjectContentFilterItem' or obj.name == 'GridPatchContentFilterItem') and property_name == 'POPUPFILTER' then
         else
-            what_to_search = string.upper(what_to_search)
-            is_same = compare(what_to_search,tostring(property_name),is_strict)
-        end
-        if is_same then
-            local addr = obj:AddrNative(true,true)
-            local property_value = tostring(obj[obj:PropertyName(i)])
-            table.insert(properties,addr..',"'..property_name..'","'..property_value:gsub('\n%s+',' ')..'",')
-            Echo('Address: '..MG..addr..YE..' Property: '..CY..property_name..YE..' Value: '..CY..property_value:gsub('\n%s+',' '))
+            local value = string.lower(tostring(obj[property_name]))
+            local is_same
+            if value_or_name == 'value' then
+                is_same = compare(what_to_search,value,is_strict)
+            else
+                what_to_search = string.upper(what_to_search)
+                is_same = compare(what_to_search,tostring(property_name),is_strict)
+            end
+            if is_same then
+                local addr = obj:AddrNative(true,true)
+                local property_value = tostring(obj[obj:PropertyName(i)])
+                table.insert(properties,addr..',"'..property_name..'","'..property_value:gsub('\n%s+',' ')..'",')
+                Echo('Address: '..MG..addr..YE..' Property: '..CY..property_name..YE..' Value: '..CY..property_value:gsub('\n%s+',' '))
+            end
         end
     end
     local child = obj:Children()
     if #child ~= 0 then
         for i=1,#child do
-            if (obj.name == 'UserEnvironment 1' or obj.name == 'UserEnvironment 2') and i == 5 then
+            if (obj.name == 'UserEnvironment 1' or obj.name == 'UserEnvironment 2' or obj.name == 'Normal' or obj.name == 'Preview') and i == 5 then
             else
                 find_property_recursive(child[i],what_to_search,is_strict,value_or_name)
             end
@@ -128,8 +134,10 @@ local function find_property(display)
         if value_or_name == 2 then value_or_name = 'value' else value_or_name = 'name' end
         local obj
         local obj_name
-        if where_to_search and string.lower(where_to_search) ~= 'root' and FromAddr(where_to_search) then
-            obj = FromAddr(where_to_search)
+        -- if where_to_search and string.lower(where_to_search) ~= 'root' and FromAddr(where_to_search) then
+        if where_to_search and string.lower(where_to_search) ~= 'root' and GetObject(where_to_search) then
+            -- obj = FromAddr(where_to_search)
+            obj = GetObject(where_to_search)
             obj_name = obj:AddrNative(obj:Parent():Parent(),false)
             -- obj_name = obj:ToAddr()
         else
@@ -157,7 +165,7 @@ local function find_property(display)
                 file:write('Address,Property,Value,\n')
                 file:write(table.concat(properties,'\n'))
                 file:close()
-                Echo('Search results exported to: '..path)
+                Echo('Search results exported to: '..WT..path)
                 Echo(gma3_helpers:headline('',HEADLINE_CHARACTER,HEADLINE_WIDTH))
                 if console_stick_selected then
                     CmdIndirectWait('select drive 1')
