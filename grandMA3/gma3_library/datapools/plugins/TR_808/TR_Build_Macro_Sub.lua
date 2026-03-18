@@ -21,6 +21,7 @@ function Build_Macro_Sub(Construct_Pool)
     local macro_fade    = { 320, 611, 902, 1193, 1484, 1775, 2066, 2357 }
     local macro_delay   = { 332, 623, 914, 1205, 1496, 1787, 2078, 2369 }
     local seq_btn_sub   = { 766, 987, 1208, 1429, 1650, 1871, 2092, 2313 }
+    local macro_no_solo = { 240, 427, 614, 801, 988, 1175, 1362, 1549 }
 
     local Build_Pool    = Root().ShowData.DataPools[Construct_Pool]
     local Call_Pool     = thiscomponent:FindParent(DataPool():GetClass())
@@ -293,20 +294,21 @@ function Build_Macro_Sub(Construct_Pool)
             Check_Size_Pool(i, MacroObject)
             MacroObject:Create(i)
             MacroObject[i]:Set('Name', varia_min[VariaSel] .. '_On_Solo_Sub_#' .. subSel)
-            for a = 1, 7 do
+            for a = 1, 4 do
                 MacroObject[i]:Insert(a)
             end
-            MacroObject[i][1]:Set('Command', "SetUserVariable 'Order' '" .. varia_mag[VariaSel] .. "'")
-            MacroObject[i][2]:Set('Command', "SetUserVariable 'math_" .. varia_min[VariaSel] .. "' 'plus'")
-            MacroObject[i][3]:Set('Command', "SetUserVariable 'TR_Pool' '" .. Build_Pool.Name .. "'")
-            MacroObject[i][4]:Set('Command', "Set DataPool '" .. Build_Pool.Name .. "' Macro '" ..
+            MacroObject[i][1]:Set('Command',
+                "SetUserVariable  " .. varia_mag[VariaSel] .. "_TR_Solo 1$" .. varia_mag[VariaSel] .. "_TR_Solo")
+            MacroObject[i][2]:Set('Command', "Set DataPool '" .. Build_Pool.Name .. "' Macro '" ..
                 varia_min[VariaSel] .. "_SOLO'." .. count .. " 'Enabled' 0")
-            MacroObject[i][5]:Set('Command', "Go+ DataPool '" .. Build_Pool.Name .. "' Macro '" ..
+            MacroObject[i][3]:Set('Command', "Go+ DataPool '" .. Build_Pool.Name .. "' Macro '" ..
                 varia_min[VariaSel] .. "_SOLO'")
-            MacroObject[i][6]:Set('Command', "Go+ DataPool '" .. Build_Pool.Name .. "' Macro '" ..
+            MacroObject[i][4]:Set('Command', "Go+ DataPool '" .. Build_Pool.Name .. "' Macro '" ..
                 varia_min[VariaSel] .. "_Rec_Sub_#" .. subSel .. "'")
-            MacroObject[i][7]:Set('Command',
-                "Call DataPool '" .. Call_Pool.Name .. "' Plugin 'TR_808_By_Riri'")
+            -- local luaCode = "local val = GetVar(UserVars(),'" .. varia_mag[VariaSel] ..
+            --     "_TR_Solo') ; if val == 0 then Cmd('Go+ DataPool " ..
+            --     Build_Pool.No .. " Macro " .. macro_no_solo[VariaSel] .. " ') end"
+            -- MacroObject[i][5]:Set('Command', 'Lua "' .. luaCode .. "")
             subSel = subSel + 1
             count = count + 1
         end
@@ -320,18 +322,23 @@ function Build_Macro_Sub(Construct_Pool)
             Check_Size_Pool(i, MacroObject)
             MacroObject:Create(i)
             MacroObject[i]:Set('Name', varia_min[VariaSel] .. '_Off_Solo_Sub_#' .. subSel)
-            for a = 1, 5 do
+            for a = 1, 4 do
                 MacroObject[i]:Insert(a)
             end
-            MacroObject[i][1]:Set('Command', "SetUserVariable 'Order' '" .. varia_mag[VariaSel] .. "'")
-            MacroObject[i][2]:Set('Command', "SetUserVariable 'math_" .. varia_min[VariaSel] .. "' 'minus'")
-            MacroObject[i][3]:Set('Command', "SetUserVariable 'TR_Pool' '" .. Build_Pool.Name .. "'")
-            MacroObject[i][4]:Set('Command', "Set DataPool '" .. Build_Pool.Name .. "' Macro '" ..
+            MacroObject[i][1]:Set('Command',
+                "SetUserVariable  " .. varia_mag[VariaSel] .. "_TR_Solo -1$" .. varia_mag[VariaSel] .. "_TR_Solo")
+            MacroObject[i][2]:Set('Command', "Set DataPool '" .. Build_Pool.Name .. "' Macro '" ..
                 varia_min[VariaSel] .. "_SOLO'." .. count .. " 'Enabled' 1")
-            -- MacroObject[i][5]:Set('Command', "Go+ DataPool '" .. Build_Pool.Name .. "' Macro '" ..
+            local luaCode = "local val = GetVar(UserVars(),'" .. varia_mag[VariaSel] ..
+                "_TR_Solo') ; if val ~= 0 then Cmd('Go+ DataPool " ..
+                Build_Pool.No .. " Macro " .. macro_no_solo[VariaSel] - 17 .. " ') end"
+            MacroObject[i][3]:Set('Command', 'Lua "' .. luaCode .. "")
+            -- MacroObject[i][4]:Set('Command', "Go+ DataPool '" .. Build_Pool.Name .. "' Macro '" ..
             --     varia_min[VariaSel] .. "_SOLO'")
-            MacroObject[i][5]:Set('Command',
-                "Call DataPool '" .. Call_Pool.Name .. "' Plugin 'TR_808_By_Riri'")
+            luaCode = "local val = GetVar(UserVars(),'" .. varia_mag[VariaSel] ..
+                "_TR_Solo') ; if val == 0 then Cmd('Go+ DataPool " ..
+                Build_Pool.No .. " Macro " .. macro_no_solo[VariaSel] .. " ') end"
+            MacroObject[i][4]:Set('Command', 'Lua "' .. luaCode .. "")
             subSel = subSel + 1
             count = count + 1
         end
