@@ -5,7 +5,6 @@
 --]]
 
 function Build_Macro_Varia(Construct_Pool)
-
     local count = 1
     local varia_min = { 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h' }
     local varia_mag = { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H' }
@@ -52,7 +51,7 @@ function Build_Macro_Varia(Construct_Pool)
         MacroObject[i][2]:Set('Command', "Goto Cue 2 DataPool '" ..
             Build_Pool.Name .. "' Sequence 'btn_" .. varia_min[VariaSel] .. "_green'")
         MacroObject[i][3]:Set('Command', "GO+ DataPool '" ..
-            Build_Pool.Name .. "' Sequence '" .. varia_mag[VariaSel] .. "_Tempo'")
+            Build_Pool.Name .. "' Sequence '" .. varia_mag[VariaSel] .. "_Tempo' Cue $TR_Temps")
         subSel = subSel + 1
         count = count + 1
         VariaSel = VariaSel + 1
@@ -110,6 +109,19 @@ function Build_Macro_Varia(Construct_Pool)
         count = count + 1
         VariaSel = VariaSel + 1
     end
+
+    -- -- Varia_Check
+    -- MacroObject:Delete(nr - 1)
+    -- Check_Size_Pool(nr - 1, MacroObject)
+    -- MacroObject:Create(nr - 1)
+    -- MacroObject[nr - 1]:Set('Name', 'Varia_Check')
+    -- for a = 1, 16 do
+    --     MacroObject[nr - 1]:Insert(a)
+    --     MacroObject[nr - 1][a]:Set('Command',
+    --         "Go+ DataPool '" .. Build_Pool.Name .. "' Macro 'Varia_Call'")
+    --     MacroObject[nr - 1][a]:Set('Execute', 0)
+    --     MacroObject[nr - 1][a]:Set('Wait', 'Go')
+    -- end
 
     -- de Varia_ABC >>> Varia_Call
     MacroObject:Delete(nr)
@@ -221,6 +233,19 @@ function Build_Macro_Varia(Construct_Pool)
     MacroObject[nr_P][8]:Set('Command', "Go+ DataPool '" .. Build_Pool.Name ..
         "' Macro 'Varia_H_Play'")
     MacroObject[nr_P][8]:Set('Enabled', 0)
+
+    -- de Varia_ _ Call >>> Start_Varia_Play
+    local nr_S_P = nr_P + 1
+    MacroObject:Delete(nr_S_P)
+    Check_Size_Pool(nr_S_P, MacroObject)
+    MacroObject:Create(nr_S_P)
+    MacroObject[nr_S_P]:Set('Name', 'Start_Varia_Play')
+    for a = 1, 2 do
+        MacroObject[nr_S_P]:Insert(a)
+    end
+    MacroObject[nr_S_P][1]:Set('Command', "SetUserVariable 'TR_Temps' 1")
+    MacroObject[nr_S_P][2]:Set('Command', "Go+ DataPool '" .. Build_Pool.Name ..
+        "' Macro 'Varia_Play'")
 
     -----
 
