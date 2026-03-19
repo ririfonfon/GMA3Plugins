@@ -64,9 +64,9 @@ function Build_Layout(Construct_Pool, Name_Layout)
     local AppearanceObject = Root().ShowData.Appearances:Children()
     local Nr
     local App_Panel_Name = { '[[panelBaseGma3_png]]', '[[01_panel_scale_2_png]]', '[[01_panel_scale_3_png]]',
-        '[[01_panel_scale_4_png]]', '[[02_btn_grid_off_png]]','p_htp_png',
+        '[[01_panel_scale_4_png]]', '[[02_btn_grid_off_png]]', 'p_htp_png',
     }
-    local Addr_Nat_Panel = { 0, 0, 0, 0, 0 ,0}
+    local Addr_Nat_Panel = { 0, 0, 0, 0, 0, 0 }
     local App_Panel_Height = { 1205, 800, 800, 800 }
     local App_Panel_Width = { 2000, 2000, 2000, 2000 }
     local App_Panel_PosY = { 0, -434, -434, -434 }
@@ -425,6 +425,27 @@ function Build_Layout(Construct_Pool, Name_Layout)
     Layout_Object[Layout_Nr][Nr.No]:Set('Appearance', Addr_Nat_Panel[6])
     Set_Def(Layout_Nr, Nr, Layout_Object)
 
-    Cmd ("Go+ Cue 2 DataPool '" .. Build_Pool.Name .. "' Sequence 'btn_a_green'")
-    Cmd ("Go+ DataPool '" .. Build_Pool.Name .. "' Sequence 'Varia_A'")
+
+    local Quant_Name = { 'None', 'Ronde', 'Blanche', 'Noir', 'Croche', 'double' }
+
+    for a = 1, 6 do
+        Nr = Layout_Object[Layout_Nr]:Acquire()
+        Layout_Object[Layout_Nr][Nr.No]:Set('Object', SequenceObject[2533 + a])
+        Layout_Object[Layout_Nr][Nr.No]:Set('posx', 440 + (80 * a))
+        Layout_Object[Layout_Nr][Nr.No]:Set('posy', 386)
+        Layout_Object[Layout_Nr][Nr.No]:Set('width', 70)
+        Layout_Object[Layout_Nr][Nr.No]:Set('height', 74)
+        Layout_Object[Layout_Nr][Nr.No]:Set('action', 'Go+')
+        Layout_Object[Layout_Nr][Nr.No]:Set('Note', 'all_none_FOND')
+        Set_Def(Layout_Nr, Nr, Layout_Object)
+        Layout_Object[Layout_Nr][Nr.No]:Set('customtexttext', Quant_Name[a])
+        Layout_Object[Layout_Nr][Nr.No]:Set('customtextsize', 16)
+        Layout_Object[Layout_Nr][Nr.No]:Set('customtextalignmenth', 'Center')
+        Layout_Object[Layout_Nr][Nr.No]:Set('customtextalignmentv', 'Center')
+    end
+
+    Cmd("Go+ Cue 2 DataPool '" .. Build_Pool.Name .. "' Sequence 'btn_a_green'")
+    Cmd("Go+ DataPool '" .. Build_Pool.Name .. "' Sequence 'Varia_A'")
+    Cmd("Go+ DataPool '" .. Build_Pool.Name .. "' Sequence 'Ronde'")
+    Cmd("SetUserVariable 'TR_Temps' 1")
 end
