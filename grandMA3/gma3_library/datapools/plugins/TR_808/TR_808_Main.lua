@@ -14,12 +14,7 @@ local function main(displayHandle)
         Retour_Recepie()
         Call = true
     end
-    if GetVar(Select, "Order") then
-        if GetVar(Select, "Order") ~= "Z" then
-            Check_Solo()
-            Call = true
-        end
-    end
+   
     if GetVar(Select, "TR_Tag") then
         Edit_Tag()
         Call = true
