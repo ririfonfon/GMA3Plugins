@@ -4,35 +4,14 @@
     Created by Richard Fontaine "RIRI", Mars 2026.
 --]]
 
--- local function getTags(obj)
---     local tbl = {}
---     for a, b in obj:Get('Tags', Enums.Roles.Edit):gmatch('([^:,]+):([^,]+)') do
---         tbl[StrToHandle(a)] = tonumber(b)
---         Printf(a .. ' - ' .. tbl[StrToHandle(a)])
---     end
---     return tbl
--- end
-
--- local function setTags(obj, tbl)
---     local str = ''
---     for a, b in pairs(tbl) do
---         str = str .. HandleToStr(a) .. ':' .. b .. ','
---     end
---     obj:Set('Tags', str)
--- end
-
 function Build_Seq_Varia_G_R(Construct_Pool)
     local varia_min = { 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h' }
     local varia_mag = { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H' }
-    -- local taglist, myobj
     local SeqNum = 18
     local SeqEnd = SeqNum + 7
     local VariaSel = 1
-
-    -- local Construct_Pool = 43
     local SequenceObject = Root().ShowData.DataPools[Construct_Pool].Sequences
-    local PoolObject = Root().ShowData.DataPools
-    -- local TagObject = Root().ShowData.Tags
+    local Build_Pool = Root().ShowData.DataPools[Construct_Pool]
     local App_btn_green_red = {
         '[[17_btn_a_low_png]]', '[[38_btn_a_next_png]]', '[[17_btn_a_high_png]]',
         '[[16_btn_b_low_png]]', '[[37_btn_b_next_png]]', '[[16_btn_b_high_png]]',
@@ -64,7 +43,7 @@ function Build_Seq_Varia_G_R(Construct_Pool)
         SequenceObject[i][3]:Create(1)
         SequenceObject[i][3][1]:Set('Appearance', App_btn_green_red[number + 1])
         SequenceObject[i][3][1]:Set('Command',
-            " Go+ DataPool '" .. PoolObject[Construct_Pool].Name .. "'  Macro 'Varia_" .. varia_mag[VariaSel] .. "'")
+            " Go+ DataPool '" .. Build_Pool.Name .. "'  Macro 'Varia_" .. varia_mag[VariaSel] .. "'")
         SequenceObject[i]:Insert()
         SequenceObject[i][4]:Set('No', 2)
         SequenceObject[i][4]:Create(1)
@@ -73,13 +52,8 @@ function Build_Seq_Varia_G_R(Construct_Pool)
         SequenceObject[i][5]:Set('No', 3)
         SequenceObject[i][5]:Create(1)
         SequenceObject[i][5][1]:Set('Appearance', App_btn_green_red[number])
-        Cmd("Assign DataPool '" .. PoolObject[Construct_Pool].Name .. "' Sequence " ..
+        Cmd("Assign DataPool '" .. Build_Pool.Name .. "' Sequence " ..
             i .. " At Tag 'Variation_Play'")
-
-        -- myobj = SequenceObject[i]
-        -- taglist = getTags(myobj)
-        -- taglist[TagObject[21]] = '0' -- Variation_Play
-        -- setTags(myobj, taglist)
 
         VariaSel = VariaSel + 1
         number = number + 3
@@ -100,14 +74,9 @@ function Build_Seq_Varia_G_R(Construct_Pool)
         SequenceObject[i][3]:Create(1)
         SequenceObject[i][3][1]:Set('Appearance', App_btn_green_red[number + 1])
         SequenceObject[i][3][1]:Set('Command',
-            " Go+ DataPool '" .. PoolObject[Construct_Pool].Name .. "'  Macro 'Edit_Varia_" .. varia_mag[VariaSel] .. "'")
-        Cmd("Assign DataPool '" .. PoolObject[Construct_Pool].Name .. "' Sequence " ..
+            " Go+ DataPool '" .. Build_Pool.Name .. "'  Macro 'Edit_Varia_" .. varia_mag[VariaSel] .. "'")
+        Cmd("Assign DataPool '" .. Build_Pool.Name .. "' Sequence " ..
             i .. " At Tag 'Variation'")
-
-        -- myobj = SequenceObject[i]
-        -- taglist = getTags(myobj)
-        -- taglist[TagObject[22]] = '0' -- Variation
-        -- setTags(myobj, taglist)
 
         VariaSel = VariaSel + 1
         number = number + 2

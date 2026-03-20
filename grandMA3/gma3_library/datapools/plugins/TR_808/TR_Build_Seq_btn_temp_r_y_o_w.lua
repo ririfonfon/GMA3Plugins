@@ -16,7 +16,7 @@ function Build_Seq_R_Y_O(Construct_Pool)
     local SeqEnd = SeqNum + 3
 
     local SequenceObject = Root().ShowData.DataPools[Construct_Pool].Sequences
-    local PoolObject = Root().ShowData.DataPools
+    local Build_Pool = Root().ShowData.DataPools[Construct_Pool]
 
     for e = 1, 4, 1 do
         for i = SeqNum, SeqEnd, 1 do
@@ -29,13 +29,13 @@ function Build_Seq_R_Y_O(Construct_Pool)
             SequenceObject[i][3]:Set('No', 1)
             SequenceObject[i][3]:Create(1)
             SequenceObject[i][3][1]:Set('Appearance', app_btn_r_o_y_w[count + 1]) --on state
-            SequenceObject[i][3][1]:Set('Command', "Set DataPool '" .. PoolObject[Construct_Pool].Name ..
+            SequenceObject[i][3][1]:Set('Command', "Set DataPool '" .. Build_Pool.Name ..
                 "' Sequence 'Varia_Check' Cue " .. nr .. " Property 'CommandEnabled' 1")
             SequenceObject[i]:Insert()
             SequenceObject[i][4]:Set('No', 2)
             SequenceObject[i][4]:Create(1)
             SequenceObject[i][4][1]:Set('Appearance', app_btn_r_o_y_w[count]) --off state
-            SequenceObject[i][4][1]:Set('Command', "Set DataPool '" .. PoolObject[Construct_Pool].Name ..
+            SequenceObject[i][4][1]:Set('Command', "Set DataPool '" .. Build_Pool.Name ..
                 "' Sequence 'Varia_Check' Cue " .. nr .. " Property 'CommandEnabled' 0")
             nr = nr + 1
         end

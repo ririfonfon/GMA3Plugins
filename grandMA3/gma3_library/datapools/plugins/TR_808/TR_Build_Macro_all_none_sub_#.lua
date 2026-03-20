@@ -14,7 +14,6 @@ function Build_Macro_All_None(Construct_Pool)
     VariaSel = 1
 
 
-    -- local Construct_Pool = 43
     local MacroObject = Root().ShowData.DataPools[Construct_Pool].Macros
     local Build_Pool = Root().ShowData.DataPools[Construct_Pool]
 

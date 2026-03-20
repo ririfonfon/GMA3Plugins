@@ -14,7 +14,7 @@ function Build_Seq_Sub(Construct_Pool)
 
     -- local Construct_Pool = 43
     local SequenceObject = Root().ShowData.DataPools[Construct_Pool].Sequences
-    local PoolObject = Root().ShowData.DataPools
+    local Build_Pool = Root().ShowData.DataPools[Construct_Pool]
 
     for e = 1, 8, 1 do
         for i = SeqNum, SeqEnd, 1 do
@@ -39,11 +39,11 @@ function Build_Seq_Sub(Construct_Pool)
             end
 
 
-            Cmd("Assign DataPool '" .. PoolObject[Construct_Pool].Name .. "' Sequence " ..
+            Cmd("Assign DataPool '" .. Build_Pool.Name .. "' Sequence " ..
                 i .. " At Tag 'off_temps'")
-            Cmd("Assign DataPool '" .. PoolObject[Construct_Pool].Name .. "' Sequence " ..
+            Cmd("Assign DataPool '" .. Build_Pool.Name .. "' Sequence " ..
                 i .. " At Tag 'Varia_" .. varia_mag[VariaSel] .. "'")
-            Cmd("Assign DataPool '" .. PoolObject[Construct_Pool].Name .. "' Sequence " ..
+            Cmd("Assign DataPool '" .. Build_Pool.Name .. "' Sequence " ..
                 i .. " At Tag 'Sub_#" .. subSel .. "'")
 
             subSel = subSel + 1

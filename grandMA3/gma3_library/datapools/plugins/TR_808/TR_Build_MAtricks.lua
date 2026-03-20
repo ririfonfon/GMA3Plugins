@@ -88,21 +88,6 @@ function Check_DataPool(Construct_Pool, Name_Construct_Pool)
         error("Pool Not Empty")
     end
     PoolObject[Construct_Pool]:Set('Name', Name_Construct_Pool)
-
-    local SequenceObject = Root().ShowData.DataPools[Construct_Pool].Sequences:Children() or nil
-    local MacroObject = Root().ShowData.DataPools[Construct_Pool].Macros:Children() or nil
-    local Size_Seq, Size_Macro = 0, 0
-
-    if SequenceObject ~= nil then
-        for S in pairs(SequenceObject) do
-            Size_Seq = S
-        end
-    end
-    if MacroObject ~= nil then
-        for S in pairs(MacroObject) do
-            Size_Macro = S
-        end
-    end
 end
 
 function Dialog_End(message)

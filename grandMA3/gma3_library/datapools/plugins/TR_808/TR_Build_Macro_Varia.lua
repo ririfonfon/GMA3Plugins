@@ -110,19 +110,6 @@ function Build_Macro_Varia(Construct_Pool)
         VariaSel = VariaSel + 1
     end
 
-    -- -- Varia_Check
-    -- MacroObject:Delete(nr - 1)
-    -- Check_Size_Pool(nr - 1, MacroObject)
-    -- MacroObject:Create(nr - 1)
-    -- MacroObject[nr - 1]:Set('Name', 'Varia_Check')
-    -- for a = 1, 16 do
-    --     MacroObject[nr - 1]:Insert(a)
-    --     MacroObject[nr - 1][a]:Set('Command',
-    --         "Go+ DataPool '" .. Build_Pool.Name .. "' Macro 'Varia_Call'")
-    --     MacroObject[nr - 1][a]:Set('Execute', 0)
-    --     MacroObject[nr - 1][a]:Set('Wait', 'Go')
-    -- end
-
     -- de Varia_ABC >>> Varia_Call
     MacroObject:Delete(nr)
     Check_Size_Pool(nr, MacroObject)
