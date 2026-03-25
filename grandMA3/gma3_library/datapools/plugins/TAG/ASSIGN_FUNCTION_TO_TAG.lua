@@ -1,7 +1,6 @@
 --[[
 Releases:
-* 0.0.0.2
-
+* 0.0.0.3
 use :
 1 MacroLine 1 SetUserVariable "Tag" "xxxx"
 2 MacroLine 2 SetUserVariable "Function" "xxxx"
