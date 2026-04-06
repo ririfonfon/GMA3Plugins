@@ -6,7 +6,7 @@
 
 local function main()
     local Select = UserVars()
-    local S_Seq, S_Layout, S_Pool, S_Fonction, Target, S_Lay, S_N_Layout, S_N_Object
+    local S_Seq, S_Layout, S_Pool, S_Fonction, Target, S_Lay, S_N_Layout, S_N_Object, S_Part
     if GetVar(Select, "S_Fonction") then
         S_Fonction = tonumber((GetVar(Select, "S_Fonction")))
     end
@@ -30,15 +30,19 @@ local function main()
     if GetVar(Select, "S_Pool") then
         S_Pool = GetVar(Select, "S_Pool")
     end
+    if GetVar(Select, "S_Part") then
+        S_Part = tonumber((GetVar(Select, "S_Part")))
+    end
+
     local SeqNr = ShowData().DataPools[S_Pool].Sequences:Children()
     local LayoutObject = Root().ShowData.DataPools[S_Pool].Layouts
     if (S_Fonction == 1) then
         for k in ipairs(SeqNr) do
             if S_Seq == SeqNr[k].name then
-                if (SeqNr[k][3][1][1].Selection == nil) then
+                if (SeqNr[k][3][1][S_Part].Selection == nil) then
                     Target = "Group"
                 else
-                    Target = SeqNr[k][3][1][1].Selection.Name
+                    Target = SeqNr[k][3][1][S_Part].Selection.Name
                 end
                 LayoutObject[S_N_Layout][S_N_Object]:Set('CustomTextText', Target)
             end
@@ -46,10 +50,10 @@ local function main()
     elseif (S_Fonction == 2) then
         for k in ipairs(SeqNr) do
             if S_Seq == SeqNr[k].name then
-                if (SeqNr[k][3][1][1].Values == nil) then
+                if (SeqNr[k][3][1][S_Part].Values == nil) then
                     Target = "Value"
                 else
-                    Target = SeqNr[k][3][1][1].Values.Name
+                    Target = SeqNr[k][3][1][S_Part].Values.Name
                 end
                 LayoutObject[S_N_Layout][S_N_Object]:Set('CustomTextText', Target)
             end
@@ -57,10 +61,10 @@ local function main()
     elseif (S_Fonction == 3) then
         for k in ipairs(SeqNr) do
             if S_Seq == SeqNr[k].name then
-                if (SeqNr[k][3][1][1].MASicks == nil) then
-                    Target = "MaSicks"
+                if (SeqNr[k][3][1][S_Part].MAtricks == nil) then
+                    Target = "Matricks"
                 else
-                    Target = SeqNr[k][3][1][1].MASicks.Name
+                    Target = SeqNr[k][3][1][S_Part].MAtricks.Name
                 end
                 LayoutObject[S_N_Layout][S_N_Object]:Set('CustomTextText', Target)
             end
@@ -94,15 +98,15 @@ local function main()
     elseif (S_Fonction == 5) then
         for k in ipairs(SeqNr) do
             if S_Seq == SeqNr[k].name then
-                if (SeqNr[k][3][1][1].FadeFromX == nil) then
+                if (SeqNr[k][3][1][S_Part].FadeFromX == nil) then
                     Target = "N/"
                 else
-                    Target = tostring(SeqNr[k][3][1][1].FadeFromX) .. "/"
+                    Target = tostring(SeqNr[k][3][1][S_Part].FadeFromX) .. "/"
                 end
-                if (SeqNr[k][3][1][1].FadeToX == nil) then
+                if (SeqNr[k][3][1][S_Part].FadeToX == nil) then
                     Target = Target .. "N"
                 else
-                    Target = Target .. tostring(SeqNr[k][3][1][1].FadeToX)
+                    Target = Target .. tostring(SeqNr[k][3][1][S_Part].FadeToX)
                 end
                 LayoutObject[S_N_Layout][S_N_Object]:Set('CustomTextText', Target)
             end
@@ -110,15 +114,15 @@ local function main()
     elseif (S_Fonction == 6) then
         for k in ipairs(SeqNr) do
             if S_Seq == SeqNr[k].name then
-                if (SeqNr[k][3][1][1].DelayFromX == nil) then
+                if (SeqNr[k][3][1][S_Part].DelayFromX == nil) then
                     Target = "N/"
                 else
-                    Target = tostring(SeqNr[k][3][1][1].DelayFromX) .. "/"
+                    Target = tostring(SeqNr[k][3][1][S_Part].DelayFromX) .. "/"
                 end
-                if (SeqNr[k][3][1][1].DelayToX == nil) then
+                if (SeqNr[k][3][1][S_Part].DelayToX == nil) then
                     Target = Target .. "N"
                 else
-                    Target = Target .. tostring(SeqNr[k][3][1][1].DelayToX)
+                    Target = Target .. tostring(SeqNr[k][3][1][S_Part].DelayToX)
                 end
                 LayoutObject[S_N_Layout][S_N_Object]:Set('CustomTextText', Target)
             end
@@ -177,5 +181,6 @@ local function main()
     DelVar(Select, "S_Layout")
     DelVar(Select, "S_Pool")
     DelVar(Select, "S_Fonction")
+    DelVar(Select, "S_Part")
 end
 return main
