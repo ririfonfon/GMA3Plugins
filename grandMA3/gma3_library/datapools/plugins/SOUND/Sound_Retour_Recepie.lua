@@ -44,6 +44,7 @@ local function main()
                 else
                     Target = SeqNr[k][3][1][S_Part].Selection.Name
                 end
+                Echo(S_N_Layout .. " " .. S_N_Object .. " " .. Target)
                 LayoutObject[S_N_Layout][S_N_Object]:Set('CustomTextText', Target)
             end
         end
