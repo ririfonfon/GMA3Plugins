@@ -58,7 +58,7 @@ function Build_Macro_Sub(Construct_Pool)
             MacroObject[MacroNum][2]:Set('Command', "SetUserVariable 'S_Fonction' 1")
             MacroObject[MacroNum][3]:Set('Command', "SetUserVariable 'S_Part' " .. PartSel)
             MacroObject[MacroNum][4]:Set('Command',
-                "SetUserVariable 'S_Seq' 'RecepieSound" .. Sound_Type[TypeSel] .. "'")
+                "SetUserVariable 'S_Seq' 'RecepieSound " .. Sound_Type[TypeSel] .. "'")
             MacroObject[MacroNum][5]:Set('Command', "SetUserVariable 'S_Layout' '1_" .. lay_object .. "'")
             MacroObject[MacroNum][6]:Set('Command', "SetUserVariable 'S_Pool' '" .. Build_Pool.Name .. "'")
             MacroObject[MacroNum][7]:Set('Command',
@@ -79,7 +79,7 @@ function Build_Macro_Sub(Construct_Pool)
             MacroObject[MacroNum][2]:Set('Command', "SetUserVariable 'S_Fonction' 2")
             MacroObject[MacroNum][3]:Set('Command', "SetUserVariable 'S_Part' " .. PartSel)
             MacroObject[MacroNum][4]:Set('Command',
-                "SetUserVariable 'S_Seq' 'RecepieSound" .. Sound_Type[TypeSel] .. "'")
+                "SetUserVariable 'S_Seq' 'RecepieSound " .. Sound_Type[TypeSel] .. "'")
             MacroObject[MacroNum][5]:Set('Command', "SetUserVariable 'S_Layout' '1_" .. lay_object .. "'")
             MacroObject[MacroNum][6]:Set('Command', "SetUserVariable 'S_Pool' '" .. Build_Pool.Name .. "'")
             MacroObject[MacroNum][7]:Set('Command',
@@ -100,7 +100,7 @@ function Build_Macro_Sub(Construct_Pool)
             MacroObject[MacroNum][2]:Set('Command', "SetUserVariable 'S_Fonction' 3")
             MacroObject[MacroNum][3]:Set('Command', "SetUserVariable 'S_Part' " .. PartSel)
             MacroObject[MacroNum][4]:Set('Command',
-                "SetUserVariable 'S_Seq' 'RecepieSound" .. Sound_Type[TypeSel] .. "'")
+                "SetUserVariable 'S_Seq' 'RecepieSound " .. Sound_Type[TypeSel] .. "'")
             MacroObject[MacroNum][5]:Set('Command', "SetUserVariable 'S_Layout' '1_" .. lay_object .. "'")
             MacroObject[MacroNum][6]:Set('Command', "SetUserVariable 'S_Pool' '" .. Build_Pool.Name .. "'")
             MacroObject[MacroNum][7]:Set('Command',
@@ -124,7 +124,7 @@ function Build_Macro_Sub(Construct_Pool)
             MacroObject[MacroNum][3]:Set('Command', "SetUserVariable 'S_Fonction' 5")
             MacroObject[MacroNum][4]:Set('Command', "SetUserVariable 'S_Part'" .. PartSel)
             MacroObject[MacroNum][5]:Set('Command',
-                "SetUserVariable 'S_Seq' 'RecepieSound" .. Sound_Type[TypeSel] .. "'")
+                "SetUserVariable 'S_Seq' 'RecepieSound " .. Sound_Type[TypeSel] .. "'")
             MacroObject[MacroNum][6]:Set('Command', "SetUserVariable 'S_Layout' '1_" .. lay_object .. "'")
             MacroObject[MacroNum][7]:Set('Command', "SetUserVariable 'S_Pool' '" .. Build_Pool.Name .. "'")
             MacroObject[MacroNum][8]:Set('Command',
@@ -148,7 +148,7 @@ function Build_Macro_Sub(Construct_Pool)
             MacroObject[MacroNum][3]:Set('Command', "SetUserVariable 'S_Fonction' 6")
             MacroObject[MacroNum][4]:Set('Command', "SetUserVariable 'S_Part'" .. PartSel)
             MacroObject[MacroNum][5]:Set('Command',
-                "SetUserVariable 'S_Seq' 'RecepieSound" .. Sound_Type[TypeSel] .. "'")
+                "SetUserVariable 'S_Seq' 'RecepieSound " .. Sound_Type[TypeSel] .. "'")
             MacroObject[MacroNum][6]:Set('Command', "SetUserVariable 'S_Layout' '1_" .. lay_object .. "'")
             MacroObject[MacroNum][7]:Set('Command', "SetUserVariable 'S_Pool' '" .. Build_Pool.Name .. "'")
             MacroObject[MacroNum][8]:Set('Command',
