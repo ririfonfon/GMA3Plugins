@@ -35,7 +35,7 @@ end
 function Build_Macro_Sub(Construct_Pool)
     local MacroNum    = 1
     local TypeSel     = 1
-    local lay_object  = 22
+    local lay_object  = 25
     local Sound_Type  = { 'All', 'Bass', 'Mid', 'High', 'Band 1', 'Band 2', 'Band 3', 'Band 4', 'Band 5', 'Band 6',
         'Band 7' }
 
