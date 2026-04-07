@@ -156,9 +156,8 @@ function Build_Macro_Sub(Construct_Pool)
 
             lay_object = lay_object + 1
             MacroNum = MacroNum + 1
-            TypeSel = TypeSel + 1
         end
-        TypeSel = 1
+        TypeSel = TypeSel + 1
     end
 end
 
