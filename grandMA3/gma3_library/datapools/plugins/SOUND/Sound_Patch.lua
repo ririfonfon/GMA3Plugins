@@ -23,8 +23,9 @@ return function()
         Printf('AddFixture failed!')
     end
     local patched_grouping_fixture = Patch().stages[1][2][my_add_fixture_table.name]
-    local Sound_Type = { 'All', 'Bass', 'Mid', 'High', 'Band 1', 'Band 2', 'Band 3', 'Band 4', 'Band 5', 'Band 6',
-    'Band 7' }
+    local Sound_Type = { 'All', 'Bass', 'Mid', 'High', 'Band1', 'Band2', 'Band3', 'Band4', 'Band5', 'Band6',
+        'Band7' }
+
 
     for i = 1, 11 do
         my_add_fixture_table = {}
