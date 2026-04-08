@@ -33,11 +33,11 @@ function Check_Size_Pool(id, PoolObject)
 end
 
 function Build_Macro(Construct_Pool)
-    local MacroNum    = 1
-    local TypeSel     = 1
-    local lay_object  = 25
-    local Sound_Type  = { 'All', 'Bass', 'Mid', 'High', 'Band 1', 'Band 2', 'Band 3', 'Band 4', 'Band 5', 'Band 6',
-        'Band 7' }
+    local MacroNum   = 1
+    local TypeSel    = 1
+    local lay_object = 25
+    local Sound_Type = { 'All', 'Bass', 'Mid', 'High', 'Band1', 'Band2', 'Band3', 'Band4', 'Band5', 'Band6', 'Band7' }
+
 
     local Build_Pool  = Root().ShowData.DataPools[Construct_Pool]
     local Call_Pool   = Build_Pool
