@@ -45,11 +45,7 @@ end
 
 function Build_Layout(Construct_Pool, Name_Layout)
     local Layout_Nr  = 1
-    local Sound_Type = { 'All', 'Bass', 'Mid', 'High', 'Band 1', 'Band 2', 'Band 3', 'Band 4', 'Band 5', 'Band 6',
-        'Band 7' }
-    local incr       = 0
-
-
+    local Sound_Type = { 'All', 'Bass', 'Mid', 'High', 'Band1', 'Band2', 'Band3', 'Band4', 'Band5', 'Band6', 'Band7' }
     local Layout_Object = Root().ShowData.DataPools[Construct_Pool].Layouts
     local SequenceObject = Root().ShowData.DataPools[Construct_Pool].Sequences
     local MacroObject = Root().ShowData.DataPools[Construct_Pool].Macros
@@ -154,10 +150,6 @@ function Build_Layout(Construct_Pool, Name_Layout)
     local S_V_M_Color = { '8080FFFF', '80F80FFF', 'FF8080FF', '80FFFFFF', 'FFFF80FF' }
     local S_V_M_Text = { 'Group', 'Value', 'Matricks', 'None/None', 'None/None' }
 
-
-
-
-
     Check_Size_Pool(Layout_Nr, Layout_Object)
     Layout_Object:Create(Layout_Nr)
     Layout_Object[Layout_Nr]:Set('Name', Name_Layout)
@@ -166,10 +158,7 @@ function Build_Layout(Construct_Pool, Name_Layout)
     Layout_Object[Layout_Nr]:Set('ViewPosActive', 'Yes')
 
 
-
-
-
-    -- btn_start_stop
+    -- on_off
     Nr = Layout_Object[Layout_Nr]:Acquire()
     Layout_Object[Layout_Nr][Nr.No]:Set('Object', SequenceObject[12])
     Layout_Object[Layout_Nr][Nr.No]:Set('posx', -400)
