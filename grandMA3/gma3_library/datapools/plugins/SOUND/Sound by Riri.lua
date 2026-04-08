@@ -73,7 +73,7 @@ local function list_input(popuplists, TLay, TLayNr, TLayNrRef, SeqNr, SeqNrStart
     Printf("All_4_NrStart: %d", All_4_NrStart)
     Printf("All_4_Current: %d", All_4_Current)
 
-    return TLay, TLayNr, TLayNrRef, SeqNr, SeqNrStart, MacroNr,
+    return TLayNr, TLayNrRef, SeqNr, SeqNrStart, MacroNr,
         MacroNrStart, All_4_Nr, All_4_NrStart, All_4_Current
 end
 
@@ -126,7 +126,7 @@ local function Main(displayHandle)
     local Construct_Pool = 1
 
     if list == false then
-        TLay, TLayNr, TLayNrRef, SeqNr, SeqNrStart, MacroNr,
+         TLayNr, TLayNrRef, SeqNr, SeqNrStart, MacroNr,
         MacroNrStart, All_4_Nr, All_4_NrStart, All_4_Current = list_input(popuplists, TLay,
             TLayNr, TLayNrRef, SeqNr, SeqNrStart, MacroNr,
             MacroNrStart, All_4_Nr, All_4_NrStart, All_4_Current)
@@ -740,38 +740,25 @@ local function Main(displayHandle)
             if Check_Pool == false then
                 local nb = PoolObject:Acquire()
                 coroutine.yield(0.1)
-                -- PoolObject:Create(nb)
-                -- PoolObject[nb]:Set('Name','New')
-                -- coroutine.yield(0.1)
                 Construct_Pool = nb
                 Printf('new is ' .. nb)
                 Check_Pool = true
             end
-            if Root().ShowData.DataPools[Construct_Pool].Layouts ~= nil then
+            if Check_Pool == false then
                 TLay = Root().ShowData.DataPools[Construct_Pool].Layouts:Children()
-            else
-                TLay = 1
-            end
-            if Root().ShowData.DataPools[Construct_Pool].Sequences:Children() ~= nil then
                 SeqNr = Root().ShowData.DataPools[Construct_Pool].Sequences:Children()
-            else
-                SeqNr = 1
-            end
-            if Root().ShowData.DataPools[Construct_Pool].Macros:Children() ~= nil then
                 MacroNr = Root().ShowData.DataPools[Construct_Pool].Macros:Children()
-            else
-                MacroNr = 1
-            end
-            if Root().ShowData.DataPools[Construct_Pool].PresetPools[24]:Children() ~= nil then
                 All_4_Nr = Root().ShowData.DataPools[Construct_Pool].PresetPools[24]:Children()
+                TLayNr, TLayNrRef, SeqNr, SeqNrStart, MacroNr,
+                MacroNrStart, All_4_Nr, All_4_NrStart, All_4_Current = list_input(popuplists, TLay,
+                    TLayNr, TLayNrRef, SeqNr, SeqNrStart, MacroNr, MacroNrStart, All_4_Nr, All_4_NrStart, All_4_Current)
             else
+                TLayNr = 1
+                SeqNr = 1
+                MacroNr = 1
                 All_4_Nr = 1
             end
 
-            TLay, TLayNr, TLayNrRef, SeqNr, SeqNrStart, MacroNr,
-            MacroNrStart, All_4_Nr, All_4_NrStart, All_4_Current = list_input(popuplists, TLay,
-                TLayNr, TLayNrRef, SeqNr, SeqNrStart, MacroNr,
-                MacroNrStart, All_4_Nr, All_4_NrStart, All_4_Current)
             input2LineEdit.Content = TLayNr
             input3LineEdit.Content = SeqNrStart
             input4LineEdit.Content = MacroNrStart
