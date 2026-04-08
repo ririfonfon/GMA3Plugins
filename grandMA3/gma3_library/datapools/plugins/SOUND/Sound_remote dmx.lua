@@ -4,12 +4,12 @@ local function main()
     Printf(mydatapool.Name)
     local Construct_Pool = 5
     local SequenceObject = Root().ShowData.DataPools[Construct_Pool].Sequences
-    local RemoteObject = Root().ShowData.Remotes.DmxRemotes
-    local startSeq = 16
-    local Count = 1
-    local endSeq = startSeq + 10
-    local Sound_Type = { 'All', 'Bass', 'Mid', 'High', 'Band 1', 'Band 2', 'Band 3', 'Band 4', 'Band 5', 'Band 6',
-    'Band 7' }
+    local RemoteObject   = Root().ShowData.Remotes.DmxRemotes
+    local startSeq       = 16
+    local Count          = 1
+    local endSeq         = startSeq + 10
+    local Sound_Type     = { 'All', 'Bass', 'Mid', 'High', 'Band1', 'Band2', 'Band3', 'Band4', 'Band5', 'Band6', 'Band7' }
+
 
     for i = startSeq, endSeq, 1 do
         local a = RemoteObject:Acquire()
