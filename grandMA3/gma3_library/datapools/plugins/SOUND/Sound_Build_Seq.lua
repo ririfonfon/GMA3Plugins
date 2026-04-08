@@ -95,7 +95,7 @@ function Build_Seq(Construct_Pool)
         Cmd("Store " .. Preset4Object[i] .. " /Merge")
         TypeSel = TypeSel + 1
     end
-    Cmd("Clear All")
+    Cmd("ClearAll")
     TypeSel = 1
 
     for i = SeqNum, SeqEnd, 1 do
@@ -122,6 +122,29 @@ function Build_Seq(Construct_Pool)
 
         TypeSel = TypeSel + 1
     end
+
+    Check_Size_Pool(SeqEnd+1, SequenceObject)
+        SequenceObject:Create(SeqEnd+1)
+        SequenceObject[SeqEnd+1]:Set('Name', 'On_Off Sound ')
+        SequenceObject[SeqEnd+1]:Set('Appearance', '[[Switch_Off_png]]')
+        Sequence_Defo(SequenceObject, SeqEnd+1)
+        SequenceObject[SeqEnd+1]:Set('AUTOSTART', 'No')
+        SequenceObject[SeqEnd+1]:Set('AUTOSTOP', 'No')
+        SequenceObject[SeqEnd+1]:Set('TRACKING', 'No')
+        SequenceObject[SeqEnd+1]:Set('PRIORITY', 'HTP')
+        SequenceObject[SeqEnd+1]:Set('SOFTLTP', 'No')
+
+        SequenceObject[SeqEnd+1]:Insert()
+        SequenceObject[SeqEnd+1][3]:Set('No', 1)
+        SequenceObject[SeqEnd+1][3]:Create(1)
+        SequenceObject[SeqEnd+1][3][1]:Set('Appearance' , '[[switch_On_png]]')
+        SequenceObject[SeqEnd+1][3][1]:Set('Command' , "Go+ DataPool "..Construct_Pool.. " Sequence 'Sound*'" )
+        SequenceObject[SeqEnd+1]:Insert()
+        SequenceObject[SeqEnd+1][4]:Set('No', 2)
+        SequenceObject[SeqEnd+1][4]:Create(1)
+        SequenceObject[SeqEnd+1][4][1]:Set('Appearance' , '[[Switch_Off_png]]')
+        SequenceObject[SeqEnd+1][4][1]:Set('Command' , "Off DataPool "..Construct_Pool.. " Sequence 'Sound*'" )
+
     SeqNum = SeqEnd + 5
     SeqEnd = SeqNum + 10
     TypeSel = 1
