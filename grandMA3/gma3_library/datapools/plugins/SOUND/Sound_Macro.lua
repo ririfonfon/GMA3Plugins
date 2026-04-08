@@ -32,7 +32,7 @@ function Check_Size_Pool(id, PoolObject)
     end
 end
 
-function Build_Macro_Sub(Construct_Pool)
+function Build_Macro(Construct_Pool)
     local MacroNum    = 1
     local TypeSel     = 1
     local lay_object  = 25
@@ -163,6 +163,6 @@ end
 
 local function main()
     local Construct_Pool = 5
-    Build_Macro_Sub(Construct_Pool)
+    Build_Macro(Construct_Pool)
 end
 return main
