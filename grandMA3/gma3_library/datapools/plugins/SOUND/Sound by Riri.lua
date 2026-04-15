@@ -60,7 +60,6 @@ local function list_input(popuplists, TLay, TLayNr, TLayNrRef, SeqNr, SeqNrStart
         end
         kk = k
         All_4_NrStart = All_4_Nr[k].NO + 1
-        Printf("All_4_NrStart inside: %d", All_4_NrStart)
     end
     if kk == nil then
         All_4_NrStart = 1
@@ -89,6 +88,7 @@ local function Main(displayHandle)
     local TLayNr
     local TLayNrRef
     local NaLay = "Sound"
+    local NaPool = "Sound"
     local SeqNr = DataPool().Sequences:Children()
     local SeqNrStart
     local SeqNrRange
@@ -106,13 +106,14 @@ local function Main(displayHandle)
     local pool_free
 
     local popuplists = {
-        DataPool_Select = {},
-        list_pool       = {},
-        Name_Select     = { 'Sound', 'Audio', 'Sound In', 'Sound Mod' },
-        Lay_Select      = { 1, 11, 101, 201, 301, 401, 501, 601, 701, 801, 901, 1001, 2001 },
-        Seq_Select      = { 1, 11, 101, 201, 301, 401, 501, 601, 701, 801, 901, 1001, 2001 },
-        Macro_Select    = { 1, 11, 101, 201, 301, 401, 501, 601, 701, 801, 901, 1001, 2001 },
-        Preset_Select   = { 1, 11, 101, 201, 301, 401, 501, 601, 701, 801, 901, 1001, 2001 }
+        DataPool_Select  = {},
+        list_pool        = {},
+        Name_Select      = { 'Sound', 'Audio', 'Sound In', 'Sound Mod' },
+        Name_Pool_Select = { 'Sound', 'Audio', 'Sound In', 'Sound Mod' },
+        Lay_Select       = { 1, 11, 101, 201, 301, 401, 501, 601, 701, 801, 901, 1001, 2001 },
+        Seq_Select       = { 1, 11, 101, 201, 301, 401, 501, 601, 701, 801, 901, 1001, 2001 },
+        Macro_Select     = { 1, 11, 101, 201, 301, 401, 501, 601, 701, 801, 901, 1001, 2001 },
+        Preset_Select    = { 1, 11, 101, 201, 301, 401, 501, 601, 701, 801, 901, 1001, 2001 }
     }
 
     local Pool_check = Root().ShowData.DataPools:Children()
@@ -124,9 +125,10 @@ local function Main(displayHandle)
     table.insert(popuplists.DataPool_Select, "'New'")
     local Groups_Pool = 1
     local Construct_Pool = 1
+    local New = false
 
     if list == false then
-         TLayNr, TLayNrRef, SeqNr, SeqNrStart, MacroNr,
+        TLayNr, TLayNrRef, SeqNr, SeqNrStart, MacroNr,
         MacroNrStart, All_4_Nr, All_4_NrStart, All_4_Current = list_input(popuplists, TLay,
             TLayNr, TLayNrRef, SeqNr, SeqNrStart, MacroNr,
             MacroNrStart, All_4_Nr, All_4_NrStart, All_4_Current)
@@ -286,6 +288,54 @@ local function Main(displayHandle)
 
     TopInc = TopInc + 1
 
+    local input21Icon = inputsGrid:Append("Button")
+    input21Icon.Text = ""
+    input21Icon.Anchors = { left = 0, right = 0, top = TopInc, bottom = TopInc }
+    input21Icon.Margin = { left = 0, right = 2, top = TopInc, bottom = 2 }
+    input21Icon.Icon = "object_datapool"
+    input21Icon.HasHover = "No";
+    input21Icon.BackColor = colorDataPools
+
+    local input21Label = inputsGrid:Append("UIObject")
+    input21Label.Text = "DataPool Name"
+    input21Label.TextalignmentH = "Left"
+    input21Label.Anchors = { left = 1, right = 3, top = TopInc, bottom = TopInc }
+    input21Label.Padding = "5,5"
+    input21Label.Margin = { left = 2, right = 2, top = TopInc, bottom = 2 }
+    input21Label.HasHover = "No"
+    input21Label.BackColor = colorDataPools
+    input21Label.Font = "2"
+
+    local input21LineEdit = inputsGrid:Append("LineEdit")
+    input21LineEdit.Prompt = "Name: "
+    input21LineEdit.TextAutoAdjust = "Yes"
+    input21LineEdit.Anchors = { left = 4, right = 7, top = TopInc, bottom = TopInc }
+    input21LineEdit.Padding = "5,5"
+    input21LineEdit.Margin = { left = 2, right = 2, top = TopInc, bottom = 2 }
+    input21LineEdit.VkPluginName = "TextInput"
+    input21LineEdit.Content = "Sound"
+    input21LineEdit.MaxTextLength = 16
+    input21LineEdit.HideFocusFrame = "Yes"
+    input21LineEdit.PluginComponent = myHandle
+    input21LineEdit.TextChanged = "OnInput21TextChanged"
+    input21LineEdit.BackColor = colorDataPools
+    input21LineEdit.Font = "2"
+    input21LineEdit.Visible = "No"
+
+    local input21Sujestion = inputsGrid:Append("Button")
+    input21Sujestion.Text = ""
+    input21Sujestion.Anchors = { left = 8, right = 9, top = TopInc, bottom = TopInc }
+    input21Sujestion.Margin = { left = 2, right = 0, top = TopInc, bottom = 2 }
+    input21Sujestion.Icon = "zoom"
+    input21Sujestion.Name = 'Name_Pool_Select'
+    input21Sujestion.PluginComponent = thiscomponent
+    input21Sujestion.Clicked = 'mypopup'
+    input21Sujestion.HasHover = "yes"
+    input21Sujestion.backColor = colorDataPools
+    input21Sujestion.Visible = "No"
+
+    TopInc = TopInc + 1
+
     local input1Icon = inputsGrid:Append("Button")
     input1Icon.Text = ""
     input1Icon.Anchors = { left = 0, right = 0, top = TopInc, bottom = TopInc }
@@ -311,7 +361,7 @@ local function Main(displayHandle)
     input1LineEdit.Padding = "5,5"
     input1LineEdit.Margin = { left = 2, right = 2, top = TopInc, bottom = 2 }
     input1LineEdit.VkPluginName = "TextInput"
-    input1LineEdit.Content = "Colors"
+    input1LineEdit.Content = "Sound"
     input1LineEdit.MaxTextLength = 16
     input1LineEdit.HideFocusFrame = "Yes"
     input1LineEdit.PluginComponent = myHandle
@@ -535,17 +585,8 @@ local function Main(displayHandle)
     input6Sujestion.backColor = colorPresets
     input6Sujestion.Visible = "No"
 
-    TopInc = TopInc + 1
+    -- TopInc = TopInc + 1
 
-
-    local input12Icon = inputsGrid:Append("Button")
-    input12Icon.Anchors = { left = 1, right = 1, top = TopInc, bottom = TopInc }
-    input12Icon.Margin = { left = 2, right = 0, top = TopInc, bottom = 2 }
-    input12Icon.Icon = 'object_datapool'
-    input12Icon.backColor = colorGroups
-    input12Icon.HasHover = "No";
-
-    TopInc = TopInc + 1
 
     -- Create the button grid.
     -- This is row 3 of the dlgFrame.
@@ -589,13 +630,20 @@ local function Main(displayHandle)
             OkButton.BackColor = colorBackground
         end
         Obj.Delete(screenOverlay, Obj.Index(baseInput))
-        Construct_Layout(TLay, SeqNrStart, MacroNrStart, TLayNr, AppNr,
-            All_4_Current, All_4_NrStart, SelectedGrp, SelectedGrpNo, TLayNrRef, NaLay,
-            Construct_Pool, Groups_Pool)
+        Construct_Layout(TLay, SeqNrStart, MacroNrStart, TLayNr, All_4_Current, All_4_NrStart, TLayNrRef, NaLay,
+            Construct_Pool, NaPool)
     end
 
     signalTable.OnInput1TextChanged = function(caller)
         NaLay = caller.Content:gsub("'", "")
+    end
+
+    signalTable.OnInput21TextChanged = function(caller)
+        NaPool = caller.Content:gsub("'", "")
+        -- NaPool = "'" .. NaPool .. "'"
+        Echo(NaPool .. "    cp " .. Construct_Pool)
+        input20Button.Text = NaPool
+        PoolObject[Construct_Pool]:Set('Name', NaPool)
     end
 
     signalTable.OnInput2TextChanged = function(caller)
@@ -607,11 +655,13 @@ local function Main(displayHandle)
         end
         TLayNr = caller.Content:gsub("'", "")
         TLayNr = tonumber(TLayNr)
-        for k in ipairs(TLay) do
-            if TLayNr == tonumber(TLay[k].NO) then
-                OkButton.Visible = "No"
-                input2LineEdit.TextColor = colorAlertText
-                check = true
+        if New == false then
+            for k in ipairs(TLay) do
+                if TLayNr == tonumber(TLay[k].NO) then
+                    OkButton.Visible = "No"
+                    input2LineEdit.TextColor = colorAlertText
+                    check = true
+                end
             end
         end
         if check == false then
@@ -632,16 +682,19 @@ local function Main(displayHandle)
         SeqNrStart = caller.Content:gsub("'", "")
         SeqNrStart = tonumber(SeqNrStart)
         SeqNrRange = SeqNrStart
-        for k in ipairs(SeqNr) do
-            if SeqNrStart <= tonumber(SeqNr[k].NO) then
-                if SeqNrRange >= tonumber(SeqNr[k].NO) then
-                    OkButton.Visible = "No"
-                    input3LineEdit.TextColor = colorAlertText
-                    checks = true
-                    for i in ipairs(popuplists.Seq_Select) do
-                        if SeqNrStart <= tonumber(popuplists.Seq_Select[i]) then
-                            if SeqNrRange >= tonumber(popuplists.Seq_Select[i]) then
-                                table.remove(popuplists.Seq_Select, i)
+        if New == false then
+            Echo('******* SeqNr ' .. SeqNr)
+            for k in ipairs(SeqNr) do
+                if SeqNrStart <= tonumber(SeqNr[k].NO) then
+                    if SeqNrRange >= tonumber(SeqNr[k].NO) then
+                        OkButton.Visible = "No"
+                        input3LineEdit.TextColor = colorAlertText
+                        checks = true
+                        for i in ipairs(popuplists.Seq_Select) do
+                            if SeqNrStart <= tonumber(popuplists.Seq_Select[i]) then
+                                if SeqNrRange >= tonumber(popuplists.Seq_Select[i]) then
+                                    table.remove(popuplists.Seq_Select, i)
+                                end
                             end
                         end
                     end
@@ -666,13 +719,15 @@ local function Main(displayHandle)
         MacroNrStart = caller.Content:gsub("'", "")
         MacroNrStart = tonumber(MacroNrStart)
         MacroNrRange = MacroNrStart + 42
-        Printf("MacroNrStart " .. MacroNrStart)
-        for k in ipairs(MacroNr) do
-            if MacroNrStart <= tonumber(MacroNr[k].NO) then
-                if MacroNrRange >= tonumber(MacroNr[k].NO) then
-                    OkButton.Visible = "No"
-                    input4LineEdit.TextColor = colorAlertText
-                    checks = true
+        Printf("**MacroNrStart " .. MacroNrStart)
+        if New == false then
+            for k in ipairs(MacroNr) do
+                if MacroNrStart <= tonumber(MacroNr[k].NO) then
+                    if MacroNrRange >= tonumber(MacroNr[k].NO) then
+                        OkButton.Visible = "No"
+                        input4LineEdit.TextColor = colorAlertText
+                        checks = true
+                    end
                 end
             end
         end
@@ -696,16 +751,19 @@ local function Main(displayHandle)
         All_4_NrStart = tonumber(All_4_NrStart)
         All_4_Current = All_4_NrStart
         All_4_NrRange = All_4_NrStart + 9
-        for k in ipairs(All_4_Nr) do
-            if All_4_NrStart <= tonumber(All_4_Nr[k].NO) then
-                if All_4_NrRange >= tonumber(All_4_Nr[k].NO) then
-                    OkButton.Visible = "No"
-                    input6LineEdit.TextColor = colorAlertText
-                    checks = true
-                    for i in ipairs(popuplists.Preset_Select) do
-                        if All_4_NrStart <= tonumber(popuplists.Preset_Select[i]) then
-                            if All_4_NrRange >= tonumber(popuplists.Preset_Select[i]) then
-                                table.remove(popuplists.Preset_Select, i)
+        if New == false then
+            for k in ipairs(All_4_Nr) do
+                if All_4_NrStart <= tonumber(All_4_Nr[k].NO) then
+                    if All_4_NrRange >= tonumber(All_4_Nr[k].NO) then
+                        Echo('**************************')
+                        OkButton.Visible = "No"
+                        input6LineEdit.TextColor = colorAlertText
+                        checks = true
+                        for i in ipairs(popuplists.Preset_Select) do
+                            if All_4_NrStart <= tonumber(popuplists.Preset_Select[i]) then
+                                if All_4_NrRange >= tonumber(popuplists.Preset_Select[i]) then
+                                    table.remove(popuplists.Preset_Select, i)
+                                end
                             end
                         end
                     end
@@ -735,16 +793,18 @@ local function Main(displayHandle)
                     Construct_Pool = tonumber(k)
                     Printf("Pool construct: " .. Construct_Pool)
                     Check_Pool = true
+                    New = false
                 end
             end
             if Check_Pool == false then
-                local nb = PoolObject:Acquire()
+                Construct_Pool = PoolObject:Acquire()
                 coroutine.yield(0.1)
-                Construct_Pool = nb
-                Printf('new is ' .. nb)
-                Check_Pool = true
+                PoolObject:Create(Construct_Pool)
+                Printf('new is ' .. Construct_Pool)
+                New = true
+                OkButton.Visible = "Yes"
             end
-            if Check_Pool == false then
+            if Check_Pool == true then
                 TLay = Root().ShowData.DataPools[Construct_Pool].Layouts:Children()
                 SeqNr = Root().ShowData.DataPools[Construct_Pool].Sequences:Children()
                 MacroNr = Root().ShowData.DataPools[Construct_Pool].Macros:Children()
@@ -754,9 +814,9 @@ local function Main(displayHandle)
                     TLayNr, TLayNrRef, SeqNr, SeqNrStart, MacroNr, MacroNrStart, All_4_Nr, All_4_NrStart, All_4_Current)
             else
                 TLayNr = 1
-                SeqNr = 1
-                MacroNr = 1
-                All_4_Nr = 1
+                SeqNrStart = 1
+                MacroNrStart = 1
+                All_4_NrStart = 1
             end
 
             input2LineEdit.Content = TLayNr
@@ -769,6 +829,7 @@ local function Main(displayHandle)
 
             OkButton.Visible = "Yes"
             input1LineEdit.Visible = "Yes"
+            input21LineEdit.Visible = "Yes"
             input2LineEdit.Visible = "Yes"
             input3LineEdit.Visible = "Yes"
             input4LineEdit.Visible = "Yes"
@@ -776,6 +837,7 @@ local function Main(displayHandle)
             input6LineEdit.Visible = "Yes"
 
             input1Sujestion.Visible = "Yes"
+            input21Sujestion.Visible = "Yes"
             input2Sujestion.Visible = "Yes"
             input3Sujestion.Visible = "Yes"
             input4Sujestion.Visible = "Yes"
@@ -791,6 +853,8 @@ local function Main(displayHandle)
             input4LineEdit.Content = choice
         elseif caller.Name == "Preset_Select" then
             input6LineEdit.Content = choice
+        elseif caller.Name == "Name_Pool_Select" then
+            input21LineEdit.Content = choice
         end
     end
 end
