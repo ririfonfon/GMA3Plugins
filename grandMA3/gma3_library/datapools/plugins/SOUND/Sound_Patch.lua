@@ -1,4 +1,4 @@
-function Patch(Univers, Address)
+function SOUND_Patch(Univers, Address)
     Cmd('ChangeDestination Root')
     Cmd('ChangeDestination 14.10')
 
@@ -87,16 +87,60 @@ function Check_DMX(myDMXUniverse, myDMXAddress, myCount, myBreakIndex)
     end
 end
 
-local function main()
-    local Construct_Pool = 5
-    local Univers = 210
-    local Address = 51
-    local Check = Check_DMX(Univers, Address, 11, 0)
-    if Check == true then
-        Echo('Cool')
-        -- Patch(Univers, Address)
-    elseif Check == false then
-        ErrEcho('Univers & Address NOT FREE')
+ function SOUND_Check_ID(myFID,myCount)
+    -- Create a variable with the FID you want to check.
+    -- local myFID = 2001
+    -- Create a variable with the number of subsequent ID's to also check.
+    -- local myCount = 10
+    -- Create a variable with the IDType you want to check.
+    -- Default value is 0. This is the "Fixture" type.
+    -- Valid integers are:
+    --- 0 = Fixture
+    --- 1 = Channel
+    --- 2 = Universal
+    --- 3 = Houseligths (default name)
+    --- 4 = NonDim (default name)
+    --- 5 = Media (default name)
+    --- 6 = Fog (default name)
+    --- 7 = Effect (default name)
+    --- 8 = Pyro (default name)
+    --- 9 = MArker
+    --- 10 = Multipatch
+    local myType = 0
+
+    -- Check if the count is more than one.
+    if myCount > 1 then
+        -- Check if there is a collision and print valid feedback.
+        if CheckFIDCollision(myFID, myCount, myType) then
+            Printf("The FID " .. myFID .. " to " .. (myFID + myCount) .. " is available.")
+            return true
+        else
+            ErrEcho("The FID " .. myFID .. " to " .. (myFID + myCount) .. " gives an FID collision.")
+            return false
+        end
+    else
+        if CheckFIDCollision(myFID, nil, myType) then
+            Printf("The FID " .. myFID .. " is available.")
+            return true
+        else
+            ErrEcho("The FID " .. myFID .. " gives an FID collision.")
+            return false
+        end
     end
+end
+
+local function main()
+    local Univers = 210
+    local Address = 41
+    local ID = 225
+    local Check_Id = SOUND_Check_ID(ID,11)
+    -- Cmd('Fixture Thru')
+    -- local Check = Check_DMX(Univers, Address, 1, 0)
+    -- Cmd('Clear')
+    -- if Check == true then
+    --     SOUND_Patch(Univers, Address)
+    -- elseif Check == false then
+    --     ErrEcho('Univers & Address NOT FREE')
+    -- end
 end
 return main
