@@ -52,7 +52,6 @@ local function SOUND_Check_DMX(myDMXUniverse, myDMXAddress, myCount, myBreakInde
 end
 
 local function SOUND_Check_ID(myFID, myCount)
-    Echo('************** fid')
     -- Create a variable with the FID you want to check.
     -- local myFID = 2001
     -- Create a variable with the number of subsequent ID's to also check.
@@ -96,7 +95,6 @@ end
 
 local function list_input(popuplists, TLay, TLayNr, TLayNrRef, SeqNr, SeqNrStart, MacroNr,
                           MacroNrStart, All_4_Nr, All_4_NrStart, All_4_Current)
-    Echo('LIST INPUT*********************')
     for k in ipairs(TLay) do
         for i in ipairs(popuplists.Lay_Select) do
             if popuplists.Lay_Select[i] == TLay[k].NO then
@@ -162,7 +160,6 @@ local function list_input(popuplists, TLay, TLayNr, TLayNrRef, SeqNr, SeqNrStart
 end
 
 local function CH_Pool(popuplists)
-    Echo('**************** C_Pool')
     local Pool_check = Root().ShowData.DataPools:Children()
     popuplists.DataPool_Select = {}
     popuplists.list_pool = {}
@@ -842,13 +839,15 @@ local function Main(displayHandle)
         --     Construct_Pool, NaPool)
     end
 
+
+
+    -- Layout Name
     signalTable.OnInput1TextChanged = function(caller)
         NaLay = caller.Content:gsub("'", "")
     end
-
+    -- Pool Name
     signalTable.OnInput21TextChanged = function(caller)
         NaPool = caller.Content:gsub("'", "")
-        Echo(NaPool .. "    cp " .. Construct_Pool)
         input20Button.Text = NaPool
         PoolObject[Construct_Pool]:Set('Name', NaPool)
         Pool_check = CH_Pool(popuplists)
@@ -858,9 +857,8 @@ local function Main(displayHandle)
             input21LineEdit.Content = NaPool
             old_NAPOOL = NaPool
         end
-        Echo('**** NaPool ' .. NaPool)
     end
-
+    -- Layout Nr
     signalTable.OnInput2TextChanged = function(caller)
         local check = false
         if caller.Content == "" or caller.Content == "0" then
@@ -882,11 +880,9 @@ local function Main(displayHandle)
         if check == false then
             input2LineEdit.TextColor = colorText
             OkButton.Visible = "Yes"
-            if check_pool == true and check_DataPool == true then
-            end
         end
     end
-
+    -- Sequence
     signalTable.OnInput3TextChanged = function(caller)
         local checks = false
         if caller.Content == "" or caller.Content == "0" then
@@ -918,11 +914,9 @@ local function Main(displayHandle)
         if checks == false then
             input3LineEdit.TextColor = colorText
             OkButton.Visible = "Yes"
-            if check_pool == true and check_DataPool == true then
-            end
         end
     end
-
+    -- Macro
     signalTable.OnInput4TextChanged = function(caller)
         local checks = false
         if caller.Content == "" or caller.Content == "0" then
@@ -947,13 +941,10 @@ local function Main(displayHandle)
         end
         if checks == false then
             input4LineEdit.TextColor = colorText
-            -- if check_pool == true and check_DataPool == true then
             OkButton.Visible = "Yes"
-            -- end
         end
     end
-
-
+    -- All 4
     signalTable.OnInput6TextChanged = function(caller)
         local checks = false
         if caller.Content == "" or caller.Content == "0" then
@@ -969,7 +960,6 @@ local function Main(displayHandle)
             for k in ipairs(All_4_Nr) do
                 if All_4_NrStart <= tonumber(All_4_Nr[k].NO) then
                     if All_4_NrRange >= tonumber(All_4_Nr[k].NO) then
-                        Echo('**************************')
                         OkButton.Visible = "No"
                         input6LineEdit.TextColor = colorAlertText
                         checks = true
@@ -986,12 +976,10 @@ local function Main(displayHandle)
         end
         if checks == false then
             input6LineEdit.TextColor = colorText
-            -- if check_pool == true and check_DataPool == true then
             OkButton.Visible = "Yes"
-            -- end
         end
     end
-
+    -- Univers
     signalTable.OnInput7TextChanged = function(caller)
         local checks = false
         if caller.Content == "" or caller.Content == "0" then
@@ -1006,12 +994,10 @@ local function Main(displayHandle)
 
         if checks == false then
             input7LineEdit.TextColor = colorText
-            -- if check_pool == true and check_DataPool == true then
             OkButton.Visible = "Yes"
-            -- end
         end
     end
-
+    -- Address
     signalTable.OnInput8TextChanged = function(caller)
         local checks = false
         if caller.Content == "" or caller.Content == "0" then
@@ -1032,7 +1018,7 @@ local function Main(displayHandle)
             OkButton.Visible = "Yes"
         end
     end
-
+    -- Fid
     signalTable.OnInput9TextChanged = function(caller)
         local checks = false
         if caller.Content == "" or caller.Content == "0" then
@@ -1049,13 +1035,9 @@ local function Main(displayHandle)
         end
         if checks == false then
             input9LineEdit.TextColor = colorText
-            -- if check_pool == true and check_DataPool == true then
             OkButton.Visible = "Yes"
-            -- end
         end
     end
-
-
 
 
     function signalTable.mypopup(caller)
@@ -1085,7 +1067,6 @@ local function Main(displayHandle)
                 input21LineEdit.Content = "Sound"
             end
             if Check_Pool == true then
-                Echo('Check_Pool true -> Pool ' .. Construct_Pool)
                 Pool_check = CH_Pool(popuplists)
                 PoolObject = Root().ShowData.DataPools
                 TLay = Root().ShowData.DataPools[Construct_Pool].Layouts:Children()
