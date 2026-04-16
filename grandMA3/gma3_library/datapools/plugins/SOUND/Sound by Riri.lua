@@ -10,6 +10,90 @@ local componentName = select(2, ...)
 local signalTable, thiscomponent = select(3, ...)
 local myHandle = select(4, ...)
 
+local function SOUND_Check_DMX(myDMXUniverse, myDMXAddress, myCount, myBreakIndex)
+    Cmd('Fixture Thru')
+
+    -- Set the DMX universe - range 1-1024.
+    -- local myDMXUniverse = 1
+    -- Set the DMX address in the universe - range 1-512.
+    -- local myDMXAddress = 1
+    -- Set the optional count for the number of fixtures (break_index channel amount) to check.
+    -- local myCount = 1
+    -- Set the optional break_index number for fixtures with multiple breaks.
+    -- Default value is 0 to indicate the first break.
+    -- local myBreakIndex = 0
+
+    -- Creates the string used for the DMX address.
+    local startOfRange = string.format("%d.%03d", myDMXUniverse, myDMXAddress)
+
+    -- Check if there is a selection and exit if there isn't.
+    if SelectionFirst() == nil then
+        Printf("Please make a selection and try again.")
+        Cmd('Clear')
+        return
+    end
+    -- This gets the handle for the first fixture a patched generic Dimmers 8-bit mode.
+    local myDmxMode = GetSubfixture(SelectionFirst()).ModeDirect
+
+    if myDmxMode == nil then
+        -- Exit the function if the DMX mode returns nil.
+    else
+        -- Do the actual collision check and provide useful feedback.
+        if CheckDMXCollision(myDmxMode, startOfRange, myCount, myBreakIndex) then
+            Printf("The DMX address " .. startOfRange .. " is available.")
+            Cmd('Clear')
+            return false
+        else
+            ErrEcho("The DMX address " .. startOfRange .. " cannot be used as a start address for this patch.")
+            Cmd('Clear')
+            return true
+        end
+    end
+end
+
+local function SOUND_Check_ID(myFID, myCount)
+    Echo('************** fid')
+    -- Create a variable with the FID you want to check.
+    -- local myFID = 2001
+    -- Create a variable with the number of subsequent ID's to also check.
+    -- local myCount = 10
+    -- Create a variable with the IDType you want to check.
+    -- Default value is 0. This is the "Fixture" type.
+    -- Valid integers are:
+    --- 0 = Fixture
+    --- 1 = Channel
+    --- 2 = Universal
+    --- 3 = Houseligths (default name)
+    --- 4 = NonDim (default name)
+    --- 5 = Media (default name)
+    --- 6 = Fog (default name)
+    --- 7 = Effect (default name)
+    --- 8 = Pyro (default name)
+    --- 9 = MArker
+    --- 10 = Multipatch
+    local myType = 0
+
+    -- Check if the count is more than one.
+    if myCount > 1 then
+        -- Check if there is a collision and print valid feedback.
+        if CheckFIDCollision(myFID, myCount, myType) then
+            Printf("The FID " .. myFID .. " to " .. (myFID + myCount) .. " is available.")
+            return false
+        else
+            ErrEcho("The FID " .. myFID .. " to " .. (myFID + myCount) .. " gives an FID collision.")
+            return true
+        end
+    else
+        if CheckFIDCollision(myFID, nil, myType) then
+            Printf("The FID " .. myFID .. " is available.")
+            return false
+        else
+            ErrEcho("The FID " .. myFID .. " gives an FID collision.")
+            return true
+        end
+    end
+end
+
 local function list_input(popuplists, TLay, TLayNr, TLayNrRef, SeqNr, SeqNrStart, MacroNr,
                           MacroNrStart, All_4_Nr, All_4_NrStart, All_4_Current)
     Echo('LIST INPUT*********************')
@@ -119,6 +203,9 @@ local function Main(displayHandle)
     local pool_free
     local Pool_check
     local old_NAPOOL
+    local Univers = 210
+    local Address = 1
+    local Fid = 901
 
     local popuplists = {
         DataPool_Select  = {},
@@ -242,7 +329,7 @@ local function Main(displayHandle)
     -- This is row 1 of the dlgFrame.
     local subTitle = dlgFrame:Append("UIObject")
     subTitle.Text =
-    "Set DataPool Layout, Sequence, Macro, Appearance & Preset & Matrick\n \nSelected Group(s) are:\n"
+    " Select DataPool \n \n Set Layout, Sequence, Macro & Preset All 4 \n \n Finish with Univers , Address & Fixture Id "
     subTitle.TextalignmentH = "Left"
     subTitle.TextalignmentV = "Top"
     subTitle.ContentDriven = "Yes"
@@ -593,7 +680,120 @@ local function Main(displayHandle)
     input6Sujestion.backColor = colorPresets
     input6Sujestion.Visible = "No"
 
-    -- TopInc = TopInc + 1
+    TopInc = TopInc + 1
+
+    -- Create the UI elements for the 7 input.
+    local input7Icon = inputsGrid:Append("Button")
+    input7Icon.Text = ""
+    input7Icon.Anchors = { left = 0, right = 0, top = TopInc, bottom = TopInc }
+    input7Icon.Icon = "settings"
+    input7Icon.Margin = { left = 0, right = 2, top = TopInc, bottom = 2 }
+    input7Icon.HasHover = "No";
+    input7Icon.BackColor = colorPartlySelected
+
+    local input7Label = inputsGrid:Append("UIObject")
+    input7Label.Text = "Univers"
+    input7Label.TextalignmentH = "Left"
+    input7Label.Anchors = { left = 1, right = 3, top = TopInc, bottom = TopInc }
+    input7Label.Padding = "5,5"
+    input7Label.Margin = { left = 2, right = 2, top = TopInc, bottom = 2 }
+    input7Label.HasHover = "No";
+    input7Label.Font = "2"
+    input7Label.BackColor = colorPartlySelected
+
+    local input7LineEdit = inputsGrid:Append("LineEdit")
+    input7LineEdit.Prompt = "Nb: "
+    input7LineEdit.TextAutoAdjust = "Yes"
+    input7LineEdit.Anchors = { left = 4, right = 9, top = TopInc, bottom = TopInc }
+    input7LineEdit.Padding = "5,5"
+    input7LineEdit.Margin = { left = 2, right = 0, top = TopInc, bottom = 2 }
+    input7LineEdit.Filter = "0123456789"
+    input7LineEdit.VkPluginName = "TextInputNumOnly"
+    input7LineEdit.Content = ""
+    input7LineEdit.MaxTextLength = 6
+    input7LineEdit.HideFocusFrame = "Yes"
+    input7LineEdit.PluginComponent = myHandle
+    input7LineEdit.TextChanged = "Oninput7TextChanged"
+    input7LineEdit.Font = "2"
+    input7LineEdit.BackColor = colorPartlySelected
+    input7LineEdit.Visible = "No"
+
+    TopInc = TopInc + 1
+
+    -- Create the UI elements for the 8 input.
+    local input8Icon = inputsGrid:Append("Button")
+    input8Icon.Text = ""
+    input8Icon.Anchors = { left = 0, right = 0, top = TopInc, bottom = TopInc }
+    input8Icon.Icon = "settings"
+    input8Icon.Margin = { left = 0, right = 2, top = TopInc, bottom = 2 }
+    input8Icon.HasHover = "No";
+    input8Icon.BackColor = colorPartlySelected
+
+    local input8Label = inputsGrid:Append("UIObject")
+    input8Label.Text = "Address"
+    input8Label.TextalignmentH = "Left"
+    input8Label.Anchors = { left = 1, right = 3, top = TopInc, bottom = TopInc }
+    input8Label.Padding = "5,5"
+    input8Label.Margin = { left = 2, right = 2, top = TopInc, bottom = 2 }
+    input8Label.HasHover = "No";
+    input8Label.Font = "2"
+    input8Label.BackColor = colorPartlySelected
+
+    local input8LineEdit = inputsGrid:Append("LineEdit")
+    input8LineEdit.Prompt = "Nb: "
+    input8LineEdit.TextAutoAdjust = "Yes"
+    input8LineEdit.Anchors = { left = 4, right = 9, top = TopInc, bottom = TopInc }
+    input8LineEdit.Padding = "5,5"
+    input8LineEdit.Margin = { left = 2, right = 0, top = TopInc, bottom = 2 }
+    input8LineEdit.Filter = "0123456789"
+    input8LineEdit.VkPluginName = "TextInputNumOnly"
+    input8LineEdit.Content = ""
+    input8LineEdit.MaxTextLength = 6
+    input8LineEdit.HideFocusFrame = "Yes"
+    input8LineEdit.PluginComponent = myHandle
+    input8LineEdit.TextChanged = "OnInput8TextChanged"
+    input8LineEdit.Font = "2"
+    input8LineEdit.BackColor = colorPartlySelected
+    input8LineEdit.Visible = "No"
+
+    TopInc = TopInc + 1
+
+    -- Create the UI elements for the 8 input.
+    local input9Icon = inputsGrid:Append("Button")
+    input9Icon.Text = ""
+    input9Icon.Anchors = { left = 0, right = 0, top = TopInc, bottom = TopInc }
+    input9Icon.Icon = "settings"
+    input9Icon.Margin = { left = 0, right = 2, top = TopInc, bottom = 2 }
+    input9Icon.HasHover = "No";
+    input9Icon.BackColor = colorPartlySelected
+
+    local input9Label = inputsGrid:Append("UIObject")
+    input9Label.Text = "Fixture ID"
+    input9Label.TextalignmentH = "Left"
+    input9Label.Anchors = { left = 1, right = 3, top = TopInc, bottom = TopInc }
+    input9Label.Padding = "5,5"
+    input9Label.Margin = { left = 2, right = 2, top = TopInc, bottom = 2 }
+    input9Label.HasHover = "No";
+    input9Label.Font = "2"
+    input9Label.BackColor = colorPartlySelected
+
+    local input9LineEdit = inputsGrid:Append("LineEdit")
+    input9LineEdit.Prompt = "Nb: "
+    input9LineEdit.TextAutoAdjust = "Yes"
+    input9LineEdit.Anchors = { left = 4, right = 9, top = TopInc, bottom = TopInc }
+    input9LineEdit.Padding = "5,5"
+    input9LineEdit.Margin = { left = 2, right = 0, top = TopInc, bottom = 2 }
+    input9LineEdit.Filter = "0123456789"
+    input9LineEdit.VkPluginName = "TextInputNumOnly"
+    input9LineEdit.Content = ""
+    input9LineEdit.MaxTextLength = 6
+    input9LineEdit.HideFocusFrame = "Yes"
+    input9LineEdit.PluginComponent = myHandle
+    input9LineEdit.TextChanged = "OnInput9TextChanged"
+    input9LineEdit.Font = "2"
+    input9LineEdit.BackColor = colorPartlySelected
+    input9LineEdit.Visible = "No"
+
 
 
     -- Create the button grid.
@@ -681,8 +881,8 @@ local function Main(displayHandle)
         end
         if check == false then
             input2LineEdit.TextColor = colorText
+            OkButton.Visible = "Yes"
             if check_pool == true and check_DataPool == true then
-                OkButton.Visible = "Yes"
             end
         end
     end
@@ -717,8 +917,8 @@ local function Main(displayHandle)
         end
         if checks == false then
             input3LineEdit.TextColor = colorText
+            OkButton.Visible = "Yes"
             if check_pool == true and check_DataPool == true then
-                OkButton.Visible = "Yes"
             end
         end
     end
@@ -747,9 +947,9 @@ local function Main(displayHandle)
         end
         if checks == false then
             input4LineEdit.TextColor = colorText
-            if check_pool == true and check_DataPool == true then
-                OkButton.Visible = "Yes"
-            end
+            -- if check_pool == true and check_DataPool == true then
+            OkButton.Visible = "Yes"
+            -- end
         end
     end
 
@@ -786,9 +986,72 @@ local function Main(displayHandle)
         end
         if checks == false then
             input6LineEdit.TextColor = colorText
-            if check_pool == true and check_DataPool == true then
-                OkButton.Visible = "Yes"
-            end
+            -- if check_pool == true and check_DataPool == true then
+            OkButton.Visible = "Yes"
+            -- end
+        end
+    end
+
+    signalTable.OnInput7TextChanged = function(caller)
+        local checks = false
+        if caller.Content == "" or caller.Content == "0" then
+            OkButton.Visible = "No"
+            input7LineEdit.TextColor = colorAlertText
+            checks = true
+        end
+        Univers = caller.Content:gsub("'", "")
+        Univers = tonumber(Univers)
+
+        checks = SOUND_Check_DMX(Univers, Address, 1, 0)
+
+        if checks == false then
+            input7LineEdit.TextColor = colorText
+            -- if check_pool == true and check_DataPool == true then
+            OkButton.Visible = "Yes"
+            -- end
+        end
+    end
+
+    signalTable.OnInput8TextChanged = function(caller)
+        local checks = false
+        if caller.Content == "" or caller.Content == "0" then
+            checks = true
+        end
+        Address = caller.Content:gsub("'", "")
+        Address = tonumber(Address)
+
+        checks = SOUND_Check_DMX(Univers, Address, 1, 0)
+
+        if checks == true then
+            OkButton.Visible = "No"
+            input8LineEdit.TextColor = colorAlertText
+        end
+        if checks == false then
+            input8LineEdit.TextColor = colorText
+
+            OkButton.Visible = "Yes"
+        end
+    end
+
+    signalTable.OnInput9TextChanged = function(caller)
+        local checks = false
+        if caller.Content == "" or caller.Content == "0" then
+            checks = true
+        end
+        Fid = caller.Content:gsub("'", "")
+        Fid = tonumber(Fid)
+
+        checks = SOUND_Check_ID(Fid, 11)
+
+        if checks == true then
+            OkButton.Visible = "No"
+            input9LineEdit.TextColor = colorAlertText
+        end
+        if checks == false then
+            input9LineEdit.TextColor = colorText
+            -- if check_pool == true and check_DataPool == true then
+            OkButton.Visible = "Yes"
+            -- end
         end
     end
 
@@ -805,7 +1068,7 @@ local function Main(displayHandle)
             for k in ipairs(Pool_check) do
                 if Pool_check[k].name == caller.Text:gsub("'", "") then
                     Construct_Pool = tonumber(k)
-                    Printf("Pool construct: " .. Construct_Pool)
+                    Printf("* Pool construct: " .. Construct_Pool)
                     Check_Pool = true
                     New = false
                 end
@@ -822,12 +1085,14 @@ local function Main(displayHandle)
                 input21LineEdit.Content = "Sound"
             end
             if Check_Pool == true then
+                Echo('Check_Pool true -> Pool ' .. Construct_Pool)
                 Pool_check = CH_Pool(popuplists)
                 PoolObject = Root().ShowData.DataPools
                 TLay = Root().ShowData.DataPools[Construct_Pool].Layouts:Children()
                 SeqNr = Root().ShowData.DataPools[Construct_Pool].Sequences:Children()
                 MacroNr = Root().ShowData.DataPools[Construct_Pool].Macros:Children()
                 All_4_Nr = Root().ShowData.DataPools[Construct_Pool].PresetPools[24]:Children()
+                TLayNr, SeqNrStart, MacroNrStart, All_4_NrStart = nil, nil, nil, nil
                 TLayNr, TLayNrRef, SeqNr, SeqNrStart, MacroNr,
                 MacroNrStart, All_4_Nr, All_4_NrStart, All_4_Current = list_input(popuplists, TLay,
                     TLayNr, TLayNrRef, SeqNr, SeqNrStart, MacroNr, MacroNrStart, All_4_Nr, All_4_NrStart, All_4_Current)
@@ -842,6 +1107,9 @@ local function Main(displayHandle)
             input3LineEdit.Content = SeqNrStart
             input4LineEdit.Content = MacroNrStart
             input6LineEdit.Content = All_4_NrStart
+            input7LineEdit.Content = Univers
+            input8LineEdit.Content = Address
+            input9LineEdit.Content = Fid
 
             check_DataPool = true
 
@@ -854,6 +1122,9 @@ local function Main(displayHandle)
             input4LineEdit.Visible = "Yes"
 
             input6LineEdit.Visible = "Yes"
+            input7LineEdit.Visible = "Yes"
+            input8LineEdit.Visible = "Yes"
+            input9LineEdit.Visible = "Yes"
 
             input1Sujestion.Visible = "Yes"
             input21Sujestion.Visible = "Yes"
