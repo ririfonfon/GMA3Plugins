@@ -1,4 +1,4 @@
-return function()
+function Patch(Univers, Address)
     Cmd('ChangeDestination Root')
     Cmd('ChangeDestination 14.10')
 
@@ -34,7 +34,7 @@ return function()
         my_add_fixture_table.fid = 900 + i
         my_add_fixture_table.idtype = 'Fixture'
         my_add_fixture_table.name = 'Sound ' .. Sound_Type[i]
-        my_add_fixture_table.patch = { "210.0" .. 40 + i .. "" }
+        my_add_fixture_table.patch = { "" .. Univers .. ".0" .. Address - 1 + i .. "" }
         ------------------------------------------------------
         my_add_fixture_table.parent = patched_grouping_fixture
         ------------------------------------------------------
@@ -50,3 +50,53 @@ return function()
 
     Cmd('ChangeDestination Root')
 end
+
+function Check_DMX(myDMXUniverse, myDMXAddress, myCount, myBreakIndex)
+    -- Set the DMX universe - range 1-1024.
+    -- local myDMXUniverse = 1
+    -- Set the DMX address in the universe - range 1-512.
+    -- local myDMXAddress = 1
+    -- Set the optional count for the number of fixtures (break_index channel amount) to check.
+    -- local myCount = 1
+    -- Set the optional break_index number for fixtures with multiple breaks.
+    -- Default value is 0 to indicate the first break.
+    -- local myBreakIndex = 0
+
+    -- Creates the string used for the DMX address.
+    local startOfRange = string.format("%d.%03d", myDMXUniverse, myDMXAddress)
+
+    -- Check if there is a selection and exit if there isn't.
+    if SelectionFirst() == nil then
+        Printf("Please make a selection and try again.")
+        return
+    end
+    -- This gets the handle for the first fixture a patched generic Dimmers 8-bit mode.
+    local myDmxMode = GetSubfixture(SelectionFirst()).ModeDirect
+
+    if myDmxMode == nil then
+        -- Exit the function if the DMX mode returns nil.
+    else
+        -- Do the actual collision check and provide useful feedback.
+        if CheckDMXCollision(myDmxMode, startOfRange, myCount, myBreakIndex) then
+            Printf("The DMX address " .. startOfRange .. " is available.")
+            return true
+        else
+            ErrEcho("The DMX address " .. startOfRange .. " cannot be used as a start address for this patch.")
+            return false
+        end
+    end
+end
+
+local function main()
+    local Construct_Pool = 5
+    local Univers = 210
+    local Address = 51
+    local Check = Check_DMX(Univers, Address, 11, 0)
+    if Check == true then
+        Echo('Cool')
+        -- Patch(Univers, Address)
+    elseif Check == false then
+        ErrEcho('Univers & Address NOT FREE')
+    end
+end
+return main
