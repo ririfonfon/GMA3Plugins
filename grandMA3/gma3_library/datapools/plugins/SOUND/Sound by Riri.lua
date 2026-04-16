@@ -12,6 +12,7 @@ local myHandle = select(4, ...)
 
 local function list_input(popuplists, TLay, TLayNr, TLayNrRef, SeqNr, SeqNrStart, MacroNr,
                           MacroNrStart, All_4_Nr, All_4_NrStart, All_4_Current)
+    Echo('LIST INPUT*********************')
     for k in ipairs(TLay) do
         for i in ipairs(popuplists.Lay_Select) do
             if popuplists.Lay_Select[i] == TLay[k].NO then
@@ -76,12 +77,24 @@ local function list_input(popuplists, TLay, TLayNr, TLayNrRef, SeqNr, SeqNrStart
         MacroNrStart, All_4_Nr, All_4_NrStart, All_4_Current
 end
 
+local function CH_Pool(popuplists)
+    Echo('**************** C_Pool')
+    local Pool_check = Root().ShowData.DataPools:Children()
+    popuplists.DataPool_Select = {}
+    popuplists.list_pool = {}
+    for k in ipairs(Pool_check) do
+        table.insert(popuplists.list_pool, "'" .. Pool_check[k].name .. "'")
+        table.insert(popuplists.DataPool_Select, "'" .. Pool_check[k].name .. "'")
+    end
+    table.insert(popuplists.list_pool, "'New'")
+    table.insert(popuplists.DataPool_Select, "'New'")
+    return Pool_check
+end
+
 local function Main(displayHandle)
     Cmd('Set UserProfile *.15 Property "keyboardshortcutsactive" false')
 
     local list = false
-    local SelectedGrp = {}
-    local SelectedGrpNo = {}
     local check_pool = false
     local check_DataPool = false
     local TLay = DataPool().Layouts:Children()
@@ -104,6 +117,8 @@ local function Main(displayHandle)
     local TopInc = 0
     local PoolObject = Root().ShowData.DataPools
     local pool_free
+    local Pool_check
+    local old_NAPOOL
 
     local popuplists = {
         DataPool_Select  = {},
@@ -116,14 +131,7 @@ local function Main(displayHandle)
         Preset_Select    = { 1, 11, 101, 201, 301, 401, 501, 601, 701, 801, 901, 1001, 2001 }
     }
 
-    local Pool_check = Root().ShowData.DataPools:Children()
-    for k in ipairs(Pool_check) do
-        table.insert(popuplists.list_pool, "'" .. Pool_check[k].name .. "'")
-        table.insert(popuplists.DataPool_Select, "'" .. Pool_check[k].name .. "'")
-    end
-    table.insert(popuplists.list_pool, "'New'")
-    table.insert(popuplists.DataPool_Select, "'New'")
-    local Groups_Pool = 1
+    Pool_check = CH_Pool(popuplists)
     local Construct_Pool = 1
     local New = false
 
@@ -313,7 +321,7 @@ local function Main(displayHandle)
     input21LineEdit.Padding = "5,5"
     input21LineEdit.Margin = { left = 2, right = 2, top = TopInc, bottom = 2 }
     input21LineEdit.VkPluginName = "TextInput"
-    input21LineEdit.Content = "Sound"
+    input21LineEdit.Content = ""
     input21LineEdit.MaxTextLength = 16
     input21LineEdit.HideFocusFrame = "Yes"
     input21LineEdit.PluginComponent = myHandle
@@ -630,8 +638,8 @@ local function Main(displayHandle)
             OkButton.BackColor = colorBackground
         end
         Obj.Delete(screenOverlay, Obj.Index(baseInput))
-        Construct_Layout(TLay, SeqNrStart, MacroNrStart, TLayNr, All_4_Current, All_4_NrStart, TLayNrRef, NaLay,
-            Construct_Pool, NaPool)
+        -- Construct_Layout(TLay, SeqNrStart, MacroNrStart, TLayNr, All_4_Current, All_4_NrStart, TLayNrRef, NaLay,
+        --     Construct_Pool, NaPool)
     end
 
     signalTable.OnInput1TextChanged = function(caller)
@@ -640,10 +648,17 @@ local function Main(displayHandle)
 
     signalTable.OnInput21TextChanged = function(caller)
         NaPool = caller.Content:gsub("'", "")
-        -- NaPool = "'" .. NaPool .. "'"
         Echo(NaPool .. "    cp " .. Construct_Pool)
         input20Button.Text = NaPool
         PoolObject[Construct_Pool]:Set('Name', NaPool)
+        Pool_check = CH_Pool(popuplists)
+        NaPool = PoolObject[Construct_Pool]:Get('Name')
+        input20Button.Text = NaPool
+        if old_NAPOOL ~= NaPool then
+            input21LineEdit.Content = NaPool
+            old_NAPOOL = NaPool
+        end
+        Echo('**** NaPool ' .. NaPool)
     end
 
     signalTable.OnInput2TextChanged = function(caller)
@@ -683,7 +698,6 @@ local function Main(displayHandle)
         SeqNrStart = tonumber(SeqNrStart)
         SeqNrRange = SeqNrStart
         if New == false then
-            Echo('******* SeqNr ' .. SeqNr)
             for k in ipairs(SeqNr) do
                 if SeqNrStart <= tonumber(SeqNr[k].NO) then
                     if SeqNrRange >= tonumber(SeqNr[k].NO) then
@@ -797,14 +811,19 @@ local function Main(displayHandle)
                 end
             end
             if Check_Pool == false then
-                Construct_Pool = PoolObject:Acquire()
+                local C_Pool = PoolObject:Acquire()
+                Construct_Pool = C_Pool.No
                 coroutine.yield(0.1)
                 PoolObject:Create(Construct_Pool)
                 Printf('new is ' .. Construct_Pool)
+                Pool_check = CH_Pool(popuplists)
                 New = true
                 OkButton.Visible = "Yes"
+                input21LineEdit.Content = "Sound"
             end
             if Check_Pool == true then
+                Pool_check = CH_Pool(popuplists)
+                PoolObject = Root().ShowData.DataPools
                 TLay = Root().ShowData.DataPools[Construct_Pool].Layouts:Children()
                 SeqNr = Root().ShowData.DataPools[Construct_Pool].Sequences:Children()
                 MacroNr = Root().ShowData.DataPools[Construct_Pool].Macros:Children()
