@@ -149,11 +149,11 @@ local function list_input(popuplists, TLay, TLayNr, TLayNrRef, SeqNr, SeqNrStart
     end
     All_4_Current = All_4_NrStart
 
-    Printf("TLayNr: %d", TLayNr)
-    Printf("SeqNrStart: %d", SeqNrStart)
-    Printf("MacroNrStart: %d", MacroNrStart)
-    Printf("All_4_NrStart: %d", All_4_NrStart)
-    Printf("All_4_Current: %d", All_4_Current)
+    -- Printf("TLayNr: %d", TLayNr)
+    -- Printf("SeqNrStart: %d", SeqNrStart)
+    -- Printf("MacroNrStart: %d", MacroNrStart)
+    -- Printf("All_4_NrStart: %d", All_4_NrStart)
+    -- Printf("All_4_Current: %d", All_4_Current)
 
     return TLayNr, TLayNrRef, SeqNr, SeqNrStart, MacroNr,
         MacroNrStart, All_4_Nr, All_4_NrStart, All_4_Current
@@ -710,7 +710,7 @@ local function Main(displayHandle)
     input7LineEdit.MaxTextLength = 6
     input7LineEdit.HideFocusFrame = "Yes"
     input7LineEdit.PluginComponent = myHandle
-    input7LineEdit.TextChanged = "Oninput7TextChanged"
+    input7LineEdit.TextChanged = "OnInput7TextChanged"
     input7LineEdit.Font = "2"
     input7LineEdit.BackColor = colorPartlySelected
     input7LineEdit.Visible = "No"
@@ -927,7 +927,7 @@ local function Main(displayHandle)
         MacroNrStart = caller.Content:gsub("'", "")
         MacroNrStart = tonumber(MacroNrStart)
         MacroNrRange = MacroNrStart + 42
-        Printf("**MacroNrStart " .. MacroNrStart)
+        -- Printf("**MacroNrStart " .. MacroNrStart)
         if New == false then
             for k in ipairs(MacroNr) do
                 if MacroNrStart <= tonumber(MacroNr[k].NO) then
@@ -992,8 +992,14 @@ local function Main(displayHandle)
 
         checks = SOUND_Check_DMX(Univers, Address, 1, 0)
 
+        if checks == true then
+            OkButton.Visible = "No"
+            input7LineEdit.TextColor = colorAlertText
+            input8LineEdit.TextColor = colorAlertText
+        end
         if checks == false then
             input7LineEdit.TextColor = colorText
+            input8LineEdit.TextColor = colorText
             OkButton.Visible = "Yes"
         end
     end
@@ -1010,9 +1016,11 @@ local function Main(displayHandle)
 
         if checks == true then
             OkButton.Visible = "No"
+            input7LineEdit.TextColor = colorAlertText
             input8LineEdit.TextColor = colorAlertText
         end
         if checks == false then
+            input7LineEdit.TextColor = colorText
             input8LineEdit.TextColor = colorText
 
             OkButton.Visible = "Yes"
@@ -1050,7 +1058,7 @@ local function Main(displayHandle)
             for k in ipairs(Pool_check) do
                 if Pool_check[k].name == caller.Text:gsub("'", "") then
                     Construct_Pool = tonumber(k)
-                    Printf("* Pool construct: " .. Construct_Pool)
+                    -- Printf("* Pool construct: " .. Construct_Pool)
                     Check_Pool = true
                     New = false
                 end
@@ -1060,7 +1068,7 @@ local function Main(displayHandle)
                 Construct_Pool = C_Pool.No
                 coroutine.yield(0.1)
                 PoolObject:Create(Construct_Pool)
-                Printf('new is ' .. Construct_Pool)
+                -- Printf('new is ' .. Construct_Pool)
                 Pool_check = CH_Pool(popuplists)
                 New = true
                 OkButton.Visible = "Yes"
