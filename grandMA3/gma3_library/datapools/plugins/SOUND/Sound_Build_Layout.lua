@@ -4,33 +4,7 @@
     Created by Richard Fontaine "RIRI", Mars 2026.
 --]]
 
-function Check_Size_Pool(id, PoolObject)
-    if not id then
-        Printf('Acquire')
-        return PoolObject:Acquire()
-    end
-    local idtype = math.type(id) or type(id)
-    if idtype ~= 'integer' then
-        Dialog_End('Error : wrong argument expected integer got ' .. idtype)
-        error('wrong argument expected integer got ' .. idtype)
-    end
-    if IsObjectValid(PoolObject[id]) then
-        Dialog_End('Error : id is already used : ' .. id)
-        error('id is already used : ' .. id)
-    end
-    local maxsize = PoolObject:MaxCount()
-    if id < 1 or id > maxsize then
-        Dialog_End('Error : id out of range')
-        error('id out of range')
-    end
-    local poolsize = PoolObject:Count()
-    if id > poolsize then
-        local newsize = math.min(maxsize, math.ceil(id / 1000) * 1000)
-        PoolObject:Resize(newsize)
-    end
-end
-
-function Set_Def(L_N, N, Obj)
+function SOUND_Set_Def(L_N, N, Obj)
     Obj[L_N][N.No]:Set('visibilitybar', 'Hidden')
     Obj[L_N][N.No]:Set('visibilityobjectname', 'Hidden')
     Obj[L_N][N.No]:Set('visibilityid', 'Hidden')
@@ -43,8 +17,8 @@ function Set_Def(L_N, N, Obj)
     Obj[L_N][N.No]:Set('fullresolution', 'Yes')
 end
 
-function Build_Layout(Construct_Pool, Name_Layout)
-    local Layout_Nr      = 1
+function SOUND_Build_Layout(Construct_Pool, Name_Layout, Layout_Nr, MacroNrStart, Seq_On_Off)
+    -- local Layout_Nr      = 1
     local Sound_Type     = { 'All', 'Bass', 'Mid', 'High', 'Band1', 'Band2', 'Band3', 'Band4', 'Band5', 'Band6', 'Band7' }
     local Layout_Object  = Root().ShowData.DataPools[Construct_Pool].Layouts
     local SequenceObject = Root().ShowData.DataPools[Construct_Pool].Sequences
@@ -150,7 +124,7 @@ function Build_Layout(Construct_Pool, Name_Layout)
     local S_V_M_Color    = { '8080FFFF', 'FF0080FF', 'FFFF80FF', '00FF00FF', 'FF8000FF' }
     local S_V_M_Text     = { 'Group', 'Value', 'Matricks', 'None/None', 'None/None' }
 
-    Check_Size_Pool(Layout_Nr, Layout_Object)
+    SOUND_Check_Size_Pool(Layout_Nr, Layout_Object)
     Layout_Object:Create(Layout_Nr)
     Layout_Object[Layout_Nr]:Set('Name', Name_Layout)
     Layout_Object[Layout_Nr]:Set('ViewPosX', 0)
@@ -160,14 +134,14 @@ function Build_Layout(Construct_Pool, Name_Layout)
 
     -- on_off
     Nr = Layout_Object[Layout_Nr]:Acquire()
-    Layout_Object[Layout_Nr][Nr.No]:Set('Object', SequenceObject[12])
+    Layout_Object[Layout_Nr][Nr.No]:Set('Object', SequenceObject[Seq_On_Off])
     Layout_Object[Layout_Nr][Nr.No]:Set('posx', -400)
     Layout_Object[Layout_Nr][Nr.No]:Set('posy', 150)
     Layout_Object[Layout_Nr][Nr.No]:Set('width', 50)
     Layout_Object[Layout_Nr][Nr.No]:Set('height', 50)
     Layout_Object[Layout_Nr][Nr.No]:Set('action', 'Go+')
     Layout_Object[Layout_Nr][Nr.No]:Set('Note', 'On&Off')
-    Set_Def(Layout_Nr, Nr, Layout_Object)
+    SOUND_Set_Def(Layout_Nr, Nr, Layout_Object)
 
     -- titre
     for i = 1, 23 do
@@ -188,7 +162,7 @@ function Build_Layout(Construct_Pool, Name_Layout)
 
     -- MacroObject
     local count = 1
-    for i = 1, 165 do
+    for i = MacroNrStart, MacroNrStart + 164 do
         Nr = Layout_Object[Layout_Nr]:Acquire()
         Layout_Object[Layout_Nr][Nr.No]:Set('Object', MacroObject[i])
         Layout_Object[Layout_Nr][Nr.No]:Set('posx', macro_x[i])
@@ -197,7 +171,7 @@ function Build_Layout(Construct_Pool, Name_Layout)
         Layout_Object[Layout_Nr][Nr.No]:Set('height', 50)
         Layout_Object[Layout_Nr][Nr.No]:Set('action', 'Go+')
         Layout_Object[Layout_Nr][Nr.No]:Set('Note', 'Macro')
-        Set_Def(Layout_Nr, Nr, Layout_Object)
+        SOUND_Set_Def(Layout_Nr, Nr, Layout_Object)
         Layout_Object[Layout_Nr][Nr.No]:Set('visibilityborder', 'Visible')
         Layout_Object[Layout_Nr][Nr.No]:Set('bordersize', 3)
         Layout_Object[Layout_Nr][Nr.No]:Set('bordercolor', S_V_M_Color[count])
@@ -211,10 +185,3 @@ function Build_Layout(Construct_Pool, Name_Layout)
         end
     end
 end
-
-local function main()
-    local Construct_Pool = 5
-    local Name_Layout = "Sound Test"
-    Build_Layout(Construct_Pool, Name_Layout)
-end
-return main
