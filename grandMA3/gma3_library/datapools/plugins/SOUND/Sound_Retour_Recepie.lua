@@ -4,7 +4,7 @@
     Created by Richard Fontaine "RIRI", Mars 2026.
 --]]
 
-local function main()
+function Sound_Retour_Recepie()
     local Select = UserVars()
     local S_Seq, S_Layout, S_Pool, S_Fonction, Target, S_Lay, S_N_Layout, S_N_Object, S_Part
     if GetVar(Select, "S_Fonction") then
@@ -184,4 +184,3 @@ local function main()
     DelVar(Select, "S_Fonction")
     DelVar(Select, "S_Part")
 end
-return main
