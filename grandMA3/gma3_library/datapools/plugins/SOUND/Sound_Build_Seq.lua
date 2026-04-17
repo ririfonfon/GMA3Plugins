@@ -4,30 +4,7 @@
     Created by Richard Fontaine "RIRI", April 2026.
 --]]
 
-function Check_Size_Pool(id, PoolObject)
-    if not id then
-        Printf('Acquire')
-        return PoolObject:Acquire()
-    end
-    local idtype = math.type(id) or type(id)
-    if idtype ~= 'integer' then
-        error('wrong argument expected integer got ' .. idtype)
-    end
-    if IsObjectValid(PoolObject[id]) then
-        error('id is already used : ' .. id)
-    end
-    local maxsize = PoolObject:MaxCount()
-    if id < 1 or id > maxsize then
-        error('id out of range')
-    end
-    local poolsize = PoolObject:Count()
-    if id > poolsize then
-        local newsize = math.min(maxsize, math.ceil(id / 1000) * 1000)
-        PoolObject:Resize(newsize)
-    end
-end
-
-function Sequence_Defo(SequenceObject, i)
+function SOUND_Sequence_Defo(SequenceObject, i)
     SequenceObject[i]:Set('AUTOSTART', 'Yes')
     SequenceObject[i]:Set('AUTOSTOP', 'Yes')
     SequenceObject[i]:Set('AUTOFIX', 'No')
@@ -67,18 +44,18 @@ function Sequence_Defo(SequenceObject, i)
     SequenceObject[i]:Set('TIMINGGOBACKFAST', 'Default')
 end
 
-function Build_Seq(Construct_Pool)
+function SOUND_Build_Seq(Construct_Pool, SeqNum, All_4_NrStart, Grp_Start)
     local Sound_Type     = { 'All', 'Bass', 'Mid', 'High', 'Band1', 'Band2', 'Band3', 'Band4', 'Band5', 'Band6', 'Band7' }
-    local SeqNum         = 41
+    -- local SeqNum         = 41
     local SeqEnd         = SeqNum + 10
     local TypeSel        = 1
 
     local SequenceObject = Root().ShowData.DataPools[Construct_Pool].Sequences
     local Preset4Object  = Root().ShowData.DataPools[Construct_Pool].PresetPools[24]
     local GroupObject    = Root().ShowData.DataPools[Construct_Pool].Groups
-    local Build_Pool     = Root().ShowData.DataPools[Construct_Pool]
+    -- local Build_Pool     = Root().ShowData.DataPools[Construct_Pool]
 
-    for i = 1, 10 do
+    for i = Grp_Start, Grp_Start + 10 do
         GroupObject:Create(i)
         GroupObject[i]:Set('Name', 'Sound ' .. Sound_Type[TypeSel])
         Cmd("AutoCreate Fixture " ..
@@ -87,7 +64,7 @@ function Build_Seq(Construct_Pool)
     end
     TypeSel = 1
 
-    for i = 1, 10 do
+    for i = All_4_NrStart, All_4_NrStart + 10 do
         Preset4Object:Create(i)
         Preset4Object[i]:Set('Name', 'Sound ' .. Sound_Type[TypeSel])
         Cmd("SelectFixtures DataPool " .. Construct_Pool .. " Group " .. GroupObject[i].No)
@@ -99,10 +76,10 @@ function Build_Seq(Construct_Pool)
     TypeSel = 1
 
     for i = SeqNum, SeqEnd, 1 do
-        Check_Size_Pool(i, SequenceObject)
+        SOUND_Check_Size_Pool(i, SequenceObject)
         SequenceObject:Create(i)
-        SequenceObject[i]:Set('Name', ' Sound ' .. Sound_Type[TypeSel])
-        Sequence_Defo(SequenceObject, i)
+        SequenceObject[i]:Set('Name', 'Sound ' .. Sound_Type[TypeSel])
+        SOUND_Sequence_Defo(SequenceObject, i)
         SequenceObject[i]:Set('AUTOSTART', 'No')
         SequenceObject[i]:Set('AUTOSTOP', 'No')
         SequenceObject[i]:Set('TRACKING', 'No')
@@ -123,37 +100,38 @@ function Build_Seq(Construct_Pool)
         TypeSel = TypeSel + 1
     end
 
-    Check_Size_Pool(SeqEnd+1, SequenceObject)
-        SequenceObject:Create(SeqEnd+1)
-        SequenceObject[SeqEnd+1]:Set('Name', 'On_Off Sound ')
-        SequenceObject[SeqEnd+1]:Set('Appearance', '[[Switch_Off_png]]')
-        Sequence_Defo(SequenceObject, SeqEnd+1)
-        SequenceObject[SeqEnd+1]:Set('AUTOSTART', 'No')
-        SequenceObject[SeqEnd+1]:Set('AUTOSTOP', 'No')
-        SequenceObject[SeqEnd+1]:Set('TRACKING', 'No')
-        SequenceObject[SeqEnd+1]:Set('PRIORITY', 'HTP')
-        SequenceObject[SeqEnd+1]:Set('SOFTLTP', 'No')
+    SOUND_Check_Size_Pool(SeqEnd + 1, SequenceObject)
+    SequenceObject:Create(SeqEnd + 1)
+    local Seq_On_Off = SeqEnd + 1
+    SequenceObject[SeqEnd + 1]:Set('Name', 'On_Off Sound ')
+    SequenceObject[SeqEnd + 1]:Set('Appearance', '[[Switch_Off_png]]')
+    SOUND_Sequence_Defo(SequenceObject, SeqEnd + 1)
+    SequenceObject[SeqEnd + 1]:Set('AUTOSTART', 'No')
+    SequenceObject[SeqEnd + 1]:Set('AUTOSTOP', 'No')
+    SequenceObject[SeqEnd + 1]:Set('TRACKING', 'No')
+    SequenceObject[SeqEnd + 1]:Set('PRIORITY', 'HTP')
+    SequenceObject[SeqEnd + 1]:Set('SOFTLTP', 'No')
 
-        SequenceObject[SeqEnd+1]:Insert()
-        SequenceObject[SeqEnd+1][3]:Set('No', 1)
-        SequenceObject[SeqEnd+1][3]:Create(1)
-        SequenceObject[SeqEnd+1][3][1]:Set('Appearance' , '[[switch_On_png]]')
-        SequenceObject[SeqEnd+1][3][1]:Set('Command' , "Go+ DataPool "..Construct_Pool.. " Sequence 'Sound*'" )
-        SequenceObject[SeqEnd+1]:Insert()
-        SequenceObject[SeqEnd+1][4]:Set('No', 2)
-        SequenceObject[SeqEnd+1][4]:Create(1)
-        SequenceObject[SeqEnd+1][4][1]:Set('Appearance' , '[[Switch_Off_png]]')
-        SequenceObject[SeqEnd+1][4][1]:Set('Command' , "Off DataPool "..Construct_Pool.. " Sequence 'Sound*'" )
+    SequenceObject[SeqEnd + 1]:Insert()
+    SequenceObject[SeqEnd + 1][3]:Set('No', 1)
+    SequenceObject[SeqEnd + 1][3]:Create(1)
+    SequenceObject[SeqEnd + 1][3][1]:Set('Appearance', '[[switch_On_png]]')
+    SequenceObject[SeqEnd + 1][3][1]:Set('Command', "Go+ DataPool " .. Construct_Pool .. " Sequence 'Sound*'")
+    SequenceObject[SeqEnd + 1]:Insert()
+    SequenceObject[SeqEnd + 1][4]:Set('No', 2)
+    SequenceObject[SeqEnd + 1][4]:Create(1)
+    SequenceObject[SeqEnd + 1][4][1]:Set('Appearance', '[[Switch_Off_png]]')
+    SequenceObject[SeqEnd + 1][4][1]:Set('Command', "Off DataPool " .. Construct_Pool .. " Sequence 'Sound*'")
 
-    SeqNum = SeqEnd + 5
+    SeqNum = SeqEnd + 2
     SeqEnd = SeqNum + 10
     TypeSel = 1
 
     for i = SeqNum, SeqEnd, 1 do
-        Check_Size_Pool(i, SequenceObject)
+        SOUND_Check_Size_Pool(i, SequenceObject)
         SequenceObject:Create(i)
-        SequenceObject[i]:Set('Name', ' RecepieSound ' .. Sound_Type[TypeSel])
-        Sequence_Defo(SequenceObject, i)
+        SequenceObject[i]:Set('Name', 'RecepieSound ' .. Sound_Type[TypeSel])
+        SOUND_Sequence_Defo(SequenceObject, i)
         SequenceObject[i]:Set('AUTOSTART', 'No')
         SequenceObject[i]:Set('AUTOSTOP', 'No')
         SequenceObject[i]:Set('TRACKING', 'No')
@@ -179,10 +157,6 @@ function Build_Seq(Construct_Pool)
     SeqNum = SeqEnd + 6
     SeqEnd = SeqNum + 11
     TypeSel = 1
-end
 
-local function main()
-    local Construct_Pool = 5
-    Build_Seq(Construct_Pool)
+    return Seq_On_Off
 end
-return main
