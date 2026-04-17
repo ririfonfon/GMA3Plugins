@@ -6,7 +6,7 @@
 
 local thiscomponent = select(4, ...)
 
-function Check_Size_Pool(id, PoolObject)
+function SOUND_Check_Size_Pool(id, PoolObject)
     if not id then
         Printf('Acquire')
         return PoolObject:Acquire()
@@ -32,21 +32,21 @@ function Check_Size_Pool(id, PoolObject)
     end
 end
 
-function Build_Macro(Construct_Pool)
-    local MacroNum   = 1
+function SOUND_Build_Macro(Construct_Pool,MacroNum)
+    -- local MacroNum   = 1
     local TypeSel    = 1
     local lay_object = 25
     local Sound_Type = { 'All', 'Bass', 'Mid', 'High', 'Band1', 'Band2', 'Band3', 'Band4', 'Band5', 'Band6', 'Band7' }
 
 
     local Build_Pool  = Root().ShowData.DataPools[Construct_Pool]
-    local Call_Pool   = Build_Pool
-    -- local Call_Pool   = thiscomponent:FindParent(DataPool():GetClass())
+    -- local Call_Pool   = Build_Pool
+    local Call_Pool   = thiscomponent:FindParent(DataPool():GetClass())
     local MacroObject = Root().ShowData.DataPools[Construct_Pool].Macros
 
     for b = 1, 11 do
         for PartSel = 1, 3 do
-            Check_Size_Pool(MacroNum, MacroObject)
+            SOUND_Check_Size_Pool(MacroNum, MacroObject)
             MacroObject:Create(MacroNum)
             MacroObject[MacroNum]:Set('Name', 'Grp part 0' .. PartSel .. ' Sound ' .. Sound_Type[TypeSel])
             for a = 1, 7 do
@@ -62,12 +62,12 @@ function Build_Macro(Construct_Pool)
             MacroObject[MacroNum][5]:Set('Command', "SetUserVariable 'S_Layout' '1_" .. lay_object .. "'")
             MacroObject[MacroNum][6]:Set('Command', "SetUserVariable 'S_Pool' '" .. Build_Pool.Name .. "'")
             MacroObject[MacroNum][7]:Set('Command',
-                "Call DataPool '" .. Call_Pool.Name .. "' Plugin 'Sound_Retour_Recepie'")
+                "Call DataPool '" .. Call_Pool.Name .. "' Plugin 'Sound by Riri'")
 
             lay_object = lay_object + 1
             MacroNum = MacroNum + 1
 
-            Check_Size_Pool(MacroNum, MacroObject)
+            SOUND_Check_Size_Pool(MacroNum, MacroObject)
             MacroObject:Create(MacroNum)
             MacroObject[MacroNum]:Set('Name', 'Values part 0' .. PartSel .. ' Sound ' .. Sound_Type[TypeSel])
             for a = 1, 7 do
@@ -83,12 +83,12 @@ function Build_Macro(Construct_Pool)
             MacroObject[MacroNum][5]:Set('Command', "SetUserVariable 'S_Layout' '1_" .. lay_object .. "'")
             MacroObject[MacroNum][6]:Set('Command', "SetUserVariable 'S_Pool' '" .. Build_Pool.Name .. "'")
             MacroObject[MacroNum][7]:Set('Command',
-                "Call DataPool '" .. Call_Pool.Name .. "' Plugin 'Sound_Retour_Recepie'")
+                "Call DataPool '" .. Call_Pool.Name .. "' Plugin 'Sound by Riri'")
 
             lay_object = lay_object + 1
             MacroNum = MacroNum + 1
 
-            Check_Size_Pool(MacroNum, MacroObject)
+            SOUND_Check_Size_Pool(MacroNum, MacroObject)
             MacroObject:Create(MacroNum)
             MacroObject[MacroNum]:Set('Name', 'MAtricks part 0' .. PartSel .. ' Sound ' .. Sound_Type[TypeSel])
             for a = 1, 7 do
@@ -104,12 +104,12 @@ function Build_Macro(Construct_Pool)
             MacroObject[MacroNum][5]:Set('Command', "SetUserVariable 'S_Layout' '1_" .. lay_object .. "'")
             MacroObject[MacroNum][6]:Set('Command', "SetUserVariable 'S_Pool' '" .. Build_Pool.Name .. "'")
             MacroObject[MacroNum][7]:Set('Command',
-                "Call DataPool '" .. Call_Pool.Name .. "' Plugin 'Sound_Retour_Recepie'")
+                "Call DataPool '" .. Call_Pool.Name .. "' Plugin 'Sound by Riri'")
 
             lay_object = lay_object + 1
             MacroNum = MacroNum + 1
 
-            Check_Size_Pool(MacroNum, MacroObject)
+            SOUND_Check_Size_Pool(MacroNum, MacroObject)
             MacroObject:Create(MacroNum)
             MacroObject[MacroNum]:Set('Name', 'Fade part 0' .. PartSel .. ' Sound ' .. Sound_Type[TypeSel])
             for a = 1, 8 do
@@ -128,12 +128,12 @@ function Build_Macro(Construct_Pool)
             MacroObject[MacroNum][6]:Set('Command', "SetUserVariable 'S_Layout' '1_" .. lay_object .. "'")
             MacroObject[MacroNum][7]:Set('Command', "SetUserVariable 'S_Pool' '" .. Build_Pool.Name .. "'")
             MacroObject[MacroNum][8]:Set('Command',
-                "Call DataPool '" .. Call_Pool.Name .. "' Plugin 'Sound_Retour_Recepie'")
+                "Call DataPool '" .. Call_Pool.Name .. "' Plugin 'Sound by Riri'")
 
             lay_object = lay_object + 1
             MacroNum = MacroNum + 1
 
-            Check_Size_Pool(MacroNum, MacroObject)
+            SOUND_Check_Size_Pool(MacroNum, MacroObject)
             MacroObject:Create(MacroNum)
             MacroObject[MacroNum]:Set('Name', 'Delay part 0' .. PartSel .. ' Sound ' .. Sound_Type[TypeSel])
             for a = 1, 8 do
@@ -152,7 +152,7 @@ function Build_Macro(Construct_Pool)
             MacroObject[MacroNum][6]:Set('Command', "SetUserVariable 'S_Layout' '1_" .. lay_object .. "'")
             MacroObject[MacroNum][7]:Set('Command', "SetUserVariable 'S_Pool' '" .. Build_Pool.Name .. "'")
             MacroObject[MacroNum][8]:Set('Command',
-                "Call DataPool '" .. Call_Pool.Name .. "' Plugin 'Sound_Retour_Recepie'")
+                "Call DataPool '" .. Call_Pool.Name .. "' Plugin 'Sound by Riri'")
 
             lay_object = lay_object + 1
             MacroNum = MacroNum + 1
@@ -160,9 +160,3 @@ function Build_Macro(Construct_Pool)
         TypeSel = TypeSel + 1
     end
 end
-
-local function main()
-    local Construct_Pool = 5
-    Build_Macro(Construct_Pool)
-end
-return main
