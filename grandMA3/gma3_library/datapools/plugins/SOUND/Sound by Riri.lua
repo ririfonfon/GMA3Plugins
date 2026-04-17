@@ -93,7 +93,7 @@ local function SOUND_Check_ID(myFID, myCount)
     end
 end
 
-local function list_input(popuplists, TLay, TLayNr, TLayNrRef, SeqNr, SeqNrStart, MacroNr,
+local function SOUND_list_input(popuplists, TLay, TLayNr, TLayNrRef, SeqNr, SeqNrStart, MacroNr,
                           MacroNrStart, All_4_Nr, All_4_NrStart, All_4_Current)
     for k in ipairs(TLay) do
         for i in ipairs(popuplists.Lay_Select) do
@@ -148,7 +148,7 @@ local function list_input(popuplists, TLay, TLayNr, TLayNrRef, SeqNr, SeqNrStart
     return TLayNr, TLayNrRef, SeqNr, SeqNrStart, MacroNr, MacroNrStart, All_4_Nr, All_4_NrStart, All_4_Current
 end
 
-local function CH_Pool(popuplists)
+local function SOUND_CH_Pool(popuplists)
     local Pool_check = Root().ShowData.DataPools:Children()
     popuplists.DataPool_Select = {}
     popuplists.list_pool = {}
@@ -162,12 +162,22 @@ local function CH_Pool(popuplists)
 end
 
 local function Main(displayHandle)
+    local Select = UserVars()
+    local Call = false
+    if GetVar(Select, "S_Fonction") then
+        Sound_Retour_Recepie()
+        Call = true
+    end
+
+    if Call == true then
+        return
+    end
+
     Cmd('Set UserProfile *.15 Property "keyboardshortcutsactive" false')
 
     local list = false
-    local check_pool = false
-    local check_DataPool = false
     local TLay = DataPool().Layouts:Children()
+    local FixtureGroups = DataPool().Groups:Children()
     local TLayNr
     local TLayNrRef
     local NaLay = "Sound"
@@ -179,19 +189,18 @@ local function Main(displayHandle)
     local MacroNrStart
     local MacroNrRange
     local App = Root().ShowData.Appearances:Children()
-    local AppNr
     local All_4_Nr = DataPool().PresetPools[25]:Children()
     local All_4_NrStart
     local All_4_NrRange
     local All_4_Current
     local TopInc = 0
     local PoolObject = Root().ShowData.DataPools
-    local pool_free
     local Pool_check
     local old_NAPOOL
     local Univers = 210
     local Address = 1
     local Fid = 901
+    local Grp_Start
 
     local popuplists = {
         DataPool_Select  = {},
@@ -204,13 +213,13 @@ local function Main(displayHandle)
         Preset_Select    = { 1, 11, 101, 201, 301, 401, 501, 601, 701, 801, 901, 1001, 2001 }
     }
 
-    Pool_check = CH_Pool(popuplists)
+    Pool_check = SOUND_CH_Pool(popuplists)
     local Construct_Pool = 1
     local New = false
 
     if list == false then
         TLayNr, TLayNrRef, SeqNr, SeqNrStart, MacroNr,
-        MacroNrStart, All_4_Nr, All_4_NrStart, All_4_Current = list_input(popuplists, TLay,
+        MacroNrStart, All_4_Nr, All_4_NrStart, All_4_Current = SOUND_list_input(popuplists, TLay,
             TLayNr, TLayNrRef, SeqNr, SeqNrStart, MacroNr,
             MacroNrStart, All_4_Nr, All_4_NrStart, All_4_Current)
 
@@ -315,7 +324,7 @@ local function Main(displayHandle)
     -- This is row 1 of the dlgFrame.
     local subTitle = dlgFrame:Append("UIObject")
     subTitle.Text =
-    " Select DataPool \n \n Set Layout, Sequence, Macro & Preset All 4 \n \n Finish with Univers , Address & Fixture Id "
+    " Select DataPool \n \n Set Layout, Sequence, Macro & Preset All 4 \n \n Univers , Address & Fixture Id \n \n FixtureGroups"
     subTitle.TextalignmentH = "Left"
     subTitle.TextalignmentV = "Top"
     subTitle.ContentDriven = "Yes"
@@ -355,9 +364,9 @@ local function Main(displayHandle)
     input20Label.Font = "3"
 
     local input20Button = inputsGrid:Append('Button')
-    input20Button.Anchors = { left = 4, right = 9, top = TopInc, bottom = TopInc }
+    input20Button.Anchors = { left = 4, right = 7, top = TopInc, bottom = TopInc }
     input20Button.Padding = "5,5"
-    input20Button.Margin = { left = 2, right = 0, top = TopInc, bottom = 2 }
+    input20Button.Margin = { left = 4, right = 0, top = TopInc, bottom = 2 }
     input20Button.Name = 'DataPool_Select'
     input20Button.Text = "Please select DataPool"
     input20Button.PluginComponent = thiscomponent
@@ -366,6 +375,13 @@ local function Main(displayHandle)
     input20Button.Font = "2"
     input20Button.Visible = "Yes"
 
+    local input20number = inputsGrid:Append('Button')
+    input20number.Anchors = { left = 8, right = 9, top = TopInc, bottom = TopInc }
+    input20number.Margin = { left = 2, right = 0, top = TopInc, bottom = 2 }
+    input20number.Text = ""
+    input20number.BackColor = colorDataPools
+    input20number.Font = "3"
+    input20number.HasHover = "No"
 
     TopInc = TopInc + 1
 
@@ -422,7 +438,7 @@ local function Main(displayHandle)
     input1Icon.Anchors = { left = 0, right = 0, top = TopInc, bottom = TopInc }
     input1Icon.Margin = { left = 0, right = 2, top = TopInc, bottom = 2 }
     input1Icon.Icon = "object_layout"
-    input1Icon.HasHover = "No";
+    input1Icon.HasHover = "No"
     input1Icon.BackColor = colorLayouts
 
     local input1Label = inputsGrid:Append("UIObject")
@@ -442,7 +458,7 @@ local function Main(displayHandle)
     input1LineEdit.Padding = "5,5"
     input1LineEdit.Margin = { left = 2, right = 2, top = TopInc, bottom = 2 }
     input1LineEdit.VkPluginName = "TextInput"
-    input1LineEdit.Content = "Sound"
+    input1LineEdit.Content = ""
     input1LineEdit.MaxTextLength = 16
     input1LineEdit.HideFocusFrame = "Yes"
     input1LineEdit.PluginComponent = myHandle
@@ -780,7 +796,43 @@ local function Main(displayHandle)
     input9LineEdit.BackColor = colorPartlySelected
     input9LineEdit.Visible = "No"
 
+    TopInc = TopInc + 1
 
+    -- Create the UI elements for the 8 input.
+    local input10Icon = inputsGrid:Append("Button")
+    input10Icon.Text = ""
+    input10Icon.Anchors = { left = 0, right = 0, top = TopInc, bottom = TopInc }
+    input10Icon.Icon = "object_group2"
+    input10Icon.Margin = { left = 0, right = 2, top = TopInc, bottom = 2 }
+    input10Icon.HasHover = "No";
+    input10Icon.BackColor = colorGroups
+
+    local input10Label = inputsGrid:Append("UIObject")
+    input10Label.Text = "Group ID"
+    input10Label.TextalignmentH = "Left"
+    input10Label.Anchors = { left = 1, right = 3, top = TopInc, bottom = TopInc }
+    input10Label.Padding = "5,5"
+    input10Label.Margin = { left = 2, right = 2, top = TopInc, bottom = 2 }
+    input10Label.HasHover = "No";
+    input10Label.Font = "2"
+    input10Label.BackColor = colorGroups
+
+    local input10LineEdit = inputsGrid:Append("LineEdit")
+    input10LineEdit.Prompt = "Nb: "
+    input10LineEdit.TextAutoAdjust = "Yes"
+    input10LineEdit.Anchors = { left = 4, right = 9, top = TopInc, bottom = TopInc }
+    input10LineEdit.Padding = "5,5"
+    input10LineEdit.Margin = { left = 2, right = 0, top = TopInc, bottom = 2 }
+    input10LineEdit.Filter = "0123456789"
+    input10LineEdit.VkPluginName = "TextInputNumOnly"
+    input10LineEdit.Content = ""
+    input10LineEdit.MaxTextLength = 6
+    input10LineEdit.HideFocusFrame = "Yes"
+    input10LineEdit.PluginComponent = myHandle
+    input10LineEdit.TextChanged = "OnInput10TextChanged"
+    input10LineEdit.Font = "2"
+    input10LineEdit.BackColor = colorGroups
+    input10LineEdit.Visible = "No"
 
     -- Create the button grid.
     -- This is row 3 of the dlgFrame.
@@ -824,8 +876,21 @@ local function Main(displayHandle)
             OkButton.BackColor = colorBackground
         end
         Obj.Delete(screenOverlay, Obj.Index(baseInput))
-        -- Construct_Layout(TLay, SeqNrStart, MacroNrStart, TLayNr, All_4_Current, All_4_NrStart, TLayNrRef, NaLay,
-        --     Construct_Pool, NaPool)
+
+        Cmd('ClearAll')
+        -- Cmd('Store DataPool ' .. Construct_Pool .. ' Sequence ' .. SeqNrStart .. ' /Overwrite /NoConfirmation')
+        -- Cmd('Store DataPool ' .. Construct_Pool .. ' Macro ' .. MacroNrStart .. ' /Overwrite /NoConfirmation')
+        Cmd('Store DataPool ' .. Construct_Pool .. ' Group ' .. Grp_Start .. ' /Overwrite /NoConfirmation')
+        Cmd('Store DataPool ' .. Construct_Pool .. ' Preset 24.' .. All_4_NrStart .. ' /Overwrite /NoConfirmation')
+        -- Cmd('Store DataPool ' .. Construct_Pool .. ' Layout ' .. TLayNr .. ' /Overwrite /NoConfirmation')
+
+        SOUND_Patch(Univers, Address, Fid)
+        local Seq_On_Off = SOUND_Build_Seq(Construct_Pool, SeqNrStart, All_4_NrStart, Grp_Start)
+        SOUND_Build_Macro(Construct_Pool, MacroNrStart)
+        SOUND_Remote_Dmx(Construct_Pool, SeqNrStart, Univers, Address)
+        SOUND_Build_Layout(Construct_Pool, NaLay, TLayNr, MacroNrStart, Seq_On_Off)
+
+        return
     end
 
 
@@ -839,7 +904,7 @@ local function Main(displayHandle)
         NaPool = caller.Content:gsub("'", "")
         input20Button.Text = NaPool
         PoolObject[Construct_Pool]:Set('Name', NaPool)
-        Pool_check = CH_Pool(popuplists)
+        Pool_check = SOUND_CH_Pool(popuplists)
         NaPool = PoolObject[Construct_Pool]:Get('Name')
         input20Button.Text = NaPool
         if old_NAPOOL ~= NaPool then
@@ -1011,7 +1076,6 @@ local function Main(displayHandle)
         if checks == false then
             input7LineEdit.TextColor = colorText
             input8LineEdit.TextColor = colorText
-
             OkButton.Visible = "Yes"
         end
     end
@@ -1032,6 +1096,30 @@ local function Main(displayHandle)
         end
         if checks == false then
             input9LineEdit.TextColor = colorText
+            OkButton.Visible = "Yes"
+        end
+    end
+    -- Grp
+    signalTable.OnInput10TextChanged = function(caller)
+        local checks = false
+        if caller.Content == "" or caller.Content == "0" then
+            checks = true
+        end
+        Grp_Start = caller.Content:gsub("'", "")
+        Grp_Start = tonumber(Grp_Start)
+
+        for k in ipairs(FixtureGroups) do
+            if FixtureGroups[k].No == Grp_Start then
+                checks = true
+            end
+        end
+
+        if checks == true then
+            OkButton.Visible = "No"
+            input10LineEdit.TextColor = colorAlertText
+        end
+        if checks == false then
+            input10LineEdit.TextColor = colorText
             OkButton.Visible = "Yes"
         end
     end
@@ -1056,22 +1144,23 @@ local function Main(displayHandle)
                 Construct_Pool = C_Pool.No
                 coroutine.yield(0.1)
                 PoolObject:Create(Construct_Pool)
-                Pool_check = CH_Pool(popuplists)
+                Pool_check = SOUND_CH_Pool(popuplists)
                 New = true
                 OkButton.Visible = "Yes"
                 input21LineEdit.Content = "Sound"
             end
             if Check_Pool == true then
-                Pool_check = CH_Pool(popuplists)
+                Pool_check = SOUND_CH_Pool(popuplists)
                 input21LineEdit.Content = PoolObject[Construct_Pool]:Get('Name')
                 PoolObject = Root().ShowData.DataPools
                 TLay = Root().ShowData.DataPools[Construct_Pool].Layouts:Children()
                 SeqNr = Root().ShowData.DataPools[Construct_Pool].Sequences:Children()
                 MacroNr = Root().ShowData.DataPools[Construct_Pool].Macros:Children()
                 All_4_Nr = Root().ShowData.DataPools[Construct_Pool].PresetPools[24]:Children()
+                FixtureGroups = Root().ShowData.DataPools[Construct_Pool].Groups:Children()
                 TLayNr, SeqNrStart, MacroNrStart, All_4_NrStart = nil, nil, nil, nil
                 TLayNr, TLayNrRef, SeqNr, SeqNrStart, MacroNr,
-                MacroNrStart, All_4_Nr, All_4_NrStart, All_4_Current = list_input(popuplists, TLay,
+                MacroNrStart, All_4_Nr, All_4_NrStart, All_4_Current = SOUND_list_input(popuplists, TLay,
                     TLayNr, TLayNrRef, SeqNr, SeqNrStart, MacroNr, MacroNrStart, All_4_Nr, All_4_NrStart, All_4_Current)
             else
                 TLayNr = 1
@@ -1080,6 +1169,7 @@ local function Main(displayHandle)
                 All_4_NrStart = 1
             end
 
+            input1LineEdit.Content = "Sound"
             input2LineEdit.Content = TLayNr
             input3LineEdit.Content = SeqNrStart
             input4LineEdit.Content = MacroNrStart
@@ -1087,8 +1177,9 @@ local function Main(displayHandle)
             input7LineEdit.Content = Univers
             input8LineEdit.Content = Address
             input9LineEdit.Content = Fid
+            input10LineEdit.Content = 1
+            input20number.Text = Construct_Pool
 
-            check_DataPool = true
 
 
             OkButton.Visible = "Yes"
@@ -1102,6 +1193,7 @@ local function Main(displayHandle)
             input7LineEdit.Visible = "Yes"
             input8LineEdit.Visible = "Yes"
             input9LineEdit.Visible = "Yes"
+            input10LineEdit.Visible = "Yes"
 
             input1Sujestion.Visible = "Yes"
             input21Sujestion.Visible = "Yes"
