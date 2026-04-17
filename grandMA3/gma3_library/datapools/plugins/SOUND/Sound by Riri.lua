@@ -2,7 +2,7 @@
 Releases:
 * 2.3.2.0
 
-Created by Richard Fontaine "RIRI", June 2024.
+Created by Richard Fontaine "RIRI", April 2026.
 --]]
 
 local pluginName = select(1, ...)
@@ -118,7 +118,6 @@ local function list_input(popuplists, TLay, TLayNr, TLayNrRef, SeqNr, SeqNrStart
     if SeqNrStart == nil then
         SeqNrStart = 1
     end
-
     local m
     for k in ipairs(MacroNr) do
         for i in ipairs(popuplists.Macro_Select) do
@@ -129,11 +128,9 @@ local function list_input(popuplists, TLay, TLayNr, TLayNrRef, SeqNr, SeqNrStart
         MacroNrStart = MacroNr[k].NO + 1
         m = k
     end
-
     if m == nil then
         MacroNrStart = 1
     end
-
     local kk
     for k in ipairs(All_4_Nr) do
         for i in ipairs(popuplists.Preset_Select) do
@@ -148,15 +145,7 @@ local function list_input(popuplists, TLay, TLayNr, TLayNrRef, SeqNr, SeqNrStart
         All_4_NrStart = 1
     end
     All_4_Current = All_4_NrStart
-
-    -- Printf("TLayNr: %d", TLayNr)
-    -- Printf("SeqNrStart: %d", SeqNrStart)
-    -- Printf("MacroNrStart: %d", MacroNrStart)
-    -- Printf("All_4_NrStart: %d", All_4_NrStart)
-    -- Printf("All_4_Current: %d", All_4_Current)
-
-    return TLayNr, TLayNrRef, SeqNr, SeqNrStart, MacroNr,
-        MacroNrStart, All_4_Nr, All_4_NrStart, All_4_Current
+    return TLayNr, TLayNrRef, SeqNr, SeqNrStart, MacroNr, MacroNrStart, All_4_Nr, All_4_NrStart, All_4_Current
 end
 
 local function CH_Pool(popuplists)
@@ -1058,7 +1047,6 @@ local function Main(displayHandle)
             for k in ipairs(Pool_check) do
                 if Pool_check[k].name == caller.Text:gsub("'", "") then
                     Construct_Pool = tonumber(k)
-                    -- Printf("* Pool construct: " .. Construct_Pool)
                     Check_Pool = true
                     New = false
                 end
@@ -1068,7 +1056,6 @@ local function Main(displayHandle)
                 Construct_Pool = C_Pool.No
                 coroutine.yield(0.1)
                 PoolObject:Create(Construct_Pool)
-                -- Printf('new is ' .. Construct_Pool)
                 Pool_check = CH_Pool(popuplists)
                 New = true
                 OkButton.Visible = "Yes"
@@ -1076,6 +1063,7 @@ local function Main(displayHandle)
             end
             if Check_Pool == true then
                 Pool_check = CH_Pool(popuplists)
+                input21LineEdit.Content = PoolObject[Construct_Pool]:Get('Name')
                 PoolObject = Root().ShowData.DataPools
                 TLay = Root().ShowData.DataPools[Construct_Pool].Layouts:Children()
                 SeqNr = Root().ShowData.DataPools[Construct_Pool].Sequences:Children()
