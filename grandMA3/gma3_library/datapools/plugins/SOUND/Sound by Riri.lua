@@ -1145,6 +1145,7 @@ local function Main(displayHandle)
                 coroutine.yield(0.1)
                 PoolObject:Create(Construct_Pool)
                 Pool_check = SOUND_CH_Pool(popuplists)
+                FixtureGroups = Root().ShowData.DataPools[Construct_Pool].Groups:Children()
                 New = true
                 OkButton.Visible = "Yes"
                 input21LineEdit.Content = "Sound"
