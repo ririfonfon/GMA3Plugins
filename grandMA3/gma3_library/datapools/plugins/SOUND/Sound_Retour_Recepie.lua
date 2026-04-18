@@ -3,10 +3,12 @@
     * 0.0.0.91
     Created by Richard Fontaine "RIRI", Mars 2026.
 --]]
+local my_table, my_handle = select(3, ...)
+
 
 function Sound_Retour_Recepie()
     local Select = UserVars()
-    local S_Seq, S_Layout, S_Pool, S_Fonction, Target, S_Lay, S_N_Layout, S_N_Object, S_Part
+    local S_Seq, S_Layout, S_Pool, S_Fonction, Target, S_Lay, S_N_Layout, S_N_Object, S_Part, S_Master
     if GetVar(Select, "S_Fonction") then
         S_Fonction = tonumber((GetVar(Select, "S_Fonction")))
     end
@@ -34,9 +36,14 @@ function Sound_Retour_Recepie()
         S_Part = tonumber((GetVar(Select, "S_Part")))
     end
 
+    if GetVar(Select, "S_Master") then
+        S_Master = tonumber((GetVar(Select, "S_Master")))
+    end
+
     local SeqNr = ShowData().DataPools[S_Pool].Sequences:Children()
     local LayoutObject = Root().ShowData.DataPools[S_Pool].Layouts
-    if (S_Fonction == 1) then
+
+    if (S_Fonction == 1) then -- Group
         for k in ipairs(SeqNr) do
             if S_Seq == SeqNr[k].name then
                 if (SeqNr[k][3][1][S_Part].Selection == nil) then
@@ -48,7 +55,7 @@ function Sound_Retour_Recepie()
                 LayoutObject[S_N_Layout][S_N_Object]:Set('CustomTextText', Target)
             end
         end
-    elseif (S_Fonction == 2) then
+    elseif (S_Fonction == 2) then -- Values
         for k in ipairs(SeqNr) do
             if S_Seq == SeqNr[k].name then
                 if (SeqNr[k][3][1][S_Part].Values == nil) then
@@ -59,7 +66,7 @@ function Sound_Retour_Recepie()
                 LayoutObject[S_N_Layout][S_N_Object]:Set('CustomTextText', Target)
             end
         end
-    elseif (S_Fonction == 3) then
+    elseif (S_Fonction == 3) then -- Matricks
         for k in ipairs(SeqNr) do
             if S_Seq == SeqNr[k].name then
                 if (SeqNr[k][3][1][S_Part].MAtricks == nil) then
@@ -70,33 +77,33 @@ function Sound_Retour_Recepie()
                 LayoutObject[S_N_Layout][S_N_Object]:Set('CustomTextText', Target)
             end
         end
-    elseif (S_Fonction == 4) then
-        for k in ipairs(SeqNr) do
-            local nr_seq = tonumber(SeqNr[k].No)
-            if S_Seq == SeqNr[k].name then
-                Printf("Seq Nr: %i", nr_seq)
-                Printf("ok")
-                local current_cue = tonumber(SeqNr[k].CurrentCue.No // 1000)
-                Printf("Current Cue: %i", current_cue)
-                for key, value in ipairs(SeqNr[k]:Children()) do
-                    if value.No then
-                        Printf("Name: %s", value.Name)
-                        local cue_number = tonumber(value.No // 1000)
-                        Printf("Cue Number: %i", cue_number)
-                        if (cue_number ~= 0) then
-                            local cue_part = SeqNr[k][2 + cue_number][1][1]:Get('Enabled', Enums.Roles.Display) or 'None'
-                            Printf("Cue Part: %s", cue_part)
-                            if (cue_part == 'Yes') then
-                                Printf('YES')
-                            else
-                                Printf('NO')
-                            end
-                        end
-                    end
-                end
-            end
+    elseif (S_Fonction == 4) then -- Fader_Master
+        local Value
+        local proxy = Root().ShowData.DataPools[S_Pool].Groups[S_Master]
+        local dialog = GetFocusDisplay().ScreenOverlay:Append('BaseInput')
+        -- local clic = GetFocusDisplay().ScreenOverlay.CLICKED
+        -- -- local clic = GetFocusDisplay().ScreenOverlay.Clicked()
+        -- local clic = GetFocusDisplay().ScreenOverlay
+        -- Echo(clic.clicked)
+        -- dialog.X, dialog.Y = 00, 00
+        dialog.H, dialog.W = 400, 10
+        local fader = dialog:Append('UiFader')
+
+        fader.target = proxy
+        fader.Text = proxy.Name
+        fader.changed = 'fader_changed'
+        fader.plugincomponent = my_handle
+
+        function my_table.fader_changed(caller)
+            Value = caller.value
         end
-    elseif (S_Fonction == 5) then
+
+        repeat
+            coroutine.yield(0.1)
+        until not IsObjectValid(dialog)
+        -- Echo(Value)
+        LayoutObject[S_N_Layout][S_N_Object]:Set('CustomTextText', Value)
+    elseif (S_Fonction == 5) then -- Fade
         for k in ipairs(SeqNr) do
             if S_Seq == SeqNr[k].name then
                 if (SeqNr[k][3][1][S_Part].FadeFromX == nil) then
@@ -112,7 +119,7 @@ function Sound_Retour_Recepie()
                 LayoutObject[S_N_Layout][S_N_Object]:Set('CustomTextText', Target)
             end
         end
-    elseif (S_Fonction == 6) then
+    elseif (S_Fonction == 6) then -- Delay
         for k in ipairs(SeqNr) do
             if S_Seq == SeqNr[k].name then
                 if (SeqNr[k][3][1][S_Part].DelayFromX == nil) then
@@ -128,7 +135,7 @@ function Sound_Retour_Recepie()
                 LayoutObject[S_N_Layout][S_N_Object]:Set('CustomTextText', Target)
             end
         end
-    elseif (S_Fonction == 10) then
+    elseif (S_Fonction == 10) then -- Priority
         local AppearanceObject = Root().ShowData.Appearances:Children()
         local App_Panel_Name = { 'p_super_png', 'p_swap_png', 'p_htp_png', 'p_highest_png',
             'p_high_png', 'p_ltp_png', 'p_low_png', 'p_lowest_png' }
@@ -144,18 +151,8 @@ function Sound_Retour_Recepie()
         end
         local priority
         for k in ipairs(SeqNr) do
-            if SeqNr[k].Name == 'a_Sub_#1' then
+            if SeqNr[k].Name == S_Seq then
                 priority = SeqNr[k]:Get('Priority', Enums.Roles.Display) or 'None'
-            end
-        end
-        for k in ipairs(SeqNr) do
-            local tag = string.format(SeqNr[k]:Get('Tags') or 'None')
-            if (string.find(tag, 'SUB_#1')) or (string.find(tag, 'SUB_#2')) or (string.find(tag, 'SUB_#3')) or
-                (string.find(tag, 'SUB_#4')) or (string.find(tag, 'SUB_#5')) or (string.find(tag, 'SUB_#6')) or
-                (string.find(tag, 'SUB_#7')) or (string.find(tag, 'SUB_#8')) or (string.find(tag, 'SUB_#9')) or
-                (string.find(tag, 'SUB_#10')) or (string.find(tag, 'SUB_#11')) or (string.find(tag, 'SUB_#12'))
-            then
-                SeqNr[k]:Set('priority', priority)
             end
         end
         if priority == "Super" then
@@ -183,4 +180,5 @@ function Sound_Retour_Recepie()
     DelVar(Select, "S_Pool")
     DelVar(Select, "S_Fonction")
     DelVar(Select, "S_Part")
+    DelVar(Select, "S_Master")
 end
