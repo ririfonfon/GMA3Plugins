@@ -94,7 +94,7 @@ local function SOUND_Check_ID(myFID, myCount)
 end
 
 local function SOUND_list_input(popuplists, TLay, TLayNr, TLayNrRef, SeqNr, SeqNrStart, MacroNr,
-                          MacroNrStart, All_4_Nr, All_4_NrStart, All_4_Current)
+                                MacroNrStart, All_4_Nr, All_4_NrStart, All_4_Current)
     for k in ipairs(TLay) do
         for i in ipairs(popuplists.Lay_Select) do
             if popuplists.Lay_Select[i] == TLay[k].NO then
@@ -200,7 +200,7 @@ local function Main(displayHandle)
     local Univers = 210
     local Address = 1
     local Fid = 901
-    local Grp_Start
+    local Grp_Start, Grp_Range
 
     local popuplists = {
         DataPool_Select  = {},
@@ -886,7 +886,7 @@ local function Main(displayHandle)
 
         SOUND_Patch(Univers, Address, Fid)
         local Seq_On_Off = SOUND_Build_Seq(Construct_Pool, SeqNrStart, All_4_NrStart, Grp_Start)
-        SOUND_Build_Macro(Construct_Pool, MacroNrStart)
+        SOUND_Build_Macro(Construct_Pool, MacroNrStart, TLayNr)
         SOUND_Remote_Dmx(Construct_Pool, SeqNrStart, Univers, Address)
         SOUND_Build_Layout(Construct_Pool, NaLay, TLayNr, MacroNrStart, Seq_On_Off)
 
@@ -916,8 +916,6 @@ local function Main(displayHandle)
     signalTable.OnInput2TextChanged = function(caller)
         local check = false
         if caller.Content == "" or caller.Content == "0" then
-            OkButton.Visible = "No"
-            input2LineEdit.TextColor = colorAlertText
             check = true
         end
         TLayNr = caller.Content:gsub("'", "")
@@ -925,11 +923,13 @@ local function Main(displayHandle)
         if New == false then
             for k in ipairs(TLay) do
                 if TLayNr == tonumber(TLay[k].NO) then
-                    OkButton.Visible = "No"
-                    input2LineEdit.TextColor = colorAlertText
                     check = true
                 end
             end
+        end
+        if checks == true then
+            input2LineEdit.TextColor = colorAlertText
+            OkButton.Visible = "No"
         end
         if check == false then
             input2LineEdit.TextColor = colorText
@@ -940,19 +940,15 @@ local function Main(displayHandle)
     signalTable.OnInput3TextChanged = function(caller)
         local checks = false
         if caller.Content == "" or caller.Content == "0" then
-            OkButton.Visible = "No"
-            input3LineEdit.TextColor = colorAlertText
             checks = true
         end
         SeqNrStart = caller.Content:gsub("'", "")
         SeqNrStart = tonumber(SeqNrStart)
-        SeqNrRange = SeqNrStart
+        SeqNrRange = SeqNrStart + 22
         if New == false then
             for k in ipairs(SeqNr) do
                 if SeqNrStart <= tonumber(SeqNr[k].NO) then
                     if SeqNrRange >= tonumber(SeqNr[k].NO) then
-                        OkButton.Visible = "No"
-                        input3LineEdit.TextColor = colorAlertText
                         checks = true
                         for i in ipairs(popuplists.Seq_Select) do
                             if SeqNrStart <= tonumber(popuplists.Seq_Select[i]) then
@@ -965,6 +961,10 @@ local function Main(displayHandle)
                 end
             end
         end
+        if checks == true then
+            input3LineEdit.TextColor = colorAlertText
+            OkButton.Visible = "No"
+        end
         if checks == false then
             input3LineEdit.TextColor = colorText
             OkButton.Visible = "Yes"
@@ -974,24 +974,23 @@ local function Main(displayHandle)
     signalTable.OnInput4TextChanged = function(caller)
         local checks = false
         if caller.Content == "" or caller.Content == "0" then
-            OkButton.Visible = "No"
-            input4LineEdit.TextColor = colorAlertText
             checks = true
         end
         MacroNrStart = caller.Content:gsub("'", "")
         MacroNrStart = tonumber(MacroNrStart)
-        MacroNrRange = MacroNrStart + 42
-        -- Printf("**MacroNrStart " .. MacroNrStart)
+        MacroNrRange = MacroNrStart + 176
         if New == false then
             for k in ipairs(MacroNr) do
                 if MacroNrStart <= tonumber(MacroNr[k].NO) then
                     if MacroNrRange >= tonumber(MacroNr[k].NO) then
-                        OkButton.Visible = "No"
-                        input4LineEdit.TextColor = colorAlertText
                         checks = true
                     end
                 end
             end
+        end
+        if checks == true then
+            input4LineEdit.TextColor = colorAlertText
+            OkButton.Visible = "No"
         end
         if checks == false then
             input4LineEdit.TextColor = colorText
@@ -1002,20 +1001,16 @@ local function Main(displayHandle)
     signalTable.OnInput6TextChanged = function(caller)
         local checks = false
         if caller.Content == "" or caller.Content == "0" then
-            OkButton.Visible = "No"
-            input6LineEdit.TextColor = colorAlertText
             checks = true
         end
         All_4_NrStart = caller.Content:gsub("'", "")
         All_4_NrStart = tonumber(All_4_NrStart)
         All_4_Current = All_4_NrStart
-        All_4_NrRange = All_4_NrStart + 9
+        All_4_NrRange = All_4_NrStart + 10
         if New == false then
             for k in ipairs(All_4_Nr) do
                 if All_4_NrStart <= tonumber(All_4_Nr[k].NO) then
                     if All_4_NrRange >= tonumber(All_4_Nr[k].NO) then
-                        OkButton.Visible = "No"
-                        input6LineEdit.TextColor = colorAlertText
                         checks = true
                         for i in ipairs(popuplists.Preset_Select) do
                             if All_4_NrStart <= tonumber(popuplists.Preset_Select[i]) then
@@ -1028,6 +1023,10 @@ local function Main(displayHandle)
                 end
             end
         end
+        if checks == true then
+            input6LineEdit.TextColor = colorAlertText
+            OkButton.Visible = "No"
+        end
         if checks == false then
             input6LineEdit.TextColor = colorText
             OkButton.Visible = "Yes"
@@ -1037,8 +1036,6 @@ local function Main(displayHandle)
     signalTable.OnInput7TextChanged = function(caller)
         local checks = false
         if caller.Content == "" or caller.Content == "0" then
-            OkButton.Visible = "No"
-            input7LineEdit.TextColor = colorAlertText
             checks = true
         end
         Univers = caller.Content:gsub("'", "")
@@ -1107,12 +1104,16 @@ local function Main(displayHandle)
         end
         Grp_Start = caller.Content:gsub("'", "")
         Grp_Start = tonumber(Grp_Start)
-
+        Grp_Range = Grp_Start + 10
+        -- if New == false then
         for k in ipairs(FixtureGroups) do
-            if FixtureGroups[k].No == Grp_Start then
-                checks = true
+            if Grp_Start <= tonumber(FixtureGroups[k].NO) then
+                if Grp_Range >= tonumber(FixtureGroups[k].NO) then
+                    checks = true
+                end
             end
         end
+        -- end
 
         if checks == true then
             OkButton.Visible = "No"
