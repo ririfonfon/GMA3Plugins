@@ -84,6 +84,11 @@ function SOUND_Build_Layout(Construct_Pool, Name_Layout, Layout_Nr, MacroNrStart
         200, 300, 400, 500, 600,
         200, 300, 400, 500, 600,
         200, 300, 400, 500, 600,
+        0, 550, 1100,
+        0, 550, 1100,
+        0, 550, 1100,
+        0, 550,
+        750,
     }
     local macro_y        = {
         100, 100, 100, 100, 100,
@@ -119,6 +124,11 @@ function SOUND_Build_Layout(Construct_Pool, Name_Layout, Layout_Nr, MacroNrStart
         -500, -500, -500, -500, -500,
         -550, -550, -550, -550, -550,
         -600, -600, -600, -600, -600,
+        152, 152, 152,
+        -48, -48, -48,
+        -248, -248, -248,
+        -448, -448,
+        -550,
     }
 
     local S_V_M_Color    = { '8080FFFF', 'FF0080FF', 'FFFF80FF', '00FF00FF', 'FF8000FF' }
@@ -184,4 +194,51 @@ function SOUND_Build_Layout(Construct_Pool, Name_Layout, Layout_Nr, MacroNrStart
             count = 1
         end
     end
+
+    for i = MacroNrStart + 165, MacroNrStart + 175 do
+        Nr = Layout_Object[Layout_Nr]:Acquire()
+        Layout_Object[Layout_Nr][Nr.No]:Set('Object', MacroObject[i])
+        Layout_Object[Layout_Nr][Nr.No]:Set('posx', macro_x[i])
+        Layout_Object[Layout_Nr][Nr.No]:Set('posy', macro_y[i])
+        Layout_Object[Layout_Nr][Nr.No]:Set('width', 100)
+        Layout_Object[Layout_Nr][Nr.No]:Set('height', 46)
+        Layout_Object[Layout_Nr][Nr.No]:Set('action', 'Go+')
+        Layout_Object[Layout_Nr][Nr.No]:Set('Note', 'Master')
+        SOUND_Set_Def(Layout_Nr, Nr, Layout_Object)
+        Layout_Object[Layout_Nr][Nr.No]:Set('visibilityborder', 'Visible')
+        Layout_Object[Layout_Nr][Nr.No]:Set('bordersize', 3)
+        Layout_Object[Layout_Nr][Nr.No]:Set('bordercolor', 'FFFFFFFF')
+        Layout_Object[Layout_Nr][Nr.No]:Set('customtexttext', '100%')
+        Layout_Object[Layout_Nr][Nr.No]:Set('customtextsize', 16)
+        Layout_Object[Layout_Nr][Nr.No]:Set('customtextalignmenth', 'Center')
+        Layout_Object[Layout_Nr][Nr.No]:Set('customtextalignmentv', 'Center')
+    end
+
+    local AppearanceObject = Root().ShowData.Appearances:Children()
+    local Addr_Nat_Panel
+        for i in pairs(AppearanceObject) do
+            if AppearanceObject[i].Name ~= nil then
+                if AppearanceObject[i].Name == 'p_htp_png' then
+                    Addr_Nat_Panel = AppearanceObject[i]:AddrNative()
+                end
+            end
+        end
+    
+    local i = MacroNrStart + 176
+    Nr = Layout_Object[Layout_Nr]:Acquire()
+    Layout_Object[Layout_Nr][Nr.No]:Set('Object', MacroObject[i])
+    Layout_Object[Layout_Nr][Nr.No]:Set('posx', macro_x[i])
+    Layout_Object[Layout_Nr][Nr.No]:Set('posy', macro_y[i])
+    Layout_Object[Layout_Nr][Nr.No]:Set('width', 100)
+    Layout_Object[Layout_Nr][Nr.No]:Set('height', 100)
+    Layout_Object[Layout_Nr][Nr.No]:Set('action', 'Go+')
+    Layout_Object[Layout_Nr][Nr.No]:Set('Note', 'Master')
+    SOUND_Set_Def(Layout_Nr, Nr, Layout_Object)
+    Layout_Object[Layout_Nr][Nr.No]:Set('visibilityborder', 'Visible')
+    Layout_Object[Layout_Nr][Nr.No]:Set('bordersize', 3)
+    Layout_Object[Layout_Nr][Nr.No]:Set('bordercolor', '808080FF')
+    Layout_Object[Layout_Nr][Nr.No]:Set('customtextsize', 16)
+    Layout_Object[Layout_Nr][Nr.No]:Set('customtextalignmenth', 'Center')
+    Layout_Object[Layout_Nr][Nr.No]:Set('customtextalignmentv', 'Center')
+    Layout_Object[Layout_Nr][Nr.No]:Set('Appearance', Addr_Nat_Panel)
 end
