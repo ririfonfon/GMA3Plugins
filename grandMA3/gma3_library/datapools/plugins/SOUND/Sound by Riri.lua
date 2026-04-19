@@ -161,6 +161,15 @@ local function SOUND_CH_Pool(popuplists)
     return Pool_check
 end
 
+local function Check_Wrong(Wrong)
+    for k in ipairs(Wrong) do
+        if Wrong[k] == true then
+            return true
+        end
+    end
+    return false
+end
+
 local function Main(displayHandle)
     local Select = UserVars()
     local Call = false
@@ -201,6 +210,7 @@ local function Main(displayHandle)
     local Address = 1
     local Fid = 901
     local Grp_Start, Grp_Range
+    local Wrong = { false, false, false, false, false, false, false, false, false }
 
     local popuplists = {
         DataPool_Select  = {},
@@ -878,7 +888,7 @@ local function Main(displayHandle)
         Obj.Delete(screenOverlay, Obj.Index(baseInput))
 
         Sound_Construct(Construct_Pool, Grp_Start, All_4_NrStart, Univers, Address, Fid, SeqNrStart, MacroNrStart, TLayNr,
-        NaLay)
+            NaLay)
 
         -- return
     end
@@ -912,18 +922,22 @@ local function Main(displayHandle)
         TLayNr = tonumber(TLayNr)
         if New == false then
             for k in ipairs(TLay) do
-                if TLayNr == tonumber(TLay[k].NO) then
+                if TLayNr == tonumber(TLay[k].No) then
                     check = true
                 end
             end
         end
-        if checks == true then
+        if check == true then
             input2LineEdit.TextColor = colorAlertText
             OkButton.Visible = "No"
+            Wrong[1] = true
         end
         if check == false then
+            Wrong[1] = false
             input2LineEdit.TextColor = colorText
-            OkButton.Visible = "Yes"
+            if Check_Wrong(Wrong) == false then
+                OkButton.Visible = "Yes"
+            end
         end
     end
     -- Sequence
@@ -954,10 +968,14 @@ local function Main(displayHandle)
         if checks == true then
             input3LineEdit.TextColor = colorAlertText
             OkButton.Visible = "No"
+            Wrong[2] = true
         end
         if checks == false then
+            Wrong[2] = false
             input3LineEdit.TextColor = colorText
-            OkButton.Visible = "Yes"
+            if Check_Wrong(Wrong) == false then
+                OkButton.Visible = "Yes"
+            end
         end
     end
     -- Macro
@@ -981,10 +999,14 @@ local function Main(displayHandle)
         if checks == true then
             input4LineEdit.TextColor = colorAlertText
             OkButton.Visible = "No"
+            Wrong[3] = true
         end
         if checks == false then
+            Wrong[3] = false
             input4LineEdit.TextColor = colorText
-            OkButton.Visible = "Yes"
+            if Check_Wrong(Wrong) == false then
+                OkButton.Visible = "Yes"
+            end
         end
     end
     -- All 4
@@ -1016,10 +1038,14 @@ local function Main(displayHandle)
         if checks == true then
             input6LineEdit.TextColor = colorAlertText
             OkButton.Visible = "No"
+            Wrong[4] = true
         end
         if checks == false then
+            Wrong[4] = false
             input6LineEdit.TextColor = colorText
-            OkButton.Visible = "Yes"
+            if Check_Wrong(Wrong) == false then
+                OkButton.Visible = "Yes"
+            end
         end
     end
     -- Univers
@@ -1037,11 +1063,17 @@ local function Main(displayHandle)
             OkButton.Visible = "No"
             input7LineEdit.TextColor = colorAlertText
             input8LineEdit.TextColor = colorAlertText
+            Wrong[5] = true
+            Wrong[6] = true
         end
         if checks == false then
+            Wrong[5] = false
+            Wrong[6] = false
             input7LineEdit.TextColor = colorText
             input8LineEdit.TextColor = colorText
-            OkButton.Visible = "Yes"
+            if Check_Wrong(Wrong) == false then
+                OkButton.Visible = "Yes"
+            end
         end
     end
     -- Address
@@ -1059,11 +1091,17 @@ local function Main(displayHandle)
             OkButton.Visible = "No"
             input7LineEdit.TextColor = colorAlertText
             input8LineEdit.TextColor = colorAlertText
+            Wrong[5] = true
+            Wrong[6] = true
         end
         if checks == false then
+            Wrong[5] = false
+            Wrong[6] = false
             input7LineEdit.TextColor = colorText
             input8LineEdit.TextColor = colorText
-            OkButton.Visible = "Yes"
+            if Check_Wrong(Wrong) == false then
+                OkButton.Visible = "Yes"
+            end
         end
     end
     -- Fid
@@ -1080,10 +1118,14 @@ local function Main(displayHandle)
         if checks == true then
             OkButton.Visible = "No"
             input9LineEdit.TextColor = colorAlertText
+            Wrong[7] = true
         end
         if checks == false then
+            Wrong[7] = false
             input9LineEdit.TextColor = colorText
-            OkButton.Visible = "Yes"
+            if Check_Wrong(Wrong) == false then
+                OkButton.Visible = "Yes"
+            end
         end
     end
     -- Grp
@@ -1108,10 +1150,14 @@ local function Main(displayHandle)
         if checks == true then
             OkButton.Visible = "No"
             input10LineEdit.TextColor = colorAlertText
+            Wrong[8] = true
         end
         if checks == false then
+            Wrong[8] = false
             input10LineEdit.TextColor = colorText
-            OkButton.Visible = "Yes"
+            if Check_Wrong(Wrong) == false then
+                OkButton.Visible = "Yes"
+            end
         end
     end
 
