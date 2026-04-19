@@ -57,29 +57,29 @@ return function()
             incr = incr + 1
             S_Object[cible[type]][3][1][part]:Set('FadeFromX', S_Object[destination[type]][3][1][part].FadeFromX)
             if S_Object[destination[type]][3][1][part].FadeFromX == nil then
-                Target = "N/"
+                Target = "None/"
             else
-                Target = tostring(S_Object[destination[type]][3][1][part].FadeFromX.Name) .. "/"
+                Target = tostring(S_Object[destination[type]][3][1][part].FadeFromX) .. "/"
             end
             S_Object[cible[type]][3][1][part]:Set('FadeToX', S_Object[destination[type]][3][1][part].FadeToX)
             if S_Object[destination[type]][3][1][part].FadeToX == nil then
-                Target = Target .. "N"
+                Target = Target .. "None"
             else
-                Target = Target .. tostring(S_Object[destination[type]][3][1][part].FadeToX.Name)
+                Target = Target .. tostring(S_Object[destination[type]][3][1][part].FadeToX)
             end
             L_Object[1][incr]:Set('CustomTextText', Target)
             incr = incr + 1
             S_Object[cible[type]][3][1][part]:Set('DelayFromX', S_Object[destination[type]][3][1][part].DelayFromX)
             if S_Object[destination[type]][3][1][part].DelayFromX == nil then
-                Target = "N/"
+                Target = "None/"
             else
-                Target = tostring(S_Object[destination[type]][3][1][part].DelayFromX.Name) .. "/"
+                Target = tostring(S_Object[destination[type]][3][1][part].DelayFromX) .. "/"
             end
             S_Object[cible[type]][3][1][part]:Set('DelayToX', S_Object[destination[type]][3][1][part].DelayToX)
             if S_Object[destination[type]][3][1][part].DelayToX == nil then
-                Target = Target .. "N"
+                Target = Target .. "None"
             else
-                Target = Target .. tostring(S_Object[destination[type]][3][1][part].DelayToX.Name)
+                Target = Target .. tostring(S_Object[destination[type]][3][1][part].DelayToX)
             end
             L_Object[1][incr]:Set('CustomTextText', Target)
             incr = incr + 1
