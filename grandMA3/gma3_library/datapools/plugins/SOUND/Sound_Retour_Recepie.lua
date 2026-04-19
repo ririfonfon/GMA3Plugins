@@ -135,6 +135,28 @@ function Sound_Retour_Recepie()
                 LayoutObject[S_N_Layout][S_N_Object]:Set('CustomTextText', Target)
             end
         end
+    elseif (S_Fonction == 7) then -- All Refrech
+        for k in ipairs(SeqNr) do
+            local Sound_Type = { 'All', 'Bass', 'Mid', 'High', 'Band1', 'Band2', 'Band3', 'Band4', 'Band5', 'Band6',
+                'Band7' }
+            for type in ipairs(Sound_Type) do
+                if SeqNr[k].name == 'RecepieSound ' .. Sound_Type[type] then
+                    for part = 1, 3, 1 do
+                        if (SeqNr[k][3][1][S_Part].DelayFromX == nil) then
+                            Target = "N/"
+                        else
+                            Target = tostring(SeqNr[k][3][1][S_Part].DelayFromX) .. "/"
+                        end
+                        if (SeqNr[k][3][1][S_Part].DelayToX == nil) then
+                            Target = Target .. "N"
+                        else
+                            Target = Target .. tostring(SeqNr[k][3][1][S_Part].DelayToX)
+                        end
+                        LayoutObject[S_N_Layout][S_N_Object]:Set('CustomTextText', Target)
+                    end
+                end
+            end
+        end
     elseif (S_Fonction == 10) then -- Priority
         local AppearanceObject = Root().ShowData.Appearances:Children()
         local App_Panel_Name = { 'p_super_png', 'p_swap_png', 'p_htp_png', 'p_highest_png',
