@@ -130,7 +130,20 @@ function SOUND_Build_Layout(Construct_Pool, Name_Layout, Layout_Nr, MacroNrStart
         -448, -448,
         150, 150,
     }
+    local mem_x          = {
+        750, 750, 750, 925, 925, 925, 1100, 1100, 1100,
+        850, 850, 850, 1025, 1025, 1025, 1200, 1200, 1200,
+        800, 800, 800, 975, 975, 975, 1150, 1150, 1150,
 
+    }
+    local mem_y          = {
+        -500, -550, -600, -500, -550, -600, -500, -550, -600,
+        -500, -550, -600, -500, -550, -600, -500, -550, -600,
+        -500, -550, -600, -500, -550, -600, -500, -550, -600,
+    }
+
+    local mem_Color      = { '80FF80FF', 'FF8080FF', '808080FF' }
+    local mem_Text       = { 'Load ', 'Save ', '' }
     local S_V_M_Color    = { '8080FFFF', 'FF0080FF', 'FFFF80FF', '00FF00FF', 'FF8000FF' }
     local S_V_M_Text     = { 'Group', 'Value', 'Matricks', 'None/None', 'None/None' }
 
@@ -232,7 +245,7 @@ function SOUND_Build_Layout(Construct_Pool, Name_Layout, Layout_Nr, MacroNrStart
     Layout_Object[Layout_Nr][Nr.No]:Set('width', 50)
     Layout_Object[Layout_Nr][Nr.No]:Set('height', 50)
     Layout_Object[Layout_Nr][Nr.No]:Set('action', 'Go+')
-    Layout_Object[Layout_Nr][Nr.No]:Set('Note', 'Priority')
+    Layout_Object[Layout_Nr][Nr.No]:Set('Note', 'Prority')
     SOUND_Set_Def(Layout_Nr, Nr, Layout_Object)
     Layout_Object[Layout_Nr][Nr.No]:Set('visibilityborder', 'Visible')
     Layout_Object[Layout_Nr][Nr.No]:Set('bordersize', 3)
@@ -249,7 +262,7 @@ function SOUND_Build_Layout(Construct_Pool, Name_Layout, Layout_Nr, MacroNrStart
     Layout_Object[Layout_Nr][Nr.No]:Set('width', 50)
     Layout_Object[Layout_Nr][Nr.No]:Set('height', 50)
     Layout_Object[Layout_Nr][Nr.No]:Set('action', 'Go+')
-    Layout_Object[Layout_Nr][Nr.No]:Set('Note', 'Priority')
+    Layout_Object[Layout_Nr][Nr.No]:Set('Note', 'Reset')
     SOUND_Set_Def(Layout_Nr, Nr, Layout_Object)
     Layout_Object[Layout_Nr][Nr.No]:Set('visibilityborder', 'Visible')
     Layout_Object[Layout_Nr][Nr.No]:Set('bordersize', 3)
@@ -258,4 +271,68 @@ function SOUND_Build_Layout(Construct_Pool, Name_Layout, Layout_Nr, MacroNrStart
     Layout_Object[Layout_Nr][Nr.No]:Set('customtextsize', 16)
     Layout_Object[Layout_Nr][Nr.No]:Set('customtextalignmenth', 'Center')
     Layout_Object[Layout_Nr][Nr.No]:Set('customtextalignmentv', 'Center')
+
+    local inc, inc_n = 1, 1
+    for o = MacroNrStart + 178, MacroNrStart + 186 do
+        Nr = Layout_Object[Layout_Nr]:Acquire()
+        Layout_Object[Layout_Nr][Nr.No]:Set('Object', MacroObject[o])
+        Layout_Object[Layout_Nr][Nr.No]:Set('posx', mem_x[inc])
+        Layout_Object[Layout_Nr][Nr.No]:Set('posy', mem_y[inc])
+        Layout_Object[Layout_Nr][Nr.No]:Set('width', 50)
+        Layout_Object[Layout_Nr][Nr.No]:Set('height', 50)
+        Layout_Object[Layout_Nr][Nr.No]:Set('action', 'Go+')
+        Layout_Object[Layout_Nr][Nr.No]:Set('Note', 'Mem')
+        SOUND_Set_Def(Layout_Nr, Nr, Layout_Object)
+        Layout_Object[Layout_Nr][Nr.No]:Set('visibilityborder', 'Visible')
+        Layout_Object[Layout_Nr][Nr.No]:Set('bordersize', 3)
+        Layout_Object[Layout_Nr][Nr.No]:Set('bordercolor', mem_Color[1])
+        Layout_Object[Layout_Nr][Nr.No]:Set('customtextcolor', mem_Color[1])
+        Layout_Object[Layout_Nr][Nr.No]:Set('customtexttext', mem_Text[1] .. inc_n)
+        Layout_Object[Layout_Nr][Nr.No]:Set('customtextsize', 16)
+        Layout_Object[Layout_Nr][Nr.No]:Set('customtextalignmenth', 'Center')
+        Layout_Object[Layout_Nr][Nr.No]:Set('customtextalignmentv', 'Center')
+        inc = inc + 1
+        inc_n = inc_n + 1
+    end
+    inc_n = 1
+    for o = MacroNrStart + 187, MacroNrStart + 195 do
+        Nr = Layout_Object[Layout_Nr]:Acquire()
+        Layout_Object[Layout_Nr][Nr.No]:Set('Object', MacroObject[o])
+        Layout_Object[Layout_Nr][Nr.No]:Set('posx', mem_x[inc])
+        Layout_Object[Layout_Nr][Nr.No]:Set('posy', mem_y[inc])
+        Layout_Object[Layout_Nr][Nr.No]:Set('width', 50)
+        Layout_Object[Layout_Nr][Nr.No]:Set('height', 50)
+        Layout_Object[Layout_Nr][Nr.No]:Set('action', 'Go+')
+        Layout_Object[Layout_Nr][Nr.No]:Set('Note', 'Mem')
+        SOUND_Set_Def(Layout_Nr, Nr, Layout_Object)
+        Layout_Object[Layout_Nr][Nr.No]:Set('visibilityborder', 'Visible')
+        Layout_Object[Layout_Nr][Nr.No]:Set('bordersize', 3)
+        Layout_Object[Layout_Nr][Nr.No]:Set('bordercolor', mem_Color[2])
+        Layout_Object[Layout_Nr][Nr.No]:Set('customtextcolor', mem_Color[2])
+        Layout_Object[Layout_Nr][Nr.No]:Set('customtexttext', mem_Text[2] .. inc_n)
+        Layout_Object[Layout_Nr][Nr.No]:Set('customtextsize', 16)
+        Layout_Object[Layout_Nr][Nr.No]:Set('customtextalignmenth', 'Center')
+        Layout_Object[Layout_Nr][Nr.No]:Set('customtextalignmentv', 'Center')
+        inc = inc + 1
+        inc_n = inc_n + 1
+    end
+    for o = MacroNrStart + 196, MacroNrStart + 204 do
+        Nr = Layout_Object[Layout_Nr]:Acquire()
+        Layout_Object[Layout_Nr][Nr.No]:Set('Object', MacroObject[o])
+        Layout_Object[Layout_Nr][Nr.No]:Set('posx', mem_x[inc])
+        Layout_Object[Layout_Nr][Nr.No]:Set('posy', mem_y[inc])
+        Layout_Object[Layout_Nr][Nr.No]:Set('width', 50)
+        Layout_Object[Layout_Nr][Nr.No]:Set('height', 50)
+        Layout_Object[Layout_Nr][Nr.No]:Set('action', 'Go+')
+        Layout_Object[Layout_Nr][Nr.No]:Set('Note', 'Mem')
+        SOUND_Set_Def(Layout_Nr, Nr, Layout_Object)
+        Layout_Object[Layout_Nr][Nr.No]:Set('visibilityborder', 'Visible')
+        Layout_Object[Layout_Nr][Nr.No]:Set('visibilityobjectname', 'Visible')
+        Layout_Object[Layout_Nr][Nr.No]:Set('bordersize', 3)
+        Layout_Object[Layout_Nr][Nr.No]:Set('customtextsize', 16)
+        Layout_Object[Layout_Nr][Nr.No]:Set('customtextalignmenth', 'Center')
+        Layout_Object[Layout_Nr][Nr.No]:Set('customtextalignmentv', 'Center')
+        inc = inc + 1
+    end
+    Dialog_End('ALL Good Sound By Riri Finish')
 end
