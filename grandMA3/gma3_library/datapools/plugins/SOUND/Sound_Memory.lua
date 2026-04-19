@@ -4,8 +4,8 @@ return function()
     local Sound_Type  = { 'All', 'Bass', 'Mid', 'High', 'Band1', 'Band2', 'Band3', 'Band4', 'Band5', 'Band6', 'Band7' }
     local cible       = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }
     local destination = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }
-    local incr
     local Target
+    local incr
     local L_Object    = Root().ShowData.DataPools[6].Layouts
     for k in ipairs(L_Object[1]) do
         if L_Object[1][k].Name == 'Grp part 01 Sound All' then
