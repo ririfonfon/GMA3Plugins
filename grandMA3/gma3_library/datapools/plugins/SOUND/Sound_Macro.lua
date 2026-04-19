@@ -185,4 +185,17 @@ function SOUND_Build_Macro(Construct_Pool, MacroNum, TLayNr)
     MacroObject[MacroNum][4]:Set('Command', "SetUserVariable 'S_Layout' '" .. TLayNr .. "_" .. lay_object .. "'")
     MacroObject[MacroNum][5]:Set('Command', "SetUserVariable 'S_Pool' '" .. Build_Pool.Name .. "'")
     MacroObject[MacroNum][6]:Set('Command', "Call DataPool '" .. Call_Pool.Name .. "' Plugin 'Sound by Riri'")
+    MacroNum = MacroNum + 1
+
+    SOUND_Check_Size_Pool(MacroNum, MacroObject)
+    MacroObject:Create(MacroNum)
+    MacroObject[MacroNum]:Set('Name', 'Reset Recepie')
+    for a = 1, 4 do
+        MacroObject[MacroNum]:Insert(a)
+    end
+    MacroObject[MacroNum][1]:Set('Command', "SetUserVariable 'S_Fonction' 8")
+    MacroObject[MacroNum][2]:Set('Command', "SetUserVariable 'S_Layout' '" .. TLayNr .. "_999'")
+    MacroObject[MacroNum][3]:Set('Command', "SetUserVariable 'S_Pool' '" .. Build_Pool.Name .. "'")
+    MacroObject[MacroNum][4]:Set('Command', "Call DataPool '" .. Call_Pool.Name .. "' Plugin 'Sound by Riri'")
+    MacroNum = MacroNum + 1
 end
