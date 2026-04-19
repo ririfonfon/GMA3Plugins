@@ -877,16 +877,10 @@ local function Main(displayHandle)
         end
         Obj.Delete(screenOverlay, Obj.Index(baseInput))
 
-        Cmd('ClearAll')
-        Cmd('Store DataPool ' .. Construct_Pool .. ' Group ' .. Grp_Start .. ' /Overwrite /NoConfirmation')
-        Cmd('Store DataPool ' .. Construct_Pool .. ' Preset 24.' .. All_4_NrStart .. ' /Overwrite /NoConfirmation')
-        SOUND_Patch(Univers, Address, Fid)
-        local Seq_On_Off = SOUND_Build_Seq(Construct_Pool, SeqNrStart, All_4_NrStart, Grp_Start, Fid)
-        SOUND_Build_Macro(Construct_Pool, MacroNrStart, TLayNr)
-        SOUND_Remote_Dmx(Construct_Pool, SeqNrStart, Univers, Address)
-        SOUND_Build_Layout(Construct_Pool, NaLay, TLayNr, MacroNrStart, Seq_On_Off)
+        Sound_Construct(Construct_Pool, Grp_Start, All_4_NrStart, Univers, Address, Fid, SeqNrStart, MacroNrStart, TLayNr,
+        NaLay)
 
-        return
+        -- return
     end
 
 
@@ -940,7 +934,7 @@ local function Main(displayHandle)
         end
         SeqNrStart = caller.Content:gsub("'", "")
         SeqNrStart = tonumber(SeqNrStart)
-        SeqNrRange = SeqNrStart + 22
+        SeqNrRange = SeqNrStart + 121
         if New == false then
             for k in ipairs(SeqNr) do
                 if SeqNrStart <= tonumber(SeqNr[k].NO) then
@@ -974,7 +968,7 @@ local function Main(displayHandle)
         end
         MacroNrStart = caller.Content:gsub("'", "")
         MacroNrStart = tonumber(MacroNrStart)
-        MacroNrRange = MacroNrStart + 176
+        MacroNrRange = MacroNrStart + 204
         if New == false then
             for k in ipairs(MacroNr) do
                 if MacroNrStart <= tonumber(MacroNr[k].NO) then
@@ -1100,7 +1094,7 @@ local function Main(displayHandle)
         end
         Grp_Start = caller.Content:gsub("'", "")
         Grp_Start = tonumber(Grp_Start)
-        Grp_Range = Grp_Start + 10
+        Grp_Range = Grp_Start + 11
         -- if New == false then
         for k in ipairs(FixtureGroups) do
             if Grp_Start <= tonumber(FixtureGroups[k].NO) then
