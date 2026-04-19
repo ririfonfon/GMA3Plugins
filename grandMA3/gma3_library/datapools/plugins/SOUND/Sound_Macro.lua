@@ -186,6 +186,8 @@ function SOUND_Build_Macro(Construct_Pool, MacroNum, TLayNr)
     MacroObject[MacroNum][5]:Set('Command', "SetUserVariable 'S_Pool' '" .. Build_Pool.Name .. "'")
     MacroObject[MacroNum][6]:Set('Command', "Call DataPool '" .. Call_Pool.Name .. "' Plugin 'Sound by Riri'")
     MacroNum = MacroNum + 1
+    lay_object = lay_object + 1
+
 
     SOUND_Check_Size_Pool(MacroNum, MacroObject)
     MacroObject:Create(MacroNum)
@@ -194,8 +196,54 @@ function SOUND_Build_Macro(Construct_Pool, MacroNum, TLayNr)
         MacroObject[MacroNum]:Insert(a)
     end
     MacroObject[MacroNum][1]:Set('Command', "SetUserVariable 'S_Fonction' 8")
-    MacroObject[MacroNum][2]:Set('Command', "SetUserVariable 'S_Layout' '" .. TLayNr .. "_999'")
+    MacroObject[MacroNum][2]:Set('Command', "SetUserVariable 'S_Layout' '" .. TLayNr .. "_" .. lay_object .. "'")
     MacroObject[MacroNum][3]:Set('Command', "SetUserVariable 'S_Pool' '" .. Build_Pool.Name .. "'")
     MacroObject[MacroNum][4]:Set('Command', "Call DataPool '" .. Call_Pool.Name .. "' Plugin 'Sound by Riri'")
     MacroNum = MacroNum + 1
+    lay_object = lay_object + 1
+
+    TypeSel = 1
+    for k = 1, 9, 1 do
+        SOUND_Check_Size_Pool(MacroNum, MacroObject)
+        MacroObject:Create(MacroNum)
+        MacroObject[MacroNum]:Set('Name', 'Load_MEM_' .. k)
+        for a = 1, 5 do
+            MacroObject[MacroNum]:Insert(a)
+        end
+        MacroObject[MacroNum][1]:Set('Command', "SetUserVariable 'S_Fonction' 12")
+        MacroObject[MacroNum][2]:Set('Command', "SetUserVariable 'S_Mem' " .. k .. "'")
+        MacroObject[MacroNum][3]:Set('Command', "SetUserVariable 'S_Layout' '" .. TLayNr .. "_" .. lay_object .. "'")
+        MacroObject[MacroNum][4]:Set('Command', "SetUserVariable 'S_Pool' '" .. Build_Pool.Name .. "'")
+        MacroObject[MacroNum][5]:Set('Command', "Call DataPool '" .. Call_Pool.Name .. "' Plugin 'Sound by Riri'")
+
+        lay_object = lay_object + 1
+        MacroNum = MacroNum + 1
+    end
+
+    for k = 1, 9, 1 do
+        SOUND_Check_Size_Pool(MacroNum, MacroObject)
+        MacroObject:Create(MacroNum)
+        MacroObject[MacroNum]:Set('Name', 'Save_MEM_' .. k)
+        for a = 1, 5 do
+            MacroObject[MacroNum]:Insert(a)
+        end
+        MacroObject[MacroNum][1]:Set('Command', "SetUserVariable 'S_Fonction' 11")
+        MacroObject[MacroNum][2]:Set('Command', "SetUserVariable 'S_Mem' " .. k .. "'")
+        MacroObject[MacroNum][3]:Set('Command', "SetUserVariable 'S_Layout' '" .. TLayNr .. "_" .. lay_object .. "'")
+        MacroObject[MacroNum][4]:Set('Command', "SetUserVariable 'S_Pool' '" .. Build_Pool.Name .. "'")
+        MacroObject[MacroNum][5]:Set('Command', "Call DataPool '" .. Call_Pool.Name .. "' Plugin 'Sound by Riri'")
+
+        lay_object = lay_object + 1
+        MacroNum = MacroNum + 1
+    end
+    for k = 1, 9, 1 do
+        SOUND_Check_Size_Pool(MacroNum, MacroObject)
+        MacroObject:Create(MacroNum)
+        MacroObject[MacroNum]:Set('Name', 'Label_MEM_' .. k)
+        MacroObject[MacroNum]:Insert(1)
+        MacroObject[MacroNum][1]:Set('Command', "Label DataPool " .. Build_Pool.Name .. " Macro " .. MacroNum)
+
+        lay_object = lay_object + 1
+        MacroNum = MacroNum + 1
+    end
 end
