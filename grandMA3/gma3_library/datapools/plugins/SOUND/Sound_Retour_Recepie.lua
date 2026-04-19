@@ -8,7 +8,7 @@ local my_table, my_handle = select(3, ...)
 
 function Sound_Retour_Recepie()
     local Select = UserVars()
-    local S_Seq, S_Layout, S_Pool, S_Fonction, Target, S_Lay, S_N_Layout, S_N_Object, S_Part, S_Master, S_Num_Lay
+    local S_Seq, S_Layout, S_Pool, S_Fonction, Target, S_Lay, S_N_Layout, S_N_Object, S_Part, S_Master, S_Num_Lay, S_Mem
     if GetVar(Select, "S_Fonction") then
         S_Fonction = tonumber((GetVar(Select, "S_Fonction")))
     end
@@ -39,6 +39,10 @@ function Sound_Retour_Recepie()
 
     if GetVar(Select, "S_Master") then
         S_Master = tonumber((GetVar(Select, "S_Master")))
+    end
+
+    if GetVar(Select, "S_Mem") then
+        S_Mem = tonumber((GetVar(Select, "S_Mem")))
     end
 
     local SeqNr = ShowData().DataPools[S_Pool].Sequences:Children()
@@ -141,10 +145,10 @@ function Sound_Retour_Recepie()
             'Band7' }
         local cible      = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }
         local incr
-        local L_Object   = Root().ShowData.DataPools[6].Layouts
-        for k in ipairs(L_Object[1]) do
+        local L_Object   = Root().ShowData.DataPools[S_Pool].Layouts
+        for k in ipairs(L_Object[S_Num_Lay]) do
             if L_Object[S_Num_Lay][k].Name == 'Grp part 01 Sound All' then
-                incr = L_Object[1][k].No
+                incr = L_Object[S_Num_Lay][k].No
             end
         end
 
@@ -208,11 +212,11 @@ function Sound_Retour_Recepie()
             'Band7' }
         local cible      = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }
         local incr
-        local L_Object   = Root().ShowData.DataPools[6].Layouts
+        local L_Object   = Root().ShowData.DataPools[S_Pool].Layouts
 
-        for k in ipairs(L_Object[1]) do
+        for k in ipairs(L_Object[S_Num_Lay]) do
             if L_Object[S_Num_Lay][k].Name == 'Grp part 01 Sound All' then
-                incr = L_Object[1][k].No
+                incr = L_Object[S_Num_Lay][k].No
             end
         end
 
@@ -317,6 +321,105 @@ function Sound_Retour_Recepie()
             Target = Addr_Nat_Panel[8]
         end
         LayoutObject[S_N_Layout][S_N_Object]:Set('Appearance', Target)
+    elseif (S_Fonction == 11) then -- Save Memory
+        local Sound_Type  = { 'All', 'Bass', 'Mid', 'High', 'Band1', 'Band2', 'Band3', 'Band4', 'Band5', 'Band6',
+            'Band7' }
+        local cible       = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }
+        local destination = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }
+
+        for type in ipairs(Sound_Type) do
+            for k in ipairs(SeqNr) do
+                if SeqNr[k].name == 'RecepieSound ' .. Sound_Type[type] then
+                    cible[type] = k
+                elseif SeqNr[k].name == "MEM_" .. S_Mem .. "_RecepieSound " .. Sound_Type[type] then
+                    destination[type] = k
+                end
+            end
+            for part = 1, 3, 1 do
+                SeqNr[destination[type]][3][1][part]:Set('Selection', SeqNr[cible[type]][3][1][part].Selection)
+                SeqNr[destination[type]][3][1][part]:Set('Values', SeqNr[cible[type]][3][1][part].Values)
+                SeqNr[destination[type]][3][1][part]:Set('MAtricks', SeqNr[cible[type]][3][1][part].MAtricks)
+                SeqNr[destination[type]][3][1][part]:Set('FadeFromX', SeqNr[cible[type]][3][1][part].FadeFromX)
+                SeqNr[destination[type]][3][1][part]:Set('FadeToX', SeqNr[cible[type]][3][1][part].FadeToX)
+                SeqNr[destination[type]][3][1][part]:Set('DelayFromX', SeqNr[cible[type]][3][1][part].DelayFromX)
+                SeqNr[destination[type]][3][1][part]:Set('DelayToX', SeqNr[cible[type]][3][1][part].DelayToX)
+            end
+        end
+    elseif (S_Fonction == 12) then -- Load Memory
+        local Sound_Type  = { 'All', 'Bass', 'Mid', 'High', 'Band1', 'Band2', 'Band3', 'Band4', 'Band5', 'Band6',
+            'Band7' }
+        local cible       = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }
+        local destination = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }
+        local incr
+        local L_Object    = Root().ShowData.DataPools[6].Layouts
+        for k in ipairs(L_Object[S_Num_Lay]) do
+            if L_Object[S_Num_Lay][k].Name == 'Grp part 01 Sound All' then
+                incr = L_Object[S_Num_Lay][k].No
+            end
+        end
+        for type in ipairs(Sound_Type) do
+            for k in ipairs(SeqNr) do
+                if SeqNr[k].name == 'RecepieSound ' .. Sound_Type[type] then
+                    cible[type] = k
+                elseif SeqNr[k].name == "MEM_" .. S_Mem .. "_RecepieSound " .. Sound_Type[type] then
+                    destination[type] = k
+                end
+            end
+            for part = 1, 3, 1 do
+                SeqNr[cible[type]][3][1][part]:Set('Selection', SeqNr[destination[type]][3][1][part].Selection)
+                if SeqNr[destination[type]][3][1][part].Selection == nil then
+                    Target = 'Group'
+                else
+                    Target = SeqNr[destination[type]][3][1][part].Selection.Name
+                end
+                L_Object[S_Num_Lay][incr]:Set('CustomTextText', Target)
+                incr = incr + 1
+                SeqNr[cible[type]][3][1][part]:Set('Values', SeqNr[destination[type]][3][1][part].Values)
+                if SeqNr[destination[type]][3][1][part].Values == nil then
+                    Target = 'Value'
+                else
+                    Target = SeqNr[destination[type]][3][1][part].Values.Name
+                end
+                L_Object[S_Num_Lay][incr]:Set('CustomTextText', Target)
+                incr = incr + 1
+                SeqNr[cible[type]][3][1][part]:Set('MAtricks', SeqNr[destination[type]][3][1][part].MAtricks)
+                if SeqNr[destination[type]][3][1][part].Matricks == nil then
+                    Target = 'Matricks'
+                else
+                    Target = SeqNr[destination[type]][3][1][part].Matricks.Name
+                end
+                L_Object[S_Num_Lay][incr]:Set('CustomTextText', Target)
+                incr = incr + 1
+                SeqNr[cible[type]][3][1][part]:Set('FadeFromX', SeqNr[destination[type]][3][1][part].FadeFromX)
+                if SeqNr[destination[type]][3][1][part].FadeFromX == nil then
+                    Target = "None/"
+                else
+                    Target = tostring(SeqNr[destination[type]][3][1][part].FadeFromX) .. "/"
+                end
+                SeqNr[cible[type]][3][1][part]:Set('FadeToX', SeqNr[destination[type]][3][1][part].FadeToX)
+                if SeqNr[destination[type]][3][1][part].FadeToX == nil then
+                    Target = Target .. "None"
+                else
+                    Target = Target .. tostring(SeqNr[destination[type]][3][1][part].FadeToX)
+                end
+                L_Object[S_Num_Lay][incr]:Set('CustomTextText', Target)
+                incr = incr + 1
+                SeqNr[cible[type]][3][1][part]:Set('DelayFromX', SeqNr[destination[type]][3][1][part].DelayFromX)
+                if SeqNr[destination[type]][3][1][part].DelayFromX == nil then
+                    Target = "None/"
+                else
+                    Target = tostring(SeqNr[destination[type]][3][1][part].DelayFromX) .. "/"
+                end
+                SeqNr[cible[type]][3][1][part]:Set('DelayToX', SeqNr[destination[type]][3][1][part].DelayToX)
+                if SeqNr[destination[type]][3][1][part].DelayToX == nil then
+                    Target = Target .. "None"
+                else
+                    Target = Target .. tostring(SeqNr[destination[type]][3][1][part].DelayToX)
+                end
+                L_Object[S_Num_Lay][incr]:Set('CustomTextText', Target)
+                incr = incr + 1
+            end
+        end
     end
 
     DelVar(Select, "S_Seq")
@@ -325,4 +428,5 @@ function Sound_Retour_Recepie()
     DelVar(Select, "S_Fonction")
     DelVar(Select, "S_Part")
     DelVar(Select, "S_Master")
+    DelVar(Select, "S_Mem")
 end
