@@ -241,7 +241,7 @@ function SOUND_Build_Macro(Construct_Pool, MacroNum, TLayNr)
         MacroObject:Create(MacroNum)
         MacroObject[MacroNum]:Set('Name', 'Label_MEM_' .. k)
         MacroObject[MacroNum]:Insert(1)
-        MacroObject[MacroNum][1]:Set('Command', "Label DataPool " .. Build_Pool.Name .. " Macro " .. MacroNum)
+        MacroObject[MacroNum][1]:Set('Command', "Label DataPool '" .. Build_Pool.Name .. "' Macro " .. MacroNum)
 
         lay_object = lay_object + 1
         MacroNum = MacroNum + 1
