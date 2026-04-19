@@ -44,24 +44,30 @@ function SOUND_Sequence_Defo(SequenceObject, i)
     SequenceObject[i]:Set('TIMINGGOBACKFAST', 'Default')
 end
 
-function SOUND_Build_Seq(Construct_Pool, SeqNum, All_4_NrStart, Grp_Start)
+function SOUND_Build_Seq(Construct_Pool, SeqNum, All_4_NrStart, Grp_Start, Fid)
     local Sound_Type     = { 'All', 'Bass', 'Mid', 'High', 'Band1', 'Band2', 'Band3', 'Band4', 'Band5', 'Band6', 'Band7' }
-    -- local SeqNum         = 41
     local SeqEnd         = SeqNum + 10
     local TypeSel        = 1
-
     local SequenceObject = Root().ShowData.DataPools[Construct_Pool].Sequences
     local Preset4Object  = Root().ShowData.DataPools[Construct_Pool].PresetPools[24]
     local GroupObject    = Root().ShowData.DataPools[Construct_Pool].Groups
-    -- local Build_Pool     = Root().ShowData.DataPools[Construct_Pool]
 
+    local inc            = 0
     for i = Grp_Start, Grp_Start + 10 do
         GroupObject:Create(i)
         GroupObject[i]:Set('Name', 'Sound ' .. Sound_Type[TypeSel])
         Cmd("AutoCreate Fixture " ..
-            900 + i .. " At DataPool " .. Construct_Pool .. " Group " .. i .. " /All /NoConfirmation ")
+            Fid + inc .. " At DataPool " .. Construct_Pool .. " Group " .. i .. " /All /NoConfirmation ")
+        GroupObject[i]:Set('Mode', 'Positive')
         TypeSel = TypeSel + 1
+        inc = inc + 1
     end
+    GroupObject:Create(Grp_Start + 11)
+    GroupObject[Grp_Start + 11]:Set('Name', 'MASTER ALL SOUND')
+    Cmd("AutoCreate Fixture " ..
+        Fid ..
+        "Thru" .. Fid + 10 .. "At DataPool " .. Construct_Pool .. " Group " .. Grp_Start + 11 .. " /All /NoConfirmation ")
+    GroupObject[Grp_Start + 11]:Set('Mode', 'Negative')
     TypeSel = 1
 
     for i = All_4_NrStart, All_4_NrStart + 10 do
@@ -154,9 +160,37 @@ function SOUND_Build_Seq(Construct_Pool, SeqNum, All_4_NrStart, Grp_Start)
 
         TypeSel = TypeSel + 1
     end
-    SeqNum = SeqEnd + 6
-    SeqEnd = SeqNum + 11
-    TypeSel = 1
+    for k = 1, 10, 1 do
+        SeqNum = SeqEnd + 1
+        SeqEnd = SeqNum + 10
+        TypeSel = 1
+        for i = SeqNum, SeqEnd, 1 do
+            SOUND_Check_Size_Pool(i, SequenceObject)
+            SequenceObject:Create(i)
+            SequenceObject[i]:Set('Name', "MEM_" .. k .. "_RecepieSound " .. Sound_Type[TypeSel])
+            SOUND_Sequence_Defo(SequenceObject, i)
+            SequenceObject[i]:Set('AUTOSTART', 'No')
+            SequenceObject[i]:Set('AUTOSTOP', 'No')
+            SequenceObject[i]:Set('TRACKING', 'No')
+            SequenceObject[i]:Set('PRIORITY', 'HTP')
+            SequenceObject[i]:Set('SOFTLTP', 'No')
 
-    return Seq_On_Off
+            SequenceObject[i]:Insert()
+            SequenceObject[i][3]:Set('No', 1)
+            SequenceObject[i][3]:Create(1)
+            SequenceObject[i][3][1]:Insert()
+            SequenceObject[i][3][1]:Create(1)
+            SequenceObject[i][3][1][1]:Set('SelectionMode', 'Strict')
+            SequenceObject[i][3][1][1]:Set('Enabled', 'Yes')
+            SequenceObject[i][3][1]:Insert()
+            SequenceObject[i][3][1][2]:Set('SelectionMode', 'Strict')
+            SequenceObject[i][3][1][2]:Set('Enabled', 'Yes')
+            SequenceObject[i][3][1]:Insert()
+            SequenceObject[i][3][1][3]:Set('SelectionMode', 'Strict')
+            SequenceObject[i][3][1][3]:Set('Enabled', 'Yes')
+
+            TypeSel = TypeSel + 1
+        end
+    end
+    return Seq_On_Off -- MEM_1_RecepieSound All
 end
