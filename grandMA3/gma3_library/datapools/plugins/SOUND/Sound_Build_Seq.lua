@@ -63,11 +63,11 @@ function SOUND_Build_Seq(Construct_Pool, SeqNum, All_4_NrStart, Grp_Start, Fid)
         inc = inc + 1
     end
     GroupObject:Create(Grp_Start + 11)
-    GroupObject[Grp_Start + 11]:Set('Name', 'MASTER ALL SOUND')
     Cmd("AutoCreate Fixture " ..
-        Fid ..
-        "Thru" .. Fid + 10 .. "At DataPool " .. Construct_Pool .. " Group " .. Grp_Start + 11 .. " /All /NoConfirmation ")
+    Fid ..
+    "Thru" .. Fid + 10 .. "At DataPool " .. Construct_Pool .. " Group " .. Grp_Start + 11 .. " /All /NoConfirmation ")
     GroupObject[Grp_Start + 11]:Set('Mode', 'Negative')
+    GroupObject[Grp_Start + 11]:Set('Name', 'MASTER ALL SOUND')
     TypeSel = 1
 
     for i = All_4_NrStart, All_4_NrStart + 10 do
@@ -160,7 +160,7 @@ function SOUND_Build_Seq(Construct_Pool, SeqNum, All_4_NrStart, Grp_Start, Fid)
 
         TypeSel = TypeSel + 1
     end
-    for k = 1, 10, 1 do
+    for k = 1, 9, 1 do
         SeqNum = SeqEnd + 1
         SeqEnd = SeqNum + 10
         TypeSel = 1
@@ -192,5 +192,5 @@ function SOUND_Build_Seq(Construct_Pool, SeqNum, All_4_NrStart, Grp_Start, Fid)
             TypeSel = TypeSel + 1
         end
     end
-    return Seq_On_Off -- MEM_1_RecepieSound All
+    return Seq_On_Off
 end
