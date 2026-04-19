@@ -8,7 +8,7 @@ local my_table, my_handle = select(3, ...)
 
 function Sound_Retour_Recepie()
     local Select = UserVars()
-    local S_Seq, S_Layout, S_Pool, S_Fonction, Target, S_Lay, S_N_Layout, S_N_Object, S_Part, S_Master
+    local S_Seq, S_Layout, S_Pool, S_Fonction, Target, S_Lay, S_N_Layout, S_N_Object, S_Part, S_Master, S_Num_Lay
     if GetVar(Select, "S_Fonction") then
         S_Fonction = tonumber((GetVar(Select, "S_Fonction")))
     end
@@ -23,6 +23,7 @@ function Sound_Retour_Recepie()
         for number in string.gmatch(S_Layout, "%d+") do
             if a == 1 then
                 S_N_Layout = tonumber(number)
+                S_Num_Lay = tonumber(number)
             elseif a == 2 then
                 S_N_Object = tonumber(number)
             end
@@ -136,25 +137,146 @@ function Sound_Retour_Recepie()
             end
         end
     elseif (S_Fonction == 7) then -- All Refrech
-        for k in ipairs(SeqNr) do
-            local Sound_Type = { 'All', 'Bass', 'Mid', 'High', 'Band1', 'Band2', 'Band3', 'Band4', 'Band5', 'Band6',
-                'Band7' }
-            for type in ipairs(Sound_Type) do
+        local Sound_Type = { 'All', 'Bass', 'Mid', 'High', 'Band1', 'Band2', 'Band3', 'Band4', 'Band5', 'Band6',
+            'Band7' }
+        local cible      = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }
+        local incr
+        local L_Object   = Root().ShowData.DataPools[6].Layouts
+        for k in ipairs(L_Object[1]) do
+            if L_Object[S_Num_Lay][k].Name == 'Grp part 01 Sound All' then
+                incr = L_Object[1][k].No
+            end
+        end
+
+        for type in ipairs(Sound_Type) do
+            for k in ipairs(SeqNr) do
                 if SeqNr[k].name == 'RecepieSound ' .. Sound_Type[type] then
-                    for part = 1, 3, 1 do
-                        if (SeqNr[k][3][1][S_Part].DelayFromX == nil) then
-                            Target = "N/"
-                        else
-                            Target = tostring(SeqNr[k][3][1][S_Part].DelayFromX) .. "/"
-                        end
-                        if (SeqNr[k][3][1][S_Part].DelayToX == nil) then
-                            Target = Target .. "N"
-                        else
-                            Target = Target .. tostring(SeqNr[k][3][1][S_Part].DelayToX)
-                        end
-                        LayoutObject[S_N_Layout][S_N_Object]:Set('CustomTextText', Target)
-                    end
+                    cible[type] = k
                 end
+            end
+
+            for part = 1, 3, 1 do
+                if SeqNr[cible[type]][3][1][part].Selection == nil then
+                    Target = 'Group'
+                else
+                    Target = SeqNr[cible[type]][3][1][part].Selection.Name
+                end
+                L_Object[S_Num_Lay][incr]:Set('CustomTextText', Target)
+                incr = incr + 1
+                if SeqNr[cible[type]][3][1][part].Values == nil then
+                    Target = 'Value'
+                else
+                    Target = SeqNr[cible[type]][3][1][part].Values.Name
+                end
+                L_Object[S_Num_Lay][incr]:Set('CustomTextText', Target)
+                incr = incr + 1
+                if SeqNr[cible[type]][3][1][part].Matricks == nil then
+                    Target = 'Matricks'
+                else
+                    Target = SeqNr[cible[type]][3][1][part].Matricks.Name
+                end
+                L_Object[S_Num_Lay][incr]:Set('CustomTextText', Target)
+                incr = incr + 1
+                if SeqNr[cible[type]][3][1][part].FadeFromX == nil then
+                    Target = "N/"
+                else
+                    Target = tostring(SeqNr[cible[type]][3][1][part].FadeFromX.Name) .. "/"
+                end
+                if SeqNr[cible[type]][3][1][part].FadeToX == nil then
+                    Target = Target .. "N"
+                else
+                    Target = Target .. tostring(SeqNr[cible[type]][3][1][part].FadeToX.Name)
+                end
+                L_Object[S_Num_Lay][incr]:Set('CustomTextText', Target)
+                incr = incr + 1
+                if SeqNr[cible[type]][3][1][part].DelayFromX == nil then
+                    Target = "N/"
+                else
+                    Target = tostring(SeqNr[cible[type]][3][1][part].DelayFromX.Name) .. "/"
+                end
+                if SeqNr[cible[type]][3][1][part].DelayToX == nil then
+                    Target = Target .. "N"
+                else
+                    Target = Target .. tostring(SeqNr[cible[type]][3][1][part].DelayToX.Name)
+                end
+                L_Object[S_Num_Lay][incr]:Set('CustomTextText', Target)
+                incr = incr + 1
+            end
+        end
+    elseif (S_Fonction == 8) then -- All Reset
+        local Sound_Type = { 'All', 'Bass', 'Mid', 'High', 'Band1', 'Band2', 'Band3', 'Band4', 'Band5', 'Band6',
+            'Band7' }
+        local cible      = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }
+        local incr
+        local L_Object   = Root().ShowData.DataPools[6].Layouts
+
+        for k in ipairs(L_Object[1]) do
+            if L_Object[S_Num_Lay][k].Name == 'Grp part 01 Sound All' then
+                incr = L_Object[1][k].No
+            end
+        end
+
+        for type in ipairs(Sound_Type) do
+            for k in ipairs(SeqNr) do
+                if SeqNr[k].name == 'RecepieSound ' .. Sound_Type[type] then
+                    cible[type] = k
+                end
+            end
+
+            for part = 1, 3, 1 do
+                SeqNr[cible[type]][3][1][part]:Set('Selection', nil)
+                if SeqNr[cible[type]][3][1][part].Selection == nil then
+                    Target = 'Group'
+                else
+                    Target = SeqNr[cible[type]][3][1][part].Selection.Name
+                end
+                L_Object[S_Num_Lay][incr]:Set('CustomTextText', Target)
+                incr = incr + 1
+                SeqNr[cible[type]][3][1][part]:Set('Values', nil)
+                if SeqNr[cible[type]][3][1][part].Values == nil then
+                    Target = 'Value'
+                else
+                    Target = SeqNr[cible[type]][3][1][part].Values.Name
+                end
+                L_Object[S_Num_Lay][incr]:Set('CustomTextText', Target)
+                incr = incr + 1
+                SeqNr[cible[type]][3][1][part]:Set('Matricks', nil)
+                if SeqNr[cible[type]][3][1][part].Matricks == nil then
+                    Target = 'Matricks'
+                else
+                    Target = SeqNr[cible[type]][3][1][part].Matricks.Name
+                end
+                L_Object[S_Num_Lay][incr]:Set('CustomTextText', Target)
+                incr = incr + 1
+                SeqNr[cible[type]][3][1][part]:Set('FadeFromX', 'None')
+                Echo(SeqNr[cible[type]][3][1][part].FadeFromX)
+                if SeqNr[cible[type]][3][1][part].FadeFromX == nil then
+                    Target = "None/"
+                else
+                    Target = tostring(SeqNr[cible[type]][3][1][part].FadeFromX) .. "/"
+                end
+                SeqNr[cible[type]][3][1][part]:Set('FadeToX', 'None')
+                if SeqNr[cible[type]][3][1][part].FadeToX == nil then
+                    Target = Target .. "None"
+                else
+                    Target = Target .. tostring(SeqNr[cible[type]][3][1][part].FadeToX)
+                end
+                L_Object[S_Num_Lay][incr]:Set('CustomTextText', Target)
+                incr = incr + 1
+                SeqNr[cible[type]][3][1][part]:Set('DelayFromX', 'None')
+                if SeqNr[cible[type]][3][1][part].DelayFromX == nil then
+                    Target = "None/"
+                else
+                    Target = tostring(SeqNr[cible[type]][3][1][part].DelayFromX) .. "/"
+                end
+                SeqNr[cible[type]][3][1][part]:Set('DelayToX', 'None')
+                if SeqNr[cible[type]][3][1][part].DelayToX == nil then
+                    Target = Target .. "None"
+                else
+                    Target = Target .. tostring(SeqNr[cible[type]][3][1][part].DelayToX)
+                end
+                L_Object[S_Num_Lay][incr]:Set('CustomTextText', Target)
+                incr = incr + 1
             end
         end
     elseif (S_Fonction == 10) then -- Priority
