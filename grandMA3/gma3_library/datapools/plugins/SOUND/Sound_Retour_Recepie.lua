@@ -86,11 +86,40 @@ function Sound_Retour_Recepie()
         local Value
         local proxy = Root().ShowData.DataPools[S_Pool].Groups[S_Master]
         local dialog = GetFocusDisplay().ScreenOverlay:Append('BaseInput')
-        -- local clic = GetFocusDisplay().ScreenOverlay.CLICKED
-        -- -- local clic = GetFocusDisplay().ScreenOverlay.Clicked()
-        -- local clic = GetFocusDisplay().ScreenOverlay
-        -- Echo(clic.clicked)
+        -- local clic = GetFocusDisplay().ScreenOverlay.Clicked
+        -- local clic = GetFocusDisplay().ScreenOverlay:Children()
+        -- local clic = MouseObj().ABSPOS
+
         -- dialog.X, dialog.Y = 00, 00
+
+        -- for k, v in pairs(clic) do
+        --     Echo(k .. " " .. v)
+        --     if k == 'x' then
+        --         dialog.X = v
+        --         Echo(k .. " " .. v)
+        --     elseif k == 'y' then
+        --         dialog.Y = v
+        --         Echo(k .. " " .. v)
+        --     end
+        -- end
+
+        for k, v in pairs(MouseObj().ABSPOS) do
+            if k == 'x' then
+                dialog.X = v / 2
+                Echo(k .. " " .. v)
+            elseif k == 'y' then
+                dialog.Y = v / 2
+                Echo(k .. " " .. v)
+            end
+        end
+
+        -- for k in pairs(clic.Target) do
+        --     Echo('T ' .. k)
+        -- end
+        -- for k in pairs(clic.Property) do
+        --     Echo('P ' .. k)
+        -- end
+
         dialog.H, dialog.W = 400, 10
         local fader = dialog:Append('UiFader')
 
