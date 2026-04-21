@@ -13,16 +13,16 @@ function SOUND_Check_Size_Pool(id, PoolObject)
     end
     local idtype = math.type(id) or type(id)
     if idtype ~= 'integer' then
-        Dialog_End('Error : wrong argument expected integer got ' .. idtype)
+        Sound_Dialog_End('Error : wrong argument expected integer got ' .. idtype)
         error('wrong argument expected integer got ' .. idtype)
     end
     if IsObjectValid(PoolObject[id]) then
-        Dialog_End('Error : id is already used : ' .. id)
+        Sound_Dialog_End('Error : id is already used : ' .. id)
         error('id is already used : ' .. id)
     end
     local maxsize = PoolObject:MaxCount()
     if id < 1 or id > maxsize then
-        Dialog_End('Error : id out of range')
+        Sound_Dialog_End('Error : id out of range')
         error('id out of range')
     end
     local poolsize = PoolObject:Count()
