@@ -4,9 +4,16 @@
     Created by Richard Fontaine "RIRI", April 2026.
 --]]
 
+function Sound_Dialog_End(message)
+    local dialog = GetFocusDisplay().ScreenOverlay:Append('BaseInput')
+    dialog.H, dialog.W = 800, 800
+    local mybutton = dialog:Append('Button')
+    mybutton.Text = message
+end
+
 function Sound_Construct(Construct_Pool, Grp_Start, All_4_NrStart, Univers, Address, Fid, SeqNrStart, MacroNrStart,
                          TLayNr, NaLay)
-    Dialog_End('Sound By Riri Build')
+    Sound_Dialog_End('Sound By Riri Build')
     Cmd('ClearAll')
     Cmd('Store DataPool ' .. Construct_Pool .. ' Group ' .. Grp_Start .. ' /Overwrite /NoConfirmation')
     Cmd('Store DataPool ' .. Construct_Pool .. ' Preset 24.' .. All_4_NrStart .. ' /Overwrite /NoConfirmation')
