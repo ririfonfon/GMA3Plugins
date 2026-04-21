@@ -334,5 +334,5 @@ function SOUND_Build_Layout(Construct_Pool, Name_Layout, Layout_Nr, MacroNrStart
         Layout_Object[Layout_Nr][Nr.No]:Set('customtextalignmentv', 'Center')
         inc = inc + 1
     end
-    Dialog_End('ALL Good Sound By Riri Finish')
+    Sound_Dialog_End('ALL Good Sound By Riri Finish')
 end
