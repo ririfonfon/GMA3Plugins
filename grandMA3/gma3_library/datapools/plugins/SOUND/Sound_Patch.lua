@@ -26,7 +26,7 @@ function SOUND_Patch(Univers, Address, Fid)
     if success ~= nil then
         Echo('Fixture ' .. my_add_fixture_table.fid .. ' is added')
     else
-        Dialog_End('AddFixture failed!')
+        Sound_Dialog_End('AddFixture failed!')
         ErrEcho('AddFixture failed!')
     end
     local patched_grouping_fixture = Patch().stages[1][2][my_add_fixture_table.name]
@@ -51,7 +51,7 @@ function SOUND_Patch(Univers, Address, Fid)
             Echo('Fixture ' .. my_add_fixture_table.fid ..
                 ' is added with patch address ' .. my_add_fixture_table.patch[1])
         else
-            Dialog_End('AddFixture failed!')
+            Sound_Dialog_End('AddFixture failed!')
             ErrEcho('AddFixture failed!')
         end
     end
