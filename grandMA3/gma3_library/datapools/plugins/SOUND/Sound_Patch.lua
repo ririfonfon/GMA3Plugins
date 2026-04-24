@@ -4,7 +4,7 @@
     Created by Richard Fontaine "RIRI", Mars 2026.
 --]]
 
-function SOUND_Patch(Univers, Address, Fid)
+function SOUND_Patch(Univers, Address, Fid, prefix)
     Cmd('ChangeDestination Root')
     Cmd('ChangeDestination 14.10')
 
@@ -16,12 +16,16 @@ function SOUND_Patch(Univers, Address, Fid)
 
     Cmd('ChangeDestination 7.1.2')
 
+    if prefix == 'B' then
+        Fid = Fid + 11
+    end
+
     local my_add_fixture_table = {}
     my_add_fixture_table.mode = Patch().FixtureTypes.Grouping.DMXModes.Default
     my_add_fixture_table.amount = 1
     my_add_fixture_table.fid = ''
     my_add_fixture_table.idtype = 'Fixture'
-    my_add_fixture_table.name = 'Sound'
+    my_add_fixture_table.name = prefix .. 'Sound'
     local success = AddFixtures(my_add_fixture_table)
     if success ~= nil then
         Echo('Fixture ' .. my_add_fixture_table.fid .. ' is added')
@@ -34,7 +38,7 @@ function SOUND_Patch(Univers, Address, Fid)
         'Band7' }
 
 
-        Fid = Fid - 1
+    Fid = Fid - 1
     for i = 1, 11 do
         my_add_fixture_table = {}
         my_add_fixture_table.mode = Patch().FixtureTypes.Dimmer.DMXModes['Mode 0']
