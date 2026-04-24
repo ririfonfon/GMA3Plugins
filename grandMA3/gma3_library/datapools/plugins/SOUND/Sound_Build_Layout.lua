@@ -17,7 +17,7 @@ function SOUND_Set_Def(L_N, N, Obj)
     Obj[L_N][N.No]:Set('fullresolution', 'Yes')
 end
 
-function SOUND_Build_Layout(Construct_Pool, Name_Layout, Layout_Nr, MacroNrStart, Seq_On_Off)
+function SOUND_Build_Layout(Construct_Pool, Name_Layout, Layout_Nr, MacroNrStart, Seq_On_Off, prefix)
     -- local Layout_Nr      = 1
     local Sound_Type     = { 'All', 'Bass', 'Mid', 'High', 'Band1', 'Band2', 'Band3', 'Band4', 'Band5', 'Band6', 'Band7' }
     local Layout_Object  = Root().ShowData.DataPools[Construct_Pool].Layouts
@@ -147,9 +147,13 @@ function SOUND_Build_Layout(Construct_Pool, Name_Layout, Layout_Nr, MacroNrStart
     local S_V_M_Color    = { '8080FFFF', 'FF0080FF', 'FFFF80FF', '00FF00FF', 'FF8000FF' }
     local S_V_M_Text     = { 'Group', 'Value', 'Matricks', 'None/None', 'None/None' }
 
+    if prefix == 'B' then
+        Layout_Nr = Layout_Nr + 1
+    end
+
     SOUND_Check_Size_Pool(Layout_Nr, Layout_Object)
     Layout_Object:Create(Layout_Nr)
-    Layout_Object[Layout_Nr]:Set('Name', Name_Layout)
+    Layout_Object[Layout_Nr]:Set('Name', prefix .. Name_Layout)
     Layout_Object[Layout_Nr]:Set('ViewPosX', 0)
     Layout_Object[Layout_Nr]:Set('ViewPosY', 0)
     Layout_Object[Layout_Nr]:Set('ViewPosActive', 'Yes')
