@@ -185,6 +185,7 @@ function SOUND_Build_Layout(Construct_Pool, Name_Layout, Layout_Nr, MacroNrStart
         Layout_Object[Layout_Nr][Nr.No]:Set('customtextsize', 16)
         Layout_Object[Layout_Nr][Nr.No]:Set('customtextalignmenth', 'Center')
         Layout_Object[Layout_Nr][Nr.No]:Set('customtextalignmentv', 'Center')
+        Layout_Object[Layout_Nr][Nr.No]:Set('Appearance', 'None')
     end
 
     -- MacroObject
@@ -206,12 +207,13 @@ function SOUND_Build_Layout(Construct_Pool, Name_Layout, Layout_Nr, MacroNrStart
         Layout_Object[Layout_Nr][Nr.No]:Set('customtextsize', 16)
         Layout_Object[Layout_Nr][Nr.No]:Set('customtextalignmenth', 'Center')
         Layout_Object[Layout_Nr][Nr.No]:Set('customtextalignmentv', 'Center')
+        Layout_Object[Layout_Nr][Nr.No]:Set('Appearance', 'None')
         count = count + 1
         if count > 5 then
             count = 1
         end
     end
-
+    -- Master
     for i = MacroNrStart + 165, MacroNrStart + 175 do
         Nr = Layout_Object[Layout_Nr]:Acquire()
         Layout_Object[Layout_Nr][Nr.No]:Set('Object', MacroObject[i])
@@ -229,6 +231,7 @@ function SOUND_Build_Layout(Construct_Pool, Name_Layout, Layout_Nr, MacroNrStart
         Layout_Object[Layout_Nr][Nr.No]:Set('customtextsize', 16)
         Layout_Object[Layout_Nr][Nr.No]:Set('customtextalignmenth', 'Center')
         Layout_Object[Layout_Nr][Nr.No]:Set('customtextalignmentv', 'Center')
+        Layout_Object[Layout_Nr][Nr.No]:Set('Appearance', 'None')
     end
 
     local AppearanceObject = Root().ShowData.Appearances:Children()
@@ -240,7 +243,7 @@ function SOUND_Build_Layout(Construct_Pool, Name_Layout, Layout_Nr, MacroNrStart
             end
         end
     end
-
+    -- Prority
     local i = MacroNrStart + 176
     Nr = Layout_Object[Layout_Nr]:Acquire()
     Layout_Object[Layout_Nr][Nr.No]:Set('Object', MacroObject[i])
@@ -259,6 +262,7 @@ function SOUND_Build_Layout(Construct_Pool, Name_Layout, Layout_Nr, MacroNrStart
     Layout_Object[Layout_Nr][Nr.No]:Set('customtextalignmentv', 'Center')
     Layout_Object[Layout_Nr][Nr.No]:Set('Appearance', Addr_Nat_Panel)
     i = i + 1
+    -- Reset
     Nr = Layout_Object[Layout_Nr]:Acquire()
     Layout_Object[Layout_Nr][Nr.No]:Set('Object', MacroObject[i])
     Layout_Object[Layout_Nr][Nr.No]:Set('posx', macro_x[i])
@@ -275,7 +279,8 @@ function SOUND_Build_Layout(Construct_Pool, Name_Layout, Layout_Nr, MacroNrStart
     Layout_Object[Layout_Nr][Nr.No]:Set('customtextsize', 16)
     Layout_Object[Layout_Nr][Nr.No]:Set('customtextalignmenth', 'Center')
     Layout_Object[Layout_Nr][Nr.No]:Set('customtextalignmentv', 'Center')
-
+    Layout_Object[Layout_Nr][Nr.No]:Set('Appearance', 'None')
+    -- load mem
     local inc, inc_n = 1, 1
     for o = MacroNrStart + 178, MacroNrStart + 186 do
         Nr = Layout_Object[Layout_Nr]:Acquire()
@@ -295,9 +300,11 @@ function SOUND_Build_Layout(Construct_Pool, Name_Layout, Layout_Nr, MacroNrStart
         Layout_Object[Layout_Nr][Nr.No]:Set('customtextsize', 16)
         Layout_Object[Layout_Nr][Nr.No]:Set('customtextalignmenth', 'Center')
         Layout_Object[Layout_Nr][Nr.No]:Set('customtextalignmentv', 'Center')
+        Layout_Object[Layout_Nr][Nr.No]:Set('Appearance', 'None')
         inc = inc + 1
         inc_n = inc_n + 1
     end
+    -- save mem
     inc_n = 1
     for o = MacroNrStart + 187, MacroNrStart + 195 do
         Nr = Layout_Object[Layout_Nr]:Acquire()
@@ -317,9 +324,11 @@ function SOUND_Build_Layout(Construct_Pool, Name_Layout, Layout_Nr, MacroNrStart
         Layout_Object[Layout_Nr][Nr.No]:Set('customtextsize', 16)
         Layout_Object[Layout_Nr][Nr.No]:Set('customtextalignmenth', 'Center')
         Layout_Object[Layout_Nr][Nr.No]:Set('customtextalignmentv', 'Center')
+        Layout_Object[Layout_Nr][Nr.No]:Set('Appearance', 'None')
         inc = inc + 1
         inc_n = inc_n + 1
     end
+    -- label mem
     for o = MacroNrStart + 196, MacroNrStart + 204 do
         Nr = Layout_Object[Layout_Nr]:Acquire()
         Layout_Object[Layout_Nr][Nr.No]:Set('Object', MacroObject[o])
@@ -336,6 +345,7 @@ function SOUND_Build_Layout(Construct_Pool, Name_Layout, Layout_Nr, MacroNrStart
         Layout_Object[Layout_Nr][Nr.No]:Set('customtextsize', 16)
         Layout_Object[Layout_Nr][Nr.No]:Set('customtextalignmenth', 'Center')
         Layout_Object[Layout_Nr][Nr.No]:Set('customtextalignmentv', 'Center')
+        Layout_Object[Layout_Nr][Nr.No]:Set('Appearance', 'None')
         inc = inc + 1
     end
     Sound_Dialog_End('ALL Good Sound By Riri Finish')
