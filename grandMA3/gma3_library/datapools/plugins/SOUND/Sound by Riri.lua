@@ -770,7 +770,7 @@ local function Main(displayHandle)
 
     TopInc = TopInc + 1
 
-    -- Create the UI elements for the 8 input.
+    -- Create the UI elements for the 9 input.
     local input9Icon = inputsGrid:Append("Button")
     input9Icon.Text = ""
     input9Icon.Anchors = { left = 0, right = 0, top = TopInc, bottom = TopInc }
@@ -808,7 +808,7 @@ local function Main(displayHandle)
 
     TopInc = TopInc + 1
 
-    -- Create the UI elements for the 8 input.
+    -- Create the UI elements for the 10 input.
     local input10Icon = inputsGrid:Append("Button")
     input10Icon.Text = ""
     input10Icon.Anchors = { left = 0, right = 0, top = TopInc, bottom = TopInc }
