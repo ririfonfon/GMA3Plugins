@@ -435,5 +435,9 @@ function SOUND_Build_Layout(Construct_Pool, Name_Layout, Layout_Nr, MacroNrStart
         Layout_Object[Layout_Nr][Nr.No]:Set('Appearance', 'None')
         inc = inc + 1
     end
-    Sound_Dialog_End('ALL Good Sound By Riri Finish')
+    if prefix == "A" then
+        Sound_Dialog_End('Sound By Riri Build B Layout Now')
+    elseif prefix == "B" then
+        Sound_Dialog_End('ALL Good Sound By Riri Finish')
+    end
 end
