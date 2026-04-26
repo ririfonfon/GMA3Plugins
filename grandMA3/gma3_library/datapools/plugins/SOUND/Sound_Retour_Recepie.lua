@@ -8,7 +8,8 @@ local my_table, my_handle = select(3, ...)
 
 function Sound_Retour_Recepie()
     local Select = UserVars()
-    local S_Seq, S_Layout, S_Pool, S_Fonction, Target, S_Lay, S_N_Layout, S_N_Object, S_Part, S_Master, S_Num_Lay, S_Mem
+    local S_Seq, S_Layout, S_Pool, S_Fonction, Target, S_Lay, S_N_Layout, S_N_Object, S_Part,
+    S_Master, S_Num_Lay, S_Mem, S_Prefix
     if GetVar(Select, "S_Fonction") then
         S_Fonction = tonumber((GetVar(Select, "S_Fonction")))
     end
@@ -43,6 +44,10 @@ function Sound_Retour_Recepie()
 
     if GetVar(Select, "S_Mem") then
         S_Mem = tonumber((GetVar(Select, "S_Mem")))
+    end
+
+    if GetVar(Select, "S_Prefix") then
+        S_Prefix = GetVar(Select, "S_Prefix")
     end
 
     local SeqNr = ShowData().DataPools[S_Pool].Sequences:Children()
@@ -244,14 +249,14 @@ function Sound_Retour_Recepie()
         local L_Object   = Root().ShowData.DataPools[S_Pool].Layouts
 
         for k in ipairs(L_Object[S_Num_Lay]) do
-            if L_Object[S_Num_Lay][k].Name == 'Grp part 01 Sound All' then
+            if L_Object[S_Num_Lay][k].Name == S_Prefix .. 'Grp part 01 Sound All' then
                 incr = L_Object[S_Num_Lay][k].No
             end
         end
 
         for type in ipairs(Sound_Type) do
             for k in ipairs(SeqNr) do
-                if SeqNr[k].name == 'RecepieSound ' .. Sound_Type[type] then
+                if SeqNr[k].name == S_Prefix .. 'RecepieSound ' .. Sound_Type[type] then
                     cible[type] = k
                 end
             end
@@ -358,9 +363,9 @@ function Sound_Retour_Recepie()
 
         for type in ipairs(Sound_Type) do
             for k in ipairs(SeqNr) do
-                if SeqNr[k].name == 'RecepieSound ' .. Sound_Type[type] then
+                if SeqNr[k].name == S_Prefix .. 'RecepieSound ' .. Sound_Type[type] then
                     cible[type] = k
-                elseif SeqNr[k].name == "MEM_" .. S_Mem .. "_RecepieSound " .. Sound_Type[type] then
+                elseif SeqNr[k].name == S_Prefix .. "MEM_" .. S_Mem .. "_RecepieSound " .. Sound_Type[type] then
                     destination[type] = k
                 end
             end
@@ -382,15 +387,15 @@ function Sound_Retour_Recepie()
         local incr
         local L_Object    = Root().ShowData.DataPools[6].Layouts
         for k in ipairs(L_Object[S_Num_Lay]) do
-            if L_Object[S_Num_Lay][k].Name == 'Grp part 01 Sound All' then
+            if L_Object[S_Num_Lay][k].Name == S_Prefix .. 'Grp part 01 Sound All' then
                 incr = L_Object[S_Num_Lay][k].No
             end
         end
         for type in ipairs(Sound_Type) do
             for k in ipairs(SeqNr) do
-                if SeqNr[k].name == 'RecepieSound ' .. Sound_Type[type] then
+                if SeqNr[k].name == S_Prefix .. 'RecepieSound ' .. Sound_Type[type] then
                     cible[type] = k
-                elseif SeqNr[k].name == "MEM_" .. S_Mem .. "_RecepieSound " .. Sound_Type[type] then
+                elseif SeqNr[k].name == S_Prefix .. "MEM_" .. S_Mem .. "_RecepieSound " .. Sound_Type[type] then
                     destination[type] = k
                 end
             end
@@ -458,4 +463,5 @@ function Sound_Retour_Recepie()
     DelVar(Select, "S_Part")
     DelVar(Select, "S_Master")
     DelVar(Select, "S_Mem")
+    DelVar(Select, "S_Prefix")
 end
