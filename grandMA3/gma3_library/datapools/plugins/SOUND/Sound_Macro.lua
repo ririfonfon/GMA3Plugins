@@ -64,7 +64,7 @@ function SOUND_Build_Macro(Construct_Pool, MacroNum, TLayNr, prefix)
                 "SetUserVariable 'S_Seq' '" .. prefix .. "RecepieSound " .. Sound_Type[TypeSel] .. "'")
             MacroObject[MacroNum][5]:Set('Command', "SetUserVariable 'S_Layout' '" .. TLayNr .. "_" .. lay_object .. "'")
             MacroObject[MacroNum][6]:Set('Command', "SetUserVariable 'S_Pool' '" .. Build_Pool.Name .. "'")
-            MacroObject[MacroNum][7]:Set('Command', "Call DataPool '" .. Call_Pool.Name .. "' Plugin 'Sound by Riri'")
+            MacroObject[MacroNum][7]:Set('Command', "Call DataPool '" .. Call_Pool.Name .. "'.'Plugins'.'Sound by Riri'.'Sound_Retour_Recepie_lua'")
 
             lay_object = lay_object + 1
             MacroNum = MacroNum + 1
@@ -84,7 +84,7 @@ function SOUND_Build_Macro(Construct_Pool, MacroNum, TLayNr, prefix)
                 "SetUserVariable 'S_Seq' '" .. prefix .. "RecepieSound " .. Sound_Type[TypeSel] .. "'")
             MacroObject[MacroNum][5]:Set('Command', "SetUserVariable 'S_Layout' '" .. TLayNr .. "_" .. lay_object .. "'")
             MacroObject[MacroNum][6]:Set('Command', "SetUserVariable 'S_Pool' '" .. Build_Pool.Name .. "'")
-            MacroObject[MacroNum][7]:Set('Command', "Call DataPool '" .. Call_Pool.Name .. "' Plugin 'Sound by Riri'")
+            MacroObject[MacroNum][7]:Set('Command', "Call DataPool '" .. Call_Pool.Name .. "'.'Plugins'.'Sound by Riri'.'Sound_Retour_Recepie_lua'")
 
             lay_object = lay_object + 1
             MacroNum = MacroNum + 1
@@ -104,7 +104,7 @@ function SOUND_Build_Macro(Construct_Pool, MacroNum, TLayNr, prefix)
                 "SetUserVariable 'S_Seq' '" .. prefix .. "RecepieSound " .. Sound_Type[TypeSel] .. "'")
             MacroObject[MacroNum][5]:Set('Command', "SetUserVariable 'S_Layout' '" .. TLayNr .. "_" .. lay_object .. "'")
             MacroObject[MacroNum][6]:Set('Command', "SetUserVariable 'S_Pool' '" .. Build_Pool.Name .. "'")
-            MacroObject[MacroNum][7]:Set('Command', "Call DataPool '" .. Call_Pool.Name .. "' Plugin 'Sound by Riri'")
+            MacroObject[MacroNum][7]:Set('Command', "Call DataPool '" .. Call_Pool.Name .. "'.'Plugins'.'Sound by Riri'.'Sound_Retour_Recepie_lua'")
 
             lay_object = lay_object + 1
             MacroNum = MacroNum + 1
@@ -127,7 +127,7 @@ function SOUND_Build_Macro(Construct_Pool, MacroNum, TLayNr, prefix)
                 "SetUserVariable 'S_Seq' '" .. prefix .. "RecepieSound " .. Sound_Type[TypeSel] .. "'")
             MacroObject[MacroNum][6]:Set('Command', "SetUserVariable 'S_Layout' '" .. TLayNr .. "_" .. lay_object .. "'")
             MacroObject[MacroNum][7]:Set('Command', "SetUserVariable 'S_Pool' '" .. Build_Pool.Name .. "'")
-            MacroObject[MacroNum][8]:Set('Command', "Call DataPool '" .. Call_Pool.Name .. "' Plugin 'Sound by Riri'")
+            MacroObject[MacroNum][8]:Set('Command', "Call DataPool '" .. Call_Pool.Name .. "'.'Plugins'.'Sound by Riri'.'Sound_Retour_Recepie_lua'")
 
             lay_object = lay_object + 1
             MacroNum = MacroNum + 1
@@ -150,7 +150,7 @@ function SOUND_Build_Macro(Construct_Pool, MacroNum, TLayNr, prefix)
                 "SetUserVariable 'S_Seq' '" .. prefix .. "RecepieSound " .. Sound_Type[TypeSel] .. "'")
             MacroObject[MacroNum][6]:Set('Command', "SetUserVariable 'S_Layout' '" .. TLayNr .. "_" .. lay_object .. "'")
             MacroObject[MacroNum][7]:Set('Command', "SetUserVariable 'S_Pool' '" .. Build_Pool.Name .. "'")
-            MacroObject[MacroNum][8]:Set('Command', "Call DataPool '" .. Call_Pool.Name .. "' Plugin 'Sound by Riri'")
+            MacroObject[MacroNum][8]:Set('Command', "Call DataPool '" .. Call_Pool.Name .. "'.'Plugins'.'Sound by Riri'.'Sound_Retour_Recepie_lua'")
 
             lay_object = lay_object + 1
             MacroNum = MacroNum + 1
@@ -173,7 +173,7 @@ function SOUND_Build_Macro(Construct_Pool, MacroNum, TLayNr, prefix)
         MacroObject[MacroNum][2]:Set('Command', "SetUserVariable 'S_Master' " .. k .. "'")
         MacroObject[MacroNum][3]:Set('Command', "SetUserVariable 'S_Layout' '" .. TLayNr .. "_" .. lay_object .. "'")
         MacroObject[MacroNum][4]:Set('Command', "SetUserVariable 'S_Pool' '" .. Build_Pool.Name .. "'")
-        MacroObject[MacroNum][5]:Set('Command', "Call DataPool '" .. Call_Pool.Name .. "' Plugin 'Sound by Riri'")
+        MacroObject[MacroNum][5]:Set('Command', "Call DataPool '" .. Call_Pool.Name .. "'.'Plugins'.'Sound by Riri'.'Sound_Retour_Recepie_lua'")
 
         lay_object = lay_object + 1
         MacroNum = MacroNum + 1
@@ -191,7 +191,7 @@ function SOUND_Build_Macro(Construct_Pool, MacroNum, TLayNr, prefix)
     MacroObject[MacroNum][3]:Set('Command', "SetUserVariable 'S_Seq' '" .. prefix .. "RecepieSound All'")
     MacroObject[MacroNum][4]:Set('Command', "SetUserVariable 'S_Layout' '" .. TLayNr .. "_" .. lay_object .. "'")
     MacroObject[MacroNum][5]:Set('Command', "SetUserVariable 'S_Pool' '" .. Build_Pool.Name .. "'")
-    MacroObject[MacroNum][6]:Set('Command', "Call DataPool '" .. Call_Pool.Name .. "' Plugin 'Sound by Riri'")
+    MacroObject[MacroNum][6]:Set('Command', "Call DataPool '" .. Call_Pool.Name .. "'.'Plugins'.'Sound by Riri'.'Sound_Retour_Recepie_lua'")
     MacroNum = MacroNum + 1
     lay_object = lay_object + 1
 
@@ -206,7 +206,7 @@ function SOUND_Build_Macro(Construct_Pool, MacroNum, TLayNr, prefix)
     MacroObject[MacroNum][2]:Set('Command', "SetUserVariable 'S_Layout' '" .. TLayNr .. "_" .. lay_object .. "'")
     MacroObject[MacroNum][3]:Set('Command', "SetUserVariable 'S_Pool' '" .. Build_Pool.Name .. "'")
     MacroObject[MacroNum][4]:Set('Command', "SetUserVariable 'S_Prefix' '" .. prefix .. "'")
-    MacroObject[MacroNum][5]:Set('Command', "Call DataPool '" .. Call_Pool.Name .. "' Plugin 'Sound by Riri'")
+    MacroObject[MacroNum][5]:Set('Command', "Call DataPool '" .. Call_Pool.Name .. "'.'Plugins'.'Sound by Riri'.'Sound_Retour_Recepie_lua'")
     MacroNum = MacroNum + 1
     lay_object = lay_object + 1
 
@@ -223,7 +223,7 @@ function SOUND_Build_Macro(Construct_Pool, MacroNum, TLayNr, prefix)
         MacroObject[MacroNum][3]:Set('Command', "SetUserVariable 'S_Layout' '" .. TLayNr .. "_" .. lay_object .. "'")
         MacroObject[MacroNum][4]:Set('Command', "SetUserVariable 'S_Pool' '" .. Build_Pool.Name .. "'")
         MacroObject[MacroNum][5]:Set('Command', "SetUserVariable 'S_Prefix' '" .. prefix .. "'")
-        MacroObject[MacroNum][6]:Set('Command', "Call DataPool '" .. Call_Pool.Name .. "' Plugin 'Sound by Riri'")
+        MacroObject[MacroNum][6]:Set('Command', "Call DataPool '" .. Call_Pool.Name .. "'.'Plugins'.'Sound by Riri'.'Sound_Retour_Recepie_lua'")
 
         lay_object = lay_object + 1
         MacroNum = MacroNum + 1
@@ -241,7 +241,7 @@ function SOUND_Build_Macro(Construct_Pool, MacroNum, TLayNr, prefix)
         MacroObject[MacroNum][3]:Set('Command', "SetUserVariable 'S_Layout' '" .. TLayNr .. "_" .. lay_object .. "'")
         MacroObject[MacroNum][4]:Set('Command', "SetUserVariable 'S_Pool' '" .. Build_Pool.Name .. "'")
         MacroObject[MacroNum][5]:Set('Command', "SetUserVariable 'S_Prefix' '" .. prefix .. "'")
-        MacroObject[MacroNum][6]:Set('Command', "Call DataPool '" .. Call_Pool.Name .. "' Plugin 'Sound by Riri'")
+        MacroObject[MacroNum][6]:Set('Command', "Call DataPool '" .. Call_Pool.Name .. "'.'Plugins'.'Sound by Riri'.'Sound_Retour_Recepie_lua'")
 
         lay_object = lay_object + 1
         MacroNum = MacroNum + 1

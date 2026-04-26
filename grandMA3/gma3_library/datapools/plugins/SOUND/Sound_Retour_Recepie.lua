@@ -6,7 +6,7 @@
 local my_table, my_handle = select(3, ...)
 
 
-function Sound_Retour_Recepie()
+return function ()
     local Select = UserVars()
     local S_Seq, S_Layout, S_Pool, S_Fonction, Target, S_Lay, S_N_Layout, S_N_Object, S_Part,
     S_Master, S_Num_Lay, S_Mem, S_Prefix

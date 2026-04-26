@@ -70,7 +70,7 @@ function Sound_Construct(Construct_Pool, Grp_Start, All_4_NrStart, Univers, Addr
     MacroObject[MacroNum][12]:Set('Command',
         "Delete DataPool " .. Construct_Pool .. " Macro " .. MacroNum .. "/NoConfirmation")
 
-    -- Cmd('Go+ DataPool ' .. Construct_Pool .. ' Macro 999')
+    Cmd('Go+ DataPool ' .. Construct_Pool .. ' Macro 999')
 
     -- SOUND_Patch(Univers, Address, Fid)
 

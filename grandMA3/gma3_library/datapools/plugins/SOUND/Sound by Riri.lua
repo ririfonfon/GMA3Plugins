@@ -171,16 +171,17 @@ local function Check_Wrong(Wrong)
 end
 
 local function Main(displayHandle)
-    local Select = UserVars()
-    local Call = false
-    if GetVar(Select, "S_Fonction") then
-        Sound_Retour_Recepie()
-        Call = true
-    end
+    -- local Select = UserVars()
+    -- local Call = false
+    -- if GetVar(Select, "S_Fonction") then
+    --     Echo('OUIIIIIIIIIIIIIII')
+    --     Sound_Retour_Recepie()
+    --     Call = true
+    -- end
 
-    if Call == true then
-        return
-    end
+    -- if Call == true then
+    --     return
+    -- end
 
     Cmd('Set UserProfile *.15 Property "keyboardshortcutsactive" false')
 
