@@ -16,8 +16,9 @@ function SOUND_Patch(Univers, Address, Fid, prefix)
 
     Cmd('ChangeDestination 7.1.2')
 
-    if prefix == 'B' then
+    if prefix == "B" then
         Fid = Fid + 11
+        Address = Address + 11
     end
 
     local my_add_fixture_table = {}
@@ -45,7 +46,7 @@ function SOUND_Patch(Univers, Address, Fid, prefix)
         my_add_fixture_table.amount = 1
         my_add_fixture_table.fid = Fid + i
         my_add_fixture_table.idtype = 'Fixture'
-        my_add_fixture_table.name = 'Sound ' .. Sound_Type[i]
+        my_add_fixture_table.name = prefix .. 'Sound ' .. Sound_Type[i]
         my_add_fixture_table.patch = { "" .. Univers .. ".0" .. Address - 1 + i .. "" }
         ------------------------------------------------------
         my_add_fixture_table.parent = patched_grouping_fixture

@@ -50,20 +50,20 @@ function SOUND_Build_Seq(Construct_Pool, SeqNum, All_4_NrStart, Grp_Start, Fid, 
     local SequenceObject = Root().ShowData.DataPools[Construct_Pool].Sequences
     local Preset4Object  = Root().ShowData.DataPools[Construct_Pool].PresetPools[24]
     local GroupObject    = Root().ShowData.DataPools[Construct_Pool].Groups
-    if prefix == 'B' then
+    if prefix == "B" then
         Grp_Start = Grp_Start + 13
         Fid = Fid + 11
-        All_4_NrStart = All_4_NrStart + 12
+        All_4_NrStart = All_4_NrStart + 13
         SeqNum = SeqNum + 123
     end
     local SeqEnd         = SeqNum + 10
     local inc = 0
     for i = Grp_Start, Grp_Start + 10 do
         GroupObject:Create(i)
-        GroupObject[i]:Set('Name', prefix .. 'Sound ' .. Sound_Type[TypeSel])
         Cmd("AutoCreate Fixture " ..
-            Fid + inc .. " At DataPool " .. Construct_Pool .. " Group " .. i .. " /All /NoConfirmation ")
+        Fid + inc .. " At DataPool " .. Construct_Pool .. " Group " .. i .. " /All /NoConfirmation ")
         GroupObject[i]:Set('Mode', 'Positive')
+        GroupObject[i]:Set('Name', prefix .. 'Sound ' .. Sound_Type[TypeSel])
         TypeSel = TypeSel + 1
         inc = inc + 1
     end

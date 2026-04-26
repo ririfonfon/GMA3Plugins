@@ -44,7 +44,7 @@ function SOUND_Build_Macro(Construct_Pool, MacroNum, TLayNr, prefix)
     local Call_Pool   = thiscomponent:FindParent(DataPool():GetClass())
     local MacroObject = Root().ShowData.DataPools[Construct_Pool].Macros
 
-    if prefix == 'B' then
+    if prefix == "B" then
         MacroNum = MacroNum + 206
     end
 
@@ -160,10 +160,10 @@ function SOUND_Build_Macro(Construct_Pool, MacroNum, TLayNr, prefix)
     end
     TypeSel = 1
     local Master = 1
-    if prefix == 'B' then
+    if prefix == "B" then
         Master = Master + 13
     end
-    for k = Master, Master + 1, 1 do
+    for k = Master, Master + 10, 1 do
         SOUND_Check_Size_Pool(MacroNum, MacroObject)
         MacroObject:Create(MacroNum)
         MacroObject[MacroNum]:Set('Name', prefix .. 'Master_' .. Sound_Type[TypeSel])

@@ -12,7 +12,7 @@ function SOUND_Remote_Dmx(Construct_Pool, SeqNum, Univers, Address, prefix)
     local Count          = 1
     local Sound_Type     = { 'All', 'Bass', 'Mid', 'High', 'Band1', 'Band2', 'Band3', 'Band4', 'Band5', 'Band6', 'Band7' }
 
-    if prefix == 'B' then
+    if prefix == "B" then
         startSeq = startSeq + 123
         Address = Address + 11
     end
