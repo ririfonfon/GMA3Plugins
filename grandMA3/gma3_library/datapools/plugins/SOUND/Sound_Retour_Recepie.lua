@@ -103,15 +103,15 @@ function Sound_Retour_Recepie()
         --     end
         -- end
 
-        for k, v in pairs(MouseObj().ABSPOS) do
-            if k == 'x' then
-                dialog.X = v / 2
-                Echo(k .. " " .. v)
-            elseif k == 'y' then
-                dialog.Y = v / 2
-                Echo(k .. " " .. v)
-            end
-        end
+        -- for k, v in pairs(MouseObj().ABSPOS) do
+        --     if k == 'x' then
+        --         dialog.X = v / 2
+        --         Echo(k .. " " .. v)
+        --     elseif k == 'y' then
+        --         dialog.Y = v / 2
+        --         Echo(k .. " " .. v)
+        --     end
+        -- end
 
         -- for k in pairs(clic.Target) do
         --     Echo('T ' .. k)
