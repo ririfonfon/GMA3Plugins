@@ -171,17 +171,6 @@ local function Check_Wrong(Wrong)
 end
 
 local function Main(displayHandle)
-    -- local Select = UserVars()
-    -- local Call = false
-    -- if GetVar(Select, "S_Fonction") then
-    --     Echo('OUIIIIIIIIIIIIIII')
-    --     Sound_Retour_Recepie()
-    --     Call = true
-    -- end
-
-    -- if Call == true then
-    --     return
-    -- end
 
     Cmd('Set UserProfile *.15 Property "keyboardshortcutsactive" false')
 
@@ -282,7 +271,7 @@ local function Main(displayHandle)
     myicon.BackColor, myicon.W = colorTransparent, 1000
     myicon.X, myicon.Y = 0, 0
     myicon.Interactive = 'No'
-    baseInput.Name = "LC_Main_Box"
+    baseInput.Name = "Sound_Main_Box"
     baseInput.H = "0"
     baseInput.W = dialogWidth
     baseInput.MaxSize = string.format("%s,%s", display.W * 0.55, display.H)
