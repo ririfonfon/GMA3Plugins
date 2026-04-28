@@ -385,7 +385,7 @@ return function ()
         local cible       = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }
         local destination = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }
         local incr
-        local L_Object    = Root().ShowData.DataPools[6].Layouts
+        local L_Object    = Root().ShowData.DataPools[S_Pool].Layouts
         for k in ipairs(L_Object[S_Num_Lay]) do
             if L_Object[S_Num_Lay][k].Name == S_Prefix .. 'Grp part 01 Sound All' then
                 incr = L_Object[S_Num_Lay][k].No
