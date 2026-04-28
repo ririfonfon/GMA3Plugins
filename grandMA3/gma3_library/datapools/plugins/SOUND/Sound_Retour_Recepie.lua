@@ -2,6 +2,7 @@
     Releases:
     * 0.0.0.91
     Created by Richard Fontaine "RIRI", Mars 2026.
+    refrech generators
 --]]
 local my_table, my_handle = select(3, ...)
 
