@@ -171,7 +171,6 @@ local function Check_Wrong(Wrong)
 end
 
 local function Main(displayHandle)
-
     Cmd('Set UserProfile *.15 Property "keyboardshortcutsactive" false')
 
     local list = false
@@ -198,6 +197,7 @@ local function Main(displayHandle)
     local old_NAPOOL
     local Univers = 210
     local Address = 1
+    local AddressRange = 22
     local Fid = 901
     local Grp_Start, Grp_Range
     local Wrong = { false, false, false, false, false, false, false, false, false }
@@ -210,7 +210,9 @@ local function Main(displayHandle)
         Lay_Select       = { 1, 11, 101, 201, 301, 401, 501, 601, 701, 801, 901, 1001, 2001 },
         Seq_Select       = { 1, 11, 101, 201, 301, 401, 501, 601, 701, 801, 901, 1001, 2001 },
         Macro_Select     = { 1, 11, 101, 201, 301, 401, 501, 601, 701, 801, 901, 1001, 2001 },
-        Preset_Select    = { 1, 11, 101, 201, 301, 401, 501, 601, 701, 801, 901, 1001, 2001 }
+        Preset_Select    = { 1, 11, 101, 201, 301, 401, 501, 601, 701, 801, 901, 1001, 2001 },
+        Address_Select   = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 21, 31, 41, 51, 61, 71, 81, 91, 101, 201, 301, 401 },
+        Univers_Select   = { 201, 202, 203, 204, 205, 206, 207, 208, 209, 210, 211, 212, 213, 214, 215, 216, 217, 218, 219, 220 }
     }
 
     Pool_check = SOUND_CH_Pool(popuplists)
@@ -938,7 +940,7 @@ local function Main(displayHandle)
         end
         SeqNrStart = caller.Content:gsub("'", "")
         SeqNrStart = tonumber(SeqNrStart)
-        SeqNrRange = SeqNrStart + 121
+        SeqNrRange = SeqNrStart + 244
         if New == false then
             for k in ipairs(SeqNr) do
                 if SeqNrStart <= tonumber(SeqNr[k].NO) then
@@ -976,7 +978,7 @@ local function Main(displayHandle)
         end
         MacroNrStart = caller.Content:gsub("'", "")
         MacroNrStart = tonumber(MacroNrStart)
-        MacroNrRange = MacroNrStart + 204
+        MacroNrRange = MacroNrStart + 410
         if New == false then
             for k in ipairs(MacroNr) do
                 if MacroNrStart <= tonumber(MacroNr[k].NO) then
@@ -1074,9 +1076,14 @@ local function Main(displayHandle)
         end
         Address = caller.Content:gsub("'", "")
         Address = tonumber(Address)
+        AddressRange = Address + 21
 
-        checks = SOUND_Check_DMX(Univers, Address, 1, 0)
-
+        for a = Address, AddressRange, 1 do
+            checks = SOUND_Check_DMX(Univers, a, 1, 0)
+            if checks == true then
+                break
+            end
+        end
         if checks == true then
             OkButton.Visible = "No"
             input7LineEdit.TextColor = colorAlertText
