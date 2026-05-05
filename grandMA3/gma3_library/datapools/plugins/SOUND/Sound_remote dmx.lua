@@ -5,7 +5,6 @@
 --]]
 
 function SOUND_Remote_Dmx(Construct_Pool, SeqNum, Univers, Address, prefix)
-    -- local Construct_Pool = 5
     local SequenceObject = Root().ShowData.DataPools[Construct_Pool].Sequences
     local RemoteObject   = Root().ShowData.Remotes.DmxRemotes
     local startSeq       = SeqNum + 12
@@ -26,4 +25,22 @@ function SOUND_Remote_Dmx(Construct_Pool, SeqNum, Univers, Address, prefix)
         RemoteObject[a.No]:Set('Fader', 'Temp')
         Count = Count + 1
     end
+end
+
+function SOUND_Remote_Dmx_Cross(Construct_Pool, Grp_Start, Univers, Address)
+    Sound_Dialog_End('Sound By Riri Build Cross_AB Mode ..')
+    local GroupObject  = Root().ShowData.DataPools[Construct_Pool].Groups
+    local RemoteObject = Root().ShowData.Remotes.DmxRemotes
+    local Sound_Type   = { 'A', 'B' }
+    local Master_Group = { Grp_Start + 11, Grp_Start + 24 }
+    Address            = Address + 22
+
+    for i = 1, 2, 1 do
+        local a = RemoteObject:Acquire()
+        RemoteObject[a.No]:Set('Name', 'Cross_' .. Sound_Type[i])
+        RemoteObject[a.No]:Set('Address', "" .. Univers .. ".0" .. Address - 1 + i .. "")
+        RemoteObject[a.No]:Set('Target', GroupObject[Master_Group[i]])
+        RemoteObject[a.No]:Set('Fader', 'Master')
+    end
+    Sound_Dialog_End('ALL Good Sound By Riri Finish')
 end
