@@ -445,6 +445,6 @@ function SOUND_Build_Layout(Construct_Pool, Name_Layout, Layout_Nr, MacroNrStart
     if prefix == "A" then
         Sound_Dialog_End('Sound By Riri Build B Layout Now')
     elseif prefix == "B" then
-        Sound_Dialog_End('ALL Good Sound By Riri Finish')
+        Sound_Dialog_End('Sound By Riri Build Cross_AB Mode')
     end
 end
