@@ -231,11 +231,13 @@ function SOUND_Build_Layout(Construct_Pool, Name_Layout, Layout_Nr, MacroNrStart
     local mem_Text       = { 'Load ', 'Save ', '' }
     local S_V_M_Color    = { '8080FFFF', 'FF0080FF', 'FFFF80FF', '00FF00FF', 'FF8000FF' }
     local S_V_M_Text     = { 'Group', 'Value', 'Matricks', 'None/None', 'None/None' }
+    local Canvas = '[[Sound_A_png]]'
 
     if prefix == "B" then
         Layout_Nr = Layout_Nr + 1
         MacroNrStart = MacroNrStart + 206
         Seq_On_Off = Seq_On_Off + 123
+        Canvas = '[[Sound_B_png]]'
     end
 
     SOUND_Check_Size_Pool(Layout_Nr, Layout_Object)
@@ -244,6 +246,11 @@ function SOUND_Build_Layout(Construct_Pool, Name_Layout, Layout_Nr, MacroNrStart
     Layout_Object[Layout_Nr]:Set('ViewPosX', 0)
     Layout_Object[Layout_Nr]:Set('ViewPosY', 0)
     Layout_Object[Layout_Nr]:Set('ViewPosActive', 'Yes')
+    Layout_Object[Layout_Nr]:Set('CanvasAppearance', Canvas)
+    Layout_Object[Layout_Nr]:Set('PositionX', 500)
+    Layout_Object[Layout_Nr]:Set('PositionY', -200)
+    Layout_Object[Layout_Nr]:Set('DimensionW', 500)
+    Layout_Object[Layout_Nr]:Set('DimensionH', 500)
 
 
     -- on_off
