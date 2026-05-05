@@ -4,10 +4,16 @@
     Created by Richard Fontaine "RIRI", Mars 2026.
     refrech generators
 --]]
+
+local signalTable = select(4, ...)
 local my_table, my_handle = select(3, ...)
 
+function signalTable.touchUpdate(...)
+    local y = select(5, ...)
+    Echo("Y pos: " .. tostring(y))
+end
 
-return function ()
+return function()
     local Select = UserVars()
     local S_Seq, S_Layout, S_Pool, S_Fonction, Target, S_Lay, S_N_Layout, S_N_Object, S_Part,
     S_Master, S_Num_Lay, S_Mem, S_Prefix
@@ -126,9 +132,10 @@ return function ()
         --     Echo('P ' .. k)
         -- end
 
+        
+        
         dialog.H, dialog.W = 400, 10
         local fader = dialog:Append('UiFader')
-
         fader.target = proxy
         fader.Text = proxy.Name
         fader.changed = 'fader_changed'
