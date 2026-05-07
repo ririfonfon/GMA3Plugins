@@ -94,7 +94,8 @@ local function SOUND_Check_ID(myFID, myCount)
 end
 
 local function SOUND_list_input(popuplists, TLay, TLayNr, TLayNrRef, SeqNr, SeqNrStart, MacroNr,
-                                MacroNrStart, All_4_Nr, All_4_NrStart, All_4_Current)
+                                MacroNrStart, All_4_Nr, All_4_NrStart, All_4_Current,
+                                FixtureGroups, Grp_Start)
     for k in ipairs(TLay) do
         for i in ipairs(popuplists.Lay_Select) do
             if popuplists.Lay_Select[i] == TLay[k].NO then
@@ -145,7 +146,23 @@ local function SOUND_list_input(popuplists, TLay, TLayNr, TLayNrRef, SeqNr, SeqN
         All_4_NrStart = 1
     end
     All_4_Current = All_4_NrStart
-    return TLayNr, TLayNrRef, SeqNr, SeqNrStart, MacroNr, MacroNrStart, All_4_Nr, All_4_NrStart, All_4_Current
+    
+    kk = 0
+    for k in ipairs(FixtureGroups) do
+        for i in ipairs(popuplists.Group_Select) do
+            if popuplists.Group_Select[i] == FixtureGroups[k].NO then
+                table.remove(popuplists.Group_Select, i)
+            end
+        end
+        kk = k
+        Grp_Start = FixtureGroups[k].NO
+    end
+    if kk == 0 then
+
+    end
+
+    return TLayNr, TLayNrRef, SeqNr, SeqNrStart, MacroNr, MacroNrStart, All_4_Nr, All_4_NrStart,
+        All_4_Current, FixtureGroups, Grp_Start
 end
 
 local function SOUND_CH_Pool(popuplists)
@@ -197,7 +214,7 @@ local function Main(displayHandle)
     local old_NAPOOL
     local Univers = 210
     local Address = 1
-    local AddressRange = 22
+    local AddressRange = 24
     local Fid = 901
     local Grp_Start, Grp_Range
     local Wrong = { false, false, false, false, false, false, false, false, false }
@@ -212,7 +229,9 @@ local function Main(displayHandle)
         Macro_Select     = { 1, 11, 101, 201, 301, 401, 501, 601, 701, 801, 901, 1001, 2001 },
         Preset_Select    = { 1, 11, 101, 201, 301, 401, 501, 601, 701, 801, 901, 1001, 2001 },
         Address_Select   = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 21, 31, 41, 51, 61, 71, 81, 91, 101, 201, 301, 401 },
-        Univers_Select   = { 201, 202, 203, 204, 205, 206, 207, 208, 209, 210, 211, 212, 213, 214, 215, 216, 217, 218, 219, 220 }
+        Univers_Select   = { 201, 202, 203, 204, 205, 206, 207, 208, 209, 210, 211, 212, 213, 214, 215, 216, 217, 218, 219, 220 },
+        Fixture_Select   = { 1, 11, 101, 201, 301, 401, 501, 601, 701, 801, 901, 1001, 1101, 1201, 1301, 1401, 1501, 1601, 1701, 1801, 1901, 2001 },
+        Group_Select     = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 21, 31, 41, 51, 61, 71, 81, 91, 101, 201, 301, 401 },
     }
 
     Pool_check = SOUND_CH_Pool(popuplists)
@@ -221,9 +240,9 @@ local function Main(displayHandle)
 
     if list == false then
         TLayNr, TLayNrRef, SeqNr, SeqNrStart, MacroNr,
-        MacroNrStart, All_4_Nr, All_4_NrStart, All_4_Current = SOUND_list_input(popuplists, TLay,
-            TLayNr, TLayNrRef, SeqNr, SeqNrStart, MacroNr,
-            MacroNrStart, All_4_Nr, All_4_NrStart, All_4_Current)
+        MacroNrStart, All_4_Nr, All_4_NrStart, All_4_Current, FixtureGroups, Grp_Start = SOUND_list_input(popuplists,
+            TLay, TLayNr, TLayNrRef, SeqNr, SeqNrStart, MacroNr,
+            MacroNrStart, All_4_Nr, All_4_NrStart, All_4_Current, FixtureGroups, Grp_Start)
 
         list = true
     end
@@ -708,7 +727,7 @@ local function Main(displayHandle)
     local input7LineEdit = inputsGrid:Append("LineEdit")
     input7LineEdit.Prompt = "Nb: "
     input7LineEdit.TextAutoAdjust = "Yes"
-    input7LineEdit.Anchors = { left = 4, right = 9, top = TopInc, bottom = TopInc }
+    input7LineEdit.Anchors = { left = 4, right = 7, top = TopInc, bottom = TopInc }
     input7LineEdit.Padding = "5,5"
     input7LineEdit.Margin = { left = 2, right = 0, top = TopInc, bottom = 2 }
     input7LineEdit.Filter = "0123456789"
@@ -721,6 +740,18 @@ local function Main(displayHandle)
     input7LineEdit.Font = "2"
     input7LineEdit.BackColor = colorPartlySelected
     input7LineEdit.Visible = "No"
+
+    local input7Sujestion = inputsGrid:Append("Button")
+    input7Sujestion.Text = ""
+    input7Sujestion.Anchors = { left = 8, right = 9, top = TopInc, bottom = TopInc }
+    input7Sujestion.Margin = { left = 2, right = 0, top = TopInc, bottom = 2 }
+    input7Sujestion.Icon = "zoom"
+    input7Sujestion.Name = 'Univers_Select'
+    input7Sujestion.PluginComponent = thiscomponent
+    input7Sujestion.Clicked = 'mypopup'
+    input7Sujestion.HasHover = "yes"
+    input7Sujestion.backColor = colorPartlySelected
+    input7Sujestion.Visible = "No"
 
     TopInc = TopInc + 1
 
@@ -760,6 +791,18 @@ local function Main(displayHandle)
     input8LineEdit.BackColor = colorPartlySelected
     input8LineEdit.Visible = "No"
 
+    local input8Sujestion = inputsGrid:Append("Button")
+    input8Sujestion.Text = ""
+    input8Sujestion.Anchors = { left = 8, right = 9, top = TopInc, bottom = TopInc }
+    input8Sujestion.Margin = { left = 2, right = 0, top = TopInc, bottom = 2 }
+    input8Sujestion.Icon = "zoom"
+    input8Sujestion.Name = 'Address_Select'
+    input8Sujestion.PluginComponent = thiscomponent
+    input8Sujestion.Clicked = 'mypopup'
+    input8Sujestion.HasHover = "yes"
+    input8Sujestion.backColor = colorPartlySelected
+    input8Sujestion.Visible = "No"
+
     TopInc = TopInc + 1
 
     -- Create the UI elements for the 9 input.
@@ -798,6 +841,18 @@ local function Main(displayHandle)
     input9LineEdit.BackColor = colorPartlySelected
     input9LineEdit.Visible = "No"
 
+    local input9Sujestion = inputsGrid:Append("Button")
+    input9Sujestion.Text = ""
+    input9Sujestion.Anchors = { left = 8, right = 9, top = TopInc, bottom = TopInc }
+    input9Sujestion.Margin = { left = 2, right = 0, top = TopInc, bottom = 2 }
+    input9Sujestion.Icon = "zoom"
+    input9Sujestion.Name = 'Fixture_Select'
+    input9Sujestion.PluginComponent = thiscomponent
+    input9Sujestion.Clicked = 'mypopup'
+    input9Sujestion.HasHover = "yes"
+    input9Sujestion.backColor = colorPartlySelected
+    input9Sujestion.Visible = "No"
+
     TopInc = TopInc + 1
 
     -- Create the UI elements for the 10 input.
@@ -835,6 +890,18 @@ local function Main(displayHandle)
     input10LineEdit.Font = "2"
     input10LineEdit.BackColor = colorGroups
     input10LineEdit.Visible = "No"
+
+    local input10Sujestion = inputsGrid:Append("Button")
+    input10Sujestion.Text = ""
+    input10Sujestion.Anchors = { left = 8, right = 9, top = TopInc, bottom = TopInc }
+    input10Sujestion.Margin = { left = 2, right = 0, top = TopInc, bottom = 2 }
+    input10Sujestion.Icon = "zoom"
+    input10Sujestion.Name = 'Group_Select'
+    input10Sujestion.PluginComponent = thiscomponent
+    input10Sujestion.Clicked = 'mypopup'
+    input10Sujestion.HasHover = "yes"
+    input10Sujestion.backColor = colorGroups
+    input10Sujestion.Visible = "No"
 
     -- Create the button grid.
     -- This is row 3 of the dlgFrame.
@@ -1133,8 +1200,7 @@ local function Main(displayHandle)
         end
         Grp_Start = caller.Content:gsub("'", "")
         Grp_Start = tonumber(Grp_Start)
-        Grp_Range = Grp_Start + 11
-        -- if New == false then
+        Grp_Range = Grp_Start + 24
         for k in ipairs(FixtureGroups) do
             if Grp_Start <= tonumber(FixtureGroups[k].NO) then
                 if Grp_Range >= tonumber(FixtureGroups[k].NO) then
@@ -1195,8 +1261,9 @@ local function Main(displayHandle)
                 FixtureGroups = Root().ShowData.DataPools[Construct_Pool].Groups:Children()
                 TLayNr, SeqNrStart, MacroNrStart, All_4_NrStart = nil, nil, nil, nil
                 TLayNr, TLayNrRef, SeqNr, SeqNrStart, MacroNr,
-                MacroNrStart, All_4_Nr, All_4_NrStart, All_4_Current = SOUND_list_input(popuplists, TLay,
-                    TLayNr, TLayNrRef, SeqNr, SeqNrStart, MacroNr, MacroNrStart, All_4_Nr, All_4_NrStart, All_4_Current)
+                MacroNrStart, All_4_Nr, All_4_NrStart, All_4_Current, FixtureGroups, Grp_Start = SOUND_list_input(
+                    popuplists, TLay, TLayNr, TLayNrRef, SeqNr, SeqNrStart, MacroNr, MacroNrStart,
+                    All_4_Nr, All_4_NrStart, All_4_Current, FixtureGroups, Grp_Start)
             else
                 TLayNr = 1
                 SeqNrStart = 1
@@ -1237,6 +1304,10 @@ local function Main(displayHandle)
             input4Sujestion.Visible = "Yes"
 
             input6Sujestion.Visible = "Yes"
+            input7Sujestion.Visible = "Yes"
+            input8Sujestion.Visible = "Yes"
+            input9Sujestion.Visible = "Yes"
+            input10Sujestion.Visible = "Yes"
         elseif caller.Name == "Name_Select" then
             input1LineEdit.Content = choice
         elseif caller.Name == "Lay_Select" then
@@ -1247,6 +1318,14 @@ local function Main(displayHandle)
             input4LineEdit.Content = choice
         elseif caller.Name == "Preset_Select" then
             input6LineEdit.Content = choice
+        elseif caller.Name == "Univers_Select" then
+            input7LineEdit.Content = choice
+        elseif caller.Name == "Address_Select" then
+            input8LineEdit.Content = choice
+        elseif caller.Name == "Fixture_Select" then
+            input9LineEdit.Content = choice
+        elseif caller.Name == "Group_Select" then
+            input10LineEdit.Content = choice
         elseif caller.Name == "Name_Pool_Select" then
             input21LineEdit.Content = choice
         end
