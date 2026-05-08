@@ -10,6 +10,8 @@ local componentName = select(2, ...)
 local signalTable, thiscomponent = select(3, ...)
 local myHandle = select(4, ...)
 
+
+
 local function SOUND_Check_DMX(myDMXUniverse, myDMXAddress, myCount, myBreakIndex)
     Cmd('Fixture Thru')
 
@@ -28,7 +30,7 @@ local function SOUND_Check_DMX(myDMXUniverse, myDMXAddress, myCount, myBreakInde
 
     -- Check if there is a selection and exit if there isn't.
     if SelectionFirst() == nil then
-        Printf("Please make a selection and try again.")
+        ErrEcho("Please make a selection and try again.")
         Cmd('Clear')
         return
     end
@@ -40,11 +42,11 @@ local function SOUND_Check_DMX(myDMXUniverse, myDMXAddress, myCount, myBreakInde
     else
         -- Do the actual collision check and provide useful feedback.
         if CheckDMXCollision(myDmxMode, startOfRange, myCount, myBreakIndex) then
-            Printf("The DMX address " .. startOfRange .. " is available.")
+            -- Printf("The DMX address " .. startOfRange .. " is available.")
             Cmd('Clear')
             return false
         else
-            ErrEcho("The DMX address " .. startOfRange .. " cannot be used as a start address for this patch.")
+            -- ErrEcho("The DMX address " .. startOfRange .. " cannot be used as a start address for this patch.")
             Cmd('Clear')
             return true
         end
@@ -103,6 +105,41 @@ local function SOUND_Check_ID(myFID, myCount, popuplists)
     end
 end
 
+local function Address_Select_Refrech(Univers, popuplists)
+    Cmd('Fixture Thru')
+    for Addr = 1, 489, 1 do
+        local AddressRange = Addr + 23
+        -- local checks = SOUND_Check_DMX(Univers, Addr, AddressRange, 0)
+        -- Creates the string used for the DMX address.
+        local startOfRange = string.format("%d.%03d", Univers, Addr)
+        -- Check if there is a selection and exit if there isn't.
+        if SelectionFirst() == nil then
+            ErrEcho("Please make a selection and try again.")
+            Cmd('Clear')
+            return
+        end
+        -- This gets the handle for the first fixture a patched generic Dimmers 8-bit mode.
+        local myDmxMode = GetSubfixture(SelectionFirst()).ModeDirect
+        if myDmxMode == nil then
+            -- Exit the function if the DMX mode returns nil.
+        else
+            -- Do the actual collision check and provide useful feedback.
+            if CheckDMXCollision(myDmxMode, startOfRange, AddressRange, 0) then
+                -- Printf("The DMX address " .. startOfRange .. " is available.")
+            else
+                -- ErrEcho("The DMX address " .. startOfRange .. " cannot be used as a start address for this patch.")
+                for i in ipairs(popuplists.Address_Select) do
+                    if popuplists.Address_Select[i] == Addr then
+                        table.remove(popuplists.Address_Select, i)
+                        break
+                    end
+                end
+            end
+        end
+    end
+    Cmd('Clear')
+end
+
 local function SOUND_Check_ID_list(myFID, myCount, popuplists)
     -- Create a variable with the FID you want to check.
     -- local myFID = 2001
@@ -123,40 +160,41 @@ local function SOUND_Check_ID_list(myFID, myCount, popuplists)
     --- 9 = MArker
     --- 10 = Multipatch
     local myType = 0
-    local Fixture_Id = Patch().IDType.Fixture:Children()
+    -- local Fixture_Id = ShowData().Patch.IDTypes.Fixture:Children()
+    local Fixture_Id = popuplists.Fixture_Select
 
     -- Check if the count is more than one.
     if myCount > 1 then
+        -- Printf("=============== START OF DUMP ===============")
+        -- Fixture_Id:Dump()
+        -- Printf("================ END OF DUMP ================")
+
         -- Check if there is a collision and print valid feedback.
         for a in ipairs(Fixture_Id) do
-            myFID = Fixture_Id[a].NO
+            myFID = Fixture_Id[a]
             if CheckFIDCollision(myFID, myCount, myType) then
-                Printf("The FID " .. myFID .. " to " .. (myFID + myCount) .. " is available.")
-                return false
+                Printf("*The FID " .. myFID .. " to " .. (myFID + myCount) .. " is available.")
             else
-                ErrEcho("The FID " .. myFID .. " to " .. (myFID + myCount) .. " gives an FID collision.")
+                ErrEcho("*The FID " .. myFID .. " to " .. (myFID + myCount) .. " gives an FID collision.")
                 for i in ipairs(popuplists.Fixture_Select) do
                     if myFID + myCount <= popuplists.Fixture_Select[i] or popuplists.Fixture_Select[i] >= myFID then
                         table.remove(popuplists.Fixture_Select, i)
                     end
                 end
-                return true
             end
         end
     else
         for a in ipairs(Fixture_Id) do
-            myFID = Fixture_Id[a].NO
+            myFID = Fixture_Id[a]
             if CheckFIDCollision(myFID, nil, myType) then
-                Printf("The FID " .. myFID .. " is available.")
-                return false
+                Printf("*The FID " .. myFID .. " is available.")
             else
-                ErrEcho("The FID " .. myFID .. " gives an FID collision.")
+                ErrEcho("*The FID " .. myFID .. " gives an FID collision.")
                 for i in ipairs(popuplists.Fixture_Select) do
                     if myFID == popuplists.Fixture_Select[i] then
                         table.remove(popuplists.Fixture_Select, i)
                     end
                 end
-                return true
             end
         end
     end
@@ -1189,7 +1227,6 @@ local function Main(displayHandle)
         end
         Univers = caller.Content:gsub("'", "")
         Univers = tonumber(Univers)
-
         checks = SOUND_Check_DMX(Univers, Address, 1, 0)
 
         if checks == true then
@@ -1217,15 +1254,22 @@ local function Main(displayHandle)
         end
         Address = caller.Content:gsub("'", "")
         Address = tonumber(Address)
-        AddressRange = Address + 21
+        AddressRange = Address + 23
 
-        for a = Address, AddressRange, 1 do
-            checks = SOUND_Check_DMX(Univers, a, 1, 0)
-            if checks == true then
-                break
-            end
-        end
+        -- for a = Address, AddressRange, 1 do
+        --     checks = SOUND_Check_DMX(Univers, a, 1, 0)
+        --     if checks == true then
+        --         break
+        --     end
+        -- end
+        checks = SOUND_Check_DMX(Univers, Address, AddressRange, 0)
+
         if checks == true then
+            for i in ipairs(popuplists.Address_Select) do
+                if popuplists.Address_Select[i] == Address then
+                    table.remove(popuplists.Address_Select, i)
+                end
+            end
             OkButton.Visible = "No"
             input7LineEdit.TextColor = colorAlertText
             input8LineEdit.TextColor = colorAlertText
@@ -1358,11 +1402,16 @@ local function Main(displayHandle)
                     popuplists, TLay, TLayNr, TLayNrRef, SeqNr, SeqNrStart, MacroNr, MacroNrStart,
                     All_4_Nr, All_4_NrStart, All_4_Current, FixtureGroups, Grp_Start)
                 SOUND_Check_ID_list(Fid, 11, popuplists)
+                coroutine.yield(0.1)
+                Address_Select_Refrech(Univers, popuplists)
             else
                 TLayNr = 1
                 SeqNrStart = 1
                 MacroNrStart = 1
                 All_4_NrStart = 1
+                SOUND_Check_ID_list(Fid, 11, popuplists)
+                coroutine.yield(0.1)
+                Address_Select_Refrech(Univers, popuplists)
             end
 
             input1LineEdit.Content = "Sound"
@@ -1371,9 +1420,9 @@ local function Main(displayHandle)
             input4LineEdit.Content = MacroNrStart
             input6LineEdit.Content = All_4_NrStart
             input7LineEdit.Content = Univers
-            input8LineEdit.Content = Address
-            input9LineEdit.Content = Fid
-            input10LineEdit.Content = 1
+            input8LineEdit.Content = popuplists.Address_Select[1]
+            input9LineEdit.Content = popuplists.Fixture_Select[1]
+            input10LineEdit.Content = popuplists.Group_Select[1]
             input20number.Text = Construct_Pool
 
 
