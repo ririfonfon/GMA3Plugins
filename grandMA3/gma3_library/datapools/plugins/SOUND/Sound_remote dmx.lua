@@ -42,5 +42,6 @@ function SOUND_Remote_Dmx_Cross(Construct_Pool, Grp_Start, Univers, Address)
         RemoteObject[a.No]:Set('Target', GroupObject[Master_Group[i]])
         RemoteObject[a.No]:Set('Fader', 'Master')
     end
-    Sound_Dialog_End('ALL Good Sound By Riri Finish')
+    Sound_Dialog_End(
+    'ALL Good Sound By Riri Finish \n\n\n Remenber\n\n AMasterALLSOUND \n & \n BMasterALLSOUND \n\n Value are 0 \n\n Make Cross remote \n\n or set a value\n\n\n\n Enjoy')
 end
