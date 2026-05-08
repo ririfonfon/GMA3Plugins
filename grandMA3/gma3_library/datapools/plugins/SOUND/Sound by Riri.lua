@@ -51,7 +51,7 @@ local function SOUND_Check_DMX(myDMXUniverse, myDMXAddress, myCount, myBreakInde
     end
 end
 
-local function SOUND_Check_ID(myFID, myCount)
+local function SOUND_Check_ID(myFID, myCount, popuplists)
     -- Create a variable with the FID you want to check.
     -- local myFID = 2001
     -- Create a variable with the number of subsequent ID's to also check.
@@ -80,6 +80,11 @@ local function SOUND_Check_ID(myFID, myCount)
             return false
         else
             ErrEcho("The FID " .. myFID .. " to " .. (myFID + myCount) .. " gives an FID collision.")
+            for i in ipairs(popuplists.Fixture_Select) do
+                if myFID + myCount <= popuplists.Fixture_Select[i] or popuplists.Fixture_Select[i] >= myFID then
+                    table.remove(popuplists.Fixture_Select, i)
+                end
+            end
             return true
         end
     else
@@ -88,7 +93,71 @@ local function SOUND_Check_ID(myFID, myCount)
             return false
         else
             ErrEcho("The FID " .. myFID .. " gives an FID collision.")
+            for i in ipairs(popuplists.Fixture_Select) do
+                if myFID == popuplists.Fixture_Select[i] then
+                    table.remove(popuplists.Fixture_Select, i)
+                end
+            end
             return true
+        end
+    end
+end
+
+local function SOUND_Check_ID_list(myFID, myCount, popuplists)
+    -- Create a variable with the FID you want to check.
+    -- local myFID = 2001
+    -- Create a variable with the number of subsequent ID's to also check.
+    -- local myCount = 10
+    -- Create a variable with the IDType you want to check.
+    -- Default value is 0. This is the "Fixture" type.
+    -- Valid integers are:
+    --- 0 = Fixture
+    --- 1 = Channel
+    --- 2 = Universal
+    --- 3 = Houseligths (default name)
+    --- 4 = NonDim (default name)
+    --- 5 = Media (default name)
+    --- 6 = Fog (default name)
+    --- 7 = Effect (default name)
+    --- 8 = Pyro (default name)
+    --- 9 = MArker
+    --- 10 = Multipatch
+    local myType = 0
+    local Fixture_Id = Patch().IDType.Fixture:Children()
+
+    -- Check if the count is more than one.
+    if myCount > 1 then
+        -- Check if there is a collision and print valid feedback.
+        for a in ipairs(Fixture_Id) do
+            myFID = Fixture_Id[a].NO
+            if CheckFIDCollision(myFID, myCount, myType) then
+                Printf("The FID " .. myFID .. " to " .. (myFID + myCount) .. " is available.")
+                return false
+            else
+                ErrEcho("The FID " .. myFID .. " to " .. (myFID + myCount) .. " gives an FID collision.")
+                for i in ipairs(popuplists.Fixture_Select) do
+                    if myFID + myCount <= popuplists.Fixture_Select[i] or popuplists.Fixture_Select[i] >= myFID then
+                        table.remove(popuplists.Fixture_Select, i)
+                    end
+                end
+                return true
+            end
+        end
+    else
+        for a in ipairs(Fixture_Id) do
+            myFID = Fixture_Id[a].NO
+            if CheckFIDCollision(myFID, nil, myType) then
+                Printf("The FID " .. myFID .. " is available.")
+                return false
+            else
+                ErrEcho("The FID " .. myFID .. " gives an FID collision.")
+                for i in ipairs(popuplists.Fixture_Select) do
+                    if myFID == popuplists.Fixture_Select[i] then
+                        table.remove(popuplists.Fixture_Select, i)
+                    end
+                end
+                return true
+            end
         end
     end
 end
@@ -146,7 +215,7 @@ local function SOUND_list_input(popuplists, TLay, TLayNr, TLayNrRef, SeqNr, SeqN
         All_4_NrStart = 1
     end
     All_4_Current = All_4_NrStart
-    
+
     kk = 0
     for k in ipairs(FixtureGroups) do
         for i in ipairs(popuplists.Group_Select) do
@@ -228,10 +297,15 @@ local function Main(displayHandle)
         Seq_Select       = { 1, 11, 101, 201, 301, 401, 501, 601, 701, 801, 901, 1001, 2001 },
         Macro_Select     = { 1, 11, 101, 201, 301, 401, 501, 601, 701, 801, 901, 1001, 2001 },
         Preset_Select    = { 1, 11, 101, 201, 301, 401, 501, 601, 701, 801, 901, 1001, 2001 },
-        Address_Select   = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 21, 31, 41, 51, 61, 71, 81, 91, 101, 201, 301, 401 },
-        Univers_Select   = { 201, 202, 203, 204, 205, 206, 207, 208, 209, 210, 211, 212, 213, 214, 215, 216, 217, 218, 219, 220 },
-        Fixture_Select   = { 1, 11, 101, 201, 301, 401, 501, 601, 701, 801, 901, 1001, 1101, 1201, 1301, 1401, 1501, 1601, 1701, 1801, 1901, 2001 },
-        Group_Select     = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 21, 31, 41, 51, 61, 71, 81, 91, 101, 201, 301, 401 },
+        Address_Select   = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 21, 31, 41, 51, 61, 71, 81, 91,
+            101, 201, 301, 401 },
+        Univers_Select   = { 201, 202, 203, 204, 205, 206, 207, 208, 209, 210, 211, 212, 213, 214,
+            215, 216, 217, 218, 219, 220 },
+        Fixture_Select   = { 1, 11, 21, 31, 41, 51, 61, 71, 81, 91, 101, 201, 301, 401, 501, 601,
+            701, 801, 901, 911, 921, 931, 941, 951, 961, 971, 981, 991, 1001, 1101, 1201, 1301,
+            1401, 1501, 1601, 1701, 1801, 1901, 2001 },
+        Group_Select     = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 21, 31, 41, 51, 61, 71, 81, 91,
+            101, 201, 301, 401 },
     }
 
     Pool_check = SOUND_CH_Pool(popuplists)
@@ -1177,7 +1251,7 @@ local function Main(displayHandle)
         Fid = caller.Content:gsub("'", "")
         Fid = tonumber(Fid)
 
-        checks = SOUND_Check_ID(Fid, 11)
+        checks = SOUND_Check_ID(Fid, 11, popuplists)
 
         if checks == true then
             OkButton.Visible = "No"
@@ -1259,11 +1333,31 @@ local function Main(displayHandle)
                 MacroNr = Root().ShowData.DataPools[Construct_Pool].Macros:Children()
                 All_4_Nr = Root().ShowData.DataPools[Construct_Pool].PresetPools[24]:Children()
                 FixtureGroups = Root().ShowData.DataPools[Construct_Pool].Groups:Children()
+                popuplists = {
+                    DataPool_Select  = {},
+                    list_pool        = {},
+                    Name_Select      = { 'Sound', 'Audio', 'Sound In', 'Sound Mod' },
+                    Name_Pool_Select = { 'Sound', 'Audio', 'Sound In', 'Sound Mod' },
+                    Lay_Select       = { 1, 11, 101, 201, 301, 401, 501, 601, 701, 801, 901, 1001, 2001 },
+                    Seq_Select       = { 1, 11, 101, 201, 301, 401, 501, 601, 701, 801, 901, 1001, 2001 },
+                    Macro_Select     = { 1, 11, 101, 201, 301, 401, 501, 601, 701, 801, 901, 1001, 2001 },
+                    Preset_Select    = { 1, 11, 101, 201, 301, 401, 501, 601, 701, 801, 901, 1001, 2001 },
+                    Address_Select   = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 21, 31, 41, 51, 61, 71, 81, 91,
+                        101, 201, 301, 401 },
+                    Univers_Select   = { 201, 202, 203, 204, 205, 206, 207, 208, 209, 210, 211, 212, 213, 214,
+                        215, 216, 217, 218, 219, 220 },
+                    Fixture_Select   = { 1, 11, 21, 31, 41, 51, 61, 71, 81, 91, 101, 201, 301, 401, 501, 601,
+                        701, 801, 901, 911, 921, 931, 941, 951, 961, 971, 981, 991, 1001, 1101, 1201, 1301,
+                        1401, 1501, 1601, 1701, 1801, 1901, 2001 },
+                    Group_Select     = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 21, 31, 41, 51, 61, 71, 81, 91,
+                        101, 201, 301, 401 },
+                }
                 TLayNr, SeqNrStart, MacroNrStart, All_4_NrStart = nil, nil, nil, nil
                 TLayNr, TLayNrRef, SeqNr, SeqNrStart, MacroNr,
                 MacroNrStart, All_4_Nr, All_4_NrStart, All_4_Current, FixtureGroups, Grp_Start = SOUND_list_input(
                     popuplists, TLay, TLayNr, TLayNrRef, SeqNr, SeqNrStart, MacroNr, MacroNrStart,
                     All_4_Nr, All_4_NrStart, All_4_Current, FixtureGroups, Grp_Start)
+                SOUND_Check_ID_list(Fid, 11, popuplists)
             else
                 TLayNr = 1
                 SeqNrStart = 1
