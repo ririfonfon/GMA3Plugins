@@ -351,10 +351,10 @@ local function Main(displayHandle)
     local New = false
 
     if list == false then
-        TLayNr, TLayNrRef, SeqNr, SeqNrStart, MacroNr,
-        MacroNrStart, All_4_Nr, All_4_NrStart, All_4_Current, FixtureGroups, Grp_Start = SOUND_list_input(popuplists,
-            TLay, TLayNr, TLayNrRef, SeqNr, SeqNrStart, MacroNr,
-            MacroNrStart, All_4_Nr, All_4_NrStart, All_4_Current, FixtureGroups, Grp_Start)
+        TLayNr, TLayNrRef, SeqNr, SeqNrStart, MacroNr, MacroNrStart, All_4_Nr, All_4_NrStart,
+        All_4_Current, FixtureGroups, Grp_Start = SOUND_list_input(popuplists, TLay, TLayNr,
+            TLayNrRef, SeqNr, SeqNrStart, MacroNr, MacroNrStart, All_4_Nr, All_4_NrStart,
+            All_4_Current, FixtureGroups, Grp_Start)
 
         list = true
     end
