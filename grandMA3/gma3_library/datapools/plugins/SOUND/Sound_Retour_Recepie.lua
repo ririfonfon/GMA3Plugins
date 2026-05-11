@@ -1,8 +1,11 @@
 --[[
-    Releases:
-    * 0.0.0.91
-    Created by Richard Fontaine "RIRI", Mars 2026.
-    refrech generators
+Releases:
+* 2.3.2.0
+
+Version :
+* 0.0.0.9
+
+Created by Richard Fontaine "RIRI", April 2026.
 --]]
 
 local signalTable = select(4, ...)
@@ -105,10 +108,10 @@ return function()
         -- MouseObj():Dump()
         -- Printf("================ END OF DUMP ================")
 
-        local clic = TouchObj()
-        Printf("=============== START OF DUMP ===============")
-        TouchObj():Dump()
-        Printf("================ END OF DUMP ================")
+        -- local clic = TouchObj()
+        -- Printf("=============== START OF DUMP ===============")
+        -- TouchObj():Dump()
+        -- Printf("================ END OF DUMP ================")
 
 
         -- dialog.X, dialog.Y = 00, 00

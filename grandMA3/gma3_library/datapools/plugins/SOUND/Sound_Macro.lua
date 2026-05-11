@@ -1,7 +1,11 @@
 --[[
-    Releases:
-    * 0.0.0.9
-    Created by Richard Fontaine "RIRI", Mars 2026.
+Releases:
+* 2.3.2.0
+
+Version :
+* 0.0.0.9
+
+Created by Richard Fontaine "RIRI", April 2026.
 --]]
 
 local thiscomponent = select(4, ...)
