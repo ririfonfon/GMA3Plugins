@@ -28,13 +28,13 @@ local formats = {"Json", "CSV"}
 local function myFunction(display_handle)
 
     -- data to store
-    local i = 0
+    local u = 0
     local data = {}
 
     for k, v in pairs(_G) do
-        i = i + 1
+        u = u + 1
         Printf(string.format("%s\n", k))
-        -- data[i] = (string.format("%s", k))
+        -- data[u] = (string.format("%s", k))
         table.insert(data, (string.format("%s", k)))
         table.insert(data, (string.format("\n")))
     end
@@ -75,7 +75,7 @@ local function myFunction(display_handle)
         selectedValue = "",
         add_args = {FilterSupport="Yes"},
         }
-    ask = PopupInput(PopTableFormat)
+    local ask = PopupInput(PopTableFormat)
     if formats == 1 then
         local result = ExportJson(exportPath, data) -- as of 1.1.3.2 always returns nil
     else
