@@ -91,7 +91,7 @@ local function LC_list_input(popuplists, TLay, TLayNr, TLayNrRef, SeqNr, SeqNrSt
     Printf("All_5_Current: %d", All_5_Current)
 
     return TLay, TLayNr, TLayNrRef, SeqNr, SeqNrStart, MacroNr, MacroNrStart, All_5_Nr,
-        All_5_NrStart, All_5_Current, MatrickNr, MatrickNrStart, FixtureGroups, ColGels, App
+        All_5_NrStart, All_5_Current, MatrickNr, MatrickNrStart
 end
 
 local function LC_CH_Pool(popuplists)
