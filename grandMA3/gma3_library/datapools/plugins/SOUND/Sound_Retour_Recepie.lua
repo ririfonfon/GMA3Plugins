@@ -98,21 +98,30 @@ return function()
         local Value
         local proxy = Root().ShowData.DataPools[S_Pool].Groups[S_Master]
         local dialog = GetFocusDisplay().ScreenOverlay:Append('BaseInput')
-        -- local clic = GetFocusDisplay().ScreenOverlay.Clicked
+        -- -- -- local clic = GetFocusDisplay().ScreenO.er.ay.Clicked
         -- local clic = GetFocusDisplay().ScreenOverlay:Children()
         -- local clic = MouseObj().ABSPOS
+        -- Printf("=============== START OF DUMP ===============")
+        -- MouseObj():Dump()
+        -- Printf("================ END OF DUMP ================")
+
+        local clic = TouchObj()
+        Printf("=============== START OF DUMP ===============")
+        TouchObj():Dump()
+        Printf("================ END OF DUMP ================")
+
 
         -- dialog.X, dialog.Y = 00, 00
 
         -- for k, v in pairs(clic) do
         --     Echo(k .. " " .. v)
-        --     if k == 'x' then
-        --         dialog.X = v
-        --         Echo(k .. " " .. v)
-        --     elseif k == 'y' then
-        --         dialog.Y = v
-        --         Echo(k .. " " .. v)
-        --     end
+        --     -- if v == 'x' then
+        --     --     -- dialog.X = v
+        --     --     Echo(k .. " " .. v)
+        --     -- elseif v == 'y' then
+        --     --     -- dialog.Y = v
+        --     --     Echo(k .. " " .. v)
+        --     -- end
         -- end
 
         -- for k, v in pairs(MouseObj().ABSPOS) do
@@ -132,8 +141,8 @@ return function()
         --     Echo('P ' .. k)
         -- end
 
-        
-        
+
+
         dialog.H, dialog.W = 400, 10
         local fader = dialog:Append('UiFader')
         fader.target = proxy
