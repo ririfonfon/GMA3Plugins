@@ -85,7 +85,7 @@ function Create_Matricks(MatrickNrStart, prefix, NaLay, SelectedGrp, SelectedGrp
     for g in pairs(SelectedGrp) do
         Check_Size_Pool(MatrickNr, MatrickObject)
         MatrickObject:Create(MatrickNr)
-        MatrickObject[MatrickNr]:Set('Name', "'" .. prefix .. SelectedGrpName[g]:gsub('\'', '') .. "'")
+        MatrickObject[MatrickNr]:Set('Name', prefix .. SelectedGrpName[g]:gsub('\'', ''))
         MatrickObject[MatrickNr]:Set('FadeFromx', 0)
         MatrickObject[MatrickNr]:Set('FadeFromy', 0)
         MatrickObject[MatrickNr]:Set('FadeFromz', 0)
@@ -301,15 +301,18 @@ function Create_Appearances_Sequences(CurrentMacroNr, SelectedGelNr, SelectedGrp
     local ColLgnCount                                    = 0
     local Ligne_Inc                                      = false
     local GroupsObject                                   = Root().ShowData.DataPools[Groups_Pool].Groups:Children()
+    local All5Object                                     = Root().ShowData.DataPools[Construct_Pool].PresetPools[25]
+    local MatricksObject                                 = Root().ShowData.DataPools[Construct_Pool].Matricks
+    local AppearObject                                   = Root().ShowData.Appearances
     for g in ipairs(SelectedGrp) do
         for r in ipairs(GroupsObject) do
             Echo('grp name ' .. GroupsObject[r].Name)
-            if GroupsObject[r].Name == SelectedGrp[g]:gsub ("'","") then
+            if GroupsObject[r].Name == SelectedGrp[g]:gsub("'", "") then
                 grpnrselect = r
                 break
             end
         end
-        Echo('Select ' .. SelectedGrp[g]:gsub ("'",""))
+        Echo('Select ' .. SelectedGrp[g]:gsub("'", ""))
         Echo('GRP ' .. GroupsObject[grpnrselect].NO)
         local LayX = RefX
         local col_count = 0
@@ -318,13 +321,14 @@ function Create_Appearances_Sequences(CurrentMacroNr, SelectedGelNr, SelectedGrp
         NrNeed = math.floor(AppNr + 1)
         Nr = Layout_Object[TLayNr]:Acquire()
         Layout_Object[TLayNr][Nr.No]:Set('Object', GroupsObject[grpnrselect])
-        Layout_Object[TLayNr][Nr.No]:Set('posx', -LayX)
+        Layout_Object[TLayNr][Nr.No]:Set('posx', LayX)
         Layout_Object[TLayNr][Nr.No]:Set('posy', LayY)
         Layout_Object[TLayNr][Nr.No]:Set('width', 100)
         Layout_Object[TLayNr][Nr.No]:Set('height', 100)
         Layout_Object[TLayNr][Nr.No]:Set('action', 'Go+')
         Layout_Object[TLayNr][Nr.No]:Set('Note', 'Group')
         LC_Set_Def(TLayNr, Nr, Layout_Object)
+        Layout_Object[TLayNr][Nr.No]:Set('visibilityobjectname', 'Visible')
         -- CmdIndirectWait("Assign DataPool " .. Groups_Pool .. " Group " .. SelectedGrp[g] ..
         --     " at DataPool " .. Groups_Pool .. " Layout " .. TLayNr)
         -- CmdIndirectWait("Set Layout " .. TLayNr .. "." .. LayNr .. " Appearance=" .. AppNr ..
@@ -355,16 +359,15 @@ function Create_Appearances_Sequences(CurrentMacroNr, SelectedGelNr, SelectedGrp
             SequenceObject[CurrentSeqNr]:Set('SOFTLTP', 'No')
 
             SequenceObject[CurrentSeqNr]:Insert()
-            SequenceObject[CurrentSeqNr]:Set('Appearance', NrNeed + 1)
+            SequenceObject[CurrentSeqNr]:Set('Appearance', AppearObject[NrNeed + 1])
             SequenceObject[CurrentSeqNr][3]:Set('No', 1)
             SequenceObject[CurrentSeqNr][3]:Create(1)
             SequenceObject[CurrentSeqNr][3][1]:Insert()
-            SequenceObject[CurrentSeqNr][3][1]:Set('Appearance', NrNeed)
+            SequenceObject[CurrentSeqNr][3][1]:Set('Appearance', AppearObject[NrNeed])
             SequenceObject[CurrentSeqNr][3][1]:Create(1)
-            SequenceObject[CurrentSeqNr][3][1][1]:Set('Selection', GrpNo)
-            SequenceObject[CurrentSeqNr][3][1][1]:Set('Values',
-                "'Preset 25." .. All_5_NrStart + col - 1 .. "'")
-            SequenceObject[CurrentSeqNr][3][1][1]:Set('MAtricks', MatrickNrStart)
+            SequenceObject[CurrentSeqNr][3][1][1]:Set('Selection', GroupsObject[grpnrselect])
+            SequenceObject[CurrentSeqNr][3][1][1]:Set('Values', All5Object[All_5_NrStart + col - 1])
+            SequenceObject[CurrentSeqNr][3][1][1]:Set('MAtricks', MatricksObject[MatrickNrStart])
             SequenceObject[CurrentSeqNr][3][1][1]:Set('SelectionMode', 'Strict')
             SequenceObject[CurrentSeqNr][3][1][1]:Set('Enabled', 'Yes')
 
@@ -424,18 +427,18 @@ function Create_Appearances_Sequences(CurrentMacroNr, SelectedGelNr, SelectedGrp
         SequenceObject[CurrentSeqNr]:Set('TRACKING', 'No')
         SequenceObject[CurrentSeqNr]:Set('PRIORITY', 'HTP')
         SequenceObject[CurrentSeqNr]:Set('SOFTLTP', 'No')
+        SequenceObject[CurrentSeqNr]:Set('Appearance', AppearObject[AppTricks[2].Nr])
 
         SequenceObject[CurrentSeqNr]:Insert()
-        SequenceObject[CurrentSeqNr]:Set('Appearance', NrNeed + 1)
         SequenceObject[CurrentSeqNr][3]:Set('No', 1)
-        SequenceObject[CurrentSeqNr][3]:Set('Command', 'Assign DataPool ' ..
-            Construct_Pool .. ' MaTricks ' .. prefix .. SelectedGrpName[g]:gsub('\'', '') ..
-            ' At DataPool ' .. Construct_Pool .. ' Sequence ' .. FirstSeqColor .. ' Thru ' .. LastSeqColor ..
-            ' Cue 1 part 0.1 ;  Assign DataPool ' .. Construct_Pool .. ' Sequence ' .. CurrentSeqNr + 1 ..
-            ' At DataPool ' .. Construct_Pool .. ' Layout ' .. TLayNr .. '.' .. LayNr)
-        SequenceObject[CurrentSeqNr][3]:Set('Appearance', AppTricks[2].Nr)
+        SequenceObject[CurrentSeqNr][3]:Create(1)
+        SequenceObject[CurrentSeqNr][3][1]:Set('Command', "Assign DataPool " .. Construct_Pool ..
+            " MaTricks '" .. prefix .. SelectedGrpName[g]:gsub('\'', '') ..
+            "' At DataPool " .. Construct_Pool .. " Sequence " .. FirstSeqColor .. " Thru " .. LastSeqColor ..
+            " Cue 1 part 0.1 ;  Assign DataPool " .. Construct_Pool .. " Sequence " .. CurrentSeqNr + 1 ..
+            " At DataPool " .. Construct_Pool .. " Layout " .. TLayNr .. "." .. LayNr .. "")
 
-
+        -- Assign DataPool 2 MAtricks LC1_SPOT_GRID At DataPool 2 Sequence 2 Thru 30 Cue 1 Part 0.1 ; Assign DataPool 2 Sequence 32 At DataPool 2 Layout 2.31
         -- CmdIndirectWait('ClearAll /nu')
         -- CmdIndirectWait('Store Sequence ' ..
         --     CurrentSeqNr .. ' \'' .. prefix .. "Tricks" .. SelectedGrpName[g]:gsub('\'', ''))
@@ -448,12 +451,12 @@ function Create_Appearances_Sequences(CurrentMacroNr, SelectedGelNr, SelectedGrp
 
         Nr = Layout_Object[TLayNr]:Acquire()
         Layout_Object[TLayNr][Nr.No]:Set('Object', SequenceObject[CurrentSeqNr])
-        Layout_Object[TLayNr][Nr.No]:Set('posx', -LayX)
+        Layout_Object[TLayNr][Nr.No]:Set('posx', LayX)
         Layout_Object[TLayNr][Nr.No]:Set('posy', LayY)
-        Layout_Object[TLayNr][Nr.No]:Set('width', 100)
-        Layout_Object[TLayNr][Nr.No]:Set('height', 100)
+        Layout_Object[TLayNr][Nr.No]:Set('width', 65)
+        Layout_Object[TLayNr][Nr.No]:Set('height', 65)
         Layout_Object[TLayNr][Nr.No]:Set('action', 'Go+')
-        Layout_Object[TLayNr][Nr.No]:Set('Note', 'Group')
+        Layout_Object[TLayNr][Nr.No]:Set('Note', 'Tricks')
         LC_Set_Def(TLayNr, Nr, Layout_Object)
 
         -- CmdIndirectWait("Assign Sequence " .. CurrentSeqNr .. " at Layout " .. TLayNr)
@@ -466,25 +469,24 @@ function Create_Appearances_Sequences(CurrentMacroNr, SelectedGelNr, SelectedGrp
 
         LC_Check_Size_Pool(CurrentSeqNr, SequenceObject)
         SequenceObject:Create(CurrentSeqNr)
-        SequenceObject[CurrentSeqNr]:Set('Name', "'" .. prefix .. "Tricks" .. SelectedGrpName[g]:gsub('\'', '') .. "'")
+        SequenceObject[CurrentSeqNr]:Set('Name', "'" .. prefix .. "Tricksh" .. SelectedGrpName[g]:gsub('\'', '') .. "'")
         LC_Sequence_Defo(SequenceObject, CurrentSeqNr)
         SequenceObject[CurrentSeqNr]:Set('TRACKING', 'No')
         SequenceObject[CurrentSeqNr]:Set('PRIORITY', 'HTP')
         SequenceObject[CurrentSeqNr]:Set('SOFTLTP', 'No')
 
         SequenceObject[CurrentSeqNr]:Insert()
-        SequenceObject[CurrentSeqNr]:Set('Appearance', NrNeed + 1)
+        SequenceObject[CurrentSeqNr]:Set('Appearance', AppearObject[AppTricks[1].Nr])
         SequenceObject[CurrentSeqNr][3]:Set('No', 1)
-        SequenceObject[CurrentSeqNr][3]:Set('Command', "'Assign DataPool " .. Construct_Pool ..
+        SequenceObject[CurrentSeqNr][3]:Create(1)
+        SequenceObject[CurrentSeqNr][3][1]:Set('Command', "Assign DataPool " .. Construct_Pool ..
             ' MaTricks ' .. MatrickNrStart .. ' At DataPool ' .. Construct_Pool .. ' Sequence ' .. FirstSeqColor ..
             ' Thru ' .. LastSeqColor .. ' Cue 1 part 0.1 ; Assign DataPool ' .. Construct_Pool ..
             ' Sequence ' .. CurrentSeqNr - 1 .. ' At DataPool ' .. Construct_Pool .. ' Layout ' .. TLayNr ..
-            '.' .. LayNr .. "'")
-        SequenceObject[CurrentSeqNr][3]:Set('Appearance', AppTricks[1].Nr)
-
+            '.' .. LayNr .. "")
 
         -- CmdIndirectWait('Store Sequence ' ..
-        --     CurrentSeqNr .. ' \'' .. prefix .. "Tricks" .. SelectedGrpName[g]:gsub('\'', '') ..
+        --     CurrentSeqNr .. ' \'' .. prefix .. "Tricksh" .. SelectedGrpName[g]:gsub('\'', '') ..
         --     '\'')
         -- CmdIndirectWait('Set Sequence ' ..
         --     CurrentSeqNr ..
@@ -500,6 +502,7 @@ function Create_Appearances_Sequences(CurrentMacroNr, SelectedGelNr, SelectedGrp
         LC_Check_Size_Pool(CurrentMacroNr, MacroObject)
         MacroObject:Create(CurrentMacroNr)
         MacroObject[CurrentMacroNr]:Set('Name', "'" .. prefix .. SelectedGrpName[g]:gsub('\'', '') .. "'")
+        MacroObject[CurrentMacroNr]:Set('Appearance', AppearObject[AppTricks[3].Nr])
         MacroObject[CurrentMacroNr]:Insert(1)
 
         MacroObject[CurrentMacroNr][1]:Set('Command', 'Edit DataPool ' ..
@@ -513,11 +516,10 @@ function Create_Appearances_Sequences(CurrentMacroNr, SelectedGelNr, SelectedGrp
 
         Nr = Layout_Object[TLayNr]:Acquire()
         Layout_Object[TLayNr][Nr.No]:Set('Object', MacroObject[CurrentMacroNr])
-        Layout_Object[TLayNr][Nr.No]:Set('Appearance', AppTricks[3].Nr)
-        Layout_Object[TLayNr][Nr.No]:Set('posx', -LayX)
+        Layout_Object[TLayNr][Nr.No]:Set('posx', LayX)
         Layout_Object[TLayNr][Nr.No]:Set('posy', LayY)
-        Layout_Object[TLayNr][Nr.No]:Set('width', 100)
-        Layout_Object[TLayNr][Nr.No]:Set('height', 100)
+        Layout_Object[TLayNr][Nr.No]:Set('width', 65)
+        Layout_Object[TLayNr][Nr.No]:Set('height', 65)
         Layout_Object[TLayNr][Nr.No]:Set('action', 'Go+')
         Layout_Object[TLayNr][Nr.No]:Set('Note', 'Macro')
         LC_Set_Def(TLayNr, Nr, Layout_Object)
