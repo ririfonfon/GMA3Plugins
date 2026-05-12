@@ -2,6 +2,9 @@
 Releases:
 * 2.3.2.0
 
+Version:
+* 2.1.2.0
+
 Created by Richard Fontaine "RIRI", June 2024. Update may 2026
 --]]
 
@@ -14,6 +17,7 @@ local function LC_list_input(popuplists, TLay, TLayNr, TLayNrRef, SeqNr, SeqNrSt
                              MacroNrStart, All_5_Nr, All_5_NrStart, All_5_Current, MatrickNr,
                              MatrickNrStart)
     for k in ipairs(TLay) do
+        Echo('Tlay ' .. k)
         for i in ipairs(popuplists.Lay_Select) do
             if popuplists.Lay_Select[i] == TLay[k].NO then
                 table.remove(popuplists.Lay_Select, i)
@@ -61,7 +65,7 @@ local function LC_list_input(popuplists, TLay, TLayNr, TLayNrRef, SeqNr, SeqNrSt
         end
         kk = k
         All_5_NrStart = All_5_Nr[k].NO + 1
-        Printf("All_5_NrStart inside: %d", All_5_NrStart)
+        -- Printf("All_5_NrStart inside: %d", All_5_NrStart)
     end
     if kk == nil then
         All_5_NrStart = 1
@@ -1255,15 +1259,21 @@ local function Main(displayHandle)
 
         local Check_Pool = false
         if caller.Name == "DataPool_Select" then
+            Echo('datapool_select')
+            Pool_check = LC_CH_Pool(popuplists)
             caller.Text = choice or caller.Text
             for k in ipairs(Pool_check) do
+                Echo('k pool_check' .. k)
+                Echo(' Name ' .. Pool_check[k].name)
                 if Pool_check[k].name == caller.Text:gsub("'", "") then
+                    Echo('Construct_Pool ' .. k)
                     Construct_Pool = tonumber(k)
                     Check_Pool = true
                     New = false
                 end
             end
             if Check_Pool == false then
+                Echo('check_pool false')
                 local C_Pool = PoolObject:Acquire()
                 Construct_Pool = C_Pool.No
                 coroutine.yield(0.1)
@@ -1273,8 +1283,10 @@ local function Main(displayHandle)
                 New = true
                 OkButton.Visible = "Yes"
                 input21LineEdit.Content = "LC_COlOR"
+                Check_Pool =  true
             end
             if Check_Pool == true then
+                Echo('New')
                 Pool_check = LC_CH_Pool(popuplists)
                 input21LineEdit.Content = PoolObject[Construct_Pool]:Get('Name')
                 PoolObject = Root().ShowData.DataPools
@@ -1305,6 +1317,7 @@ local function Main(displayHandle)
                     All_5_NrStart, All_5_Current, MatrickNr, MatrickNrStart)
                 coroutine.yield(0.1)
             else
+                Echo('Else')
                 TLayNr = 1
                 SeqNrStart = 1
                 MacroNrStart = 1
