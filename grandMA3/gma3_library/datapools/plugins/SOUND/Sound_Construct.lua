@@ -3,7 +3,7 @@ Releases:
 * 2.3.2.0
 
 Version :
-* 0.0.0.9
+* 0.0.0.91
 
 Created by Richard Fontaine "RIRI", April 2026.
 --]]
@@ -73,7 +73,8 @@ function Sound_Construct(Construct_Pool, Grp_Start, All_4_NrStart, Univers, Addr
     MacroObject[MacroNum][10]:Set('Wait', 2)
     MacroObject[MacroNum][11]:Set('Command', "")
     MacroObject[MacroNum][11]:Set('Wait', 2)
-    MacroObject[MacroNum][12]:Set('Command', "Lua'SOUND_Patch_Cross(" .. Univers .. ", " .. Address .. ", " .. Fid .. ")")
+    MacroObject[MacroNum][12]:Set('Command',
+        "Lua'SOUND_Patch_Cross(" .. Univers .. ", " .. Address .. ", " .. Fid .. ", " .. Construct_Pool .. ")")
     MacroObject[MacroNum][12]:Set('Wait', 2)
     MacroObject[MacroNum][13]:Set('Command',
         "Lua'SOUND_Remote_Dmx_Cross(" .. Construct_Pool .. ", " .. Grp_Start .. ", " .. Univers .. ", " .. Address .. ")")
@@ -84,5 +85,4 @@ function Sound_Construct(Construct_Pool, Grp_Start, All_4_NrStart, Univers, Addr
         "Delete DataPool " .. Construct_Pool .. " Macro " .. MacroNum .. "/NoConfirmation")
 
     Cmd('Go+ DataPool ' .. Construct_Pool .. ' Macro 999')
-
 end
