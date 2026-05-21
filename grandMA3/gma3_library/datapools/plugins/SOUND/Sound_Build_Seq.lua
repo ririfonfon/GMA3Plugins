@@ -59,7 +59,7 @@ function SOUND_Build_Seq(Construct_Pool, SeqNum, All_4_NrStart, Grp_Start, Fid, 
         Grp_Start = Grp_Start + 13
         Fid = Fid + 11
         All_4_NrStart = All_4_NrStart + 13
-        SeqNum = SeqNum + 123
+        SeqNum = SeqNum + 141
         Grp_TypeSel = 13
     end
     local SeqEnd = SeqNum + 10
@@ -210,5 +210,62 @@ function SOUND_Build_Seq(Construct_Pool, SeqNum, All_4_NrStart, Grp_Start, Fid, 
         end
         TypeSel = 1
     end
+
+    SeqNum = SeqEnd + 1
+    SeqEnd = SeqNum + 8
+    local k = 1
+    for i = SeqNum, SeqEnd, 1 do
+        SOUND_Check_Size_Pool(i, SequenceObject)
+        SequenceObject:Create(i)
+        SequenceObject[i]:Set('Name', prefix .. "load_MEM_" .. k)
+        SequenceObject[i]:Set('Appearance', 'Black')
+        SOUND_Sequence_Defo(SequenceObject, i)
+        SequenceObject[i]:Set('AUTOSTART', 'No')
+        SequenceObject[i]:Set('AUTOSTOP', 'No')
+        SequenceObject[i]:Set('TRACKING', 'No')
+        SequenceObject[i]:Set('PRIORITY', 'HTP')
+        SequenceObject[i]:Set('SOFTLTP', 'No')
+
+        SequenceObject[i]:Insert()
+        SequenceObject[i][3]:Set('No', 1)
+        SequenceObject[i][3]:Create(1)
+        SequenceObject[i][3][1]:Set('Appearance', 'Green')
+        SequenceObject[i]:Insert()
+        SequenceObject[i][4]:Set('No', 2)
+        SequenceObject[i][4]:Create(1)
+        SequenceObject[i][4][1]:Set('Appearance', 'Black')
+        SequenceObject[i][4]:Set('TrigType', 1)
+        SequenceObject[i][4]:Set('TrigTime', 1)
+        k = k + 1
+    end
+
+    SeqNum = SeqEnd + 1
+    SeqEnd = SeqNum + 8
+    k = 1
+    for i = SeqNum, SeqEnd, 1 do
+        SOUND_Check_Size_Pool(i, SequenceObject)
+        SequenceObject:Create(i)
+        SequenceObject[i]:Set('Name', prefix .. "Save_MEM_" .. k)
+        SequenceObject[i]:Set('Appearance', 'Black')
+        SOUND_Sequence_Defo(SequenceObject, i)
+        SequenceObject[i]:Set('AUTOSTART', 'No')
+        SequenceObject[i]:Set('AUTOSTOP', 'No')
+        SequenceObject[i]:Set('TRACKING', 'No')
+        SequenceObject[i]:Set('PRIORITY', 'HTP')
+        SequenceObject[i]:Set('SOFTLTP', 'No')
+
+        SequenceObject[i]:Insert()
+        SequenceObject[i][3]:Set('No', 1)
+        SequenceObject[i][3]:Create(1)
+        SequenceObject[i][3][1]:Set('Appearance', 'Red')
+        SequenceObject[i]:Insert()
+        SequenceObject[i][4]:Set('No', 2)
+        SequenceObject[i][4]:Create(1)
+        SequenceObject[i][4][1]:Set('Appearance', 'Black')
+        SequenceObject[i][4]:Set('TrigType', 1)
+        SequenceObject[i][4]:Set('TrigTime', 1)
+        k = k + 1
+    end
+
     return Seq_On_Off
 end
