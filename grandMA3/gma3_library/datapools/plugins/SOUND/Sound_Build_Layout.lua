@@ -3,7 +3,7 @@ Releases:
 * 2.3.2.0
 
 Version :
-* 0.0.0.9
+* 0.0.0.91
 
 Created by Richard Fontaine "RIRI", April 2026.
 --]]
@@ -29,16 +29,16 @@ function SOUND_Build_Layout(Construct_Pool, Name_Layout, Layout_Nr, MacroNrStart
     local Nr
 
     local titre_x        = {
-        -400, -400, -400, -350, 200, 750,
-        -400, -400, -400, -350, 200, 750,
-        -400, -400, -400, -350, 200, 750,
-        -400, -400, -400, -350, 200
+        -400, -400, -400, 750, -350, 200,
+        -400, -400, -400, 750, -350, 200,
+        -400, -400, -400, 750, -350, 200,
+        -400, -400, -400, 750, -350
     }
     local titre_y        = {
-        100, 50, 0, 150, 150, 150,
-        -100, -150, -200, -50, -50, -50,
-        -300, -350, -400, -250, -250, -250,
-        -500, -550, -600, -450, -450
+        100, 50, 0, -450, 150, 150,
+        -100, -150, -200, 150, -50, -50,
+        -300, -350, -400, -50, -250, -250,
+        -500, -550, -600, -250, -450
     }
     local titre_w        = {
         50, 50, 50, 500, 500, 500,
@@ -54,12 +54,6 @@ function SOUND_Build_Layout(Construct_Pool, Name_Layout, Layout_Nr, MacroNrStart
     }
 
     local macro_x        = {
-        -350, -250, -150, -50, 50,
-        -350, -250, -150, -50, 50,
-        -350, -250, -150, -50, 50,
-        200, 300, 400, 500, 600,
-        200, 300, 400, 500, 600,
-        200, 300, 400, 500, 600,
         750, 850, 950, 1050, 1150,
         750, 850, 950, 1050, 1150,
         750, 850, 950, 1050, 1150,
@@ -87,108 +81,36 @@ function SOUND_Build_Layout(Construct_Pool, Name_Layout, Layout_Nr, MacroNrStart
         200, 300, 400, 500, 600,
         200, 300, 400, 500, 600,
         200, 300, 400, 500, 600,
-        0, 550, 1100,
-        0, 550, 1100,
-        0, 550, 1100,
-        0, 550,
-        150, 700,
+        750, 850, 950, 1050, 1150,
+        750, 850, 950, 1050, 1150,
+        750, 850, 950, 1050, 1150,
+        -350, -250, -150, -50, 50,
+        -350, -250, -150, -50, 50,
+        -350, -250, -150, -50, 50,
 
-        0,0,0,0,0,0,0,0,0,0,
-        0,0,0,0,0,0,0,0,0,0,
-        0,0,0,0,0,0,0,0,
 
-        -350, -250, -150, -50, 50,
-        -350, -250, -150, -50, 50,
-        -350, -250, -150, -50, 50,
-        200, 300, 400, 500, 600,
-        200, 300, 400, 500, 600,
-        200, 300, 400, 500, 600,
-        750, 850, 950, 1050, 1150,
-        750, 850, 950, 1050, 1150,
-        750, 850, 950, 1050, 1150,
-        -350, -250, -150, -50, 50,
-        -350, -250, -150, -50, 50,
-        -350, -250, -150, -50, 50,
-        200, 300, 400, 500, 600,
-        200, 300, 400, 500, 600,
-        200, 300, 400, 500, 600,
-        750, 850, 950, 1050, 1150,
-        750, 850, 950, 1050, 1150,
-        750, 850, 950, 1050, 1150,
-        -350, -250, -150, -50, 50,
-        -350, -250, -150, -50, 50,
-        -350, -250, -150, -50, 50,
-        200, 300, 400, 500, 600,
-        200, 300, 400, 500, 600,
-        200, 300, 400, 500, 600,
-        750, 850, 950, 1050, 1150,
-        750, 850, 950, 1050, 1150,
-        750, 850, 950, 1050, 1150,
-        -350, -250, -150, -50, 50,
-        -350, -250, -150, -50, 50,
-        -350, -250, -150, -50, 50,
-        200, 300, 400, 500, 600,
-        200, 300, 400, 500, 600,
-        200, 300, 400, 500, 600,
-        0, 550, 1100,
-        0, 550, 1100,
-        0, 550, 1100,
-        0, 550,
-        150, 700,
+        1100, 0, 550,
+        1100, 0, 550,
+        1100, 0, 550,
+        1100, 0,
+        600, 450,
+
     }
     local macro_y        = {
-        100, 100, 100, 100, 100,
-        50, 50, 50, 50, 50,
-        0, 0, 0, 0, 0,
-        100, 100, 100, 100, 100,
-        50, 50, 50, 50, 50,
-        0, 0, 0, 0, 0,
-        100, 100, 100, 100, 100,
-        50, 50, 50, 50, 50,
-        0, 0, 0, 0, 0,
-        -100, -100, -100, -100, -100,
-        -150, -150, -150, -150, -150,
-        -200, -200, -200, -200, -200,
-        -100, -100, -100, -100, -100,
-        -150, -150, -150, -150, -150,
-        -200, -200, -200, -200, -200,
-        -100, -100, -100, -100, -100,
-        -150, -150, -150, -150, -150,
-        -200, -200, -200, -200, -200,
-        -300, -300, -300, -300, -300,
-        -350, -350, -350, -350, -350,
-        -400, -400, -400, -400, -400,
-        -300, -300, -300, -300, -300,
-        -350, -350, -350, -350, -350,
-        -400, -400, -400, -400, -400,
-        -300, -300, -300, -300, -300,
-        -350, -350, -350, -350, -350,
-        -400, -400, -400, -400, -400,
         -500, -500, -500, -500, -500,
         -550, -550, -550, -550, -550,
         -600, -600, -600, -600, -600,
-        -500, -500, -500, -500, -500,
-        -550, -550, -550, -550, -550,
-        -600, -600, -600, -600, -600,
-        152, 152, 152,
-        -48, -48, -48,
-        -248, -248, -248,
-        -448, -448,
-        150, 150,
 
-        0,0,0,0,0,0,0,0,0,0,
-        0,0,0,0,0,0,0,0,0,0,
-        0,0,0,0,0,0,0,0,
+        100, 100, 100, 100, 100,
+        50, 50, 50, 50, 50,
+        0, 0, 0, 0, 0,
+        100, 100, 100, 100, 100,
+        50, 50, 50, 50, 50,
+        0, 0, 0, 0, 0,
+        100, 100, 100, 100, 100,
+        50, 50, 50, 50, 50,
+        0, 0, 0, 0, 0,
 
-         100, 100, 100, 100, 100,
-        50, 50, 50, 50, 50,
-        0, 0, 0, 0, 0,
-        100, 100, 100, 100, 100,
-        50, 50, 50, 50, 50,
-        0, 0, 0, 0, 0,
-        100, 100, 100, 100, 100,
-        50, 50, 50, 50, 50,
-        0, 0, 0, 0, 0,
         -100, -100, -100, -100, -100,
         -150, -150, -150, -150, -150,
         -200, -200, -200, -200, -200,
@@ -198,6 +120,7 @@ function SOUND_Build_Layout(Construct_Pool, Name_Layout, Layout_Nr, MacroNrStart
         -100, -100, -100, -100, -100,
         -150, -150, -150, -150, -150,
         -200, -200, -200, -200, -200,
+
         -300, -300, -300, -300, -300,
         -350, -350, -350, -350, -350,
         -400, -400, -400, -400, -400,
@@ -207,35 +130,35 @@ function SOUND_Build_Layout(Construct_Pool, Name_Layout, Layout_Nr, MacroNrStart
         -300, -300, -300, -300, -300,
         -350, -350, -350, -350, -350,
         -400, -400, -400, -400, -400,
+
         -500, -500, -500, -500, -500,
         -550, -550, -550, -550, -550,
         -600, -600, -600, -600, -600,
-        -500, -500, -500, -500, -500,
-        -550, -550, -550, -550, -550,
-        -600, -600, -600, -600, -600,
-        152, 152, 152,
-        -48, -48, -48,
-        -248, -248, -248,
-        -448, -448,
-        150, 150,
+
+        -448, 152, 152,
+        152, -48, -48,
+        -48, -248, -248,
+        -248, -448,
+        -600, -600,
+
     }
     local mem_x          = {
-        750, 750, 750, 925, 925, 925, 1100, 1100, 1100,
-        850, 850, 850, 1025, 1025, 1025, 1200, 1200, 1200,
-        800, 800, 800, 975, 975, 975, 1150, 1150, 1150,
+        -350, -350, -350, 200, 200, 200, 750, 750, 750,
+        50, 50, 50, 600, 600, 600, 1150, 1150, 1150,
+        -250, -250, -250, 300, 300, 300, 850, 850, 850,
 
     }
     local mem_y          = {
-        -500, -550, -600, -500, -550, -600, -500, -550, -600,
-        -500, -550, -600, -500, -550, -600, -500, -550, -600,
-        -500, -550, -600, -500, -550, -600, -500, -550, -600,
+        350, 300, 250, 350, 300, 250, 350, 300, 250,
+        350, 300, 250, 350, 300, 250, 350, 300, 250,
+        350, 300, 250, 350, 300, 250, 350, 300, 250,
     }
 
     local mem_Color      = { '80FF80FF', 'FF8080FF', '808080FF' }
     local mem_Text       = { 'Load ', 'Save ', '' }
     local S_V_M_Color    = { '8080FFFF', 'FF0080FF', 'FFFF80FF', '00FF00FF', 'FF8000FF' }
     local S_V_M_Text     = { 'Group', 'Value', 'Matricks', 'None/None', 'None/None' }
-    local Canvas = '[[Sound_A_png]]'
+    local Canvas         = '[[Sound_A_png]]'
 
     if prefix == "B" then
         Layout_Nr = Layout_Nr + 1
@@ -260,10 +183,10 @@ function SOUND_Build_Layout(Construct_Pool, Name_Layout, Layout_Nr, MacroNrStart
     -- on_off
     Nr = Layout_Object[Layout_Nr]:Acquire()
     Layout_Object[Layout_Nr][Nr.No]:Set('Object', SequenceObject[Seq_On_Off])
-    Layout_Object[Layout_Nr][Nr.No]:Set('posx', -400)
-    Layout_Object[Layout_Nr][Nr.No]:Set('posy', 150)
-    Layout_Object[Layout_Nr][Nr.No]:Set('width', 50)
-    Layout_Object[Layout_Nr][Nr.No]:Set('height', 50)
+    Layout_Object[Layout_Nr][Nr.No]:Set('posx', 200)
+    Layout_Object[Layout_Nr][Nr.No]:Set('posy', -600)
+    Layout_Object[Layout_Nr][Nr.No]:Set('width', 150)
+    Layout_Object[Layout_Nr][Nr.No]:Set('height', 150)
     Layout_Object[Layout_Nr][Nr.No]:Set('action', 'Go+')
     Layout_Object[Layout_Nr][Nr.No]:Set('Note', 'On&Off')
     SOUND_Set_Def(Layout_Nr, Nr, Layout_Object)
@@ -288,11 +211,12 @@ function SOUND_Build_Layout(Construct_Pool, Name_Layout, Layout_Nr, MacroNrStart
 
     -- MacroObject
     local count = 1
+    local x_y = 1
     for i = MacroNrStart, MacroNrStart + 164 do
         Nr = Layout_Object[Layout_Nr]:Acquire()
         Layout_Object[Layout_Nr][Nr.No]:Set('Object', MacroObject[i])
-        Layout_Object[Layout_Nr][Nr.No]:Set('posx', macro_x[i])
-        Layout_Object[Layout_Nr][Nr.No]:Set('posy', macro_y[i])
+        Layout_Object[Layout_Nr][Nr.No]:Set('posx', macro_x[x_y])
+        Layout_Object[Layout_Nr][Nr.No]:Set('posy', macro_y[x_y])
         Layout_Object[Layout_Nr][Nr.No]:Set('width', 100)
         Layout_Object[Layout_Nr][Nr.No]:Set('height', 50)
         Layout_Object[Layout_Nr][Nr.No]:Set('action', 'Go+')
@@ -306,17 +230,19 @@ function SOUND_Build_Layout(Construct_Pool, Name_Layout, Layout_Nr, MacroNrStart
         Layout_Object[Layout_Nr][Nr.No]:Set('customtextalignmenth', 'Center')
         Layout_Object[Layout_Nr][Nr.No]:Set('customtextalignmentv', 'Center')
         Layout_Object[Layout_Nr][Nr.No]:Set('Appearance', 'None')
+        x_y = x_y + 1
         count = count + 1
         if count > 5 then
             count = 1
         end
     end
     -- Master
+    x_y = 166
     for i = MacroNrStart + 165, MacroNrStart + 175 do
         Nr = Layout_Object[Layout_Nr]:Acquire()
         Layout_Object[Layout_Nr][Nr.No]:Set('Object', MacroObject[i])
-        Layout_Object[Layout_Nr][Nr.No]:Set('posx', macro_x[i])
-        Layout_Object[Layout_Nr][Nr.No]:Set('posy', macro_y[i])
+        Layout_Object[Layout_Nr][Nr.No]:Set('posx', macro_x[x_y])
+        Layout_Object[Layout_Nr][Nr.No]:Set('posy', macro_y[x_y])
         Layout_Object[Layout_Nr][Nr.No]:Set('width', 100)
         Layout_Object[Layout_Nr][Nr.No]:Set('height', 46)
         Layout_Object[Layout_Nr][Nr.No]:Set('action', 'Go+')
@@ -330,6 +256,7 @@ function SOUND_Build_Layout(Construct_Pool, Name_Layout, Layout_Nr, MacroNrStart
         Layout_Object[Layout_Nr][Nr.No]:Set('customtextalignmenth', 'Center')
         Layout_Object[Layout_Nr][Nr.No]:Set('customtextalignmentv', 'Center')
         Layout_Object[Layout_Nr][Nr.No]:Set('Appearance', 'None')
+        x_y = x_y + 1
     end
 
     local AppearanceObject = Root().ShowData.Appearances:Children()
@@ -342,13 +269,14 @@ function SOUND_Build_Layout(Construct_Pool, Name_Layout, Layout_Nr, MacroNrStart
         end
     end
     -- Prority
+    x_y = 177
     local i = MacroNrStart + 176
     Nr = Layout_Object[Layout_Nr]:Acquire()
     Layout_Object[Layout_Nr][Nr.No]:Set('Object', MacroObject[i])
-    Layout_Object[Layout_Nr][Nr.No]:Set('posx', macro_x[i])
-    Layout_Object[Layout_Nr][Nr.No]:Set('posy', macro_y[i])
-    Layout_Object[Layout_Nr][Nr.No]:Set('width', 50)
-    Layout_Object[Layout_Nr][Nr.No]:Set('height', 50)
+    Layout_Object[Layout_Nr][Nr.No]:Set('posx', macro_x[x_y])
+    Layout_Object[Layout_Nr][Nr.No]:Set('posy', macro_y[x_y])
+    Layout_Object[Layout_Nr][Nr.No]:Set('width', 100)
+    Layout_Object[Layout_Nr][Nr.No]:Set('height', 100)
     Layout_Object[Layout_Nr][Nr.No]:Set('action', 'Go+')
     Layout_Object[Layout_Nr][Nr.No]:Set('Note', 'Prority')
     SOUND_Set_Def(Layout_Nr, Nr, Layout_Object)
@@ -360,13 +288,14 @@ function SOUND_Build_Layout(Construct_Pool, Name_Layout, Layout_Nr, MacroNrStart
     Layout_Object[Layout_Nr][Nr.No]:Set('customtextalignmentv', 'Center')
     Layout_Object[Layout_Nr][Nr.No]:Set('Appearance', Addr_Nat_Panel)
     i = i + 1
+    x_y = x_y + 1
     -- Reset
     Nr = Layout_Object[Layout_Nr]:Acquire()
     Layout_Object[Layout_Nr][Nr.No]:Set('Object', MacroObject[i])
-    Layout_Object[Layout_Nr][Nr.No]:Set('posx', macro_x[i])
-    Layout_Object[Layout_Nr][Nr.No]:Set('posy', macro_y[i])
-    Layout_Object[Layout_Nr][Nr.No]:Set('width', 50)
-    Layout_Object[Layout_Nr][Nr.No]:Set('height', 50)
+    Layout_Object[Layout_Nr][Nr.No]:Set('posx', macro_x[x_y])
+    Layout_Object[Layout_Nr][Nr.No]:Set('posy', macro_y[x_y])
+    Layout_Object[Layout_Nr][Nr.No]:Set('width', 100)
+    Layout_Object[Layout_Nr][Nr.No]:Set('height', 100)
     Layout_Object[Layout_Nr][Nr.No]:Set('action', 'Go+')
     Layout_Object[Layout_Nr][Nr.No]:Set('Note', 'Reset')
     SOUND_Set_Def(Layout_Nr, Nr, Layout_Object)
@@ -385,7 +314,7 @@ function SOUND_Build_Layout(Construct_Pool, Name_Layout, Layout_Nr, MacroNrStart
         Layout_Object[Layout_Nr][Nr.No]:Set('Object', MacroObject[o])
         Layout_Object[Layout_Nr][Nr.No]:Set('posx', mem_x[inc])
         Layout_Object[Layout_Nr][Nr.No]:Set('posy', mem_y[inc])
-        Layout_Object[Layout_Nr][Nr.No]:Set('width', 50)
+        Layout_Object[Layout_Nr][Nr.No]:Set('width', 100)
         Layout_Object[Layout_Nr][Nr.No]:Set('height', 50)
         Layout_Object[Layout_Nr][Nr.No]:Set('action', 'Go+')
         Layout_Object[Layout_Nr][Nr.No]:Set('Note', 'Mem')
@@ -409,7 +338,7 @@ function SOUND_Build_Layout(Construct_Pool, Name_Layout, Layout_Nr, MacroNrStart
         Layout_Object[Layout_Nr][Nr.No]:Set('Object', MacroObject[o])
         Layout_Object[Layout_Nr][Nr.No]:Set('posx', mem_x[inc])
         Layout_Object[Layout_Nr][Nr.No]:Set('posy', mem_y[inc])
-        Layout_Object[Layout_Nr][Nr.No]:Set('width', 50)
+        Layout_Object[Layout_Nr][Nr.No]:Set('width', 100)
         Layout_Object[Layout_Nr][Nr.No]:Set('height', 50)
         Layout_Object[Layout_Nr][Nr.No]:Set('action', 'Go+')
         Layout_Object[Layout_Nr][Nr.No]:Set('Note', 'Mem')
@@ -432,7 +361,7 @@ function SOUND_Build_Layout(Construct_Pool, Name_Layout, Layout_Nr, MacroNrStart
         Layout_Object[Layout_Nr][Nr.No]:Set('Object', MacroObject[o])
         Layout_Object[Layout_Nr][Nr.No]:Set('posx', mem_x[inc])
         Layout_Object[Layout_Nr][Nr.No]:Set('posy', mem_y[inc])
-        Layout_Object[Layout_Nr][Nr.No]:Set('width', 50)
+        Layout_Object[Layout_Nr][Nr.No]:Set('width', 300)
         Layout_Object[Layout_Nr][Nr.No]:Set('height', 50)
         Layout_Object[Layout_Nr][Nr.No]:Set('action', 'Go+')
         Layout_Object[Layout_Nr][Nr.No]:Set('Note', 'Mem')
