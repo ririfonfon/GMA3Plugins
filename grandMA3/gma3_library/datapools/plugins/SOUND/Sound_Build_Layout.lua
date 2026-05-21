@@ -163,7 +163,7 @@ function SOUND_Build_Layout(Construct_Pool, Name_Layout, Layout_Nr, MacroNrStart
     if prefix == "B" then
         Layout_Nr = Layout_Nr + 1
         MacroNrStart = MacroNrStart + 206
-        Seq_On_Off = Seq_On_Off + 123
+        Seq_On_Off = Seq_On_Off + 141
         Canvas = '[[Sound_B_png]]'
     end
 
@@ -309,9 +309,12 @@ function SOUND_Build_Layout(Construct_Pool, Name_Layout, Layout_Nr, MacroNrStart
     Layout_Object[Layout_Nr][Nr.No]:Set('Appearance', 'None')
     -- load mem
     local inc, inc_n = 1, 1
+    local seq =  Seq_On_Off + 111
     for o = MacroNrStart + 178, MacroNrStart + 186 do
         Nr = Layout_Object[Layout_Nr]:Acquire()
-        Layout_Object[Layout_Nr][Nr.No]:Set('Object', MacroObject[o])
+        -- Layout_Object[Layout_Nr][Nr.No]:Set('Object', MacroObject[o])
+        SequenceObject[seq][3][1]:Set('Command', 'Go+ ' .. MacroObject[o])
+        Layout_Object[Layout_Nr][Nr.No]:Set('Object', SequenceObject[seq])
         Layout_Object[Layout_Nr][Nr.No]:Set('posx', mem_x[inc])
         Layout_Object[Layout_Nr][Nr.No]:Set('posy', mem_y[inc])
         Layout_Object[Layout_Nr][Nr.No]:Set('width', 100)
@@ -327,15 +330,18 @@ function SOUND_Build_Layout(Construct_Pool, Name_Layout, Layout_Nr, MacroNrStart
         Layout_Object[Layout_Nr][Nr.No]:Set('customtextsize', 16)
         Layout_Object[Layout_Nr][Nr.No]:Set('customtextalignmenth', 'Center')
         Layout_Object[Layout_Nr][Nr.No]:Set('customtextalignmentv', 'Center')
-        Layout_Object[Layout_Nr][Nr.No]:Set('Appearance', 'None')
+        -- Layout_Object[Layout_Nr][Nr.No]:Set('Appearance', 'None')
         inc = inc + 1
         inc_n = inc_n + 1
+        seq = seq + 1
     end
     -- save mem
     inc_n = 1
     for o = MacroNrStart + 187, MacroNrStart + 195 do
         Nr = Layout_Object[Layout_Nr]:Acquire()
-        Layout_Object[Layout_Nr][Nr.No]:Set('Object', MacroObject[o])
+        -- Layout_Object[Layout_Nr][Nr.No]:Set('Object', MacroObject[o])
+        SequenceObject[seq][3][1]:Set('Command', 'Go+ ' .. MacroObject[o])
+        Layout_Object[Layout_Nr][Nr.No]:Set('Object', SequenceObject[seq])
         Layout_Object[Layout_Nr][Nr.No]:Set('posx', mem_x[inc])
         Layout_Object[Layout_Nr][Nr.No]:Set('posy', mem_y[inc])
         Layout_Object[Layout_Nr][Nr.No]:Set('width', 100)
@@ -351,8 +357,9 @@ function SOUND_Build_Layout(Construct_Pool, Name_Layout, Layout_Nr, MacroNrStart
         Layout_Object[Layout_Nr][Nr.No]:Set('customtextsize', 16)
         Layout_Object[Layout_Nr][Nr.No]:Set('customtextalignmenth', 'Center')
         Layout_Object[Layout_Nr][Nr.No]:Set('customtextalignmentv', 'Center')
-        Layout_Object[Layout_Nr][Nr.No]:Set('Appearance', 'None')
+        -- Layout_Object[Layout_Nr][Nr.No]:Set('Appearance', 'None')
         inc = inc + 1
+        seq = seq + 1
         inc_n = inc_n + 1
     end
     -- label mem
