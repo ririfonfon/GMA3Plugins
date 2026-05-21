@@ -87,7 +87,7 @@ function SOUND_Build_Seq(Construct_Pool, SeqNum, All_4_NrStart, Grp_Start, Fid, 
             Preset4Object[i]:Set('Name', 'Sound ' .. Sound_Type[TypeSel])
             Cmd("SelectFixtures DataPool " .. Construct_Pool .. " Group " .. GroupObject[i].No)
             Cmd(" Attribute 'Dimmer' At SoundChannel '" .. Sound_Type[TypeSel] .. "'")
-            Cmd("Store " .. Preset4Object[i] .. " /Merge")
+            Cmd("Store " .. Preset4Object[i] .. "/Universal /NoConfirmation")
             TypeSel = TypeSel + 1
         end
         Cmd("ClearAll")
@@ -113,7 +113,7 @@ function SOUND_Build_Seq(Construct_Pool, SeqNum, All_4_NrStart, Grp_Start, Fid, 
         SequenceObject[i][3][1]:Create(1)
         SequenceObject[i][3][1][1]:Set('Selection', GroupObject[Grp_TypeSel])
         SequenceObject[i][3][1][1]:Set('Values', Preset4Object[TypeSel])
-        SequenceObject[i][3][1][1]:Set('SelectionMode', 'Strict')
+        SequenceObject[i][3][1][1]:Set('SelectionMode', 'Normal')
         SequenceObject[i][3][1][1]:Set('Enabled', 'Yes')
 
 
@@ -166,13 +166,13 @@ function SOUND_Build_Seq(Construct_Pool, SeqNum, All_4_NrStart, Grp_Start, Fid, 
         SequenceObject[i][3]:Create(1)
         SequenceObject[i][3][1]:Insert()
         SequenceObject[i][3][1]:Create(1)
-        SequenceObject[i][3][1][1]:Set('SelectionMode', 'Strict')
+        SequenceObject[i][3][1][1]:Set('SelectionMode', 'Normal')
         SequenceObject[i][3][1][1]:Set('Enabled', 'Yes')
         SequenceObject[i][3][1]:Insert()
-        SequenceObject[i][3][1][2]:Set('SelectionMode', 'Strict')
+        SequenceObject[i][3][1][2]:Set('SelectionMode', 'Normal')
         SequenceObject[i][3][1][2]:Set('Enabled', 'Yes')
         SequenceObject[i][3][1]:Insert()
-        SequenceObject[i][3][1][3]:Set('SelectionMode', 'Strict')
+        SequenceObject[i][3][1][3]:Set('SelectionMode', 'Normal')
         SequenceObject[i][3][1][3]:Set('Enabled', 'Yes')
 
         TypeSel = TypeSel + 1
@@ -197,13 +197,13 @@ function SOUND_Build_Seq(Construct_Pool, SeqNum, All_4_NrStart, Grp_Start, Fid, 
             SequenceObject[i][3]:Create(1)
             SequenceObject[i][3][1]:Insert()
             SequenceObject[i][3][1]:Create(1)
-            SequenceObject[i][3][1][1]:Set('SelectionMode', 'Strict')
+            SequenceObject[i][3][1][1]:Set('SelectionMode', 'Normal')
             SequenceObject[i][3][1][1]:Set('Enabled', 'Yes')
             SequenceObject[i][3][1]:Insert()
-            SequenceObject[i][3][1][2]:Set('SelectionMode', 'Strict')
+            SequenceObject[i][3][1][2]:Set('SelectionMode', 'Normal')
             SequenceObject[i][3][1][2]:Set('Enabled', 'Yes')
             SequenceObject[i][3][1]:Insert()
-            SequenceObject[i][3][1][3]:Set('SelectionMode', 'Strict')
+            SequenceObject[i][3][1][3]:Set('SelectionMode', 'Normal')
             SequenceObject[i][3][1][3]:Set('Enabled', 'Yes')
 
             TypeSel = TypeSel + 1
