@@ -66,35 +66,69 @@ return function()
     if (S_Fonction == 1) then -- Group
         for k in ipairs(SeqNr) do
             if S_Seq == SeqNr[k].name then
-                if (SeqNr[k][3][1][S_Part].Selection == nil) then
-                    Target = "Group"
+                if S_Part ~= 99 then
+                    if (SeqNr[k][3][1][S_Part].Selection == nil) then
+                        Target = "Group"
+                    else
+                        Target = SeqNr[k][3][1][S_Part].Selection.Name
+                    end
+                    -- Echo(S_N_Layout .. " " .. S_N_Object .. " " .. Target)
+                    LayoutObject[S_N_Layout][S_N_Object]:Set('CustomTextText', Target)
                 else
-                    Target = SeqNr[k][3][1][S_Part].Selection.Name
+                    if (SeqNr[k][3][1][1].Selection == nil) then
+                        Target = "Group"
+                    else
+                        Target = SeqNr[k][3][1][1].Selection.Name
+                    end
+                    -- Echo("All part " .. S_N_Layout .. " " .. S_N_Object .. " " .. Target)
+                    LayoutObject[S_N_Layout][S_N_Object]:Set('CustomTextText', Target)
+                    LayoutObject[S_N_Layout][S_N_Object + 5]:Set('CustomTextText', Target)
+                    LayoutObject[S_N_Layout][S_N_Object + 10]:Set('CustomTextText', Target)
                 end
-                Echo(S_N_Layout .. " " .. S_N_Object .. " " .. Target)
-                LayoutObject[S_N_Layout][S_N_Object]:Set('CustomTextText', Target)
             end
         end
     elseif (S_Fonction == 2) then -- Values
         for k in ipairs(SeqNr) do
             if S_Seq == SeqNr[k].name then
-                if (SeqNr[k][3][1][S_Part].Values == nil) then
-                    Target = "Value"
+                if S_Part ~= 99 then
+                    if (SeqNr[k][3][1][S_Part].Values == nil) then
+                        Target = "Value"
+                    else
+                        Target = SeqNr[k][3][1][S_Part].Values.Name
+                    end
+                    LayoutObject[S_N_Layout][S_N_Object]:Set('CustomTextText', Target)
                 else
-                    Target = SeqNr[k][3][1][S_Part].Values.Name
+                    if (SeqNr[k][3][1][1].Values == nil) then
+                        Target = "Value"
+                    else
+                        Target = SeqNr[k][3][1][1].Values.Name
+                    end
+                    LayoutObject[S_N_Layout][S_N_Object]:Set('CustomTextText', Target)
+                    LayoutObject[S_N_Layout][S_N_Object + 5]:Set('CustomTextText', Target)
+                    LayoutObject[S_N_Layout][S_N_Object + 10]:Set('CustomTextText', Target)
                 end
-                LayoutObject[S_N_Layout][S_N_Object]:Set('CustomTextText', Target)
             end
         end
     elseif (S_Fonction == 3) then -- Matricks
         for k in ipairs(SeqNr) do
             if S_Seq == SeqNr[k].name then
-                if (SeqNr[k][3][1][S_Part].MAtricks == nil) then
-                    Target = "Matricks"
+                if S_Part ~= 99 then
+                    if (SeqNr[k][3][1][S_Part].MAtricks == nil) then
+                        Target = "Matricks"
+                    else
+                        Target = SeqNr[k][3][1][S_Part].MAtricks.Name
+                    end
+                    LayoutObject[S_N_Layout][S_N_Object]:Set('CustomTextText', Target)
                 else
-                    Target = SeqNr[k][3][1][S_Part].MAtricks.Name
+                    if (SeqNr[k][3][1][1].MAtricks == nil) then
+                        Target = "Matricks"
+                    else
+                        Target = SeqNr[k][3][1][1].MAtricks.Name
+                    end
+                    LayoutObject[S_N_Layout][S_N_Object]:Set('CustomTextText', Target)
+                    LayoutObject[S_N_Layout][S_N_Object + 5]:Set('CustomTextText', Target)
+                    LayoutObject[S_N_Layout][S_N_Object + 10]:Set('CustomTextText', Target)
                 end
-                LayoutObject[S_N_Layout][S_N_Object]:Set('CustomTextText', Target)
             end
         end
     elseif (S_Fonction == 4) then -- Fader_Master
@@ -165,33 +199,65 @@ return function()
     elseif (S_Fonction == 5) then -- Fade
         for k in ipairs(SeqNr) do
             if S_Seq == SeqNr[k].name then
-                if (SeqNr[k][3][1][S_Part].FadeFromX == nil) then
-                    Target = "N/"
+                if S_Part ~= 99 then
+                    if (SeqNr[k][3][1][S_Part].FadeFromX == nil) then
+                        Target = "N/"
+                    else
+                        Target = tostring(SeqNr[k][3][1][S_Part].FadeFromX) .. "/"
+                    end
+                    if (SeqNr[k][3][1][S_Part].FadeToX == nil) then
+                        Target = Target .. "N"
+                    else
+                        Target = Target .. tostring(SeqNr[k][3][1][S_Part].FadeToX)
+                    end
+                    LayoutObject[S_N_Layout][S_N_Object]:Set('CustomTextText', Target)
                 else
-                    Target = tostring(SeqNr[k][3][1][S_Part].FadeFromX) .. "/"
+                    if (SeqNr[k][3][1][1].FadeFromX == nil) then
+                        Target = "N/"
+                    else
+                        Target = tostring(SeqNr[k][3][1][1].FadeFromX) .. "/"
+                    end
+                    if (SeqNr[k][3][1][1].FadeToX == nil) then
+                        Target = Target .. "N"
+                    else
+                        Target = Target .. tostring(SeqNr[k][3][1][1].FadeToX)
+                    end
+                    LayoutObject[S_N_Layout][S_N_Object]:Set('CustomTextText', Target)
+                    LayoutObject[S_N_Layout][S_N_Object + 5]:Set('CustomTextText', Target)
+                    LayoutObject[S_N_Layout][S_N_Object + 10]:Set('CustomTextText', Target)
                 end
-                if (SeqNr[k][3][1][S_Part].FadeToX == nil) then
-                    Target = Target .. "N"
-                else
-                    Target = Target .. tostring(SeqNr[k][3][1][S_Part].FadeToX)
-                end
-                LayoutObject[S_N_Layout][S_N_Object]:Set('CustomTextText', Target)
             end
         end
     elseif (S_Fonction == 6) then -- Delay
         for k in ipairs(SeqNr) do
             if S_Seq == SeqNr[k].name then
-                if (SeqNr[k][3][1][S_Part].DelayFromX == nil) then
-                    Target = "N/"
+                if S_Part ~= 99 then
+                    if (SeqNr[k][3][1][S_Part].DelayFromX == nil) then
+                        Target = "N/"
+                    else
+                        Target = tostring(SeqNr[k][3][1][S_Part].DelayFromX) .. "/"
+                    end
+                    if (SeqNr[k][3][1][S_Part].DelayToX == nil) then
+                        Target = Target .. "N"
+                    else
+                        Target = Target .. tostring(SeqNr[k][3][1][S_Part].DelayToX)
+                    end
+                    LayoutObject[S_N_Layout][S_N_Object]:Set('CustomTextText', Target)
                 else
-                    Target = tostring(SeqNr[k][3][1][S_Part].DelayFromX) .. "/"
+                    if (SeqNr[k][3][1][1].DelayFromX == nil) then
+                        Target = "N/"
+                    else
+                        Target = tostring(SeqNr[k][3][1][1].DelayFromX) .. "/"
+                    end
+                    if (SeqNr[k][3][1][1].DelayToX == nil) then
+                        Target = Target .. "N"
+                    else
+                        Target = Target .. tostring(SeqNr[k][3][1][1].DelayToX)
+                    end
+                    LayoutObject[S_N_Layout][S_N_Object]:Set('CustomTextText', Target)
+                    LayoutObject[S_N_Layout][S_N_Object + 5]:Set('CustomTextText', Target)
+                    LayoutObject[S_N_Layout][S_N_Object + 10]:Set('CustomTextText', Target)
                 end
-                if (SeqNr[k][3][1][S_Part].DelayToX == nil) then
-                    Target = Target .. "N"
-                else
-                    Target = Target .. tostring(SeqNr[k][3][1][S_Part].DelayToX)
-                end
-                LayoutObject[S_N_Layout][S_N_Object]:Set('CustomTextText', Target)
             end
         end
     elseif (S_Fonction == 7) then -- All Refrech
