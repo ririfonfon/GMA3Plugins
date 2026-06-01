@@ -83,7 +83,7 @@ function SOUND_Build_Seq(Construct_Pool, SeqNum, All_4_NrStart, Grp_Start, Fid, 
             Preset4Object[i]:Set('Name', 'Sound ' .. Sound_Type[TypeSel])
             Cmd("SelectFixtures DataPool " .. Construct_Pool .. " Group " .. GroupObject[i].No)
             Cmd(" Attribute 'Dimmer' At SoundChannel '" .. Sound_Type[TypeSel] .. "'")
-            Cmd("Store " .. Preset4Object[i] .. " /Merge")
+            Cmd("Store " .. Preset4Object[i] .. "/Universel /Merge")
             TypeSel = TypeSel + 1
         end
         Cmd("ClearAll")
