@@ -2,6 +2,9 @@
 Releases:
 * 2.3.2.0
 
+Version :
+* 0.0.0.91
+
 Created by Richard Fontaine "RIRI", April 2026.
 todo fid 10001 cmd store preset universal
 recepie selection mode to normal
@@ -267,7 +270,8 @@ local function SOUND_list_input(popuplists, TLay, TLayNr, TLayNrRef, SeqNr, SeqN
         Grp_Start = FixtureGroups[k].NO
     end
     if kk == 0 then
-
+        Echo('kk 0')
+        Grp_Start = 1
     end
 
     return TLayNr, TLayNrRef, SeqNr, SeqNrStart, MacroNr, MacroNrStart, All_4_Nr, All_4_NrStart,
@@ -1297,7 +1301,7 @@ local function Main(displayHandle)
         Fid = caller.Content:gsub("'", "")
         Fid = tonumber(Fid)
 
-        checks = SOUND_Check_ID(Fid, 11, popuplists)
+        checks = SOUND_Check_ID(Fid, 24, popuplists)
 
         if checks == true then
             OkButton.Visible = "No"
@@ -1369,6 +1373,7 @@ local function Main(displayHandle)
                 New = true
                 OkButton.Visible = "Yes"
                 input21LineEdit.Content = "Sound"
+                -- Check_Pool = true
             end
             if Check_Pool == true then
                 Pool_check = SOUND_CH_Pool(popuplists)
@@ -1398,7 +1403,7 @@ local function Main(displayHandle)
                     Group_Select     = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 21, 31, 41, 51, 61, 71, 81, 91,
                         101, 201, 301, 401 },
                 }
-                TLayNr, SeqNrStart, MacroNrStart, All_4_NrStart = nil, nil, nil, nil
+                TLayNr, SeqNrStart, MacroNrStart, All_4_NrStart, Grp_Start = nil, nil, nil, nil, nil
                 TLayNr, TLayNrRef, SeqNr, SeqNrStart, MacroNr,
                 MacroNrStart, All_4_Nr, All_4_NrStart, All_4_Current, FixtureGroups, Grp_Start = SOUND_list_input(
                     popuplists, TLay, TLayNr, TLayNrRef, SeqNr, SeqNrStart, MacroNr, MacroNrStart,

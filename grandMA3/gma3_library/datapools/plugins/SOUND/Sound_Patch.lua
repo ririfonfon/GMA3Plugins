@@ -1,7 +1,11 @@
 --[[
-    Releases:
-    * 0.0.0.9
-    Created by Richard Fontaine "RIRI", Mars 2026.
+Releases:
+* 2.3.2.0
+
+Version :
+* 0.0.0.91
+
+Created by Richard Fontaine "RIRI", April 2026.
 --]]
 
 function SOUND_Patch(Univers, Address, Fid, prefix)
@@ -63,9 +67,10 @@ function SOUND_Patch(Univers, Address, Fid, prefix)
     Cmd('ChangeDestination Root')
 end
 
-function SOUND_Patch_Cross(Univers, Address, Fid)
+function SOUND_Patch_Cross(Univers, Address, Fid, Construct_Pool)
     Sound_Dialog_End('Sound By Riri Build Cross_AB Mode .')
 
+    local GroupObject = Root().ShowData.DataPools[Construct_Pool].Groups
     Cmd('ChangeDestination Root')
     Cmd('ChangeDestination 14.10')
 
@@ -79,6 +84,8 @@ function SOUND_Patch_Cross(Univers, Address, Fid)
 
     Fid = Fid + 22
     Address = Address + 22
+
+    local good = false
 
     local my_add_fixture_table = {}
     my_add_fixture_table.mode = Patch().FixtureTypes.Grouping.DMXModes.Default
@@ -111,11 +118,21 @@ function SOUND_Patch_Cross(Univers, Address, Fid)
         if success ~= nil then
             Echo('Fixture ' .. my_add_fixture_table.fid ..
                 ' is added with patch address ' .. my_add_fixture_table.patch[1])
+            good = true
         else
             Sound_Dialog_End('AddFixture failed!')
             ErrEcho('AddFixture failed!')
+            good = false
         end
     end
-
     Cmd('ChangeDestination Root')
+    if good == true then
+        for a = 1, 2 do
+            local nri = GroupObject:Acquire()
+            GroupObject:Create(nri.No)
+            Cmd("AutoCreate Fixture " ..
+                Fid + a .. " At DataPool " .. Construct_Pool .. " Group " .. nri.No .. " /All /NoConfirmation ")
+            GroupObject[nri.No]:Set('Name', 'Cross_' .. Sound_Type[a])
+        end
+    end
 end
