@@ -31,6 +31,8 @@ function Sound_Construct(Construct_Pool, Grp_Start, All_4_NrStart, Univers, Addr
     local MacroNum    = 999
     NaLay             = '"' .. NaLay .. '"'
 
+    Sound_Build_Tag()
+
     SOUND_Check_Size_Pool(MacroNum, MacroObject)
     MacroObject:Create(MacroNum)
     MacroObject[MacroNum]:Set('Name', 'Construct_Sound')
@@ -83,6 +85,7 @@ function Sound_Construct(Construct_Pool, Grp_Start, All_4_NrStart, Univers, Addr
     MacroObject[MacroNum][14]:Set('Wait', 2)
     MacroObject[MacroNum][15]:Set('Command',
         "Delete DataPool " .. Construct_Pool .. " Macro " .. MacroNum .. "/NoConfirmation")
+    -- MacroObject[MacroNum][15]:Set('Command', "")
 
     Cmd('Go+ DataPool ' .. Construct_Pool .. ' Macro 999')
 end
