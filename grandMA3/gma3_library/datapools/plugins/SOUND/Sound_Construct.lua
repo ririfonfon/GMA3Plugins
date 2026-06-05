@@ -83,9 +83,9 @@ function Sound_Construct(Construct_Pool, Grp_Start, All_4_NrStart, Univers, Addr
     MacroObject[MacroNum][13]:Set('Wait', 2)
     MacroObject[MacroNum][14]:Set('Command', "")
     MacroObject[MacroNum][14]:Set('Wait', 2)
-    MacroObject[MacroNum][15]:Set('Command',
-        "Delete DataPool " .. Construct_Pool .. " Macro " .. MacroNum .. "/NoConfirmation")
-    -- MacroObject[MacroNum][15]:Set('Command', "")
+    -- MacroObject[MacroNum][15]:Set('Command',
+    --     "Delete DataPool " .. Construct_Pool .. " Macro " .. MacroNum .. "/NoConfirmation")
+    MacroObject[MacroNum][15]:Set('Command', "")
 
-    Cmd('Go+ DataPool ' .. Construct_Pool .. ' Macro 999')
+    -- Cmd('Go+ DataPool ' .. Construct_Pool .. ' Macro 999')
 end
