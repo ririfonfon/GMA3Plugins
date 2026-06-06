@@ -405,7 +405,7 @@ function SOUND_Build_Macro(Construct_Pool, MacroNum, TLayNr, prefix)
     for k = 1, 11, 1 do
         SOUND_Check_Size_Pool(MacroNum, MacroObject)
         MacroObject:Create(MacroNum)
-        MacroObject[MacroNum]:Set('Name', 'All_' .. prefix .. Sound_Type[k])
+        MacroObject[MacroNum]:Set('Name', 'On_' .. prefix .. Sound_Type[k])
         for i = 1, 30, 1 do
             MacroObject[MacroNum]:Insert(i)
         end
@@ -446,7 +446,7 @@ function SOUND_Build_Macro(Construct_Pool, MacroNum, TLayNr, prefix)
      for k = 1, 11, 1 do
         SOUND_Check_Size_Pool(MacroNum, MacroObject)
         MacroObject:Create(MacroNum)
-        MacroObject[MacroNum]:Set('Name', 'All_' .. prefix .. Sound_Type[k]..' Off')
+        MacroObject[MacroNum]:Set('Name', 'Off_' .. prefix .. Sound_Type[k])
         for i = 1, 30, 1 do
             MacroObject[MacroNum]:Insert(i)
         end
