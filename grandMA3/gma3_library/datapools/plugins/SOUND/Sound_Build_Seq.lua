@@ -210,7 +210,7 @@ function SOUND_Build_Seq(Construct_Pool, SeqNum, All_4_NrStart, Grp_Start, Fid, 
         end
         TypeSel = 1
     end
-
+    -- load_MEM_
     SeqNum = SeqEnd + 1
     SeqEnd = SeqNum + 8
     local k = 1
@@ -239,6 +239,7 @@ function SOUND_Build_Seq(Construct_Pool, SeqNum, All_4_NrStart, Grp_Start, Fid, 
         k = k + 1
     end
 
+    -- Save_MEM_
     SeqNum = SeqEnd + 1
     SeqEnd = SeqNum + 8
     k = 1
@@ -264,6 +265,35 @@ function SOUND_Build_Seq(Construct_Pool, SeqNum, All_4_NrStart, Grp_Start, Fid, 
         SequenceObject[i][4][1]:Set('Appearance', 'Black')
         SequenceObject[i][4]:Set('TrigType', 1)
         SequenceObject[i][4]:Set('TrigTime', 1)
+        k = k + 1
+    end
+
+    -- all_on_off
+    SeqNum = SeqEnd + 1
+    SeqEnd = SeqNum + 10
+    k = 1
+    for i = SeqNum, SeqEnd, 1 do
+        SOUND_Check_Size_Pool(i, SequenceObject)
+        SequenceObject:Create(i)
+        SequenceObject[i]:Set('Name', prefix .. "On_Off" .. Sound_Type[k])
+        SequenceObject[i]:Set('Appearance', 'Black')
+        SOUND_Sequence_Defo(SequenceObject, i)
+        SequenceObject[i]:Set('AUTOSTART', 'No')
+        SequenceObject[i]:Set('AUTOSTOP', 'No')
+        SequenceObject[i]:Set('TRACKING', 'No')
+        SequenceObject[i]:Set('PRIORITY', 'HTP')
+        SequenceObject[i]:Set('SOFTLTP', 'No')
+
+        SequenceObject[i]:Insert()
+        SequenceObject[i][3]:Set('No', 1)
+        SequenceObject[i][3]:Create(1)
+        SequenceObject[i][3][1]:Set('Appearance', 'Red')
+        SequenceObject[i][3][1]:Set('Command' , 'Go+ DataPool '.. Construct_Pool .. ' Macro On_' .. prefix .. Sound_Type[k])
+        SequenceObject[i]:Insert()
+        SequenceObject[i][4]:Set('No', 2)
+        SequenceObject[i][4]:Create(1)
+        SequenceObject[i][4][1]:Set('Appearance', 'Black')
+        SequenceObject[i][4][1]:Set('Command' , 'Go+ DataPool '.. Construct_Pool .. ' Macro Off_' .. prefix .. Sound_Type[k])
         k = k + 1
     end
 
