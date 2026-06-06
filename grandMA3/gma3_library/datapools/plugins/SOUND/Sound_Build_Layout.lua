@@ -162,7 +162,7 @@ function SOUND_Build_Layout(Construct_Pool, Name_Layout, Layout_Nr, MacroNrStart
 
     if prefix == "B" then
         Layout_Nr = Layout_Nr + 1
-        MacroNrStart = MacroNrStart + 206
+        MacroNrStart = MacroNrStart + 228
         Seq_On_Off = Seq_On_Off + 141
         Canvas = '[[Sound_B_png]]'
     end
