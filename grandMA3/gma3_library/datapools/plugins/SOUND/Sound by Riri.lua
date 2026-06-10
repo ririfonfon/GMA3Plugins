@@ -3,7 +3,7 @@ Releases:
 * 2.3.2.0
 
 Version :
-* 0.0.0.91
+* 0.0.0.93
 
 Created by Richard Fontaine "RIRI", April 2026.
 todo fid 10001 cmd store preset universal
