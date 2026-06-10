@@ -59,7 +59,7 @@ function SOUND_Build_Seq(Construct_Pool, SeqNum, All_4_NrStart, Grp_Start, Fid, 
         Grp_Start = Grp_Start + 13
         Fid = Fid + 11
         All_4_NrStart = All_4_NrStart + 13
-        SeqNum = SeqNum + 141
+        SeqNum = SeqNum + 152
         Grp_TypeSel = 13
     end
     local SeqEnd = SeqNum + 10
@@ -275,7 +275,7 @@ function SOUND_Build_Seq(Construct_Pool, SeqNum, All_4_NrStart, Grp_Start, Fid, 
     for i = SeqNum, SeqEnd, 1 do
         SOUND_Check_Size_Pool(i, SequenceObject)
         SequenceObject:Create(i)
-        SequenceObject[i]:Set('Name', prefix .. "On_Off" .. Sound_Type[k])
+        SequenceObject[i]:Set('Name', "Select All" .. prefix .. Sound_Type[k])
         SequenceObject[i]:Set('Appearance', 'Black')
         SOUND_Sequence_Defo(SequenceObject, i)
         SequenceObject[i]:Set('AUTOSTART', 'No')

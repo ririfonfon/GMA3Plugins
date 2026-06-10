@@ -154,6 +154,19 @@ function SOUND_Build_Layout(Construct_Pool, Name_Layout, Layout_Nr, MacroNrStart
         350, 300, 250, 350, 300, 250, 350, 300, 250,
     }
 
+    local seq_x          = {
+        750, -350, 200,
+        750, -350, 200,
+        750, -350, 200,
+        750, -350 }
+    local seq_y          = {
+        -450,
+        150, 150, 150,
+        -50, -50, -50,
+        -250, -250, -250,
+        -450
+    }
+
     local mem_Color      = { '80FF80FF', 'FF8080FF', '808080FF' }
     local mem_Text       = { 'Load ', 'Save ', '' }
     local S_V_M_Color    = { '8080FFFF', 'FF0080FF', 'FFFF80FF', '00FF00FF', 'FF8000FF' }
@@ -163,7 +176,7 @@ function SOUND_Build_Layout(Construct_Pool, Name_Layout, Layout_Nr, MacroNrStart
     if prefix == "B" then
         Layout_Nr = Layout_Nr + 1
         MacroNrStart = MacroNrStart + 228
-        Seq_On_Off = Seq_On_Off + 141
+        Seq_On_Off = Seq_On_Off + 152
         Canvas = '[[Sound_B_png]]'
     end
 
@@ -309,7 +322,7 @@ function SOUND_Build_Layout(Construct_Pool, Name_Layout, Layout_Nr, MacroNrStart
     Layout_Object[Layout_Nr][Nr.No]:Set('Appearance', 'None')
     -- load mem
     local inc, inc_n = 1, 1
-    local seq =  Seq_On_Off + 111
+    local seq = Seq_On_Off + 111
     for o = MacroNrStart + 178, MacroNrStart + 186 do
         Nr = Layout_Object[Layout_Nr]:Acquire()
         -- Layout_Object[Layout_Nr][Nr.No]:Set('Object', MacroObject[o])
@@ -382,6 +395,29 @@ function SOUND_Build_Layout(Construct_Pool, Name_Layout, Layout_Nr, MacroNrStart
         Layout_Object[Layout_Nr][Nr.No]:Set('Appearance', 'None')
         inc = inc + 1
     end
+    -- sequence all select
+    inc = 1
+    for o = seq, seq + 10 do
+        Nr = Layout_Object[Layout_Nr]:Acquire()
+        Layout_Object[Layout_Nr][Nr.No]:Set('Object', SequenceObject[seq])
+        Layout_Object[Layout_Nr][Nr.No]:Set('posx', seq_x[inc])
+        Layout_Object[Layout_Nr][Nr.No]:Set('posy', seq_y[inc])
+        Layout_Object[Layout_Nr][Nr.No]:Set('width', 100)
+        Layout_Object[Layout_Nr][Nr.No]:Set('height', 50)
+        Layout_Object[Layout_Nr][Nr.No]:Set('action', 'Go+')
+        Layout_Object[Layout_Nr][Nr.No]:Set('Note', 'select_all_on_off')
+        SOUND_Set_Def(Layout_Nr, Nr, Layout_Object)
+        Layout_Object[Layout_Nr][Nr.No]:Set('visibilityborder', 'Visible')
+        Layout_Object[Layout_Nr][Nr.No]:Set('visibilityobjectname', 'Visible')
+        Layout_Object[Layout_Nr][Nr.No]:Set('bordersize', 3)
+        Layout_Object[Layout_Nr][Nr.No]:Set('customtextsize', 16)
+        Layout_Object[Layout_Nr][Nr.No]:Set('customtextalignmenth', 'Center')
+        Layout_Object[Layout_Nr][Nr.No]:Set('customtextalignmentv', 'Center')
+        -- Layout_Object[Layout_Nr][Nr.No]:Set('Appearance', 'None')
+        inc = inc + 1
+        seq = seq + 1
+    end
+
     if prefix == "A" then
         Sound_Dialog_End('Sound By Riri Build B Layout Now')
     elseif prefix == "B" then
