@@ -3,7 +3,7 @@ Releases:
 * 2.3.2.0
 
 Version :
-* 0.0.0.93
+* 0.0.0.94
 
 Created by Richard Fontaine "RIRI", April 2026.
 todo fid 10001 cmd store preset universal
@@ -83,28 +83,28 @@ local function SOUND_Check_ID(myFID, myCount, popuplists)
     if myCount > 1 then
         -- Check if there is a collision and print valid feedback.
         if CheckFIDCollision(myFID, myCount, myType) then
-            Printf("The FID " .. myFID .. " to " .. (myFID + myCount) .. " is available.")
+            -- Printf("The FID " .. myFID .. " to " .. (myFID + myCount) .. " is available.")
             return false
         else
-            ErrEcho("The FID " .. myFID .. " to " .. (myFID + myCount) .. " gives an FID collision.")
-            for i in ipairs(popuplists.Fixture_Select) do
-                if myFID + myCount <= popuplists.Fixture_Select[i] or popuplists.Fixture_Select[i] >= myFID then
-                    table.remove(popuplists.Fixture_Select, i)
-                end
-            end
+            -- ErrEcho("The FID " .. myFID .. " to " .. (myFID + myCount) .. " gives an FID collision.")
+            -- for i in ipairs(popuplists.Fixture_Select) do
+            --     if myFID + myCount <= popuplists.Fixture_Select[i] or popuplists.Fixture_Select[i] >= myFID then
+            --         table.remove(popuplists.Fixture_Select, i)
+            --     end
+            -- end
             return true
         end
     else
         if CheckFIDCollision(myFID, nil, myType) then
-            Printf("The FID " .. myFID .. " is available.")
+            -- Printf("The FID " .. myFID .. " is available.")
             return false
         else
-            ErrEcho("The FID " .. myFID .. " gives an FID collision.")
-            for i in ipairs(popuplists.Fixture_Select) do
-                if myFID == popuplists.Fixture_Select[i] then
-                    table.remove(popuplists.Fixture_Select, i)
-                end
-            end
+            -- ErrEcho("The FID " .. myFID .. " gives an FID collision.")
+            -- for i in ipairs(popuplists.Fixture_Select) do
+            --     if myFID == popuplists.Fixture_Select[i] then
+            --         table.remove(popuplists.Fixture_Select, i)
+            --     end
+            -- end
             return true
         end
     end
@@ -112,7 +112,7 @@ end
 
 local function Address_Select_Refrech(Univers, popuplists)
     Cmd('Fixture Thru')
-    for Addr = 1, 489, 1 do
+    for Addr = 1, 488, 1 do
         local AddressRange = Addr + 23
         -- local checks = SOUND_Check_DMX(Univers, Addr, AddressRange, 0)
         -- Creates the string used for the DMX address.
@@ -143,66 +143,6 @@ local function Address_Select_Refrech(Univers, popuplists)
         end
     end
     Cmd('Clear')
-end
-
-local function SOUND_Check_ID_list(myFID, myCount, popuplists)
-    -- Create a variable with the FID you want to check.
-    -- local myFID = 2001
-    -- Create a variable with the number of subsequent ID's to also check.
-    -- local myCount = 10
-    -- Create a variable with the IDType you want to check.
-    -- Default value is 0. This is the "Fixture" type.
-    -- Valid integers are:
-    --- 0 = Fixture
-    --- 1 = Channel
-    --- 2 = Universal
-    --- 3 = Houseligths (default name)
-    --- 4 = NonDim (default name)
-    --- 5 = Media (default name)
-    --- 6 = Fog (default name)
-    --- 7 = Effect (default name)
-    --- 8 = Pyro (default name)
-    --- 9 = MArker
-    --- 10 = Multipatch
-    local myType = 0
-    -- local Fixture_Id = ShowData().Patch.IDTypes.Fixture:Children()
-    local Fixture_Id = popuplists.Fixture_Select
-
-    -- Check if the count is more than one.
-    if myCount > 1 then
-        -- Printf("=============== START OF DUMP ===============")
-        -- Fixture_Id:Dump()
-        -- Printf("================ END OF DUMP ================")
-
-        -- Check if there is a collision and print valid feedback.
-        for a in ipairs(Fixture_Id) do
-            myFID = Fixture_Id[a]
-            if CheckFIDCollision(myFID, myCount, myType) then
-                Printf("*The FID " .. myFID .. " to " .. (myFID + myCount) .. " is available.")
-            else
-                ErrEcho("*The FID " .. myFID .. " to " .. (myFID + myCount) .. " gives an FID collision.")
-                for i in ipairs(popuplists.Fixture_Select) do
-                    if myFID + myCount <= popuplists.Fixture_Select[i] or popuplists.Fixture_Select[i] >= myFID then
-                        table.remove(popuplists.Fixture_Select, i)
-                    end
-                end
-            end
-        end
-    else
-        for a in ipairs(Fixture_Id) do
-            myFID = Fixture_Id[a]
-            if CheckFIDCollision(myFID, nil, myType) then
-                Printf("*The FID " .. myFID .. " is available.")
-            else
-                ErrEcho("*The FID " .. myFID .. " gives an FID collision.")
-                for i in ipairs(popuplists.Fixture_Select) do
-                    if myFID == popuplists.Fixture_Select[i] then
-                        table.remove(popuplists.Fixture_Select, i)
-                    end
-                end
-            end
-        end
-    end
 end
 
 local function SOUND_list_input(popuplists, TLay, TLayNr, TLayNrRef, SeqNr, SeqNrStart, MacroNr,
@@ -270,7 +210,6 @@ local function SOUND_list_input(popuplists, TLay, TLayNr, TLayNrRef, SeqNr, SeqN
         Grp_Start = FixtureGroups[k].NO
     end
     if kk == 0 then
-        Echo('kk 0')
         Grp_Start = 1
     end
 
@@ -331,6 +270,7 @@ local function Main(displayHandle)
     local Fid = 901
     local Grp_Start, Grp_Range
     local Wrong = { false, false, false, false, false, false, false, false, false }
+    local fid_wrong = {}
 
     local popuplists = {
         DataPool_Select  = {},
@@ -347,7 +287,14 @@ local function Main(displayHandle)
             215, 216, 217, 218, 219, 220 },
         Fixture_Select   = { 1, 11, 21, 31, 41, 51, 61, 71, 81, 91, 101, 201, 301, 401, 501, 601,
             701, 801, 901, 911, 921, 931, 941, 951, 961, 971, 981, 991, 1001, 1101, 1201, 1301,
-            1401, 1501, 1601, 1701, 1801, 1901, 2001 },
+            1401, 1501, 1601, 1701, 1801, 1901, 2001, 2101, 2201, 2301, 2401, 2501, 2601, 2701, 2801, 2901,
+            3001, 3101, 3201, 3301, 3401, 3501, 3601, 3701, 3801, 3901, 4001, 4101, 4201, 4301, 4401, 4501,
+            4601, 4701, 4801, 4901, 5001, 5101, 5201, 5301, 5401, 5501, 5601, 5701, 5801, 5901, 6001, 6101,
+            6201, 6301, 6401, 6501, 6601, 6701, 6801, 6901, 7001, 7101, 7201, 7301, 7401, 7501, 7601, 7701,
+            7801, 7901, 8001, 8101, 8201, 8301, 8401, 8501, 8601, 8701, 8801, 8901, 9001, 9101, 9201, 9301,
+            9401, 9501, 9601, 9701, 9801, 9901, 10000, 10101, 10201, 10301, 10401, 10501, 10601, 10701,
+            10801, 10901, 11001,
+        },
         Group_Select     = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 21, 31, 41, 51, 61, 71, 81, 91,
             101, 201, 301, 401 },
     }
@@ -1304,6 +1251,11 @@ local function Main(displayHandle)
         checks = SOUND_Check_ID(Fid, 24, popuplists)
 
         if checks == true then
+            for index in ipairs(popuplists.Fixture_Select) do
+                if Fid == popuplists.Fixture_Select[index] then
+                    table.remove(popuplists.Fixture_Select, index)
+                end
+            end
             OkButton.Visible = "No"
             input9LineEdit.TextColor = colorAlertText
             Wrong[7] = true
@@ -1399,7 +1351,13 @@ local function Main(displayHandle)
                         215, 216, 217, 218, 219, 220 },
                     Fixture_Select   = { 1, 11, 21, 31, 41, 51, 61, 71, 81, 91, 101, 201, 301, 401, 501, 601,
                         701, 801, 901, 911, 921, 931, 941, 951, 961, 971, 981, 991, 1001, 1101, 1201, 1301,
-                        1401, 1501, 1601, 1701, 1801, 1901, 2001 },
+                        1401, 1501, 1601, 1701, 1801, 1901, 2001, 2101, 2201, 2301, 2401, 2501, 2601, 2701, 2801, 2901,
+                        3001, 3101, 3201, 3301, 3401, 3501, 3601, 3701, 3801, 3901, 4001, 4101, 4201, 4301, 4401, 4501,
+                        4601, 4701, 4801, 4901, 5001, 5101, 5201, 5301, 5401, 5501, 5601, 5701, 5801, 5901, 6001, 6101,
+                        6201, 6301, 6401, 6501, 6601, 6701, 6801, 6901, 7001, 7101, 7201, 7301, 7401, 7501, 7601, 7701,
+                        7801, 7901, 8001, 8101, 8201, 8301, 8401, 8501, 8601, 8701, 8801, 8901, 9001, 9101, 9201, 9301,
+                        9401, 9501, 9601, 9701, 9801, 9901, 10000, 10101, 10201, 10301, 10401, 10501, 10601, 10701,
+                        10801, 10901, 11001, },
                     Group_Select     = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 21, 31, 41, 51, 61, 71, 81, 91,
                         101, 201, 301, 401 },
                 }
@@ -1408,7 +1366,23 @@ local function Main(displayHandle)
                 MacroNrStart, All_4_Nr, All_4_NrStart, All_4_Current, FixtureGroups, Grp_Start = SOUND_list_input(
                     popuplists, TLay, TLayNr, TLayNrRef, SeqNr, SeqNrStart, MacroNr, MacroNrStart,
                     All_4_Nr, All_4_NrStart, All_4_Current, FixtureGroups, Grp_Start)
-                SOUND_Check_ID_list(Fid, 11, popuplists)
+                for index in pairs(popuplists.Fixture_Select) do
+                    if SOUND_Check_ID(popuplists.Fixture_Select[index], 24, popuplists) == true then
+                        table.insert(fid_wrong, index)
+                    end
+                end
+                local pass = true
+                while (pass) do
+                    local last
+                    for index in pairs(fid_wrong) do
+                        last = index
+                    end
+                    table.remove(popuplists.Fixture_Select, fid_wrong[last])
+                    table.remove(fid_wrong, last)
+                    if last == 1 then
+                        pass = false
+                    end
+                end
                 coroutine.yield(0.1)
                 Address_Select_Refrech(Univers, popuplists)
             else
@@ -1416,11 +1390,26 @@ local function Main(displayHandle)
                 SeqNrStart = 1
                 MacroNrStart = 1
                 All_4_NrStart = 1
-                SOUND_Check_ID_list(Fid, 11, popuplists)
+                for index in pairs(popuplists.Fixture_Select) do
+                    if SOUND_Check_ID(popuplists.Fixture_Select[index], 24, popuplists) == true then
+                        table.insert(fid_wrong, index)
+                    end
+                end
+                local pass = true
+                while (pass) do
+                    local last
+                    for index in pairs(fid_wrong) do
+                        last = index
+                    end
+                    table.remove(popuplists.Fixture_Select, fid_wrong[last])
+                    table.remove(fid_wrong, last)
+                    if last == 1 then
+                        pass = false
+                    end
+                end
                 coroutine.yield(0.1)
                 Address_Select_Refrech(Univers, popuplists)
             end
-
             input1LineEdit.Content = "Sound"
             input2LineEdit.Content = TLayNr
             input3LineEdit.Content = SeqNrStart
