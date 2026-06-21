@@ -3,7 +3,7 @@ Releases:
 * 2.3.2.0
 
 Version :
-* 0.0.0.93
+* 0.0.0.94
 
 Created by Richard Fontaine "RIRI", April 2026.
 --]]
@@ -88,7 +88,7 @@ function SOUND_Build_Macro(Construct_Pool, MacroNum, TLayNr, prefix)
             Cmd("Assign " .. MacroObject[MacroNum][1] .. " at " .. S_Tag_solo)
             MacroObject[MacroNum][2]:Set('Command',
                 "Edit DataPool '" .. Build_Pool.Name .. "' Sequence '" .. prefix .. "RecepieSound " ..
-                Sound_Type[TypeSel] .. "' Cue 1 Part 0.1 Thru Part 0.3 Property 'Selection'")
+                Sound_Type[TypeSel] .. "' Cue 1 Part 0.1 Thru  Property 'Selection'")
             Cmd("Assign " .. MacroObject[MacroNum][2] .. " at " .. S_Tag_all)
             MacroObject[MacroNum][2]:Set('Enabled', 0)
 
@@ -129,7 +129,7 @@ function SOUND_Build_Macro(Construct_Pool, MacroNum, TLayNr, prefix)
             Cmd("Assign " .. MacroObject[MacroNum][1] .. " at " .. S_Tag_solo)
             MacroObject[MacroNum][2]:Set('Command',
                 "Edit DataPool '" .. Build_Pool.Name .. "' Sequence '" .. prefix .. "RecepieSound " ..
-                Sound_Type[TypeSel] .. "' Cue 1 Part 0.1 Thru Part 0.3 Property 'Values'")
+                Sound_Type[TypeSel] .. "' Cue 1 Part 0.1 Thru  Property 'Values'")
             Cmd("Assign " .. MacroObject[MacroNum][2] .. " at " .. S_Tag_all)
             MacroObject[MacroNum][2]:Set('Enabled', 0)
 
@@ -170,7 +170,7 @@ function SOUND_Build_Macro(Construct_Pool, MacroNum, TLayNr, prefix)
             Cmd("Assign " .. MacroObject[MacroNum][1] .. " at " .. S_Tag_solo)
             MacroObject[MacroNum][2]:Set('Command',
                 "Edit DataPool '" .. Build_Pool.Name .. "' Sequence '" .. prefix .. "RecepieSound " ..
-                Sound_Type[TypeSel] .. "' Cue 1 Part 0.1 Thru Part 0.3 Property 'MAtricks'")
+                Sound_Type[TypeSel] .. "' Cue 1 Part 0.1 Thru  Property 'MAtricks'")
             Cmd("Assign " .. MacroObject[MacroNum][2] .. " at " .. S_Tag_all)
             MacroObject[MacroNum][2]:Set('Enabled', 0)
 
@@ -216,12 +216,12 @@ function SOUND_Build_Macro(Construct_Pool, MacroNum, TLayNr, prefix)
             Cmd("Assign " .. MacroObject[MacroNum][2] .. " at " .. S_Tag_solo)
             MacroObject[MacroNum][3]:Set('Command',
                 "Edit DataPool '" .. Build_Pool.Name .. "' Sequence '" .. prefix .. "RecepieSound " ..
-                Sound_Type[TypeSel] .. "' Cue 1 Part 0.1 Thru Part 0.3 Property 'FadeFromX'")
+                Sound_Type[TypeSel] .. "' Cue 1 Part 0.1 Thru  Property 'FadeFromX'")
             Cmd("Assign " .. MacroObject[MacroNum][3] .. " at " .. S_Tag_all)
             MacroObject[MacroNum][3]:Set('Enabled', 0)
             MacroObject[MacroNum][4]:Set('Command',
                 "Edit DataPool '" .. Build_Pool.Name .. "' Sequence '" .. prefix .. "RecepieSound " ..
-                Sound_Type[TypeSel] .. "' Cue 1 Part 0.1 Thru Part 0.3 Property 'FadeToX'")
+                Sound_Type[TypeSel] .. "' Cue 1 Part 0.1 Thru  Property 'FadeToX'")
             Cmd("Assign " .. MacroObject[MacroNum][4] .. " at " .. S_Tag_all)
             MacroObject[MacroNum][4]:Set('Enabled', 0)
 
@@ -265,12 +265,12 @@ function SOUND_Build_Macro(Construct_Pool, MacroNum, TLayNr, prefix)
             Cmd("Assign " .. MacroObject[MacroNum][2] .. " at " .. S_Tag_solo)
             MacroObject[MacroNum][3]:Set('Command',
                 "Edit DataPool '" .. Build_Pool.Name .. "' Sequence '" .. prefix .. "RecepieSound " ..
-                Sound_Type[TypeSel] .. "' Cue 1 Part 0." .. PartSel .. " Property 'DelayFromX'")
+                Sound_Type[TypeSel] .. "' Cue 1 Part 0.1 Thru Property 'DelayFromX'")
             Cmd("Assign " .. MacroObject[MacroNum][3] .. " at " .. S_Tag_all)
             MacroObject[MacroNum][3]:Set('Enabled', 0)
             MacroObject[MacroNum][4]:Set('Command',
                 "Edit DataPool '" .. Build_Pool.Name .. "' Sequence '" .. prefix .. "RecepieSound " ..
-                Sound_Type[TypeSel] .. "' Cue 1 Part 0." .. PartSel .. " Property 'DelayToX'")
+                Sound_Type[TypeSel] .. "' Cue 1 Part 0.1 Thru Property 'DelayToX'")
             Cmd("Assign " .. MacroObject[MacroNum][4] .. " at " .. S_Tag_all)
             MacroObject[MacroNum][4]:Set('Enabled', 0)
 
