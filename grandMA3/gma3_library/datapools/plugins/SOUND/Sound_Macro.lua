@@ -21,8 +21,14 @@ function SOUND_Check_Size_Pool(id, PoolObject)
         error('wrong argument expected integer got ' .. idtype)
     end
     if IsObjectValid(PoolObject[id]) then
-        Sound_Dialog_End('Error : id is already used : ' .. id)
-        error('id is already used : ' .. id)
+        if PoolObject[id].Name == 'Default' then
+            Sound_Dialog_End('  id is already used : ' .. id .. ' By Default , Over write')
+        else
+            Sound_Dialog_End('Error : id is already used : ' .. id)
+        end
+
+        PoolObject:Delete(id)
+        -- error('id is already used : ' .. id)
     end
     local maxsize = PoolObject:MaxCount()
     if id < 1 or id > maxsize then
@@ -71,7 +77,8 @@ function SOUND_Build_Macro(Construct_Pool, MacroNum, TLayNr, prefix)
 
     for b = 1, 11 do
         All_Ref[TypeSel] = MacroNum
-        Echo('*************** All_Ref type = ' .. TypeSel .. ' ref macro ' .. MacroNum .. ' sound type ' .. Sound_Type[TypeSel])
+        Echo('*************** All_Ref type = ' ..
+        TypeSel .. ' ref macro ' .. MacroNum .. ' sound type ' .. Sound_Type[TypeSel])
         for PartSel = 1, 3 do
             if PartSel == 1 then
                 lay_select = lay_object
@@ -409,77 +416,197 @@ function SOUND_Build_Macro(Construct_Pool, MacroNum, TLayNr, prefix)
         for i = 1, 30, 1 do
             MacroObject[MacroNum]:Insert(i)
         end
-        MacroObject[MacroNum][1]:Set('Command', "Set DataPool '" .. Build_Pool.Name .. "' Macro " .. All_Ref[k] .. '.1 Thru Property "Enabled" 0 if Tag "S_solo"')
-        MacroObject[MacroNum][2]:Set('Command', "Set DataPool '" .. Build_Pool.Name .. "' Macro " .. All_Ref[k] + 1 .. '.1 Thru Property "Enabled" 0 if Tag "S_solo"')
-        MacroObject[MacroNum][3]:Set('Command', "Set DataPool '" .. Build_Pool.Name .. "' Macro " .. All_Ref[k] + 2 .. '.1 Thru Property "Enabled" 0 if Tag "S_solo"')
-        MacroObject[MacroNum][4]:Set('Command', "Set DataPool '" .. Build_Pool.Name .. "' Macro " .. All_Ref[k] + 3 .. '.1 Thru Property "Enabled" 0 if Tag "S_solo"')
-        MacroObject[MacroNum][5]:Set('Command', "Set DataPool '" .. Build_Pool.Name .. "' Macro " .. All_Ref[k] + 4 .. '.1 Thru Property "Enabled" 0 if Tag "S_solo"')
-        MacroObject[MacroNum][6]:Set('Command', "Set DataPool '" .. Build_Pool.Name .. "' Macro " .. All_Ref[k] + 5 .. '.1 Thru Property "Enabled" 0 if Tag "S_solo"')
-        MacroObject[MacroNum][7]:Set('Command', "Set DataPool '" .. Build_Pool.Name .. "' Macro " .. All_Ref[k] + 6 .. '.1 Thru Property "Enabled" 0 if Tag "S_solo"')
-        MacroObject[MacroNum][8]:Set('Command', "Set DataPool '" .. Build_Pool.Name .. "' Macro " .. All_Ref[k] + 7 .. '.1 Thru Property "Enabled" 0 if Tag "S_solo"')
-        MacroObject[MacroNum][9]:Set('Command', "Set DataPool '" .. Build_Pool.Name .. "' Macro " .. All_Ref[k] + 8 .. '.1 Thru Property "Enabled" 0 if Tag "S_solo"')
-        MacroObject[MacroNum][10]:Set('Command', "Set DataPool '" .. Build_Pool.Name .. "' Macro " .. All_Ref[k] + 9 .. '.1 Thru Property "Enabled" 0 if Tag "S_solo"')
-        MacroObject[MacroNum][11]:Set('Command', "Set DataPool '" .. Build_Pool.Name .. "' Macro " .. All_Ref[k] + 10 .. '.1 Thru Property "Enabled" 0 if Tag "S_solo"')
-        MacroObject[MacroNum][12]:Set('Command', "Set DataPool '" .. Build_Pool.Name .. "' Macro " .. All_Ref[k] + 11 .. '.1 Thru Property "Enabled" 0 if Tag "S_solo"')
-        MacroObject[MacroNum][13]:Set('Command', "Set DataPool '" .. Build_Pool.Name .. "' Macro " .. All_Ref[k] + 12 .. '.1 Thru Property "Enabled" 0 if Tag "S_solo"')
-        MacroObject[MacroNum][14]:Set('Command', "Set DataPool '" .. Build_Pool.Name .. "' Macro " .. All_Ref[k] + 13 .. '.1 Thru Property "Enabled" 0 if Tag "S_solo"')
-        MacroObject[MacroNum][15]:Set('Command', "Set DataPool '" .. Build_Pool.Name .. "' Macro " .. All_Ref[k] + 14 .. '.1 Thru Property "Enabled" 0 if Tag "S_solo"')
-        MacroObject[MacroNum][16]:Set('Command', "Set DataPool '" .. Build_Pool.Name .. "' Macro " .. All_Ref[k] .. '.1 Thru Property "Enabled" 1 if Tag "S_all"')
-        MacroObject[MacroNum][17]:Set('Command', "Set DataPool '" .. Build_Pool.Name .. "' Macro " .. All_Ref[k] + 1 .. '.1 Thru Property "Enabled" 1 if Tag "S_all"')
-        MacroObject[MacroNum][18]:Set('Command', "Set DataPool '" .. Build_Pool.Name .. "' Macro " .. All_Ref[k] + 2 .. '.1 Thru Property "Enabled" 1 if Tag "S_all"')
-        MacroObject[MacroNum][19]:Set('Command', "Set DataPool '" .. Build_Pool.Name .. "' Macro " .. All_Ref[k] + 3 .. '.1 Thru Property "Enabled" 1 if Tag "S_all"')
-        MacroObject[MacroNum][20]:Set('Command', "Set DataPool '" .. Build_Pool.Name .. "' Macro " .. All_Ref[k] + 4 .. '.1 Thru Property "Enabled" 1 if Tag "S_all"')
-        MacroObject[MacroNum][21]:Set('Command', "Set DataPool '" .. Build_Pool.Name .. "' Macro " .. All_Ref[k] + 5 .. '.1 Thru Property "Enabled" 1 if Tag "S_all"')
-        MacroObject[MacroNum][22]:Set('Command', "Set DataPool '" .. Build_Pool.Name .. "' Macro " .. All_Ref[k] + 6 .. '.1 Thru Property "Enabled" 1 if Tag "S_all"')
-        MacroObject[MacroNum][23]:Set('Command', "Set DataPool '" .. Build_Pool.Name .. "' Macro " .. All_Ref[k] + 7 .. '.1 Thru Property "Enabled" 1 if Tag "S_all"')
-        MacroObject[MacroNum][24]:Set('Command', "Set DataPool '" .. Build_Pool.Name .. "' Macro " .. All_Ref[k] + 8 .. '.1 Thru Property "Enabled" 1 if Tag "S_all"')
-        MacroObject[MacroNum][25]:Set('Command', "Set DataPool '" .. Build_Pool.Name .. "' Macro " .. All_Ref[k] + 9 .. '.1 Thru Property "Enabled" 1 if Tag "S_all"')
-        MacroObject[MacroNum][26]:Set('Command', "Set DataPool '" .. Build_Pool.Name .. "' Macro " .. All_Ref[k] + 10 .. '.1 Thru Property "Enabled" 1 if Tag "S_all"')
-        MacroObject[MacroNum][27]:Set('Command', "Set DataPool '" .. Build_Pool.Name .. "' Macro " .. All_Ref[k] + 11 .. '.1 Thru Property "Enabled" 1 if Tag "S_all"')
-        MacroObject[MacroNum][28]:Set('Command', "Set DataPool '" .. Build_Pool.Name .. "' Macro " .. All_Ref[k] + 12 .. '.1 Thru Property "Enabled" 1 if Tag "S_all"')
-        MacroObject[MacroNum][29]:Set('Command', "Set DataPool '" .. Build_Pool.Name .. "' Macro " .. All_Ref[k] + 13 .. '.1 Thru Property "Enabled" 1 if Tag "S_all"')
-        MacroObject[MacroNum][30]:Set('Command', "Set DataPool '" .. Build_Pool.Name .. "' Macro " .. All_Ref[k] + 14 .. '.1 Thru Property "Enabled" 1 if Tag "S_all"')
+        MacroObject[MacroNum][1]:Set('Command',
+            "Set DataPool '" ..
+            Build_Pool.Name .. "' Macro " .. All_Ref[k] .. '.1 Thru Property "Enabled" 0 if Tag "S_solo"')
+        MacroObject[MacroNum][2]:Set('Command',
+            "Set DataPool '" ..
+            Build_Pool.Name .. "' Macro " .. All_Ref[k] + 1 .. '.1 Thru Property "Enabled" 0 if Tag "S_solo"')
+        MacroObject[MacroNum][3]:Set('Command',
+            "Set DataPool '" ..
+            Build_Pool.Name .. "' Macro " .. All_Ref[k] + 2 .. '.1 Thru Property "Enabled" 0 if Tag "S_solo"')
+        MacroObject[MacroNum][4]:Set('Command',
+            "Set DataPool '" ..
+            Build_Pool.Name .. "' Macro " .. All_Ref[k] + 3 .. '.1 Thru Property "Enabled" 0 if Tag "S_solo"')
+        MacroObject[MacroNum][5]:Set('Command',
+            "Set DataPool '" ..
+            Build_Pool.Name .. "' Macro " .. All_Ref[k] + 4 .. '.1 Thru Property "Enabled" 0 if Tag "S_solo"')
+        MacroObject[MacroNum][6]:Set('Command',
+            "Set DataPool '" ..
+            Build_Pool.Name .. "' Macro " .. All_Ref[k] + 5 .. '.1 Thru Property "Enabled" 0 if Tag "S_solo"')
+        MacroObject[MacroNum][7]:Set('Command',
+            "Set DataPool '" ..
+            Build_Pool.Name .. "' Macro " .. All_Ref[k] + 6 .. '.1 Thru Property "Enabled" 0 if Tag "S_solo"')
+        MacroObject[MacroNum][8]:Set('Command',
+            "Set DataPool '" ..
+            Build_Pool.Name .. "' Macro " .. All_Ref[k] + 7 .. '.1 Thru Property "Enabled" 0 if Tag "S_solo"')
+        MacroObject[MacroNum][9]:Set('Command',
+            "Set DataPool '" ..
+            Build_Pool.Name .. "' Macro " .. All_Ref[k] + 8 .. '.1 Thru Property "Enabled" 0 if Tag "S_solo"')
+        MacroObject[MacroNum][10]:Set('Command',
+            "Set DataPool '" ..
+            Build_Pool.Name .. "' Macro " .. All_Ref[k] + 9 .. '.1 Thru Property "Enabled" 0 if Tag "S_solo"')
+        MacroObject[MacroNum][11]:Set('Command',
+            "Set DataPool '" ..
+            Build_Pool.Name .. "' Macro " .. All_Ref[k] + 10 .. '.1 Thru Property "Enabled" 0 if Tag "S_solo"')
+        MacroObject[MacroNum][12]:Set('Command',
+            "Set DataPool '" ..
+            Build_Pool.Name .. "' Macro " .. All_Ref[k] + 11 .. '.1 Thru Property "Enabled" 0 if Tag "S_solo"')
+        MacroObject[MacroNum][13]:Set('Command',
+            "Set DataPool '" ..
+            Build_Pool.Name .. "' Macro " .. All_Ref[k] + 12 .. '.1 Thru Property "Enabled" 0 if Tag "S_solo"')
+        MacroObject[MacroNum][14]:Set('Command',
+            "Set DataPool '" ..
+            Build_Pool.Name .. "' Macro " .. All_Ref[k] + 13 .. '.1 Thru Property "Enabled" 0 if Tag "S_solo"')
+        MacroObject[MacroNum][15]:Set('Command',
+            "Set DataPool '" ..
+            Build_Pool.Name .. "' Macro " .. All_Ref[k] + 14 .. '.1 Thru Property "Enabled" 0 if Tag "S_solo"')
+        MacroObject[MacroNum][16]:Set('Command',
+            "Set DataPool '" ..
+            Build_Pool.Name .. "' Macro " .. All_Ref[k] .. '.1 Thru Property "Enabled" 1 if Tag "S_all"')
+        MacroObject[MacroNum][17]:Set('Command',
+            "Set DataPool '" ..
+            Build_Pool.Name .. "' Macro " .. All_Ref[k] + 1 .. '.1 Thru Property "Enabled" 1 if Tag "S_all"')
+        MacroObject[MacroNum][18]:Set('Command',
+            "Set DataPool '" ..
+            Build_Pool.Name .. "' Macro " .. All_Ref[k] + 2 .. '.1 Thru Property "Enabled" 1 if Tag "S_all"')
+        MacroObject[MacroNum][19]:Set('Command',
+            "Set DataPool '" ..
+            Build_Pool.Name .. "' Macro " .. All_Ref[k] + 3 .. '.1 Thru Property "Enabled" 1 if Tag "S_all"')
+        MacroObject[MacroNum][20]:Set('Command',
+            "Set DataPool '" ..
+            Build_Pool.Name .. "' Macro " .. All_Ref[k] + 4 .. '.1 Thru Property "Enabled" 1 if Tag "S_all"')
+        MacroObject[MacroNum][21]:Set('Command',
+            "Set DataPool '" ..
+            Build_Pool.Name .. "' Macro " .. All_Ref[k] + 5 .. '.1 Thru Property "Enabled" 1 if Tag "S_all"')
+        MacroObject[MacroNum][22]:Set('Command',
+            "Set DataPool '" ..
+            Build_Pool.Name .. "' Macro " .. All_Ref[k] + 6 .. '.1 Thru Property "Enabled" 1 if Tag "S_all"')
+        MacroObject[MacroNum][23]:Set('Command',
+            "Set DataPool '" ..
+            Build_Pool.Name .. "' Macro " .. All_Ref[k] + 7 .. '.1 Thru Property "Enabled" 1 if Tag "S_all"')
+        MacroObject[MacroNum][24]:Set('Command',
+            "Set DataPool '" ..
+            Build_Pool.Name .. "' Macro " .. All_Ref[k] + 8 .. '.1 Thru Property "Enabled" 1 if Tag "S_all"')
+        MacroObject[MacroNum][25]:Set('Command',
+            "Set DataPool '" ..
+            Build_Pool.Name .. "' Macro " .. All_Ref[k] + 9 .. '.1 Thru Property "Enabled" 1 if Tag "S_all"')
+        MacroObject[MacroNum][26]:Set('Command',
+            "Set DataPool '" ..
+            Build_Pool.Name .. "' Macro " .. All_Ref[k] + 10 .. '.1 Thru Property "Enabled" 1 if Tag "S_all"')
+        MacroObject[MacroNum][27]:Set('Command',
+            "Set DataPool '" ..
+            Build_Pool.Name .. "' Macro " .. All_Ref[k] + 11 .. '.1 Thru Property "Enabled" 1 if Tag "S_all"')
+        MacroObject[MacroNum][28]:Set('Command',
+            "Set DataPool '" ..
+            Build_Pool.Name .. "' Macro " .. All_Ref[k] + 12 .. '.1 Thru Property "Enabled" 1 if Tag "S_all"')
+        MacroObject[MacroNum][29]:Set('Command',
+            "Set DataPool '" ..
+            Build_Pool.Name .. "' Macro " .. All_Ref[k] + 13 .. '.1 Thru Property "Enabled" 1 if Tag "S_all"')
+        MacroObject[MacroNum][30]:Set('Command',
+            "Set DataPool '" ..
+            Build_Pool.Name .. "' Macro " .. All_Ref[k] + 14 .. '.1 Thru Property "Enabled" 1 if Tag "S_all"')
 
         MacroNum = MacroNum + 1
     end
 
-     for k = 1, 11, 1 do
+    for k = 1, 11, 1 do
         SOUND_Check_Size_Pool(MacroNum, MacroObject)
         MacroObject:Create(MacroNum)
         MacroObject[MacroNum]:Set('Name', 'Off_' .. prefix .. Sound_Type[k])
         for i = 1, 30, 1 do
             MacroObject[MacroNum]:Insert(i)
         end
-        MacroObject[MacroNum][1]:Set('Command', "Set DataPool '" .. Build_Pool.Name .. "' Macro " .. All_Ref[k] .. '.1 Thru Property "Enabled" 1 if Tag "S_solo"')
-        MacroObject[MacroNum][2]:Set('Command', "Set DataPool '" .. Build_Pool.Name .. "' Macro " .. All_Ref[k] + 1 .. '.1 Thru Property "Enabled" 1 if Tag "S_solo"')
-        MacroObject[MacroNum][3]:Set('Command', "Set DataPool '" .. Build_Pool.Name .. "' Macro " .. All_Ref[k] + 2 .. '.1 Thru Property "Enabled" 1 if Tag "S_solo"')
-        MacroObject[MacroNum][4]:Set('Command', "Set DataPool '" .. Build_Pool.Name .. "' Macro " .. All_Ref[k] + 3 .. '.1 Thru Property "Enabled" 1 if Tag "S_solo"')
-        MacroObject[MacroNum][5]:Set('Command', "Set DataPool '" .. Build_Pool.Name .. "' Macro " .. All_Ref[k] + 4 .. '.1 Thru Property "Enabled" 1 if Tag "S_solo"')
-        MacroObject[MacroNum][6]:Set('Command', "Set DataPool '" .. Build_Pool.Name .. "' Macro " .. All_Ref[k] + 5 .. '.1 Thru Property "Enabled" 1 if Tag "S_solo"')
-        MacroObject[MacroNum][7]:Set('Command', "Set DataPool '" .. Build_Pool.Name .. "' Macro " .. All_Ref[k] + 6 .. '.1 Thru Property "Enabled" 1 if Tag "S_solo"')
-        MacroObject[MacroNum][8]:Set('Command', "Set DataPool '" .. Build_Pool.Name .. "' Macro " .. All_Ref[k] + 7 .. '.1 Thru Property "Enabled" 1 if Tag "S_solo"')
-        MacroObject[MacroNum][9]:Set('Command', "Set DataPool '" .. Build_Pool.Name .. "' Macro " .. All_Ref[k] + 8 .. '.1 Thru Property "Enabled" 1 if Tag "S_solo"')
-        MacroObject[MacroNum][10]:Set('Command', "Set DataPool '" .. Build_Pool.Name .. "' Macro " .. All_Ref[k] + 9 .. '.1 Thru Property "Enabled" 1 if Tag "S_solo"')
-        MacroObject[MacroNum][11]:Set('Command', "Set DataPool '" .. Build_Pool.Name .. "' Macro " .. All_Ref[k] + 10 .. '.1 Thru Property "Enabled" 1 if Tag "S_solo"')
-        MacroObject[MacroNum][12]:Set('Command', "Set DataPool '" .. Build_Pool.Name .. "' Macro " .. All_Ref[k] + 11 .. '.1 Thru Property "Enabled" 1 if Tag "S_solo"')
-        MacroObject[MacroNum][13]:Set('Command', "Set DataPool '" .. Build_Pool.Name .. "' Macro " .. All_Ref[k] + 12 .. '.1 Thru Property "Enabled" 1 if Tag "S_solo"')
-        MacroObject[MacroNum][14]:Set('Command', "Set DataPool '" .. Build_Pool.Name .. "' Macro " .. All_Ref[k] + 13 .. '.1 Thru Property "Enabled" 1 if Tag "S_solo"')
-        MacroObject[MacroNum][15]:Set('Command', "Set DataPool '" .. Build_Pool.Name .. "' Macro " .. All_Ref[k] + 14 .. '.1 Thru Property "Enabled" 1 if Tag "S_solo"')
-        MacroObject[MacroNum][16]:Set('Command', "Set DataPool '" .. Build_Pool.Name .. "' Macro " .. All_Ref[k] .. '.1 Thru Property "Enabled" 0 if Tag "S_all"')
-        MacroObject[MacroNum][17]:Set('Command', "Set DataPool '" .. Build_Pool.Name .. "' Macro " .. All_Ref[k] + 1 .. '.1 Thru Property "Enabled" 0 if Tag "S_all"')
-        MacroObject[MacroNum][18]:Set('Command', "Set DataPool '" .. Build_Pool.Name .. "' Macro " .. All_Ref[k] + 2 .. '.1 Thru Property "Enabled" 0 if Tag "S_all"')
-        MacroObject[MacroNum][19]:Set('Command', "Set DataPool '" .. Build_Pool.Name .. "' Macro " .. All_Ref[k] + 3 .. '.1 Thru Property "Enabled" 0 if Tag "S_all"')
-        MacroObject[MacroNum][20]:Set('Command', "Set DataPool '" .. Build_Pool.Name .. "' Macro " .. All_Ref[k] + 4 .. '.1 Thru Property "Enabled" 0 if Tag "S_all"')
-        MacroObject[MacroNum][21]:Set('Command', "Set DataPool '" .. Build_Pool.Name .. "' Macro " .. All_Ref[k] + 5 .. '.1 Thru Property "Enabled" 0 if Tag "S_all"')
-        MacroObject[MacroNum][22]:Set('Command', "Set DataPool '" .. Build_Pool.Name .. "' Macro " .. All_Ref[k] + 6 .. '.1 Thru Property "Enabled" 0 if Tag "S_all"')
-        MacroObject[MacroNum][23]:Set('Command', "Set DataPool '" .. Build_Pool.Name .. "' Macro " .. All_Ref[k] + 7 .. '.1 Thru Property "Enabled" 0 if Tag "S_all"')
-        MacroObject[MacroNum][24]:Set('Command', "Set DataPool '" .. Build_Pool.Name .. "' Macro " .. All_Ref[k] + 8 .. '.1 Thru Property "Enabled" 0 if Tag "S_all"')
-        MacroObject[MacroNum][25]:Set('Command', "Set DataPool '" .. Build_Pool.Name .. "' Macro " .. All_Ref[k] + 9 .. '.1 Thru Property "Enabled" 0 if Tag "S_all"')
-        MacroObject[MacroNum][26]:Set('Command', "Set DataPool '" .. Build_Pool.Name .. "' Macro " .. All_Ref[k] + 10 .. '.1 Thru Property "Enabled" 0 if Tag "S_all"')
-        MacroObject[MacroNum][27]:Set('Command', "Set DataPool '" .. Build_Pool.Name .. "' Macro " .. All_Ref[k] + 11 .. '.1 Thru Property "Enabled" 0 if Tag "S_all"')
-        MacroObject[MacroNum][28]:Set('Command', "Set DataPool '" .. Build_Pool.Name .. "' Macro " .. All_Ref[k] + 12 .. '.1 Thru Property "Enabled" 0 if Tag "S_all"')
-        MacroObject[MacroNum][29]:Set('Command', "Set DataPool '" .. Build_Pool.Name .. "' Macro " .. All_Ref[k] + 13 .. '.1 Thru Property "Enabled" 0 if Tag "S_all"')
-        MacroObject[MacroNum][30]:Set('Command', "Set DataPool '" .. Build_Pool.Name .. "' Macro " .. All_Ref[k] + 14 .. '.1 Thru Property "Enabled" 0 if Tag "S_all"')
+        MacroObject[MacroNum][1]:Set('Command',
+            "Set DataPool '" ..
+            Build_Pool.Name .. "' Macro " .. All_Ref[k] .. '.1 Thru Property "Enabled" 1 if Tag "S_solo"')
+        MacroObject[MacroNum][2]:Set('Command',
+            "Set DataPool '" ..
+            Build_Pool.Name .. "' Macro " .. All_Ref[k] + 1 .. '.1 Thru Property "Enabled" 1 if Tag "S_solo"')
+        MacroObject[MacroNum][3]:Set('Command',
+            "Set DataPool '" ..
+            Build_Pool.Name .. "' Macro " .. All_Ref[k] + 2 .. '.1 Thru Property "Enabled" 1 if Tag "S_solo"')
+        MacroObject[MacroNum][4]:Set('Command',
+            "Set DataPool '" ..
+            Build_Pool.Name .. "' Macro " .. All_Ref[k] + 3 .. '.1 Thru Property "Enabled" 1 if Tag "S_solo"')
+        MacroObject[MacroNum][5]:Set('Command',
+            "Set DataPool '" ..
+            Build_Pool.Name .. "' Macro " .. All_Ref[k] + 4 .. '.1 Thru Property "Enabled" 1 if Tag "S_solo"')
+        MacroObject[MacroNum][6]:Set('Command',
+            "Set DataPool '" ..
+            Build_Pool.Name .. "' Macro " .. All_Ref[k] + 5 .. '.1 Thru Property "Enabled" 1 if Tag "S_solo"')
+        MacroObject[MacroNum][7]:Set('Command',
+            "Set DataPool '" ..
+            Build_Pool.Name .. "' Macro " .. All_Ref[k] + 6 .. '.1 Thru Property "Enabled" 1 if Tag "S_solo"')
+        MacroObject[MacroNum][8]:Set('Command',
+            "Set DataPool '" ..
+            Build_Pool.Name .. "' Macro " .. All_Ref[k] + 7 .. '.1 Thru Property "Enabled" 1 if Tag "S_solo"')
+        MacroObject[MacroNum][9]:Set('Command',
+            "Set DataPool '" ..
+            Build_Pool.Name .. "' Macro " .. All_Ref[k] + 8 .. '.1 Thru Property "Enabled" 1 if Tag "S_solo"')
+        MacroObject[MacroNum][10]:Set('Command',
+            "Set DataPool '" ..
+            Build_Pool.Name .. "' Macro " .. All_Ref[k] + 9 .. '.1 Thru Property "Enabled" 1 if Tag "S_solo"')
+        MacroObject[MacroNum][11]:Set('Command',
+            "Set DataPool '" ..
+            Build_Pool.Name .. "' Macro " .. All_Ref[k] + 10 .. '.1 Thru Property "Enabled" 1 if Tag "S_solo"')
+        MacroObject[MacroNum][12]:Set('Command',
+            "Set DataPool '" ..
+            Build_Pool.Name .. "' Macro " .. All_Ref[k] + 11 .. '.1 Thru Property "Enabled" 1 if Tag "S_solo"')
+        MacroObject[MacroNum][13]:Set('Command',
+            "Set DataPool '" ..
+            Build_Pool.Name .. "' Macro " .. All_Ref[k] + 12 .. '.1 Thru Property "Enabled" 1 if Tag "S_solo"')
+        MacroObject[MacroNum][14]:Set('Command',
+            "Set DataPool '" ..
+            Build_Pool.Name .. "' Macro " .. All_Ref[k] + 13 .. '.1 Thru Property "Enabled" 1 if Tag "S_solo"')
+        MacroObject[MacroNum][15]:Set('Command',
+            "Set DataPool '" ..
+            Build_Pool.Name .. "' Macro " .. All_Ref[k] + 14 .. '.1 Thru Property "Enabled" 1 if Tag "S_solo"')
+        MacroObject[MacroNum][16]:Set('Command',
+            "Set DataPool '" ..
+            Build_Pool.Name .. "' Macro " .. All_Ref[k] .. '.1 Thru Property "Enabled" 0 if Tag "S_all"')
+        MacroObject[MacroNum][17]:Set('Command',
+            "Set DataPool '" ..
+            Build_Pool.Name .. "' Macro " .. All_Ref[k] + 1 .. '.1 Thru Property "Enabled" 0 if Tag "S_all"')
+        MacroObject[MacroNum][18]:Set('Command',
+            "Set DataPool '" ..
+            Build_Pool.Name .. "' Macro " .. All_Ref[k] + 2 .. '.1 Thru Property "Enabled" 0 if Tag "S_all"')
+        MacroObject[MacroNum][19]:Set('Command',
+            "Set DataPool '" ..
+            Build_Pool.Name .. "' Macro " .. All_Ref[k] + 3 .. '.1 Thru Property "Enabled" 0 if Tag "S_all"')
+        MacroObject[MacroNum][20]:Set('Command',
+            "Set DataPool '" ..
+            Build_Pool.Name .. "' Macro " .. All_Ref[k] + 4 .. '.1 Thru Property "Enabled" 0 if Tag "S_all"')
+        MacroObject[MacroNum][21]:Set('Command',
+            "Set DataPool '" ..
+            Build_Pool.Name .. "' Macro " .. All_Ref[k] + 5 .. '.1 Thru Property "Enabled" 0 if Tag "S_all"')
+        MacroObject[MacroNum][22]:Set('Command',
+            "Set DataPool '" ..
+            Build_Pool.Name .. "' Macro " .. All_Ref[k] + 6 .. '.1 Thru Property "Enabled" 0 if Tag "S_all"')
+        MacroObject[MacroNum][23]:Set('Command',
+            "Set DataPool '" ..
+            Build_Pool.Name .. "' Macro " .. All_Ref[k] + 7 .. '.1 Thru Property "Enabled" 0 if Tag "S_all"')
+        MacroObject[MacroNum][24]:Set('Command',
+            "Set DataPool '" ..
+            Build_Pool.Name .. "' Macro " .. All_Ref[k] + 8 .. '.1 Thru Property "Enabled" 0 if Tag "S_all"')
+        MacroObject[MacroNum][25]:Set('Command',
+            "Set DataPool '" ..
+            Build_Pool.Name .. "' Macro " .. All_Ref[k] + 9 .. '.1 Thru Property "Enabled" 0 if Tag "S_all"')
+        MacroObject[MacroNum][26]:Set('Command',
+            "Set DataPool '" ..
+            Build_Pool.Name .. "' Macro " .. All_Ref[k] + 10 .. '.1 Thru Property "Enabled" 0 if Tag "S_all"')
+        MacroObject[MacroNum][27]:Set('Command',
+            "Set DataPool '" ..
+            Build_Pool.Name .. "' Macro " .. All_Ref[k] + 11 .. '.1 Thru Property "Enabled" 0 if Tag "S_all"')
+        MacroObject[MacroNum][28]:Set('Command',
+            "Set DataPool '" ..
+            Build_Pool.Name .. "' Macro " .. All_Ref[k] + 12 .. '.1 Thru Property "Enabled" 0 if Tag "S_all"')
+        MacroObject[MacroNum][29]:Set('Command',
+            "Set DataPool '" ..
+            Build_Pool.Name .. "' Macro " .. All_Ref[k] + 13 .. '.1 Thru Property "Enabled" 0 if Tag "S_all"')
+        MacroObject[MacroNum][30]:Set('Command',
+            "Set DataPool '" ..
+            Build_Pool.Name .. "' Macro " .. All_Ref[k] + 14 .. '.1 Thru Property "Enabled" 0 if Tag "S_all"')
 
         MacroNum = MacroNum + 1
     end
