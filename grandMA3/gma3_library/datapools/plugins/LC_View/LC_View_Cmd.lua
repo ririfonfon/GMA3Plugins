@@ -387,7 +387,8 @@ function Favourites(layout, macrostore, data_pool, prefix, macro)
         layoutspool[layout]['Macro ' .. macronum]:Set('visibilityobjectname', true)
     end
     Cmd('label DataPool ' ..
-    data_pool .. ' macro ' .. macronum .. ' ' .. string.char(34) .. prefix .. ' Favourite' .. string.char(34) .. ' /o')
+        data_pool ..
+        ' macro ' .. macronum .. ' ' .. string.char(34) .. prefix .. ' Favourite' .. string.char(34) .. ' /o')
     if #macropool[macronum] > 0 then
         Cmd('delete DataPool ' .. data_pool .. ' macro ' .. macronum .. '.1 thru')
     end
@@ -398,6 +399,23 @@ function Favourites(layout, macrostore, data_pool, prefix, macro)
             ' Sequence ' .. string.char(34) .. '' .. sequences[seqnumber].name .. '' .. string.char(34) .. '')
     end
     Cmd('Set DataPool ' .. data_pool .. ' Macro ' .. macro .. ' Property "Appearance" "LC_Black"')
+end
+
+
+function Group_select(layout, element, seq_call, data_pool)
+    seq_call = "'" .. seq_call .. "'"
+    local SEQ_Root = ShowData().DataPools[data_pool].Sequences:Children()
+    local pool = DataPool().No
+    local GroupObject = ShowData().DataPools[pool].Groups:Children()
+    local LayoutObject = Root().ShowData.DataPools[data_pool].Layouts
+    local Target
+    for k in ipairs(SEQ_Root) do
+        if SEQ_Root[k].name == seq_call then
+            Target = SEQ_Root[k][3][1][1].Selection.No
+            break
+        end
+    end
+    LayoutObject[layout][element]:Set('Object', GroupObject[Target])
 end
 
 -- end LC_View_Cmd.lua

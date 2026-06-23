@@ -61,6 +61,8 @@ local function main()
         PriorityNumber(layout,element,seq_call,data_pool)
     elseif (sel == 10) then
         Favourites(layout,macrostore,data_pool,prefix,macro)
+    elseif (sel == 11) then
+        Group_select(layout,element,seq_call,data_pool)
     end
 
     DelVar(Select, "LC_Fonction")
