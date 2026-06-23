@@ -4,10 +4,10 @@ Releases:
 
 Created by Richard Fontaine "RIRI", June 2024. Update may 2026
 --]]
-
+-- SelectedGrp, SelectedGrpNo,
 function LC_Construct_Layout(TLay, SeqNrStart, MacroNrStart, MatrickNrStart, MatrickNr, TLayNr,
                              AppNr, All_5_Current, All_5_NrStart, ColPath, SelectedGelNr,
-                             SelectedGrp, SelectedGrpNo, TLayNrRef, NaLay, MaxColLgn,
+                             NbGroup, TLayNrRef, NaLay, MaxColLgn,
                              Favourite_Nr, Construct_Pool, Groups_Pool)
     local MacroObject, SequenceObject, Layout_Object, Nr = LC_Get_Object(Construct_Pool)
     local All_5_NrEnd
@@ -222,7 +222,7 @@ function LC_Construct_Layout(TLay, SeqNrStart, MacroNrStart, MatrickNrStart, Mat
     local StColCode
     local StColName
     local StringColName
-    local SelectedGrpName = {}
+    -- local SelectedGrpName = {}
     local check = {}
     local FirstSeqTime
     local LastSeqTime
@@ -273,10 +273,10 @@ function LC_Construct_Layout(TLay, SeqNrStart, MacroNrStart, MatrickNrStart, Mat
             exit = true
         end
     until exit == true
-    -- fix name SelectedGrp
-    for g in pairs(SelectedGrp) do
-        SelectedGrpName[g] = SelectedGrp[g]:gsub(' ', '_')
-    end
+    -- -- fix name SelectedGrp
+    -- for g in pairs(SelectedGrp) do
+    --     SelectedGrpName[g] = SelectedGrp[g]:gsub(' ', '_')
+    -- end
 
     -- fix *NrStart & use Current*Nr
     CurrentSeqNr = SeqNrStart
@@ -286,7 +286,7 @@ function LC_Construct_Layout(TLay, SeqNrStart, MacroNrStart, MatrickNrStart, Mat
     Echo('Check ok')
 
     -- Create MAtricks
-    MatrickNr = Create_Matricks(MatrickNrStart, prefix, NaLay, SelectedGrp, SelectedGrpName, MatrickNr, Construct_Pool)
+    MatrickNr = Create_Matricks(MatrickNrStart, prefix, NaLay, NbGroup, MatrickNr, Construct_Pool)
     Echo('matricks ok')
 
 
@@ -319,17 +319,15 @@ function LC_Construct_Layout(TLay, SeqNrStart, MacroNrStart, MatrickNrStart, Mat
 
     -- Appearances/Sequences
     LayY, NrNeed, LayNr, CurrentSeqNr, CurrentMacroNr, ColLgnCount,
-    Ligne_Inc = Create_Appearances_Sequences(CurrentMacroNr, SelectedGelNr, SelectedGrp, RefX,
+    Ligne_Inc = Create_Appearances_Sequences(CurrentMacroNr, SelectedGelNr, NbGroup, RefX,
         LayY, LayH, NrAppear, AppNr, NrNeed, TLayNr, LayW, LayNr, CurrentSeqNr, MaxColLgn,
-        TCol, SelectedGrpNo, prefix, All_5_NrStart, MatrickNrStart, SelectedGrpName,
+        TCol, prefix, All_5_NrStart, MatrickNrStart,
         AppTricks, Construct_Pool, Groups_Pool)
     -- end Appearances/Sequences
     Echo('Crea app_sequence ok')
-
 end
 
 local function suite()
-
     -- Create Appearances/Function
     for q in pairs(AppImp) do
         AppImp[q].Nr = math.floor(NrNeed)

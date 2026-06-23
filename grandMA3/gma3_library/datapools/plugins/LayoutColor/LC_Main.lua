@@ -119,10 +119,10 @@ local function Main(displayHandle)
 
     local list = false
     local FixtureGroups = DataPool().Groups:Children()
-    local SelectedGrp = {}
-    local SelectedGrpNo = {}
+    -- local SelectedGrp = {}
+    -- local SelectedGrpNo = {}
     local SelGrp
-    local Nr_SelectedGrp
+    -- local Nr_SelectedGrp
     local check_grp = false
     local check_pool = false
     local check_gel = false
@@ -165,7 +165,7 @@ local function Main(displayHandle)
     local popuplists = {
         DataPool_Select  = {},
         list_pool        = {},
-        Grp_Select       = {},
+        -- Grp_Select       = {},
         Gel_Select       = {},
         Name_Select      = { 'LC_COLOR', 'Layout Color', 'Layout Kolor', 'L Co', 'L Ko', 'Color', 'Kolor' },
         Name_Pool_Select = { 'LC_COLOR', 'Layout Color', 'Layout Kolor', 'L Co', 'L Ko', 'Color', 'Kolor' },
@@ -184,9 +184,9 @@ local function Main(displayHandle)
     local New = false
 
     if list == false then
-        for k in ipairs(FixtureGroups) do
-            table.insert(popuplists.Grp_Select, "'" .. FixtureGroups[k].name .. "'")
-        end
+        -- for k in ipairs(FixtureGroups) do
+        --     table.insert(popuplists.Grp_Select, "'" .. FixtureGroups[k].name .. "'")
+        -- end
         for k in ipairs(ColGels) do
             table.insert(popuplists.Gel_Select, "'" .. ColGels[k].name .. "'")
         end
@@ -1009,8 +1009,8 @@ local function Main(displayHandle)
         end
         Obj.Delete(screenOverlay, Obj.Index(baseInput))
         LC_Construct_Layout(TLay, SeqNrStart, MacroNrStart, MatrickNrStart, MatrickNr, TLayNr,
-            AppNr, All_5_Current, All_5_NrStart, ColPath, SelectedGelNr, SelectedGrp,
-            SelectedGrpNo, TLayNrRef, NaLay, MaxColLgn, Favourite_Nr, Construct_Pool,
+            AppNr, All_5_Current, All_5_NrStart, ColPath, SelectedGelNr, NbGroup,
+            TLayNrRef, NaLay, MaxColLgn, Favourite_Nr, Construct_Pool,
             Groups_Pool)
     end
 
@@ -1065,7 +1065,7 @@ local function Main(displayHandle)
         end
         SeqNrStart = caller.Content:gsub("'", "")
         SeqNrStart = tonumber(SeqNrStart)
-        SeqNrRange = SeqNrStart + tonumber((Nr_SelectedGrp * (NGel + 2)) + NGel + 100)
+        SeqNrRange = SeqNrStart + tonumber((NbGroup * (NGel + 2)) + NGel + 100)
         for k in ipairs(SeqNr) do
             if SeqNrStart <= tonumber(SeqNr[k].NO) then
                 if SeqNrRange >= tonumber(SeqNr[k].NO) then
@@ -1099,7 +1099,7 @@ local function Main(displayHandle)
         end
         MacroNrStart = caller.Content:gsub("'", "")
         MacroNrStart = tonumber(MacroNrStart)
-        MacroNrRange = MacroNrStart + 42 + Favourite_Nr + Nr_SelectedGrp
+        MacroNrRange = MacroNrStart + 42 + Favourite_Nr + NbGroup
         Printf("MacroNrStart " .. MacroNrStart)
         for k in ipairs(MacroNr) do
             if MacroNrStart <= tonumber(MacroNr[k].NO) then
@@ -1196,7 +1196,7 @@ local function Main(displayHandle)
         end
         MatrickNrStart = caller.Content:gsub("'", "")
         MatrickNrStart = tonumber(MatrickNrStart)
-        MatrickNrRange = MatrickNrStart + Nr_SelectedGrp + 1
+        MatrickNrRange = MatrickNrStart + NbGroup + 1
         for k in ipairs(MatrickNr) do
             if MatrickNrStart <= tonumber(MatrickNr[k].NO) then
                 if MatrickNrRange >= tonumber(MatrickNr[k].NO) then
@@ -1253,7 +1253,7 @@ local function Main(displayHandle)
         if Favourite_Nr == nil then
             Favourite_Nr = 1
         end
-        MacroNrRange = MacroNrStart + 42 + Favourite_Nr + Nr_SelectedGrp
+        MacroNrRange = MacroNrStart + 42 + Favourite_Nr + NbGroup
         for k in ipairs(MacroNr) do
             if MacroNrStart <= tonumber(MacroNr[k].NO) then
                 if MacroNrRange >= tonumber(MacroNr[k].NO) then
@@ -1341,10 +1341,12 @@ local function Main(displayHandle)
                 MacroNr = Root().ShowData.DataPools[Construct_Pool].Macros:Children()
                 All_5_Nr = Root().ShowData.DataPools[Construct_Pool].PresetPools[25]:Children()
                 FixtureGroups = Root().ShowData.DataPools[Construct_Pool].Groups:Children()
+                MatrickNr = Root().ShowData.DataPools[Construct_Pool].MAtricks:Children()
+                MatrickNrStart = 1
                 popuplists = {
                     DataPool_Select  = {},
                     list_pool        = {},
-                    Grp_Select       = {},
+                    -- Grp_Select       = {},
                     -- Gel_Select       = {},
                     Name_Select      = { 'LC_COLOR', 'Layout Color', 'Layout Kolor', 'L Co', 'L Ko', 'Color', 'Kolor' },
                     Name_Pool_Select = { 'LC_COLOR', 'Layout Color', 'Layout Kolor', 'L Co', 'L Ko', 'Color', 'Kolor' },
