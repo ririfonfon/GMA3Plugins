@@ -159,6 +159,7 @@ local function Main(displayHandle)
     local NaPool = "LC_COLOR"
     local PoolObject = Root().ShowData.DataPools
     local old_NAPOOL
+    local NbGroup
 
 
     local popuplists = {
@@ -305,8 +306,8 @@ local function Main(displayHandle)
     -- Create the sub title.
     -- This is row 1 of the dlgFrame.
     local subTitle = dlgFrame:Append("UIObject")
-    subTitle.Text =
-    "Set Number begin Layout, Sequence, Macro, Appearance & Preset & Matrick\nAdd ColorGel & FixtureGroup\nSelected Group(s) are:\n"
+    subTitle.Text = ""
+    -- "Set Number begin Layout, Sequence, Macro, Appearance & Preset & Matrick\nAdd ColorGel & FixtureGroup\nSelected Group(s) are:\n"
     subTitle.TextalignmentH = "Left"
     subTitle.TextalignmentV = "Top"
     subTitle.ContentDriven = "Yes"
@@ -325,6 +326,79 @@ local function Main(displayHandle)
     inputsGrid.Rows = 13
     inputsGrid.Anchors = { left = 0, right = 0, top = 1, bottom = 1 }
     inputsGrid.Margin = { left = 0, right = 0, top = 0, bottom = 5 }
+
+    -- Create the UI elements for the 9 input button.
+    local input9Icon = inputsGrid:Append("Button")
+    input9Icon.Text = ""
+    input9Icon.Anchors = { left = 0, right = 0, top = TopInc, bottom = TopInc }
+    input9Icon.Icon = "object_gels"
+    input9Icon.Margin = { left = 0, right = 2, top = TopInc, bottom = 2 }
+    input9Icon.HasHover = "No";
+    input9Icon.BackColor = colorGelPools
+    input9Icon.Font = "2"
+
+    local input9Label = inputsGrid:Append("UIObject")
+    input9Label.Text = "Gel  "
+    input9Label.TextalignmentH = "Left"
+    input9Label.Anchors = { left = 1, right = 3, top = TopInc, bottom = TopInc }
+    input9Label.Padding = "5,5"
+    input9Label.Margin = { left = 2, right = 2, top = TopInc, bottom = 2 }
+    input9Label.HasHover = "No";
+    input9Label.Font = "2"
+    input9Label.BackColor = colorGelPools
+
+    local input9Button = inputsGrid:Append('Button')
+    input9Button.Anchors = { left = 4, right = 9, top = TopInc, bottom = TopInc }
+    input9Button.Padding = "5,5"
+    input9Button.Margin = { left = 2, right = 0, top = TopInc, bottom = 2 }
+    input9Button.Name = 'Gel_Select'
+    input9Button.Text = "Please select Gel"
+    input9Button.PluginComponent = thiscomponent
+    input9Button.Clicked = 'mypopup'
+    input9Button.BackColor = colorGelPools
+    input9Button.Font = "2"
+    input9Button.Visible = "Yes"
+
+    TopInc = TopInc + 1
+
+    -- Create the UI elements for the 10 input button.
+    local input10Icon = inputsGrid:Append("Button")
+    input10Icon.Text = ""
+    input10Icon.Anchors = { left = 0, right = 0, top = TopInc, bottom = TopInc }
+    input10Icon.Icon = "object_group2"
+    input10Icon.Margin = { left = 0, right = 2, top = TopInc, bottom = 2 }
+    input10Icon.HasHover = "No";
+    input10Icon.BackColor = colorGroups
+    input10Icon.Font = "2"
+
+    local input10Label = inputsGrid:Append("UIObject")
+    input10Label.Text = "Nb Group  "
+    input10Label.TextalignmentH = "Left"
+    input10Label.Anchors = { left = 1, right = 3, top = TopInc, bottom = TopInc }
+    input10Label.Padding = "5,5"
+    input10Label.Margin = { left = 2, right = 2, top = TopInc, bottom = 2 }
+    input10Label.HasHover = "No";
+    input10Label.Font = "2"
+    input10Label.BackColor = colorGroups
+
+    local input10LineEdit = inputsGrid:Append("LineEdit")
+    input10LineEdit.Prompt = "Nb: "
+    input10LineEdit.TextAutoAdjust = "Yes"
+    input10LineEdit.Anchors = { left = 4, right = 9, top = TopInc, bottom = TopInc }
+    input10LineEdit.Padding = "5,5"
+    input10LineEdit.Margin = { left = 2, right = 0, top = TopInc, bottom = 2 }
+    input10LineEdit.Filter = "0123456789"
+    input10LineEdit.VkPluginName = "TextInputNumOnly"
+    input10LineEdit.Content = NbGroup
+    input10LineEdit.MaxTextLength = 6
+    input10LineEdit.HideFocusFrame = "Yes"
+    input10LineEdit.PluginComponent = myHandle
+    input10LineEdit.TextChanged = "OnInput10TextChanged"
+    input10LineEdit.Font = "2"
+    input10LineEdit.BackColor = colorGroups
+    input10LineEdit.Visible = "No"
+
+    TopInc = TopInc + 1
 
     -- Create the UI elements for the 1 input.
     local input20Icon = inputsGrid:Append("Button")
@@ -364,6 +438,7 @@ local function Main(displayHandle)
     input20number.BackColor = colorDataPools
     input20number.Font = "3"
     input20number.HasHover = "No"
+    input20number.Visible = "No"
 
     TopInc = TopInc + 1
 
@@ -414,6 +489,8 @@ local function Main(displayHandle)
     input21Sujestion.Visible = "No"
 
     TopInc = TopInc + 1
+
+
 
     local input1Icon = inputsGrid:Append("Button")
     input1Icon.Text = ""
@@ -850,94 +927,43 @@ local function Main(displayHandle)
     input11Sujestion.backColor = colorFavorite
     input11Sujestion.Visible = "No"
 
-    TopInc = TopInc + 1
 
-    -- Create the UI elements for the 9 input button.
-    local input9Icon = inputsGrid:Append("Button")
-    input9Icon.Text = ""
-    input9Icon.Anchors = { left = 0, right = 0, top = TopInc, bottom = TopInc }
-    input9Icon.Icon = "object_gels"
-    input9Icon.Margin = { left = 0, right = 2, top = TopInc, bottom = 2 }
-    input9Icon.HasHover = "No";
-    input9Icon.BackColor = colorGelPools
-    input9Icon.Font = "2"
 
-    local input9Label = inputsGrid:Append("UIObject")
-    input9Label.Text = "Gel  "
-    input9Label.TextalignmentH = "Left"
-    input9Label.Anchors = { left = 1, right = 3, top = TopInc, bottom = TopInc }
-    input9Label.Padding = "5,5"
-    input9Label.Margin = { left = 2, right = 2, top = TopInc, bottom = 2 }
-    input9Label.HasHover = "No";
-    input9Label.Font = "2"
-    input9Label.BackColor = colorGelPools
 
-    local input9Button = inputsGrid:Append('Button')
-    input9Button.Anchors = { left = 4, right = 9, top = TopInc, bottom = TopInc }
-    input9Button.Padding = "5,5"
-    input9Button.Margin = { left = 2, right = 0, top = TopInc, bottom = 2 }
-    input9Button.Name = 'Gel_Select'
-    input9Button.Text = "Please select Gel"
-    input9Button.PluginComponent = thiscomponent
-    input9Button.Clicked = 'mypopup'
-    input9Button.BackColor = colorGelPools
-    input9Button.Font = "2"
 
-    TopInc = TopInc + 1
+    -- local input10Button = inputsGrid:Append('Button')
+    -- input10Button.Text = 'Please add Group'
+    -- input10Button.Anchors = { left = 4, right = 9, top = TopInc, bottom = TopInc }
+    -- input10Button.Padding = "5,5"
+    -- input10Button.Margin = { left = 2, right = 0, top = TopInc, bottom = 2 }
+    -- input10Button.Name = 'Grp_Select'
+    -- input10Button.HasHover = "yes"
+    -- input10Button.PluginComponent = thiscomponent
+    -- input10Button.Clicked = 'mypopup'
+    -- input10Button.BackColor = colorGroups
+    -- input10Button.Font = "2"
+    -- input10Button.Visible = "No"
 
-    -- Create the UI elements for the 10 input button.
-    local input10Icon = inputsGrid:Append("Button")
-    input10Icon.Text = ""
-    input10Icon.Anchors = { left = 0, right = 0, top = TopInc, bottom = TopInc }
-    input10Icon.Icon = "object_group2"
-    input10Icon.Margin = { left = 0, right = 2, top = TopInc, bottom = 2 }
-    input10Icon.HasHover = "No";
-    input10Icon.BackColor = colorGroups
-    input10Icon.Font = "2"
+    -- local input10Sujestion = inputsGrid:Append("Button")
+    -- input10Sujestion.Text = "Select Pool"
+    -- input10Sujestion.Anchors = { left = 2, right = 3, top = TopInc, bottom = TopInc }
+    -- input10Sujestion.Margin = { left = 0, right = 0, top = TopInc, bottom = 2 }
+    -- input10Sujestion.Name = 'list_pool'
+    -- input10Sujestion.PluginComponent = thiscomponent
+    -- input10Sujestion.Clicked = 'mypopup'
+    -- input10Sujestion.HasHover = "yes"
+    -- input10Sujestion.backColor = colorGroups
+    -- input10Sujestion.Font = "2"
+    -- input10Sujestion.Visible = "No"
 
-    local input10Label = inputsGrid:Append("UIObject")
-    input10Label.Text = "Group  "
-    input10Label.TextalignmentH = "Left"
-    input10Label.Anchors = { left = 1, right = 3, top = TopInc, bottom = TopInc }
-    input10Label.Padding = "5,5"
-    input10Label.Margin = { left = 2, right = 2, top = TopInc, bottom = 2 }
-    input10Label.HasHover = "No";
-    input10Label.Font = "2"
-    input10Label.BackColor = colorGroups
+    -- TopInc = TopInc + 1
 
-    local input10Button = inputsGrid:Append('Button')
-    input10Button.Text = 'Please add Group'
-    input10Button.Anchors = { left = 4, right = 9, top = TopInc, bottom = TopInc }
-    input10Button.Padding = "5,5"
-    input10Button.Margin = { left = 2, right = 0, top = TopInc, bottom = 2 }
-    input10Button.Name = 'Grp_Select'
-    input10Button.HasHover = "yes"
-    input10Button.PluginComponent = thiscomponent
-    input10Button.Clicked = 'mypopup'
-    input10Button.BackColor = colorGroups
-    input10Button.Font = "2"
-    input10Button.Visible = "No"
-
-    local input10Sujestion = inputsGrid:Append("Button")
-    input10Sujestion.Text = "Select Pool"
-    input10Sujestion.Anchors = { left = 2, right = 3, top = TopInc, bottom = TopInc }
-    input10Sujestion.Margin = { left = 0, right = 0, top = TopInc, bottom = 2 }
-    input10Sujestion.Name = 'list_pool'
-    input10Sujestion.PluginComponent = thiscomponent
-    input10Sujestion.Clicked = 'mypopup'
-    input10Sujestion.HasHover = "yes"
-    input10Sujestion.backColor = colorGroups
-    input10Sujestion.Font = "2"
-    input10Sujestion.Visible = "No"
-
-    TopInc = TopInc + 1
-
-    local input12Icon = inputsGrid:Append("Button")
-    input12Icon.Anchors = { left = 1, right = 1, top = TopInc, bottom = TopInc }
-    input12Icon.Margin = { left = 2, right = 0, top = TopInc, bottom = 2 }
-    input12Icon.Icon = 'object_datapool'
-    input12Icon.backColor = colorGroups
-    input12Icon.HasHover = "No";
+    -- local input12Icon = inputsGrid:Append("Button")
+    -- input12Icon.Anchors = { left = 1, right = 1, top = TopInc, bottom = TopInc }
+    -- input12Icon.Margin = { left = 2, right = 0, top = TopInc, bottom = 2 }
+    -- input12Icon.Icon = 'object_datapool'
+    -- input12Icon.backColor = colorGroups
+    -- input12Icon.HasHover = "No"
 
 
     -- Create the button grid.
@@ -1252,6 +1278,26 @@ local function Main(displayHandle)
             end
         end
     end
+    -- Nb Group
+    signalTable.OnInput10TextChanged = function(caller)
+        local checks = false
+        if caller.Content == "" or caller.Content == "0" then
+            OkButton.Visible = "No"
+            input10LineEdit.TextColor = colorAlertText
+            checks = true
+        else
+            OkButton.Visible = "Yes"
+            input10LineEdit.TextColor = colorText
+        end
+        NbGroup = caller.Content:gsub("'", "")
+        NbGroup = tonumber(NbGroup)
+        if NbGroup == nil then
+            NbGroup = 1
+        end
+        check_grp = true
+        input20number.Visible = "Yes"
+        input20Button.Visible = "Yes"
+    end
 
     function signalTable.mypopup(caller)
         local itemlist = popuplists[caller.Name]
@@ -1283,7 +1329,7 @@ local function Main(displayHandle)
                 New = true
                 OkButton.Visible = "Yes"
                 input21LineEdit.Content = "LC_COlOR"
-                Check_Pool =  true
+                Check_Pool = true
             end
             if Check_Pool == true then
                 Echo('New')
@@ -1299,7 +1345,7 @@ local function Main(displayHandle)
                     DataPool_Select  = {},
                     list_pool        = {},
                     Grp_Select       = {},
-                    Gel_Select       = {},
+                    -- Gel_Select       = {},
                     Name_Select      = { 'LC_COLOR', 'Layout Color', 'Layout Kolor', 'L Co', 'L Ko', 'Color', 'Kolor' },
                     Name_Pool_Select = { 'LC_COLOR', 'Layout Color', 'Layout Kolor', 'L Co', 'L Ko', 'Color', 'Kolor' },
                     Lay_Select       = { 1, 11, 101, 201, 301, 401, 501, 601, 701, 801, 901, 1001, 2001 },
@@ -1335,11 +1381,8 @@ local function Main(displayHandle)
             input11LineEdit.Content = Favourite_Nr
             input20number.Text = Construct_Pool
 
-
-
             OkButton.Visible = "Yes"
             input1LineEdit.Visible = "Yes"
-            input21LineEdit.Visible = "Yes"
             input2LineEdit.Visible = "Yes"
             input3LineEdit.Visible = "Yes"
             input4LineEdit.Visible = "Yes"
@@ -1359,8 +1402,12 @@ local function Main(displayHandle)
 
             input6Sujestion.Visible = "Yes"
             input7Sujestion.Visible = "Yes"
-            input10Sujestion.Visible = "Yes"
+            -- input10Sujestion.Visible = "Yes"
             input11Sujestion.Visible = "Yes"
+
+            input21LineEdit.Visible = "Yes"
+
+            input9Button.Visible = "Yes"
         elseif caller.Name == "Gel_Select" then
             caller.Text = choice or caller.Text
             for k in ipairs(ColGels) do
@@ -1373,50 +1420,50 @@ local function Main(displayHandle)
                 NGel = k
             end
             check_gel = true
-            input10Button.Visible = "Yes"
+            -- input10Button.Visible = "Yes"
+            input10LineEdit.Visible = "Yes"
+
             -- input10Sujestion.Visible = "Yes"
-        elseif caller.Name == "list_pool" then
-            caller.Text = choice or caller.Text
-            for k in ipairs(Pool_check) do
-                if Pool_check[k].name == caller.Text:gsub("'", "") then
-                    Groups_Pool = tonumber(k)
-                    Printf("Pool selected: " .. Groups_Pool)
-                end
-            end
-            local lo
-            for k in ipairs(popuplists.Grp_Select) do
-                lo = tonumber(k)
-            end
-            Printf("lo : " .. lo)
-            for k = lo, 0, -1 do
-                table.remove(popuplists.Grp_Select, k)
-            end
-            for k in ipairs(FixtureGroups) do
-                Printf("NEW Adding Group to list: " .. FixtureGroups[k].name)
-                table.insert(popuplists.Grp_Select, "'" .. FixtureGroups[k].name .. "'")
-            end
-            check_pool = true
-            input10Button.Visible = "Yes"
-        elseif caller.Name == "Grp_Select" then
-            for k in ipairs(popuplists.Grp_Select) do
-                if popuplists.Grp_Select[k] == choice then
-                    table.remove(popuplists.Grp_Select, k)
-                end
-            end
-            choice = choice:gsub("'", "")
-            for k in ipairs(FixtureGroups) do
-                if choice == FixtureGroups[k].name then
-                    SelGrp = k
-                end
-            end
-            table.insert(SelectedGrp, "'" .. FixtureGroups[SelGrp].name .. "'")
-            table.insert(SelectedGrpNo, "'" .. FixtureGroups[SelGrp].NO .. "'")
-            for k in ipairs(SelectedGrp) do
-                Nr_SelectedGrp = k
-            end
-            subTitle.Text = subTitle.Text .. Nr_SelectedGrp .. "." .. FixtureGroups[SelGrp].name .. " "
-            check_grp = true
-            input20Button.Visible = "Yes"
+            -- elseif caller.Name == "list_pool" then
+            --     caller.Text = choice or caller.Text
+            --     for k in ipairs(Pool_check) do
+            --         if Pool_check[k].name == caller.Text:gsub("'", "") then
+            --             Groups_Pool = tonumber(k)
+            --             Printf("Pool selected: " .. Groups_Pool)
+            --         end
+            --     end
+            --     -- local lo
+            --     -- for k in ipairs(popuplists.Grp_Select) do
+            --     --     lo = tonumber(k)
+            --     -- end
+            --     -- Printf("lo : " .. lo)
+            --     -- for k = lo, 0, -1 do
+            --     --     table.remove(popuplists.Grp_Select, k)
+            --     -- end
+            --     -- for k in ipairs(FixtureGroups) do
+            --     --     Printf("NEW Adding Group to list: " .. FixtureGroups[k].name)
+            --     --     table.insert(popuplists.Grp_Select, "'" .. FixtureGroups[k].name .. "'")
+            --     -- end
+            --     check_pool = true
+            --     input10Button.Visible = "Yes"
+            -- elseif caller.Name == "Grp_Select" then
+            --     for k in ipairs(popuplists.Grp_Select) do
+            --         if popuplists.Grp_Select[k] == choice then
+            --             table.remove(popuplists.Grp_Select, k)
+            --         end
+            --     end
+            --     choice = choice:gsub("'", "")
+            --     for k in ipairs(FixtureGroups) do
+            --         if choice == FixtureGroups[k].name then
+            --             SelGrp = k
+            --         end
+            --     end
+            --     table.insert(SelectedGrp, "'" .. FixtureGroups[SelGrp].name .. "'")
+            --     table.insert(SelectedGrpNo, "'" .. FixtureGroups[SelGrp].NO .. "'")
+            --     for k in ipairs(SelectedGrp) do
+            --         Nr_SelectedGrp = k
+            --     end
+            --     subTitle.Text = subTitle.Text .. Nr_SelectedGrp .. "." .. FixtureGroups[SelGrp].name .. " "
         elseif caller.Name == "Name_Select" then
             input1LineEdit.Content = choice
         elseif caller.Name == "Lay_Select" then
