@@ -269,7 +269,7 @@ function Create_Appearances_Sequences(CurrentMacroNr, SelectedGelNr, NbGroup, Re
                                       LayH, NrAppear, AppNr, NrNeed, TLayNr, LayW, LayNr,
                                       CurrentSeqNr, MaxColLgn, TCol, prefix,
                                       All_5_NrStart, MatrickNrStart, AppTricks,
-                                      Construct_Pool, Groups_Pool,Color_Range)
+                                      Construct_Pool, Groups_Pool, Color_Range, Call_Pool)
     local MacroObject, SequenceObject, Layout_Object, Nr = LC_Get_Object(Construct_Pool)
     local LastSeqColor, grpnrselect
     local ColLgnCount                                    = 0
@@ -278,7 +278,7 @@ function Create_Appearances_Sequences(CurrentMacroNr, SelectedGelNr, NbGroup, Re
     local All5Object                                     = Root().ShowData.DataPools[Construct_Pool].PresetPools[25]
     local MatricksObject                                 = Root().ShowData.DataPools[Construct_Pool].Matricks
     local AppearObject                                   = Root().ShowData.Appearances
-    
+
     for g = 1, NbGroup, 1 do
         local LayX = RefX
         local col_count = 0
@@ -296,7 +296,34 @@ function Create_Appearances_Sequences(CurrentMacroNr, SelectedGelNr, NbGroup, Re
         LC_Set_Def(TLayNr, Nr, Layout_Object)
         Layout_Object[TLayNr][Nr.No]:Set('visibilityobjectname', 'Visible')
         Layout_Object[TLayNr][Nr.No]:Set('Action', 0)
-    
+
+        LC_Check_Size_Pool(CurrentMacroNr, MacroObject)
+        MacroObject:Create(CurrentMacroNr)
+        MacroObject[CurrentMacroNr]:Set('Name', "'" .. prefix .. '_Select_Group_' .. g .. "'")
+        for a = 1, 7 do
+            MacroObject[CurrentMacroNr]:Insert(a)
+        end
+        MacroObject[CurrentMacroNr][1]:Set('Command', 'Edit DataPool ' .. Construct_Pool .. ' Sequence ' ..
+            CurrentSeqNr .. ' Thru ' .. CurrentSeqNr + Color_Range - 1 .. ' Cue 1 Part 0.1 Property "Selection"')
+        MacroObject[CurrentMacroNr][2]:Set('Command', 'SetUserVariable "LC_Fonction" 11')
+        MacroObject[CurrentMacroNr][3]:Set('Command', 'SetUserVariable "LC_Layout" ' .. TLayNr)
+        MacroObject[CurrentMacroNr][4]:Set('Command', 'SetUserVariable "LC_Element" ' .. Nr.No)
+        MacroObject[CurrentMacroNr][5]:Set('Command', 'SetUserVariable "LC_DataPool" ' .. Construct_Pool)
+        MacroObject[CurrentMacroNr][6]:Set('Command', 'SetUserVariable "LC_Sequence" ' .. CurrentSeqNr)
+        MacroObject[CurrentMacroNr][7]:Set('Command', 'Call ' .. Call_Pool .. ' Plugin "DEV_LC_View"')
+
+        Nr = Layout_Object[TLayNr]:Acquire()
+        Layout_Object[TLayNr][Nr.No]:Set('Object', MacroObject[CurrentMacroNr])
+        Layout_Object[TLayNr][Nr.No]:Set('posx', LayX)
+        Layout_Object[TLayNr][Nr.No]:Set('posy', LayY)
+        Layout_Object[TLayNr][Nr.No]:Set('width', 100)
+        Layout_Object[TLayNr][Nr.No]:Set('height',100)
+        Layout_Object[TLayNr][Nr.No]:Set('action', 'Go+')
+        Layout_Object[TLayNr][Nr.No]:Set('Note', 'Macro set Group ' .. g)
+        LC_Set_Def(TLayNr, Nr, Layout_Object)
+
+        CurrentMacroNr = math.floor(CurrentMacroNr + 1)
+
         LayNr = math.floor(LayNr + 1)
         LayX = math.floor(LayX + LayW + 20)
         local FirstSeqColor = CurrentSeqNr
@@ -438,8 +465,6 @@ function Create_Appearances_Sequences(CurrentMacroNr, SelectedGelNr, NbGroup, Re
     end                              -- end GRP
     return LayY, NrNeed, LayNr, CurrentSeqNr, CurrentMacroNr, ColLgnCount, Ligne_Inc
 end                                  -- end Create_Appearances_Sequences
-
-
 
 function Create_All_Color(TCol, CurrentSeqNr, prefix, TLayNr, LayNr, NrNeed, LayX, LayY, LayW, LayH, MaxColLgn,
                           RefX, AppNr, Construct_Pool)
