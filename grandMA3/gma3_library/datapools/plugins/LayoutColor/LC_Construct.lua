@@ -324,6 +324,10 @@ function LC_Construct_Layout(TLay, SeqNrStart, MacroNrStart, MatrickNrStart, Mat
     -- endCreate Preset 25
     Echo('Preset 25 ok')
 
+    -- Build Tag
+    LC_Build_Tag(prefix,NbGroup)
+    -- end Build Tag
+
     -- Appearances/Sequences
     LayY, NrNeed, LayNr, CurrentSeqNr, CurrentMacroNr, ColLgnCount,
     Ligne_Inc = Create_Appearances_Sequences(CurrentMacroNr, SelectedGelNr, NbGroup, RefX,

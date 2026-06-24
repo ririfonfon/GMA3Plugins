@@ -278,6 +278,15 @@ function Create_Appearances_Sequences(CurrentMacroNr, SelectedGelNr, NbGroup, Re
     local All5Object                                     = Root().ShowData.DataPools[Construct_Pool].PresetPools[25]
     local MatricksObject                                 = Root().ShowData.DataPools[Construct_Pool].Matricks
     local AppearObject                                   = Root().ShowData.Appearances
+    local TagObject_LC                                   = Root().ShowData.Tags:Children()
+    local Group_Tag                                      = {}
+    for ta = 1, NbGroup do
+        for v in ipairs(TagObject_LC) do
+            if TagObject_LC[v].Name == prefix .. '_Group_' .. ta then
+                table.insert(Group_Tag, TagObject_LC[v])
+            end
+        end
+    end
 
     for g = 1, NbGroup, 1 do
         local LayX = RefX
@@ -317,7 +326,7 @@ function Create_Appearances_Sequences(CurrentMacroNr, SelectedGelNr, NbGroup, Re
         Layout_Object[TLayNr][Nr.No]:Set('posx', LayX)
         Layout_Object[TLayNr][Nr.No]:Set('posy', LayY)
         Layout_Object[TLayNr][Nr.No]:Set('width', 100)
-        Layout_Object[TLayNr][Nr.No]:Set('height',100)
+        Layout_Object[TLayNr][Nr.No]:Set('height', 100)
         Layout_Object[TLayNr][Nr.No]:Set('action', 'Go+')
         Layout_Object[TLayNr][Nr.No]:Set('Note', 'Macro set Group ' .. g)
         LC_Set_Def(TLayNr, Nr, Layout_Object)
@@ -357,6 +366,7 @@ function Create_Appearances_Sequences(CurrentMacroNr, SelectedGelNr, NbGroup, Re
             SequenceObject[CurrentSeqNr][3][1][1]:Set('MAtricks', MatricksObject[MatrickNrStart])
             SequenceObject[CurrentSeqNr][3][1][1]:Set('SelectionMode', 'Strict')
             SequenceObject[CurrentSeqNr][3][1][1]:Set('Enabled', 'Yes')
+            Cmd('Assign ' .. SequenceObject[CurrentSeqNr] .. " at " .. Group_Tag[g])
 
             Nr = Layout_Object[TLayNr]:Acquire()
             Layout_Object[TLayNr][Nr.No]:Set('Object', SequenceObject[CurrentSeqNr])
@@ -623,5 +633,36 @@ function Command_Ext_Suite(CurrentSeqNr)
     -- CmdIndirectWait('Set Sequence ' .. CurrentSeqNr .. ' Property SequMIB=0')
     -- CmdIndirectWait('Set Sequence ' .. CurrentSeqNr .. ' Property SequMIBMode=1')
 end -- end function Command_Ext_Suite(...)
+
+function LC_Build_Tag(prefix, NbGroup)
+    local TagObject = Root().ShowData.Tags
+    local TagObject_C = Root().ShowData.Tags:Children()
+    local LC_TAGS_CHECKS = {}
+    local LC_TAGS = {}
+    local Tag_Type = {}
+    for t = 1, NbGroup do
+        table.insert(LC_TAGS, prefix .. '_Group_' .. t)
+        table.insert(Tag_Type, 'Kill Delayed')
+    end
+    for i = 1, #LC_TAGS, 1 do
+        LC_TAGS_CHECKS[i] = false
+    end
+
+    for v in pairs(LC_TAGS) do
+        for k in pairs(TagObject_C) do
+            if LC_TAGS[v] == TagObject_C[k].Name then
+                LC_TAGS_CHECKS[v] = true
+                break
+            end
+        end
+    end
+    for k in pairs(LC_TAGS_CHECKS) do
+        if LC_TAGS_CHECKS[k] == false then
+            local nr = TagObject:Acquire()
+            TagObject[nr.No]:Set('Name', LC_TAGS[k])
+            TagObject[nr.No]:Set('TAGTYPE', Tag_Type[k])
+        end
+    end
+end
 
 --end LC_Cmd.lua
