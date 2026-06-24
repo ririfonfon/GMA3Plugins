@@ -269,7 +269,7 @@ function Create_Appearances_Sequences(CurrentMacroNr, SelectedGelNr, NbGroup, Re
                                       LayH, NrAppear, AppNr, NrNeed, TLayNr, LayW, LayNr,
                                       CurrentSeqNr, MaxColLgn, TCol, prefix,
                                       All_5_NrStart, MatrickNrStart, AppTricks,
-                                      Construct_Pool, Groups_Pool)
+                                      Construct_Pool, Groups_Pool,Color_Range)
     local MacroObject, SequenceObject, Layout_Object, Nr = LC_Get_Object(Construct_Pool)
     local LastSeqColor, grpnrselect
     local ColLgnCount                                    = 0
@@ -278,16 +278,8 @@ function Create_Appearances_Sequences(CurrentMacroNr, SelectedGelNr, NbGroup, Re
     local All5Object                                     = Root().ShowData.DataPools[Construct_Pool].PresetPools[25]
     local MatricksObject                                 = Root().ShowData.DataPools[Construct_Pool].Matricks
     local AppearObject                                   = Root().ShowData.Appearances
+    
     for g = 1, NbGroup, 1 do
-        -- for r in ipairs(GroupsObject) do
-        --     Echo('grp name ' .. GroupsObject[r].Name)
-        --     if GroupsObject[r].Name == SelectedGrp[g]:gsub("'", "") then
-        --         grpnrselect = r
-        --         break
-        --     end
-        -- end
-        -- Echo('Select ' .. SelectedGrp[g]:gsub("'", ""))
-        -- Echo('GRP ' .. GroupsObject[grpnrselect].NO)
         local LayX = RefX
         local col_count = 0
         LayY = math.floor(LayY - LayH) -- Max Y Position minus hight from element. 0 are at the Bottom!

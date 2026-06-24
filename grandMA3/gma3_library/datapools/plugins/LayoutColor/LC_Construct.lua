@@ -256,6 +256,13 @@ function LC_Construct_Layout(TLay, SeqNrStart, MacroNrStart, MatrickNrStart, Mat
 
     local Ligne_Inc = false
 
+    SelectedGelNr = tonumber(SelectedGelNr)
+    TCol = ColPath:Children()[SelectedGelNr]
+    local Color_Range
+    for co in ipairs(TCol) do
+        Color_Range = co
+    end
+
     -- fix prefix
     local prefix_index = 1
     local old_prefix_index
@@ -263,9 +270,13 @@ function LC_Construct_Layout(TLay, SeqNrStart, MacroNrStart, MatrickNrStart, Mat
     local exit = false
     repeat
         old_prefix_index = prefix_index
-        for k in pairs(TLay) do
-            if string.match(TLay[k].name, prefix) then
-                prefix_index = math.floor(prefix_index + 1)
+        local Ref_PoolObject = Root().ShowData.DataPools
+        for r in ipairs(Ref_PoolObject) do
+            local Ref_TLay = Root().ShowData.DataPools[r].Layouts:Children()
+            for k in pairs(Ref_TLay) do
+                if string.match(Ref_TLay[k].name, prefix) then
+                    prefix_index = math.floor(prefix_index + 1)
+                end
             end
         end
         prefix = 'LC' .. tostring(prefix_index) .. '_'
@@ -296,8 +307,7 @@ function LC_Construct_Layout(TLay, SeqNrStart, MacroNrStart, MatrickNrStart, Mat
     Layout_Object[TLayNr]:Set('Name', "'" .. prefix .. NaLay .. "'")
     -- CmdIndirectWait('Select Layout ' .. TLayNr)
 
-    SelectedGelNr = tonumber(SelectedGelNr)
-    TCol = ColPath:Children()[SelectedGelNr]
+    
     MaxColLgn = tonumber(MaxColLgn)
 
     -- Create Appearances Tricks Ref
@@ -322,7 +332,7 @@ function LC_Construct_Layout(TLay, SeqNrStart, MacroNrStart, MatrickNrStart, Mat
     Ligne_Inc = Create_Appearances_Sequences(CurrentMacroNr, SelectedGelNr, NbGroup, RefX,
         LayY, LayH, NrAppear, AppNr, NrNeed, TLayNr, LayW, LayNr, CurrentSeqNr, MaxColLgn,
         TCol, prefix, All_5_NrStart, MatrickNrStart,
-        AppTricks, Construct_Pool, Groups_Pool)
+        AppTricks, Construct_Pool, Groups_Pool, Color_Range)
     -- end Appearances/Sequences
     Echo('Crea app_sequence ok')
 end
