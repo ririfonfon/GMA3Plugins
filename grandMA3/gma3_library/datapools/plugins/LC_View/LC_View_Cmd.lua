@@ -401,21 +401,23 @@ function Favourites(layout, macrostore, data_pool, prefix, macro)
     Cmd('Set DataPool ' .. data_pool .. ' Macro ' .. macro .. ' Property "Appearance" "LC_Black"')
 end
 
-
 function Group_select(layout, element, seq_call, data_pool)
-    seq_call = "'" .. seq_call .. "'"
     local SEQ_Root = ShowData().DataPools[data_pool].Sequences:Children()
     local pool = DataPool().No
     local GroupObject = ShowData().DataPools[pool].Groups:Children()
     local LayoutObject = Root().ShowData.DataPools[data_pool].Layouts
     local Target
     for k in ipairs(SEQ_Root) do
-        if SEQ_Root[k].name == seq_call then
+        if SEQ_Root[k].No == seq_call then
             Target = SEQ_Root[k][3][1][1].Selection.No
             break
         end
     end
-    LayoutObject[layout][element]:Set('Object', GroupObject[Target])
+    for g in ipairs(GroupObject) do
+        if GroupObject[g].No == Target then
+            LayoutObject[layout][element]:Set('Object', GroupObject[g])
+        end
+    end
 end
 
 -- end LC_View_Cmd.lua
