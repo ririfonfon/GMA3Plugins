@@ -303,6 +303,7 @@ function Create_Appearances_Sequences(CurrentMacroNr, SelectedGelNr, NbGroup, Re
         Layout_Object[TLayNr][Nr.No]:Set('Note', 'Group' .. g)
         LC_Set_Def(TLayNr, Nr, Layout_Object)
         Layout_Object[TLayNr][Nr.No]:Set('visibilityobjectname', 'Visible')
+        Layout_Object[TLayNr][Nr.No]:Set('Action', 0)
         -- CmdIndirectWait("Assign DataPool " .. Groups_Pool .. " Group " .. SelectedGrp[g] ..
         --     " at DataPool " .. Groups_Pool .. " Layout " .. TLayNr)
         -- CmdIndirectWait("Set Layout " .. TLayNr .. "." .. LayNr .. " Appearance=" .. AppNr ..
