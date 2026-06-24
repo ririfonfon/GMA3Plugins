@@ -111,11 +111,14 @@ local function LC_CH_Pool(popuplists)
     return Pool_check
 end
 
+local thiscomponent = select(4, ...)
+
+
 local function Main(displayHandle)
     Cmd('Set UserProfile *.15 Property "keyboardshortcutsactive" false')
 
-
-
+    -- fix Call_Pool
+    local Call_Pool = thiscomponent:FindParent(DataPool():GetClass())
 
     local list = false
     local FixtureGroups = DataPool().Groups:Children()
@@ -1011,7 +1014,7 @@ local function Main(displayHandle)
         LC_Construct_Layout(TLay, SeqNrStart, MacroNrStart, MatrickNrStart, MatrickNr, TLayNr,
             AppNr, All_5_Current, All_5_NrStart, ColPath, SelectedGelNr, NbGroup,
             TLayNrRef, NaLay, MaxColLgn, Favourite_Nr, Construct_Pool,
-            Groups_Pool)
+            Groups_Pool, Call_Pool)
     end
 
     -- Layout Name
