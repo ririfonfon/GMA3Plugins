@@ -644,6 +644,10 @@ function LC_Build_Tag(prefix, NbGroup)
         table.insert(LC_TAGS, prefix .. '_Group_' .. t)
         table.insert(Tag_Type, 'Kill Delayed')
     end
+    table.insert(LC_TAGS, prefix .. '_Group_ALL')
+    table.insert(Tag_Type, 'Kill Delayed')
+    table.insert(LC_TAGS, prefix .. 'Call_Group_ALL')
+    table.insert(Tag_Type, 'None')
     for i = 1, #LC_TAGS, 1 do
         LC_TAGS_CHECKS[i] = false
     end
