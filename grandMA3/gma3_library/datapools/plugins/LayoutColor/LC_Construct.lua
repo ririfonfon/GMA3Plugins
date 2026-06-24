@@ -256,6 +256,7 @@ function LC_Construct_Layout(TLay, SeqNrStart, MacroNrStart, MatrickNrStart, Mat
 
     local Ligne_Inc = false
 
+    -- fix Color_Range
     SelectedGelNr = tonumber(SelectedGelNr)
     TCol = ColPath:Children()[SelectedGelNr]
     local Color_Range
@@ -284,10 +285,6 @@ function LC_Construct_Layout(TLay, SeqNrStart, MacroNrStart, MatrickNrStart, Mat
             exit = true
         end
     until exit == true
-    -- -- fix name SelectedGrp
-    -- for g in pairs(SelectedGrp) do
-    --     SelectedGrpName[g] = SelectedGrp[g]:gsub(' ', '_')
-    -- end
 
     -- fix *NrStart & use Current*Nr
     CurrentSeqNr = SeqNrStart
