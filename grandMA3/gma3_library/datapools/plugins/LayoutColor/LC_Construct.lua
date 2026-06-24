@@ -8,7 +8,7 @@ Created by Richard Fontaine "RIRI", June 2024. Update may 2026
 function LC_Construct_Layout(TLay, SeqNrStart, MacroNrStart, MatrickNrStart, MatrickNr, TLayNr,
                              AppNr, All_5_Current, All_5_NrStart, ColPath, SelectedGelNr,
                              NbGroup, TLayNrRef, NaLay, MaxColLgn,
-                             Favourite_Nr, Construct_Pool, Groups_Pool)
+                             Favourite_Nr, Construct_Pool, Groups_Pool, Call_Pool)
     local MacroObject, SequenceObject, Layout_Object, Nr = LC_Get_Object(Construct_Pool)
     local All_5_NrEnd
     local Img = Root().ShowData.MediaPools.Symbols:Children()
@@ -329,7 +329,7 @@ function LC_Construct_Layout(TLay, SeqNrStart, MacroNrStart, MatrickNrStart, Mat
     Ligne_Inc = Create_Appearances_Sequences(CurrentMacroNr, SelectedGelNr, NbGroup, RefX,
         LayY, LayH, NrAppear, AppNr, NrNeed, TLayNr, LayW, LayNr, CurrentSeqNr, MaxColLgn,
         TCol, prefix, All_5_NrStart, MatrickNrStart,
-        AppTricks, Construct_Pool, Groups_Pool, Color_Range)
+        AppTricks, Construct_Pool, Groups_Pool, Color_Range, Call_Pool)
     -- end Appearances/Sequences
     Echo('Crea app_sequence ok')
 end
