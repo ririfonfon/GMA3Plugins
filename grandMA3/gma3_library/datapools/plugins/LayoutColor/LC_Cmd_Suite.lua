@@ -55,14 +55,11 @@ function Create_Fade_Sequences(MakeX, FirstSeqTime, LastSeqTime, CurrentSeqNr, C
     CurrentMacroNr = CurrentMacroNr + 1
 
     for v in ipairs(TagObject_LC) do
-        Echo('v ' ..
-            v ..
-            ' tag ' .. TagObject_LC[v].Name .. ' ?? ' .. old_prefix .. '_' .. Time_Argument[1].name .. '_' .. surfix[a])
         if TagObject_LC[v].Name == old_prefix .. '_' .. Time_Argument[1].name .. '_' .. surfix[a] then
             tag_fade = TagObject_LC[v]
-            Echo('found in ' .. v)
         end
     end
+
     if a == 1 then
         LC_Check_Size_Pool(CurrentSeqNr, SequenceObject)
         SequenceObject:Create(CurrentSeqNr)
@@ -170,16 +167,22 @@ end -- end Create_Fade_Sequences
 
 function Create_Delay_From_Sequences(First_Id_Lay, LayNr, CurrentSeqNr, Current_Id_Lay, prefix, surfix, Argument_Delay,
                                      AppImp, CurrentMacroNr, a, MatrickNrStart, TLayNr, Delay_F_Element, MatrickNr, MakeX,
-                                     LayX, LayY, LayW, LayH, Delay_T_Element, Construct_Pool, Call_Pool)
+                                     LayX, LayY, LayW, LayH, Delay_T_Element, Construct_Pool, Call_Pool, Time_Argument)
     local MacroObject, SequenceObject, Layout_Object, Nr = LC_Get_Object(Construct_Pool)
-    prefix = 'o' .. prefix
+    -- fix time_tag
+    local TagObject_LC                                   = Root().ShowData.Tags:Children()
+    local tag_delay_from
+
+    -- Setup Delay from Sequence
+    local old_prefix                                     = prefix
+    prefix                                               = 'o' .. prefix
     -- Setup DelayFrom Sequence
-    CurrentMacroNr = math.floor(CurrentMacroNr + 5)
-    local FirstSeqDelayFrom = CurrentSeqNr
-    local LastSeqDelayFrom = math.floor(CurrentSeqNr + 4)
+    CurrentMacroNr                                       = math.floor(CurrentMacroNr + 5)
+    local FirstSeqDelayFrom                              = CurrentSeqNr
+    local LastSeqDelayFrom                               = math.floor(CurrentSeqNr + 4)
 
     -- Create Macro DelayFrom Input
-    Delay_F_Element = Delay_F_Element + 2
+    Delay_F_Element                                      = Delay_F_Element + 2
     Create_Macro_Delay_From(CurrentMacroNr, prefix, surfix, a, FirstSeqDelayFrom, LastSeqDelayFrom,
         MatrickNrStart, 2, TLayNr, Delay_F_Element, MatrickNr, Construct_Pool, Call_Pool)
 
@@ -205,6 +208,12 @@ function Create_Delay_From_Sequences(First_Id_Lay, LayNr, CurrentSeqNr, Current_
             Current_Id_Lay = First_Id_Lay[5]
         end
 
+        for v in ipairs(TagObject_LC) do
+            if TagObject_LC[v].Name == old_prefix .. '_' .. Time_Argument[2].name .. '_' .. surfix[a] then
+                tag_delay_from = TagObject_LC[v]
+            end
+        end
+
         LC_Check_Size_Pool(CurrentSeqNr, SequenceObject)
         SequenceObject:Create(CurrentSeqNr)
         SequenceObject[CurrentSeqNr]:Set('Name', "'" .. prefix .. Argument_Delay[i].name .. surfix[a] .. "'")
@@ -222,9 +231,7 @@ function Create_Delay_From_Sequences(First_Id_Lay, LayNr, CurrentSeqNr, Current_
             SequenceObject[CurrentSeqNr][3][1]:Set('Command',
                 'Go DataPool ' .. Construct_Pool .. ' Macro ' .. CurrentMacroNr .. '')
         else
-            SequenceObject[CurrentSeqNr][3][1]:Set('Command', 'Off DataPool ' .. Construct_Pool .. ' Sequence ' ..
-                FirstSeqDelayFrom .. ' Thru ' .. LastSeqDelayFrom .. ' - ' .. CurrentSeqNr ..
-                ' ; Set DataPool ' .. Construct_Pool .. ' Matricks ' ..
+            SequenceObject[CurrentSeqNr][3][1]:Set('Command', 'Set DataPool ' .. Construct_Pool .. ' Matricks ' ..
                 MatrickNrStart .. ' Property "DelayFrom' .. surfix[a] .. '" ' .. Argument_Delay[i].Time ..
                 '  ; SetUserVariable "LC_Fonction" 2 ; SetUserVariable "LC_Axes" "' .. a ..
                 '" ; SetUserVariable "LC_Layout" ' .. TLayNr ..
@@ -233,6 +240,8 @@ function Create_Delay_From_Sequences(First_Id_Lay, LayNr, CurrentSeqNr, Current_
                 ' ; SetUserVariable "LC_Matrick_Thru" ' .. MatrickNr ..
                 ' ; Call ' .. Call_Pool .. ' Plugin "DEV_LC_View" ')
         end
+        Cmd('Assign ' .. SequenceObject[CurrentSeqNr] .. " at " .. tag_delay_from)
+
 
         -- CmdIndirectWait('ClearAll /nu')
         -- CmdIndirectWait('Store Sequence ' ..
@@ -292,15 +301,21 @@ end     --Create_Delay_From_Sequences
 
 function Create_Delay_To_Sequences(a, First_Id_Lay, LayNr, CurrentSeqNr, Current_Id_Lay, prefix, Argument_DelayTo, surfix,
                                    MatrickNrStart, TLayNr, Delay_T_Element, MatrickNr, AppImp, LayX, LayY, LayW, LayH,
-                                   Phase_Element, CurrentMacroNr, MakeX, Construct_Pool, Call_Pool)
+                                   Phase_Element, CurrentMacroNr, MakeX, Construct_Pool, Call_Pool, Time_Argument)
     local MacroObject, SequenceObject, Layout_Object, Nr = LC_Get_Object(Construct_Pool)
-    prefix = 'o' .. prefix
+    -- fix time_tag
+    local TagObject_LC                                   = Root().ShowData.Tags:Children()
+    local tag_delay_to
+
+    -- Setup Delay to Sequence
+    local old_prefix                                     = prefix
+    prefix                                               = 'o' .. prefix
     -- Setup DelayTo Sequence
-    CurrentMacroNr = math.floor(CurrentMacroNr + 1)
-    local FirstSeqDelayTo = CurrentSeqNr
-    local LastSeqDelayTo = math.floor(CurrentSeqNr + 4)
+    CurrentMacroNr                                       = math.floor(CurrentMacroNr + 1)
+    local FirstSeqDelayTo                                = CurrentSeqNr
+    local LastSeqDelayTo                                 = math.floor(CurrentSeqNr + 4)
     -- Create Macro DelayTo Input
-    Delay_T_Element = Delay_T_Element + 2
+    Delay_T_Element                                      = Delay_T_Element + 2
     Create_Macro_Delay_To(CurrentMacroNr, prefix, surfix, a, FirstSeqDelayTo, LastSeqDelayTo, MatrickNrStart,
         3, TLayNr, Delay_T_Element, MatrickNr, Construct_Pool, Call_Pool)
 
@@ -326,6 +341,12 @@ function Create_Delay_To_Sequences(a, First_Id_Lay, LayNr, CurrentSeqNr, Current
             Current_Id_Lay = First_Id_Lay[9]
         end
 
+        for v in ipairs(TagObject_LC) do
+            if TagObject_LC[v].Name == old_prefix .. '_' .. Time_Argument[3].name .. '_' .. surfix[a] then
+                tag_delay_to = TagObject_LC[v]
+            end
+        end
+
         LC_Check_Size_Pool(CurrentSeqNr, SequenceObject)
         SequenceObject:Create(CurrentSeqNr)
         SequenceObject[CurrentSeqNr]:Set('Name', "'" .. prefix .. Argument_DelayTo[i].name .. surfix[a] .. "'")
@@ -343,9 +364,7 @@ function Create_Delay_To_Sequences(a, First_Id_Lay, LayNr, CurrentSeqNr, Current
             SequenceObject[CurrentSeqNr][3][1]:Set('Command',
                 'Go DataPool ' .. Construct_Pool .. ' Macro ' .. CurrentMacroNr .. '')
         else
-            SequenceObject[CurrentSeqNr][3][1]:Set('Command', 'Off DataPool ' .. Construct_Pool .. ' Sequence ' ..
-                FirstSeqDelayTo .. ' Thru ' .. LastSeqDelayTo .. ' - ' .. CurrentSeqNr ..
-                ' ; Set DataPool ' .. Construct_Pool .. ' Matricks ' ..
+            SequenceObject[CurrentSeqNr][3][1]:Set('Command', 'Set DataPool ' .. Construct_Pool .. ' Matricks ' ..
                 MatrickNrStart .. ' Property "DelayTo' .. surfix[a] .. '" ' .. Argument_DelayTo[i].Time ..
                 ' ; SetUserVariable "LC_Fonction" 3 ; SetUserVariable "LC_Axes" "' .. a ..
                 '" ; SetUserVariable "LC_Layout" ' .. TLayNr ..
@@ -354,6 +373,7 @@ function Create_Delay_To_Sequences(a, First_Id_Lay, LayNr, CurrentSeqNr, Current
                 ' ; SetUserVariable "LC_Matrick_Thru" ' .. MatrickNr ..
                 ' ; Call ' .. Call_Pool .. ' Plugin "DEV_LC_View" ')
         end
+        Cmd('Assign ' .. SequenceObject[CurrentSeqNr] .. " at " .. tag_delay_to)
 
         -- CmdIndirectWait('ClearAll /nu')
         -- CmdIndirectWait('Store Sequence ' ..
@@ -413,13 +433,14 @@ end     -- end Create_Delay_To_Sequences
 
 function Create_Phase_Sequence(LayY, LayX, LayW, a, First_Id_Lay, LayNr, CurrentSeqNr, Current_Id_Lay, CurrentMacroNr,
                                prefix, surfix, MatrickNrStart, TLayNr, Phase_Element, MatrickNr, AppImp, MakeX, LayH,
-                               RefX, Group_Element, Construct_Pool, Call_Pool)
+                               RefX, Group_Element, Construct_Pool, Call_Pool, Time_Argument)
     local MacroObject, SequenceObject, Layout_Object, Nr = LC_Get_Object(Construct_Pool)
-    prefix = 'o' .. prefix
+    -- Setup Phase Sequence
+    prefix                                               = 'o' .. prefix
     -- Add offset for Layout Element distance
-    LayY = math.floor(LayY - 150)
-    LayX = RefX
-    LayX = math.floor(LayX + LayW - 100)
+    LayY                                                 = math.floor(LayY - 150)
+    LayX                                                 = RefX
+    LayX                                                 = math.floor(LayX + LayW - 100)
 
     -- Create Macro Phase Input
     if a == 1 then
@@ -436,8 +457,8 @@ function Create_Phase_Sequence(LayY, LayX, LayW, a, First_Id_Lay, LayNr, Current
     Create_Macro_Phase(CurrentMacroNr, prefix, surfix, a, MatrickNrStart, 4, TLayNr, Phase_Element, MatrickNr,
         Construct_Pool, Call_Pool)
 
-    -- Create Sequences Phase
 
+    -- Create Sequences Phase
     LC_Check_Size_Pool(CurrentSeqNr, SequenceObject)
     SequenceObject:Create(CurrentSeqNr)
     SequenceObject[CurrentSeqNr]:Set('Name', "'" .. prefix .. 'Phase Input' .. surfix[a] .. "'")
@@ -505,15 +526,22 @@ end -- end Create_Phase_Sequence
 
 function Create_Group_Sequence(CurrentMacroNr, FirstSeqGrp, CurrentSeqNr, LastSeqGrp, prefix, surfix, a, MatrickNrStart,
                                TLayNr, Group_Element, MatrickNr, LayNr, LayX, LayY, First_Id_Lay, Current_Id_Lay,
-                               Argument_Xgrp, AppImp, LayW, LayH, Block_Element, MakeX, Construct_Pool, Call_Pool)
+                               Argument_Xgrp, AppImp, LayW, LayH, Block_Element, MakeX, Construct_Pool, Call_Pool,
+                               Time_Argument)
     local MacroObject, SequenceObject, Layout_Object, Nr = LC_Get_Object(Construct_Pool)
-    prefix = 'o' .. prefix
+    -- fix time_tag
+    local TagObject_LC                                   = Root().ShowData.Tags:Children()
+    local tag_group
+
+    -- Setup Group Sequence
+    local old_prefix                                     = prefix
+    prefix                                               = 'o' .. prefix
     -- Setup XGroup Sequence
-    CurrentMacroNr = math.floor(CurrentMacroNr + 1)
-    FirstSeqGrp = CurrentSeqNr
-    LastSeqGrp = math.floor(CurrentSeqNr + 4)
+    CurrentMacroNr                                       = math.floor(CurrentMacroNr + 1)
+    FirstSeqGrp                                          = CurrentSeqNr
+    LastSeqGrp                                           = math.floor(CurrentSeqNr + 4)
     -- Create Macro Group Input
-    Group_Element = Group_Element + 2
+    Group_Element                                        = Group_Element + 2
     Create_Macro_Group(CurrentMacroNr, prefix, surfix, a, FirstSeqGrp, LastSeqGrp, MatrickNrStart, 5, TLayNr,
         Group_Element, MatrickNr, Construct_Pool, Call_Pool)
 
@@ -538,6 +566,11 @@ function Create_Group_Sequence(CurrentMacroNr, FirstSeqGrp, CurrentSeqNr, LastSe
             end
             Current_Id_Lay = First_Id_Lay[17]
         end
+        for v in ipairs(TagObject_LC) do
+            if TagObject_LC[v].Name == old_prefix .. '_' .. Time_Argument[4].name .. '_' .. surfix[a] then
+                tag_group = TagObject_LC[v]
+            end
+        end
         LC_Check_Size_Pool(CurrentSeqNr, SequenceObject)
         SequenceObject:Create(CurrentSeqNr)
         SequenceObject[CurrentSeqNr]:Set('Name', "'" .. prefix .. Argument_Xgrp[i].name .. surfix[a] .. "'")
@@ -555,9 +588,7 @@ function Create_Group_Sequence(CurrentMacroNr, FirstSeqGrp, CurrentSeqNr, LastSe
             SequenceObject[CurrentSeqNr][3][1]:Set('Command',
                 'Go DataPool ' .. Construct_Pool .. ' Macro ' .. CurrentMacroNr .. '')
         else
-            SequenceObject[CurrentSeqNr][3][1]:Set('Command', 'Off DataPool ' .. Construct_Pool .. ' Sequence ' ..
-                FirstSeqGrp .. ' Thru ' .. LastSeqGrp .. ' - ' .. CurrentSeqNr ..
-                ' ; Set DataPool ' .. Construct_Pool .. ' Matricks ' .. MatrickNrStart .. ' Property "' .. surfix[a] ..
+            SequenceObject[CurrentSeqNr][3][1]:Set('Command', 'Set DataPool ' .. Construct_Pool .. ' Matricks ' .. MatrickNrStart .. ' Property "' .. surfix[a] ..
                 'Group" ' .. Argument_Xgrp[i].Time ..
                 ' ; SetUserVariable "LC_Fonction" 5 ; SetUserVariable "LC_Axes" "' .. a ..
                 '" ; SetUserVariable "LC_Layout" ' .. TLayNr ..
@@ -566,6 +597,7 @@ function Create_Group_Sequence(CurrentMacroNr, FirstSeqGrp, CurrentSeqNr, LastSe
                 ' ; SetUserVariable "LC_Matrick_Thru" ' .. MatrickNr ..
                 ' ; Call ' .. Call_Pool .. ' Plugin "DEV_LC_View" ')
         end
+        Cmd('Assign ' .. SequenceObject[CurrentSeqNr] .. " at " .. tag_group)
 
         -- CmdIndirectWait('ClearAll /nu')
         -- CmdIndirectWait('Store Sequence ' ..
@@ -627,14 +659,20 @@ end -- end Create_Group_Sequence
 function Create_Block_Sequence(CurrentMacroNr, FirstSeqBlock, CurrentSeqNr, LastSeqBlock, prefix, surfix, a,
                                MatrickNrStart, TLayNr, Block_Element, MatrickNr, MakeX, LayNr, LayX, LayY, First_Id_Lay,
                                Current_Id_Lay, Argument_Xblock, AppImp, Wings_Element, LayW, LayH, Construct_Pool,
-                               Call_Pool)
+                               Call_Pool, Time_Argument)
     local MacroObject, SequenceObject, Layout_Object, Nr = LC_Get_Object(Construct_Pool)
-    prefix = 'o' .. prefix
-    CurrentMacroNr = math.floor(CurrentMacroNr + 1)
-    FirstSeqBlock = CurrentSeqNr
-    LastSeqBlock = math.floor(CurrentSeqNr + 4)
+    -- fix time_tag
+    local TagObject_LC                                   = Root().ShowData.Tags:Children()
+    local tag_block
+
+    -- Setup Block Sequence
+    local old_prefix                                     = prefix
+    prefix                                               = 'o' .. prefix
+    CurrentMacroNr                                       = math.floor(CurrentMacroNr + 1)
+    FirstSeqBlock                                        = CurrentSeqNr
+    LastSeqBlock                                         = math.floor(CurrentSeqNr + 4)
     -- Create Macro Block Input
-    Block_Element = Block_Element + 2
+    Block_Element                                        = Block_Element + 2
     Create_Macro_Block(CurrentMacroNr, prefix, surfix, a, FirstSeqBlock, LastSeqBlock, MatrickNrStart, 6,
         TLayNr, Block_Element, MatrickNr, Construct_Pool, Call_Pool)
 
@@ -660,6 +698,12 @@ function Create_Block_Sequence(CurrentMacroNr, FirstSeqBlock, CurrentSeqNr, Last
             Current_Id_Lay = First_Id_Lay[21]
         end
 
+        for v in ipairs(TagObject_LC) do
+            if TagObject_LC[v].Name == old_prefix .. '_' .. Time_Argument[5].name .. '_' .. surfix[a] then
+                tag_block = TagObject_LC[v]
+            end
+        end
+
         LC_Check_Size_Pool(CurrentSeqNr, SequenceObject)
         SequenceObject:Create(CurrentSeqNr)
         SequenceObject[CurrentSeqNr]:Set('Name', "'" .. prefix .. Argument_Xblock[i].name .. surfix[a] .. "'")
@@ -677,9 +721,7 @@ function Create_Block_Sequence(CurrentMacroNr, FirstSeqBlock, CurrentSeqNr, Last
             SequenceObject[CurrentSeqNr][3][1]:Set('Command',
                 'Go DataPool ' .. Construct_Pool .. ' Macro ' .. CurrentMacroNr .. '')
         else
-            SequenceObject[CurrentSeqNr][3][1]:Set('Command', 'Off DataPool ' .. Construct_Pool .. ' Sequence ' ..
-                FirstSeqBlock .. ' Thru ' .. LastSeqBlock .. ' - ' .. CurrentSeqNr ..
-                ' ; Set DataPool ' .. Construct_Pool .. ' Matricks ' .. MatrickNrStart ..
+            SequenceObject[CurrentSeqNr][3][1]:Set('Command', 'Set DataPool ' .. Construct_Pool .. ' Matricks ' .. MatrickNrStart ..
                 ' Property "' .. surfix[a] .. 'Block" ' .. Argument_Xblock[i].Time ..
                 ' ; SetUserVariable "LC_Fonction" 6 ; SetUserVariable "LC_Axes" "' .. a ..
                 '" ; SetUserVariable "LC_Layout" ' .. TLayNr ..
@@ -688,6 +730,8 @@ function Create_Block_Sequence(CurrentMacroNr, FirstSeqBlock, CurrentSeqNr, Last
                 ' ; SetUserVariable "LC_Matrick_Thru" ' .. MatrickNr ..
                 ' ; Call ' .. Call_Pool .. ' Plugin "DEV_LC_View" ')
         end
+
+        Cmd('Assign ' .. SequenceObject[CurrentSeqNr] .. " at " .. tag_block)
 
         -- CmdIndirectWait('ClearAll /nu')
         -- CmdIndirectWait('Store Sequence ' ..
@@ -749,14 +793,21 @@ end -- end Create_Block_Sequence
 
 function Create_Wings_Sequence(CurrentMacroNr, FirstSeqWings, CurrentSeqNr, LastSeqWings, prefix, surfix, a,
                                MatrickNrStart, TLayNr, Wings_Element, MatrickNr, MakeX, LayNr, LayX, LayY, First_Id_Lay,
-                               Current_Id_Lay, Argument_Xwings, AppImp, LayW, LayH, Construct_Pool, Call_Pool)
+                               Current_Id_Lay, Argument_Xwings, AppImp, LayW, LayH, Construct_Pool, Call_Pool,
+                               Time_Argument)
     local MacroObject, SequenceObject, Layout_Object, Nr = LC_Get_Object(Construct_Pool)
-    prefix = 'o' .. prefix
-    CurrentMacroNr = math.floor(CurrentMacroNr + 1)
-    FirstSeqWings = CurrentSeqNr
-    LastSeqWings = math.floor(CurrentSeqNr + 4)
+    -- fix time_tag
+    local TagObject_LC                                   = Root().ShowData.Tags:Children()
+    local tag_wings
+
+    -- Setup Wings Sequence
+    local old_prefix                                     = prefix
+    prefix                                               = 'o' .. prefix
+    CurrentMacroNr                                       = math.floor(CurrentMacroNr + 1)
+    FirstSeqWings                                        = CurrentSeqNr
+    LastSeqWings                                         = math.floor(CurrentSeqNr + 4)
     -- Create Macro Wings Input
-    Wings_Element = Wings_Element + 2
+    Wings_Element                                        = Wings_Element + 2
     Create_Macro_Wings(CurrentMacroNr, prefix, surfix, a, FirstSeqWings, LastSeqWings, MatrickNrStart, 7,
         TLayNr, Wings_Element, MatrickNr, Construct_Pool, Call_Pool)
 
@@ -781,6 +832,13 @@ function Create_Wings_Sequence(CurrentMacroNr, FirstSeqWings, CurrentSeqNr, Last
             end
             Current_Id_Lay = First_Id_Lay[25]
         end
+
+        for v in ipairs(TagObject_LC) do
+            if TagObject_LC[v].Name == old_prefix .. '_' .. Time_Argument[6].name .. '_' .. surfix[a] then
+                tag_wings = TagObject_LC[v]
+            end
+        end
+
         LC_Check_Size_Pool(CurrentSeqNr, SequenceObject)
         SequenceObject:Create(CurrentSeqNr)
         SequenceObject[CurrentSeqNr]:Set('Name', "'" .. prefix .. Argument_Xwings[i].name .. surfix[a] .. "'")
@@ -798,9 +856,7 @@ function Create_Wings_Sequence(CurrentMacroNr, FirstSeqWings, CurrentSeqNr, Last
             SequenceObject[CurrentSeqNr][3][1]:Set('Command',
                 'Go DataPool ' .. Construct_Pool .. ' Macro ' .. CurrentMacroNr .. '')
         else
-            SequenceObject[CurrentSeqNr][3][1]:Set('Command', 'Off DataPool ' .. Construct_Pool .. ' Sequence ' ..
-                FirstSeqWings .. ' Thru ' .. LastSeqWings .. ' - ' .. CurrentSeqNr ..
-                ' ; Set DataPool ' .. Construct_Pool .. ' Matricks ' .. MatrickNrStart .. ' Property "' .. surfix[a] ..
+            SequenceObject[CurrentSeqNr][3][1]:Set('Command', 'Set DataPool ' .. Construct_Pool .. ' Matricks ' .. MatrickNrStart .. ' Property "' .. surfix[a] ..
                 'Wings" ' .. Argument_Xwings[i].Time ..
                 '  ; SetUserVariable "LC_Fonction" 7 ; SetUserVariable "LC_Axes" "' .. a ..
                 '" ; SetUserVariable "LC_Layout" ' .. TLayNr ..
@@ -809,6 +865,9 @@ function Create_Wings_Sequence(CurrentMacroNr, FirstSeqWings, CurrentSeqNr, Last
                 ' ; SetUserVariable "LC_Matrick_Thru" ' .. MatrickNr ..
                 ' ; Call ' .. Call_Pool .. ' Plugin "DEV_LC_View" ')
         end
+
+        Cmd('Assign ' .. SequenceObject[CurrentSeqNr] .. " at " .. tag_wings)
+
 
         -- CmdIndirectWait('ClearAll /nu')
         -- CmdIndirectWait('Store Sequence ' ..
@@ -861,17 +920,24 @@ function Create_Wings_Sequence(CurrentMacroNr, FirstSeqWings, CurrentSeqNr, Last
         -- end
         -- CurrentSeqNr = math.floor(CurrentSeqNr + 1)
     end
-    return CurrentSeqNr, LayNr, LayX, Current_Id_Lay, First_Id_Lay, LastSeqWings, FirstSeqWings, CurrentMacroNr, Wings_Element
+    return CurrentSeqNr, LayNr, LayX, Current_Id_Lay, First_Id_Lay, LastSeqWings, FirstSeqWings, CurrentMacroNr,
+        Wings_Element
 end -- end Create_Wings_Sequence
 
 function Create_XYZ_Sequence(CurrentMacroNr, First_Id_Lay, prefix, surfix, Call_inc, CallT, MatrickNrStart, a,
                              CurrentSeqNr, TLayNr, Fade_Element, Delay_F_Element, Delay_T_Element, Phase_Element,
                              Group_Element, Block_Element, Wings_Element, MatrickNr, AppImp, MakeX, LayNr, LayX, LayY,
-                             LayW, LayH, Construct_Pool, Call_Pool)
+                             LayW, LayH, Construct_Pool, Call_Pool, Time_Argument)
     local MacroObject, SequenceObject, Layout_Object, Nr = LC_Get_Object(Construct_Pool)
-    prefix = 'o' .. prefix
-    CurrentMacroNr = math.floor(CurrentMacroNr + 1)
-    First_Id_Lay[33 + a] = CurrentMacroNr
+    -- fix time_tag
+    local TagObject_LC                                   = Root().ShowData.Tags:Children()
+    local tag_xyz
+
+    -- Setup XYZ Sequence
+    local old_prefix                                     = prefix
+    prefix                                               = 'o' .. prefix
+    CurrentMacroNr                                       = math.floor(CurrentMacroNr + 1)
+    First_Id_Lay[33 + a]                                 = CurrentMacroNr
     LC_Check_Size_Pool(CurrentMacroNr, MacroObject)
     MacroObject:Create(CurrentMacroNr)
     MacroObject[CurrentMacroNr]:Set('Name', "'" .. prefix .. surfix[a] .. "_Call'")
@@ -913,6 +979,12 @@ function Create_XYZ_Sequence(CurrentMacroNr, First_Id_Lay, prefix, surfix, Call_
 
     First_Id_Lay[28 + a] = CurrentSeqNr
 
+    for v in ipairs(TagObject_LC) do
+        if TagObject_LC[v].Name == old_prefix .. '_' .. Time_Argument[7].name then
+            tag_xyz = TagObject_LC[v]
+        end
+    end
+
     LC_Check_Size_Pool(CurrentSeqNr, SequenceObject)
     SequenceObject:Create(CurrentSeqNr)
     SequenceObject[CurrentSeqNr]:Set('Name', "'" .. prefix .. surfix[a] .. "_Call'")
@@ -928,6 +1000,8 @@ function Create_XYZ_Sequence(CurrentMacroNr, First_Id_Lay, prefix, surfix, Call_
     SequenceObject[CurrentSeqNr][3][1]:Set('Appearance', AppImp[66 + tonumber(a * 2 - 1)].Nr)
     SequenceObject[CurrentSeqNr][3][1]:Set('Command',
         'Go DataPool ' .. Construct_Pool .. ' Macro ' .. CurrentMacroNr .. '')
+
+    Cmd('Assign ' .. SequenceObject[CurrentSeqNr] .. " at " .. tag_xyz)
 
     -- CmdIndirectWait('ClearAll /nu')
     -- CmdIndirectWait('Store Sequence ' .. CurrentSeqNr .. ' \'' .. prefix .. surfix[a] .. '_Call\'')
