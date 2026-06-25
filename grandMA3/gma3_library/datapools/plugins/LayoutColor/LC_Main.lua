@@ -3,9 +3,9 @@ Releases:
 * 2.3.2.0
 
 Version:
-* 2.1.2.0
+* 2.2.0.0
 
-Created by Richard Fontaine "RIRI", June 2024. Update may 2026
+Rewrite by Richard Fontaine "RIRI", June 2026.
 --]]
 
 local pluginName = select(1, ...)

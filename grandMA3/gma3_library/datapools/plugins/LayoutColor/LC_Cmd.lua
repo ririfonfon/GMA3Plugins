@@ -1,9 +1,12 @@
 --[[
-    Releases:
-    * 2.3.1.2
+Releases:
+* 2.3.2.0
 
-    Created by Richard Fontaine "RIRI", September 2025.
-    --]]
+Version:
+* 2.2.0.0
+
+Rewrite by Richard Fontaine "RIRI", June 2026.
+--]]
 
 local function Check_Size_Pool(id, PoolObject)
     if not id then return PoolObject:Acquire() end
@@ -581,92 +584,45 @@ function Command_Title(title, TLayNr, LayNr, LayX, LayY, Pw, Ph, align, Construc
         Layout_Object[TLayNr][Nr.No]:Set('customtextalignmentv', 'Bottom')
     end
 
-    -- CmdIndirectWait('Store Layout ' .. TLayNr .. '.' .. LayNr .. ' Property CustomTextText=\' ' .. title .. ' \'')
-    -- CmdIndirectWait('Set Layout ' .. TLayNr .. '.' .. LayNr .. ' Property CustomTextSize \'24')
-    -- CmdIndirectWait('Set Layout ' .. TLayNr .. '.' .. LayNr .. ' Property CustomTextAlignmentV \'Top')
-    -- if (align == 1) then
-    --     CmdIndirectWait('Set Layout ' .. TLayNr .. '.' .. LayNr .. ' Property CustomTextAlignmentH \'Left')
-    -- elseif (align == 2) then
-    --     CmdIndirectWait('Set Layout ' .. TLayNr .. '.' .. LayNr .. ' Property CustomTextAlignmentH \'Center')
-    -- elseif (align == 3) then
-    --     CmdIndirectWait('Set Layout ' .. TLayNr .. '.' .. LayNr .. ' Property CustomTextAlignmentH \'Right')
-    -- elseif (align == 4) then
-    --     CmdIndirectWait('Set Layout ' .. TLayNr .. '.' .. LayNr .. ' Property CustomTextAlignmentH \'Left')
-    --     CmdIndirectWait('Set Layout ' .. TLayNr .. '.' .. LayNr .. ' Property CustomTextAlignmentV \'Bottom')
-    -- end
-    -- CmdIndirectWait('Set Layout ' .. TLayNr .. '.' .. LayNr .. ' Property VisibilityBorder=0 VisibilityIcon=0')
-    -- CmdIndirectWait('Set Layout ' .. TLayNr ..
-    --     '.' .. LayNr .. ' Property PosX ' .. LayX .. ' PosY ' .. LayY .. ' PositionW ' .. Pw .. ' PositionH ' .. Ph .. '')
 end -- end function Command_Title(...)
 
-function Command_Ext_Suite(CurrentSeqNr,SequenceObject)
+function Command_Ext_Suite(CurrentSeqNr, SequenceObject)
     -- Echo('Call Command_Ext_suite ' .. CurrentSeqNr)
-        SequenceObject[CurrentSeqNr]:Set('prefercueappearance', 'on')
-        SequenceObject[CurrentSeqNr]:Set('AutoStart', '1')
-        SequenceObject[CurrentSeqNr]:Set('AutoStop', '1')
-        SequenceObject[CurrentSeqNr]:Set('MasterGoMode', 'None')
-        SequenceObject[CurrentSeqNr]:Set('AutoFix', '0')
-        SequenceObject[CurrentSeqNr]:Set('AutoStomp', '0')
-        SequenceObject[CurrentSeqNr]:Set('Tracking', '0')
-        SequenceObject[CurrentSeqNr]:Set('WrapAround', '1')
-        SequenceObject[CurrentSeqNr]:Set('ReleaseFirstCue', '0')
-        SequenceObject[CurrentSeqNr]:Set('RestartMode', '1')
-        SequenceObject[CurrentSeqNr]:Set('CueCommand', '0')
-        SequenceObject[CurrentSeqNr]:Set('XFadeReload', '0')
-        SequenceObject[CurrentSeqNr]:Set('OutputFilter', '')
-        SequenceObject[CurrentSeqNr]:Set('Priority', '0')
-        SequenceObject[CurrentSeqNr]:Set('SoftLTP', '1')
-        SequenceObject[CurrentSeqNr]:Set('PlaybackMaster', '')
-        SequenceObject[CurrentSeqNr]:Set('XfadeMode', '0')
-        SequenceObject[CurrentSeqNr]:Set('RateMaster', '')
-        SequenceObject[CurrentSeqNr]:Set('RateScale', '0')
-        SequenceObject[CurrentSeqNr]:Set('SpeedMaster', '')
-        SequenceObject[CurrentSeqNr]:Set('SpeedScale', '0')
-        SequenceObject[CurrentSeqNr]:Set('SpeedfromRate', '0')
-        SequenceObject[CurrentSeqNr]:Set('InputFilter', '')
-        SequenceObject[CurrentSeqNr]:Set('SwapProtect', '0')
-        SequenceObject[CurrentSeqNr]:Set('KillProtect', '0')
-        SequenceObject[CurrentSeqNr]:Set('IncludeLinkLastGo', '1')
-        SequenceObject[CurrentSeqNr]:Set('UseExecutorTime', '0')
-        SequenceObject[CurrentSeqNr]:Set('OffwhenOverridden', '0')
-        SequenceObject[CurrentSeqNr]:Set('Lock', '0')
-        SequenceObject[CurrentSeqNr]:Set('SequMIB', '0')
-        SequenceObject[CurrentSeqNr]:Set('SequMIBMode', '1')
+    SequenceObject[CurrentSeqNr]:Set('prefercueappearance', 'on')
+    SequenceObject[CurrentSeqNr]:Set('AutoStart', '1')
+    SequenceObject[CurrentSeqNr]:Set('AutoStop', '1')
+    SequenceObject[CurrentSeqNr]:Set('MasterGoMode', 'None')
+    SequenceObject[CurrentSeqNr]:Set('AutoFix', '0')
+    SequenceObject[CurrentSeqNr]:Set('AutoStomp', '0')
+    SequenceObject[CurrentSeqNr]:Set('Tracking', '0')
+    SequenceObject[CurrentSeqNr]:Set('WrapAround', '1')
+    SequenceObject[CurrentSeqNr]:Set('ReleaseFirstCue', '0')
+    SequenceObject[CurrentSeqNr]:Set('RestartMode', '1')
+    SequenceObject[CurrentSeqNr]:Set('CueCommand', '0')
+    SequenceObject[CurrentSeqNr]:Set('XFadeReload', '0')
+    SequenceObject[CurrentSeqNr]:Set('OutputFilter', '')
+    SequenceObject[CurrentSeqNr]:Set('Priority', '0')
+    SequenceObject[CurrentSeqNr]:Set('SoftLTP', '1')
+    SequenceObject[CurrentSeqNr]:Set('PlaybackMaster', '')
+    SequenceObject[CurrentSeqNr]:Set('XfadeMode', '0')
+    SequenceObject[CurrentSeqNr]:Set('RateMaster', '')
+    SequenceObject[CurrentSeqNr]:Set('RateScale', '0')
+    SequenceObject[CurrentSeqNr]:Set('SpeedMaster', '')
+    SequenceObject[CurrentSeqNr]:Set('SpeedScale', '0')
+    SequenceObject[CurrentSeqNr]:Set('SpeedfromRate', '0')
+    SequenceObject[CurrentSeqNr]:Set('InputFilter', '')
+    SequenceObject[CurrentSeqNr]:Set('SwapProtect', '0')
+    SequenceObject[CurrentSeqNr]:Set('KillProtect', '0')
+    SequenceObject[CurrentSeqNr]:Set('IncludeLinkLastGo', '1')
+    SequenceObject[CurrentSeqNr]:Set('UseExecutorTime', '0')
+    SequenceObject[CurrentSeqNr]:Set('OffwhenOverridden', '0')
+    SequenceObject[CurrentSeqNr]:Set('Lock', '0')
+    SequenceObject[CurrentSeqNr]:Set('SequMIB', '0')
+    SequenceObject[CurrentSeqNr]:Set('SequMIBMode', '1')
 
-    -- CmdIndirectWait('Set Sequence ' .. CurrentSeqNr .. ' Property prefercueappearance=on')
-    -- CmdIndirectWait('Set Sequence ' .. CurrentSeqNr .. ' Property AutoStart=1')
-    -- CmdIndirectWait('Set Sequence ' .. CurrentSeqNr .. ' Property AutoStop=1')
-    -- CmdIndirectWait('Set Sequence ' .. CurrentSeqNr .. ' Property MasterGoMode=None')
-    -- CmdIndirectWait('Set Sequence ' .. CurrentSeqNr .. ' Property AutoFix=0')
-    -- CmdIndirectWait('Set Sequence ' .. CurrentSeqNr .. ' Property AutoStomp=0')
-    -- CmdIndirectWait('Set Sequence ' .. CurrentSeqNr .. ' Property Tracking=0')
-    -- CmdIndirectWait('Set Sequence ' .. CurrentSeqNr .. ' Property WrapAround=1')
-    -- CmdIndirectWait('Set Sequence ' .. CurrentSeqNr .. ' Property ReleaseFirstCue=0')
-    -- CmdIndirectWait('Set Sequence ' .. CurrentSeqNr .. ' Property RestartMode=1')
-    -- CmdIndirectWait('Set Sequence ' .. CurrentSeqNr .. ' Property CueCommand=0')
-    -- CmdIndirectWait('Set Sequence ' .. CurrentSeqNr .. ' Property XFadeReload=0')
-    -- CmdIndirectWait('Set Sequence ' .. CurrentSeqNr .. ' Property OutputFilter=""')
-    -- CmdIndirectWait('Set Sequence ' .. CurrentSeqNr .. ' Property Priority=0')
-    -- CmdIndirectWait('Set Sequence ' .. CurrentSeqNr .. ' Property SoftLTP=1')
-    -- CmdIndirectWait('Set Sequence ' .. CurrentSeqNr .. ' Property PlaybackMaster=""')
-    -- CmdIndirectWait('Set Sequence ' .. CurrentSeqNr .. ' Property XfadeMode=0')
-    -- CmdIndirectWait('Set Sequence ' .. CurrentSeqNr .. ' Property RateMaster=""')
-    -- CmdIndirectWait('Set Sequence ' .. CurrentSeqNr .. ' Property RateScale=0')
-    -- CmdIndirectWait('Set Sequence ' .. CurrentSeqNr .. ' Property SpeedMaster=""')
-    -- CmdIndirectWait('Set Sequence ' .. CurrentSeqNr .. ' Property SpeedScale=0')
-    -- CmdIndirectWait('Set Sequence ' .. CurrentSeqNr .. ' Property SpeedfromRate=0')
-    -- CmdIndirectWait('Set Sequence ' .. CurrentSeqNr .. ' Property InputFilter=""')
-    -- CmdIndirectWait('Set Sequence ' .. CurrentSeqNr .. ' Property SwapProtect=0')
-    -- CmdIndirectWait('Set Sequence ' .. CurrentSeqNr .. ' Property KillProtect=0')
-    -- CmdIndirectWait('Set Sequence ' .. CurrentSeqNr .. ' Property IncludeLinkLastGo=1')
-    -- CmdIndirectWait('Set Sequence ' .. CurrentSeqNr .. ' Property UseExecutorTime=0')
-    -- CmdIndirectWait('Set Sequence ' .. CurrentSeqNr .. ' Property OffwhenOverridden=1')
-    -- CmdIndirectWait('Set Sequence ' .. CurrentSeqNr .. ' Property Lock=0')
-    -- CmdIndirectWait('Set Sequence ' .. CurrentSeqNr .. ' Property SequMIB=0')
-    -- CmdIndirectWait('Set Sequence ' .. CurrentSeqNr .. ' Property SequMIBMode=1')
 end -- end function Command_Ext_Suite(...)
 
-function LC_Build_Tag(prefix, NbGroup)
+function LC_Build_Tag(prefix, NbGroup, surfix, Time_Argument)
     local TagObject = Root().ShowData.Tags
     local TagObject_C = Root().ShowData.Tags:Children()
     local LC_TAGS_CHECKS = {}
@@ -676,10 +632,26 @@ function LC_Build_Tag(prefix, NbGroup)
         table.insert(LC_TAGS, prefix .. '_Group_' .. t)
         table.insert(Tag_Type, 'Kill Delayed')
     end
+
     table.insert(LC_TAGS, prefix .. '_Group_ALL')
     table.insert(Tag_Type, 'Kill Delayed')
     table.insert(LC_TAGS, prefix .. 'Call_Group_ALL')
     table.insert(Tag_Type, 'None')
+
+    for s in ipairs(surfix) do
+        for a in ipairs(Time_Argument) do
+            if Time_Argument[a].name ~= 'axes' then
+                table.insert(LC_TAGS, prefix .. '_' .. Time_Argument[a].name .. '_' .. surfix[s])
+                table.insert(Tag_Type, Time_Argument[a].type)
+            else
+                if s == 1 then
+                    table.insert(LC_TAGS, prefix .. '_' .. Time_Argument[a].name)
+                    table.insert(Tag_Type, Time_Argument[a].type)
+                end
+            end
+        end
+    end
+
     for i = 1, #LC_TAGS, 1 do
         LC_TAGS_CHECKS[i] = false
     end

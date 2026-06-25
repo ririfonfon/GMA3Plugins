@@ -2,8 +2,12 @@
 Releases:
 * 2.3.2.0
 
-Created by Richard Fontaine "RIRI", June 2024. Update may 2026
+Version:
+* 2.2.0.0
+
+Rewrite by Richard Fontaine "RIRI", June 2026.
 --]]
+
 -- SelectedGrp, SelectedGrpNo,
 function LC_Construct_Layout(TLay, SeqNrStart, MacroNrStart, MatrickNrStart, MatrickNr, TLayNr,
                              AppNr, All_5_Current, All_5_NrStart, ColPath, SelectedGelNr,
@@ -201,6 +205,16 @@ function LC_Construct_Layout(TLay, SeqNrStart, MacroNrStart, MatrickNrStart, Mat
         { name = 'XWings To Input', Time = 0 },
     }
 
+    local Time_Argument = {
+        { name = 'fade',       type = 'Kill Delayed' },
+        { name = 'delay_from', type = 'Kill Delayed' },
+        { name = 'delay_to',   type = 'Kill Delayed' },
+        { name = 'group',      type = 'Kill Delayed' },
+        { name = 'block',      type = 'Kill Delayed' },
+        { name = 'wings',      type = 'Kill Delayed' },
+        { name = 'axes',       type = 'Kill Delayed' },
+    }
+
     local First_Id_Lay = {}
     local SeqNrEnd
 
@@ -325,7 +339,7 @@ function LC_Construct_Layout(TLay, SeqNrStart, MacroNrStart, MatrickNrStart, Mat
     Echo('Preset 25 ok')
 
     -- Build Tag
-    LC_Build_Tag(prefix, NbGroup)
+    LC_Build_Tag(prefix, NbGroup, surfix, Time_Argument)
     -- end Build Tag
 
     -- Appearances/Sequences
@@ -364,7 +378,7 @@ function LC_Construct_Layout(TLay, SeqNrStart, MacroNrStart, MatrickNrStart, Mat
         Fade_Element, CurrentMacroNr = Create_Fade_Sequences(MakeX,
             FirstSeqTime, LastSeqTime, CurrentSeqNr, CurrentMacroNr, prefix, surfix, First_Id_Lay, LayNr, MatrickNrStart,
             TLayNr, Fade_Element, Argument_Fade, AppImp, LayX, LayY, LayW, LayH, SeqNrStart, SeqNrEnd, Current_Id_Lay,
-            Delay_F_Element, a, Construct_Pool, Call_Pool)
+            Delay_F_Element, a, Construct_Pool, Call_Pool, Time_Argument)
         -- end Create Sequence FADE
 
         -- Create Sequences Delayfrom

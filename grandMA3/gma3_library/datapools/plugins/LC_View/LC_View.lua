@@ -1,8 +1,11 @@
 --[[
 Releases:
-* 2.3.1.1
+* 2.3.2.0
 
-Created by Richard Fontaine "RIRI", September 2025.
+Version:
+* 2.2.0.0
+
+Rewrite by Richard Fontaine "RIRI", June 2026.
 --]]
 
 local function main()

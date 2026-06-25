@@ -1,9 +1,24 @@
+--[[
+Releases:
+* 2.3.2.0
+
+Version:
+* 2.2.0.0
+
+Rewrite by Richard Fontaine "RIRI", June 2026.
+--]]
+
 function Create_Fade_Sequences(MakeX, FirstSeqTime, LastSeqTime, CurrentSeqNr, CurrentMacroNr, prefix, surfix,
                                First_Id_Lay, LayNr, MatrickNrStart, TLayNr, Fade_Element, Argument_Fade,
                                AppImp, LayX, LayY, LayW, LayH, SeqNrStart, SeqNrEnd, Current_Id_Lay, Delay_F_Element, a,
-                               Construct_Pool, Call_Pool)
+                               Construct_Pool, Call_Pool, Time_Argument)
     local MacroObject, SequenceObject, Layout_Object, Nr = LC_Get_Object(Construct_Pool)
+    -- fix time_tag
+    local TagObject_LC                                   = Root().ShowData.Tags:Children()
+    local tag_fade
+
     -- Setup Fade Sequence
+    local old_prefix                                     = prefix
     prefix                                               = 'o' .. prefix
     if MakeX then
         FirstSeqTime = CurrentSeqNr
@@ -19,12 +34,14 @@ function Create_Fade_Sequences(MakeX, FirstSeqTime, LastSeqTime, CurrentSeqNr, C
     MacroObject[CurrentMacroNr]:Set('Name', "'" .. prefix .. 'Time Input' .. surfix[a] .. "'")
     MacroObject[CurrentMacroNr]:Insert(1)
     if MakeX then
-        MacroObject[CurrentMacroNr][1]:Set('Command', 'Off DataPool ' .. Construct_Pool .. ' Sequence ' ..
-            FirstSeqTime .. ' Thru ' .. LastSeqTime .. ' - ' .. LastSeqTime .. '')
+        MacroObject[CurrentMacroNr][1]:Set('Command', '')
+        -- MacroObject[CurrentMacroNr][1]:Set('Command', 'Off DataPool ' .. Construct_Pool .. ' Sequence ' ..
+        --     FirstSeqTime .. ' Thru ' .. LastSeqTime .. ' - ' .. LastSeqTime .. '')
         Fade_Element = math.floor(LayNr + 3)
     else
-        MacroObject[CurrentMacroNr][1]:Set('Command', 'Off DataPool ' .. Construct_Pool .. ' Sequence ' ..
-            First_Id_Lay[37] .. ' + ' .. FirstSeqTime .. ' Thru ' .. LastSeqTime .. ' - ' .. LastSeqTime .. '')
+        MacroObject[CurrentMacroNr][1]:Set('Command', '')
+        -- MacroObject[CurrentMacroNr][1]:Set('Command', 'Off DataPool ' .. Construct_Pool .. ' Sequence ' ..
+        --     First_Id_Lay[37] .. ' + ' .. FirstSeqTime .. ' Thru ' .. LastSeqTime .. ' - ' .. LastSeqTime .. '')
     end
     for i = 2, 9, 1 do
         MacroObject[CurrentMacroNr]:Insert(i)
@@ -70,6 +87,15 @@ function Create_Fade_Sequences(MakeX, FirstSeqTime, LastSeqTime, CurrentSeqNr, C
     -- CmdIndirectWait("Insert")
     -- CmdIndirectWait('set 9 Command=\'Call DataPool ' .. Construct_Pool .. ' Plugin "LC_View"')
     -- CmdIndirectWait('ChangeDestination Root')
+    for v in ipairs(TagObject_LC) do
+        Echo('v ' ..
+            v ..
+            ' tag ' .. TagObject_LC[v].Name .. ' ?? ' .. old_prefix .. '_' .. Time_Argument[1].name .. '_' .. surfix[a])
+        if TagObject_LC[v].Name == old_prefix .. '_' .. Time_Argument[1].name .. '_' .. surfix[a] then
+            tag_fade = TagObject_LC[v]
+            Echo('found in ' .. v)
+        end
+    end
     if a == 1 then
         LC_Check_Size_Pool(CurrentSeqNr, SequenceObject)
         SequenceObject:Create(CurrentSeqNr)
@@ -84,9 +110,12 @@ function Create_Fade_Sequences(MakeX, FirstSeqTime, LastSeqTime, CurrentSeqNr, C
         SequenceObject[CurrentSeqNr][3]:Set('No', 1)
         SequenceObject[CurrentSeqNr][3]:Create(1)
         SequenceObject[CurrentSeqNr][3][1]:Set('Appearance', AppImp[1].Nr)
-        SequenceObject[CurrentSeqNr][3][1]:Set('Command', 'Off DataPool ' .. Construct_Pool .. ' Sequence ' ..
-            FirstSeqTime .. ' Thru ' .. LastSeqTime .. ' - ' .. CurrentSeqNr .. ' ; Set Sequence ' ..
+        SequenceObject[CurrentSeqNr][3][1]:Set('Command', 'Set DataPool ' .. Construct_Pool .. ' Sequence ' ..
             SeqNrStart .. ' Thru ' .. SeqNrEnd .. ' UseExecutorTime=' .. Argument_Fade[1].UseExTime .. '')
+        -- SequenceObject[CurrentSeqNr][3][1]:Set('Command', 'Off DataPool ' .. Construct_Pool .. ' Sequence ' ..
+        --     FirstSeqTime .. ' Thru ' .. LastSeqTime .. ' - ' .. CurrentSeqNr .. ' ; Set Sequence ' ..
+        --     SeqNrStart .. ' Thru ' .. SeqNrEnd .. ' UseExecutorTime=' .. Argument_Fade[1].UseExTime .. '')
+        Cmd('Assign ' .. SequenceObject[CurrentSeqNr] .. " at " .. tag_fade)
 
 
         -- CmdIndirectWait('ClearAll /nu')
@@ -155,17 +184,19 @@ function Create_Fade_Sequences(MakeX, FirstSeqTime, LastSeqTime, CurrentSeqNr, C
         SequenceObject[CurrentSeqNr][3]:Create(1)
         if i == 6 then
             SequenceObject[CurrentSeqNr][3][1]:Set('Command',
-            'Go DataPool ' .. Construct_Pool .. ' Macro ' .. CurrentMacroNr - 5 )
+                'Go DataPool ' .. Construct_Pool .. ' Macro ' .. CurrentMacroNr - 5)
         else
             CurrentMacroNr = Create_Macro_Fade_E(CurrentMacroNr, prefix, Argument_Fade, i, surfix, a, FirstSeqTime,
-            LastSeqTime, CurrentSeqNr, SeqNrStart, SeqNrEnd, MatrickNrStart, TLayNr, Fade_Element, Construct_Pool,
-            Call_Pool)
+                LastSeqTime, CurrentSeqNr, SeqNrStart, SeqNrEnd, MatrickNrStart, TLayNr, Fade_Element, Construct_Pool,
+                Call_Pool)
             SequenceObject[CurrentSeqNr][3][1]:Set('Command',
-            'Go DataPool ' .. Construct_Pool .. ' Macro ' .. CurrentMacroNr - 1 )
+                'Go DataPool ' .. Construct_Pool .. ' Macro ' .. CurrentMacroNr - 1)
         end
         SequenceObject[CurrentSeqNr][3][1]:Set('Appearance', AppImp[ia].Nr)
         SequenceObject[CurrentSeqNr]:Set('Appearance', AppImp[ib].Nr)
         Command_Ext_Suite(CurrentSeqNr, SequenceObject)
+        Cmd('Assign ' .. SequenceObject[CurrentSeqNr] .. " at " .. tag_fade)
+
         -- CmdIndirectWait('ClearAll /nu')
         -- CmdIndirectWait('Store Sequence ' ..
         --     CurrentSeqNr .. ' \'' .. prefix .. Argument_Fade[i].name .. surfix[a] .. '\'')

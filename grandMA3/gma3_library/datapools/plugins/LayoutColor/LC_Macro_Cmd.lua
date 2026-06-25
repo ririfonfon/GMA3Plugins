@@ -1,9 +1,12 @@
 --[[
-    Releases:
-    * 2.3.2.0
+Releases:
+* 2.3.2.0
 
-    Created by Richard Fontaine "RIRI", September 2025. Update may 2026
-    --]]
+Version:
+* 2.2.0.0
+
+Rewrite by Richard Fontaine "RIRI", June 2026.
+--]]
 function LC_Get_Object(Construct_Pool)
     local MacroObject    = Root().ShowData.DataPools[Construct_Pool].Macros
     local SequenceObject = Root().ShowData.DataPools[Construct_Pool].Sequences
@@ -589,8 +592,9 @@ function Create_Macro_Fade_E(CurrentMacroNr, prefix, Argument_Fade, i, surfix, a
     for b = 1, 11 do
         MacroObject[CurrentMacroNr]:Insert(b)
     end
-    MacroObject[CurrentMacroNr][1]:Set('Command', 'Off DataPool ' ..
-        Construct_Pool .. '  Sequence ' .. FirstSeqTime .. ' thru ' .. LastSeqTime .. ' - ' .. CurrentSeqNr .. '')
+    MacroObject[CurrentMacroNr][1]:Set('Command', '')
+    -- MacroObject[CurrentMacroNr][1]:Set('Command', 'Off DataPool ' ..
+    --     Construct_Pool .. '  Sequence ' .. FirstSeqTime .. ' thru ' .. LastSeqTime .. ' - ' .. CurrentSeqNr .. '')
     MacroObject[CurrentMacroNr][2]:Set('Command', 'Set DataPool ' .. Construct_Pool .. '  Sequence ' ..
         SeqNrStart .. ' thru ' .. SeqNrEnd .. ' UseExecutorTime=' .. Argument_Fade[i].UseExTime .. '')
     MacroObject[CurrentMacroNr][3]:Set('Command', 'Set DataPool ' .. Construct_Pool .. ' Matricks   ' ..

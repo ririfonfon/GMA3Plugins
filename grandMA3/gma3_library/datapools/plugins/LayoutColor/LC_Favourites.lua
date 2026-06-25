@@ -1,9 +1,12 @@
 --[[
-    Releases:
-    * 2.3.2.0
+Releases:
+* 2.3.2.0
 
-    Created by Richard Fontaine "RIRI", June 2024. Update may 2026
-    --]]
+Version:
+* 2.2.0.0
+
+Rewrite by Richard Fontaine "RIRI", June 2026.
+--]]
 
 function Create_Favourite_Macro(prefix, CurrentMacroNr, TLayNr, Construct_Pool, Favourite_Nr)
     local macro_num = CurrentMacroNr + 1
