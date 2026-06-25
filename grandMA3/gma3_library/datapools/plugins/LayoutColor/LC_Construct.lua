@@ -61,15 +61,15 @@ function LC_Construct_Layout(TLay, SeqNrStart, MacroNrStart, MatrickNrStart, Mat
     local StAppZOn = '\"Showdata.MediaPools.Symbols.z_on\"'
     local StAppZOff = '\"Showdata.MediaPools.Symbols.z_off\"'
     local surfix = { 'x', 'y', 'z' }
-    local FadeRef = ' color=\'0,0.8,0,1\''
-    local DelayRef = ' color=\'0.8,0.8,0,1\''
-    local DelayToRef = ' color=\'0.8,0.3,0,1\''
-    local XgrpRef = ' color=\'0,0.8,0.8,1\''
-    local XblockRef = ' color=\'0.8,0,0.8,1\''
-    local XwingsRef = ' color=\'0.8,0,0.3,1\''
-    local PhaseRef = ' color=\'0.3,0,0.8,1\''
-    local SkullRef = ' color=\'0.6,0,0,1\''
-    local NoRef = ' color=\'1,1,1,1\''
+    local FadeRef = '0,0.8,0,1'
+    local DelayRef = '0.8,0.8,0,1'
+    local DelayToRef = '0.8,0.3,0,1'
+    local XgrpRef = '0,0.8,0.8,1'
+    local XblockRef = '0.8,0,0.8,1'
+    local XwingsRef = '0.8,0,0.3,1'
+    local PhaseRef = '0.3,0,0.8,1'
+    local SkullRef = '0.6,0,0,1'
+    local NoRef = '1,1,1,1'
 
     local AppTricks = {
         { Name = '\'tricks_on\'',       StApp = StAppTricksOn,    Nr = '', RGBref = NoRef },
@@ -359,61 +359,60 @@ function LC_Construct_Layout(TLay, SeqNrStart, MacroNrStart, MatrickNrStart, Mat
 
     -- Create Function for X Y Z
     for a = 1, 3 do
-        Echo('*************** a ' .. a)
         -- Create Sequence FADE
         CurrentSeqNr, Delay_F_Element, LayNr, LayX, Current_Id_Lay,
         Fade_Element, CurrentMacroNr = Create_Fade_Sequences(MakeX,
             FirstSeqTime, LastSeqTime, CurrentSeqNr, CurrentMacroNr, prefix, surfix, First_Id_Lay, LayNr, MatrickNrStart,
             TLayNr, Fade_Element, Argument_Fade, AppImp, LayX, LayY, LayW, LayH, SeqNrStart, SeqNrEnd, Current_Id_Lay,
-            Delay_F_Element, a, Construct_Pool)
+            Delay_F_Element, a, Construct_Pool, Call_Pool)
         -- end Create Sequence FADE
 
         -- Create Sequences Delayfrom
         Current_Id_Lay, First_Id_Lay, LayX, LayNr, Delay_T_Element, CurrentSeqNr, CurrentMacroNr =
             Create_Delay_From_Sequences(First_Id_Lay, LayNr, CurrentSeqNr, Current_Id_Lay, prefix, surfix, Argument_Delay,
                 AppImp, CurrentMacroNr, a, MatrickNrStart, TLayNr, Delay_F_Element, MatrickNr, MakeX, LayX, LayY, LayW,
-                LayH, Delay_T_Element, Construct_Pool)
+                LayH, Delay_T_Element, Construct_Pool, Call_Pool)
         -- end Create Sequences Delayfrom
 
         -- Create Sequences DelayTo
         First_Id_Lay, Current_Id_Lay, LayX, LayNr, Phase_Element, CurrentSeqNr, CurrentMacroNr =
             Create_Delay_To_Sequences(a, First_Id_Lay, LayNr, CurrentSeqNr, Current_Id_Lay, prefix, Argument_DelayTo,
                 surfix, MatrickNrStart, TLayNr, Delay_T_Element, MatrickNr, AppImp, LayX, LayY, LayW, LayH, Phase_Element,
-                CurrentMacroNr, MakeX, Construct_Pool)
+                CurrentMacroNr, MakeX, Construct_Pool, Call_Pool)
         -- end Create Sequences DelayTo
 
         -- Create_Sequence_Phase
         Current_Id_Lay, CurrentMacroNr, LayY, LayX, LayNr, CurrentSeqNr, Group_Element = Create_Phase_Sequence(LayY, LayX,
             LayW, a, First_Id_Lay, LayNr, CurrentSeqNr, Current_Id_Lay, CurrentMacroNr, prefix, surfix, MatrickNrStart,
-            TLayNr, Phase_Element, MatrickNr, AppImp, MakeX, LayH, RefX, Group_Element, Construct_Pool)
+            TLayNr, Phase_Element, MatrickNr, AppImp, MakeX, LayH, RefX, Group_Element, Construct_Pool, Call_Pool)
         -- end Sequences Phase
 
         -- Create_sequence_xgroup
         CurrentSeqNr, Block_Element, LayNr, LayX, Current_Id_Lay, First_Id_Lay, CurrentMacroNr, LastSeqGrp, FirstSeqGrp =
             Create_Group_Sequence(CurrentMacroNr, FirstSeqGrp, CurrentSeqNr, LastSeqGrp, prefix, surfix, a,
                 MatrickNrStart, TLayNr, Group_Element, MatrickNr, LayNr, LayX, LayY, First_Id_Lay, Current_Id_Lay,
-                Argument_Xgrp, AppImp, LayW, LayH, Block_Element, MakeX, Construct_Pool)
+                Argument_Xgrp, AppImp, LayW, LayH, Block_Element, MakeX, Construct_Pool, Call_Pool)
         -- end Sequences XGroup
 
         -- Create_Block_Sequence
         CurrentSeqNr, Wings_Element, LayNr, LayX, Current_Id_Lay, First_Id_Lay, CurrentMacroNr, FirstSeqBlock, LastSeqBlock =
             Create_Block_Sequence(CurrentMacroNr, FirstSeqBlock, CurrentSeqNr, LastSeqBlock, prefix, surfix, a,
                 MatrickNrStart, TLayNr, Block_Element, MatrickNr, MakeX, LayNr, LayX, LayY, First_Id_Lay, Current_Id_Lay,
-                Argument_Xblock, AppImp, Wings_Element, LayW, LayH, Construct_Pool)
+                Argument_Xblock, AppImp, Wings_Element, LayW, LayH, Construct_Pool, Call_Pool)
         -- end Create_Block_Sequence
 
         -- Create_Wings_Sequence
         CurrentSeqNr, LayNr, LayX, Current_Id_Lay, First_Id_Lay, LastSeqWings, FirstSeqWings, CurrentMacroNr =
             Create_Wings_Sequence(CurrentMacroNr, FirstSeqWings, CurrentSeqNr, LastSeqWings, prefix, surfix, a,
                 MatrickNrStart, TLayNr, Wings_Element, MatrickNr, MakeX, LayNr, LayX, LayY, First_Id_Lay, Current_Id_Lay,
-                Argument_Xwings, AppImp, LayW, LayH, Construct_Pool)
+                Argument_Xwings, AppImp, LayW, LayH, Construct_Pool, Call_Pool)
         -- end Create_Wings_Sequence
 
         -- Create_XYZ_Sequence
         First_Id_Lay, LayNr, CurrentMacroNr = Create_XYZ_Sequence(CurrentMacroNr, First_Id_Lay, prefix, surfix, Call_inc,
             CallT, MatrickNrStart, a, CurrentSeqNr, TLayNr, Fade_Element, Delay_F_Element, Delay_T_Element, Phase_Element,
             Group_Element, Block_Element, Wings_Element, MatrickNr, AppImp, MakeX, LayNr, LayX, LayY, LayW, LayH,
-            Construct_Pool)
+            Construct_Pool, Call_Pool)
         -- Create_XYZ_Sequence
 
         LayNr = math.floor(LayNr + 1)

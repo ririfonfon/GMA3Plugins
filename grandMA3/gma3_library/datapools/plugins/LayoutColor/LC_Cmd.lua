@@ -559,7 +559,7 @@ function Command_Title(title, TLayNr, LayNr, LayX, LayY, Pw, Ph, align, Construc
 
     Nr = Layout_Object[TLayNr]:Acquire()
     Layout_Object[TLayNr][Nr.No]:Set('posx', LayX)
-    Layout_Object[TLayNr][Nr.No]:Set('posy', LayX)
+    Layout_Object[TLayNr][Nr.No]:Set('posy', LayY)
     Layout_Object[TLayNr][Nr.No]:Set('width', Pw)
     Layout_Object[TLayNr][Nr.No]:Set('height', Ph)
     Layout_Object[TLayNr][Nr.No]:Set('Note', 'Titre')
@@ -600,7 +600,7 @@ function Command_Title(title, TLayNr, LayNr, LayX, LayY, Pw, Ph, align, Construc
 end -- end function Command_Title(...)
 
 function Command_Ext_Suite(CurrentSeqNr,SequenceObject)
-    Echo('Call Command_Ext_suite ' .. CurrentSeqNr)
+    -- Echo('Call Command_Ext_suite ' .. CurrentSeqNr)
         SequenceObject[CurrentSeqNr]:Set('prefercueappearance', 'on')
         SequenceObject[CurrentSeqNr]:Set('AutoStart', '1')
         SequenceObject[CurrentSeqNr]:Set('AutoStop', '1')
