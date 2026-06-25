@@ -35,13 +35,9 @@ function Create_Fade_Sequences(MakeX, FirstSeqTime, LastSeqTime, CurrentSeqNr, C
     MacroObject[CurrentMacroNr]:Insert(1)
     if MakeX then
         MacroObject[CurrentMacroNr][1]:Set('Command', '')
-        -- MacroObject[CurrentMacroNr][1]:Set('Command', 'Off DataPool ' .. Construct_Pool .. ' Sequence ' ..
-        --     FirstSeqTime .. ' Thru ' .. LastSeqTime .. ' - ' .. LastSeqTime .. '')
         Fade_Element = math.floor(LayNr + 3)
     else
         MacroObject[CurrentMacroNr][1]:Set('Command', '')
-        -- MacroObject[CurrentMacroNr][1]:Set('Command', 'Off DataPool ' .. Construct_Pool .. ' Sequence ' ..
-        --     First_Id_Lay[37] .. ' + ' .. FirstSeqTime .. ' Thru ' .. LastSeqTime .. ' - ' .. LastSeqTime .. '')
     end
     for i = 2, 9, 1 do
         MacroObject[CurrentMacroNr]:Insert(i)
@@ -57,36 +53,7 @@ function Create_Fade_Sequences(MakeX, FirstSeqTime, LastSeqTime, CurrentSeqNr, C
     MacroObject[CurrentMacroNr][8]:Set('Command', 'SetUserVariable "LC_Matrick" ' .. MatrickNrStart .. '')
     MacroObject[CurrentMacroNr][9]:Set('Command', 'Call ' .. Call_Pool .. ' Plugin "DEV_LC_View"')
     CurrentMacroNr = CurrentMacroNr + 1
-    -- CmdIndirectWait('Store Macro ' .. CurrentMacroNr .. ' \'' .. prefix .. 'Time Input' .. surfix[a] .. '')
-    -- CmdIndirectWait('ChangeDestination Macro ' .. CurrentMacroNr .. '')
-    -- Cmd('Insert')
-    -- if MakeX then
-    --     CmdIndirectWait('set 1 Command=\'Off DataPool ' .. Construct_Pool .. ' Sequence ' ..
-    --         FirstSeqTime .. ' Thru ' .. LastSeqTime .. ' - ' .. LastSeqTime .. '')
-    --     Fade_Element = math.floor(LayNr + 3)
-    -- else
-    --     CmdIndirectWait('set 1 Command=\'Off DataPool ' .. Construct_Pool .. ' Sequence ' ..
-    --         First_Id_Lay[37] .. ' + ' .. FirstSeqTime .. ' Thru ' .. LastSeqTime .. ' - ' .. LastSeqTime .. '')
-    -- end
-    -- Cmd('Insert')
-    -- CmdIndirectWait('set 2 Command=\'Edit DataPool ' ..
-    --     Construct_Pool .. ' Matricks ' .. MatrickNrStart .. ' Property "FadeFrom' .. surfix[a] .. '"')
-    -- CmdIndirectWait("Insert")
-    -- CmdIndirectWait('set 3 Command=\'Edit DataPool ' ..
-    --     Construct_Pool .. ' Matricks ' .. MatrickNrStart .. ' Property "FadeTo' .. surfix[a] .. '"')
-    -- CmdIndirectWait("Insert")
-    -- CmdIndirectWait('set 4 Command=\'SetUserVariable "LC_Fonction" 1')
-    -- CmdIndirectWait("Insert")
-    -- CmdIndirectWait('set 5 Command=\'SetUserVariable "LC_Axes" ' .. a .. '')
-    -- CmdIndirectWait("Insert")
-    -- CmdIndirectWait('set 6 Command=\'SetUserVariable "LC_Layout" ' .. TLayNr .. '')
-    -- CmdIndirectWait("Insert")
-    -- CmdIndirectWait('set 7 Command=\'SetUserVariable "LC_Element" ' .. Fade_Element .. '')
-    -- CmdIndirectWait("Insert")
-    -- CmdIndirectWait('set 8 Command=\'SetUserVariable "LC_Matrick" ' .. MatrickNrStart .. '')
-    -- CmdIndirectWait("Insert")
-    -- CmdIndirectWait('set 9 Command=\'Call DataPool ' .. Construct_Pool .. ' Plugin "LC_View"')
-    -- CmdIndirectWait('ChangeDestination Root')
+
     for v in ipairs(TagObject_LC) do
         Echo('v ' ..
             v ..
@@ -112,21 +79,8 @@ function Create_Fade_Sequences(MakeX, FirstSeqTime, LastSeqTime, CurrentSeqNr, C
         SequenceObject[CurrentSeqNr][3][1]:Set('Appearance', AppImp[1].Nr)
         SequenceObject[CurrentSeqNr][3][1]:Set('Command', 'Set DataPool ' .. Construct_Pool .. ' Sequence ' ..
             SeqNrStart .. ' Thru ' .. SeqNrEnd .. ' UseExecutorTime=' .. Argument_Fade[1].UseExTime .. '')
-        -- SequenceObject[CurrentSeqNr][3][1]:Set('Command', 'Off DataPool ' .. Construct_Pool .. ' Sequence ' ..
-        --     FirstSeqTime .. ' Thru ' .. LastSeqTime .. ' - ' .. CurrentSeqNr .. ' ; Set Sequence ' ..
-        --     SeqNrStart .. ' Thru ' .. SeqNrEnd .. ' UseExecutorTime=' .. Argument_Fade[1].UseExTime .. '')
+
         Cmd('Assign ' .. SequenceObject[CurrentSeqNr] .. " at " .. tag_fade)
-
-
-        -- CmdIndirectWait('ClearAll /nu')
-        -- CmdIndirectWait('Store Sequence ' ..
-        --     CurrentSeqNr .. ' \'' .. prefix .. Argument_Fade[1].name .. surfix[a] .. '\'')
-        -- CmdIndirectWait('Set Sequence ' .. CurrentSeqNr .. ' Cue 1 Property Appearance=' .. AppImp[1].Nr)
-        -- CmdIndirectWait('Set Sequence ' .. CurrentSeqNr .. ' Cue 1 Property Command=\'Off DataPool ' ..
-        --     Construct_Pool .. ' Sequence ' .. FirstSeqTime .. ' Thru ' .. LastSeqTime .. ' - ' .. CurrentSeqNr ..
-        --     ' ; Set Sequence ' ..
-        --     SeqNrStart .. ' Thru ' .. SeqNrEnd .. ' UseExecutorTime=' .. Argument_Fade[1].UseExTime .. '')
-        -- CmdIndirectWait('Set Sequence ' .. CurrentSeqNr .. ' Property Appearance=' .. AppImp[2].Nr)
         Command_Ext_Suite(CurrentSeqNr, SequenceObject)
 
         Nr = Layout_Object[TLayNr]:Acquire()
@@ -138,12 +92,6 @@ function Create_Fade_Sequences(MakeX, FirstSeqTime, LastSeqTime, CurrentSeqNr, C
         Layout_Object[TLayNr][Nr.No]:Set('action', 'Go+')
         Layout_Object[TLayNr][Nr.No]:Set('Note', 'Fade')
         LC_Set_Def(TLayNr, Nr, Layout_Object)
-
-        -- CmdIndirectWait('Assign Sequence ' .. CurrentSeqNr .. ' at Layout ' .. TLayNr)
-        -- CmdIndirectWait('Set Layout ' .. TLayNr .. '.' .. LayNr ..
-        --     ' Property PosX ' .. LayX .. ' PosY ' .. LayY ..
-        --     ' PositionW ' .. LayW .. ' PositionH ' .. LayH ..
-        --     ' VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0 VisibilityBorder=0 VisibilityIcon=0')
 
         LayNr = math.floor(LayNr + 1)
         Command_Title('Ex.Time', TLayNr, LayNr, LayX, LayY, 700, 140, 1, Construct_Pool)
@@ -196,25 +144,6 @@ function Create_Fade_Sequences(MakeX, FirstSeqTime, LastSeqTime, CurrentSeqNr, C
         SequenceObject[CurrentSeqNr]:Set('Appearance', AppImp[ib].Nr)
         Command_Ext_Suite(CurrentSeqNr, SequenceObject)
         Cmd('Assign ' .. SequenceObject[CurrentSeqNr] .. " at " .. tag_fade)
-
-        -- CmdIndirectWait('ClearAll /nu')
-        -- CmdIndirectWait('Store Sequence ' ..
-        --     CurrentSeqNr .. ' \'' .. prefix .. Argument_Fade[i].name .. surfix[a] .. '\'')
-        -- Add CmdIndirectWait to Squence
-        -- CmdIndirectWait('Set Sequence ' .. CurrentSeqNr .. ' Cue 1 Property Appearance=' .. AppImp[ia].Nr)
-        -- if i == 6 then
-        --     CmdIndirectWait('Set Sequence ' ..
-        --         CurrentSeqNr ..
-        --         ' Cue 1 Property Command=\'Go DataPool ' .. Construct_Pool .. ' Macro ' .. CurrentMacroNr .. '')
-        -- else
-        -- Create_Macro_Fade_E(CurrentMacroNr, prefix, Argument_Fade, i, surfix, a, FirstSeqTime,
-        --     LastSeqTime, CurrentSeqNr, SeqNrStart, SeqNrEnd, MatrickNrStart, TLayNr, Fade_Element, Construct_Pool)
-        -- CmdIndirectWait('Set Sequence ' ..
-        --     CurrentSeqNr ..
-        --     ' Cue 1 Property Command=\'Go DataPool ' .. Construct_Pool .. ' Macro ' .. CurrentMacroNr + i - 1 .. '')
-        -- end
-        -- CmdIndirectWait('Set Sequence ' .. CurrentSeqNr .. ' Property Appearance=' .. AppImp[ib].Nr)
-        -- Command_Ext_Suite(CurrentSeqNr)
         -- end Sequences
 
         -- Add Squences to Layout
@@ -236,18 +165,6 @@ function Create_Fade_Sequences(MakeX, FirstSeqTime, LastSeqTime, CurrentSeqNr, C
         -- CurrentMacroNr = CurrentMacroNr + 1
     end -- end Sequences FADE
 
-    --     if MakeX then
-    --         CmdIndirectWait('Assign Sequence ' .. CurrentSeqNr .. ' at Layout ' .. TLayNr)
-    --         CmdIndirectWait('Set Layout ' .. TLayNr .. '.' .. LayNr ..
-    --             ' Property PosX ' .. LayX .. ' PosY ' .. LayY ..
-    --             ' PositionW ' .. LayW .. ' PositionH ' .. LayH ..
-    --             ' VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0 VisibilityBorder=0 VisibilityIcon=0')
-    --         LayX = math.floor(LayX + LayW + 20)
-    --         LayNr = math.floor(LayNr + 1)
-    --         Delay_F_Element = math.floor(LayNr + 1)
-    --     end
-    --     CurrentSeqNr = math.floor(CurrentSeqNr + 1)
-    -- end -- end Sequences FADE
     return CurrentSeqNr, Delay_F_Element, LayNr, LayX, Current_Id_Lay, Fade_Element, CurrentMacroNr
 end -- end Create_Fade_Sequences
 
@@ -262,6 +179,7 @@ function Create_Delay_From_Sequences(First_Id_Lay, LayNr, CurrentSeqNr, Current_
     local LastSeqDelayFrom = math.floor(CurrentSeqNr + 4)
 
     -- Create Macro DelayFrom Input
+    Delay_F_Element = Delay_F_Element + 2
     Create_Macro_Delay_From(CurrentMacroNr, prefix, surfix, a, FirstSeqDelayFrom, LastSeqDelayFrom,
         MatrickNrStart, 2, TLayNr, Delay_F_Element, MatrickNr, Construct_Pool, Call_Pool)
 
@@ -313,7 +231,7 @@ function Create_Delay_From_Sequences(First_Id_Lay, LayNr, CurrentSeqNr, Current_
                 ' ; SetUserVariable "LC_Element" ' .. Delay_F_Element ..
                 ' ; SetUserVariable "LC_Matrick" ' .. MatrickNrStart ..
                 ' ; SetUserVariable "LC_Matrick_Thru" ' .. MatrickNr ..
-                ' ; Call DataPool ' .. Call_Pool .. ' Plugin "DEV_LC_View" ')
+                ' ; Call ' .. Call_Pool .. ' Plugin "DEV_LC_View" ')
         end
 
         -- CmdIndirectWait('ClearAll /nu')
@@ -369,7 +287,7 @@ function Create_Delay_From_Sequences(First_Id_Lay, LayNr, CurrentSeqNr, Current_
         -- end
         -- CurrentSeqNr = math.floor(CurrentSeqNr + 1)
     end -- end Sequences DelayFrom
-    return Current_Id_Lay, First_Id_Lay, LayX, LayNr, Delay_T_Element, CurrentSeqNr, CurrentMacroNr
+    return Current_Id_Lay, First_Id_Lay, LayX, LayNr, Delay_T_Element, CurrentSeqNr, CurrentMacroNr, Delay_F_Element
 end     --Create_Delay_From_Sequences
 
 function Create_Delay_To_Sequences(a, First_Id_Lay, LayNr, CurrentSeqNr, Current_Id_Lay, prefix, Argument_DelayTo, surfix,
@@ -382,6 +300,7 @@ function Create_Delay_To_Sequences(a, First_Id_Lay, LayNr, CurrentSeqNr, Current
     local FirstSeqDelayTo = CurrentSeqNr
     local LastSeqDelayTo = math.floor(CurrentSeqNr + 4)
     -- Create Macro DelayTo Input
+    Delay_T_Element = Delay_T_Element + 2
     Create_Macro_Delay_To(CurrentMacroNr, prefix, surfix, a, FirstSeqDelayTo, LastSeqDelayTo, MatrickNrStart,
         3, TLayNr, Delay_T_Element, MatrickNr, Construct_Pool, Call_Pool)
 
@@ -433,7 +352,7 @@ function Create_Delay_To_Sequences(a, First_Id_Lay, LayNr, CurrentSeqNr, Current
                 ' ; SetUserVariable "LC_Element" ' .. Delay_T_Element ..
                 ' ; SetUserVariable "LC_Matrick" ' .. MatrickNrStart ..
                 ' ; SetUserVariable "LC_Matrick_Thru" ' .. MatrickNr ..
-                ' ; Call DataPool ' .. Call_Pool .. ' Plugin "DEV_LC_View" ')
+                ' ; Call ' .. Call_Pool .. ' Plugin "DEV_LC_View" ')
         end
 
         -- CmdIndirectWait('ClearAll /nu')
@@ -489,7 +408,7 @@ function Create_Delay_To_Sequences(a, First_Id_Lay, LayNr, CurrentSeqNr, Current
         -- end
         -- CurrentSeqNr = math.floor(CurrentSeqNr + 1)
     end -- end Sequences DelayTo
-    return First_Id_Lay, Current_Id_Lay, LayX, LayNr, Phase_Element, CurrentSeqNr, CurrentMacroNr
+    return First_Id_Lay, Current_Id_Lay, LayX, LayNr, Phase_Element, CurrentSeqNr, CurrentMacroNr, Delay_T_Element
 end     -- end Create_Delay_To_Sequences
 
 function Create_Phase_Sequence(LayY, LayX, LayW, a, First_Id_Lay, LayNr, CurrentSeqNr, Current_Id_Lay, CurrentMacroNr,
@@ -513,6 +432,7 @@ function Create_Phase_Sequence(LayY, LayX, LayW, a, First_Id_Lay, LayNr, Current
     end
     Current_Id_Lay = First_Id_Lay[13]
     CurrentMacroNr = math.floor(CurrentMacroNr + 1)
+    Phase_Element = Phase_Element + 2
     Create_Macro_Phase(CurrentMacroNr, prefix, surfix, a, MatrickNrStart, 4, TLayNr, Phase_Element, MatrickNr,
         Construct_Pool, Call_Pool)
 
@@ -580,7 +500,7 @@ function Create_Phase_Sequence(LayY, LayX, LayW, a, First_Id_Lay, LayNr, Current
     -- Group_Element = math.floor(LayNr + 1)
     -- end
     -- CurrentSeqNr = math.floor(CurrentSeqNr + 1)
-    return Current_Id_Lay, CurrentMacroNr, LayY, LayX, LayNr, CurrentSeqNr, Group_Element
+    return Current_Id_Lay, CurrentMacroNr, LayY, LayX, LayNr, CurrentSeqNr, Group_Element, Phase_Element
 end -- end Create_Phase_Sequence
 
 function Create_Group_Sequence(CurrentMacroNr, FirstSeqGrp, CurrentSeqNr, LastSeqGrp, prefix, surfix, a, MatrickNrStart,
@@ -593,6 +513,7 @@ function Create_Group_Sequence(CurrentMacroNr, FirstSeqGrp, CurrentSeqNr, LastSe
     FirstSeqGrp = CurrentSeqNr
     LastSeqGrp = math.floor(CurrentSeqNr + 4)
     -- Create Macro Group Input
+    Group_Element = Group_Element + 2
     Create_Macro_Group(CurrentMacroNr, prefix, surfix, a, FirstSeqGrp, LastSeqGrp, MatrickNrStart, 5, TLayNr,
         Group_Element, MatrickNr, Construct_Pool, Call_Pool)
 
@@ -643,7 +564,7 @@ function Create_Group_Sequence(CurrentMacroNr, FirstSeqGrp, CurrentSeqNr, LastSe
                 ' ; SetUserVariable "LC_Element" ' .. Group_Element ..
                 ' ; SetUserVariable "LC_Matrick" ' .. MatrickNrStart ..
                 ' ; SetUserVariable "LC_Matrick_Thru" ' .. MatrickNr ..
-                ' ; Call DataPool ' .. Call_Pool .. ' Plugin "DEV_LC_View" ')
+                ' ; Call ' .. Call_Pool .. ' Plugin "DEV_LC_View" ')
         end
 
         -- CmdIndirectWait('ClearAll /nu')
@@ -700,7 +621,7 @@ function Create_Group_Sequence(CurrentMacroNr, FirstSeqGrp, CurrentSeqNr, LastSe
         -- CurrentSeqNr = math.floor(CurrentSeqNr + 1)
     end
     return CurrentSeqNr, Block_Element, LayNr, LayX, Current_Id_Lay, First_Id_Lay, CurrentMacroNr, LastSeqGrp,
-        FirstSeqGrp
+        FirstSeqGrp, Group_Element
 end -- end Create_Group_Sequence
 
 function Create_Block_Sequence(CurrentMacroNr, FirstSeqBlock, CurrentSeqNr, LastSeqBlock, prefix, surfix, a,
@@ -713,6 +634,7 @@ function Create_Block_Sequence(CurrentMacroNr, FirstSeqBlock, CurrentSeqNr, Last
     FirstSeqBlock = CurrentSeqNr
     LastSeqBlock = math.floor(CurrentSeqNr + 4)
     -- Create Macro Block Input
+    Block_Element = Block_Element + 2
     Create_Macro_Block(CurrentMacroNr, prefix, surfix, a, FirstSeqBlock, LastSeqBlock, MatrickNrStart, 6,
         TLayNr, Block_Element, MatrickNr, Construct_Pool, Call_Pool)
 
@@ -764,7 +686,7 @@ function Create_Block_Sequence(CurrentMacroNr, FirstSeqBlock, CurrentSeqNr, Last
                 ' ; SetUserVariable "LC_Element" ' .. Block_Element ..
                 ' ; SetUserVariable "LC_Matrick" ' .. MatrickNrStart ..
                 ' ; SetUserVariable "LC_Matrick_Thru" ' .. MatrickNr ..
-                ' ; Call DataPool ' .. Call_Pool .. ' Plugin "DEV_LC_View" ')
+                ' ; Call ' .. Call_Pool .. ' Plugin "DEV_LC_View" ')
         end
 
         -- CmdIndirectWait('ClearAll /nu')
@@ -822,7 +744,7 @@ function Create_Block_Sequence(CurrentMacroNr, FirstSeqBlock, CurrentSeqNr, Last
         -- CurrentSeqNr = math.floor(CurrentSeqNr + 1)
     end
     return CurrentSeqNr, Wings_Element, LayNr, LayX, Current_Id_Lay, First_Id_Lay, CurrentMacroNr, FirstSeqBlock,
-        LastSeqBlock
+        LastSeqBlock, Block_Element
 end -- end Create_Block_Sequence
 
 function Create_Wings_Sequence(CurrentMacroNr, FirstSeqWings, CurrentSeqNr, LastSeqWings, prefix, surfix, a,
@@ -834,6 +756,7 @@ function Create_Wings_Sequence(CurrentMacroNr, FirstSeqWings, CurrentSeqNr, Last
     FirstSeqWings = CurrentSeqNr
     LastSeqWings = math.floor(CurrentSeqNr + 4)
     -- Create Macro Wings Input
+    Wings_Element = Wings_Element + 2
     Create_Macro_Wings(CurrentMacroNr, prefix, surfix, a, FirstSeqWings, LastSeqWings, MatrickNrStart, 7,
         TLayNr, Wings_Element, MatrickNr, Construct_Pool, Call_Pool)
 
@@ -884,7 +807,7 @@ function Create_Wings_Sequence(CurrentMacroNr, FirstSeqWings, CurrentSeqNr, Last
                 ' ; SetUserVariable "LC_Element" ' .. Wings_Element ..
                 ' ; SetUserVariable "LC_Matrick" ' .. MatrickNrStart ..
                 ' ; SetUserVariable "LC_Matrick_Thru" ' .. MatrickNr ..
-                ' ; Call DataPool ' .. Call_Pool .. ' Plugin "DEV_LC_View" ')
+                ' ; Call ' .. Call_Pool .. ' Plugin "DEV_LC_View" ')
         end
 
         -- CmdIndirectWait('ClearAll /nu')
@@ -923,7 +846,7 @@ function Create_Wings_Sequence(CurrentMacroNr, FirstSeqWings, CurrentSeqNr, Last
             LC_Set_Def(TLayNr, Nr, Layout_Object)
             LayX = math.floor(LayX + LayW + 20)
             LayNr = math.floor(LayNr + 1)
-            Phase_Element = math.floor(LayNr + 2)
+            -- Phase_Element = math.floor(LayNr + 2)
         end
         CurrentSeqNr = math.floor(CurrentSeqNr + 1)
 
@@ -938,7 +861,7 @@ function Create_Wings_Sequence(CurrentMacroNr, FirstSeqWings, CurrentSeqNr, Last
         -- end
         -- CurrentSeqNr = math.floor(CurrentSeqNr + 1)
     end
-    return CurrentSeqNr, LayNr, LayX, Current_Id_Lay, First_Id_Lay, LastSeqWings, FirstSeqWings, CurrentMacroNr
+    return CurrentSeqNr, LayNr, LayX, Current_Id_Lay, First_Id_Lay, LastSeqWings, FirstSeqWings, CurrentMacroNr, Wings_Element
 end -- end Create_Wings_Sequence
 
 function Create_XYZ_Sequence(CurrentMacroNr, First_Id_Lay, prefix, surfix, Call_inc, CallT, MatrickNrStart, a,
