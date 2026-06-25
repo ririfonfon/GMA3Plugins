@@ -304,7 +304,7 @@ function LC_Construct_Layout(TLay, SeqNrStart, MacroNrStart, MatrickNrStart, Mat
     Layout_Object[TLayNr]:Set('Name', "'" .. prefix .. NaLay .. "'")
     -- CmdIndirectWait('Select Layout ' .. TLayNr)
 
-    
+
     MaxColLgn = tonumber(MaxColLgn)
 
     -- Create Appearances Tricks Ref
@@ -325,7 +325,7 @@ function LC_Construct_Layout(TLay, SeqNrStart, MacroNrStart, MatrickNrStart, Mat
     Echo('Preset 25 ok')
 
     -- Build Tag
-    LC_Build_Tag(prefix,NbGroup)
+    LC_Build_Tag(prefix, NbGroup)
     -- end Build Tag
 
     -- Appearances/Sequences
@@ -336,18 +336,23 @@ function LC_Construct_Layout(TLay, SeqNrStart, MacroNrStart, MatrickNrStart, Mat
         AppTricks, Construct_Pool, Groups_Pool, Color_Range, Call_Pool)
     -- end Appearances/Sequences
     Echo('Crea app_sequence ok')
-end
 
-local function suite()
     -- Create Appearances/Function
+    local AppObject = Root().ShowData.Appearances
     for q in pairs(AppImp) do
         AppImp[q].Nr = math.floor(NrNeed)
-        CmdIndirectWait('Store App ' .. AppImp[q].Nr .. ' "' .. prefix .. AppImp[q].Name ..
-            '" "Appearance"=' .. AppImp[q].StApp .. '' .. AppImp[q].RGBref .. '')
+        Check_Size_Pool(AppImp[q].Nr, AppObject)
+        AppObject:Create(AppImp[q].Nr)
+        AppObject[AppImp[q].Nr]:Set('Name', "'" .. prefix .. AppImp[q].Name .. '')
+        AppObject[AppImp[q].Nr]:Set('Appearance', AppImp[q].StApp:gsub('"', ''))
+        AppObject[AppImp[q].Nr]:Set('Color', AppImp[q].RGBref)
         NrNeed = math.floor(NrNeed + 1)
     end
     -- end Create Appearances/Function
+    Echo('create app function ok')
+end
 
+local function suite()
     SeqNrEnd = CurrentSeqNr - 1
     -- Add offset for Layout Element distance
     LayY = math.floor(LayY - 150)
