@@ -350,9 +350,7 @@ function LC_Construct_Layout(TLay, SeqNrStart, MacroNrStart, MatrickNrStart, Mat
     end
     -- end Create Appearances/Function
     Echo('create app function ok')
-end
 
-local function suite()
     SeqNrEnd = CurrentSeqNr - 1
     -- Add offset for Layout Element distance
     LayY = math.floor(LayY - 150)
@@ -361,6 +359,7 @@ local function suite()
 
     -- Create Function for X Y Z
     for a = 1, 3 do
+        Echo('*************** a ' .. a)
         -- Create Sequence FADE
         CurrentSeqNr, Delay_F_Element, LayNr, LayX, Current_Id_Lay,
         Fade_Element, CurrentMacroNr = Create_Fade_Sequences(MakeX,
@@ -422,7 +421,10 @@ local function suite()
         CurrentMacroNr = math.floor(CurrentMacroNr + 2)
         MakeX = false
     end --end  Create Function for X Y Z
+    Echo('create function xyz ok')
+end
 
+local function suite()
     -- add line macro X Y Z Call
     for i = 1, 3 do
         MacroObject[First_Id_Lay[33 + i]]:Insert(32)

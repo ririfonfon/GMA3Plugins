@@ -600,7 +600,7 @@ function Command_Title(title, TLayNr, LayNr, LayX, LayY, Pw, Ph, align, Construc
 end -- end function Command_Title(...)
 
 function Command_Ext_Suite(CurrentSeqNr,SequenceObject)
-    ErrEcho('Call Command_Ext_suite')
+    Echo('Call Command_Ext_suite ' .. CurrentSeqNr)
         SequenceObject[CurrentSeqNr]:Set('prefercueappearance', 'on')
         SequenceObject[CurrentSeqNr]:Set('AutoStart', '1')
         SequenceObject[CurrentSeqNr]:Set('AutoStop', '1')

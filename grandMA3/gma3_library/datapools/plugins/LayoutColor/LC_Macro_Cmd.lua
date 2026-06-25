@@ -23,6 +23,7 @@ function Create_Macro_Reset(CurrentMacroNr, prefix, surfix, MatrickNrStart, a, C
     MacroObject[CurrentMacroNr + 1]:Set('Name', "'" .. prefix .. surfix[a] .. "_Reset'")
     for b = 1, 72 do
         MacroObject[CurrentMacroNr + 1]:Insert(b)
+        Echo('insert b ' .. b)
     end
     MacroObject[CurrentMacroNr + 1][1]:Set('Command', 'Set DataPool ' ..
         Construct_Pool .. '  Matricks ' .. MatrickNrStart .. ' Property "FadeFrom' .. surfix[a] .. '" None')
@@ -50,7 +51,6 @@ function Create_Macro_Reset(CurrentMacroNr, prefix, surfix, MatrickNrStart, a, C
         Construct_Pool .. ' Sequence ' .. First_Id_Lay[a + 9] .. ' Thru ' .. First_Id_Lay[a + 9] + 4)
     MacroObject[CurrentMacroNr + 1][13]:Set('Command',
         'Off DataPool ' .. Construct_Pool .. ' Sequence ' .. First_Id_Lay[a + 13])
-    Cmd('Insert')
     MacroObject[CurrentMacroNr + 1][14]:Set('Command', 'Off DataPool ' ..
         Construct_Pool .. ' Sequence ' .. First_Id_Lay[a + 17] .. ' Thru ' .. First_Id_Lay[a + 17] + 4)
     MacroObject[CurrentMacroNr + 1][15]:Set('Command', 'Off DataPool ' ..
@@ -101,7 +101,7 @@ function Create_Macro_Reset(CurrentMacroNr, prefix, surfix, MatrickNrStart, a, C
     MacroObject[CurrentMacroNr + 1][57]:Set('Command', 'SetUserVariable "LC_Fonction" 6')
     MacroObject[CurrentMacroNr + 1][58]:Set('Command', 'SetUserVariable "LC_Axes" ' .. a .. '')
     MacroObject[CurrentMacroNr + 1][59]:Set('Command', 'SetUserVariable "LC_Layout" ' .. TLayNr .. '')
-    MacroObject[CurrentMacroNr + 1][10]:Set('Command', 'SetUserVariable "LC_Element" ' .. Block_Element .. '')
+    MacroObject[CurrentMacroNr + 1][60]:Set('Command', 'SetUserVariable "LC_Element" ' .. Block_Element .. '')
     MacroObject[CurrentMacroNr + 1][61]:Set('Command', 'SetUserVariable "LC_Matrick" ' .. MatrickNrStart .. '')
     MacroObject[CurrentMacroNr + 1][62]:Set('Command', 'SetUserVariable "LC_Matrick_Thru" ' .. MatrickNr .. '')
     MacroObject[CurrentMacroNr + 1][63]:Set('Command', 'SetUserVariable "LC_DataPool" ' .. Construct_Pool .. '')
@@ -591,13 +591,13 @@ function Create_Macro_Fade_E(CurrentMacroNr, prefix, Argument_Fade, i, surfix, a
         MacroObject[CurrentMacroNr]:Insert(b)
     end
     MacroObject[CurrentMacroNr][1]:Set('Command', 'Off DataPool ' ..
-    Construct_Pool .. '  Sequence ' .. FirstSeqTime .. ' thru ' .. LastSeqTime .. ' - ' .. CurrentSeqNr .. '')
+        Construct_Pool .. '  Sequence ' .. FirstSeqTime .. ' thru ' .. LastSeqTime .. ' - ' .. CurrentSeqNr .. '')
     MacroObject[CurrentMacroNr][2]:Set('Command', 'Set DataPool ' .. Construct_Pool .. '  Sequence ' ..
-    SeqNrStart .. ' thru ' .. SeqNrEnd .. ' UseExecutorTime=' .. Argument_Fade[i].UseExTime .. '')
+        SeqNrStart .. ' thru ' .. SeqNrEnd .. ' UseExecutorTime=' .. Argument_Fade[i].UseExTime .. '')
     MacroObject[CurrentMacroNr][3]:Set('Command', 'Set DataPool ' .. Construct_Pool .. ' Matricks   ' ..
-    MatrickNrStart .. ' Property "FadeFrom' .. surfix[a] .. '" ' .. Argument_Fade[i].Time .. '')
+        MatrickNrStart .. ' Property "FadeFrom' .. surfix[a] .. '" ' .. Argument_Fade[i].Time .. '')
     MacroObject[CurrentMacroNr][4]:Set('Command', 'Set DataPool ' .. Construct_Pool .. ' Matricks   ' ..
-    MatrickNrStart .. ' Property "FadeTo' .. surfix[a] .. '" ' .. Argument_Fade[i].Time .. '')
+        MatrickNrStart .. ' Property "FadeTo' .. surfix[a] .. '" ' .. Argument_Fade[i].Time .. '')
     MacroObject[CurrentMacroNr][5]:Set('Command', 'SetUserVariable "LC_Fonction" 1')
     MacroObject[CurrentMacroNr][6]:Set('Command', 'SetUserVariable "LC_Axes" ' .. a .. '')
     MacroObject[CurrentMacroNr][7]:Set('Command', 'SetUserVariable "LC_Layout" ' .. TLayNr .. '')
@@ -605,7 +605,7 @@ function Create_Macro_Fade_E(CurrentMacroNr, prefix, Argument_Fade, i, surfix, a
     MacroObject[CurrentMacroNr][9]:Set('Command', 'SetUserVariable "LC_Matrick" ' .. MatrickNrStart .. '')
     MacroObject[CurrentMacroNr][10]:Set('Command', 'SetUserVariable "LC_DataPool" ' .. Construct_Pool .. '')
     MacroObject[CurrentMacroNr][11]:Set('Command', 'Call DataPool ' .. Construct_Pool .. ' Plugin "LC_View"')
-    
+
     CurrentMacroNr = CurrentMacroNr + 1
     return CurrentMacroNr
     -- CmdIndirectWait('Store Macro ' ..

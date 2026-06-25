@@ -82,8 +82,9 @@ function Create_Fade_Sequences(MakeX, FirstSeqTime, LastSeqTime, CurrentSeqNr, C
         SequenceObject[CurrentSeqNr]:Insert()
         SequenceObject[CurrentSeqNr]:Set('Appearance', AppImp[2].Nr)
         SequenceObject[CurrentSeqNr][3]:Set('No', 1)
-        SequenceObject[CurrentSeqNr][3]:Set('Appearance', AppImp[1].Nr)
-        SequenceObject[CurrentSeqNr][3]:Set('Command', 'Off DataPool ' .. Construct_Pool .. ' Sequence ' ..
+        SequenceObject[CurrentSeqNr][3]:Create(1)
+        SequenceObject[CurrentSeqNr][3][1]:Set('Appearance', AppImp[1].Nr)
+        SequenceObject[CurrentSeqNr][3][1]:Set('Command', 'Off DataPool ' .. Construct_Pool .. ' Sequence ' ..
             FirstSeqTime .. ' Thru ' .. LastSeqTime .. ' - ' .. CurrentSeqNr .. ' ; Set Sequence ' ..
             SeqNrStart .. ' Thru ' .. SeqNrEnd .. ' UseExecutorTime=' .. Argument_Fade[1].UseExTime .. '')
 
@@ -97,7 +98,7 @@ function Create_Fade_Sequences(MakeX, FirstSeqTime, LastSeqTime, CurrentSeqNr, C
         --     ' ; Set Sequence ' ..
         --     SeqNrStart .. ' Thru ' .. SeqNrEnd .. ' UseExecutorTime=' .. Argument_Fade[1].UseExTime .. '')
         -- CmdIndirectWait('Set Sequence ' .. CurrentSeqNr .. ' Property Appearance=' .. AppImp[2].Nr)
-        -- Command_Ext_Suite(CurrentSeqNr)
+        Command_Ext_Suite(CurrentSeqNr, SequenceObject)
 
         Nr = Layout_Object[TLayNr]:Acquire()
         Layout_Object[TLayNr][Nr.No]:Set('Object', SequenceObject[CurrentSeqNr])
@@ -153,17 +154,18 @@ function Create_Fade_Sequences(MakeX, FirstSeqTime, LastSeqTime, CurrentSeqNr, C
         SequenceObject[CurrentSeqNr]:Insert()
         SequenceObject[CurrentSeqNr]:Set('Appearance', AppImp[ia].Nr)
         SequenceObject[CurrentSeqNr][3]:Set('No', 1)
+        SequenceObject[CurrentSeqNr][3]:Create(1)
         if i == 6 then
-            SequenceObject[CurrentSeqNr][3]:Set('Command',
+            SequenceObject[CurrentSeqNr][3][1]:Set('Command',
                 'Go DataPool ' .. Construct_Pool .. ' Macro ' .. CurrentMacroNr .. "'")
         else
             CurrentMacroNr = Create_Macro_Fade_E(CurrentMacroNr, prefix, Argument_Fade, i, surfix, a, FirstSeqTime,
                 LastSeqTime, CurrentSeqNr, SeqNrStart, SeqNrEnd, MatrickNrStart, TLayNr, Fade_Element, Construct_Pool)
-            SequenceObject[CurrentSeqNr][3]:Set('Command',
+            SequenceObject[CurrentSeqNr][3][1]:Set('Command',
                 'Go DataPool ' .. Construct_Pool .. ' Macro ' .. CurrentMacroNr + i - 1 .. "'")
         end
         SequenceObject[CurrentSeqNr]:Set('Appearance', AppImp[ib].Nr)
-        -- Command_Ext_Suite(CurrentSeqNr)
+        Command_Ext_Suite(CurrentSeqNr, SequenceObject)
         -- CmdIndirectWait('ClearAll /nu')
         -- CmdIndirectWait('Store Sequence ' ..
         --     CurrentSeqNr .. ' \'' .. prefix .. Argument_Fade[i].name .. surfix[a] .. '\'')
@@ -264,12 +266,13 @@ function Create_Delay_From_Sequences(First_Id_Lay, LayNr, CurrentSeqNr, Current_
         SequenceObject[CurrentSeqNr]:Insert()
         SequenceObject[CurrentSeqNr]:Set('Appearance', AppImp[ib].Nr)
         SequenceObject[CurrentSeqNr][3]:Set('No', 1)
-        SequenceObject[CurrentSeqNr][3]:Set('Appearance', AppImp[ia].Nr)
+        SequenceObject[CurrentSeqNr][3]:Create(1)
+        SequenceObject[CurrentSeqNr][3][1]:Set('Appearance', AppImp[ia].Nr)
         if i == 5 then
-            SequenceObject[CurrentSeqNr][3]:Set('Command',
+            SequenceObject[CurrentSeqNr][3][1]:Set('Command',
                 'Go DataPool ' .. Construct_Pool .. ' Macro ' .. CurrentMacroNr .. '')
         else
-            SequenceObject[CurrentSeqNr][3]:Set('Command', 'Off DataPool ' .. Construct_Pool .. ' Sequence ' ..
+            SequenceObject[CurrentSeqNr][3][1]:Set('Command', 'Off DataPool ' .. Construct_Pool .. ' Sequence ' ..
                 FirstSeqDelayFrom .. ' Thru ' .. LastSeqDelayFrom .. ' - ' .. CurrentSeqNr ..
                 ' ; Set DataPool ' .. Construct_Pool .. ' Matricks ' ..
                 MatrickNrStart .. ' Property "DelayFrom' .. surfix[a] .. '" ' .. Argument_Delay[i].Time ..
@@ -303,7 +306,7 @@ function Create_Delay_From_Sequences(First_Id_Lay, LayNr, CurrentSeqNr, Current_
         --         ' ; Call DataPool ' .. Construct_Pool .. ' Plugin "LC_View" ')
         -- end
         -- CmdIndirectWait('Set Sequence ' .. CurrentSeqNr .. ' Property Appearance=' .. AppImp[ib].Nr)
-        -- Command_Ext_Suite(CurrentSeqNr)
+        Command_Ext_Suite(CurrentSeqNr, SequenceObject)
 
         -- Add Squences to Layout
         if MakeX then
@@ -383,12 +386,13 @@ function Create_Delay_To_Sequences(a, First_Id_Lay, LayNr, CurrentSeqNr, Current
         SequenceObject[CurrentSeqNr]:Insert()
         SequenceObject[CurrentSeqNr]:Set('Appearance', AppImp[ib].Nr)
         SequenceObject[CurrentSeqNr][3]:Set('No', 1)
-        SequenceObject[CurrentSeqNr][3]:Set('Appearance', AppImp[ia].Nr)
+        SequenceObject[CurrentSeqNr][3]:Create(1)
+        SequenceObject[CurrentSeqNr][3][1]:Set('Appearance', AppImp[ia].Nr)
         if i == 5 then
-            SequenceObject[CurrentSeqNr][3]:Set('Command',
+            SequenceObject[CurrentSeqNr][3][1]:Set('Command',
                 'Go DataPool ' .. Construct_Pool .. ' Macro ' .. CurrentMacroNr .. '')
         else
-            SequenceObject[CurrentSeqNr][3]:Set('Command', 'Off DataPool ' .. Construct_Pool .. ' Sequence ' ..
+            SequenceObject[CurrentSeqNr][3][1]:Set('Command', 'Off DataPool ' .. Construct_Pool .. ' Sequence ' ..
                 FirstSeqDelayTo .. ' Thru ' .. LastSeqDelayTo .. ' - ' .. CurrentSeqNr ..
                 ' ; Set DataPool ' .. Construct_Pool .. ' Matricks ' ..
                 MatrickNrStart .. ' Property "DelayTo' .. surfix[a] .. '" ' .. Argument_DelayTo[i].Time ..
@@ -423,7 +427,7 @@ function Create_Delay_To_Sequences(a, First_Id_Lay, LayNr, CurrentSeqNr, Current
         --         ' ; Call DataPool ' .. Construct_Pool .. ' Plugin "LC_View" ')
         -- end
         -- CmdIndirectWait('Set Sequence ' .. CurrentSeqNr .. ' Property Appearance=' .. AppImp[ib].Nr)
-        -- Command_Ext_Suite(CurrentSeqNr)
+        Command_Ext_Suite(CurrentSeqNr, SequenceObject)
         -- end Sequences
         -- Add Squences to Layout
         if MakeX then
@@ -493,8 +497,10 @@ function Create_Phase_Sequence(LayY, LayX, LayW, a, First_Id_Lay, LayNr, Current
     SequenceObject[CurrentSeqNr]:Insert()
     SequenceObject[CurrentSeqNr]:Set('Appearance', AppImp[64].Nr)
     SequenceObject[CurrentSeqNr][3]:Set('No', 1)
-    SequenceObject[CurrentSeqNr][3]:Set('Appearance', AppImp[63].Nr)
-    SequenceObject[CurrentSeqNr][3]:Set('Command', 'Go DataPool ' .. Construct_Pool .. ' Macro ' .. CurrentMacroNr .. '')
+    SequenceObject[CurrentSeqNr][3]:Create(1)
+    SequenceObject[CurrentSeqNr][3][1]:Set('Appearance', AppImp[63].Nr)
+    SequenceObject[CurrentSeqNr][3][1]:Set('Command',
+        'Go DataPool ' .. Construct_Pool .. ' Macro ' .. CurrentMacroNr .. '')
 
 
     -- CmdIndirectWait('ClearAll /nu')
@@ -504,7 +510,7 @@ function Create_Phase_Sequence(LayY, LayX, LayW, a, First_Id_Lay, LayNr, Current
     -- CmdIndirectWait('Set Sequence ' ..
     --     CurrentSeqNr .. ' Cue 1 Property Command=\'Go DataPool ' .. Construct_Pool .. ' Macro ' .. CurrentMacroNr .. '')
     -- CmdIndirectWait('Set Sequence ' .. CurrentSeqNr .. ' Property Appearance=' .. AppImp[64].Nr)
-    -- Command_Ext_Suite(CurrentSeqNr)
+    Command_Ext_Suite(CurrentSeqNr, SequenceObject)
 
     -- Add Squences to Layout
     if MakeX then
@@ -590,12 +596,13 @@ function Create_Group_Sequence(CurrentMacroNr, FirstSeqGrp, CurrentSeqNr, LastSe
         SequenceObject[CurrentSeqNr]:Insert()
         SequenceObject[CurrentSeqNr]:Set('Appearance', AppImp[ib].Nr)
         SequenceObject[CurrentSeqNr][3]:Set('No', 1)
-        SequenceObject[CurrentSeqNr][3]:Set('Appearance', AppImp[ia].Nr)
+        SequenceObject[CurrentSeqNr][3]:Create(1)
+        SequenceObject[CurrentSeqNr][3][1]:Set('Appearance', AppImp[ia].Nr)
         if i == 5 then
-            SequenceObject[CurrentSeqNr][3]:Set('Command',
+            SequenceObject[CurrentSeqNr][3][1]:Set('Command',
                 'Go DataPool ' .. Construct_Pool .. ' Macro ' .. CurrentMacroNr .. '')
         else
-            SequenceObject[CurrentSeqNr][3]:Set('Command', 'Off DataPool ' .. Construct_Pool .. ' Sequence ' ..
+            SequenceObject[CurrentSeqNr][3][1]:Set('Command', 'Off DataPool ' .. Construct_Pool .. ' Sequence ' ..
                 FirstSeqGrp .. ' Thru ' .. LastSeqGrp .. ' - ' .. CurrentSeqNr ..
                 ' ; Set DataPool ' .. Construct_Pool .. ' Matricks ' .. MatrickNrStart .. ' Property "' .. surfix[a] ..
                 'Group" ' .. Argument_Xgrp[i].Time ..
@@ -630,7 +637,7 @@ function Create_Group_Sequence(CurrentMacroNr, FirstSeqGrp, CurrentSeqNr, LastSe
         --         ' ; Call DataPool ' .. Construct_Pool .. ' Plugin "LC_View" ')
         -- end
         -- CmdIndirectWait('Set Sequence ' .. CurrentSeqNr .. ' Property Appearance=' .. AppImp[ib].Nr)
-        -- Command_Ext_Suite(CurrentSeqNr)
+        Command_Ext_Suite(CurrentSeqNr, SequenceObject)
         -- end Sequences
         -- Add Squences to Layout
         if MakeX then
@@ -709,12 +716,13 @@ function Create_Block_Sequence(CurrentMacroNr, FirstSeqBlock, CurrentSeqNr, Last
         SequenceObject[CurrentSeqNr]:Insert()
         SequenceObject[CurrentSeqNr]:Set('Appearance', AppImp[ib].Nr)
         SequenceObject[CurrentSeqNr][3]:Set('No', 1)
-        SequenceObject[CurrentSeqNr][3]:Set('Appearance', AppImp[ia].Nr)
+        SequenceObject[CurrentSeqNr][3]:Create(1)
+        SequenceObject[CurrentSeqNr][3][1]:Set('Appearance', AppImp[ia].Nr)
         if i == 5 then
-            SequenceObject[CurrentSeqNr][3]:Set('Command',
+            SequenceObject[CurrentSeqNr][3][1]:Set('Command',
                 'Go DataPool ' .. Construct_Pool .. ' Macro ' .. CurrentMacroNr .. '')
         else
-            SequenceObject[CurrentSeqNr][3]:Set('Command', 'Off DataPool ' .. Construct_Pool .. ' Sequence ' ..
+            SequenceObject[CurrentSeqNr][3][1]:Set('Command', 'Off DataPool ' .. Construct_Pool .. ' Sequence ' ..
                 FirstSeqBlock .. ' Thru ' .. LastSeqBlock .. ' - ' .. CurrentSeqNr ..
                 ' ; Set DataPool ' .. Construct_Pool .. ' Matricks ' .. MatrickNrStart ..
                 ' Property "' .. surfix[a] .. 'Block" ' .. Argument_Xblock[i].Time ..
@@ -749,7 +757,7 @@ function Create_Block_Sequence(CurrentMacroNr, FirstSeqBlock, CurrentSeqNr, Last
         --         ' ; Call DataPool ' .. Construct_Pool .. ' Plugin "LC_View" ')
         -- end
         -- CmdIndirectWait('Set Sequence ' .. CurrentSeqNr .. ' Property Appearance=' .. AppImp[ib].Nr)
-        -- Command_Ext_Suite(CurrentSeqNr)
+        Command_Ext_Suite(CurrentSeqNr, SequenceObject)
         -- end Sequences
         -- Add Squences to Layout
         if MakeX then
@@ -828,12 +836,13 @@ function Create_Wings_Sequence(CurrentMacroNr, FirstSeqWings, CurrentSeqNr, Last
         SequenceObject[CurrentSeqNr]:Insert()
         SequenceObject[CurrentSeqNr]:Set('Appearance', AppImp[ib].Nr)
         SequenceObject[CurrentSeqNr][3]:Set('No', 1)
-        SequenceObject[CurrentSeqNr][3]:Set('Appearance', AppImp[ia].Nr)
+        SequenceObject[CurrentSeqNr][3]:Create(1)
+        SequenceObject[CurrentSeqNr][3][1]:Set('Appearance', AppImp[ia].Nr)
         if i == 5 then
-            SequenceObject[CurrentSeqNr][3]:Set('Command',
+            SequenceObject[CurrentSeqNr][3][1]:Set('Command',
                 'Go DataPool ' .. Construct_Pool .. ' Macro ' .. CurrentMacroNr .. '')
         else
-            SequenceObject[CurrentSeqNr][3]:Set('Command', 'Off DataPool ' .. Construct_Pool .. ' Sequence ' ..
+            SequenceObject[CurrentSeqNr][3][1]:Set('Command', 'Off DataPool ' .. Construct_Pool .. ' Sequence ' ..
                 FirstSeqWings .. ' Thru ' .. LastSeqWings .. ' - ' .. CurrentSeqNr ..
                 ' ; Set DataPool ' .. Construct_Pool .. ' Matricks ' .. MatrickNrStart .. ' Property "' .. surfix[a] ..
                 'Wings" ' .. Argument_Xwings[i].Time ..
@@ -867,7 +876,7 @@ function Create_Wings_Sequence(CurrentMacroNr, FirstSeqWings, CurrentSeqNr, Last
         --         ' ; Call DataPool ' .. Construct_Pool .. ' Plugin "LC_View" ')
         -- end -- end Sequences
         -- CmdIndirectWait('Set Sequence ' .. CurrentSeqNr .. ' Property Appearance=' .. AppImp[ib].Nr)
-        -- Command_Ext_Suite(CurrentSeqNr)
+        Command_Ext_Suite(CurrentSeqNr, SequenceObject)
         -- Add Squences to Layout
         if MakeX then
             Nr = Layout_Object[TLayNr]:Acquire()
@@ -908,6 +917,7 @@ function Create_XYZ_Sequence(CurrentMacroNr, First_Id_Lay, prefix, surfix, Call_
     CurrentMacroNr = math.floor(CurrentMacroNr + 1)
     First_Id_Lay[33 + a] = CurrentMacroNr
     LC_Check_Size_Pool(CurrentMacroNr, MacroObject)
+    Echo('check ok macro ' .. CurrentMacroNr)
     MacroObject:Create(CurrentMacroNr)
     MacroObject[CurrentMacroNr]:Set('Name', "'" .. prefix .. surfix[a] .. "_Call'")
     -- CmdIndirectWait('Store Macro ' .. CurrentMacroNr .. ' \'' .. prefix .. surfix[a] .. '_Call\'')
@@ -931,8 +941,10 @@ function Create_XYZ_Sequence(CurrentMacroNr, First_Id_Lay, prefix, surfix, Call_
         elseif m <= 31 then
             CallT = 25
         end
-        MacroObject[CurrentMacroNr]:Insert(1)
-        MacroObject[CurrentMacroNr][1]:Set('Command', 'Assign DataPool ' .. Construct_Pool .. ' Sequence ' ..
+        Echo('insert la m ' .. m)
+        MacroObject[CurrentMacroNr]:Insert(m)
+        Echo('insert labas m ' .. m)
+        MacroObject[CurrentMacroNr][m]:Set('Command', 'Assign DataPool ' .. Construct_Pool .. ' Sequence ' ..
             First_Id_Lay[CallT + a] + Call_inc .. ' At DataPool ' .. Construct_Pool .. ' Layout ' ..
             TLayNr .. '.' .. First_Id_Lay[CallT] + Call_inc)
         -- Cmd('Insert')
@@ -940,15 +952,18 @@ function Create_XYZ_Sequence(CurrentMacroNr, First_Id_Lay, prefix, surfix, Call_
         --     First_Id_Lay[CallT + a] + Call_inc .. ' At DataPool ' .. Construct_Pool .. ' Layout ' ..
         --     TLayNr .. '.' .. First_Id_Lay[CallT] + Call_inc)
         Call_inc = math.floor(Call_inc + 1)
+        Echo('cool fini m ' .. m)
     end
     -- CmdIndirectWait('ChangeDestination Root')
     Create_Macro_Reset(CurrentMacroNr, prefix, surfix, MatrickNrStart, a, CurrentSeqNr, First_Id_Lay, TLayNr,
         Fade_Element, Delay_F_Element, Delay_T_Element, Phase_Element, Group_Element, Block_Element,
         Wings_Element, MatrickNr, Construct_Pool)
+        Echo('c est donc ici')
 
     First_Id_Lay[28 + a] = CurrentSeqNr
 
     LC_Check_Size_Pool(CurrentSeqNr, SequenceObject)
+    Echo('check ok2 seq n ' .. CurrentSeqNr)
     SequenceObject:Create(CurrentSeqNr)
     SequenceObject[CurrentSeqNr]:Set('Name', "'" .. prefix .. surfix[a] .. "_Call'")
     LC_Sequence_Defo(SequenceObject, CurrentSeqNr)
@@ -959,8 +974,10 @@ function Create_XYZ_Sequence(CurrentMacroNr, First_Id_Lay, prefix, surfix, Call_
     SequenceObject[CurrentSeqNr]:Insert()
     SequenceObject[CurrentSeqNr]:Set('Appearance', AppImp[67 + tonumber(a * 2 - 1)].Nr)
     SequenceObject[CurrentSeqNr][3]:Set('No', 1)
-    SequenceObject[CurrentSeqNr][3]:Set('Appearance', AppImp[66 + tonumber(a * 2 - 1)].Nr)
-    SequenceObject[CurrentSeqNr][3]:Set('Command', 'Go DataPool ' .. Construct_Pool .. ' Macro ' .. CurrentMacroNr .. '')
+    SequenceObject[CurrentSeqNr][3]:Create(1)
+    SequenceObject[CurrentSeqNr][3][1]:Set('Appearance', AppImp[66 + tonumber(a * 2 - 1)].Nr)
+    SequenceObject[CurrentSeqNr][3][1]:Set('Command',
+        'Go DataPool ' .. Construct_Pool .. ' Macro ' .. CurrentMacroNr .. '')
 
     -- CmdIndirectWait('ClearAll /nu')
     -- CmdIndirectWait('Store Sequence ' .. CurrentSeqNr .. ' \'' .. prefix .. surfix[a] .. '_Call\'')
@@ -969,21 +986,23 @@ function Create_XYZ_Sequence(CurrentMacroNr, First_Id_Lay, prefix, surfix, Call_
     -- CmdIndirectWait('Set Sequence ' ..
     --     CurrentSeqNr .. ' Cue 1 Property Command=\'Go DataPool ' .. Construct_Pool .. ' Macro ' .. CurrentMacroNr .. '')
     -- CmdIndirectWait('Set Sequence ' .. CurrentSeqNr .. ' Property Appearance=' .. AppImp[67 + tonumber(a * 2 - 1)].Nr)
-    -- Command_Ext_Suite(CurrentSeqNr)
-
-    LC_Check_Size_Pool(CurrentSeqNr, SequenceObject)
-    SequenceObject:Create(CurrentSeqNr)
-    SequenceObject[CurrentSeqNr]:Set('Name', "'" .. prefix .. surfix[a] .. "_Reset'")
+    Command_Ext_Suite(CurrentSeqNr, SequenceObject)
+    Echo('yep')
+    LC_Check_Size_Pool(CurrentSeqNr + 1, SequenceObject)
+    Echo('check ok3')
+    SequenceObject:Create(CurrentSeqNr + 1)
+    SequenceObject[CurrentSeqNr + 1]:Set('Name', "'" .. prefix .. surfix[a] .. "_Reset'")
     LC_Sequence_Defo(SequenceObject, CurrentSeqNr)
-    SequenceObject[CurrentSeqNr]:Set('TRACKING', 'No')
-    SequenceObject[CurrentSeqNr]:Set('PRIORITY', 'HTP')
-    SequenceObject[CurrentSeqNr]:Set('SOFTLTP', 'No')
+    SequenceObject[CurrentSeqNr + 1]:Set('TRACKING', 'No')
+    SequenceObject[CurrentSeqNr + 1]:Set('PRIORITY', 'HTP')
+    SequenceObject[CurrentSeqNr + 1]:Set('SOFTLTP', 'No')
 
-    SequenceObject[CurrentSeqNr]:Insert()
-    SequenceObject[CurrentSeqNr]:Set('Appearance', prefix:gsub('o', '') .. "'skull_off'")
-    SequenceObject[CurrentSeqNr][3]:Set('No', 1)
-    SequenceObject[CurrentSeqNr][3]:Set('Appearance', prefix:gsub('o', '') .. "'skull_on'")
-    SequenceObject[CurrentSeqNr][3]:Set('Command',
+    SequenceObject[CurrentSeqNr + 1]:Insert()
+    SequenceObject[CurrentSeqNr + 1]:Set('Appearance', prefix:gsub('o', '') .. "'skull_off'")
+    SequenceObject[CurrentSeqNr + 1][3]:Set('No', 1)
+    SequenceObject[CurrentSeqNr + 1][3]:Create(1)
+    SequenceObject[CurrentSeqNr + 1][3][1]:Set('Appearance', prefix:gsub('o', '') .. "'skull_on'")
+    SequenceObject[CurrentSeqNr + 1][3][1]:Set('Command',
         'Go DataPool ' .. Construct_Pool .. ' Macro ' .. CurrentMacroNr + 1 .. '')
 
     -- CmdIndirectWait('ClearAll /nu')
@@ -995,7 +1014,7 @@ function Create_XYZ_Sequence(CurrentMacroNr, First_Id_Lay, prefix, surfix, Call_
     --     ' Cue 1 Property Command=\'Go DataPool ' .. Construct_Pool .. ' Macro ' .. CurrentMacroNr + 1 .. '')
     -- CmdIndirectWait("Set Sequence " ..
     --     CurrentSeqNr + 1 .. " Property Appearance=" .. prefix:gsub('o', '') .. "'skull_off'")
-    -- Command_Ext_Suite(CurrentSeqNr + 1)
+    Command_Ext_Suite(CurrentSeqNr + 1, SequenceObject)
     if MakeX == false then
         LayNr = math.floor(LayNr + 1)
     end
