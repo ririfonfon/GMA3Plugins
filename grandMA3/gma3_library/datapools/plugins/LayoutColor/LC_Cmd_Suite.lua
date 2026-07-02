@@ -90,12 +90,9 @@ function Create_Fade_Sequences(MakeX, FirstSeqTime, LastSeqTime, CurrentSeqNr, C
         Layout_Object[TLayNr][Nr.No]:Set('Note', 'Fade')
         LC_Set_Def(TLayNr, Nr, Layout_Object)
 
-        LayNr = math.floor(LayNr + 1)
-        Command_Title('Ex.Time', TLayNr, LayNr, LayX, LayY, 700, 140, 1, Construct_Pool)
-        LayNr = math.floor(LayNr + 1)
-        Command_Title('FADE', TLayNr, LayNr, LayX, LayY, 700, 140, 2, Construct_Pool)
-        LayNr = math.floor(LayNr + 1)
-        Command_Title('none > none', TLayNr, LayNr, LayX, LayY, 700, 140, 3, Construct_Pool)
+        LayNr = Command_Title('Ex.Time', TLayNr, LayNr, LayX, LayY, 700, 140, 1, Construct_Pool)
+        LayNr = Command_Title('FADE', TLayNr, LayNr, LayX, LayY, 700, 140, 2, Construct_Pool)
+        LayNr = Command_Title('none > none', TLayNr, LayNr, LayX, LayY, 700, 140, 3, Construct_Pool)
         LayX = math.floor(LayX + LayW + 20)
         LayNr = math.floor(LayNr + 1)
         CurrentSeqNr = math.floor(CurrentSeqNr + 1)
@@ -162,7 +159,7 @@ function Create_Fade_Sequences(MakeX, FirstSeqTime, LastSeqTime, CurrentSeqNr, C
         -- CurrentMacroNr = CurrentMacroNr + 1
     end -- end Sequences FADE
 
-    return CurrentSeqNr, Delay_F_Element, LayNr, LayX, Current_Id_Lay, Fade_Element, CurrentMacroNr
+    return CurrentSeqNr, Delay_F_Element, LayNr, LayX, Current_Id_Lay, Fade_Element, CurrentMacroNr, First_Id_Lay
 end -- end Create_Fade_Sequences
 
 function Create_Delay_From_Sequences(First_Id_Lay, LayNr, CurrentSeqNr, Current_Id_Lay, prefix, surfix, Argument_Delay,
@@ -521,7 +518,7 @@ function Create_Phase_Sequence(LayY, LayX, LayW, a, First_Id_Lay, LayNr, Current
     -- Group_Element = math.floor(LayNr + 1)
     -- end
     -- CurrentSeqNr = math.floor(CurrentSeqNr + 1)
-    return Current_Id_Lay, CurrentMacroNr, LayY, LayX, LayNr, CurrentSeqNr, Group_Element, Phase_Element
+    return Current_Id_Lay, CurrentMacroNr, LayY, LayX, LayNr, CurrentSeqNr, Group_Element, Phase_Element, First_Id_Lay
 end -- end Create_Phase_Sequence
 
 function Create_Group_Sequence(CurrentMacroNr, FirstSeqGrp, CurrentSeqNr, LastSeqGrp, prefix, surfix, a, MatrickNrStart,
@@ -588,7 +585,8 @@ function Create_Group_Sequence(CurrentMacroNr, FirstSeqGrp, CurrentSeqNr, LastSe
             SequenceObject[CurrentSeqNr][3][1]:Set('Command',
                 'Go DataPool ' .. Construct_Pool .. ' Macro ' .. CurrentMacroNr .. '')
         else
-            SequenceObject[CurrentSeqNr][3][1]:Set('Command', 'Set DataPool ' .. Construct_Pool .. ' Matricks ' .. MatrickNrStart .. ' Property "' .. surfix[a] ..
+            SequenceObject[CurrentSeqNr][3][1]:Set('Command',
+                'Set DataPool ' .. Construct_Pool .. ' Matricks ' .. MatrickNrStart .. ' Property "' .. surfix[a] ..
                 'Group" ' .. Argument_Xgrp[i].Time ..
                 ' ; SetUserVariable "LC_Fonction" 5 ; SetUserVariable "LC_Axes" "' .. a ..
                 '" ; SetUserVariable "LC_Layout" ' .. TLayNr ..
@@ -721,7 +719,8 @@ function Create_Block_Sequence(CurrentMacroNr, FirstSeqBlock, CurrentSeqNr, Last
             SequenceObject[CurrentSeqNr][3][1]:Set('Command',
                 'Go DataPool ' .. Construct_Pool .. ' Macro ' .. CurrentMacroNr .. '')
         else
-            SequenceObject[CurrentSeqNr][3][1]:Set('Command', 'Set DataPool ' .. Construct_Pool .. ' Matricks ' .. MatrickNrStart ..
+            SequenceObject[CurrentSeqNr][3][1]:Set('Command',
+                'Set DataPool ' .. Construct_Pool .. ' Matricks ' .. MatrickNrStart ..
                 ' Property "' .. surfix[a] .. 'Block" ' .. Argument_Xblock[i].Time ..
                 ' ; SetUserVariable "LC_Fonction" 6 ; SetUserVariable "LC_Axes" "' .. a ..
                 '" ; SetUserVariable "LC_Layout" ' .. TLayNr ..
@@ -856,7 +855,8 @@ function Create_Wings_Sequence(CurrentMacroNr, FirstSeqWings, CurrentSeqNr, Last
             SequenceObject[CurrentSeqNr][3][1]:Set('Command',
                 'Go DataPool ' .. Construct_Pool .. ' Macro ' .. CurrentMacroNr .. '')
         else
-            SequenceObject[CurrentSeqNr][3][1]:Set('Command', 'Set DataPool ' .. Construct_Pool .. ' Matricks ' .. MatrickNrStart .. ' Property "' .. surfix[a] ..
+            SequenceObject[CurrentSeqNr][3][1]:Set('Command',
+                'Set DataPool ' .. Construct_Pool .. ' Matricks ' .. MatrickNrStart .. ' Property "' .. surfix[a] ..
                 'Wings" ' .. Argument_Xwings[i].Time ..
                 '  ; SetUserVariable "LC_Fonction" 7 ; SetUserVariable "LC_Axes" "' .. a ..
                 '" ; SetUserVariable "LC_Layout" ' .. TLayNr ..

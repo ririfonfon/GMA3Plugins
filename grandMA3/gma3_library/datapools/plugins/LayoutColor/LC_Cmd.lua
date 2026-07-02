@@ -583,7 +583,7 @@ function Command_Title(title, TLayNr, LayNr, LayX, LayY, Pw, Ph, align, Construc
         Layout_Object[TLayNr][Nr.No]:Set('customtextalignmenth', 'Left')
         Layout_Object[TLayNr][Nr.No]:Set('customtextalignmentv', 'Bottom')
     end
-
+    return Nr.No
 end -- end function Command_Title(...)
 
 function Command_Ext_Suite(CurrentSeqNr, SequenceObject)
@@ -619,7 +619,6 @@ function Command_Ext_Suite(CurrentSeqNr, SequenceObject)
     SequenceObject[CurrentSeqNr]:Set('Lock', '0')
     SequenceObject[CurrentSeqNr]:Set('SequMIB', '0')
     SequenceObject[CurrentSeqNr]:Set('SequMIBMode', '1')
-
 end -- end function Command_Ext_Suite(...)
 
 function LC_Build_Tag(prefix, NbGroup, surfix, Time_Argument)

@@ -374,7 +374,7 @@ function LC_Construct_Layout(TLay, SeqNrStart, MacroNrStart, MatrickNrStart, Mat
     -- Create Function for X Y Z
     for a = 1, 3 do
         -- Create Sequence FADE
-        CurrentSeqNr, Delay_F_Element, LayNr, LayX, Current_Id_Lay, Fade_Element, CurrentMacroNr =
+        CurrentSeqNr, Delay_F_Element, LayNr, LayX, Current_Id_Lay, Fade_Element, CurrentMacroNr, First_Id_Lay =
             Create_Fade_Sequences(MakeX, FirstSeqTime, LastSeqTime, CurrentSeqNr, CurrentMacroNr, prefix, surfix,
                 First_Id_Lay, LayNr, MatrickNrStart, TLayNr, Fade_Element, Argument_Fade, AppImp, LayX, LayY, LayW, LayH,
                 SeqNrStart, SeqNrEnd, Current_Id_Lay, Delay_F_Element, a, Construct_Pool, Call_Pool, Time_Argument)
@@ -395,7 +395,7 @@ function LC_Construct_Layout(TLay, SeqNrStart, MacroNrStart, MatrickNrStart, Mat
         -- end Create Sequences DelayTo
 
         -- Create_Sequence_Phase
-        Current_Id_Lay, CurrentMacroNr, LayY, LayX, LayNr, CurrentSeqNr, Group_Element, Phase_Element =
+        Current_Id_Lay, CurrentMacroNr, LayY, LayX, LayNr, CurrentSeqNr, Group_Element, Phase_Element, First_Id_Lay =
             Create_Phase_Sequence(LayY, LayX, LayW, a, First_Id_Lay, LayNr, CurrentSeqNr, Current_Id_Lay, CurrentMacroNr,
                 prefix, surfix, MatrickNrStart, TLayNr, Phase_Element, MatrickNr, AppImp, MakeX, LayH, RefX,
                 Group_Element, Construct_Pool, Call_Pool, Time_Argument)
