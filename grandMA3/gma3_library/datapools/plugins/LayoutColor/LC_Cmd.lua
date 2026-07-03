@@ -350,8 +350,7 @@ function Create_Appearances_Sequences(CurrentMacroNr, SelectedGelNr, NbGroup, Re
             -- Create Sequences
             LC_Check_Size_Pool(CurrentSeqNr, SequenceObject)
             SequenceObject:Create(CurrentSeqNr)
-            SequenceObject[CurrentSeqNr]:Set('Name',
-                "'" .. prefix .. StringColName .. "_Group_" .. g .. "'")
+            SequenceObject[CurrentSeqNr]:Set('Name', prefix .. StringColName .. "_Group_" .. g)
             LC_Sequence_Defo(SequenceObject, CurrentSeqNr)
             SequenceObject[CurrentSeqNr]:Set('TRACKING', 'No')
             SequenceObject[CurrentSeqNr]:Set('PRIORITY', 'HTP')
@@ -402,7 +401,7 @@ function Create_Appearances_Sequences(CurrentMacroNr, SelectedGelNr, NbGroup, Re
 
         LC_Check_Size_Pool(CurrentSeqNr, SequenceObject)
         SequenceObject:Create(CurrentSeqNr)
-        SequenceObject[CurrentSeqNr]:Set('Name', "'" .. prefix .. "Tricks_Group_" .. g .. "'")
+        SequenceObject[CurrentSeqNr]:Set('Name', prefix .. "Tricks_Group_" .. g)
         LC_Sequence_Defo(SequenceObject, CurrentSeqNr)
         SequenceObject[CurrentSeqNr]:Set('TRACKING', 'No')
         SequenceObject[CurrentSeqNr]:Set('PRIORITY', 'HTP')
@@ -432,7 +431,7 @@ function Create_Appearances_Sequences(CurrentMacroNr, SelectedGelNr, NbGroup, Re
 
         LC_Check_Size_Pool(CurrentSeqNr, SequenceObject)
         SequenceObject:Create(CurrentSeqNr)
-        SequenceObject[CurrentSeqNr]:Set('Name', "'" .. prefix .. "Tricksh" .. '_Group_' .. g .. "'")
+        SequenceObject[CurrentSeqNr]:Set('Name', prefix .. "Tricksh" .. '_Group_' .. g )
         LC_Sequence_Defo(SequenceObject, CurrentSeqNr)
         SequenceObject[CurrentSeqNr]:Set('TRACKING', 'No')
         SequenceObject[CurrentSeqNr]:Set('PRIORITY', 'HTP')
@@ -453,7 +452,7 @@ function Create_Appearances_Sequences(CurrentMacroNr, SelectedGelNr, NbGroup, Re
 
         LC_Check_Size_Pool(CurrentMacroNr, MacroObject)
         MacroObject:Create(CurrentMacroNr)
-        MacroObject[CurrentMacroNr]:Set('Name', "'" .. prefix .. '_Group_' .. g .. "'")
+        MacroObject[CurrentMacroNr]:Set('Name', prefix .. '_Group_' .. g)
         MacroObject[CurrentMacroNr]:Set('Appearance', AppearObject[AppTricks[3].Nr])
         MacroObject[CurrentMacroNr]:Insert(1)
 
@@ -498,7 +497,7 @@ function Create_All_Color(TCol, CurrentSeqNr, prefix, TLayNr, LayNr, NrNeed, Lay
         end
         LC_Check_Size_Pool(CurrentSeqNr, SequenceObject)
         SequenceObject:Create(CurrentSeqNr)
-        SequenceObject[CurrentSeqNr]:Set('Name', "'" .. prefix .. 'ALL' .. StringColName .. "ALL'")
+        SequenceObject[CurrentSeqNr]:Set('Name', prefix .. 'ALL' .. StringColName .. "ALL")
         LC_Sequence_Defo(SequenceObject, CurrentSeqNr)
         SequenceObject[CurrentSeqNr]:Set('TRACKING', 'No')
         SequenceObject[CurrentSeqNr]:Set('PRIORITY', 'HTP')

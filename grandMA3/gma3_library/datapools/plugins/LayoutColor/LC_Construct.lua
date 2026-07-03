@@ -454,15 +454,18 @@ function LC_Construct_Layout(TLay, SeqNrStart, MacroNrStart, MatrickNrStart, Mat
         -- CmdIndirectWait('ChangeDestination Root')
     end
     -- end line macro X Y Z Call
-end
+    Echo('line macro xyz ok')
 
-local function suite()
+
     -- add Kill all LCx_
-    if TLayNrRef then
-        LayY = TLay[TLayNrRef].DimensionH / 2
-    else
-        LayY = 540
-    end
+    -- Echo(' 1 ' .. TLayNr)
+    -- Echo(' 2 ' .. LayY)
+    -- Echo(' 3 ' .. TLay[TLayNr].DimensionH)
+    -- if TLayNrRef then
+    --     LayY = TLay[TLayNr].DimensionH / 2
+    -- else
+    LayY = 540
+    -- end
 
     LayY = math.floor(LayY + 20) -- Add offset for Layout Element distance
     LayY = math.floor(LayY + (120 * ColLgnCount))
@@ -470,17 +473,19 @@ local function suite()
     LayNr = math.floor(LayNr + 1)
     LC_Check_Size_Pool(CurrentSeqNr, SequenceObject)
     SequenceObject:Create(CurrentSeqNr)
-    SequenceObject[CurrentSeqNr]:Set('Name', "'" .. prefix .. "KILL_ALL'")
+    SequenceObject[CurrentSeqNr]:Set('Name', prefix .. "KILL_ALL")
     LC_Sequence_Defo(SequenceObject, CurrentSeqNr)
     SequenceObject[CurrentSeqNr]:Set('TRACKING', 'No')
     SequenceObject[CurrentSeqNr]:Set('PRIORITY', 'HTP')
     SequenceObject[CurrentSeqNr]:Set('SOFTLTP', 'No')
 
     SequenceObject[CurrentSeqNr]:Insert()
-    SequenceObject[CurrentSeqNr]:Set('Appearance', prefix .. "'skull_off'")
+    SequenceObject[CurrentSeqNr]:Set('Appearance', '[[skull_white_png]]')
     SequenceObject[CurrentSeqNr][3]:Set('No', 1)
-    SequenceObject[CurrentSeqNr][3]:Set('Appearance', prefix .. "'skull_on'")
-    SequenceObject[CurrentSeqNr][3]:Set('Command', 'Off DataPool ' .. Construct_Pool .. ' Sequence \'' .. prefix .. '*')
+    SequenceObject[CurrentSeqNr][3]:Create(1)
+    SequenceObject[CurrentSeqNr][3][1]:Set('Appearance', '[[skull_black_png]]')
+    SequenceObject[CurrentSeqNr][3][1]:Set('Command',
+        'Off DataPool ' .. Construct_Pool .. ' Sequence \'' .. prefix .. '*')
 
 
     -- CmdIndirectWait('ClearAll /nu')
@@ -499,6 +504,7 @@ local function suite()
     Layout_Object[TLayNr][Nr.No]:Set('height', LayH)
     Layout_Object[TLayNr][Nr.No]:Set('action', 'Go+')
     Layout_Object[TLayNr][Nr.No]:Set('Note', 'Kill_All')
+    LC_Set_Def(TLayNr, Nr, Layout_Object)
 
     -- CmdIndirectWait("Assign Seq " .. CurrentSeqNr .. " at Layout " .. TLayNr)
     -- CmdIndirectWait('Set Layout ' .. TLayNr .. '.' .. LayNr ..
@@ -506,7 +512,10 @@ local function suite()
     --     ' PositionW ' .. LayW .. ' PositionH ' .. LayH ..
     --     ' VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0 VisibilityBorder=0 VisibilityIcon=0')
     -- end Kill all LCx_
+    Echo('create Kill all LCx_ ok')
+end
 
+local function suite()
     -- Create_All_Color
     LayNr, LayX, First_All_Color = Create_All_Color(TCol, CurrentSeqNr, prefix, TLayNr, LayNr, NrNeed, LayX, LayY,
         LayW, LayH, MaxColLgn, RefX, AppNr, Construct_Pool)
