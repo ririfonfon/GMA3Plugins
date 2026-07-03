@@ -18,8 +18,8 @@ function Create_Fade_Sequences(MakeX, FirstSeqTime, LastSeqTime, CurrentSeqNr, C
     local tag_fade
 
     -- Setup Fade Sequence
-    local old_prefix                                     = prefix
-    prefix                                               = 'o' .. prefix
+    local old_prefix = prefix
+    prefix           = 'o' .. prefix
     if MakeX then
         FirstSeqTime = CurrentSeqNr
         First_Id_Lay[37] = CurrentSeqNr
@@ -35,7 +35,7 @@ function Create_Fade_Sequences(MakeX, FirstSeqTime, LastSeqTime, CurrentSeqNr, C
     MacroObject[CurrentMacroNr]:Insert(1)
     if MakeX then
         MacroObject[CurrentMacroNr][1]:Set('Command', '')
-        Fade_Element = math.floor(LayNr + 3)
+        Fade_Element = math.floor(LayNr + 6)
     else
         MacroObject[CurrentMacroNr][1]:Set('Command', '')
     end
@@ -179,7 +179,7 @@ function Create_Delay_From_Sequences(First_Id_Lay, LayNr, CurrentSeqNr, Current_
     local LastSeqDelayFrom                               = math.floor(CurrentSeqNr + 4)
 
     -- Create Macro DelayFrom Input
-    Delay_F_Element                                      = Delay_F_Element + 2
+    -- Delay_F_Element                                      = Delay_F_Element + 2
     Create_Macro_Delay_From(CurrentMacroNr, prefix, surfix, a, FirstSeqDelayFrom, LastSeqDelayFrom,
         MatrickNrStart, 2, TLayNr, Delay_F_Element, MatrickNr, Construct_Pool, Call_Pool)
 
@@ -312,7 +312,7 @@ function Create_Delay_To_Sequences(a, First_Id_Lay, LayNr, CurrentSeqNr, Current
     local FirstSeqDelayTo                                = CurrentSeqNr
     local LastSeqDelayTo                                 = math.floor(CurrentSeqNr + 4)
     -- Create Macro DelayTo Input
-    Delay_T_Element                                      = Delay_T_Element + 2
+    -- Delay_T_Element                                      = Delay_T_Element + 2
     Create_Macro_Delay_To(CurrentMacroNr, prefix, surfix, a, FirstSeqDelayTo, LastSeqDelayTo, MatrickNrStart,
         3, TLayNr, Delay_T_Element, MatrickNr, Construct_Pool, Call_Pool)
 
@@ -450,7 +450,7 @@ function Create_Phase_Sequence(LayY, LayX, LayW, a, First_Id_Lay, LayNr, Current
     end
     Current_Id_Lay = First_Id_Lay[13]
     CurrentMacroNr = math.floor(CurrentMacroNr + 1)
-    Phase_Element = Phase_Element + 2
+    -- Phase_Element = Phase_Element + 2
     Create_Macro_Phase(CurrentMacroNr, prefix, surfix, a, MatrickNrStart, 4, TLayNr, Phase_Element, MatrickNr,
         Construct_Pool, Call_Pool)
 
@@ -538,7 +538,7 @@ function Create_Group_Sequence(CurrentMacroNr, FirstSeqGrp, CurrentSeqNr, LastSe
     FirstSeqGrp                                          = CurrentSeqNr
     LastSeqGrp                                           = math.floor(CurrentSeqNr + 4)
     -- Create Macro Group Input
-    Group_Element                                        = Group_Element + 2
+    -- Group_Element                                        = Group_Element + 2
     Create_Macro_Group(CurrentMacroNr, prefix, surfix, a, FirstSeqGrp, LastSeqGrp, MatrickNrStart, 5, TLayNr,
         Group_Element, MatrickNr, Construct_Pool, Call_Pool)
 
@@ -670,7 +670,7 @@ function Create_Block_Sequence(CurrentMacroNr, FirstSeqBlock, CurrentSeqNr, Last
     FirstSeqBlock                                        = CurrentSeqNr
     LastSeqBlock                                         = math.floor(CurrentSeqNr + 4)
     -- Create Macro Block Input
-    Block_Element                                        = Block_Element + 2
+    -- Block_Element                                        = Block_Element + 2
     Create_Macro_Block(CurrentMacroNr, prefix, surfix, a, FirstSeqBlock, LastSeqBlock, MatrickNrStart, 6,
         TLayNr, Block_Element, MatrickNr, Construct_Pool, Call_Pool)
 
@@ -806,7 +806,7 @@ function Create_Wings_Sequence(CurrentMacroNr, FirstSeqWings, CurrentSeqNr, Last
     FirstSeqWings                                        = CurrentSeqNr
     LastSeqWings                                         = math.floor(CurrentSeqNr + 4)
     -- Create Macro Wings Input
-    Wings_Element                                        = Wings_Element + 2
+    -- Wings_Element                                        = Wings_Element + 2
     Create_Macro_Wings(CurrentMacroNr, prefix, surfix, a, FirstSeqWings, LastSeqWings, MatrickNrStart, 7,
         TLayNr, Wings_Element, MatrickNr, Construct_Pool, Call_Pool)
 

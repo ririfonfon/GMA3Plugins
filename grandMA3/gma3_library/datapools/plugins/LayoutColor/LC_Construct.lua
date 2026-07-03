@@ -436,26 +436,27 @@ function LC_Construct_Layout(TLay, SeqNrStart, MacroNrStart, MatrickNrStart, Mat
         MakeX = false
     end --end  Create Function for X Y Z
     Echo('create function xyz ok')
-end
 
-local function suite()
     -- add line macro X Y Z Call
     for i = 1, 3 do
         MacroObject[First_Id_Lay[33 + i]]:Insert(32)
-        MacroObject[First_Id_Lay[33 + i]][32]:Set('Command',
-            'Off DataPool ' .. Construct_Pool .. ' Sequence ' .. First_Id_Lay[29] ..
-            ' + ' .. First_Id_Lay[30] .. ' + ' .. First_Id_Lay[31] .. ' - ' .. First_Id_Lay[28 + i])
+        MacroObject[First_Id_Lay[33 + i]][32]:Set('Command', '')
+        -- MacroObject[First_Id_Lay[33 + i]][32]:Set('Command',
+        -- 'Off DataPool ' .. Construct_Pool .. ' Sequence ' .. First_Id_Lay[29] ..
+        -- ' + ' .. First_Id_Lay[30] .. ' + ' .. First_Id_Lay[31] .. ' - ' .. First_Id_Lay[28 + i])
 
         -- CmdIndirectWait('ChangeDestination Macro ' .. First_Id_Lay[33 + i])
         -- Cmd('Insert')
         -- CmdIndirectWait('Set 32 Command=\'Off DataPool ' .. Construct_Pool .. ' Sequence ' .. First_Id_Lay[29] ..
         --     ' + ' .. First_Id_Lay[30] .. ' + ' .. First_Id_Lay[31] .. ' - ' .. First_Id_Lay[28 + i])
         Add_Macro_Call(i, TLayNr, Fade_Element, MatrickNrStart, Delay_F_Element, Delay_T_Element, Phase_Element,
-            Group_Element, Block_Element, Wings_Element, Construct_Pool, First_Id_Lay[33 + i])
+            Group_Element, Block_Element, Wings_Element, Construct_Pool, First_Id_Lay[33 + i], Call_Pool)
         -- CmdIndirectWait('ChangeDestination Root')
     end
     -- end line macro X Y Z Call
+end
 
+local function suite()
     -- add Kill all LCx_
     if TLayNrRef then
         LayY = TLay[TLayNrRef].DimensionH / 2

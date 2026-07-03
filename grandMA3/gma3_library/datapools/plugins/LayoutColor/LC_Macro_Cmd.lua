@@ -644,12 +644,9 @@ function Create_Macro_Fade_E(CurrentMacroNr, prefix, Argument_Fade, i, surfix, a
 end
 
 function Add_Macro_Call(a, TLayNr, Fade_Element, MatrickNrStart, Delay_F_Element, Delay_T_Element, Phase_Element,
-                        Group_Element, Block_Element, Wings_Element, Construct_Pool, CurrentMacroNr)
+                        Group_Element, Block_Element, Wings_Element, Construct_Pool, CurrentMacroNr, Call_Pool)
     local MacroObject, SequenceObject, Layout_Object, Nr = LC_Get_Object(Construct_Pool)
 
-    LC_Check_Size_Pool(CurrentMacroNr, MacroObject)
-    MacroObject:Create(CurrentMacroNr)
-    MacroObject[CurrentMacroNr]:Set('Name', "'" .. prefix .. Argument_Fade[i].name .. surfix[a] .. "'")
     for b = 33, 81 do
         MacroObject[CurrentMacroNr]:Insert(b)
     end
