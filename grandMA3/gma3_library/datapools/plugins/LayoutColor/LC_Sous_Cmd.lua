@@ -189,3 +189,15 @@ function LC_Dialog_End(message)
     mybutton.Text = message
 end -- end function LC_Dialog_End(message)
 
+function LC_Search_Addr_Nat_App(label)
+    local AppearanceObject = Root().ShowData.Appearances:Children()
+    local Addr_Nat_Panel
+    for i in pairs(AppearanceObject) do
+        if AppearanceObject[i].Name ~= nil then
+            if AppearanceObject[i].Name == label then
+                Addr_Nat_Panel = AppearanceObject[i]:AddrNative()
+            end
+        end
+    end
+    return Addr_Nat_Panel
+end

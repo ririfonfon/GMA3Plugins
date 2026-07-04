@@ -8,7 +8,7 @@ Version:
 Rewrite by Richard Fontaine "RIRI", June 2026.
 --]]
 
-function Create_Favourite_Macro(prefix, CurrentMacroNr, TLayNr, Construct_Pool, Favourite_Nr)
+function LC_Create_Favourite_Macro(prefix, CurrentMacroNr, TLayNr, Construct_Pool, Favourite_Nr)
     local macro_num = CurrentMacroNr + 1
     CurrentMacroNr = macro_num + Favourite_Nr
     local macropool = ShowData().DataPools[Construct_Pool].Macros

@@ -382,7 +382,8 @@ function LC_Construct_Layout(TLay, SeqNrStart, MacroNrStart, MatrickNrStart, Mat
 
         -- Create Sequences Delayfrom
         Current_Id_Lay, First_Id_Lay, LayX, LayNr, Delay_T_Element, CurrentSeqNr, CurrentMacroNr, Delay_F_Element =
-            LC_Create_Delay_From_Sequences(First_Id_Lay, LayNr, CurrentSeqNr, Current_Id_Lay, prefix, surfix, Argument_Delay,
+            LC_Create_Delay_From_Sequences(First_Id_Lay, LayNr, CurrentSeqNr, Current_Id_Lay, prefix, surfix,
+                Argument_Delay,
                 AppImp, CurrentMacroNr, a, MatrickNrStart, TLayNr, Delay_F_Element, MatrickNr, MakeX, LayX, LayY, LayW,
                 LayH, Delay_T_Element, Construct_Pool, Call_Pool, Time_Argument)
         -- end Create Sequences Delayfrom
@@ -396,7 +397,8 @@ function LC_Construct_Layout(TLay, SeqNrStart, MacroNrStart, MatrickNrStart, Mat
 
         -- Create_Sequence_Phase
         Current_Id_Lay, CurrentMacroNr, LayY, LayX, LayNr, CurrentSeqNr, Group_Element, Phase_Element, First_Id_Lay =
-            LC_Create_Phase_Sequence(LayY, LayX, LayW, a, First_Id_Lay, LayNr, CurrentSeqNr, Current_Id_Lay, CurrentMacroNr,
+            LC_Create_Phase_Sequence(LayY, LayX, LayW, a, First_Id_Lay, LayNr, CurrentSeqNr, Current_Id_Lay,
+                CurrentMacroNr,
                 prefix, surfix, MatrickNrStart, TLayNr, Phase_Element, MatrickNr, AppImp, MakeX, LayH, RefX,
                 Group_Element, Construct_Pool, Call_Pool, Time_Argument)
         -- end Sequences Phase
@@ -444,77 +446,31 @@ function LC_Construct_Layout(TLay, SeqNrStart, MacroNrStart, MatrickNrStart, Mat
     -- end line macro X Y Z Call
     Echo('line macro xyz ok')
 
-    CurrentSeqNr, Nr, LayX, LayY, LayNr = LC_Create_KillallLCx(LayY, LayX, LayNr, ColLgnCount, RefX, CurrentSeqNr, SequenceObject, Nr,
+    CurrentSeqNr, Nr, LayX, LayY, LayNr = LC_Create_KillallLCx(LayY, LayX, LayNr, ColLgnCount, RefX, CurrentSeqNr,
+        SequenceObject, Nr,
         Layout_Object, TLayNr, LayW, LayH, prefix, Construct_Pool)
 
     Echo('create Kill all LCx_ ok')
     -- LC_Create_All_Color
     LayNr, LayX, First_All_Color = LC_Create_All_Color(TCol, CurrentSeqNr, prefix, TLayNr, LayNr, NrNeed, LayX, LayY,
-    LayW, LayH, MaxColLgn, RefX, AppNr, Construct_Pool)
+        LayW, LayH, MaxColLgn, RefX, AppNr, Construct_Pool)
     -- LC_Create_All_Color
     Echo('LC_Create_All_Color ok')
+
+    -- add Macro priority
+    LC_Macro_Priority(LayX, LayY, Ligne_Inc, CurrentMacroNr, First_All_Color, LayW, LayH, TLayNr, LayNr, Construct_Pool,
+        prefix, Call_Pool)
+    -- end Macro priority
+    Echo('LC_Macro_Priority ok')
 end
 
 local function suite()
-
-    -- add Macro priority
-    for k in pairs(DataPool().Layouts:Children()) do
-        if (math.floor(TLayNr) == math.floor(tonumber(DataPool().Layouts:Children()[k].NO))) then
-            TLayNrRef = k
-        end
-    end
-    -- UsedW = DataPool().Layouts:Children()[TLayNrRef].UsedW / 2
-    -- LayX = math.floor(UsedW - 20)
-    LayX = -330
-    LayY = 700
-    if Ligne_Inc then
-        LayY = 800
-    end
-    CurrentMacroNr = math.floor(CurrentMacroNr)
-
-    local Color_message = 'SetUserVariable "LC_Sequence" "' .. First_All_Color .. '"'
-    Color_message = string.gsub(Color_message, "'", "")
-    Echo('ici ' .. CurrentMacroNr)
-    LC_Check_Size_Pool(CurrentMacroNr, MacroObject)
-    MacroObject:Create(CurrentMacroNr)
-    MacroObject[CurrentMacroNr]:Set('Name', "'" .. "Priority'")
-    for b = 1, 7 do
-        MacroObject[CurrentMacroNr]:Insert(b)
-    end
-    MacroObject[CurrentMacroNr][1]:Set('Command',
-        'Edit DataPool ' .. Construct_Pool .. ' Sequence "' .. prefix .. '*" Property "priority"')
-    MacroObject[CurrentMacroNr][2]:Set('Command', 'SetUserVariable "LC_Fonction" 8')
-    MacroObject[CurrentMacroNr][3]:Set('Command', 'SetUserVariable "LC_Layout" ' .. TLayNr)
-    MacroObject[CurrentMacroNr][4]:Set('Command', 'SetUserVariable "LC_Element" ' .. LayNr)
-    MacroObject[CurrentMacroNr][5]:Set('Command', 'SetUserVariable "LC_DataPool" ' .. Construct_Pool)
-    MacroObject[CurrentMacroNr][6]:Set('Command', Color_message)
-    MacroObject[CurrentMacroNr][7]:Set('Command', 'Call DataPool ' .. Construct_Pool .. ' Plugin "LC_View"')
-
-    Nr = Layout_Object[TLayNr]:Acquire()
-    Layout_Object[TLayNr][Nr.No]:Set('Object', MacroObject[CurrentMacroNr])
-    Layout_Object[TLayNr][Nr.No]:Set('posx', LayX)
-    Layout_Object[TLayNr][Nr.No]:Set('posy', LayY)
-    Layout_Object[TLayNr][Nr.No]:Set('width', LayW)
-    Layout_Object[TLayNr][Nr.No]:Set('height', LayH)
-    Layout_Object[TLayNr][Nr.No]:Set('action', 'Go+')
-    Layout_Object[TLayNr][Nr.No]:Set('Note', 'Seq Color')
-    LC_Set_Def(TLayNr, Nr, Layout_Object)
-    Layout_Object[TLayNr][Nr.No]:Set('Appearance', 'p_super_png')
-
-    -- CmdIndirectWait('Assign Macro ' .. CurrentMacroNr .. ' at Layout ' .. TLayNr)
-    -- CmdIndirectWait('Set Layout ' .. TLayNr .. '.' .. LayNr ..
-    --     ' Property PosX ' .. LayX .. ' PosY ' .. LayY ..
-    --     ' PositionW ' .. LayW .. ' PositionH ' .. LayH ..
-    --     ' VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0 VisibilityBorder=0')
-    -- CmdIndirectWait('Set Layout ' .. TLayNr .. "." .. LayNr .. ' Property "Appearance" "p_super_png" ')
-    -- CmdIndirectWait('ChangeDestination Root')
-    -- end Macro priority
-
     -- add Favourites
     local Macro_Num_Start
     local Macro_Num_End
     LayNr = math.floor(LayNr + 1)
-    CurrentMacroNr, Macro_Num_End = Create_Favourite_Macro(prefix, CurrentMacroNr, TLayNr, Construct_Pool, Favourite_Nr)
+    CurrentMacroNr, Macro_Num_End = LC_Create_Favourite_Macro(prefix, CurrentMacroNr, TLayNr, Construct_Pool,
+        Favourite_Nr)
     Macro_Num_Start = CurrentMacroNr + 1
     Create_Favourite_Layout(LayNr, CurrentMacroNr, LayH, LayW, TLayNr, Construct_Pool, Ligne_Inc, Favourite_Nr)
     -- end Favourites
