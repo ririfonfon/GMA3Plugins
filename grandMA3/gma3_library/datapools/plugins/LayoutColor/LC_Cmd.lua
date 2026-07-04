@@ -9,7 +9,7 @@ Rewrite by Richard Fontaine "RIRI", June 2026.
 --]]
 
 
-function Create_Matricks(MatrickNrStart, prefix, NaLay, NbGroup, MatrickNr, pool_construct)
+function LC_Create_Matricks(MatrickNrStart, prefix, NaLay, NbGroup, MatrickNr, pool_construct)
     local MatrickObject = Root().ShowData.DataPools[pool_construct].Matricks
     Echo('pool ' .. pool_construct .. ' Matrick ' .. MatrickNrStart)
     LC_Check_Size_Pool(MatrickNrStart, MatrickObject)
@@ -30,9 +30,9 @@ function Create_Matricks(MatrickNrStart, prefix, NaLay, NbGroup, MatrickNr, pool
         MatrickNr = math.floor(MatrickNr + 1)
     end
     return MatrickNr
-end -- end Create_Matricks
+end -- end LC_Create_Matricks
 
-function Create_Appear_Tricks(AppTricks, AppNr, prefix)
+function LC_Create_Appear_Tricks(AppTricks, AppNr, prefix)
     local AppObject = Root().ShowData.Appearances
     for q in pairs(AppTricks) do
         AppTricks[q].Nr = math.floor(AppNr)
@@ -44,9 +44,9 @@ function Create_Appear_Tricks(AppTricks, AppNr, prefix)
         AppNr = math.floor(AppNr + 1)
     end
     return AppNr, AppTricks
-end -- end Create_Appear_Tricks
+end -- end LC_Create_Appear_Tricks
 
-function Create_Appearances(AppNr, prefix, TCol, NrAppear, StColCode, StColName, StringColName)
+function LC_Create_Appearances(AppNr, prefix, TCol, NrAppear, StColCode, StColName, StringColName)
     local AppObject = Root().ShowData.Appearances
     AppObject:Acquire()
     local StAppNameOn
@@ -84,9 +84,9 @@ function Create_Appearances(AppNr, prefix, TCol, NrAppear, StColCode, StColName,
     end
     -- end
     return NrAppear
-end -- end Create_Appearances
+end -- end LC_Create_Appearances
 
-function Create_Preset_25(TCol, StColName, StringColName, SelectedGelNr, prefix, All_5_NrEnd, All_5_Current,
+function LC_Create_Preset_25(TCol, StColName, StringColName, SelectedGelNr, prefix, All_5_NrEnd, All_5_Current,
                           pool_construct)
     local Preset25Object = Root().ShowData.DataPools[pool_construct].PresetPools[25]
     Preset25Object:Set('PresetMode', 'Universal')
@@ -106,14 +106,14 @@ function Create_Preset_25(TCol, StColName, StringColName, SelectedGelNr, prefix,
     end
     CmdIndirectWait("ClearAll /nu")
     return All_5_NrEnd, All_5_Current
-end -- end Create_Preset_25
+end -- end LC_Create_Preset_25
 
 
 
 
 
 -- SelectedGrp,SelectedGrpNo, SelectedGrpName,
-function Create_Appearances_Sequences(CurrentMacroNr, SelectedGelNr, NbGroup, RefX, LayY,
+function LC_Create_Appearances_Sequences(CurrentMacroNr, SelectedGelNr, NbGroup, RefX, LayY,
                                       LayH, NrAppear, AppNr, NrNeed, TLayNr, LayW, LayNr,
                                       CurrentSeqNr, MaxColLgn, TCol, prefix,
                                       All_5_NrStart, MatrickNrStart, AppTricks,
@@ -321,9 +321,9 @@ function Create_Appearances_Sequences(CurrentMacroNr, SelectedGelNr, NbGroup, Re
         LayY = math.floor(LayY - 20) -- Add offset for Layout Element distance
     end                              -- end GRP
     return LayY, NrNeed, LayNr, CurrentSeqNr, CurrentMacroNr, ColLgnCount, Ligne_Inc
-end                                  -- end Create_Appearances_Sequences
+end                                  -- end LC_Create_Appearances_Sequences
 
-function Create_All_Color(TCol, CurrentSeqNr, prefix, TLayNr, LayNr, NrNeed, LayX, LayY, LayW, LayH, MaxColLgn,
+function LC_Create_All_Color(TCol, CurrentSeqNr, prefix, TLayNr, LayNr, NrNeed, LayX, LayY, LayW, LayH, MaxColLgn,
                           RefX, AppNr, Construct_Pool)
     local MacroObject, SequenceObject, Layout_Object, Nr = LC_Get_Object(Construct_Pool)
     LayNr = math.floor(LayNr + 1)
@@ -356,7 +356,7 @@ function Create_All_Color(TCol, CurrentSeqNr, prefix, TLayNr, LayNr, NrNeed, Lay
             prefix .. StringColName .. '* ; Off DataPool ' .. Construct_Pool .. ' Sequence ' ..
             CurrentSeqNr .. '\'')
 
-        Command_Ext_Suite(CurrentSeqNr, SequenceObject)
+        LC_Command_Ext_Suite(CurrentSeqNr, SequenceObject)
 
         -- CmdIndirectWait("ClearAll /nu")
         -- CmdIndirectWait('Store Sequence ' .. CurrentSeqNr .. ' \'' .. prefix .. 'ALL' .. StringColName .. 'ALL\'')
@@ -399,9 +399,9 @@ function Create_All_Color(TCol, CurrentSeqNr, prefix, TLayNr, LayNr, NrNeed, Lay
     LayX = math.floor(LayX + LayW + 20)
 
     return LayNr, LayX, First_All_Color
-end -- end Create_All_Color
+end -- end LC_Create_All_Color
 
-function Command_Title(title, TLayNr, LayNr, LayX, LayY, Pw, Ph, align, Construct_Pool)
+function LC_Command_Title(title, TLayNr, LayNr, LayX, LayY, Pw, Ph, align, Construct_Pool)
     local MacroObject, SequenceObject, Layout_Object, Nr = LC_Get_Object(Construct_Pool)
 
     Nr = Layout_Object[TLayNr]:Acquire()
@@ -428,7 +428,7 @@ function Command_Title(title, TLayNr, LayNr, LayX, LayY, Pw, Ph, align, Construc
         Layout_Object[TLayNr][Nr.No]:Set('customtextalignmentv', 'Bottom')
     end
     return Nr.No
-end -- end function Command_Title(...)
+end -- end function LC_Command_Title(...)
 
 
 function LC_Build_Tag(prefix, NbGroup, surfix, Time_Argument)
@@ -482,7 +482,7 @@ function LC_Build_Tag(prefix, NbGroup, surfix, Time_Argument)
     end
 end
 
-function Create_Fade_Sequences(MakeX, FirstSeqTime, LastSeqTime, CurrentSeqNr, CurrentMacroNr, prefix, surfix,
+function LC_Create_Fade_Sequences(MakeX, FirstSeqTime, LastSeqTime, CurrentSeqNr, CurrentMacroNr, prefix, surfix,
                                First_Id_Lay, LayNr, MatrickNrStart, TLayNr, Fade_Element, Argument_Fade,
                                AppImp, LayX, LayY, LayW, LayH, SeqNrStart, SeqNrEnd, Current_Id_Lay, Delay_F_Element, a,
                                Construct_Pool, Call_Pool, Time_Argument)
@@ -552,7 +552,7 @@ function Create_Fade_Sequences(MakeX, FirstSeqTime, LastSeqTime, CurrentSeqNr, C
             SeqNrStart .. ' Thru ' .. SeqNrEnd .. ' UseExecutorTime=' .. Argument_Fade[1].UseExTime .. '')
 
         Cmd('Assign ' .. SequenceObject[CurrentSeqNr] .. " at " .. tag_fade)
-        Command_Ext_Suite(CurrentSeqNr, SequenceObject)
+        LC_Command_Ext_Suite(CurrentSeqNr, SequenceObject)
 
         Nr = Layout_Object[TLayNr]:Acquire()
         Layout_Object[TLayNr][Nr.No]:Set('Object', SequenceObject[CurrentSeqNr])
@@ -564,9 +564,9 @@ function Create_Fade_Sequences(MakeX, FirstSeqTime, LastSeqTime, CurrentSeqNr, C
         Layout_Object[TLayNr][Nr.No]:Set('Note', 'Fade')
         LC_Set_Def(TLayNr, Nr, Layout_Object)
 
-        LayNr = Command_Title('Ex.Time', TLayNr, LayNr, LayX, LayY, 700, 140, 1, Construct_Pool)
-        LayNr = Command_Title('FADE', TLayNr, LayNr, LayX, LayY, 700, 140, 2, Construct_Pool)
-        LayNr = Command_Title('none > none', TLayNr, LayNr, LayX, LayY, 700, 140, 3, Construct_Pool)
+        LayNr = LC_Command_Title('Ex.Time', TLayNr, LayNr, LayX, LayY, 700, 140, 1, Construct_Pool)
+        LayNr = LC_Command_Title('FADE', TLayNr, LayNr, LayX, LayY, 700, 140, 2, Construct_Pool)
+        LayNr = LC_Command_Title('none > none', TLayNr, LayNr, LayX, LayY, 700, 140, 3, Construct_Pool)
         LayX = math.floor(LayX + LayW + 20)
         LayNr = math.floor(LayNr + 1)
         CurrentSeqNr = math.floor(CurrentSeqNr + 1)
@@ -610,7 +610,7 @@ function Create_Fade_Sequences(MakeX, FirstSeqTime, LastSeqTime, CurrentSeqNr, C
         end
         SequenceObject[CurrentSeqNr][3][1]:Set('Appearance', AppImp[ia].Nr)
         SequenceObject[CurrentSeqNr]:Set('Appearance', AppImp[ib].Nr)
-        Command_Ext_Suite(CurrentSeqNr, SequenceObject)
+        LC_Command_Ext_Suite(CurrentSeqNr, SequenceObject)
         Cmd('Assign ' .. SequenceObject[CurrentSeqNr] .. " at " .. tag_fade)
         -- end Sequences
 
@@ -634,9 +634,9 @@ function Create_Fade_Sequences(MakeX, FirstSeqTime, LastSeqTime, CurrentSeqNr, C
     end -- end Sequences FADE
 
     return CurrentSeqNr, Delay_F_Element, LayNr, LayX, Current_Id_Lay, Fade_Element, CurrentMacroNr, First_Id_Lay
-end -- end Create_Fade_Sequences
+end -- end LC_Create_Fade_Sequences
 
-function Create_Delay_From_Sequences(First_Id_Lay, LayNr, CurrentSeqNr, Current_Id_Lay, prefix, surfix, Argument_Delay,
+function LC_Create_Delay_From_Sequences(First_Id_Lay, LayNr, CurrentSeqNr, Current_Id_Lay, prefix, surfix, Argument_Delay,
                                      AppImp, CurrentMacroNr, a, MatrickNrStart, TLayNr, Delay_F_Element, MatrickNr, MakeX,
                                      LayX, LayY, LayW, LayH, Delay_T_Element, Construct_Pool, Call_Pool, Time_Argument)
     local MacroObject, SequenceObject, Layout_Object, Nr = LC_Get_Object(Construct_Pool)
@@ -654,13 +654,13 @@ function Create_Delay_From_Sequences(First_Id_Lay, LayNr, CurrentSeqNr, Current_
 
     -- Create Macro DelayFrom Input
     -- Delay_F_Element                                      = Delay_F_Element + 2
-    Create_Macro_Delay_From(CurrentMacroNr, prefix, surfix, a, FirstSeqDelayFrom, LastSeqDelayFrom,
+    LC_Create_Macro_Delay_From(CurrentMacroNr, prefix, surfix, a, FirstSeqDelayFrom, LastSeqDelayFrom,
         MatrickNrStart, 2, TLayNr, Delay_F_Element, MatrickNr, Construct_Pool, Call_Pool)
 
     if MakeX then
-        Command_Title('DELAY FROM', TLayNr, LayNr, LayX, LayY, 580, 140, 2, Construct_Pool)
+        LC_Command_Title('DELAY FROM', TLayNr, LayNr, LayX, LayY, 580, 140, 2, Construct_Pool)
         LayNr = math.floor(LayNr + 1)
-        Command_Title('none', TLayNr, LayNr, LayX, LayY, 580, 140, 3, Construct_Pool)
+        LC_Command_Title('none', TLayNr, LayNr, LayX, LayY, 580, 140, 3, Construct_Pool)
         LayNr = math.floor(LayNr + 1)
     end
 
@@ -736,7 +736,7 @@ function Create_Delay_From_Sequences(First_Id_Lay, LayNr, CurrentSeqNr, Current_
         --         ' ; Call DataPool ' .. Construct_Pool .. ' Plugin "LC_View" ')
         -- end
         -- CmdIndirectWait('Set Sequence ' .. CurrentSeqNr .. ' Property Appearance=' .. AppImp[ib].Nr)
-        Command_Ext_Suite(CurrentSeqNr, SequenceObject)
+        LC_Command_Ext_Suite(CurrentSeqNr, SequenceObject)
 
         -- Add Squences to Layout
         if MakeX then
@@ -768,9 +768,9 @@ function Create_Delay_From_Sequences(First_Id_Lay, LayNr, CurrentSeqNr, Current_
         -- CurrentSeqNr = math.floor(CurrentSeqNr + 1)
     end -- end Sequences DelayFrom
     return Current_Id_Lay, First_Id_Lay, LayX, LayNr, Delay_T_Element, CurrentSeqNr, CurrentMacroNr, Delay_F_Element
-end     --Create_Delay_From_Sequences
+end     --LC_Create_Delay_From_Sequences
 
-function Create_Delay_To_Sequences(a, First_Id_Lay, LayNr, CurrentSeqNr, Current_Id_Lay, prefix, Argument_DelayTo, surfix,
+function LC_Create_Delay_To_Sequences(a, First_Id_Lay, LayNr, CurrentSeqNr, Current_Id_Lay, prefix, Argument_DelayTo, surfix,
                                    MatrickNrStart, TLayNr, Delay_T_Element, MatrickNr, AppImp, LayX, LayY, LayW, LayH,
                                    Phase_Element, CurrentMacroNr, MakeX, Construct_Pool, Call_Pool, Time_Argument)
     local MacroObject, SequenceObject, Layout_Object, Nr = LC_Get_Object(Construct_Pool)
@@ -787,13 +787,13 @@ function Create_Delay_To_Sequences(a, First_Id_Lay, LayNr, CurrentSeqNr, Current
     local LastSeqDelayTo                                 = math.floor(CurrentSeqNr + 4)
     -- Create Macro DelayTo Input
     -- Delay_T_Element                                      = Delay_T_Element + 2
-    Create_Macro_Delay_To(CurrentMacroNr, prefix, surfix, a, FirstSeqDelayTo, LastSeqDelayTo, MatrickNrStart,
+    LC_Create_Macro_Delay_To(CurrentMacroNr, prefix, surfix, a, FirstSeqDelayTo, LastSeqDelayTo, MatrickNrStart,
         3, TLayNr, Delay_T_Element, MatrickNr, Construct_Pool, Call_Pool)
 
     if MakeX then
-        Command_Title('DELAY TO', TLayNr, LayNr, LayX, LayY, 580, 140, 2, Construct_Pool)
+        LC_Command_Title('DELAY TO', TLayNr, LayNr, LayX, LayY, 580, 140, 2, Construct_Pool)
         LayNr = math.floor(LayNr + 1)
-        Command_Title('none', TLayNr, LayNr, LayX, LayY, 580, 140, 3, Construct_Pool)
+        LC_Command_Title('none', TLayNr, LayNr, LayX, LayY, 580, 140, 3, Construct_Pool)
         LayNr = math.floor(LayNr + 1)
     end
 
@@ -869,7 +869,7 @@ function Create_Delay_To_Sequences(a, First_Id_Lay, LayNr, CurrentSeqNr, Current
         --         ' ; Call DataPool ' .. Construct_Pool .. ' Plugin "LC_View" ')
         -- end
         -- CmdIndirectWait('Set Sequence ' .. CurrentSeqNr .. ' Property Appearance=' .. AppImp[ib].Nr)
-        Command_Ext_Suite(CurrentSeqNr, SequenceObject)
+        LC_Command_Ext_Suite(CurrentSeqNr, SequenceObject)
         -- end Sequences
         -- Add Squences to Layout
         if MakeX then
@@ -900,7 +900,7 @@ function Create_Delay_To_Sequences(a, First_Id_Lay, LayNr, CurrentSeqNr, Current
         -- CurrentSeqNr = math.floor(CurrentSeqNr + 1)
     end -- end Sequences DelayTo
     return First_Id_Lay, Current_Id_Lay, LayX, LayNr, Phase_Element, CurrentSeqNr, CurrentMacroNr, Delay_T_Element
-end     -- end Create_Delay_To_Sequences
+end     -- end LC_Create_Delay_To_Sequences
 
 
 --end LC_Cmd.lua

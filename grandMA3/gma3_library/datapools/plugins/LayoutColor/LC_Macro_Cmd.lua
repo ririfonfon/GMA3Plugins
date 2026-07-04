@@ -15,7 +15,7 @@ function LC_Get_Object(Construct_Pool)
     return MacroObject, SequenceObject, Layout_Object, Nr
 end
 
-function Create_Macro_Reset(CurrentMacroNr, prefix, surfix, MatrickNrStart, a, CurrentSeqNr, First_Id_Lay, TLayNr,
+function LC_Create_Macro_Reset(CurrentMacroNr, prefix, surfix, MatrickNrStart, a, CurrentSeqNr, First_Id_Lay, TLayNr,
                             Fade_Element, Delay_F_Element, Delay_T_Element, Phase_Element, Group_Element, Block_Element,
                             Wings_Element, MatrickNr, Construct_Pool, Call_Pool)
     local MacroObject, SequenceObject, Layout_Object, Nr = LC_Get_Object(Construct_Pool)
@@ -281,9 +281,9 @@ function Create_Macro_Reset(CurrentMacroNr, prefix, surfix, MatrickNrStart, a, C
     -- CmdIndirectWait("Insert")
     -- CmdIndirectWait('set 72 Command=\'Call DataPool ' .. Construct_Pool .. ' Plugin "LC_View"')
     -- CmdIndirectWait('ChangeDestination Root')
-end -- end function Create_Macro_Reset(...)
+end -- end function LC_Create_Macro_Reset(...)
 
-function Create_Macro_Delay_From(CurrentMacroNr, prefix, surfix, a, FirstSeq, LastSeq, MatrickNrStart, fonct, TLayNr,
+function LC_Create_Macro_Delay_From(CurrentMacroNr, prefix, surfix, a, FirstSeq, LastSeq, MatrickNrStart, fonct, TLayNr,
                                  LayNr, MatrickNr, Construct_Pool, Call_Pool)
     local MacroObject, SequenceObject, Layout_Object, Nr = LC_Get_Object(Construct_Pool)
 
@@ -333,7 +333,7 @@ function Create_Macro_Delay_From(CurrentMacroNr, prefix, surfix, a, FirstSeq, La
     -- CmdIndirectWait('ChangeDestination Root')
 end
 
-function Create_Macro_Delay_To(CurrentMacroNr, prefix, surfix, a, FirstSeq, LastSeq, MatrickNrStart, fonct, TLayNr, LayNr,
+function LC_Create_Macro_Delay_To(CurrentMacroNr, prefix, surfix, a, FirstSeq, LastSeq, MatrickNrStart, fonct, TLayNr, LayNr,
                                MatrickNr, Construct_Pool, Call_Pool)
     local MacroObject, SequenceObject, Layout_Object, Nr = LC_Get_Object(Construct_Pool)
 
@@ -383,7 +383,7 @@ function Create_Macro_Delay_To(CurrentMacroNr, prefix, surfix, a, FirstSeq, Last
     -- CmdIndirectWait('ChangeDestination Root')
 end
 
-function Create_Macro_Phase(CurrentMacroNr, prefix, surfix, a, MatrickNrStart, fonct, TLayNr, LayNr, MatrickNr,
+function LC_Create_Macro_Phase(CurrentMacroNr, prefix, surfix, a, MatrickNrStart, fonct, TLayNr, LayNr, MatrickNr,
                             Construct_Pool, Call_Pool)
     local MacroObject, SequenceObject, Layout_Object, Nr = LC_Get_Object(Construct_Pool)
 
@@ -433,7 +433,7 @@ function Create_Macro_Phase(CurrentMacroNr, prefix, surfix, a, MatrickNrStart, f
     -- CmdIndirectWait('ChangeDestination Root')
 end
 
-function Create_Macro_Group(CurrentMacroNr, prefix, surfix, a, FirstSeq, LastSeq, MatrickNrStart, fonct, TLayNr, LayNr,
+function LC_Create_Macro_Group(CurrentMacroNr, prefix, surfix, a, FirstSeq, LastSeq, MatrickNrStart, fonct, TLayNr, LayNr,
                             MatrickNr, Construct_Pool, Call_Pool)
     local MacroObject, SequenceObject, Layout_Object, Nr = LC_Get_Object(Construct_Pool)
 
@@ -483,7 +483,7 @@ function Create_Macro_Group(CurrentMacroNr, prefix, surfix, a, FirstSeq, LastSeq
     -- CmdIndirectWait('ChangeDestination Root')
 end
 
-function Create_Macro_Block(CurrentMacroNr, prefix, surfix, a, FirstSeq, LastSeq, MatrickNrStart, fonct, TLayNr, LayNr,
+function LC_Create_Macro_Block(CurrentMacroNr, prefix, surfix, a, FirstSeq, LastSeq, MatrickNrStart, fonct, TLayNr, LayNr,
                             MatrickNr, Construct_Pool, Call_Pool)
     local MacroObject, SequenceObject, Layout_Object, Nr = LC_Get_Object(Construct_Pool)
 
@@ -533,7 +533,7 @@ function Create_Macro_Block(CurrentMacroNr, prefix, surfix, a, FirstSeq, LastSeq
     -- CmdIndirectWait('ChangeDestination Root')
 end
 
-function Create_Macro_Wings(CurrentMacroNr, prefix, surfix, a, FirstSeq, LastSeq, MatrickNrStart, fonct, TLayNr, LayNr,
+function LC_Create_Macro_Wings(CurrentMacroNr, prefix, surfix, a, FirstSeq, LastSeq, MatrickNrStart, fonct, TLayNr, LayNr,
                             MatrickNr, Construct_Pool, Call_Pool)
     local MacroObject, SequenceObject, Layout_Object, Nr = LC_Get_Object(Construct_Pool)
 
@@ -643,7 +643,7 @@ function Create_Macro_Fade_E(CurrentMacroNr, prefix, Argument_Fade, i, surfix, a
     -- CmdIndirectWait('ChangeDestination Root')
 end
 
-function Add_Macro_Call(a, TLayNr, Fade_Element, MatrickNrStart, Delay_F_Element, Delay_T_Element, Phase_Element,
+function LC_Add_Macro_Call(a, TLayNr, Fade_Element, MatrickNrStart, Delay_F_Element, Delay_T_Element, Phase_Element,
                         Group_Element, Block_Element, Wings_Element, Construct_Pool, CurrentMacroNr, Call_Pool)
     local MacroObject, SequenceObject, Layout_Object, Nr = LC_Get_Object(Construct_Pool)
 

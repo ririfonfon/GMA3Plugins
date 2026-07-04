@@ -8,20 +8,6 @@ Version:
 Rewrite by Richard Fontaine "RIRI", June 2026.
 --]]
 
-function Check_Size_Pool(id, PoolObject)
-    if not id then return PoolObject:Acquire() end
-    local idtype = math.type(id) or type(id)
-    if idtype ~= 'integer' then error('wrong argument expected integer got ' .. idtype) end
-    if IsObjectValid(PoolObject[id]) then error('id is already used : ' .. id) end
-    local maxsize = PoolObject:MaxCount()
-    if id < 1 or id > maxsize then error('id out of range') end
-    local poolsize = PoolObject:Count()
-    if id > poolsize then
-        local newsize = math.min(maxsize, math.ceil(id / 1000) * 1000)
-        PoolObject:Resize(newsize)
-    end
-end
-
 function LC_Check_Size_Pool(id, PoolObject)
     if not id then
         Printf('Acquire')
@@ -48,7 +34,7 @@ function LC_Check_Size_Pool(id, PoolObject)
     end
 end
 
-function CheckSymbols(Img, ImgImp, check, add_check, long_imgimp, ImgNr)
+function LC_CheckSymbols(Img, ImgImp, check, add_check, long_imgimp, ImgNr)
     for k in pairs(Img) do
         for q in pairs(ImgImp) do
             if ('"' .. Img[k].name .. '"' == ImgImp[q].Name) then
@@ -101,10 +87,10 @@ function CheckSymbols(Img, ImgImp, check, add_check, long_imgimp, ImgNr)
             end
         end
     end
-end -- end CheckSymbols
+end -- end LC_CheckSymbols
 
-function Command_Ext_Suite(CurrentSeqNr, SequenceObject)
-    -- Echo('Call Command_Ext_suite ' .. CurrentSeqNr)
+function LC_Command_Ext_Suite(CurrentSeqNr, SequenceObject)
+    -- Echo('Call LC_Command_Ext_Suite ' .. CurrentSeqNr)
     SequenceObject[CurrentSeqNr]:Set('prefercueappearance', 'on')
     SequenceObject[CurrentSeqNr]:Set('AutoStart', '1')
     SequenceObject[CurrentSeqNr]:Set('AutoStop', '1')
@@ -136,7 +122,7 @@ function Command_Ext_Suite(CurrentSeqNr, SequenceObject)
     SequenceObject[CurrentSeqNr]:Set('Lock', '0')
     SequenceObject[CurrentSeqNr]:Set('SequMIB', '0')
     SequenceObject[CurrentSeqNr]:Set('SequMIBMode', '1')
-end -- end function Command_Ext_Suite(...)
+end -- end function LC_Command_Ext_Suite(...)
 
 function LC_Set_Def(L_N, N, Obj)
     Obj[L_N][N.No]:Set('visibilitybar', 'Hidden')
