@@ -448,13 +448,14 @@ function LC_Construct_Layout(TLay, SeqNrStart, MacroNrStart, MatrickNrStart, Mat
         Layout_Object, TLayNr, LayW, LayH, prefix, Construct_Pool)
 
     Echo('create Kill all LCx_ ok')
+    -- LC_Create_All_Color
+    LayNr, LayX, First_All_Color = LC_Create_All_Color(TCol, CurrentSeqNr, prefix, TLayNr, LayNr, NrNeed, LayX, LayY,
+    LayW, LayH, MaxColLgn, RefX, AppNr, Construct_Pool)
+    -- LC_Create_All_Color
+    Echo('LC_Create_All_Color ok')
 end
 
 local function suite()
-    -- LC_Create_All_Color
-    LayNr, LayX, First_All_Color = LC_Create_All_Color(TCol, CurrentSeqNr, prefix, TLayNr, LayNr, NrNeed, LayX, LayY,
-        LayW, LayH, MaxColLgn, RefX, AppNr, Construct_Pool)
-    -- LC_Create_All_Color
 
     -- add Macro priority
     for k in pairs(DataPool().Layouts:Children()) do
