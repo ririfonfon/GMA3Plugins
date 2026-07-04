@@ -8,7 +8,7 @@ Version:
 Rewrite by Richard Fontaine "RIRI", June 2026.
 --]]
 
-function LC_Create_Favourite_Macro(prefix, CurrentMacroNr, TLayNr, Construct_Pool, Favourite_Nr)
+function LC_Create_Favourite_Macro(prefix, CurrentMacroNr, TLayNr, Construct_Pool, Favourite_Nr, Call_Pool)
     local macro_num = CurrentMacroNr + 1
     CurrentMacroNr = macro_num + Favourite_Nr
     local macropool = ShowData().DataPools[Construct_Pool].Macros
@@ -32,7 +32,7 @@ function LC_Create_Favourite_Macro(prefix, CurrentMacroNr, TLayNr, Construct_Poo
     macropool[macro_num][5]:Set('Command', 'SetUserVariable "LC_DataPool" ' .. Construct_Pool .. '')
     macropool[macro_num][6]:Set('Command', 'SetUserVariable "LC_Prefix" ' .. prefix .. '')
     macropool[macro_num][7]:Set('Command', 'SetUserVariable "LC_Macro" ' .. macro_num .. '')
-    macropool[macro_num][8]:Set('Command', 'Call DataPool ' .. Construct_Pool .. ' Plugin "LC_View"')
+    macropool[macro_num][8]:Set('Command', 'Call ' .. Call_Pool .. ' Plugin "DEV_LC_View"')
     macropool[macro_num]:Set('Appearance', 'LC_Black')
     for i = macro_num + 1, CurrentMacroNr do
         macropool[i]:Set('Appearance', 'LC_Favo')
@@ -40,7 +40,8 @@ function LC_Create_Favourite_Macro(prefix, CurrentMacroNr, TLayNr, Construct_Poo
     return CurrentMacroNr, macro_num
 end
 
-function Create_Favourite_Layout(LayNr, CurrentMacroNr, LayH, LayW, TLayNr, Construct_Pool, Ligne_Inc, Favourite_Nr)
+function LC_Create_Favourite_Layout(LayNr, CurrentMacroNr, LayH, LayW, TLayNr, Construct_Pool, Ligne_Inc, Favourite_Nr)
+    local MacroObject, SequenceObject, Layout_Object, Nr = LC_Get_Object(Construct_Pool)
     local LayX = 0 - 80 -- position of te first object by x-axis
     -- local LayX = 0 -- position of te first object by x-axis
     local LayY = 700    -- position of te first0 object by y-axis
@@ -50,25 +51,29 @@ function Create_Favourite_Layout(LayNr, CurrentMacroNr, LayH, LayW, TLayNr, Cons
     local object_type = 'Macro'
     local line_num = 1
     local pool_obj_num = CurrentMacroNr - Favourite_Nr -- pool number of the first object
-    Printf('pool object ' .. pool_obj_num)
+    Echo('pool object ' .. pool_obj_num)
     local obj_count = Favourite_Nr                     -- amout of objects to be aligned
     local last_pool_obj = pool_obj_num + obj_count     -- last object of the pool to be aligned
     local layout_pool = ShowData().datapools[Construct_Pool].Layouts
     -- CmdIndirectWait('assign ' .. object_type .. ' ' .. pool_obj_num .. ' at Layout ' .. TLayNr .. ' /nu')
-    layout_pool[TLayNr][LayNr]:Set('Object', object_type .. ' ' .. pool_obj_num)
-    layout_pool[TLayNr][LayNr]:Set('posx', LayX)
-    layout_pool[TLayNr][LayNr]:Set('posy', LayY)
-    layout_pool[TLayNr][LayNr]:Set('VisibilityBar', false)
-    layout_pool[TLayNr][LayNr]:Set('POSITIONH', LayH)
-    layout_pool[TLayNr][LayNr]:Set('POSITIONW', LayW * 2)
-    layout_pool[TLayNr][LayNr]:Set('visibilityborder', false)
-    LayNr = LayNr + 1
+    Echo('*** macro object num ' .. MacroObject[pool_obj_num].No .. ' Name ' .. MacroObject[pool_obj_num].Name)
+    Nr = Layout_Object[TLayNr]:Acquire()
+    layout_pool[TLayNr][Nr.No]:Set('Object', MacroObject[pool_obj_num])
+    layout_pool[TLayNr][Nr.No]:Set('posx', LayX)
+    layout_pool[TLayNr][Nr.No]:Set('posy', LayY)
+    layout_pool[TLayNr][Nr.No]:Set('VisibilityBar', false)
+    layout_pool[TLayNr][Nr.No]:Set('POSITIONH', LayH)
+    layout_pool[TLayNr][Nr.No]:Set('POSITIONW', LayW * 2)
+    layout_pool[TLayNr][Nr.No]:Set('visibilityborder', false)
+    -- LayNr = LayNr + 1
+    LayNr = Nr.No + 1
     pool_obj_num = pool_obj_num + 1
     -- CmdIndirectWait('assign ' ..
     --     object_type .. ' ' .. pool_obj_num .. ' Thru ' .. last_pool_obj .. ' at Layout ' .. TLayNr .. ' /nu')
     local inc = LayNr
     for d = pool_obj_num, last_pool_obj do
-        layout_pool[TLayNr][inc]:Set('Object', object_type .. ' ' .. d)
+        Nr = Layout_Object[TLayNr]:Acquire()
+        layout_pool[TLayNr][Nr.No]:Set('Object', MacroObject[d])
         inc = inc + 1
     end
     LayX = 160
@@ -84,7 +89,7 @@ function Create_Favourite_Layout(LayNr, CurrentMacroNr, LayH, LayW, TLayNr, Cons
         LayX = LayX + 120
         LayNr = LayNr + 1
         line_num = line_num + 1
-        Printf(line_num .. ' <= ' .. Favourite_Nr)
+        Echo(line_num .. ' <= ' .. Favourite_Nr)
     end
     return LayNr
 end

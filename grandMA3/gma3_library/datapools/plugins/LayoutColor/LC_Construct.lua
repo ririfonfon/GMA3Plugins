@@ -462,18 +462,21 @@ function LC_Construct_Layout(TLay, SeqNrStart, MacroNrStart, MatrickNrStart, Mat
         prefix, Call_Pool)
     -- end Macro priority
     Echo('LC_Macro_Priority ok')
-end
 
-local function suite()
     -- add Favourites
     local Macro_Num_Start
     local Macro_Num_End
     LayNr = math.floor(LayNr + 1)
     CurrentMacroNr, Macro_Num_End = LC_Create_Favourite_Macro(prefix, CurrentMacroNr, TLayNr, Construct_Pool,
-        Favourite_Nr)
+        Favourite_Nr, Call_Pool)
     Macro_Num_Start = CurrentMacroNr + 1
-    Create_Favourite_Layout(LayNr, CurrentMacroNr, LayH, LayW, TLayNr, Construct_Pool, Ligne_Inc, Favourite_Nr)
+    LC_Create_Favourite_Layout(LayNr, CurrentMacroNr, LayH, LayW, TLayNr, Construct_Pool, Ligne_Inc, Favourite_Nr)
     -- end Favourites
+    Echo('LC_Create_Favourite_Layout ok')
+
+end
+
+local function suite()
 
     -- Macro Del LC prefix
     CurrentMacroNr = math.floor(CurrentMacroNr + 2)
