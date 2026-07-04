@@ -8,85 +8,17 @@ Version:
 Rewrite by Richard Fontaine "RIRI", June 2026.
 --]]
 
-local function Check_Size_Pool(id, PoolObject)
-    if not id then return PoolObject:Acquire() end
-    local idtype = math.type(id) or type(id)
-    if idtype ~= 'integer' then error('wrong argument expected integer got ' .. idtype) end
-    if IsObjectValid(PoolObject[id]) then error('id is already used : ' .. id) end
-    local maxsize = PoolObject:MaxCount()
-    if id < 1 or id > maxsize then error('id out of range') end
-    local poolsize = PoolObject:Count()
-    if id > poolsize then
-        local newsize = math.min(maxsize, math.ceil(id / 1000) * 1000)
-        PoolObject:Resize(newsize)
-    end
-end
-
-function CheckSymbols(Img, ImgImp, check, add_check, long_imgimp, ImgNr)
-    for k in pairs(Img) do
-        for q in pairs(ImgImp) do
-            if ('"' .. Img[k].name .. '"' == ImgImp[q].Name) then
-                check[q] = 1
-                add_check = math.floor(add_check + 1)
-            end
-            long_imgimp = q
-        end
-    end
-
-    if (long_imgimp == add_check) then
-        Echo("file exist")
-    else
-        -- Select a disk
-        local drives = Root().Temp.DriveCollect
-        local selectedDrive     -- users selected drive
-        local options = {}      -- popup options
-        local PopTableDisk = {} --
-        -- grab a list of connected drives
-        for i = 1, drives.count, 1 do
-            table.insert(options, string.format("%s (%s)", drives[i].name, drives[i].DriveType))
-        end
-        -- present a popup for the user choose (Internal may not work)
-        PopTableDisk = {
-            title = "Select a disk to import on & Off symbols",
-            caller = displayHandle,
-            items = options,
-            selectedValue = "",
-            add_args = {
-                FilterSupport = "Yes"
-            }
-        }
-        selectedDrive = PopupInput(PopTableDisk)
-        selectedDrive = selectedDrive + 1
-
-        -- if the user cancled then exit the plugin
-        if selectedDrive == nil then
-            return
-        end
-
-        -- grab the export path for the selected drive and append the file name
-        CmdIndirectWait("select Drive " .. selectedDrive .. "")
-
-        -- Import Symbols
-        for k in pairs(ImgImp) do
-            if (check[k] == nil) then
-                ImgNr = math.floor(ImgNr + 1);
-                CmdIndirectWait("Store Image 2." .. ImgNr .. " " .. ImgImp[k].Name .. " Filename=" ..
-                    ImgImp[k].FileName .. " filepath=" .. ImgImp[k].Filepath .. "")
-            end
-        end
-    end
-end -- end CheckSymbols
 
 function Create_Matricks(MatrickNrStart, prefix, NaLay, NbGroup, MatrickNr, pool_construct)
     local MatrickObject = Root().ShowData.DataPools[pool_construct].Matricks
     Echo('pool ' .. pool_construct .. ' Matrick ' .. MatrickNrStart)
-    Check_Size_Pool(MatrickNrStart, MatrickObject)
+    LC_Check_Size_Pool(MatrickNrStart, MatrickObject)
     MatrickObject:Acquire()
     MatrickObject:Create(MatrickNrStart)
     MatrickObject[MatrickNrStart]:Set('Name', "'" .. prefix .. NaLay .. "'")
     MatrickNr = math.floor(MatrickNrStart + 1)
     for g = 1, NbGroup, 1 do
-        Check_Size_Pool(MatrickNr, MatrickObject)
+        LC_Check_Size_Pool(MatrickNr, MatrickObject)
         MatrickObject:Create(MatrickNr)
         MatrickObject[MatrickNr]:Set('Name', prefix .. '_Group_' .. g)
         MatrickObject[MatrickNr]:Set('FadeFromx', 0)
@@ -104,7 +36,7 @@ function Create_Appear_Tricks(AppTricks, AppNr, prefix)
     local AppObject = Root().ShowData.Appearances
     for q in pairs(AppTricks) do
         AppTricks[q].Nr = math.floor(AppNr)
-        Check_Size_Pool(AppTricks[q].Nr, AppObject)
+        LC_Check_Size_Pool(AppTricks[q].Nr, AppObject)
         AppObject:Create(AppTricks[q].Nr)
         AppObject[AppTricks[q].Nr]:Set('Name', "'" .. prefix .. AppTricks[q].Name .. "'")
         AppObject[AppTricks[q].Nr]:Set('Appearance', AppTricks[q].StApp:gsub('"', ''))
@@ -122,7 +54,7 @@ function Create_Appearances(AppNr, prefix, TCol, NrAppear, StColCode, StColName,
     local StAppOn = '\"Showdata.MediaPools.Symbols.on\"'
     local StAppOff = '\"Showdata.MediaPools.Symbols.off\"'
     NrAppear = math.floor(AppNr)
-    Check_Size_Pool(NrAppear, AppObject)
+    LC_Check_Size_Pool(NrAppear, AppObject)
     AppObject:Create(NrAppear)
     AppObject[NrAppear]:Set('Name', "'" .. prefix .. 'Label')
     AppObject[NrAppear]:Set('Appearance', StAppOn:gsub('"', ''))
@@ -135,14 +67,14 @@ function Create_Appearances(AppNr, prefix, TCol, NrAppear, StColCode, StColName,
         StringColName = StColName:gsub(' ', '_')
         StAppNameOn = prefix .. StringColName .. "_On"
         StAppNameOff = prefix .. StringColName .. "_Off"
-        Check_Size_Pool(NrAppear, AppObject)
+        LC_Check_Size_Pool(NrAppear, AppObject)
         AppObject:Create(NrAppear)
         AppObject[NrAppear]:Set('Name', "'" .. StAppNameOn:gsub('"', '') .. "'")
         AppObject[NrAppear]:Set('Appearance', StAppOn:gsub('"', ''))
         AppObject[NrAppear]:Set('Color', StColCode:gsub('"', ''))
 
         NrAppear = math.floor(NrAppear + 1)
-        Check_Size_Pool(NrAppear, AppObject)
+        LC_Check_Size_Pool(NrAppear, AppObject)
         AppObject:Create(NrAppear)
         AppObject[NrAppear]:Set('Name', "'" .. StAppNameOff:gsub('"', '') .. "'")
         AppObject[NrAppear]:Set('Appearance', StAppOff:gsub('"', ''))
@@ -176,96 +108,9 @@ function Create_Preset_25(TCol, StColName, StringColName, SelectedGelNr, prefix,
     return All_5_NrEnd, All_5_Current
 end -- end Create_Preset_25
 
-function LC_Dialog_End(message)
-    local dialog = GetFocusDisplay().ScreenOverlay:Append('BaseInput')
-    dialog.H, dialog.W = 800, 800
-    local mybutton = dialog:Append('Button')
-    mybutton.Font = 1
-    mybutton.TextAutoAdjust = "Yes"
-    mybutton.Text = message
-end
 
-function LC_Check_Size_Pool(id, PoolObject)
-    if not id then
-        Printf('Acquire')
-        return PoolObject:Acquire()
-    end
-    local idtype = math.type(id) or type(id)
-    if idtype ~= 'integer' then
-        LC_Dialog_End('Error : wrong argument expected integer got ' .. idtype)
-        error('wrong argument expected integer got ' .. idtype)
-    end
-    if IsObjectValid(PoolObject[id]) then
-        LC_Dialog_End('Error : id is already used : ' .. id)
-        error('id is already used : ' .. id)
-    end
-    local maxsize = PoolObject:MaxCount()
-    if id < 1 or id > maxsize then
-        LC_Dialog_End('Error : id out of range')
-        error('id out of range')
-    end
-    local poolsize = PoolObject:Count()
-    if id > poolsize then
-        local newsize = math.min(maxsize, math.ceil(id / 1000) * 1000)
-        PoolObject:Resize(newsize)
-    end
-end
 
-function LC_Set_Def(L_N, N, Obj)
-    Obj[L_N][N.No]:Set('visibilitybar', 'Hidden')
-    Obj[L_N][N.No]:Set('visibilityobjectname', 'Hidden')
-    Obj[L_N][N.No]:Set('visibilityid', 'Hidden')
-    Obj[L_N][N.No]:Set('visibilitycid', 'Hidden')
-    Obj[L_N][N.No]:Set('visibilityvalue', 'Hidden')
-    Obj[L_N][N.No]:Set('visibilityicon', 'Hidden')
-    Obj[L_N][N.No]:Set('visibilityindicatorbar', 'Hidden')
-    Obj[L_N][N.No]:Set('visibilityselectionrelevance', 'Hidden')
-    Obj[L_N][N.No]:Set('visibilityborder', 'Hidden')
-    Obj[L_N][N.No]:Set('fullresolution', 'Yes')
-end
 
-function LC_Sequence_Defo(SequenceObject, i)
-    SequenceObject[i]:Set('PREFERCUEAPPEARANCE', 'Yes')
-    SequenceObject[i]:Set('AUTOSTART', 'Yes')
-    SequenceObject[i]:Set('AUTOSTOP', 'Yes')
-    SequenceObject[i]:Set('MASTERGOMODE', 'None')
-    SequenceObject[i]:Set('AUTOFIX', 'No')
-    SequenceObject[i]:Set('AUTOSTOMP', 'No')
-    SequenceObject[i]:Set('TRACKING', 'No')
-    SequenceObject[i]:Set('WRAPAROUND', 'Yes')
-    SequenceObject[i]:Set('RELEASEFIRSTCUE', 'No')
-    SequenceObject[i]:Set('RESTARTMODE', 'First Cue')
-    SequenceObject[i]:Set('CUECOMMAND', 'Enabled')
-    SequenceObject[i]:Set('XFADERELOAD', 'No')
-    SequenceObject[i]:Set('OUTPUTFILTER', '')
-    SequenceObject[i]:Set('PRIORITY', 'LTP')
-    SequenceObject[i]:Set('SOFTLTP', 'Yes')
-    SequenceObject[i]:Set('PLAYBACKMASTER', 'None')
-    SequenceObject[i]:Set('XFADEMODE', 'AB')
-    SequenceObject[i]:Set('RATEMASTER', 'None')
-    SequenceObject[i]:Set('RATESCALE', 'One')
-    SequenceObject[i]:Set('SPEEDFROMRATE', 'No')
-    SequenceObject[i]:Set('INPUTFILTER', '')
-    SequenceObject[i]:Set('SWAPPROTECT', 'Yes')
-    SequenceObject[i]:Set('KILLPROTECT', 'Yes')
-    SequenceObject[i]:Set('INCLUDELINKLASTGO', 'Yes')
-    SequenceObject[i]:Set('USEEXECUTORTIME', 'No')
-    SequenceObject[i]:Set('OFFWHENOVERRIDDEN', 'No')
-    SequenceObject[i]:Set('LOCK', 'No')
-    SequenceObject[i]:Set('SEQUMIB', 'Enabled')
-    SequenceObject[i]:Set('SEQUMIBMODE', 'None')
-
-    SequenceObject[i]:Set('AUTOPREPOS', 'No')
-    SequenceObject[i]:Set('SPEEDMASTER', 'None')
-    SequenceObject[i]:Set('SPEEDSCALE', 'One')
-    SequenceObject[i]:Set('EXECUTORDISPLAYMODE', 'Both')
-    SequenceObject[i]:Set('CUEZEROMODE', 'Off')
-    SequenceObject[i]:Set('ACTION', 'Pool Default')
-    SequenceObject[i]:Set('TIMINGGOTO', 'Default')
-    SequenceObject[i]:Set('TIMINGGOBACK', 'Default')
-    SequenceObject[i]:Set('TIMINGGOFAST', 'Default')
-    SequenceObject[i]:Set('TIMINGGOBACKFAST', 'Default')
-end
 
 -- SelectedGrp,SelectedGrpNo, SelectedGrpName,
 function Create_Appearances_Sequences(CurrentMacroNr, SelectedGelNr, NbGroup, RefX, LayY,
@@ -585,40 +430,6 @@ function Command_Title(title, TLayNr, LayNr, LayX, LayY, Pw, Ph, align, Construc
     return Nr.No
 end -- end function Command_Title(...)
 
-function Command_Ext_Suite(CurrentSeqNr, SequenceObject)
-    -- Echo('Call Command_Ext_suite ' .. CurrentSeqNr)
-    SequenceObject[CurrentSeqNr]:Set('prefercueappearance', 'on')
-    SequenceObject[CurrentSeqNr]:Set('AutoStart', '1')
-    SequenceObject[CurrentSeqNr]:Set('AutoStop', '1')
-    SequenceObject[CurrentSeqNr]:Set('MasterGoMode', 'None')
-    SequenceObject[CurrentSeqNr]:Set('AutoFix', '0')
-    SequenceObject[CurrentSeqNr]:Set('AutoStomp', '0')
-    SequenceObject[CurrentSeqNr]:Set('Tracking', '0')
-    SequenceObject[CurrentSeqNr]:Set('WrapAround', '1')
-    SequenceObject[CurrentSeqNr]:Set('ReleaseFirstCue', '0')
-    SequenceObject[CurrentSeqNr]:Set('RestartMode', '1')
-    SequenceObject[CurrentSeqNr]:Set('CueCommand', '0')
-    SequenceObject[CurrentSeqNr]:Set('XFadeReload', '0')
-    SequenceObject[CurrentSeqNr]:Set('OutputFilter', '')
-    SequenceObject[CurrentSeqNr]:Set('Priority', '0')
-    SequenceObject[CurrentSeqNr]:Set('SoftLTP', '1')
-    SequenceObject[CurrentSeqNr]:Set('PlaybackMaster', '')
-    SequenceObject[CurrentSeqNr]:Set('XfadeMode', '0')
-    SequenceObject[CurrentSeqNr]:Set('RateMaster', '')
-    SequenceObject[CurrentSeqNr]:Set('RateScale', '0')
-    SequenceObject[CurrentSeqNr]:Set('SpeedMaster', '')
-    SequenceObject[CurrentSeqNr]:Set('SpeedScale', '0')
-    SequenceObject[CurrentSeqNr]:Set('SpeedfromRate', '0')
-    SequenceObject[CurrentSeqNr]:Set('InputFilter', '')
-    SequenceObject[CurrentSeqNr]:Set('SwapProtect', '0')
-    SequenceObject[CurrentSeqNr]:Set('KillProtect', '0')
-    SequenceObject[CurrentSeqNr]:Set('IncludeLinkLastGo', '1')
-    SequenceObject[CurrentSeqNr]:Set('UseExecutorTime', '0')
-    SequenceObject[CurrentSeqNr]:Set('OffwhenOverridden', '0')
-    SequenceObject[CurrentSeqNr]:Set('Lock', '0')
-    SequenceObject[CurrentSeqNr]:Set('SequMIB', '0')
-    SequenceObject[CurrentSeqNr]:Set('SequMIBMode', '1')
-end -- end function Command_Ext_Suite(...)
 
 function LC_Build_Tag(prefix, NbGroup, surfix, Time_Argument)
     local TagObject = Root().ShowData.Tags
@@ -670,5 +481,426 @@ function LC_Build_Tag(prefix, NbGroup, surfix, Time_Argument)
         end
     end
 end
+
+function Create_Fade_Sequences(MakeX, FirstSeqTime, LastSeqTime, CurrentSeqNr, CurrentMacroNr, prefix, surfix,
+                               First_Id_Lay, LayNr, MatrickNrStart, TLayNr, Fade_Element, Argument_Fade,
+                               AppImp, LayX, LayY, LayW, LayH, SeqNrStart, SeqNrEnd, Current_Id_Lay, Delay_F_Element, a,
+                               Construct_Pool, Call_Pool, Time_Argument)
+    local MacroObject, SequenceObject, Layout_Object, Nr = LC_Get_Object(Construct_Pool)
+    -- fix time_tag
+    local TagObject_LC                                   = Root().ShowData.Tags:Children()
+    local tag_fade
+
+    -- Setup Fade Sequence
+    local old_prefix = prefix
+    prefix           = 'o' .. prefix
+    if MakeX then
+        FirstSeqTime = CurrentSeqNr
+        First_Id_Lay[37] = CurrentSeqNr
+        LastSeqTime = math.floor(CurrentSeqNr + 5)
+    else
+        FirstSeqTime = CurrentSeqNr
+        LastSeqTime = math.floor(CurrentSeqNr + 4)
+    end
+    -- Create Macro Time Input
+    LC_Check_Size_Pool(CurrentMacroNr, MacroObject)
+    MacroObject:Create(CurrentMacroNr)
+    MacroObject[CurrentMacroNr]:Set('Name', "'" .. prefix .. 'Time Input' .. surfix[a] .. "'")
+    MacroObject[CurrentMacroNr]:Insert(1)
+    if MakeX then
+        MacroObject[CurrentMacroNr][1]:Set('Command', '')
+        Fade_Element = math.floor(LayNr + 6)
+    else
+        MacroObject[CurrentMacroNr][1]:Set('Command', '')
+    end
+    for i = 2, 9, 1 do
+        MacroObject[CurrentMacroNr]:Insert(i)
+    end
+    MacroObject[CurrentMacroNr][2]:Set('Command', 'Edit DataPool ' ..
+        Construct_Pool .. ' Matricks ' .. MatrickNrStart .. ' Property "FadeFrom' .. surfix[a] .. '"')
+    MacroObject[CurrentMacroNr][3]:Set('Command', 'Edit DataPool ' ..
+        Construct_Pool .. ' Matricks ' .. MatrickNrStart .. ' Property "FadeTo' .. surfix[a] .. '"')
+    MacroObject[CurrentMacroNr][4]:Set('Command', 'SetUserVariable "LC_Fonction" 1')
+    MacroObject[CurrentMacroNr][5]:Set('Command', 'SetUserVariable "LC_Axes" ' .. a .. '')
+    MacroObject[CurrentMacroNr][6]:Set('Command', 'SetUserVariable "LC_Layout" ' .. TLayNr .. '')
+    MacroObject[CurrentMacroNr][7]:Set('Command', 'SetUserVariable "LC_Element" ' .. Fade_Element .. '')
+    MacroObject[CurrentMacroNr][8]:Set('Command', 'SetUserVariable "LC_Matrick" ' .. MatrickNrStart .. '')
+    MacroObject[CurrentMacroNr][9]:Set('Command', 'Call ' .. Call_Pool .. ' Plugin "DEV_LC_View"')
+    CurrentMacroNr = CurrentMacroNr + 1
+
+    for v in ipairs(TagObject_LC) do
+        if TagObject_LC[v].Name == old_prefix .. '_' .. Time_Argument[1].name .. '_' .. surfix[a] then
+            tag_fade = TagObject_LC[v]
+        end
+    end
+
+    if a == 1 then
+        LC_Check_Size_Pool(CurrentSeqNr, SequenceObject)
+        SequenceObject:Create(CurrentSeqNr)
+        SequenceObject[CurrentSeqNr]:Set('Name', "'" .. prefix .. Argument_Fade[1].name .. surfix[a] .. "'")
+        LC_Sequence_Defo(SequenceObject, CurrentSeqNr)
+        SequenceObject[CurrentSeqNr]:Set('TRACKING', 'No')
+        SequenceObject[CurrentSeqNr]:Set('PRIORITY', 'HTP')
+        SequenceObject[CurrentSeqNr]:Set('SOFTLTP', 'No')
+
+        SequenceObject[CurrentSeqNr]:Insert()
+        SequenceObject[CurrentSeqNr]:Set('Appearance', AppImp[2].Nr)
+        SequenceObject[CurrentSeqNr][3]:Set('No', 1)
+        SequenceObject[CurrentSeqNr][3]:Create(1)
+        SequenceObject[CurrentSeqNr][3][1]:Set('Appearance', AppImp[1].Nr)
+        SequenceObject[CurrentSeqNr][3][1]:Set('Command', 'Set DataPool ' .. Construct_Pool .. ' Sequence ' ..
+            SeqNrStart .. ' Thru ' .. SeqNrEnd .. ' UseExecutorTime=' .. Argument_Fade[1].UseExTime .. '')
+
+        Cmd('Assign ' .. SequenceObject[CurrentSeqNr] .. " at " .. tag_fade)
+        Command_Ext_Suite(CurrentSeqNr, SequenceObject)
+
+        Nr = Layout_Object[TLayNr]:Acquire()
+        Layout_Object[TLayNr][Nr.No]:Set('Object', SequenceObject[CurrentSeqNr])
+        Layout_Object[TLayNr][Nr.No]:Set('posx', LayX)
+        Layout_Object[TLayNr][Nr.No]:Set('posy', LayY)
+        Layout_Object[TLayNr][Nr.No]:Set('width', 100)
+        Layout_Object[TLayNr][Nr.No]:Set('height', 100)
+        Layout_Object[TLayNr][Nr.No]:Set('action', 'Go+')
+        Layout_Object[TLayNr][Nr.No]:Set('Note', 'Fade')
+        LC_Set_Def(TLayNr, Nr, Layout_Object)
+
+        LayNr = Command_Title('Ex.Time', TLayNr, LayNr, LayX, LayY, 700, 140, 1, Construct_Pool)
+        LayNr = Command_Title('FADE', TLayNr, LayNr, LayX, LayY, 700, 140, 2, Construct_Pool)
+        LayNr = Command_Title('none > none', TLayNr, LayNr, LayX, LayY, 700, 140, 3, Construct_Pool)
+        LayX = math.floor(LayX + LayW + 20)
+        LayNr = math.floor(LayNr + 1)
+        CurrentSeqNr = math.floor(CurrentSeqNr + 1)
+    end
+    for i = 2, 6 do
+        local ia = tonumber(i * 2 - 1)
+        local ib = tonumber(i * 2)
+        if i == 2 then
+            if a == 1 then
+                First_Id_Lay[1] = math.floor(LayNr)
+                First_Id_Lay[2] = CurrentSeqNr
+            elseif a == 2 then
+                First_Id_Lay[3] = CurrentSeqNr
+            elseif a == 3 then
+                First_Id_Lay[4] = CurrentSeqNr
+            end
+            Current_Id_Lay = First_Id_Lay[1]
+        end
+        -- Create Sequences
+
+        LC_Check_Size_Pool(CurrentSeqNr, SequenceObject)
+        SequenceObject:Create(CurrentSeqNr)
+        SequenceObject[CurrentSeqNr]:Set('Name', "'" .. prefix .. Argument_Fade[i].name .. surfix[a] .. "'")
+        LC_Sequence_Defo(SequenceObject, CurrentSeqNr)
+        SequenceObject[CurrentSeqNr]:Set('TRACKING', 'No')
+        SequenceObject[CurrentSeqNr]:Set('PRIORITY', 'HTP')
+        SequenceObject[CurrentSeqNr]:Set('SOFTLTP', 'No')
+
+        SequenceObject[CurrentSeqNr]:Insert()
+        SequenceObject[CurrentSeqNr][3]:Set('No', 1)
+        SequenceObject[CurrentSeqNr][3]:Create(1)
+        if i == 6 then
+            SequenceObject[CurrentSeqNr][3][1]:Set('Command',
+                'Go DataPool ' .. Construct_Pool .. ' Macro ' .. CurrentMacroNr - 5)
+        else
+            CurrentMacroNr = Create_Macro_Fade_E(CurrentMacroNr, prefix, Argument_Fade, i, surfix, a, FirstSeqTime,
+                LastSeqTime, CurrentSeqNr, SeqNrStart, SeqNrEnd, MatrickNrStart, TLayNr, Fade_Element, Construct_Pool,
+                Call_Pool)
+            SequenceObject[CurrentSeqNr][3][1]:Set('Command',
+                'Go DataPool ' .. Construct_Pool .. ' Macro ' .. CurrentMacroNr - 1)
+        end
+        SequenceObject[CurrentSeqNr][3][1]:Set('Appearance', AppImp[ia].Nr)
+        SequenceObject[CurrentSeqNr]:Set('Appearance', AppImp[ib].Nr)
+        Command_Ext_Suite(CurrentSeqNr, SequenceObject)
+        Cmd('Assign ' .. SequenceObject[CurrentSeqNr] .. " at " .. tag_fade)
+        -- end Sequences
+
+        -- Add Squences to Layout
+        if MakeX then
+            Nr = Layout_Object[TLayNr]:Acquire()
+            Layout_Object[TLayNr][Nr.No]:Set('Object', SequenceObject[CurrentSeqNr])
+            Layout_Object[TLayNr][Nr.No]:Set('posx', LayX)
+            Layout_Object[TLayNr][Nr.No]:Set('posy', LayY)
+            Layout_Object[TLayNr][Nr.No]:Set('width', LayW)
+            Layout_Object[TLayNr][Nr.No]:Set('height', LayH)
+            Layout_Object[TLayNr][Nr.No]:Set('action', 'Go+')
+            Layout_Object[TLayNr][Nr.No]:Set('Note', 'Fade')
+            LC_Set_Def(TLayNr, Nr, Layout_Object)
+            LayX = math.floor(LayX + LayW + 20)
+            LayNr = math.floor(LayNr + 1)
+            Delay_F_Element = math.floor(LayNr + 1)
+        end
+        CurrentSeqNr = math.floor(CurrentSeqNr + 1)
+        -- CurrentMacroNr = CurrentMacroNr + 1
+    end -- end Sequences FADE
+
+    return CurrentSeqNr, Delay_F_Element, LayNr, LayX, Current_Id_Lay, Fade_Element, CurrentMacroNr, First_Id_Lay
+end -- end Create_Fade_Sequences
+
+function Create_Delay_From_Sequences(First_Id_Lay, LayNr, CurrentSeqNr, Current_Id_Lay, prefix, surfix, Argument_Delay,
+                                     AppImp, CurrentMacroNr, a, MatrickNrStart, TLayNr, Delay_F_Element, MatrickNr, MakeX,
+                                     LayX, LayY, LayW, LayH, Delay_T_Element, Construct_Pool, Call_Pool, Time_Argument)
+    local MacroObject, SequenceObject, Layout_Object, Nr = LC_Get_Object(Construct_Pool)
+    -- fix time_tag
+    local TagObject_LC                                   = Root().ShowData.Tags:Children()
+    local tag_delay_from
+
+    -- Setup Delay from Sequence
+    local old_prefix                                     = prefix
+    prefix                                               = 'o' .. prefix
+    -- Setup DelayFrom Sequence
+    CurrentMacroNr                                       = math.floor(CurrentMacroNr + 5)
+    local FirstSeqDelayFrom                              = CurrentSeqNr
+    local LastSeqDelayFrom                               = math.floor(CurrentSeqNr + 4)
+
+    -- Create Macro DelayFrom Input
+    -- Delay_F_Element                                      = Delay_F_Element + 2
+    Create_Macro_Delay_From(CurrentMacroNr, prefix, surfix, a, FirstSeqDelayFrom, LastSeqDelayFrom,
+        MatrickNrStart, 2, TLayNr, Delay_F_Element, MatrickNr, Construct_Pool, Call_Pool)
+
+    if MakeX then
+        Command_Title('DELAY FROM', TLayNr, LayNr, LayX, LayY, 580, 140, 2, Construct_Pool)
+        LayNr = math.floor(LayNr + 1)
+        Command_Title('none', TLayNr, LayNr, LayX, LayY, 580, 140, 3, Construct_Pool)
+        LayNr = math.floor(LayNr + 1)
+    end
+
+    for i = 1, 5 do
+        local ia = tonumber(i * 2 + 11)
+        local ib = tonumber(i * 2 + 12)
+        if i == 1 then
+            if a == 1 then
+                First_Id_Lay[5] = math.floor(LayNr)
+                First_Id_Lay[6] = CurrentSeqNr
+            elseif a == 2 then
+                First_Id_Lay[7] = CurrentSeqNr
+            elseif a == 3 then
+                First_Id_Lay[8] = CurrentSeqNr
+            end
+            Current_Id_Lay = First_Id_Lay[5]
+        end
+
+        for v in ipairs(TagObject_LC) do
+            if TagObject_LC[v].Name == old_prefix .. '_' .. Time_Argument[2].name .. '_' .. surfix[a] then
+                tag_delay_from = TagObject_LC[v]
+            end
+        end
+
+        LC_Check_Size_Pool(CurrentSeqNr, SequenceObject)
+        SequenceObject:Create(CurrentSeqNr)
+        SequenceObject[CurrentSeqNr]:Set('Name', "'" .. prefix .. Argument_Delay[i].name .. surfix[a] .. "'")
+        LC_Sequence_Defo(SequenceObject, CurrentSeqNr)
+        SequenceObject[CurrentSeqNr]:Set('TRACKING', 'No')
+        SequenceObject[CurrentSeqNr]:Set('PRIORITY', 'HTP')
+        SequenceObject[CurrentSeqNr]:Set('SOFTLTP', 'No')
+
+        SequenceObject[CurrentSeqNr]:Insert()
+        SequenceObject[CurrentSeqNr]:Set('Appearance', AppImp[ib].Nr)
+        SequenceObject[CurrentSeqNr][3]:Set('No', 1)
+        SequenceObject[CurrentSeqNr][3]:Create(1)
+        SequenceObject[CurrentSeqNr][3][1]:Set('Appearance', AppImp[ia].Nr)
+        if i == 5 then
+            SequenceObject[CurrentSeqNr][3][1]:Set('Command',
+                'Go DataPool ' .. Construct_Pool .. ' Macro ' .. CurrentMacroNr .. '')
+        else
+            SequenceObject[CurrentSeqNr][3][1]:Set('Command', 'Set DataPool ' .. Construct_Pool .. ' Matricks ' ..
+                MatrickNrStart .. ' Property "DelayFrom' .. surfix[a] .. '" ' .. Argument_Delay[i].Time ..
+                '  ; SetUserVariable "LC_Fonction" 2 ; SetUserVariable "LC_Axes" "' .. a ..
+                '" ; SetUserVariable "LC_Layout" ' .. TLayNr ..
+                ' ; SetUserVariable "LC_Element" ' .. Delay_F_Element ..
+                ' ; SetUserVariable "LC_Matrick" ' .. MatrickNrStart ..
+                ' ; SetUserVariable "LC_Matrick_Thru" ' .. MatrickNr ..
+                ' ; Call ' .. Call_Pool .. ' Plugin "DEV_LC_View" ')
+        end
+        Cmd('Assign ' .. SequenceObject[CurrentSeqNr] .. " at " .. tag_delay_from)
+
+
+        -- CmdIndirectWait('ClearAll /nu')
+        -- CmdIndirectWait('Store Sequence ' ..
+        --     CurrentSeqNr .. ' \'' .. prefix .. Argument_Delay[i].name .. surfix[a] .. '\'')
+        -- Add CmdIndirectWait to Squence
+        -- CmdIndirectWait('Set Sequence ' .. CurrentSeqNr .. ' Cue 1 Property Appearance=' .. AppImp[ia].Nr)
+        -- if i == 5 then
+        --     CmdIndirectWait('Set DataPool ' .. Construct_Pool .. ' Sequence ' .. CurrentSeqNr ..
+        --         ' Cue 1 Property Command=\'Go DataPool ' .. Construct_Pool .. ' Macro ' .. CurrentMacroNr .. '')
+        -- else
+        --     CmdIndirectWait('Set Sequence ' ..
+        --         CurrentSeqNr .. ' Cue 1 Property Command=\'Off DataPool ' .. Construct_Pool .. ' Sequence ' ..
+        --         FirstSeqDelayFrom .. ' Thru ' .. LastSeqDelayFrom .. ' - ' .. CurrentSeqNr ..
+        --         ' ; Set DataPool ' .. Construct_Pool .. ' Matricks ' ..
+        --         MatrickNrStart .. ' Property "DelayFrom' .. surfix[a] .. '" ' .. Argument_Delay[i].Time ..
+        --         '  ; SetUserVariable "LC_Fonction" 2 ; SetUserVariable "LC_Axes" "' .. a ..
+        --         '" ; SetUserVariable "LC_Layout" ' .. TLayNr ..
+        --         ' ; SetUserVariable "LC_Element" ' .. Delay_F_Element ..
+        --         ' ; SetUserVariable "LC_Matrick" ' .. MatrickNrStart ..
+        --         ' ; SetUserVariable "LC_Matrick_Thru" ' .. MatrickNr ..
+        --         ' ; Call DataPool ' .. Construct_Pool .. ' Plugin "LC_View" ')
+        -- end
+        -- CmdIndirectWait('Set Sequence ' .. CurrentSeqNr .. ' Property Appearance=' .. AppImp[ib].Nr)
+        Command_Ext_Suite(CurrentSeqNr, SequenceObject)
+
+        -- Add Squences to Layout
+        if MakeX then
+            Nr = Layout_Object[TLayNr]:Acquire()
+            Layout_Object[TLayNr][Nr.No]:Set('Object', SequenceObject[CurrentSeqNr])
+            Layout_Object[TLayNr][Nr.No]:Set('posx', LayX)
+            Layout_Object[TLayNr][Nr.No]:Set('posy', LayY)
+            Layout_Object[TLayNr][Nr.No]:Set('width', LayW)
+            Layout_Object[TLayNr][Nr.No]:Set('height', LayH)
+            Layout_Object[TLayNr][Nr.No]:Set('action', 'Go+')
+            Layout_Object[TLayNr][Nr.No]:Set('Note', 'Delay from')
+            LC_Set_Def(TLayNr, Nr, Layout_Object)
+            LayX = math.floor(LayX + LayW + 20)
+            LayNr = math.floor(LayNr + 1)
+            Delay_T_Element = math.floor(LayNr + 1)
+        end
+        CurrentSeqNr = math.floor(CurrentSeqNr + 1)
+
+        -- if MakeX then
+        --     CmdIndirectWait("Assign Sequence " .. CurrentSeqNr .. " at Layout " .. TLayNr)
+        --     CmdIndirectWait("Set Layout " .. TLayNr .. "." .. LayNr ..
+        --         " Property PosX " .. LayX .. " PosY " .. LayY ..
+        --         " PositionW " .. LayW .. " PositionH " .. LayH ..
+        --         " VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0 VisibilityBorder=0 VisibilityIcon=0")
+        --     LayX = math.floor(LayX + LayW + 20)
+        --     LayNr = math.floor(LayNr + 1)
+        --     Delay_T_Element = math.floor(LayNr + 1)
+        -- end
+        -- CurrentSeqNr = math.floor(CurrentSeqNr + 1)
+    end -- end Sequences DelayFrom
+    return Current_Id_Lay, First_Id_Lay, LayX, LayNr, Delay_T_Element, CurrentSeqNr, CurrentMacroNr, Delay_F_Element
+end     --Create_Delay_From_Sequences
+
+function Create_Delay_To_Sequences(a, First_Id_Lay, LayNr, CurrentSeqNr, Current_Id_Lay, prefix, Argument_DelayTo, surfix,
+                                   MatrickNrStart, TLayNr, Delay_T_Element, MatrickNr, AppImp, LayX, LayY, LayW, LayH,
+                                   Phase_Element, CurrentMacroNr, MakeX, Construct_Pool, Call_Pool, Time_Argument)
+    local MacroObject, SequenceObject, Layout_Object, Nr = LC_Get_Object(Construct_Pool)
+    -- fix time_tag
+    local TagObject_LC                                   = Root().ShowData.Tags:Children()
+    local tag_delay_to
+
+    -- Setup Delay to Sequence
+    local old_prefix                                     = prefix
+    prefix                                               = 'o' .. prefix
+    -- Setup DelayTo Sequence
+    CurrentMacroNr                                       = math.floor(CurrentMacroNr + 1)
+    local FirstSeqDelayTo                                = CurrentSeqNr
+    local LastSeqDelayTo                                 = math.floor(CurrentSeqNr + 4)
+    -- Create Macro DelayTo Input
+    -- Delay_T_Element                                      = Delay_T_Element + 2
+    Create_Macro_Delay_To(CurrentMacroNr, prefix, surfix, a, FirstSeqDelayTo, LastSeqDelayTo, MatrickNrStart,
+        3, TLayNr, Delay_T_Element, MatrickNr, Construct_Pool, Call_Pool)
+
+    if MakeX then
+        Command_Title('DELAY TO', TLayNr, LayNr, LayX, LayY, 580, 140, 2, Construct_Pool)
+        LayNr = math.floor(LayNr + 1)
+        Command_Title('none', TLayNr, LayNr, LayX, LayY, 580, 140, 3, Construct_Pool)
+        LayNr = math.floor(LayNr + 1)
+    end
+
+    for i = 1, 5 do
+        local ia = tonumber(i * 2 + 21)
+        local ib = tonumber(i * 2 + 22)
+        if i == 1 then
+            if a == 1 then
+                First_Id_Lay[9] = math.floor(LayNr)
+                First_Id_Lay[10] = CurrentSeqNr
+            elseif a == 2 then
+                First_Id_Lay[11] = CurrentSeqNr
+            elseif a == 3 then
+                First_Id_Lay[12] = CurrentSeqNr
+            end
+            Current_Id_Lay = First_Id_Lay[9]
+        end
+
+        for v in ipairs(TagObject_LC) do
+            if TagObject_LC[v].Name == old_prefix .. '_' .. Time_Argument[3].name .. '_' .. surfix[a] then
+                tag_delay_to = TagObject_LC[v]
+            end
+        end
+
+        LC_Check_Size_Pool(CurrentSeqNr, SequenceObject)
+        SequenceObject:Create(CurrentSeqNr)
+        SequenceObject[CurrentSeqNr]:Set('Name', "'" .. prefix .. Argument_DelayTo[i].name .. surfix[a] .. "'")
+        LC_Sequence_Defo(SequenceObject, CurrentSeqNr)
+        SequenceObject[CurrentSeqNr]:Set('TRACKING', 'No')
+        SequenceObject[CurrentSeqNr]:Set('PRIORITY', 'HTP')
+        SequenceObject[CurrentSeqNr]:Set('SOFTLTP', 'No')
+
+        SequenceObject[CurrentSeqNr]:Insert()
+        SequenceObject[CurrentSeqNr]:Set('Appearance', AppImp[ib].Nr)
+        SequenceObject[CurrentSeqNr][3]:Set('No', 1)
+        SequenceObject[CurrentSeqNr][3]:Create(1)
+        SequenceObject[CurrentSeqNr][3][1]:Set('Appearance', AppImp[ia].Nr)
+        if i == 5 then
+            SequenceObject[CurrentSeqNr][3][1]:Set('Command',
+                'Go DataPool ' .. Construct_Pool .. ' Macro ' .. CurrentMacroNr .. '')
+        else
+            SequenceObject[CurrentSeqNr][3][1]:Set('Command', 'Set DataPool ' .. Construct_Pool .. ' Matricks ' ..
+                MatrickNrStart .. ' Property "DelayTo' .. surfix[a] .. '" ' .. Argument_DelayTo[i].Time ..
+                ' ; SetUserVariable "LC_Fonction" 3 ; SetUserVariable "LC_Axes" "' .. a ..
+                '" ; SetUserVariable "LC_Layout" ' .. TLayNr ..
+                ' ; SetUserVariable "LC_Element" ' .. Delay_T_Element ..
+                ' ; SetUserVariable "LC_Matrick" ' .. MatrickNrStart ..
+                ' ; SetUserVariable "LC_Matrick_Thru" ' .. MatrickNr ..
+                ' ; Call ' .. Call_Pool .. ' Plugin "DEV_LC_View" ')
+        end
+        Cmd('Assign ' .. SequenceObject[CurrentSeqNr] .. " at " .. tag_delay_to)
+
+        -- CmdIndirectWait('ClearAll /nu')
+        -- CmdIndirectWait('Store Sequence ' ..
+        --     CurrentSeqNr .. ' \'' .. prefix .. Argument_DelayTo[i].name .. surfix[a] .. '\'')
+        -- Add CmdIndirectWait to Squence
+        -- CmdIndirectWait('Set Sequence ' .. CurrentSeqNr .. ' Cue 1 Property Appearance=' .. AppImp[ia].Nr)
+        -- if i == 5 then
+        --     CmdIndirectWait('Set Sequence ' ..
+        --         CurrentSeqNr ..
+        --         ' Cue 1 Property Command=\'Go DataPool ' .. Construct_Pool .. ' Macro ' .. CurrentMacroNr .. '')
+        -- else
+        --     CmdIndirectWait('Set Sequence ' ..
+        --         CurrentSeqNr .. ' Cue 1 Property Command=\'Off DataPool ' .. Construct_Pool .. ' Sequence ' ..
+        --         FirstSeqDelayTo .. ' Thru ' .. LastSeqDelayTo .. ' - ' .. CurrentSeqNr ..
+        --         ' ; Set DataPool ' .. Construct_Pool .. ' Matricks ' ..
+        --         MatrickNrStart .. ' Property "DelayTo' .. surfix[a] .. '" ' .. Argument_DelayTo[i].Time ..
+        --         ' ; SetUserVariable "LC_Fonction" 3 ; SetUserVariable "LC_Axes" "' .. a ..
+        --         '" ; SetUserVariable "LC_Layout" ' .. TLayNr ..
+        --         ' ; SetUserVariable "LC_Element" ' .. Delay_T_Element ..
+        --         ' ; SetUserVariable "LC_Matrick" ' .. MatrickNrStart ..
+        --         ' ; SetUserVariable "LC_Matrick_Thru" ' .. MatrickNr ..
+        --         ' ; Call DataPool ' .. Construct_Pool .. ' Plugin "LC_View" ')
+        -- end
+        -- CmdIndirectWait('Set Sequence ' .. CurrentSeqNr .. ' Property Appearance=' .. AppImp[ib].Nr)
+        Command_Ext_Suite(CurrentSeqNr, SequenceObject)
+        -- end Sequences
+        -- Add Squences to Layout
+        if MakeX then
+            Nr = Layout_Object[TLayNr]:Acquire()
+            Layout_Object[TLayNr][Nr.No]:Set('Object', SequenceObject[CurrentSeqNr])
+            Layout_Object[TLayNr][Nr.No]:Set('posx', LayX)
+            Layout_Object[TLayNr][Nr.No]:Set('posy', LayY)
+            Layout_Object[TLayNr][Nr.No]:Set('width', LayW)
+            Layout_Object[TLayNr][Nr.No]:Set('height', LayH)
+            Layout_Object[TLayNr][Nr.No]:Set('action', 'Go+')
+            Layout_Object[TLayNr][Nr.No]:Set('Note', 'Delay to')
+            LC_Set_Def(TLayNr, Nr, Layout_Object)
+            LayX = math.floor(LayX + LayW + 20)
+            LayNr = math.floor(LayNr + 1)
+            Phase_Element = math.floor(LayNr + 2)
+        end
+        CurrentSeqNr = math.floor(CurrentSeqNr + 1)
+        -- if MakeX then
+        --     -- CmdIndirectWait('Assign Sequence ' .. CurrentSeqNr .. ' at Layout ' .. TLayNr)
+        --     -- CmdIndirectWait('Set Layout ' .. TLayNr .. '.' .. LayNr ..
+        --     --     ' Property PosX ' .. LayX .. ' PosY ' .. LayY ..
+        --     --     ' PositionW ' .. LayW .. ' PositionH ' .. LayH ..
+        --     --     ' VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0 VisibilityBorder=0 VisibilityIcon=0')
+        --     LayX = math.floor(LayX + LayW + 20)
+        --     LayNr = math.floor(LayNr + 1)
+        --     Phase_Element = math.floor(LayNr + 2)
+        -- end
+        -- CurrentSeqNr = math.floor(CurrentSeqNr + 1)
+    end -- end Sequences DelayTo
+    return First_Id_Lay, Current_Id_Lay, LayX, LayNr, Phase_Element, CurrentSeqNr, CurrentMacroNr, Delay_T_Element
+end     -- end Create_Delay_To_Sequences
+
 
 --end LC_Cmd.lua

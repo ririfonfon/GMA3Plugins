@@ -438,80 +438,15 @@ function LC_Construct_Layout(TLay, SeqNrStart, MacroNrStart, MatrickNrStart, Mat
     Echo('create function xyz ok')
 
     -- add line macro X Y Z Call
-    for i = 1, 3 do
-        MacroObject[First_Id_Lay[33 + i]]:Insert(32)
-        MacroObject[First_Id_Lay[33 + i]][32]:Set('Command', '')
-        -- MacroObject[First_Id_Lay[33 + i]][32]:Set('Command',
-        -- 'Off DataPool ' .. Construct_Pool .. ' Sequence ' .. First_Id_Lay[29] ..
-        -- ' + ' .. First_Id_Lay[30] .. ' + ' .. First_Id_Lay[31] .. ' - ' .. First_Id_Lay[28 + i])
-
-        -- CmdIndirectWait('ChangeDestination Macro ' .. First_Id_Lay[33 + i])
-        -- Cmd('Insert')
-        -- CmdIndirectWait('Set 32 Command=\'Off DataPool ' .. Construct_Pool .. ' Sequence ' .. First_Id_Lay[29] ..
-        --     ' + ' .. First_Id_Lay[30] .. ' + ' .. First_Id_Lay[31] .. ' - ' .. First_Id_Lay[28 + i])
-        Add_Macro_Call(i, TLayNr, Fade_Element, MatrickNrStart, Delay_F_Element, Delay_T_Element, Phase_Element,
-            Group_Element, Block_Element, Wings_Element, Construct_Pool, First_Id_Lay[33 + i], Call_Pool)
-        -- CmdIndirectWait('ChangeDestination Root')
-    end
+    LC_Add_Line_Macro_XYZ(MacroObject, First_Id_Lay, TLayNr, Fade_Element, MatrickNrStart, Delay_F_Element,
+        Delay_T_Element, Phase_Element, Group_Element, Block_Element, Wings_Element,
+        Construct_Pool, Call_Pool)
     -- end line macro X Y Z Call
     Echo('line macro xyz ok')
 
+    CurrentSeqNr, Nr, LayX, LayY, LayNr = LC_Create_KillallLCx(LayY, LayX, LayNr, ColLgnCount, RefX, CurrentSeqNr, SequenceObject, Nr,
+        Layout_Object, TLayNr, LayW, LayH, prefix, Construct_Pool)
 
-    -- add Kill all LCx_
-    -- Echo(' 1 ' .. TLayNr)
-    -- Echo(' 2 ' .. LayY)
-    -- Echo(' 3 ' .. TLay[TLayNr].DimensionH)
-    -- if TLayNrRef then
-    --     LayY = TLay[TLayNr].DimensionH / 2
-    -- else
-    LayY = 540
-    -- end
-
-    LayY = math.floor(LayY + 20) -- Add offset for Layout Element distance
-    LayY = math.floor(LayY + (120 * ColLgnCount))
-    LayX = RefX
-    LayNr = math.floor(LayNr + 1)
-    LC_Check_Size_Pool(CurrentSeqNr, SequenceObject)
-    SequenceObject:Create(CurrentSeqNr)
-    SequenceObject[CurrentSeqNr]:Set('Name', prefix .. "KILL_ALL")
-    LC_Sequence_Defo(SequenceObject, CurrentSeqNr)
-    SequenceObject[CurrentSeqNr]:Set('TRACKING', 'No')
-    SequenceObject[CurrentSeqNr]:Set('PRIORITY', 'HTP')
-    SequenceObject[CurrentSeqNr]:Set('SOFTLTP', 'No')
-
-    SequenceObject[CurrentSeqNr]:Insert()
-    SequenceObject[CurrentSeqNr]:Set('Appearance', '[[skull_white_png]]')
-    SequenceObject[CurrentSeqNr][3]:Set('No', 1)
-    SequenceObject[CurrentSeqNr][3]:Create(1)
-    SequenceObject[CurrentSeqNr][3][1]:Set('Appearance', '[[skull_black_png]]')
-    SequenceObject[CurrentSeqNr][3][1]:Set('Command',
-        'Off DataPool ' .. Construct_Pool .. ' Sequence \'' .. prefix .. '*')
-
-
-    -- CmdIndirectWait('ClearAll /nu')
-    -- CmdIndirectWait('Store Sequence ' .. CurrentSeqNr .. ' \'' .. prefix .. 'KILL_ALL\'')
-    -- CmdIndirectWait("Set Seq " .. CurrentSeqNr .. " cue 1 Property Appearance=" .. prefix .. "'skull_on'")
-    -- CmdIndirectWait('Set Seq ' ..
-    --     CurrentSeqNr .. ' cue 1 Property Command=\'Off DataPool ' .. Construct_Pool .. ' Sequence \'' .. prefix .. '*')
-    -- CmdIndirectWait("Set Seq " .. CurrentSeqNr .. " Property Appearance=" .. prefix .. "'skull_off'")
-    -- Command_Ext_Suite(CurrentSeqNr)
-
-    Nr = Layout_Object[TLayNr]:Acquire()
-    Layout_Object[TLayNr][Nr.No]:Set('Object', SequenceObject[CurrentSeqNr])
-    Layout_Object[TLayNr][Nr.No]:Set('posx', LayX)
-    Layout_Object[TLayNr][Nr.No]:Set('posy', LayY)
-    Layout_Object[TLayNr][Nr.No]:Set('width', LayW)
-    Layout_Object[TLayNr][Nr.No]:Set('height', LayH)
-    Layout_Object[TLayNr][Nr.No]:Set('action', 'Go+')
-    Layout_Object[TLayNr][Nr.No]:Set('Note', 'Kill_All')
-    LC_Set_Def(TLayNr, Nr, Layout_Object)
-
-    -- CmdIndirectWait("Assign Seq " .. CurrentSeqNr .. " at Layout " .. TLayNr)
-    -- CmdIndirectWait('Set Layout ' .. TLayNr .. '.' .. LayNr ..
-    --     ' Property PosX ' .. LayX .. ' PosY ' .. LayY ..
-    --     ' PositionW ' .. LayW .. ' PositionH ' .. LayH ..
-    --     ' VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0 VisibilityBorder=0 VisibilityIcon=0')
-    -- end Kill all LCx_
     Echo('create Kill all LCx_ ok')
 end
 
