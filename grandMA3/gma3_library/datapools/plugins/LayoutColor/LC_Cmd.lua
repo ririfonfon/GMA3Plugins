@@ -353,14 +353,6 @@ function LC_Create_All_Color(TCol, CurrentSeqNr, prefix, TLayNr, LayNr, NrNeed, 
 
         LC_Command_Ext_Suite(CurrentSeqNr, SequenceObject)
 
-        -- CmdIndirectWait("ClearAll /nu")
-        -- CmdIndirectWait('Store Sequence ' .. CurrentSeqNr .. ' \'' .. prefix .. 'ALL' .. StringColName .. 'ALL\'')
-        -- CmdIndirectWait('Set Sequence ' .. CurrentSeqNr .. ' Cue 1 Property Appearance=' .. NrNeed + 1)
-        -- CmdIndirectWait('Set Sequence ' ..
-        --     CurrentSeqNr .. ' Cue 1 Property Command= \'Go+ DataPool ' .. Construct_Pool .. ' Sequence ' ..
-        --     prefix .. StringColName .. '* ; Off DataPool ' .. Construct_Pool .. ' Sequence ' ..
-        --     CurrentSeqNr .. '\'')
-        -- CmdIndirectWait('Set Sequence ' .. CurrentSeqNr .. ' Property Appearance=' .. NrNeed + 1)
         Nr = Layout_Object[TLayNr]:Acquire()
         Layout_Object[TLayNr][Nr.No]:Set('Object', SequenceObject[CurrentSeqNr])
         Layout_Object[TLayNr][Nr.No]:Set('posx', LayX)
@@ -370,12 +362,6 @@ function LC_Create_All_Color(TCol, CurrentSeqNr, prefix, TLayNr, LayNr, NrNeed, 
         Layout_Object[TLayNr][Nr.No]:Set('action', 'Go+')
         Layout_Object[TLayNr][Nr.No]:Set('Note', 'Seq Color')
         LC_Set_Def(TLayNr, Nr, Layout_Object)
-
-        -- CmdIndirectWait("Assign Sequence " .. CurrentSeqNr .. " at Layout " .. TLayNr)
-        -- CmdIndirectWait("Set Layout " .. TLayNr .. "." .. LayNr ..
-        --     " Property PosX " .. LayX .. " PosY " .. LayY ..
-        --     " PositionW " .. LayW .. " PositionH " .. LayH ..
-        --     " VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0 VisibilityBorder=0 VisibilityIcon=0")
 
         if (col_count ~= MaxColLgn) then
             LayX = math.floor(LayX + LayW + 20)
