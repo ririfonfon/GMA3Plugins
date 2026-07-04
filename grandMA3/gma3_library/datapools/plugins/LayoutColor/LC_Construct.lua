@@ -315,7 +315,7 @@ function LC_Construct_Layout(TLay, SeqNrStart, MacroNrStart, MatrickNrStart, Mat
     -- Create new Layout View
     LC_Check_Size_Pool(TLayNr, Layout_Object)
     Layout_Object:Create(TLayNr)
-    Layout_Object[TLayNr]:Set('Name', "'" .. prefix .. NaLay .. "'")
+    Layout_Object[TLayNr]:Set('Name', prefix .. NaLay)
     -- CmdIndirectWait('Select Layout ' .. TLayNr)
 
 
@@ -474,16 +474,13 @@ function LC_Construct_Layout(TLay, SeqNrStart, MacroNrStart, MatrickNrStart, Mat
     -- end Favourites
     Echo('LC_Create_Favourite_Layout ok')
 
-end
-
-local function suite()
 
     -- Macro Del LC prefix
     CurrentMacroNr = math.floor(CurrentMacroNr + 2)
     condition_string = "Lua 'if Confirm(\"Delete Layout Color LC" ..
         prefix:gsub('%D*', '') ..
-        "?\") then; CmdIndirectWait(\"Go macro " ..
-        CurrentMacroNr .. "\"); else CmdIndirectWait(\"Off macro " .. CurrentMacroNr .. "\"); end'" .. ' /nu'
+        "?\") then; CmdIndirectWait(\"Go DataPool " .. Construct_Pool .. " macro " .. CurrentMacroNr ..
+        "\"); else CmdIndirectWait(\"Off DataPool " .. Construct_Pool .. " macro " .. CurrentMacroNr .. "\"); end'" .. ' /nu'
     MacroObject:Create(CurrentMacroNr)
     MacroObject[CurrentMacroNr]:Set('Name', "'" .. CurrentMacroNr .. ' \'' .. "ERASE'")
     for b = 1, 11 do
@@ -499,22 +496,22 @@ local function suite()
     MacroObject[CurrentMacroNr][1]:Set('Command', condition_string)
     MacroObject[CurrentMacroNr][1]:Set('Wait', 'Go')
     MacroObject[CurrentMacroNr][2]:Set('Command',
-        'Delete DataPool ' .. Construct_Pool .. ' Sequence ' .. prefix .. '*' .. ' /nc')
+        'Delete DataPool ' .. Construct_Pool .. ' Sequence ' .. prefix .. '* /nc')
     MacroObject[CurrentMacroNr][3]:Set('Command',
-        'Delete DataPool ' .. Construct_Pool .. ' Layout ' .. prefix .. '*' .. ' /nc')
+        'Delete DataPool ' .. Construct_Pool .. ' Layout ' .. prefix .. '* /nc')
     MacroObject[CurrentMacroNr][4]:Set('Command',
-        'Delete DataPool ' .. Construct_Pool .. ' Matricks ' .. prefix .. '*' .. ' /nc')
-    MacroObject[CurrentMacroNr][5]:Set('Command', 'Delete Appearance ' .. prefix .. '*' .. ' /nc')
+        'Delete DataPool ' .. Construct_Pool .. ' Matricks ' .. prefix .. '* /nc')
+    MacroObject[CurrentMacroNr][5]:Set('Command', 'Delete Appearance ' .. prefix .. '* /nc')
     MacroObject[CurrentMacroNr][6]:Set('Command',
-        'Delete DataPool ' .. Construct_Pool .. ' Preset 25. ' .. prefix .. '*' .. ' /nc')
+        'Delete DataPool ' .. Construct_Pool .. ' Preset 25. ' .. prefix .. '* /nc')
     MacroObject[CurrentMacroNr][7]:Set('Command',
         'Delete DataPool ' .. Construct_Pool .. ' Macro ' .. Macro_Num_Start .. ' Thru ' .. Macro_Num_End .. ' /nc')
     MacroObject[CurrentMacroNr][8]:Set('Command',
-        'Delete DataPool ' .. Construct_Pool .. ' Macro ' .. prefix .. '*' .. ' /nc')
+        'Delete DataPool ' .. Construct_Pool .. ' Macro ' .. prefix .. '* /nc')
     MacroObject[CurrentMacroNr][9]:Set('Command',
-        'Delete DataPool ' .. Construct_Pool .. ' Macro o' .. prefix .. '*' .. ' /nc')
+        'Delete DataPool ' .. Construct_Pool .. ' Macro o' .. prefix .. '* /nc')
     MacroObject[CurrentMacroNr][10]:Set('Command',
-        'Delete DataPool ' .. Construct_Pool .. ' Sequence o' .. prefix .. '*' .. ' /nc')
+        'Delete DataPool ' .. Construct_Pool .. ' Sequence o' .. prefix .. '* /nc')
     MacroObject[CurrentMacroNr][11]:Set('Command',
         'Delete DataPool ' .. Construct_Pool .. ' Macro ' .. CurrentMacroNr .. ' /nc')
     -- end Macro Del LC prefix
@@ -532,6 +529,7 @@ local function suite()
 
     -- CmdIndirectWait("Set Layout " .. TLayNr .. " DimensionW " .. UsedW .. " DimensionH " .. UsedH)
     CmdIndirectWait('Select Layout ' .. TLayNr)
-end -- end Construct_Layout
+end -- end LC_Construct.lua
 
---end LC_Construct.lua
+local function suite()
+end

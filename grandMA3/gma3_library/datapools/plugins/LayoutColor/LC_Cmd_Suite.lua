@@ -38,7 +38,7 @@ function LC_Create_Phase_Sequence(LayY, LayX, LayW, a, First_Id_Lay, LayNr, Curr
     -- Create Sequences Phase
     LC_Check_Size_Pool(CurrentSeqNr, SequenceObject)
     SequenceObject:Create(CurrentSeqNr)
-    SequenceObject[CurrentSeqNr]:Set('Name', "'" .. prefix .. 'Phase Input' .. surfix[a] .. "'")
+    SequenceObject[CurrentSeqNr]:Set('Name', prefix .. 'Phase Input' .. surfix[a])
     LC_Sequence_Defo(SequenceObject, CurrentSeqNr)
     SequenceObject[CurrentSeqNr]:Set('TRACKING', 'No')
     SequenceObject[CurrentSeqNr]:Set('PRIORITY', 'HTP')
@@ -151,7 +151,7 @@ function LC_Create_Group_Sequence(CurrentMacroNr, FirstSeqGrp, CurrentSeqNr, Las
         end
         LC_Check_Size_Pool(CurrentSeqNr, SequenceObject)
         SequenceObject:Create(CurrentSeqNr)
-        SequenceObject[CurrentSeqNr]:Set('Name', "'" .. prefix .. Argument_Xgrp[i].name .. surfix[a] .. "'")
+        SequenceObject[CurrentSeqNr]:Set('Name', prefix .. Argument_Xgrp[i].name .. surfix[a])
         LC_Sequence_Defo(SequenceObject, CurrentSeqNr)
         SequenceObject[CurrentSeqNr]:Set('TRACKING', 'No')
         SequenceObject[CurrentSeqNr]:Set('PRIORITY', 'HTP')
@@ -286,7 +286,7 @@ function LC_Create_Block_Sequence(CurrentMacroNr, FirstSeqBlock, CurrentSeqNr, L
 
         LC_Check_Size_Pool(CurrentSeqNr, SequenceObject)
         SequenceObject:Create(CurrentSeqNr)
-        SequenceObject[CurrentSeqNr]:Set('Name', "'" .. prefix .. Argument_Xblock[i].name .. surfix[a] .. "'")
+        SequenceObject[CurrentSeqNr]:Set('Name', prefix .. Argument_Xblock[i].name .. surfix[a])
         LC_Sequence_Defo(SequenceObject, CurrentSeqNr)
         SequenceObject[CurrentSeqNr]:Set('TRACKING', 'No')
         SequenceObject[CurrentSeqNr]:Set('PRIORITY', 'HTP')
@@ -423,7 +423,7 @@ function LC_Create_Wings_Sequence(CurrentMacroNr, FirstSeqWings, CurrentSeqNr, L
 
         LC_Check_Size_Pool(CurrentSeqNr, SequenceObject)
         SequenceObject:Create(CurrentSeqNr)
-        SequenceObject[CurrentSeqNr]:Set('Name', "'" .. prefix .. Argument_Xwings[i].name .. surfix[a] .. "'")
+        SequenceObject[CurrentSeqNr]:Set('Name', prefix .. Argument_Xwings[i].name .. surfix[a])
         LC_Sequence_Defo(SequenceObject, CurrentSeqNr)
         SequenceObject[CurrentSeqNr]:Set('TRACKING', 'No')
         SequenceObject[CurrentSeqNr]:Set('PRIORITY', 'HTP')
@@ -523,7 +523,7 @@ function LC_Create_XYZ_Sequence(CurrentMacroNr, First_Id_Lay, prefix, surfix, Ca
     First_Id_Lay[33 + a]                                 = CurrentMacroNr
     LC_Check_Size_Pool(CurrentMacroNr, MacroObject)
     MacroObject:Create(CurrentMacroNr)
-    MacroObject[CurrentMacroNr]:Set('Name', "'" .. prefix .. surfix[a] .. "_Call'")
+    MacroObject[CurrentMacroNr]:Set('Name', prefix .. surfix[a] .. "_Call")
     -- CmdIndirectWait('Store Macro ' .. CurrentMacroNr .. ' \'' .. prefix .. surfix[a] .. '_Call\'')
     -- CmdIndirectWait('ChangeDestination Macro ' .. CurrentMacroNr .. '')
     for m = 1, 31 do
@@ -570,7 +570,7 @@ function LC_Create_XYZ_Sequence(CurrentMacroNr, First_Id_Lay, prefix, surfix, Ca
 
     LC_Check_Size_Pool(CurrentSeqNr, SequenceObject)
     SequenceObject:Create(CurrentSeqNr)
-    SequenceObject[CurrentSeqNr]:Set('Name', "'" .. prefix .. surfix[a] .. "_Call'")
+    SequenceObject[CurrentSeqNr]:Set('Name', prefix .. surfix[a] .. "_Call")
     LC_Sequence_Defo(SequenceObject, CurrentSeqNr)
     SequenceObject[CurrentSeqNr]:Set('TRACKING', 'No')
     SequenceObject[CurrentSeqNr]:Set('PRIORITY', 'HTP')
@@ -596,7 +596,7 @@ function LC_Create_XYZ_Sequence(CurrentMacroNr, First_Id_Lay, prefix, surfix, Ca
     LC_Command_Ext_Suite(CurrentSeqNr, SequenceObject)
     LC_Check_Size_Pool(CurrentSeqNr + 1, SequenceObject)
     SequenceObject:Create(CurrentSeqNr + 1)
-    SequenceObject[CurrentSeqNr + 1]:Set('Name', "'" .. prefix .. surfix[a] .. "_Reset'")
+    SequenceObject[CurrentSeqNr + 1]:Set('Name', prefix .. surfix[a] .. "_Reset")
     LC_Sequence_Defo(SequenceObject, CurrentSeqNr)
     SequenceObject[CurrentSeqNr + 1]:Set('TRACKING', 'No')
     SequenceObject[CurrentSeqNr + 1]:Set('PRIORITY', 'HTP')
@@ -788,7 +788,7 @@ function LC_Macro_Priority(LayX, LayY, Ligne_Inc, CurrentMacroNr, First_All_Colo
     Echo('ici ' .. CurrentMacroNr)
     LC_Check_Size_Pool(CurrentMacroNr, MacroObject)
     MacroObject:Create(CurrentMacroNr)
-    MacroObject[CurrentMacroNr]:Set('Name', "'" .. "Priority'")
+    MacroObject[CurrentMacroNr]:Set('Name', "o".. prefix .. "Priority")
     for b = 1, 7 do
         MacroObject[CurrentMacroNr]:Insert(b)
     end

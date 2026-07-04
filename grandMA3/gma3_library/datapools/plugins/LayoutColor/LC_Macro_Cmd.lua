@@ -23,7 +23,7 @@ function LC_Create_Macro_Reset(CurrentMacroNr, prefix, surfix, MatrickNrStart, a
 
     LC_Check_Size_Pool(CurrentMacroNr + 1, MacroObject)
     MacroObject:Create(CurrentMacroNr + 1)
-    MacroObject[CurrentMacroNr + 1]:Set('Name', "'" .. prefix .. surfix[a] .. "_Reset'")
+    MacroObject[CurrentMacroNr + 1]:Set('Name', prefix .. surfix[a] .. "_Reset")
     for b = 1, 72 do
         MacroObject[CurrentMacroNr + 1]:Insert(b)
     end
@@ -289,7 +289,7 @@ function LC_Create_Macro_Delay_From(CurrentMacroNr, prefix, surfix, a, FirstSeq,
 
     LC_Check_Size_Pool(CurrentMacroNr, MacroObject)
     MacroObject:Create(CurrentMacroNr)
-    MacroObject[CurrentMacroNr]:Set('Name', "'" .. prefix .. 'DelayFrom Input' .. surfix[a] .. "'")
+    MacroObject[CurrentMacroNr]:Set('Name', prefix .. 'DelayFrom Input' .. surfix[a])
     for b = 1, 10 do
         MacroObject[CurrentMacroNr]:Insert(b)
     end
@@ -339,7 +339,7 @@ function LC_Create_Macro_Delay_To(CurrentMacroNr, prefix, surfix, a, FirstSeq, L
 
     LC_Check_Size_Pool(CurrentMacroNr, MacroObject)
     MacroObject:Create(CurrentMacroNr)
-    MacroObject[CurrentMacroNr]:Set('Name', "'" .. prefix .. 'DelayTo Input' .. surfix[a] .. "'")
+    MacroObject[CurrentMacroNr]:Set('Name', prefix .. 'DelayTo Input' .. surfix[a])
     for b = 1, 10 do
         MacroObject[CurrentMacroNr]:Insert(b)
     end
@@ -389,7 +389,7 @@ function LC_Create_Macro_Phase(CurrentMacroNr, prefix, surfix, a, MatrickNrStart
 
     LC_Check_Size_Pool(CurrentMacroNr, MacroObject)
     MacroObject:Create(CurrentMacroNr)
-    MacroObject[CurrentMacroNr]:Set('Name', "'" .. prefix .. 'Phase Input' .. surfix[a] .. "'")
+    MacroObject[CurrentMacroNr]:Set('Name', prefix .. 'Phase Input' .. surfix[a])
     for b = 1, 10 do
         MacroObject[CurrentMacroNr]:Insert(b)
     end
@@ -439,7 +439,7 @@ function LC_Create_Macro_Group(CurrentMacroNr, prefix, surfix, a, FirstSeq, Last
 
     LC_Check_Size_Pool(CurrentMacroNr, MacroObject)
     MacroObject:Create(CurrentMacroNr)
-    MacroObject[CurrentMacroNr]:Set('Name', "'" .. prefix .. 'Group Input' .. surfix[a] .. "'")
+    MacroObject[CurrentMacroNr]:Set('Name', prefix .. 'Group Input' .. surfix[a])
     for b = 1, 10 do
         MacroObject[CurrentMacroNr]:Insert(b)
     end
@@ -489,7 +489,7 @@ function LC_Create_Macro_Block(CurrentMacroNr, prefix, surfix, a, FirstSeq, Last
 
     LC_Check_Size_Pool(CurrentMacroNr, MacroObject)
     MacroObject:Create(CurrentMacroNr)
-    MacroObject[CurrentMacroNr]:Set('Name', "'" .. prefix .. 'Block Input' .. surfix[a] .. "'")
+    MacroObject[CurrentMacroNr]:Set('Name', prefix .. 'Block Input' .. surfix[a])
     for b = 1, 10 do
         MacroObject[CurrentMacroNr]:Insert(b)
     end
@@ -539,7 +539,7 @@ function LC_Create_Macro_Wings(CurrentMacroNr, prefix, surfix, a, FirstSeq, Last
 
     LC_Check_Size_Pool(CurrentMacroNr, MacroObject)
     MacroObject:Create(CurrentMacroNr)
-    MacroObject[CurrentMacroNr]:Set('Name', "'" .. prefix .. 'Wings Input' .. surfix[a] .. "'")
+    MacroObject[CurrentMacroNr]:Set('Name', prefix .. 'Wings Input' .. surfix[a])
     for b = 1, 10 do
         MacroObject[CurrentMacroNr]:Insert(b)
     end
@@ -588,7 +588,7 @@ function Create_Macro_Fade_E(CurrentMacroNr, prefix, Argument_Fade, i, surfix, a
     local MacroObject, SequenceObject, Layout_Object, Nr = LC_Get_Object(Construct_Pool)
     LC_Check_Size_Pool(CurrentMacroNr, MacroObject)
     MacroObject:Create(CurrentMacroNr)
-    MacroObject[CurrentMacroNr]:Set('Name', "'" .. prefix .. Argument_Fade[i].name .. surfix[a] .. "'")
+    MacroObject[CurrentMacroNr]:Set('Name', prefix .. Argument_Fade[i].name .. surfix[a])
     for b = 1, 11 do
         MacroObject[CurrentMacroNr]:Insert(b)
     end

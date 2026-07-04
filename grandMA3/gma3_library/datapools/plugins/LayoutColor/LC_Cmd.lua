@@ -15,7 +15,7 @@ function LC_Create_Matricks(MatrickNrStart, prefix, NaLay, NbGroup, MatrickNr, p
     LC_Check_Size_Pool(MatrickNrStart, MatrickObject)
     MatrickObject:Acquire()
     MatrickObject:Create(MatrickNrStart)
-    MatrickObject[MatrickNrStart]:Set('Name', "'" .. prefix .. NaLay .. "'")
+    MatrickObject[MatrickNrStart]:Set('Name', prefix .. NaLay)
     MatrickNr = math.floor(MatrickNrStart + 1)
     for g = 1, NbGroup, 1 do
         LC_Check_Size_Pool(MatrickNr, MatrickObject)
@@ -38,7 +38,7 @@ function LC_Create_Appear_Tricks(AppTricks, AppNr, prefix)
         AppTricks[q].Nr = math.floor(AppNr)
         LC_Check_Size_Pool(AppTricks[q].Nr, AppObject)
         AppObject:Create(AppTricks[q].Nr)
-        AppObject[AppTricks[q].Nr]:Set('Name', "'" .. prefix .. AppTricks[q].Name .. "'")
+        AppObject[AppTricks[q].Nr]:Set('Name', prefix .. AppTricks[q].Name)
         AppObject[AppTricks[q].Nr]:Set('Appearance', AppTricks[q].StApp:gsub('"', ''))
         AppObject[AppTricks[q].Nr]:Set('Color', AppTricks[q].RGBref:gsub('"', ''))
         AppNr = math.floor(AppNr + 1)
@@ -56,7 +56,7 @@ function LC_Create_Appearances(AppNr, prefix, TCol, NrAppear, StColCode, StColNa
     NrAppear = math.floor(AppNr)
     LC_Check_Size_Pool(NrAppear, AppObject)
     AppObject:Create(NrAppear)
-    AppObject[NrAppear]:Set('Name', "'" .. prefix .. 'Label')
+    AppObject[NrAppear]:Set('Name', prefix .. 'Label')
     AppObject[NrAppear]:Set('Appearance', StAppOn:gsub('"', ''))
     AppObject[NrAppear]:Set('Color', '0, 0, 0, 1')
 
@@ -152,7 +152,7 @@ function LC_Create_Appearances_Sequences(CurrentMacroNr, SelectedGelNr, NbGroup,
 
         LC_Check_Size_Pool(CurrentMacroNr, MacroObject)
         MacroObject:Create(CurrentMacroNr)
-        MacroObject[CurrentMacroNr]:Set('Name', "'" .. prefix .. '_Select_Group_' .. g .. "'")
+        MacroObject[CurrentMacroNr]:Set('Name', prefix .. '_Select_Group_' .. g )
         for a = 1, 7 do
             MacroObject[CurrentMacroNr]:Insert(a)
         end
@@ -486,7 +486,7 @@ function LC_Create_Fade_Sequences(MakeX, FirstSeqTime, LastSeqTime, CurrentSeqNr
     -- Create Macro Time Input
     LC_Check_Size_Pool(CurrentMacroNr, MacroObject)
     MacroObject:Create(CurrentMacroNr)
-    MacroObject[CurrentMacroNr]:Set('Name', "'" .. prefix .. 'Time Input' .. surfix[a] .. "'")
+    MacroObject[CurrentMacroNr]:Set('Name', prefix .. 'Time Input' .. surfix[a])
     MacroObject[CurrentMacroNr]:Insert(1)
     if MakeX then
         MacroObject[CurrentMacroNr][1]:Set('Command', '')
@@ -518,7 +518,7 @@ function LC_Create_Fade_Sequences(MakeX, FirstSeqTime, LastSeqTime, CurrentSeqNr
     if a == 1 then
         LC_Check_Size_Pool(CurrentSeqNr, SequenceObject)
         SequenceObject:Create(CurrentSeqNr)
-        SequenceObject[CurrentSeqNr]:Set('Name', "'" .. prefix .. Argument_Fade[1].name .. surfix[a] .. "'")
+        SequenceObject[CurrentSeqNr]:Set('Name', prefix .. Argument_Fade[1].name .. surfix[a])
         LC_Sequence_Defo(SequenceObject, CurrentSeqNr)
         SequenceObject[CurrentSeqNr]:Set('TRACKING', 'No')
         SequenceObject[CurrentSeqNr]:Set('PRIORITY', 'HTP')
@@ -570,7 +570,7 @@ function LC_Create_Fade_Sequences(MakeX, FirstSeqTime, LastSeqTime, CurrentSeqNr
 
         LC_Check_Size_Pool(CurrentSeqNr, SequenceObject)
         SequenceObject:Create(CurrentSeqNr)
-        SequenceObject[CurrentSeqNr]:Set('Name', "'" .. prefix .. Argument_Fade[i].name .. surfix[a] .. "'")
+        SequenceObject[CurrentSeqNr]:Set('Name', prefix .. Argument_Fade[i].name .. surfix[a])
         LC_Sequence_Defo(SequenceObject, CurrentSeqNr)
         SequenceObject[CurrentSeqNr]:Set('TRACKING', 'No')
         SequenceObject[CurrentSeqNr]:Set('PRIORITY', 'HTP')
@@ -669,7 +669,7 @@ function LC_Create_Delay_From_Sequences(First_Id_Lay, LayNr, CurrentSeqNr, Curre
 
         LC_Check_Size_Pool(CurrentSeqNr, SequenceObject)
         SequenceObject:Create(CurrentSeqNr)
-        SequenceObject[CurrentSeqNr]:Set('Name', "'" .. prefix .. Argument_Delay[i].name .. surfix[a] .. "'")
+        SequenceObject[CurrentSeqNr]:Set('Name', prefix .. Argument_Delay[i].name .. surfix[a])
         LC_Sequence_Defo(SequenceObject, CurrentSeqNr)
         SequenceObject[CurrentSeqNr]:Set('TRACKING', 'No')
         SequenceObject[CurrentSeqNr]:Set('PRIORITY', 'HTP')
@@ -803,7 +803,7 @@ function LC_Create_Delay_To_Sequences(a, First_Id_Lay, LayNr, CurrentSeqNr, Curr
 
         LC_Check_Size_Pool(CurrentSeqNr, SequenceObject)
         SequenceObject:Create(CurrentSeqNr)
-        SequenceObject[CurrentSeqNr]:Set('Name', "'" .. prefix .. Argument_DelayTo[i].name .. surfix[a] .. "'")
+        SequenceObject[CurrentSeqNr]:Set('Name', prefix .. Argument_DelayTo[i].name .. surfix[a])
         LC_Sequence_Defo(SequenceObject, CurrentSeqNr)
         SequenceObject[CurrentSeqNr]:Set('TRACKING', 'No')
         SequenceObject[CurrentSeqNr]:Set('PRIORITY', 'HTP')
