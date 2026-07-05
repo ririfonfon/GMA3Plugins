@@ -12,8 +12,7 @@ function LC_Create_Favourite_Macro(prefix, CurrentMacroNr, TLayNr, Construct_Poo
     local macro_num = CurrentMacroNr + 1
     CurrentMacroNr = macro_num + Favourite_Nr
     local macropool = ShowData().DataPools[Construct_Pool].Macros
-    -- CmdIndirectWait('Store Macro ' .. macro_num .. '.1 Thru 8' .. ' /nu')
-    -- CmdIndirectWait('Store Macro ' .. (macro_num + 1) .. ' Thru ' .. CurrentMacroNr .. ' /nu')
+
     for c = macro_num + 1, CurrentMacroNr do
         macropool:Create(c)
     end
@@ -43,7 +42,6 @@ end
 function LC_Create_Favourite_Layout(LayNr, CurrentMacroNr, LayH, LayW, TLayNr, Construct_Pool, Ligne_Inc, Favourite_Nr)
     local MacroObject, SequenceObject, Layout_Object, Nr = LC_Get_Object(Construct_Pool)
     local LayX = 0 - 80 -- position of te first object by x-axis
-    -- local LayX = 0 -- position of te first object by x-axis
     local LayY = 700    -- position of te first0 object by y-axis
     if Ligne_Inc then
         LayY = 800
@@ -51,12 +49,9 @@ function LC_Create_Favourite_Layout(LayNr, CurrentMacroNr, LayH, LayW, TLayNr, C
     local object_type = 'Macro'
     local line_num = 1
     local pool_obj_num = CurrentMacroNr - Favourite_Nr -- pool number of the first object
-    Echo('pool object ' .. pool_obj_num)
     local obj_count = Favourite_Nr                     -- amout of objects to be aligned
     local last_pool_obj = pool_obj_num + obj_count     -- last object of the pool to be aligned
     local layout_pool = ShowData().datapools[Construct_Pool].Layouts
-    -- CmdIndirectWait('assign ' .. object_type .. ' ' .. pool_obj_num .. ' at Layout ' .. TLayNr .. ' /nu')
-    Echo('*** macro object num ' .. MacroObject[pool_obj_num].No .. ' Name ' .. MacroObject[pool_obj_num].Name)
     Nr = Layout_Object[TLayNr]:Acquire()
     layout_pool[TLayNr][Nr.No]:Set('Object', MacroObject[pool_obj_num])
     layout_pool[TLayNr][Nr.No]:Set('posx', LayX)
@@ -65,11 +60,9 @@ function LC_Create_Favourite_Layout(LayNr, CurrentMacroNr, LayH, LayW, TLayNr, C
     layout_pool[TLayNr][Nr.No]:Set('POSITIONH', LayH)
     layout_pool[TLayNr][Nr.No]:Set('POSITIONW', LayW * 2)
     layout_pool[TLayNr][Nr.No]:Set('visibilityborder', false)
-    -- LayNr = LayNr + 1
     LayNr = Nr.No + 1
     pool_obj_num = pool_obj_num + 1
-    -- CmdIndirectWait('assign ' ..
-    --     object_type .. ' ' .. pool_obj_num .. ' Thru ' .. last_pool_obj .. ' at Layout ' .. TLayNr .. ' /nu')
+
     local inc = LayNr
     for d = pool_obj_num, last_pool_obj do
         Nr = Layout_Object[TLayNr]:Acquire()
@@ -89,7 +82,6 @@ function LC_Create_Favourite_Layout(LayNr, CurrentMacroNr, LayH, LayW, TLayNr, C
         LayX = LayX + 120
         LayNr = LayNr + 1
         line_num = line_num + 1
-        Echo(line_num .. ' <= ' .. Favourite_Nr)
     end
     return LayNr
 end

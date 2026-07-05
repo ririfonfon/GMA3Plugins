@@ -9,6 +9,7 @@ Rewrite by Richard Fontaine "RIRI", June 2026.
 --]]
 
 function LC_Check_Size_Pool(id, PoolObject)
+    local DEBUG = false
     if not id then
         Printf('Acquire')
         return PoolObject:Acquire()
@@ -46,7 +47,7 @@ function LC_CheckSymbols(Img, ImgImp, check, add_check, long_imgimp, ImgNr)
     end
 
     if (long_imgimp == add_check) then
-        Echo("file exist")
+        if DEBUG then Echo("file exist") end
     else
         -- Select a disk
         local drives = Root().Temp.DriveCollect
@@ -90,7 +91,8 @@ function LC_CheckSymbols(Img, ImgImp, check, add_check, long_imgimp, ImgNr)
 end -- end LC_CheckSymbols
 
 function LC_Command_Ext_Suite(CurrentSeqNr, SequenceObject)
-    -- Echo('Call LC_Command_Ext_Suite ' .. CurrentSeqNr)
+    local DEBUG = false
+    if DEBUG then Echo('Call LC_Command_Ext_Suite ' .. CurrentSeqNr) end
     SequenceObject[CurrentSeqNr]:Set('prefercueappearance', 'on')
     SequenceObject[CurrentSeqNr]:Set('AutoStart', '1')
     SequenceObject[CurrentSeqNr]:Set('AutoStop', '1')

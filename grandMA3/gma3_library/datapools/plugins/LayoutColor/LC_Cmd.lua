@@ -10,8 +10,9 @@ Rewrite by Richard Fontaine "RIRI", June 2026.
 
 
 function LC_Create_Matricks(MatrickNrStart, prefix, NaLay, NbGroup, MatrickNr, pool_construct)
+    local DEBUG = false
     local MatrickObject = Root().ShowData.DataPools[pool_construct].Matricks
-    Echo('pool ' .. pool_construct .. ' Matrick ' .. MatrickNrStart)
+    if Debug then Echo('pool ' .. pool_construct .. ' Matrick ' .. MatrickNrStart) end
     LC_Check_Size_Pool(MatrickNrStart, MatrickObject)
     MatrickObject:Acquire()
     MatrickObject:Create(MatrickNrStart)
@@ -69,14 +70,16 @@ function LC_Create_Appearances(AppNr, prefix, TCol, NrAppear, StColCode, StColNa
         StAppNameOff = prefix .. StringColName .. "_Off"
         LC_Check_Size_Pool(NrAppear, AppObject)
         AppObject:Create(NrAppear)
-        AppObject[NrAppear]:Set('Name', "'" .. StAppNameOn:gsub('"', '') .. "'")
+        -- AppObject[NrAppear]:Set('Name', "'" .. StAppNameOn:gsub('"', '') .. "'")
+        AppObject[NrAppear]:Set('Name', StAppNameOn:gsub('"', ''))
         AppObject[NrAppear]:Set('Appearance', StAppOn:gsub('"', ''))
         AppObject[NrAppear]:Set('Color', StColCode:gsub('"', ''))
 
         NrAppear = math.floor(NrAppear + 1)
         LC_Check_Size_Pool(NrAppear, AppObject)
         AppObject:Create(NrAppear)
-        AppObject[NrAppear]:Set('Name', "'" .. StAppNameOff:gsub('"', '') .. "'")
+        -- AppObject[NrAppear]:Set('Name', "'" .. StAppNameOff:gsub('"', '') .. "'")
+        AppObject[NrAppear]:Set('Name', StAppNameOff:gsub('"', ''))
         AppObject[NrAppear]:Set('Appearance', StAppOff:gsub('"', ''))
         AppObject[NrAppear]:Set('Color', StColCode:gsub('"', ''))
 
@@ -695,29 +698,6 @@ function LC_Create_Delay_From_Sequences(First_Id_Lay, LayNr, CurrentSeqNr, Curre
         end
         Cmd('Assign ' .. SequenceObject[CurrentSeqNr] .. " at " .. tag_delay_from)
 
-
-        -- CmdIndirectWait('ClearAll /nu')
-        -- CmdIndirectWait('Store Sequence ' ..
-        --     CurrentSeqNr .. ' \'' .. prefix .. Argument_Delay[i].name .. surfix[a] .. '\'')
-        -- Add CmdIndirectWait to Squence
-        -- CmdIndirectWait('Set Sequence ' .. CurrentSeqNr .. ' Cue 1 Property Appearance=' .. AppImp[ia].Nr)
-        -- if i == 5 then
-        --     CmdIndirectWait('Set DataPool ' .. Construct_Pool .. ' Sequence ' .. CurrentSeqNr ..
-        --         ' Cue 1 Property Command=\'Go DataPool ' .. Construct_Pool .. ' Macro ' .. CurrentMacroNr .. '')
-        -- else
-        --     CmdIndirectWait('Set Sequence ' ..
-        --         CurrentSeqNr .. ' Cue 1 Property Command=\'Off DataPool ' .. Construct_Pool .. ' Sequence ' ..
-        --         FirstSeqDelayFrom .. ' Thru ' .. LastSeqDelayFrom .. ' - ' .. CurrentSeqNr ..
-        --         ' ; Set DataPool ' .. Construct_Pool .. ' Matricks ' ..
-        --         MatrickNrStart .. ' Property "DelayFrom' .. surfix[a] .. '" ' .. Argument_Delay[i].Time ..
-        --         '  ; SetUserVariable "LC_Fonction" 2 ; SetUserVariable "LC_Axes" "' .. a ..
-        --         '" ; SetUserVariable "LC_Layout" ' .. TLayNr ..
-        --         ' ; SetUserVariable "LC_Element" ' .. Delay_F_Element ..
-        --         ' ; SetUserVariable "LC_Matrick" ' .. MatrickNrStart ..
-        --         ' ; SetUserVariable "LC_Matrick_Thru" ' .. MatrickNr ..
-        --         ' ; Call DataPool ' .. Construct_Pool .. ' Plugin "LC_View" ')
-        -- end
-        -- CmdIndirectWait('Set Sequence ' .. CurrentSeqNr .. ' Property Appearance=' .. AppImp[ib].Nr)
         LC_Command_Ext_Suite(CurrentSeqNr, SequenceObject)
 
         -- Add Squences to Layout
@@ -737,17 +717,6 @@ function LC_Create_Delay_From_Sequences(First_Id_Lay, LayNr, CurrentSeqNr, Curre
         end
         CurrentSeqNr = math.floor(CurrentSeqNr + 1)
 
-        -- if MakeX then
-        --     CmdIndirectWait("Assign Sequence " .. CurrentSeqNr .. " at Layout " .. TLayNr)
-        --     CmdIndirectWait("Set Layout " .. TLayNr .. "." .. LayNr ..
-        --         " Property PosX " .. LayX .. " PosY " .. LayY ..
-        --         " PositionW " .. LayW .. " PositionH " .. LayH ..
-        --         " VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0 VisibilityBorder=0 VisibilityIcon=0")
-        --     LayX = math.floor(LayX + LayW + 20)
-        --     LayNr = math.floor(LayNr + 1)
-        --     Delay_T_Element = math.floor(LayNr + 1)
-        -- end
-        -- CurrentSeqNr = math.floor(CurrentSeqNr + 1)
     end -- end Sequences DelayFrom
     return Current_Id_Lay, First_Id_Lay, LayX, LayNr, Delay_T_Element, CurrentSeqNr, CurrentMacroNr, Delay_F_Element
 end     --LC_Create_Delay_From_Sequences
@@ -829,31 +798,9 @@ function LC_Create_Delay_To_Sequences(a, First_Id_Lay, LayNr, CurrentSeqNr, Curr
         end
         Cmd('Assign ' .. SequenceObject[CurrentSeqNr] .. " at " .. tag_delay_to)
 
-        -- CmdIndirectWait('ClearAll /nu')
-        -- CmdIndirectWait('Store Sequence ' ..
-        --     CurrentSeqNr .. ' \'' .. prefix .. Argument_DelayTo[i].name .. surfix[a] .. '\'')
-        -- Add CmdIndirectWait to Squence
-        -- CmdIndirectWait('Set Sequence ' .. CurrentSeqNr .. ' Cue 1 Property Appearance=' .. AppImp[ia].Nr)
-        -- if i == 5 then
-        --     CmdIndirectWait('Set Sequence ' ..
-        --         CurrentSeqNr ..
-        --         ' Cue 1 Property Command=\'Go DataPool ' .. Construct_Pool .. ' Macro ' .. CurrentMacroNr .. '')
-        -- else
-        --     CmdIndirectWait('Set Sequence ' ..
-        --         CurrentSeqNr .. ' Cue 1 Property Command=\'Off DataPool ' .. Construct_Pool .. ' Sequence ' ..
-        --         FirstSeqDelayTo .. ' Thru ' .. LastSeqDelayTo .. ' - ' .. CurrentSeqNr ..
-        --         ' ; Set DataPool ' .. Construct_Pool .. ' Matricks ' ..
-        --         MatrickNrStart .. ' Property "DelayTo' .. surfix[a] .. '" ' .. Argument_DelayTo[i].Time ..
-        --         ' ; SetUserVariable "LC_Fonction" 3 ; SetUserVariable "LC_Axes" "' .. a ..
-        --         '" ; SetUserVariable "LC_Layout" ' .. TLayNr ..
-        --         ' ; SetUserVariable "LC_Element" ' .. Delay_T_Element ..
-        --         ' ; SetUserVariable "LC_Matrick" ' .. MatrickNrStart ..
-        --         ' ; SetUserVariable "LC_Matrick_Thru" ' .. MatrickNr ..
-        --         ' ; Call DataPool ' .. Construct_Pool .. ' Plugin "LC_View" ')
-        -- end
-        -- CmdIndirectWait('Set Sequence ' .. CurrentSeqNr .. ' Property Appearance=' .. AppImp[ib].Nr)
         LC_Command_Ext_Suite(CurrentSeqNr, SequenceObject)
         -- end Sequences
+
         -- Add Squences to Layout
         if MakeX then
             Nr = Layout_Object[TLayNr]:Acquire()
@@ -870,17 +817,7 @@ function LC_Create_Delay_To_Sequences(a, First_Id_Lay, LayNr, CurrentSeqNr, Curr
             Phase_Element = math.floor(LayNr + 2)
         end
         CurrentSeqNr = math.floor(CurrentSeqNr + 1)
-        -- if MakeX then
-        --     -- CmdIndirectWait('Assign Sequence ' .. CurrentSeqNr .. ' at Layout ' .. TLayNr)
-        --     -- CmdIndirectWait('Set Layout ' .. TLayNr .. '.' .. LayNr ..
-        --     --     ' Property PosX ' .. LayX .. ' PosY ' .. LayY ..
-        --     --     ' PositionW ' .. LayW .. ' PositionH ' .. LayH ..
-        --     --     ' VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0 VisibilityBorder=0 VisibilityIcon=0')
-        --     LayX = math.floor(LayX + LayW + 20)
-        --     LayNr = math.floor(LayNr + 1)
-        --     Phase_Element = math.floor(LayNr + 2)
-        -- end
-        -- CurrentSeqNr = math.floor(CurrentSeqNr + 1)
+       
     end -- end Sequences DelayTo
     return First_Id_Lay, Current_Id_Lay, LayX, LayNr, Phase_Element, CurrentSeqNr, CurrentMacroNr, Delay_T_Element
 end     -- end LC_Create_Delay_To_Sequences

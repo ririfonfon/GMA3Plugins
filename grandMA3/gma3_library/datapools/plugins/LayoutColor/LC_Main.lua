@@ -16,8 +16,9 @@ local myHandle = select(4, ...)
 local function LC_list_input(popuplists, TLay, TLayNr, TLayNrRef, SeqNr, SeqNrStart, MacroNr,
                              MacroNrStart, All_5_Nr, All_5_NrStart, All_5_Current, MatrickNr,
                              MatrickNrStart)
+    local DEBUG = false
     for k in ipairs(TLay) do
-        Echo('Tlay ' .. k)
+        if DEBUG then Echo('Tlay ' .. k) end
         for i in ipairs(popuplists.Lay_Select) do
             if popuplists.Lay_Select[i] == TLay[k].NO then
                 table.remove(popuplists.Lay_Select, i)
@@ -65,7 +66,7 @@ local function LC_list_input(popuplists, TLay, TLayNr, TLayNrRef, SeqNr, SeqNrSt
         end
         kk = k
         All_5_NrStart = All_5_Nr[k].NO + 1
-        -- Printf("All_5_NrStart inside: %d", All_5_NrStart)
+        if DEBUG then Echo("All_5_NrStart inside: %d", All_5_NrStart) end
     end
     if kk == nil then
         All_5_NrStart = 1
@@ -87,12 +88,12 @@ local function LC_list_input(popuplists, TLay, TLayNr, TLayNrRef, SeqNr, SeqNrSt
     end
     -- MatrickNr = MatrickNrStart
 
-    Printf("TLayNr: %d", TLayNr)
-    Printf("SeqNrStart: %d", SeqNrStart)
-    Printf("MacroNrStart: %d", MacroNrStart)
-    Printf("All_5_NrStart: %d", All_5_NrStart)
-    Printf("MatrickNrStart: %d", MatrickNrStart)
-    Printf("All_5_Current: %d", All_5_Current)
+    if DEBUG then Echo("TLayNr: %d", TLayNr) end
+    if DEBUG then Echo("SeqNrStart: %d", SeqNrStart) end
+    if DEBUG then Echo("MacroNrStart: %d", MacroNrStart) end
+    if DEBUG then Echo("All_5_NrStart: %d", All_5_NrStart) end
+    if DEBUG then Echo("MatrickNrStart: %d", MatrickNrStart) end
+    if DEBUG then Echo("All_5_Current: %d", All_5_Current) end
 
     return TLay, TLayNr, TLayNrRef, SeqNr, SeqNrStart, MacroNr, MacroNrStart, All_5_Nr,
         All_5_NrStart, All_5_Current, MatrickNr, MatrickNrStart
@@ -115,17 +116,12 @@ local thiscomponent = select(4, ...)
 
 
 local function Main(displayHandle)
+    local DEBUG = false
     Cmd('Set UserProfile *.15 Property "keyboardshortcutsactive" false')
 
     -- fix Call_Pool
     local Call_Pool = thiscomponent:FindParent(DataPool():GetClass())
-
     local list = false
-    local FixtureGroups = DataPool().Groups:Children()
-    -- local SelectedGrp = {}
-    -- local SelectedGrpNo = {}
-    local SelGrp
-    -- local Nr_SelectedGrp
     local check_grp = false
     local check_pool = false
     local check_gel = false
@@ -930,45 +926,6 @@ local function Main(displayHandle)
     input11Sujestion.backColor = colorFavorite
     input11Sujestion.Visible = "No"
 
-
-
-
-
-    -- local input10Button = inputsGrid:Append('Button')
-    -- input10Button.Text = 'Please add Group'
-    -- input10Button.Anchors = { left = 4, right = 9, top = TopInc, bottom = TopInc }
-    -- input10Button.Padding = "5,5"
-    -- input10Button.Margin = { left = 2, right = 0, top = TopInc, bottom = 2 }
-    -- input10Button.Name = 'Grp_Select'
-    -- input10Button.HasHover = "yes"
-    -- input10Button.PluginComponent = thiscomponent
-    -- input10Button.Clicked = 'mypopup'
-    -- input10Button.BackColor = colorGroups
-    -- input10Button.Font = "2"
-    -- input10Button.Visible = "No"
-
-    -- local input10Sujestion = inputsGrid:Append("Button")
-    -- input10Sujestion.Text = "Select Pool"
-    -- input10Sujestion.Anchors = { left = 2, right = 3, top = TopInc, bottom = TopInc }
-    -- input10Sujestion.Margin = { left = 0, right = 0, top = TopInc, bottom = 2 }
-    -- input10Sujestion.Name = 'list_pool'
-    -- input10Sujestion.PluginComponent = thiscomponent
-    -- input10Sujestion.Clicked = 'mypopup'
-    -- input10Sujestion.HasHover = "yes"
-    -- input10Sujestion.backColor = colorGroups
-    -- input10Sujestion.Font = "2"
-    -- input10Sujestion.Visible = "No"
-
-    -- TopInc = TopInc + 1
-
-    -- local input12Icon = inputsGrid:Append("Button")
-    -- input12Icon.Anchors = { left = 1, right = 1, top = TopInc, bottom = TopInc }
-    -- input12Icon.Margin = { left = 2, right = 0, top = TopInc, bottom = 2 }
-    -- input12Icon.Icon = 'object_datapool'
-    -- input12Icon.backColor = colorGroups
-    -- input12Icon.HasHover = "No"
-
-
     -- Create the button grid.
     -- This is row 3 of the dlgFrame.
     local buttonGrid = dlgFrame:Append("UILayoutGrid")
@@ -1103,7 +1060,7 @@ local function Main(displayHandle)
         MacroNrStart = caller.Content:gsub("'", "")
         MacroNrStart = tonumber(MacroNrStart)
         MacroNrRange = MacroNrStart + 42 + Favourite_Nr + NbGroup
-        Printf("MacroNrStart " .. MacroNrStart)
+        if DEBUG then Echo("MacroNrStart " .. MacroNrStart) end
         for k in ipairs(MacroNr) do
             if MacroNrStart <= tonumber(MacroNr[k].NO) then
                 if MacroNrRange >= tonumber(MacroNr[k].NO) then
@@ -1308,21 +1265,21 @@ local function Main(displayHandle)
 
         local Check_Pool = false
         if caller.Name == "DataPool_Select" then
-            Echo('datapool_select')
+            if DEBUG then Echo('datapool_select') end
             Pool_check = LC_CH_Pool(popuplists)
             caller.Text = choice or caller.Text
             for k in ipairs(Pool_check) do
-                Echo('k pool_check' .. k)
-                Echo(' Name ' .. Pool_check[k].name)
+                if DEBUG then Echo('k pool_check' .. k) end
+                if DEBUG then Echo(' Name ' .. Pool_check[k].name) end
                 if Pool_check[k].name == caller.Text:gsub("'", "") then
-                    Echo('Construct_Pool ' .. k)
+                    if DEBUG then Echo('Construct_Pool ' .. k) end
                     Construct_Pool = tonumber(k)
                     Check_Pool = true
                     New = false
                 end
             end
             if Check_Pool == false then
-                Echo('check_pool false')
+                if DEBUG then Echo('check_pool false') end
                 local C_Pool = PoolObject:Acquire()
                 Construct_Pool = C_Pool.No
                 coroutine.yield(0.1)
@@ -1335,7 +1292,7 @@ local function Main(displayHandle)
                 Check_Pool = true
             end
             if Check_Pool == true then
-                Echo('New')
+                if DEBUG then Echo('New') end
                 Pool_check = LC_CH_Pool(popuplists)
                 input21LineEdit.Content = PoolObject[Construct_Pool]:Get('Name')
                 PoolObject = Root().ShowData.DataPools
@@ -1368,7 +1325,7 @@ local function Main(displayHandle)
                     All_5_NrStart, All_5_Current, MatrickNr, MatrickNrStart)
                 coroutine.yield(0.1)
             else
-                Echo('Else')
+                if DEBUG then Echo('Else') end
                 TLayNr = 1
                 SeqNrStart = 1
                 MacroNrStart = 1
@@ -1407,7 +1364,6 @@ local function Main(displayHandle)
 
             input6Sujestion.Visible = "Yes"
             input7Sujestion.Visible = "Yes"
-            -- input10Sujestion.Visible = "Yes"
             input11Sujestion.Visible = "Yes"
 
             input21LineEdit.Visible = "Yes"
@@ -1425,50 +1381,7 @@ local function Main(displayHandle)
                 NGel = k
             end
             check_gel = true
-            -- input10Button.Visible = "Yes"
             input10LineEdit.Visible = "Yes"
-
-            -- input10Sujestion.Visible = "Yes"
-            -- elseif caller.Name == "list_pool" then
-            --     caller.Text = choice or caller.Text
-            --     for k in ipairs(Pool_check) do
-            --         if Pool_check[k].name == caller.Text:gsub("'", "") then
-            --             Groups_Pool = tonumber(k)
-            --             Printf("Pool selected: " .. Groups_Pool)
-            --         end
-            --     end
-            --     -- local lo
-            --     -- for k in ipairs(popuplists.Grp_Select) do
-            --     --     lo = tonumber(k)
-            --     -- end
-            --     -- Printf("lo : " .. lo)
-            --     -- for k = lo, 0, -1 do
-            --     --     table.remove(popuplists.Grp_Select, k)
-            --     -- end
-            --     -- for k in ipairs(FixtureGroups) do
-            --     --     Printf("NEW Adding Group to list: " .. FixtureGroups[k].name)
-            --     --     table.insert(popuplists.Grp_Select, "'" .. FixtureGroups[k].name .. "'")
-            --     -- end
-            --     check_pool = true
-            --     input10Button.Visible = "Yes"
-            -- elseif caller.Name == "Grp_Select" then
-            --     for k in ipairs(popuplists.Grp_Select) do
-            --         if popuplists.Grp_Select[k] == choice then
-            --             table.remove(popuplists.Grp_Select, k)
-            --         end
-            --     end
-            --     choice = choice:gsub("'", "")
-            --     for k in ipairs(FixtureGroups) do
-            --         if choice == FixtureGroups[k].name then
-            --             SelGrp = k
-            --         end
-            --     end
-            --     table.insert(SelectedGrp, "'" .. FixtureGroups[SelGrp].name .. "'")
-            --     table.insert(SelectedGrpNo, "'" .. FixtureGroups[SelGrp].NO .. "'")
-            --     for k in ipairs(SelectedGrp) do
-            --         Nr_SelectedGrp = k
-            --     end
-            --     subTitle.Text = subTitle.Text .. Nr_SelectedGrp .. "." .. FixtureGroups[SelGrp].name .. " "
         elseif caller.Name == "Name_Select" then
             input1LineEdit.Content = choice
         elseif caller.Name == "Lay_Select" then

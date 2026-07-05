@@ -13,6 +13,7 @@ function LC_Construct_Layout(TLay, SeqNrStart, MacroNrStart, MatrickNrStart, Mat
                              AppNr, All_5_Current, All_5_NrStart, ColPath, SelectedGelNr,
                              NbGroup, TLayNrRef, NaLay, MaxColLgn,
                              Favourite_Nr, Construct_Pool, Groups_Pool, Call_Pool)
+    local DEBUG = false
     local MacroObject, SequenceObject, Layout_Object, Nr = LC_Get_Object(Construct_Pool)
     local All_5_NrEnd
     local Img = Root().ShowData.MediaPools.Symbols:Children()
@@ -305,11 +306,11 @@ function LC_Construct_Layout(TLay, SeqNrStart, MacroNrStart, MatrickNrStart, Mat
     CurrentMacroNr = MacroNrStart
     -- check Symbols
     LC_CheckSymbols(Img, ImgImp, check, add_check, long_imgimp, ImgNr)
-    Echo('Check ok')
+    if DEBUG then Echo('Check ok') end
 
     -- Create MAtricks
     MatrickNr = LC_Create_Matricks(MatrickNrStart, prefix, NaLay, NbGroup, MatrickNr, Construct_Pool)
-    Echo('matricks ok')
+    if DEBUG then Echo('matricks ok') end
 
 
     -- Create new Layout View
@@ -324,19 +325,19 @@ function LC_Construct_Layout(TLay, SeqNrStart, MacroNrStart, MatrickNrStart, Mat
     -- Create Appearances Tricks Ref
     AppNr, AppTricks = LC_Create_Appear_Tricks(AppTricks, AppNr, prefix)
     -- end Appearances Tricks Ref
-    Echo('Create Appear trick ok')
+    if DEBUG then Echo('Create Appear trick ok') end
 
     -- Create Appearances
     NrAppear = LC_Create_Appearances(AppNr, prefix, TCol, NrAppear, StColCode, StColName,
         StringColName)
     -- end Appearances
-    Echo('Creat APP ok')
+    if DEBUG then Echo('Creat APP ok') end
 
     -- Create Preset 25
     All_5_NrEnd, All_5_Current = LC_Create_Preset_25(TCol, StColName, StringColName, SelectedGelNr,
         prefix, All_5_NrEnd, All_5_Current, Construct_Pool)
     -- endCreate Preset 25
-    Echo('Preset 25 ok')
+    if DEBUG then Echo('Preset 25 ok') end
 
     -- Build Tag
     LC_Build_Tag(prefix, NbGroup, surfix, Time_Argument)
@@ -349,7 +350,7 @@ function LC_Construct_Layout(TLay, SeqNrStart, MacroNrStart, MatrickNrStart, Mat
         TCol, prefix, All_5_NrStart, MatrickNrStart,
         AppTricks, Construct_Pool, Groups_Pool, Color_Range, Call_Pool)
     -- end Appearances/Sequences
-    Echo('Crea app_sequence ok')
+    if DEBUG then Echo('Crea app_sequence ok') end
 
     -- Create Appearances/Function
     local AppObject = Root().ShowData.Appearances
@@ -357,13 +358,14 @@ function LC_Construct_Layout(TLay, SeqNrStart, MacroNrStart, MatrickNrStart, Mat
         AppImp[q].Nr = math.floor(NrNeed)
         LC_Check_Size_Pool(AppImp[q].Nr, AppObject)
         AppObject:Create(AppImp[q].Nr)
-        AppObject[AppImp[q].Nr]:Set('Name', "'" .. prefix .. AppImp[q].Name .. '')
+        -- AppObject[AppImp[q].Nr]:Set('Name', "'" .. prefix .. AppImp[q].Name .. '')
+        AppObject[AppImp[q].Nr]:Set('Name', prefix .. AppImp[q].Name)
         AppObject[AppImp[q].Nr]:Set('Appearance', AppImp[q].StApp:gsub('"', ''))
         AppObject[AppImp[q].Nr]:Set('Color', AppImp[q].RGBref)
         NrNeed = math.floor(NrNeed + 1)
     end
     -- end Create Appearances/Function
-    Echo('create app function ok')
+    if DEBUG then Echo('create app function ok') end
 
     SeqNrEnd = CurrentSeqNr - 1
     -- Add offset for Layout Element distance
@@ -437,31 +439,31 @@ function LC_Construct_Layout(TLay, SeqNrStart, MacroNrStart, MatrickNrStart, Mat
         CurrentMacroNr = math.floor(CurrentMacroNr + 2)
         MakeX = false
     end --end  Create Function for X Y Z
-    Echo('create function xyz ok')
+    if DEBUG then Echo('create function xyz ok') end
 
     -- add line macro X Y Z Call
     LC_Add_Line_Macro_XYZ(MacroObject, First_Id_Lay, TLayNr, Fade_Element, MatrickNrStart, Delay_F_Element,
         Delay_T_Element, Phase_Element, Group_Element, Block_Element, Wings_Element,
         Construct_Pool, Call_Pool)
     -- end line macro X Y Z Call
-    Echo('line macro xyz ok')
+    if DEBUG then Echo('line macro xyz ok') end
 
     CurrentSeqNr, Nr, LayX, LayY, LayNr = LC_Create_KillallLCx(LayY, LayX, LayNr, ColLgnCount, RefX, CurrentSeqNr,
         SequenceObject, Nr,
         Layout_Object, TLayNr, LayW, LayH, prefix, Construct_Pool)
 
-    Echo('create Kill all LCx_ ok')
+    if DEBUG then Echo('create Kill all LCx_ ok') end
     -- LC_Create_All_Color
     LayNr, LayX, First_All_Color = LC_Create_All_Color(TCol, CurrentSeqNr, prefix, TLayNr, LayNr, NrNeed, LayX, LayY,
         LayW, LayH, MaxColLgn, RefX, AppNr, Construct_Pool)
     -- LC_Create_All_Color
-    Echo('LC_Create_All_Color ok')
+    if DEBUG then Echo('LC_Create_All_Color ok') end
 
     -- add Macro priority
     LC_Macro_Priority(LayX, LayY, Ligne_Inc, CurrentMacroNr, First_All_Color, LayW, LayH, TLayNr, LayNr, Construct_Pool,
         prefix, Call_Pool)
     -- end Macro priority
-    Echo('LC_Macro_Priority ok')
+    if DEBUG then Echo('LC_Macro_Priority ok') end
 
     -- add Favourites
     local Macro_Num_Start
@@ -472,7 +474,7 @@ function LC_Construct_Layout(TLay, SeqNrStart, MacroNrStart, MatrickNrStart, Mat
     Macro_Num_Start = CurrentMacroNr + 1
     LC_Create_Favourite_Layout(LayNr, CurrentMacroNr, LayH, LayW, TLayNr, Construct_Pool, Ligne_Inc, Favourite_Nr)
     -- end Favourites
-    Echo('LC_Create_Favourite_Layout ok')
+    if DEBUG then Echo('LC_Create_Favourite_Layout ok') end
 
 
     -- Macro Del LC prefix
@@ -480,10 +482,11 @@ function LC_Construct_Layout(TLay, SeqNrStart, MacroNrStart, MatrickNrStart, Mat
     condition_string = "Lua 'if Confirm(\"Delete Layout Color LC" ..
         prefix:gsub('%D*', '') ..
         "?\") then; CmdIndirectWait(\"Go DataPool " .. Construct_Pool .. " macro " .. CurrentMacroNr ..
-        "\"); else CmdIndirectWait(\"Off DataPool " .. Construct_Pool .. " macro " .. CurrentMacroNr .. "\"); end'" .. ' /nu'
+        "\"); else CmdIndirectWait(\"Off DataPool " ..
+        Construct_Pool .. " macro " .. CurrentMacroNr .. "\"); end'" .. ' /nu'
     MacroObject:Create(CurrentMacroNr)
-    MacroObject[CurrentMacroNr]:Set('Name', "'" .. CurrentMacroNr .. ' \'' .. "ERASE'")
-    for b = 1, 11 do
+    -- MacroObject[CurrentMacroNr]:Set('Name', CurrentMacroNr .. ' \'' .. "ERASE")
+    for b = 1, 12 do
         MacroObject[CurrentMacroNr]:Insert(b)
     end
     --     CmdIndirectWait('Store Macro ' .. CurrentMacroNr .. ' \'' .. 'ERASE\'')
@@ -513,6 +516,8 @@ function LC_Construct_Layout(TLay, SeqNrStart, MacroNrStart, MatrickNrStart, Mat
     MacroObject[CurrentMacroNr][10]:Set('Command',
         'Delete DataPool ' .. Construct_Pool .. ' Sequence o' .. prefix .. '* /nc')
     MacroObject[CurrentMacroNr][11]:Set('Command',
+        'Delete Tag ' .. prefix .. '* /nc')
+    MacroObject[CurrentMacroNr][12]:Set('Command',
         'Delete DataPool ' .. Construct_Pool .. ' Macro ' .. CurrentMacroNr .. ' /nc')
     -- end Macro Del LC prefix
 
@@ -528,7 +533,9 @@ function LC_Construct_Layout(TLay, SeqNrStart, MacroNrStart, MatrickNrStart, Mat
     Layout_Object[TLayNr]:Set('DimensionH', UsedH)
 
     -- CmdIndirectWait("Set Layout " .. TLayNr .. " DimensionW " .. UsedW .. " DimensionH " .. UsedH)
-    CmdIndirectWait('Select Layout ' .. TLayNr)
+    CmdIndirectWait('Select DataPool ' .. Construct_Pool .. ' Layout ' .. TLayNr)
+
+    if DEBUG then Echo('LC_Create_Macro_Erase ok') end
 end -- end LC_Construct.lua
 
 local function suite()
