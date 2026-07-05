@@ -156,7 +156,7 @@ function LC_Create_Group_Sequence(CurrentMacroNr, FirstSeqGrp, CurrentSeqNr, Las
 
         LC_Command_Ext_Suite(CurrentSeqNr, SequenceObject)
         -- end Sequences
-        
+
         -- Add Squences to Layout
         if MakeX then
             Nr = Layout_Object[TLayNr]:Acquire()
@@ -259,7 +259,7 @@ function LC_Create_Block_Sequence(CurrentMacroNr, FirstSeqBlock, CurrentSeqNr, L
 
         LC_Command_Ext_Suite(CurrentSeqNr, SequenceObject)
         -- end Sequences
-       
+
         -- Add Squences to Layout
         if MakeX then
             Nr = Layout_Object[TLayNr]:Acquire()
@@ -497,7 +497,6 @@ function LC_Create_XYZ_Sequence(CurrentMacroNr, First_Id_Lay, prefix, surfix, Ca
         Layout_Object[TLayNr][Nr.No]:Set('action', 'Go+')
         Layout_Object[TLayNr][Nr.No]:Set('Note', 'X_Y_Z')
         LC_Set_Def(TLayNr, Nr, Layout_Object)
-        
     elseif a == 2 then
         Nr = Layout_Object[TLayNr]:Acquire()
         Layout_Object[TLayNr][Nr.No]:Set('Object', SequenceObject[CurrentSeqNr])
@@ -508,7 +507,7 @@ function LC_Create_XYZ_Sequence(CurrentMacroNr, First_Id_Lay, prefix, surfix, Ca
         Layout_Object[TLayNr][Nr.No]:Set('action', 'Go+')
         Layout_Object[TLayNr][Nr.No]:Set('Note', 'X_Y_Z')
         LC_Set_Def(TLayNr, Nr, Layout_Object)
-        
+
         Nr = Layout_Object[TLayNr]:Acquire()
         Layout_Object[TLayNr][Nr.No]:Set('Object', SequenceObject[CurrentSeqNr + 1])
         Layout_Object[TLayNr][Nr.No]:Set('posx', First_Id_Lay[32] + 85)
@@ -518,7 +517,6 @@ function LC_Create_XYZ_Sequence(CurrentMacroNr, First_Id_Lay, prefix, surfix, Ca
         Layout_Object[TLayNr][Nr.No]:Set('action', 'Go+')
         Layout_Object[TLayNr][Nr.No]:Set('Note', 'X_Y_Z')
         LC_Set_Def(TLayNr, Nr, Layout_Object)
-        
     elseif a == 3 then
         Nr = Layout_Object[TLayNr]:Acquire()
         Layout_Object[TLayNr][Nr.No]:Set('Object', SequenceObject[CurrentSeqNr])
@@ -529,7 +527,7 @@ function LC_Create_XYZ_Sequence(CurrentMacroNr, First_Id_Lay, prefix, surfix, Ca
         Layout_Object[TLayNr][Nr.No]:Set('action', 'Go+')
         Layout_Object[TLayNr][Nr.No]:Set('Note', 'X_Y_Z')
         LC_Set_Def(TLayNr, Nr, Layout_Object)
-       
+
         Nr = Layout_Object[TLayNr]:Acquire()
         Layout_Object[TLayNr][Nr.No]:Set('Object', SequenceObject[CurrentSeqNr + 1])
         Layout_Object[TLayNr][Nr.No]:Set('posx', First_Id_Lay[32] + 85)
@@ -539,7 +537,6 @@ function LC_Create_XYZ_Sequence(CurrentMacroNr, First_Id_Lay, prefix, surfix, Ca
         Layout_Object[TLayNr][Nr.No]:Set('action', 'Go+')
         Layout_Object[TLayNr][Nr.No]:Set('Note', 'X_Y_Z')
         LC_Set_Def(TLayNr, Nr, Layout_Object)
-        
     end
     return First_Id_Lay, LayNr, CurrentMacroNr
 end -- end LC_Create_XYZ_Sequence
@@ -607,7 +604,7 @@ function LC_Macro_Priority(LayX, LayY, Ligne_Inc, CurrentMacroNr, First_All_Colo
     Color_message = string.gsub(Color_message, "'", "")
     LC_Check_Size_Pool(CurrentMacroNr, MacroObject)
     MacroObject:Create(CurrentMacroNr)
-    MacroObject[CurrentMacroNr]:Set('Name', "o".. prefix .. "Priority")
+    MacroObject[CurrentMacroNr]:Set('Name', "o" .. prefix .. "Priority")
     for b = 1, 7 do
         MacroObject[CurrentMacroNr]:Insert(b)
     end
@@ -632,5 +629,84 @@ function LC_Macro_Priority(LayX, LayY, Ligne_Inc, CurrentMacroNr, First_All_Colo
     Layout_Object[TLayNr][Nr.No]:Set('Note', 'Seq Color')
     LC_Set_Def(TLayNr, Nr, Layout_Object)
     Layout_Object[TLayNr][Nr.No]:Set('Appearance', address)
+end
 
+function LC_Create_Group_Call(allmacrocallstart, allmacroallend, LayNr, LayX, LayY, CurrentSeqNr, CurrentMacroNr, NbGroup,
+                              Construct_Pool, prefix, NrNeed)
+    local AppearObject                                   = Root().ShowData.Appearances
+    local MacroObject, SequenceObject, Layout_Object, Nr = LC_Get_Object(Construct_Pool)
+    local TagObject_LC                                   = Root().ShowData.Tags:Children()
+    local Group_Tag                                      = {}
+    for ta = 1, NbGroup do
+        for v in ipairs(TagObject_LC) do
+            if TagObject_LC[v].Name == prefix .. '_Group_' .. ta then
+                table.insert(Group_Tag, TagObject_LC[v])
+            end
+        end
+    end
+
+    local Macro_on = CurrentMacroNr
+    local inc = 1
+    for m = 1, NbGroup do
+        LC_Check_Size_Pool(CurrentMacroNr, MacroObject)
+        MacroObject:Create(CurrentMacroNr)
+        MacroObject[CurrentMacroNr]:Set('Name', prefix .. "on_call_all_group_" .. m)
+        for g = allmacrocallstart, allmacroallend do
+            MacroObject[CurrentMacroNr]:Insert(inc)
+            MacroObject[CurrentMacroNr][inc]:Set('Command', 'Set DataPool ' .. Construct_Pool .. ' Macro ' ..
+                g .. '.1 Thru Property "Enabled" 1 if ' .. Group_Tag[m])
+            inc = inc + 1
+        end
+
+        CurrentMacroNr = math.floor(CurrentMacroNr + 1)
+        inc = 1
+    end
+
+    local Macro_off = CurrentMacroNr
+    inc = 1
+    for m = 1, NbGroup do
+        LC_Check_Size_Pool(CurrentMacroNr, MacroObject)
+        MacroObject:Create(CurrentMacroNr)
+        MacroObject[CurrentMacroNr]:Set('Name', prefix .. "off_call_all_group_" .. m)
+        for g = allmacrocallstart, allmacroallend do
+            MacroObject[CurrentMacroNr]:Insert(inc)
+            MacroObject[CurrentMacroNr][inc]:Set('Command', 'Set DataPool ' .. Construct_Pool .. ' Macro ' ..
+                g .. '.1 Thru Property "Enabled" 0 if ' .. Group_Tag[m])
+            inc = inc + 1
+        end
+
+        CurrentMacroNr = math.floor(CurrentMacroNr + 1)
+        inc = 1
+    end
+
+    for m = 1, NbGroup do
+        LC_Check_Size_Pool(CurrentSeqNr, SequenceObject)
+        SequenceObject:Create(CurrentSeqNr)
+        SequenceObject[CurrentSeqNr]:Set('Name', prefix .. 'onoff_group' .. m)
+        LC_Sequence_Defo(SequenceObject, CurrentSeqNr)
+        SequenceObject[CurrentSeqNr]:Set('TRACKING', 'No')
+        SequenceObject[CurrentSeqNr]:Set('PRIORITY', 'HTP')
+        SequenceObject[CurrentSeqNr]:Set('SOFTLTP', 'No')
+        Echo('nrneed ' .. NrNeed)
+        SequenceObject[CurrentSeqNr]:Set('Appearance', AppearObject[NrNeed-1])
+
+        SequenceObject[CurrentSeqNr]:Insert()
+        SequenceObject[CurrentSeqNr][3]:Set('No', 1)
+        SequenceObject[CurrentSeqNr][3]:Create(1)
+        SequenceObject[CurrentSeqNr][3][1]:Set('Command',
+            'Go+ DataPool ' .. Construct_Pool .. ' Macro ' .. Macro_on + m - 1)
+        SequenceObject[CurrentSeqNr][3][1]:Set('Appearance', AppearObject[NrNeed])
+        SequenceObject[CurrentSeqNr]:Insert()
+        SequenceObject[CurrentSeqNr][4]:Set('No', 2)
+        SequenceObject[CurrentSeqNr][4]:Create(1)
+        SequenceObject[CurrentSeqNr][4][1]:Set('Command',
+            'Go+ DataPool ' .. Construct_Pool .. ' Macro ' .. Macro_off + m - 1)
+        SequenceObject[CurrentSeqNr][4][1]:Set('Appearance', AppearObject[NrNeed-1])
+
+        CurrentSeqNr = math.floor(CurrentSeqNr + 1)
+    end
+
+
+
+    return CurrentSeqNr, CurrentMacroNr
 end

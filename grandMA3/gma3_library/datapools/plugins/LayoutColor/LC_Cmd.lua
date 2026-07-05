@@ -155,7 +155,7 @@ function LC_Create_Appearances_Sequences(CurrentMacroNr, SelectedGelNr, NbGroup,
 
         LC_Check_Size_Pool(CurrentMacroNr, MacroObject)
         MacroObject:Create(CurrentMacroNr)
-        MacroObject[CurrentMacroNr]:Set('Name', prefix .. '_Select_Group_' .. g )
+        MacroObject[CurrentMacroNr]:Set('Name', prefix .. '_Select_Group_' .. g)
         for a = 1, 7 do
             MacroObject[CurrentMacroNr]:Insert(a)
         end
@@ -323,12 +323,24 @@ function LC_Create_Appearances_Sequences(CurrentMacroNr, SelectedGelNr, NbGroup,
 end                                  -- end LC_Create_Appearances_Sequences
 
 function LC_Create_All_Color(TCol, CurrentSeqNr, prefix, TLayNr, LayNr, NrNeed, LayX, LayY, LayW, LayH, MaxColLgn,
-                             RefX, AppNr, Construct_Pool)
+                             RefX, AppNr, Construct_Pool, CurrentMacroNr, NbGroup)
     local MacroObject, SequenceObject, Layout_Object, Nr = LC_Get_Object(Construct_Pool)
+    local TagObject_LC                                   = Root().ShowData.Tags:Children()
+    local Group_Tag                                      = {}
+    for ta = 1, NbGroup do
+        for v in ipairs(TagObject_LC) do
+            if TagObject_LC[v].Name == prefix .. '_Group_' .. ta then
+                table.insert(Group_Tag, TagObject_LC[v])
+            end
+        end
+    end
+
     LayNr = math.floor(LayNr + 1)
     CurrentSeqNr = math.floor(CurrentSeqNr + 1)
     LayX = math.floor(LayX + LayW + 20)
     NrNeed = math.floor(AppNr + 1)
+    local allmacrocallstar = CurrentMacroNr
+    local allmacrocallend
     local col_count = 0
     local First_All_Color
     for col in ipairs(TCol) do
@@ -338,6 +350,21 @@ function LC_Create_All_Color(TCol, CurrentSeqNr, prefix, TLayNr, LayNr, NrNeed, 
         if col == 1 then
             First_All_Color = prefix .. 'ALL' .. StringColName .. 'ALL\''
         end
+
+        LC_Check_Size_Pool(CurrentMacroNr, MacroObject)
+        MacroObject:Create(CurrentMacroNr)
+        MacroObject[CurrentMacroNr]:Set('Name', prefix .. 'ALL' .. StringColName .. "ALL")
+        for b = 1, NbGroup do
+            MacroObject[CurrentMacroNr]:Insert(b)
+            MacroObject[CurrentMacroNr][b]:Set('Command', 'Go+ DataPool ' .. Construct_Pool .. ' Sequence ' ..
+                prefix .. StringColName .. '* if ' .. Group_Tag[b])
+            Cmd("Assign " .. MacroObject[CurrentMacroNr][b] .. " at " .. Group_Tag[b])
+            MacroObject[CurrentMacroNr][b]:Set('Enabled', 0)
+        end
+        MacroObject[CurrentMacroNr]:Insert(NbGroup + 1)
+        MacroObject[CurrentMacroNr][NbGroup + 1]:Set('Command',
+            'Off DataPool ' .. Construct_Pool .. ' Sequence ' .. CurrentSeqNr)
+
         LC_Check_Size_Pool(CurrentSeqNr, SequenceObject)
         SequenceObject:Create(CurrentSeqNr)
         SequenceObject[CurrentSeqNr]:Set('Name', prefix .. 'ALL' .. StringColName .. "ALL")
@@ -351,8 +378,8 @@ function LC_Create_All_Color(TCol, CurrentSeqNr, prefix, TLayNr, LayNr, NrNeed, 
         SequenceObject[CurrentSeqNr][3]:Set('No', 1)
         SequenceObject[CurrentSeqNr][3]:Create(1)
         SequenceObject[CurrentSeqNr][3][1]:Set('Appearance', NrNeed + 1)
-        SequenceObject[CurrentSeqNr][3][1]:Set('Command', 'Go+ DataPool ' .. Construct_Pool .. ' Sequence ' ..
-            prefix .. StringColName .. '* ; Off DataPool ' .. Construct_Pool .. ' Sequence ' .. CurrentSeqNr)
+        SequenceObject[CurrentSeqNr][3][1]:Set('Command',
+            'Go+ DataPool ' .. Construct_Pool .. ' Macro ' .. CurrentMacroNr)
 
         LC_Command_Ext_Suite(CurrentSeqNr, SequenceObject)
 
@@ -379,10 +406,12 @@ function LC_Create_All_Color(TCol, CurrentSeqNr, prefix, TLayNr, LayNr, NrNeed, 
         NrNeed = math.floor(NrNeed + 2); -- Set App Nr to next color
         LayNr = math.floor(LayNr + 1)
         CurrentSeqNr = math.floor(CurrentSeqNr + 1)
+        CurrentMacroNr = math.floor(CurrentMacroNr + 1)
     end
+    allmacrocallend = CurrentMacroNr - 1
     LayX = math.floor(LayX + LayW + 20)
 
-    return LayNr, LayX, First_All_Color
+    return LayNr, LayX, First_All_Color, CurrentMacroNr, allmacrocallstar, allmacrocallend, CurrentSeqNr
 end -- end LC_Create_All_Color
 
 function LC_Command_Title(title, TLayNr, LayNr, LayX, LayY, Pw, Ph, align, Construct_Pool)
@@ -716,7 +745,6 @@ function LC_Create_Delay_From_Sequences(First_Id_Lay, LayNr, CurrentSeqNr, Curre
             Delay_T_Element = math.floor(LayNr + 1)
         end
         CurrentSeqNr = math.floor(CurrentSeqNr + 1)
-
     end -- end Sequences DelayFrom
     return Current_Id_Lay, First_Id_Lay, LayX, LayNr, Delay_T_Element, CurrentSeqNr, CurrentMacroNr, Delay_F_Element
 end     --LC_Create_Delay_From_Sequences
@@ -817,7 +845,6 @@ function LC_Create_Delay_To_Sequences(a, First_Id_Lay, LayNr, CurrentSeqNr, Curr
             Phase_Element = math.floor(LayNr + 2)
         end
         CurrentSeqNr = math.floor(CurrentSeqNr + 1)
-       
     end -- end Sequences DelayTo
     return First_Id_Lay, Current_Id_Lay, LayX, LayNr, Phase_Element, CurrentSeqNr, CurrentMacroNr, Delay_T_Element
 end     -- end LC_Create_Delay_To_Sequences

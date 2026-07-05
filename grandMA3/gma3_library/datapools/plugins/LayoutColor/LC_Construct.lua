@@ -346,9 +346,10 @@ function LC_Construct_Layout(TLay, SeqNrStart, MacroNrStart, MatrickNrStart, Mat
     -- Appearances/Sequences
     LayY, NrNeed, LayNr, CurrentSeqNr, CurrentMacroNr, ColLgnCount,
     Ligne_Inc = LC_Create_Appearances_Sequences(CurrentMacroNr, SelectedGelNr, NbGroup, RefX,
-        LayY, LayH, NrAppear, AppNr, NrNeed, TLayNr, LayW, LayNr, CurrentSeqNr, MaxColLgn,
-        TCol, prefix, All_5_NrStart, MatrickNrStart,
-        AppTricks, Construct_Pool, Groups_Pool, Color_Range, Call_Pool)
+    LayY, LayH, NrAppear, AppNr, NrNeed, TLayNr, LayW, LayNr, CurrentSeqNr, MaxColLgn,
+    TCol, prefix, All_5_NrStart, MatrickNrStart,
+    AppTricks, Construct_Pool, Groups_Pool, Color_Range, Call_Pool)
+    local NrNeedBase = AppNr + 1
     -- end Appearances/Sequences
     if DEBUG then Echo('Crea app_sequence ok') end
 
@@ -454,8 +455,10 @@ function LC_Construct_Layout(TLay, SeqNrStart, MacroNrStart, MatrickNrStart, Mat
 
     if DEBUG then Echo('create Kill all LCx_ ok') end
     -- LC_Create_All_Color
-    LayNr, LayX, First_All_Color = LC_Create_All_Color(TCol, CurrentSeqNr, prefix, TLayNr, LayNr, NrNeed, LayX, LayY,
-        LayW, LayH, MaxColLgn, RefX, AppNr, Construct_Pool)
+    local allmacroallstart, allmacroallend
+    LayNr, LayX, First_All_Color, CurrentMacroNr, allmacroallstart, allmacroallend, CurrentSeqNr = LC_Create_All_Color(
+        TCol, CurrentSeqNr, prefix, TLayNr, LayNr, NrNeed, LayX, LayY, LayW, LayH, MaxColLgn, RefX, AppNr, Construct_Pool,
+        CurrentMacroNr, NbGroup)
     -- LC_Create_All_Color
     if DEBUG then Echo('LC_Create_All_Color ok') end
 
@@ -476,6 +479,10 @@ function LC_Construct_Layout(TLay, SeqNrStart, MacroNrStart, MatrickNrStart, Mat
     -- end Favourites
     if DEBUG then Echo('LC_Create_Favourite_Layout ok') end
 
+    -- add group Call
+    CurrentMacroNr = CurrentMacroNr + 1
+    CurrentSeqNr, CurrentMacroNr = LC_Create_Group_Call(allmacroallstart, allmacroallend, LayNr, LayX, LayY,
+        CurrentSeqNr, CurrentMacroNr, NbGroup, Construct_Pool, prefix, NrNeedBase)
 
     -- Macro Del LC prefix
     CurrentMacroNr = math.floor(CurrentMacroNr + 2)
