@@ -617,7 +617,7 @@ function LC_Macro_Priority(LayX, LayY, Ligne_Inc, CurrentMacroNr, First_All_Colo
     MacroObject[CurrentMacroNr][6]:Set('Command', Color_message)
     MacroObject[CurrentMacroNr][7]:Set('Command', 'Call ' .. Call_Pool .. ' Plugin "DEV_LC_View"')
 
-    local address = LC_Search_Addr_Nat_App('p_super_png')
+    local address = LC_Search_Addr_Nat_App('p_htp_png')
 
     Nr = Layout_Object[TLayNr]:Acquire()
     Layout_Object[TLayNr][Nr.No]:Set('Object', MacroObject[CurrentMacroNr])
@@ -757,7 +757,7 @@ function LC_Create_Group_Call(allmacrocallstart, allmacroallend, TLayNr, LayX, L
 
     LC_Check_Size_Pool(CurrentSeqNr, SequenceObject)
     SequenceObject:Create(CurrentSeqNr)
-    SequenceObject[CurrentSeqNr]:Set('Name', 'o' .. prefix .. 'None')
+    SequenceObject[CurrentSeqNr]:Set('Name', 'o' .. prefix .. 'ALL')
     LC_Sequence_Defo(SequenceObject, CurrentSeqNr)
     SequenceObject[CurrentSeqNr]:Set('TRACKING', 'No')
     SequenceObject[CurrentSeqNr]:Set('PRIORITY', 'HTP')
@@ -769,7 +769,7 @@ function LC_Create_Group_Call(allmacrocallstart, allmacroallend, TLayNr, LayX, L
     SequenceObject[CurrentSeqNr][3]:Create(1)
     SequenceObject[CurrentSeqNr][3][1]:Set('Command',
         'Go+ DataPool ' .. Construct_Pool .. ' Sequence ' ..
-        CurrentSeqNr - NbGroup - 1 .. ' Thru ' .. CurrentSeqNr - 2 .. ' Cue 2')
+        CurrentSeqNr - NbGroup - 1 .. ' Thru ' .. CurrentSeqNr - 2 .. ' Cue 1')
     SequenceObject[CurrentSeqNr][3][1]:Set('Appearance', AppearObject[NrNeed])
 
     Nr = Layout_Object[TLayNr]:Acquire()
@@ -782,7 +782,7 @@ function LC_Create_Group_Call(allmacrocallstart, allmacroallend, TLayNr, LayX, L
     Layout_Object[TLayNr][Nr.No]:Set('CustomTextText', 'None')
     Layout_Object[TLayNr][Nr.No]:Set('CustomTextColor', 'FF0000FF')
     Layout_Object[TLayNr][Nr.No]:Set('CustomTextAlignmentV', 'Center')
-    Layout_Object[TLayNr][Nr.No]:Set('Note', 'all None call')
+    Layout_Object[TLayNr][Nr.No]:Set('Note', 'all ALL call')
     LC_Set_Def(TLayNr, Nr, Layout_Object)
 
     return CurrentSeqNr, CurrentMacroNr
