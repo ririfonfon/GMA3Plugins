@@ -471,7 +471,7 @@ function LC_Build_Tag(prefix, NbGroup, surfix, Time_Argument)
                 end
             end
         end
-        table.insert(LC_TAGS, prefix .. 'V_'..surfix[s] )
+        table.insert(LC_TAGS, prefix .. 'V_' .. surfix[s])
         table.insert(Tag_Type, 'None')
     end
 
@@ -503,7 +503,7 @@ function LC_Create_Fade_Sequences(MakeX, FirstSeqTime, LastSeqTime, CurrentSeqNr
     local MacroObject, SequenceObject, Layout_Object, Nr = LC_Get_Object(Construct_Pool)
     -- fix time_tag
     local TagObject_LC                                   = Root().ShowData.Tags:Children()
-    local tag_fade
+    local tag_fade, tag_V
 
     -- Setup Fade Sequence
     local old_prefix                                     = prefix
@@ -542,6 +542,8 @@ function LC_Create_Fade_Sequences(MakeX, FirstSeqTime, LastSeqTime, CurrentSeqNr
     for v in ipairs(TagObject_LC) do
         if TagObject_LC[v].Name == old_prefix .. Time_Argument[1].name .. '_' .. surfix[Axes] then
             tag_fade = TagObject_LC[v]
+        elseif TagObject_LC[v].Name == old_prefix .. 'V_' .. surfix[Axes] then
+            tag_V = TagObject_LC[v]
         end
     end
 
@@ -577,8 +579,11 @@ function LC_Create_Fade_Sequences(MakeX, FirstSeqTime, LastSeqTime, CurrentSeqNr
 
         LayNr = LC_Command_Title('Ex.Time', 'Titre', TLayNr, LayNr, LayX, LayY, 700, 140, 1, Construct_Pool)
         LayNr = LC_Command_Title('FADE', 'Titre', TLayNr, LayNr, LayX, LayY, 700, 140, 2, Construct_Pool)
+
         LayNr = LC_Command_Title('none > none', 'Value' .. surfix[Axes], TLayNr, LayNr, LayX, LayY, 700, 140, 3,
             Construct_Pool)
+        Cmd('Assign ' .. Layout_Object[TLayNr][LayNr] .. " at " .. tag_V)
+
         LayX = math.floor(LayX + LayW + 20)
         LayNr = math.floor(LayNr + 1)
         CurrentSeqNr = math.floor(CurrentSeqNr + 1)
@@ -636,6 +641,7 @@ function LC_Create_Fade_Sequences(MakeX, FirstSeqTime, LastSeqTime, CurrentSeqNr
             Layout_Object[TLayNr][Nr.No]:Set('height', LayH)
             Layout_Object[TLayNr][Nr.No]:Set('action', 'Go+')
             Layout_Object[TLayNr][Nr.No]:Set('Note', 'Fade')
+            Cmd('Assign ' .. Layout_Object[TLayNr][Nr.No] .. " at " .. tag_V)
             LC_Set_Def(TLayNr, Nr, Layout_Object)
             LayX = math.floor(LayX + LayW + 20)
             LayNr = math.floor(LayNr + 1)
@@ -655,7 +661,7 @@ function LC_Create_Delay_From_Sequences(First_Id_Lay, LayNr, CurrentSeqNr, Curre
     local MacroObject, SequenceObject, Layout_Object, Nr = LC_Get_Object(Construct_Pool)
     -- fix time_tag
     local TagObject_LC                                   = Root().ShowData.Tags:Children()
-    local tag_delay_from
+    local tag_delay_from, tag_V
 
     -- Setup Delay from Sequence
     local old_prefix                                     = prefix
@@ -670,11 +676,19 @@ function LC_Create_Delay_From_Sequences(First_Id_Lay, LayNr, CurrentSeqNr, Curre
     LC_Create_Macro_Delay_From(CurrentMacroNr, prefix, surfix, Axes, FirstSeqDelayFrom, LastSeqDelayFrom,
         MatrickNrStart, 2, TLayNr, Delay_F_Element, MatrickNr, Construct_Pool, Call_Pool)
 
+    for v in ipairs(TagObject_LC) do
+        if TagObject_LC[v].Name == old_prefix .. Time_Argument[2].name .. '_' .. surfix[Axes] then
+            tag_delay_from = TagObject_LC[v]
+        elseif TagObject_LC[v].Name == old_prefix .. 'V_' .. surfix[Axes] then
+            tag_V = TagObject_LC[v]
+        end
+    end
+
     if MakeX then
-        LC_Command_Title('DELAY FROM', 'Titre', TLayNr, LayNr, LayX, LayY, 580, 140, 2, Construct_Pool)
-        LayNr = math.floor(LayNr + 1)
-        LC_Command_Title('none', 'Value' .. surfix[Axes], TLayNr, LayNr, LayX, LayY, 580, 140, 3, Construct_Pool)
-        LayNr = math.floor(LayNr + 1)
+        LayNr = LC_Command_Title('DELAY FROM', 'Titre', TLayNr, LayNr, LayX, LayY, 580, 140, 2, Construct_Pool)
+
+        LayNr = LC_Command_Title('none', 'Value' .. surfix[Axes], TLayNr, LayNr, LayX, LayY, 580, 140, 3, Construct_Pool)
+        Cmd('Assign ' .. Layout_Object[TLayNr][LayNr] .. " at " .. tag_V)
     end
 
     for i = 1, 5 do
@@ -692,11 +706,6 @@ function LC_Create_Delay_From_Sequences(First_Id_Lay, LayNr, CurrentSeqNr, Curre
             Current_Id_Lay = First_Id_Lay[5]
         end
 
-        for v in ipairs(TagObject_LC) do
-            if TagObject_LC[v].Name == old_prefix .. Time_Argument[2].name .. '_' .. surfix[Axes] then
-                tag_delay_from = TagObject_LC[v]
-            end
-        end
 
         LC_Check_Size_Pool(CurrentSeqNr, SequenceObject)
         SequenceObject:Create(CurrentSeqNr)
@@ -738,6 +747,7 @@ function LC_Create_Delay_From_Sequences(First_Id_Lay, LayNr, CurrentSeqNr, Curre
             Layout_Object[TLayNr][Nr.No]:Set('height', LayH)
             Layout_Object[TLayNr][Nr.No]:Set('action', 'Go+')
             Layout_Object[TLayNr][Nr.No]:Set('Note', 'Delay from')
+            Cmd('Assign ' .. Layout_Object[TLayNr][Nr.No] .. " at " .. tag_V)
             LC_Set_Def(TLayNr, Nr, Layout_Object)
             LayX = math.floor(LayX + LayW + 20)
             LayNr = math.floor(LayNr + 1)
@@ -755,7 +765,7 @@ function LC_Create_Delay_To_Sequences(Axes, First_Id_Lay, LayNr, CurrentSeqNr, C
     local MacroObject, SequenceObject, Layout_Object, Nr = LC_Get_Object(Construct_Pool)
     -- fix time_tag
     local TagObject_LC                                   = Root().ShowData.Tags:Children()
-    local tag_delay_to
+    local tag_delay_to, tag_V
 
     -- Setup Delay to Sequence
     local old_prefix                                     = prefix
@@ -769,11 +779,19 @@ function LC_Create_Delay_To_Sequences(Axes, First_Id_Lay, LayNr, CurrentSeqNr, C
     LC_Create_Macro_Delay_To(CurrentMacroNr, prefix, surfix, Axes, FirstSeqDelayTo, LastSeqDelayTo, MatrickNrStart,
         3, TLayNr, Delay_T_Element, MatrickNr, Construct_Pool, Call_Pool)
 
+    for v in ipairs(TagObject_LC) do
+        if TagObject_LC[v].Name == old_prefix .. Time_Argument[3].name .. '_' .. surfix[Axes] then
+            tag_delay_to = TagObject_LC[v]
+        elseif TagObject_LC[v].Name == old_prefix .. 'V_' .. surfix[Axes] then
+            tag_V = TagObject_LC[v]
+        end
+    end
+
     if MakeX then
-        LC_Command_Title('DELAY TO', 'Titre', TLayNr, LayNr, LayX, LayY, 580, 140, 2, Construct_Pool)
-        LayNr = math.floor(LayNr + 1)
-        LC_Command_Title('none', 'Value' .. surfix[Axes], TLayNr, LayNr, LayX, LayY, 580, 140, 3, Construct_Pool)
-        LayNr = math.floor(LayNr + 1)
+        LayNr = LC_Command_Title('DELAY TO', 'Titre', TLayNr, LayNr, LayX, LayY, 580, 140, 2, Construct_Pool)
+
+        LayNr = LC_Command_Title('none', 'Value' .. surfix[Axes], TLayNr, LayNr, LayX, LayY, 580, 140, 3, Construct_Pool)
+        Cmd('Assign ' .. Layout_Object[TLayNr][LayNr] .. " at " .. tag_V)
     end
 
     for i = 1, 5 do
@@ -791,11 +809,6 @@ function LC_Create_Delay_To_Sequences(Axes, First_Id_Lay, LayNr, CurrentSeqNr, C
             Current_Id_Lay = First_Id_Lay[9]
         end
 
-        for v in ipairs(TagObject_LC) do
-            if TagObject_LC[v].Name == old_prefix .. Time_Argument[3].name .. '_' .. surfix[Axes] then
-                tag_delay_to = TagObject_LC[v]
-            end
-        end
 
         LC_Check_Size_Pool(CurrentSeqNr, SequenceObject)
         SequenceObject:Create(CurrentSeqNr)
@@ -838,6 +851,7 @@ function LC_Create_Delay_To_Sequences(Axes, First_Id_Lay, LayNr, CurrentSeqNr, C
             Layout_Object[TLayNr][Nr.No]:Set('height', LayH)
             Layout_Object[TLayNr][Nr.No]:Set('action', 'Go+')
             Layout_Object[TLayNr][Nr.No]:Set('Note', 'Delay to')
+            Cmd('Assign ' .. Layout_Object[TLayNr][Nr.No] .. " at " .. tag_V)
             LC_Set_Def(TLayNr, Nr, Layout_Object)
             LayX = math.floor(LayX + LayW + 20)
             LayNr = math.floor(LayNr + 1)

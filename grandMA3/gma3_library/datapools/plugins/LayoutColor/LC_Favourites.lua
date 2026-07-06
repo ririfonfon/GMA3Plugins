@@ -60,6 +60,7 @@ function LC_Create_Favourite_Layout(LayNr, CurrentMacroNr, LayH, LayW, TLayNr, C
     layout_pool[TLayNr][Nr.No]:Set('POSITIONH', LayH)
     layout_pool[TLayNr][Nr.No]:Set('POSITIONW', LayW * 2)
     layout_pool[TLayNr][Nr.No]:Set('visibilityborder', false)
+    Layout_Object[TLayNr][Nr.No]:Set('Note', 'Favourites')
     LayNr = Nr.No + 1
     pool_obj_num = pool_obj_num + 1
 
@@ -79,6 +80,7 @@ function LC_Create_Favourite_Layout(LayNr, CurrentMacroNr, LayH, LayW, TLayNr, C
         layout_pool[TLayNr][LayNr]:Set('visibilityindicatorbar', false)
         layout_pool[TLayNr][LayNr]:Set('visibilityobjectname', false)
         layout_pool[TLayNr][LayNr]:Set('visibilityborder', false)
+        Layout_Object[TLayNr][Nr.No]:Set('Note', 'Favourites')
         LayX = LayX + 120
         LayNr = LayNr + 1
         line_num = line_num + 1
