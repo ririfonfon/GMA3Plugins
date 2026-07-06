@@ -8,7 +8,8 @@ Version:
 Rewrite by Richard Fontaine "RIRI", June 2026.
 --]]
 
-function LC_Create_Phase_Sequence(LayY, LayX, LayW, Axes, First_Id_Lay, LayNr, CurrentSeqNr, Current_Id_Lay, CurrentMacroNr,
+function LC_Create_Phase_Sequence(LayY, LayX, LayW, Axes, First_Id_Lay, LayNr, CurrentSeqNr, Current_Id_Lay,
+                                  CurrentMacroNr,
                                   prefix, surfix, MatrickNrStart, TLayNr, Phase_Element, MatrickNr, AppImp, MakeX, LayH,
                                   RefX, Group_Element, Construct_Pool, Call_Pool, Time_Argument)
     local MacroObject, SequenceObject, Layout_Object, Nr = LC_Get_Object(Construct_Pool)
@@ -67,9 +68,10 @@ function LC_Create_Phase_Sequence(LayY, LayX, LayW, Axes, First_Id_Lay, LayNr, C
         LC_Set_Def(TLayNr, Nr, Layout_Object)
         LayX = math.floor(LayX + LayW + 20)
         LayNr = math.floor(LayNr + 1)
-        LC_Command_Title('PHASE', TLayNr, LayNr, LayX - 120, LayY - 30, 700, 170, 4, Construct_Pool)
+        LC_Command_Title('PHASE', 'Titre', TLayNr, LayNr, LayX - 120, LayY - 30, 700, 170, 4, Construct_Pool)
         LayNr = math.floor(LayNr + 1)
-        LC_Command_Title('none > none', TLayNr, LayNr, LayX - 120, LayY - 30, 700, 170, 1, Construct_Pool)
+        LC_Command_Title('none > none', 'Value' .. surfix[Axes], TLayNr, LayNr, LayX - 120, LayY - 30, 700, 170, 1,
+            Construct_Pool)
         LayNr = math.floor(LayNr + 1)
         Group_Element = math.floor(LayNr + 1)
     end
@@ -100,9 +102,10 @@ function LC_Create_Group_Sequence(CurrentMacroNr, FirstSeqGrp, CurrentSeqNr, Las
         Group_Element, MatrickNr, Construct_Pool, Call_Pool)
 
     if MakeX then
-        LC_Command_Title('GROUP', TLayNr, LayNr, LayX - 120, LayY - 30, 700, 170, 2, Construct_Pool)
+        LC_Command_Title('GROUP', 'Titre', TLayNr, LayNr, LayX - 120, LayY - 30, 700, 170, 2, Construct_Pool)
         LayNr = math.floor(LayNr + 1)
-        LC_Command_Title('None', TLayNr, LayNr, LayX - 120, LayY - 30, 700, 170, 3, Construct_Pool)
+        LC_Command_Title('None', 'Value' .. surfix[Axes], TLayNr, LayNr, LayX - 120, LayY - 30, 700, 170, 3,
+            Construct_Pool)
         LayNr = math.floor(LayNr + 1)
     end
     -- Create Sequences XGroup
@@ -121,7 +124,7 @@ function LC_Create_Group_Sequence(CurrentMacroNr, FirstSeqGrp, CurrentSeqNr, Las
             Current_Id_Lay = First_Id_Lay[17]
         end
         for v in ipairs(TagObject_LC) do
-            if TagObject_LC[v].Name == old_prefix .. '_' .. Time_Argument[4].name .. '_' .. surfix[Axes] then
+            if TagObject_LC[v].Name == old_prefix .. Time_Argument[4].name .. '_' .. surfix[Axes] then
                 tag_group = TagObject_LC[v]
             end
         end
@@ -200,9 +203,9 @@ function LC_Create_Block_Sequence(CurrentMacroNr, FirstSeqBlock, CurrentSeqNr, L
         TLayNr, Block_Element, MatrickNr, Construct_Pool, Call_Pool)
 
     if MakeX then
-        LC_Command_Title('BLOCK', TLayNr, LayNr, LayX, LayY, 580, 140, 2, Construct_Pool)
+        LC_Command_Title('BLOCK', 'Titre', TLayNr, LayNr, LayX, LayY, 580, 140, 2, Construct_Pool)
         LayNr = math.floor(LayNr + 1)
-        LC_Command_Title('none', TLayNr, LayNr, LayX, LayY, 580, 140, 3, Construct_Pool)
+        LC_Command_Title('none', 'Value' .. surfix[Axes], TLayNr, LayNr, LayX, LayY, 580, 140, 3, Construct_Pool)
         LayNr = math.floor(LayNr + 1)
     end
     -- Create Sequences XBlock
@@ -222,7 +225,7 @@ function LC_Create_Block_Sequence(CurrentMacroNr, FirstSeqBlock, CurrentSeqNr, L
         end
 
         for v in ipairs(TagObject_LC) do
-            if TagObject_LC[v].Name == old_prefix .. '_' .. Time_Argument[5].name .. '_' .. surfix[Axes] then
+            if TagObject_LC[v].Name == old_prefix .. Time_Argument[5].name .. '_' .. surfix[Axes] then
                 tag_block = TagObject_LC[v]
             end
         end
@@ -303,9 +306,9 @@ function LC_Create_Wings_Sequence(CurrentMacroNr, FirstSeqWings, CurrentSeqNr, L
         TLayNr, Wings_Element, MatrickNr, Construct_Pool, Call_Pool)
 
     if MakeX then
-        LC_Command_Title('WINGS', TLayNr, LayNr, LayX, LayY, 580, 140, 2, Construct_Pool)
+        LC_Command_Title('WINGS', 'Titre', TLayNr, LayNr, LayX, LayY, 580, 140, 2, Construct_Pool)
         LayNr = math.floor(LayNr + 1)
-        LC_Command_Title('none', TLayNr, LayNr, LayX, LayY, 580, 140, 3, Construct_Pool)
+        LC_Command_Title('none', 'Value' .. surfix[Axes], TLayNr, LayNr, LayX, LayY, 580, 140, 3, Construct_Pool)
         LayNr = math.floor(LayNr + 1)
     end
     -- Create Sequences Wings
@@ -325,7 +328,7 @@ function LC_Create_Wings_Sequence(CurrentMacroNr, FirstSeqWings, CurrentSeqNr, L
         end
 
         for v in ipairs(TagObject_LC) do
-            if TagObject_LC[v].Name == old_prefix .. '_' .. Time_Argument[6].name .. '_' .. surfix[Axes] then
+            if TagObject_LC[v].Name == old_prefix .. Time_Argument[6].name .. '_' .. surfix[Axes] then
                 tag_wings = TagObject_LC[v]
             end
         end
@@ -395,7 +398,7 @@ function LC_Create_XYZ_Sequence(CurrentMacroNr, First_Id_Lay, prefix, surfix, Ca
     local old_prefix                                     = prefix
     prefix                                               = 'o' .. prefix
     CurrentMacroNr                                       = math.floor(CurrentMacroNr + 1)
-    First_Id_Lay[33 + Axes]                                 = CurrentMacroNr
+    First_Id_Lay[33 + Axes]                              = CurrentMacroNr
     LC_Check_Size_Pool(CurrentMacroNr, MacroObject)
     MacroObject:Create(CurrentMacroNr)
     MacroObject[CurrentMacroNr]:Set('Name', prefix .. surfix[Axes] .. "_Call")
@@ -431,7 +434,7 @@ function LC_Create_XYZ_Sequence(CurrentMacroNr, First_Id_Lay, prefix, surfix, Ca
     First_Id_Lay[28 + Axes] = CurrentSeqNr
 
     for v in ipairs(TagObject_LC) do
-        if TagObject_LC[v].Name == old_prefix .. '_' .. Time_Argument[7].name then
+        if TagObject_LC[v].Name == old_prefix .. Time_Argument[7].name then
             tag_xyz = TagObject_LC[v]
         end
     end
@@ -640,7 +643,7 @@ function LC_Create_Group_Call(allmacrocallstart, allmacroallend, TLayNr, LayX, L
     local Group_Tag                                      = {}
     for ta = 1, NbGroup do
         for v in ipairs(TagObject_LC) do
-            if TagObject_LC[v].Name == prefix .. '_Group_' .. ta then
+            if TagObject_LC[v].Name == prefix .. 'Group_' .. ta then
                 table.insert(Group_Tag, TagObject_LC[v])
             end
         end
