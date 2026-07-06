@@ -375,32 +375,32 @@ function LC_Construct_Layout(TLay, SeqNrStart, MacroNrStart, MatrickNrStart, Mat
     LayX = math.floor(LayX + LayW - 100)
 
     -- Create Function for X Y Z
-    for a = 1, 3 do
+    for Axes = 1, 3 do
         -- Create Sequence FADE
         CurrentSeqNr, Delay_F_Element, LayNr, LayX, Current_Id_Lay, Fade_Element, CurrentMacroNr, First_Id_Lay =
             LC_Create_Fade_Sequences(MakeX, FirstSeqTime, LastSeqTime, CurrentSeqNr, CurrentMacroNr, prefix, surfix,
                 First_Id_Lay, LayNr, MatrickNrStart, TLayNr, Fade_Element, Argument_Fade, AppImp, LayX, LayY, LayW, LayH,
-                SeqNrStart, SeqNrEnd, Current_Id_Lay, Delay_F_Element, a, Construct_Pool, Call_Pool, Time_Argument)
+                SeqNrStart, SeqNrEnd, Current_Id_Lay, Delay_F_Element, Axes, Construct_Pool, Call_Pool, Time_Argument)
         -- end Create Sequence FADE
 
         -- Create Sequences Delayfrom
         Current_Id_Lay, First_Id_Lay, LayX, LayNr, Delay_T_Element, CurrentSeqNr, CurrentMacroNr, Delay_F_Element =
             LC_Create_Delay_From_Sequences(First_Id_Lay, LayNr, CurrentSeqNr, Current_Id_Lay, prefix, surfix,
                 Argument_Delay,
-                AppImp, CurrentMacroNr, a, MatrickNrStart, TLayNr, Delay_F_Element, MatrickNr, MakeX, LayX, LayY, LayW,
+                AppImp, CurrentMacroNr, Axes, MatrickNrStart, TLayNr, Delay_F_Element, MatrickNr, MakeX, LayX, LayY, LayW,
                 LayH, Delay_T_Element, Construct_Pool, Call_Pool, Time_Argument)
         -- end Create Sequences Delayfrom
 
         -- Create Sequences DelayTo
         First_Id_Lay, Current_Id_Lay, LayX, LayNr, Phase_Element, CurrentSeqNr, CurrentMacroNr, Delay_T_Element =
-            LC_Create_Delay_To_Sequences(a, First_Id_Lay, LayNr, CurrentSeqNr, Current_Id_Lay, prefix, Argument_DelayTo,
+            LC_Create_Delay_To_Sequences(Axes, First_Id_Lay, LayNr, CurrentSeqNr, Current_Id_Lay, prefix, Argument_DelayTo,
                 surfix, MatrickNrStart, TLayNr, Delay_T_Element, MatrickNr, AppImp, LayX, LayY, LayW, LayH, Phase_Element,
                 CurrentMacroNr, MakeX, Construct_Pool, Call_Pool, Time_Argument)
         -- end Create Sequences DelayTo
 
         -- Create_Sequence_Phase
         Current_Id_Lay, CurrentMacroNr, LayY, LayX, LayNr, CurrentSeqNr, Group_Element, Phase_Element, First_Id_Lay =
-            LC_Create_Phase_Sequence(LayY, LayX, LayW, a, First_Id_Lay, LayNr, CurrentSeqNr, Current_Id_Lay,
+            LC_Create_Phase_Sequence(LayY, LayX, LayW, Axes, First_Id_Lay, LayNr, CurrentSeqNr, Current_Id_Lay,
                 CurrentMacroNr,
                 prefix, surfix, MatrickNrStart, TLayNr, Phase_Element, MatrickNr, AppImp, MakeX, LayH, RefX,
                 Group_Element, Construct_Pool, Call_Pool, Time_Argument)
@@ -408,28 +408,28 @@ function LC_Construct_Layout(TLay, SeqNrStart, MacroNrStart, MatrickNrStart, Mat
 
         -- Create_sequence_xgroup
         CurrentSeqNr, Block_Element, LayNr, LayX, Current_Id_Lay, First_Id_Lay, CurrentMacroNr, LastSeqGrp, FirstSeqGrp, Group_Element =
-            LC_Create_Group_Sequence(CurrentMacroNr, FirstSeqGrp, CurrentSeqNr, LastSeqGrp, prefix, surfix, a,
+            LC_Create_Group_Sequence(CurrentMacroNr, FirstSeqGrp, CurrentSeqNr, LastSeqGrp, prefix, surfix, Axes,
                 MatrickNrStart, TLayNr, Group_Element, MatrickNr, LayNr, LayX, LayY, First_Id_Lay, Current_Id_Lay,
                 Argument_Xgrp, AppImp, LayW, LayH, Block_Element, MakeX, Construct_Pool, Call_Pool, Time_Argument)
         -- end Sequences XGroup
 
         -- LC_Create_Block_Sequence
         CurrentSeqNr, Wings_Element, LayNr, LayX, Current_Id_Lay, First_Id_Lay, CurrentMacroNr, FirstSeqBlock, LastSeqBlock, Block_Element =
-            LC_Create_Block_Sequence(CurrentMacroNr, FirstSeqBlock, CurrentSeqNr, LastSeqBlock, prefix, surfix, a,
+            LC_Create_Block_Sequence(CurrentMacroNr, FirstSeqBlock, CurrentSeqNr, LastSeqBlock, prefix, surfix, Axes,
                 MatrickNrStart, TLayNr, Block_Element, MatrickNr, MakeX, LayNr, LayX, LayY, First_Id_Lay, Current_Id_Lay,
                 Argument_Xblock, AppImp, Wings_Element, LayW, LayH, Construct_Pool, Call_Pool, Time_Argument)
         -- end LC_Create_Block_Sequence
 
         -- LC_Create_Wings_Sequence
         CurrentSeqNr, LayNr, LayX, Current_Id_Lay, First_Id_Lay, LastSeqWings, FirstSeqWings, CurrentMacroNr, Wings_Element =
-            LC_Create_Wings_Sequence(CurrentMacroNr, FirstSeqWings, CurrentSeqNr, LastSeqWings, prefix, surfix, a,
+            LC_Create_Wings_Sequence(CurrentMacroNr, FirstSeqWings, CurrentSeqNr, LastSeqWings, prefix, surfix, Axes,
                 MatrickNrStart, TLayNr, Wings_Element, MatrickNr, MakeX, LayNr, LayX, LayY, First_Id_Lay, Current_Id_Lay,
                 Argument_Xwings, AppImp, LayW, LayH, Construct_Pool, Call_Pool, Time_Argument)
         -- end LC_Create_Wings_Sequence
 
         -- LC_Create_XYZ_Sequence
         First_Id_Lay, LayNr, CurrentMacroNr =
-            LC_Create_XYZ_Sequence(CurrentMacroNr, First_Id_Lay, prefix, surfix, Call_inc, CallT, MatrickNrStart, a,
+            LC_Create_XYZ_Sequence(CurrentMacroNr, First_Id_Lay, prefix, surfix, Call_inc, CallT, MatrickNrStart, Axes,
                 CurrentSeqNr, TLayNr, Fade_Element, Delay_F_Element, Delay_T_Element, Phase_Element, Group_Element,
                 Block_Element, Wings_Element, MatrickNr, AppImp, MakeX, LayNr, LayX, LayY, LayW, LayH, Construct_Pool,
                 Call_Pool, Time_Argument)
