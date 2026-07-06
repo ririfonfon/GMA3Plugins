@@ -259,7 +259,7 @@ function LC_Create_Appearances_Sequences(CurrentMacroNr, SelectedGelNr, NbGroup,
             " MaTricks '" .. prefix .. '_Group_' .. g ..
             "' At DataPool " .. Construct_Pool .. " Sequence " .. FirstSeqColor .. " Thru " .. LastSeqColor ..
             " Cue 1 part 0.1 ;  Assign DataPool " .. Construct_Pool .. " Sequence " .. CurrentSeqNr + 1 ..
-            " At DataPool " .. Construct_Pool .. " Layout " .. TLayNr .. "." .. LayNr .. "")
+            " At DataPool " .. Construct_Pool .. " Layout " .. TLayNr .. "." .. Nr.No + 1 .. "")
 
         Nr = Layout_Object[TLayNr]:Acquire()
         Layout_Object[TLayNr][Nr.No]:Set('Object', SequenceObject[CurrentSeqNr])
@@ -289,7 +289,7 @@ function LC_Create_Appearances_Sequences(CurrentMacroNr, SelectedGelNr, NbGroup,
             ' MaTricks ' .. MatrickNrStart .. ' At DataPool ' .. Construct_Pool .. ' Sequence ' .. FirstSeqColor ..
             ' Thru ' .. LastSeqColor .. ' Cue 1 part 0.1 ; Assign DataPool ' .. Construct_Pool ..
             ' Sequence ' .. CurrentSeqNr - 1 .. ' At DataPool ' .. Construct_Pool .. ' Layout ' .. TLayNr ..
-            '.' .. LayNr .. "")
+            '.' .. Nr.No .. "")
 
         LayNr = math.floor(LayNr + 1)
         LayX = math.floor(LayX + LayW - 35 + 20)

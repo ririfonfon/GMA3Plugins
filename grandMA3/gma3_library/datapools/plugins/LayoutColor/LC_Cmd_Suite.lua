@@ -631,7 +631,8 @@ function LC_Macro_Priority(LayX, LayY, Ligne_Inc, CurrentMacroNr, First_All_Colo
     Layout_Object[TLayNr][Nr.No]:Set('Appearance', address)
 end
 
-function LC_Create_Group_Call(allmacrocallstart, allmacroallend, LayNr, LayX, LayY, CurrentSeqNr, CurrentMacroNr, NbGroup,
+function LC_Create_Group_Call(allmacrocallstart, allmacroallend, TLayNr, LayX, LayY, CurrentSeqNr, CurrentMacroNr,
+                              NbGroup,
                               Construct_Pool, prefix, NrNeed)
     local AppearObject                                   = Root().ShowData.Appearances
     local MacroObject, SequenceObject, Layout_Object, Nr = LC_Get_Object(Construct_Pool)
@@ -679,16 +680,17 @@ function LC_Create_Group_Call(allmacrocallstart, allmacroallend, LayNr, LayX, La
         inc = 1
     end
 
+    LayX = -1100
+    LayY = 440
     for m = 1, NbGroup do
         LC_Check_Size_Pool(CurrentSeqNr, SequenceObject)
         SequenceObject:Create(CurrentSeqNr)
-        SequenceObject[CurrentSeqNr]:Set('Name', prefix .. 'onoff_group' .. m)
+        SequenceObject[CurrentSeqNr]:Set('Name', 'o' .. prefix .. 'onoff_group' .. m)
         LC_Sequence_Defo(SequenceObject, CurrentSeqNr)
         SequenceObject[CurrentSeqNr]:Set('TRACKING', 'No')
         SequenceObject[CurrentSeqNr]:Set('PRIORITY', 'HTP')
         SequenceObject[CurrentSeqNr]:Set('SOFTLTP', 'No')
-        Echo('nrneed ' .. NrNeed)
-        SequenceObject[CurrentSeqNr]:Set('Appearance', AppearObject[NrNeed-1])
+        SequenceObject[CurrentSeqNr]:Set('Appearance', AppearObject[NrNeed - 1])
 
         SequenceObject[CurrentSeqNr]:Insert()
         SequenceObject[CurrentSeqNr][3]:Set('No', 1)
@@ -701,12 +703,87 @@ function LC_Create_Group_Call(allmacrocallstart, allmacroallend, LayNr, LayX, La
         SequenceObject[CurrentSeqNr][4]:Create(1)
         SequenceObject[CurrentSeqNr][4][1]:Set('Command',
             'Go+ DataPool ' .. Construct_Pool .. ' Macro ' .. Macro_off + m - 1)
-        SequenceObject[CurrentSeqNr][4][1]:Set('Appearance', AppearObject[NrNeed-1])
+        SequenceObject[CurrentSeqNr][4][1]:Set('Appearance', AppearObject[NrNeed - 1])
 
+        Nr = Layout_Object[TLayNr]:Acquire()
+        Layout_Object[TLayNr][Nr.No]:Set('Object', SequenceObject[CurrentSeqNr])
+        Layout_Object[TLayNr][Nr.No]:Set('posx', LayX)
+        Layout_Object[TLayNr][Nr.No]:Set('posy', LayY)
+        Layout_Object[TLayNr][Nr.No]:Set('width', 100)
+        Layout_Object[TLayNr][Nr.No]:Set('height', 100)
+        Layout_Object[TLayNr][Nr.No]:Set('action', 'Go+')
+        Layout_Object[TLayNr][Nr.No]:Set('CustomTextText', '->')
+        Layout_Object[TLayNr][Nr.No]:Set('CustomTextColor', 'FF0000FF')
+        Layout_Object[TLayNr][Nr.No]:Set('CustomTextSize', '32')
+        Layout_Object[TLayNr][Nr.No]:Set('CustomTextAlignmentV', 'Center')
+        Layout_Object[TLayNr][Nr.No]:Set('Note', 'Grp on off call')
+        LC_Set_Def(TLayNr, Nr, Layout_Object)
+
+        LayY = math.floor(LayY - 120)
         CurrentSeqNr = math.floor(CurrentSeqNr + 1)
     end
 
+    LC_Check_Size_Pool(CurrentSeqNr, SequenceObject)
+    SequenceObject:Create(CurrentSeqNr)
+    SequenceObject[CurrentSeqNr]:Set('Name', 'o' .. prefix .. 'Inv')
+    LC_Sequence_Defo(SequenceObject, CurrentSeqNr)
+    SequenceObject[CurrentSeqNr]:Set('TRACKING', 'No')
+    SequenceObject[CurrentSeqNr]:Set('PRIORITY', 'HTP')
+    SequenceObject[CurrentSeqNr]:Set('SOFTLTP', 'No')
+    SequenceObject[CurrentSeqNr]:Set('Appearance', AppearObject[NrNeed - 1])
 
+    SequenceObject[CurrentSeqNr]:Insert()
+    SequenceObject[CurrentSeqNr][3]:Set('No', 1)
+    SequenceObject[CurrentSeqNr][3]:Create(1)
+    SequenceObject[CurrentSeqNr][3][1]:Set('Command',
+        'Go+ DataPool ' .. Construct_Pool .. ' Sequence ' ..
+        CurrentSeqNr - NbGroup .. ' Thru ' .. CurrentSeqNr - 1)
+    SequenceObject[CurrentSeqNr][3][1]:Set('Appearance', AppearObject[NrNeed])
+
+    Nr = Layout_Object[TLayNr]:Acquire()
+    Layout_Object[TLayNr][Nr.No]:Set('Object', SequenceObject[CurrentSeqNr])
+    Layout_Object[TLayNr][Nr.No]:Set('posx', LayX)
+    Layout_Object[TLayNr][Nr.No]:Set('posy', 560)
+    Layout_Object[TLayNr][Nr.No]:Set('width', 100)
+    Layout_Object[TLayNr][Nr.No]:Set('height', 100)
+    Layout_Object[TLayNr][Nr.No]:Set('action', 'Flash')
+    Layout_Object[TLayNr][Nr.No]:Set('CustomTextText', 'INV')
+    Layout_Object[TLayNr][Nr.No]:Set('CustomTextColor', 'FF0000FF')
+    Layout_Object[TLayNr][Nr.No]:Set('CustomTextAlignmentV', 'Center')
+    Layout_Object[TLayNr][Nr.No]:Set('Note', 'all Inv call')
+    LC_Set_Def(TLayNr, Nr, Layout_Object)
+
+    CurrentSeqNr = math.floor(CurrentSeqNr + 1)
+
+    LC_Check_Size_Pool(CurrentSeqNr, SequenceObject)
+    SequenceObject:Create(CurrentSeqNr)
+    SequenceObject[CurrentSeqNr]:Set('Name', 'o' .. prefix .. 'None')
+    LC_Sequence_Defo(SequenceObject, CurrentSeqNr)
+    SequenceObject[CurrentSeqNr]:Set('TRACKING', 'No')
+    SequenceObject[CurrentSeqNr]:Set('PRIORITY', 'HTP')
+    SequenceObject[CurrentSeqNr]:Set('SOFTLTP', 'No')
+    SequenceObject[CurrentSeqNr]:Set('Appearance', AppearObject[NrNeed - 1])
+
+    SequenceObject[CurrentSeqNr]:Insert()
+    SequenceObject[CurrentSeqNr][3]:Set('No', 1)
+    SequenceObject[CurrentSeqNr][3]:Create(1)
+    SequenceObject[CurrentSeqNr][3][1]:Set('Command',
+        'Go+ DataPool ' .. Construct_Pool .. ' Sequence ' ..
+        CurrentSeqNr - NbGroup - 1 .. ' Thru ' .. CurrentSeqNr - 2 .. ' Cue 2')
+    SequenceObject[CurrentSeqNr][3][1]:Set('Appearance', AppearObject[NrNeed])
+
+    Nr = Layout_Object[TLayNr]:Acquire()
+    Layout_Object[TLayNr][Nr.No]:Set('Object', SequenceObject[CurrentSeqNr])
+    Layout_Object[TLayNr][Nr.No]:Set('posx', LayX)
+    Layout_Object[TLayNr][Nr.No]:Set('posy', 680)
+    Layout_Object[TLayNr][Nr.No]:Set('width', 100)
+    Layout_Object[TLayNr][Nr.No]:Set('height', 100)
+    Layout_Object[TLayNr][Nr.No]:Set('action', 'Flash')
+    Layout_Object[TLayNr][Nr.No]:Set('CustomTextText', 'None')
+    Layout_Object[TLayNr][Nr.No]:Set('CustomTextColor', 'FF0000FF')
+    Layout_Object[TLayNr][Nr.No]:Set('CustomTextAlignmentV', 'Center')
+    Layout_Object[TLayNr][Nr.No]:Set('Note', 'all None call')
+    LC_Set_Def(TLayNr, Nr, Layout_Object)
 
     return CurrentSeqNr, CurrentMacroNr
 end

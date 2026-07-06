@@ -481,7 +481,7 @@ function LC_Construct_Layout(TLay, SeqNrStart, MacroNrStart, MatrickNrStart, Mat
 
     -- add group Call
     CurrentMacroNr = CurrentMacroNr + 1
-    CurrentSeqNr, CurrentMacroNr = LC_Create_Group_Call(allmacroallstart, allmacroallend, LayNr, LayX, LayY,
+    CurrentSeqNr, CurrentMacroNr = LC_Create_Group_Call(allmacroallstart, allmacroallend, TLayNr, LayX, LayY,
         CurrentSeqNr, CurrentMacroNr, NbGroup, Construct_Pool, prefix, NrNeedBase)
 
     -- Macro Del LC prefix
