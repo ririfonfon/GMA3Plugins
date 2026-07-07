@@ -3,7 +3,7 @@ Releases:
 * 2.3.2.0
 
 Version:
-* 2.2.0.0
+* 2.3.6.0
 
 Rewrite by Richard Fontaine "RIRI", June 2026.
 --]]
@@ -31,7 +31,7 @@ function LC_Create_Favourite_Macro(prefix, CurrentMacroNr, TLayNr, Construct_Poo
     macropool[macro_num][5]:Set('Command', 'SetUserVariable "LC_DataPool" ' .. Construct_Pool .. '')
     macropool[macro_num][6]:Set('Command', 'SetUserVariable "LC_Prefix" ' .. prefix .. '')
     macropool[macro_num][7]:Set('Command', 'SetUserVariable "LC_Macro" ' .. macro_num .. '')
-    macropool[macro_num][8]:Set('Command', 'Call ' .. Call_Pool .. ' Plugin "DEV_LC_View"')
+    macropool[macro_num][8]:Set('Command', "Call DataPool '" .. Call_Pool.Name .. "'.'Plugins'.'LayoutColor_V2'.'LC_View_lua'")
     macropool[macro_num]:Set('Appearance', 'LC_Black')
     for i = macro_num + 1, CurrentMacroNr do
         macropool[i]:Set('Appearance', 'LC_Favo')

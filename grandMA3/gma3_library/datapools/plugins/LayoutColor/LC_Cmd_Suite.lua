@@ -3,7 +3,7 @@ Releases:
 * 2.3.2.0
 
 Version:
-* 2.2.0.0
+* 2.3.6.0
 
 Rewrite by Richard Fontaine "RIRI", June 2026.
 --]]
@@ -188,7 +188,7 @@ function LC_Create_Group_Sequence(CurrentMacroNr, FirstSeqGrp, CurrentSeqNr, Las
                 ' ; SetUserVariable "LC_Element" ' .. Group_Element[Axes] ..
                 ' ; SetUserVariable "LC_Matrick" ' .. MatrickNrStart ..
                 ' ; SetUserVariable "LC_Matrick_Thru" ' .. MatrickNr ..
-                ' ; Call ' .. Call_Pool .. ' Plugin "DEV_LC_View" ')
+                ' ; Call DataPool "' .. Call_Pool.Name .. '"."Plugins"."LayoutColor_V2"."LC_View_lua" ')
         end
         Cmd('Assign ' .. SequenceObject[CurrentSeqNr] .. " at " .. tag_group)
 
@@ -304,7 +304,7 @@ function LC_Create_Block_Sequence(CurrentMacroNr, FirstSeqBlock, CurrentSeqNr, L
                 ' ; SetUserVariable "LC_Element" ' .. Block_Element[Axes] ..
                 ' ; SetUserVariable "LC_Matrick" ' .. MatrickNrStart ..
                 ' ; SetUserVariable "LC_Matrick_Thru" ' .. MatrickNr ..
-                ' ; Call ' .. Call_Pool .. ' Plugin "DEV_LC_View" ')
+                ' ; Call DataPool "' .. Call_Pool.Name .. '"."Plugins"."LayoutColor_V2"."LC_View_lua" ')
         end
 
         Cmd('Assign ' .. SequenceObject[CurrentSeqNr] .. " at " .. tag_block)
@@ -420,7 +420,7 @@ function LC_Create_Wings_Sequence(CurrentMacroNr, FirstSeqWings, CurrentSeqNr, L
                 ' ; SetUserVariable "LC_Element" ' .. Wings_Element[Axes] ..
                 ' ; SetUserVariable "LC_Matrick" ' .. MatrickNrStart ..
                 ' ; SetUserVariable "LC_Matrick_Thru" ' .. MatrickNr ..
-                ' ; Call ' .. Call_Pool .. ' Plugin "DEV_LC_View" ')
+                ' ; Call DataPool "' .. Call_Pool.Name .. '"."Plugins"."LayoutColor_V2"."LC_View_lua" ')
         end
 
         Cmd('Assign ' .. SequenceObject[CurrentSeqNr] .. " at " .. tag_wings)
@@ -664,7 +664,7 @@ function LC_Macro_Priority(LayX, LayY, Ligne_Inc, CurrentMacroNr, First_All_Colo
     MacroObject[CurrentMacroNr][4]:Set('Command', 'SetUserVariable "LC_Element" ' .. LayNr)
     MacroObject[CurrentMacroNr][5]:Set('Command', 'SetUserVariable "LC_DataPool" ' .. Construct_Pool)
     MacroObject[CurrentMacroNr][6]:Set('Command', Color_message)
-    MacroObject[CurrentMacroNr][7]:Set('Command', 'Call ' .. Call_Pool .. ' Plugin "DEV_LC_View"')
+    MacroObject[CurrentMacroNr][7]:Set('Command', "Call DataPool '" .. Call_Pool.Name .. "'.'Plugins'.'LayoutColor_V2'.'LC_View_lua'")
 
     local address = LC_Search_Addr_Nat_App('p_htp_png')
 

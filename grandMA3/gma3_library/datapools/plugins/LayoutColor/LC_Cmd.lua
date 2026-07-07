@@ -3,7 +3,7 @@ Releases:
 * 2.3.2.0
 
 Version:
-* 2.2.0.0
+* 2.3.6.0
 
 Rewrite by Richard Fontaine "RIRI", June 2026.
 --]]
@@ -166,7 +166,7 @@ function LC_Create_Appearances_Sequences(CurrentMacroNr, SelectedGelNr, NbGroup,
         MacroObject[CurrentMacroNr][4]:Set('Command', 'SetUserVariable "LC_Element" ' .. Nr.No)
         MacroObject[CurrentMacroNr][5]:Set('Command', 'SetUserVariable "LC_DataPool" ' .. Construct_Pool)
         MacroObject[CurrentMacroNr][6]:Set('Command', 'SetUserVariable "LC_Sequence" ' .. CurrentSeqNr)
-        MacroObject[CurrentMacroNr][7]:Set('Command', 'Call ' .. Call_Pool .. ' Plugin "DEV_LC_View"')
+        MacroObject[CurrentMacroNr][7]:Set('Command', "Call DataPool '" .. Call_Pool.Name .. "'.'Plugins'.'LayoutColor_V2'.'LC_View_lua'")
 
         Nr = Layout_Object[TLayNr]:Acquire()
         Layout_Object[TLayNr][Nr.No]:Set('Object', MacroObject[CurrentMacroNr])
@@ -536,7 +536,7 @@ function LC_Create_Fade_Sequences(MakeX, CurrentSeqNr, CurrentMacroNr, prefix, s
     MacroObject[CurrentMacroNr][5]:Set('Command', 'SetUserVariable "LC_Layout" ' .. TLayNr .. '')
     MacroObject[CurrentMacroNr][6]:Set('Command', 'SetUserVariable "LC_Element" ' .. Fade_Element[Axes] .. '')
     MacroObject[CurrentMacroNr][7]:Set('Command', 'SetUserVariable "LC_Matrick" ' .. MatrickNrStart .. '')
-    MacroObject[CurrentMacroNr][8]:Set('Command', 'Call ' .. Call_Pool .. ' Plugin "DEV_LC_View"')
+    MacroObject[CurrentMacroNr][8]:Set('Command', "Call DataPool '" .. Call_Pool.Name .. "'.'Plugins'.'LayoutColor_V2'.'LC_View_lua'")
     CurrentMacroNr = CurrentMacroNr + 1
 
     for v in ipairs(TagObject_LC) do
@@ -737,7 +737,7 @@ function LC_Create_Delay_From_Sequences(First_Id_Lay, LayNr, CurrentSeqNr, Curre
                 ' ; SetUserVariable "LC_Element" ' .. Delay_F_Element[Axes] ..
                 ' ; SetUserVariable "LC_Matrick" ' .. MatrickNrStart ..
                 ' ; SetUserVariable "LC_Matrick_Thru" ' .. MatrickNr ..
-                ' ; Call ' .. Call_Pool .. ' Plugin "DEV_LC_View" ')
+                ' ; Call DataPool "' .. Call_Pool.Name .. '"."Plugins"."LayoutColor_V2"."LC_View_lua" ')
         end
         Cmd('Assign ' .. SequenceObject[CurrentSeqNr] .. " at " .. tag_delay_from)
 
@@ -850,7 +850,7 @@ function LC_Create_Delay_To_Sequences(Axes, First_Id_Lay, LayNr, CurrentSeqNr, C
                 ' ; SetUserVariable "LC_Element" ' .. Delay_T_Element[Axes] ..
                 ' ; SetUserVariable "LC_Matrick" ' .. MatrickNrStart ..
                 ' ; SetUserVariable "LC_Matrick_Thru" ' .. MatrickNr ..
-                ' ; Call ' .. Call_Pool .. ' Plugin "DEV_LC_View" ')
+                ' ; Call DataPool "' .. Call_Pool.Name .. '"."Plugins"."LayoutColor_V2"."LC_View_lua" ')
         end
         Cmd('Assign ' .. SequenceObject[CurrentSeqNr] .. " at " .. tag_delay_to)
 
