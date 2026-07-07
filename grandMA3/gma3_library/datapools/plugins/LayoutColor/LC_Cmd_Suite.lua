@@ -484,32 +484,10 @@ function LC_Create_XYZ_Sequence(CurrentMacroNr, First_Id_Lay, prefix, surfix, Ma
         { 0, 0, 1 }
     }
     for m = 1, 3 do
-        -- if m == 1 or m == 6 or m == 11 or m == 16 or m == 17 or m == 22 or m == 27 then
-        --     Call_inc = 0
-        -- end
-        -- if m < 6 then
-        --     CallT = 1
-        -- elseif m < 11 then
-        --     CallT = 5
-        -- elseif m < 16 then
-        --     CallT = 9
-        -- elseif m < 17 then
-        --     CallT = 13
-        -- elseif m < 22 then
-        --     CallT = 17
-        -- elseif m < 27 then
-        --     CallT = 21
-        -- elseif m <= 31 then
-        --     CallT = 25
-        -- end
         MacroObject[CurrentMacroNr]:Insert(m)
         MacroObject[CurrentMacroNr][m]:Set('Command',
             'Set DataPool ' .. Construct_Pool .. ' Layout 1.1 Thru Property VisibilityElement ' .. Visi[Axes][m] ..
             ' if Tag ' .. tag_V[m])
-        -- MacroObject[CurrentMacroNr][m]:Set('Command', 'Assign DataPool ' .. Construct_Pool .. ' Sequence ' ..
-        --     First_Id_Lay[CallT + Axes] + Call_inc .. ' At DataPool ' .. Construct_Pool .. ' Layout ' ..
-        --     TLayNr .. '.' .. First_Id_Lay[CallT] + Call_inc)
-        -- Call_inc = math.floor(Call_inc + 1)
     end
     LC_Create_Macro_Reset(CurrentMacroNr, prefix, surfix, MatrickNrStart, Axes, CurrentSeqNr, First_Id_Lay, TLayNr,
         Fade_Element, Delay_F_Element, Delay_T_Element, Phase_Element, Group_Element, Block_Element, Wings_Element,
@@ -622,17 +600,6 @@ function LC_Create_XYZ_Sequence(CurrentMacroNr, First_Id_Lay, prefix, surfix, Ma
     end
     return First_Id_Lay, LayNr, CurrentMacroNr
 end -- end LC_Create_XYZ_Sequence
-
--- function LC_Add_Line_Macro_XYZ(MacroObject, First_Id_Lay, TLayNr, Fade_Element, MatrickNrStart, Delay_F_Element,
---                                Delay_T_Element, Phase_Element, Group_Element, Block_Element, Wings_Element,
---                                Construct_Pool, Call_Pool)
---     for i = 1, 3 do
---         MacroObject[First_Id_Lay[33 + i]]:Insert(32)
---         MacroObject[First_Id_Lay[33 + i]][32]:Set('Command', '')
---         LC_Add_Macro_Call(i, TLayNr, Fade_Element, MatrickNrStart, Delay_F_Element, Delay_T_Element, Phase_Element,
---             Group_Element, Block_Element, Wings_Element, Construct_Pool, First_Id_Lay[33 + i], Call_Pool)
---     end
--- end
 
 function LC_Create_KillallLCx(LayY, LayX, LayNr, ColLgnCount, RefX, CurrentSeqNr, SequenceObject, Nr, Layout_Object,
                               TLayNr, LayW, LayH, prefix, Construct_Pool)
