@@ -500,7 +500,7 @@ end
 function LC_Create_Fade_Sequences(MakeX, CurrentSeqNr, CurrentMacroNr, prefix, surfix,
                                   First_Id_Lay, LayNr, MatrickNrStart, TLayNr, Fade_Element, Argument_Fade,
                                   AppImp, LayX, LayY, LayW, LayH, SeqNrStart, SeqNrEnd, Current_Id_Lay, Delay_F_Element,
-                                  Axes, Construct_Pool, Call_Pool, Time_Argument)
+                                  Axes, Construct_Pool, Call_Pool, Time_Argument,Nbgroup)
     local MacroObject, SequenceObject, Layout_Object, Nr = LC_Get_Object(Construct_Pool)
     -- fix time_tag
     local TagObject_LC                                   = Root().ShowData.Tags:Children()
@@ -513,7 +513,7 @@ function LC_Create_Fade_Sequences(MakeX, CurrentSeqNr, CurrentMacroNr, prefix, s
         First_Id_Lay[37] = CurrentSeqNr
     end
     if Axes == 1 then
-        Fade_Element[Axes] = math.floor(LayNr + 6)
+        Fade_Element[Axes] = math.floor(LayNr + Nbgroup + 3)
     elseif Axes == 2 then
         Fade_Element[Axes] = math.floor(LayNr + 2)
     elseif Axes == 3 then

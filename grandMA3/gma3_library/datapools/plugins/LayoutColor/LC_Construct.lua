@@ -382,7 +382,7 @@ function LC_Construct_Layout(TLay, SeqNrStart, MacroNrStart, MatrickNrStart, Mat
         CurrentSeqNr, Delay_F_Element, LayNr, LayX, Current_Id_Lay, Fade_Element, CurrentMacroNr, First_Id_Lay =
             LC_Create_Fade_Sequences(MakeX, CurrentSeqNr, CurrentMacroNr, prefix, surfix,
                 First_Id_Lay, LayNr, MatrickNrStart, TLayNr, Fade_Element, Argument_Fade, AppImp, LayX, LayY, LayW, LayH,
-                SeqNrStart, SeqNrEnd, Current_Id_Lay, Delay_F_Element, Axes, Construct_Pool, Call_Pool, Time_Argument)
+                SeqNrStart, SeqNrEnd, Current_Id_Lay, Delay_F_Element, Axes, Construct_Pool, Call_Pool, Time_Argument, NbGroup)
         -- end Create Sequence FADE
 
         -- Create Sequences Delayfrom
