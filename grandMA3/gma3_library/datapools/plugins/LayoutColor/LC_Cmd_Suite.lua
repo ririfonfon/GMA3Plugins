@@ -9,9 +9,8 @@ Rewrite by Richard Fontaine "RIRI", June 2026.
 --]]
 
 function LC_Create_Phase_Sequence(LayY, LayX, LayW, Axes, First_Id_Lay, LayNr, CurrentSeqNr, Current_Id_Lay,
-                                  CurrentMacroNr,
-                                  prefix, surfix, MatrickNrStart, TLayNr, Phase_Element, MatrickNr, AppImp, MakeX, LayH,
-                                  RefX, Group_Element, Construct_Pool, Call_Pool, Time_Argument)
+                                  CurrentMacroNr, prefix, surfix, MatrickNrStart, TLayNr, Phase_Element, MatrickNr,
+                                  AppImp, MakeX, LayH, RefX, Group_Element, Construct_Pool, Call_Pool)
     local MacroObject, SequenceObject, Layout_Object, Nr = LC_Get_Object(Construct_Pool)
     -- fix time_tag
     local TagObject_LC                                   = Root().ShowData.Tags:Children()
@@ -41,7 +40,13 @@ function LC_Create_Phase_Sequence(LayY, LayX, LayW, Axes, First_Id_Lay, LayNr, C
     end
     Current_Id_Lay = First_Id_Lay[13]
     CurrentMacroNr = math.floor(CurrentMacroNr + 1)
-    -- Phase_Element = Phase_Element + 2
+    if Axes == 1 then
+        Phase_Element[Axes] = Phase_Element[Axes] + 1
+    elseif Axes == 2 then
+        Phase_Element[Axes] = Phase_Element[Axes]
+    elseif Axes == 3 then
+        Phase_Element[Axes] = Phase_Element[Axes]
+    end
     LC_Create_Macro_Phase(CurrentMacroNr, prefix, surfix, Axes, MatrickNrStart, 4, TLayNr, Phase_Element, MatrickNr,
         Construct_Pool, Call_Pool)
 
@@ -65,37 +70,39 @@ function LC_Create_Phase_Sequence(LayY, LayX, LayW, Axes, First_Id_Lay, LayNr, C
 
     LC_Command_Ext_Suite(CurrentSeqNr, SequenceObject)
 
+    local Visi = 0
     -- Add Squences to Layout
     if MakeX then
-        Nr = Layout_Object[TLayNr]:Acquire()
-        Layout_Object[TLayNr][Nr.No]:Set('Object', SequenceObject[CurrentSeqNr])
-        Layout_Object[TLayNr][Nr.No]:Set('posx', LayX)
-        Layout_Object[TLayNr][Nr.No]:Set('posy', LayY)
-        Layout_Object[TLayNr][Nr.No]:Set('width', LayW)
-        Layout_Object[TLayNr][Nr.No]:Set('height', LayH)
-        Layout_Object[TLayNr][Nr.No]:Set('action', 'Go+')
-        Layout_Object[TLayNr][Nr.No]:Set('Note', 'Phase')
-        Cmd('Assign ' .. Layout_Object[TLayNr][Nr.No] .. " at " .. tag_V)
-        LC_Set_Def(TLayNr, Nr, Layout_Object)
-        LayX = math.floor(LayX + LayW + 20)
-        LayNr = LC_Command_Title('PHASE', 'Titre', TLayNr, LayNr, LayX - 120, LayY - 30, 700, 170, 4, Construct_Pool)
-        LayNr = LC_Command_Title('none > none', 'Value' .. surfix[Axes], TLayNr, LayNr, LayX - 120, LayY - 30, 700, 170,
-            1,
-            Construct_Pool)
-        Cmd('Assign ' .. Layout_Object[TLayNr][LayNr] .. " at " .. tag_V)
-        LayNr = math.floor(LayNr + 1)
-        Group_Element = math.floor(LayNr + 1)
+        Visi = 1
+        LayNr = LC_Command_Title('PHASE', 'Titre', TLayNr, LayNr, LayX - 120, LayY - 30, 700, 170, 4, Construct_Pool,
+            Visi)
     end
+    Nr = Layout_Object[TLayNr]:Acquire()
+    Layout_Object[TLayNr][Nr.No]:Set('Object', SequenceObject[CurrentSeqNr])
+    Layout_Object[TLayNr][Nr.No]:Set('posx', LayX)
+    Layout_Object[TLayNr][Nr.No]:Set('posy', LayY)
+    Layout_Object[TLayNr][Nr.No]:Set('width', LayW)
+    Layout_Object[TLayNr][Nr.No]:Set('height', LayH)
+    Layout_Object[TLayNr][Nr.No]:Set('action', 'Go+')
+    Layout_Object[TLayNr][Nr.No]:Set('Note', 'Phase')
+    Layout_Object[TLayNr][Nr.No]:Set('VisibilityElement', Visi)
+    Cmd('Assign ' .. Layout_Object[TLayNr][Nr.No] .. " at " .. tag_V)
+    LC_Set_Def(TLayNr, Nr, Layout_Object)
+    LayX = math.floor(LayX + LayW + 20)
+    LayNr = LC_Command_Title('none > none', 'Value' .. surfix[Axes], TLayNr, LayNr, LayX - 120, LayY - 30, 700, 170,
+        1, Construct_Pool, Visi)
+    Cmd('Assign ' .. Layout_Object[TLayNr][LayNr] .. " at " .. tag_V)
+    LayNr = math.floor(LayNr + 1)
+    Group_Element[Axes] = math.floor(LayNr + 1)
     CurrentSeqNr = math.floor(CurrentSeqNr + 1)
 
     return Current_Id_Lay, CurrentMacroNr, LayY, LayX, LayNr, CurrentSeqNr, Group_Element, Phase_Element, First_Id_Lay
 end -- end LC_Create_Phase_Sequence
 
 function LC_Create_Group_Sequence(CurrentMacroNr, FirstSeqGrp, CurrentSeqNr, LastSeqGrp, prefix, surfix, Axes,
-                                  MatrickNrStart,
-                                  TLayNr, Group_Element, MatrickNr, LayNr, LayX, LayY, First_Id_Lay, Current_Id_Lay,
-                                  Argument_Xgrp, AppImp, LayW, LayH, Block_Element, MakeX, Construct_Pool, Call_Pool,
-                                  Time_Argument)
+                                  MatrickNrStart, TLayNr, Group_Element, MatrickNr, LayNr, LayX, LayY, First_Id_Lay,
+                                  Current_Id_Lay, Argument_Xgrp, AppImp, LayW, LayH, Block_Element, MakeX, Construct_Pool,
+                                  Call_Pool, Time_Argument)
     local MacroObject, SequenceObject, Layout_Object, Nr = LC_Get_Object(Construct_Pool)
     -- fix time_tag
     local TagObject_LC                                   = Root().ShowData.Tags:Children()
@@ -109,9 +116,6 @@ function LC_Create_Group_Sequence(CurrentMacroNr, FirstSeqGrp, CurrentSeqNr, Las
     CurrentMacroNr   = math.floor(CurrentMacroNr + 1)
     FirstSeqGrp      = CurrentSeqNr
     LastSeqGrp       = math.floor(CurrentSeqNr + 4)
-    -- Create Macro Group Input
-    LC_Create_Macro_Group(CurrentMacroNr, prefix, surfix, Axes, FirstSeqGrp, LastSeqGrp, MatrickNrStart, 5, TLayNr,
-        Group_Element, MatrickNr, Construct_Pool, Call_Pool)
 
     for v in ipairs(TagObject_LC) do
         if TagObject_LC[v].Name == old_prefix .. Time_Argument[4].name .. '_' .. surfix[Axes] then
@@ -121,12 +125,29 @@ function LC_Create_Group_Sequence(CurrentMacroNr, FirstSeqGrp, CurrentSeqNr, Las
         end
     end
 
-    if MakeX then
-        LayNr = LC_Command_Title('GROUP', 'Titre', TLayNr, LayNr, LayX - 120, LayY - 30, 700, 170, 2, Construct_Pool)
-        LayNr = LC_Command_Title('None', 'Value' .. surfix[Axes], TLayNr, LayNr, LayX - 120, LayY - 30, 700, 170, 3,
-            Construct_Pool)
-        Cmd('Assign ' .. Layout_Object[TLayNr][LayNr] .. " at " .. tag_V)
+    if Axes == 2 then
+        Echo('axes 2 ge[] ' .. Group_Element[Axes])
+        Group_Element[Axes] = Group_Element[Axes] - 1
+        Echo(' after axes 2 ge[] ' .. Group_Element[Axes])
+    elseif Axes == 3 then
+        Echo('axes 3 ge[] ' .. Group_Element[Axes])
+        Group_Element[Axes] = Group_Element[Axes] - 1
+        Echo('after axes 3 ge[] ' .. Group_Element[Axes])
     end
+
+    -- Create Macro Group Input
+    LC_Create_Macro_Group(CurrentMacroNr, prefix, surfix, Axes, MatrickNrStart, 5, TLayNr, Group_Element, MatrickNr,
+        Construct_Pool, Call_Pool)
+
+    local Visi = 0
+    if MakeX then
+        Visi = 1
+        LayNr = LC_Command_Title('GROUP', 'Titre', TLayNr, LayNr, LayX - 120, LayY - 30, 700, 170, 2, Construct_Pool,
+            Visi)
+    end
+    LayNr = LC_Command_Title('None', 'Value' .. surfix[Axes], TLayNr, LayNr, LayX - 120, LayY - 30, 700, 170, 3,
+        Construct_Pool, Visi)
+    Cmd('Assign ' .. Layout_Object[TLayNr][LayNr] .. " at " .. tag_V)
     -- Create Sequences XGroup
     for i = 1, 5 do
         local ia = tonumber(i * 2 + 31)
@@ -164,7 +185,7 @@ function LC_Create_Group_Sequence(CurrentMacroNr, FirstSeqGrp, CurrentSeqNr, Las
                 'Group" ' .. Argument_Xgrp[i].Time ..
                 ' ; SetUserVariable "LC_Fonction" 5 ; SetUserVariable "LC_Axes" "' .. Axes ..
                 '" ; SetUserVariable "LC_Layout" ' .. TLayNr ..
-                ' ; SetUserVariable "LC_Element" ' .. Group_Element ..
+                ' ; SetUserVariable "LC_Element" ' .. Group_Element[Axes] ..
                 ' ; SetUserVariable "LC_Matrick" ' .. MatrickNrStart ..
                 ' ; SetUserVariable "LC_Matrick_Thru" ' .. MatrickNr ..
                 ' ; Call ' .. Call_Pool .. ' Plugin "DEV_LC_View" ')
@@ -175,21 +196,22 @@ function LC_Create_Group_Sequence(CurrentMacroNr, FirstSeqGrp, CurrentSeqNr, Las
         -- end Sequences
 
         -- Add Squences to Layout
-        if MakeX then
-            Nr = Layout_Object[TLayNr]:Acquire()
-            Layout_Object[TLayNr][Nr.No]:Set('Object', SequenceObject[CurrentSeqNr])
-            Layout_Object[TLayNr][Nr.No]:Set('posx', LayX)
-            Layout_Object[TLayNr][Nr.No]:Set('posy', LayY)
-            Layout_Object[TLayNr][Nr.No]:Set('width', LayW)
-            Layout_Object[TLayNr][Nr.No]:Set('height', LayH)
-            Layout_Object[TLayNr][Nr.No]:Set('action', 'Go+')
-            Layout_Object[TLayNr][Nr.No]:Set('Note', 'Group')
-            Cmd('Assign ' .. Layout_Object[TLayNr][Nr.No] .. " at " .. tag_V)
-            LC_Set_Def(TLayNr, Nr, Layout_Object)
-            LayX = math.floor(LayX + LayW + 20)
-            LayNr = math.floor(LayNr + 1)
-            Block_Element = math.floor(LayNr + 1)
-        end
+        -- if MakeX then
+        Nr = Layout_Object[TLayNr]:Acquire()
+        Layout_Object[TLayNr][Nr.No]:Set('Object', SequenceObject[CurrentSeqNr])
+        Layout_Object[TLayNr][Nr.No]:Set('posx', LayX)
+        Layout_Object[TLayNr][Nr.No]:Set('posy', LayY)
+        Layout_Object[TLayNr][Nr.No]:Set('width', LayW)
+        Layout_Object[TLayNr][Nr.No]:Set('height', LayH)
+        Layout_Object[TLayNr][Nr.No]:Set('action', 'Go+')
+        Layout_Object[TLayNr][Nr.No]:Set('Note', 'Group')
+        Layout_Object[TLayNr][Nr.No]:Set('VisibilityElement', Visi)
+        Cmd('Assign ' .. Layout_Object[TLayNr][Nr.No] .. " at " .. tag_V)
+        LC_Set_Def(TLayNr, Nr, Layout_Object)
+        LayX = math.floor(LayX + LayW + 20)
+        LayNr = math.floor(LayNr + 1)
+        Block_Element[Axes] = math.floor(LayNr + 1)
+        -- end
         CurrentSeqNr = math.floor(CurrentSeqNr + 1)
     end
     return CurrentSeqNr, Block_Element, LayNr, LayX, Current_Id_Lay, First_Id_Lay, CurrentMacroNr, LastSeqGrp,
@@ -198,9 +220,8 @@ end -- end LC_Create_Group_Sequence
 
 function LC_Create_Block_Sequence(CurrentMacroNr, FirstSeqBlock, CurrentSeqNr, LastSeqBlock, prefix, surfix, Axes,
                                   MatrickNrStart, TLayNr, Block_Element, MatrickNr, MakeX, LayNr, LayX, LayY,
-                                  First_Id_Lay,
-                                  Current_Id_Lay, Argument_Xblock, AppImp, Wings_Element, LayW, LayH, Construct_Pool,
-                                  Call_Pool, Time_Argument)
+                                  First_Id_Lay, Current_Id_Lay, Argument_Xblock, AppImp, Wings_Element, LayW, LayH,
+                                  Construct_Pool, Call_Pool, Time_Argument)
     local MacroObject, SequenceObject, Layout_Object, Nr = LC_Get_Object(Construct_Pool)
     -- fix time_tag
     local TagObject_LC                                   = Root().ShowData.Tags:Children()
@@ -214,9 +235,15 @@ function LC_Create_Block_Sequence(CurrentMacroNr, FirstSeqBlock, CurrentSeqNr, L
     FirstSeqBlock    = CurrentSeqNr
     LastSeqBlock     = math.floor(CurrentSeqNr + 4)
     -- Create Macro Block Input
-    -- Block_Element                                        = Block_Element + 2
-    LC_Create_Macro_Block(CurrentMacroNr, prefix, surfix, Axes, FirstSeqBlock, LastSeqBlock, MatrickNrStart, 6,
-        TLayNr, Block_Element, MatrickNr, Construct_Pool, Call_Pool)
+    if Axes == 1 then
+        Block_Element[Axes] = Block_Element[Axes] + 1
+    elseif Axes == 2 then
+        Block_Element[Axes] = Block_Element[Axes]
+    elseif Axes == 3 then
+        Block_Element[Axes] = Block_Element[Axes]
+    end
+    LC_Create_Macro_Block(CurrentMacroNr, prefix, surfix, Axes, MatrickNrStart, 6, TLayNr, Block_Element, MatrickNr,
+        Construct_Pool, Call_Pool)
 
     for v in ipairs(TagObject_LC) do
         if TagObject_LC[v].Name == old_prefix .. Time_Argument[5].name .. '_' .. surfix[Axes] then
@@ -226,12 +253,15 @@ function LC_Create_Block_Sequence(CurrentMacroNr, FirstSeqBlock, CurrentSeqNr, L
         end
     end
 
+    local Visi = 0
     if MakeX then
-        LayNr = LC_Command_Title('BLOCK', 'Titre', TLayNr, LayNr, LayX, LayY, 580, 140, 2, Construct_Pool)
-
-        LayNr = LC_Command_Title('none', 'Value' .. surfix[Axes], TLayNr, LayNr, LayX, LayY, 580, 140, 3, Construct_Pool)
-        Cmd('Assign ' .. Layout_Object[TLayNr][LayNr] .. " at " .. tag_V)
+        Visi = 1
+        LayNr = LC_Command_Title('BLOCK', 'Titre', TLayNr, LayNr, LayX, LayY, 580, 140, 2, Construct_Pool, Visi)
     end
+
+    LayNr = LC_Command_Title('none', 'Value' .. surfix[Axes], TLayNr, LayNr, LayX, LayY, 580, 140, 3, Construct_Pool,
+        Visi)
+    Cmd('Assign ' .. Layout_Object[TLayNr][LayNr] .. " at " .. tag_V)
     -- Create Sequences XBlock
     for i = 1, 5 do
         local ia = tonumber(i * 2 + 41)
@@ -271,7 +301,7 @@ function LC_Create_Block_Sequence(CurrentMacroNr, FirstSeqBlock, CurrentSeqNr, L
                 ' Property "' .. surfix[Axes] .. 'Block" ' .. Argument_Xblock[i].Time ..
                 ' ; SetUserVariable "LC_Fonction" 6 ; SetUserVariable "LC_Axes" "' .. Axes ..
                 '" ; SetUserVariable "LC_Layout" ' .. TLayNr ..
-                ' ; SetUserVariable "LC_Element" ' .. Block_Element ..
+                ' ; SetUserVariable "LC_Element" ' .. Block_Element[Axes] ..
                 ' ; SetUserVariable "LC_Matrick" ' .. MatrickNrStart ..
                 ' ; SetUserVariable "LC_Matrick_Thru" ' .. MatrickNr ..
                 ' ; Call ' .. Call_Pool .. ' Plugin "DEV_LC_View" ')
@@ -283,21 +313,22 @@ function LC_Create_Block_Sequence(CurrentMacroNr, FirstSeqBlock, CurrentSeqNr, L
         -- end Sequences
 
         -- Add Squences to Layout
-        if MakeX then
-            Nr = Layout_Object[TLayNr]:Acquire()
-            Layout_Object[TLayNr][Nr.No]:Set('Object', SequenceObject[CurrentSeqNr])
-            Layout_Object[TLayNr][Nr.No]:Set('posx', LayX)
-            Layout_Object[TLayNr][Nr.No]:Set('posy', LayY)
-            Layout_Object[TLayNr][Nr.No]:Set('width', LayW)
-            Layout_Object[TLayNr][Nr.No]:Set('height', LayH)
-            Layout_Object[TLayNr][Nr.No]:Set('action', 'Go+')
-            Layout_Object[TLayNr][Nr.No]:Set('Note', 'Block')
-            Cmd('Assign ' .. Layout_Object[TLayNr][Nr.No] .. " at " .. tag_V)
-            LC_Set_Def(TLayNr, Nr, Layout_Object)
-            LayX = math.floor(LayX + LayW + 20)
-            LayNr = math.floor(LayNr + 1)
-            Wings_Element = math.floor(LayNr + 1)
-        end
+        -- if MakeX then
+        Nr = Layout_Object[TLayNr]:Acquire()
+        Layout_Object[TLayNr][Nr.No]:Set('Object', SequenceObject[CurrentSeqNr])
+        Layout_Object[TLayNr][Nr.No]:Set('posx', LayX)
+        Layout_Object[TLayNr][Nr.No]:Set('posy', LayY)
+        Layout_Object[TLayNr][Nr.No]:Set('width', LayW)
+        Layout_Object[TLayNr][Nr.No]:Set('height', LayH)
+        Layout_Object[TLayNr][Nr.No]:Set('action', 'Go+')
+        Layout_Object[TLayNr][Nr.No]:Set('Note', 'Block')
+        Layout_Object[TLayNr][Nr.No]:Set('VisibilityElement', Visi)
+        Cmd('Assign ' .. Layout_Object[TLayNr][Nr.No] .. " at " .. tag_V)
+        LC_Set_Def(TLayNr, Nr, Layout_Object)
+        LayX = math.floor(LayX + LayW + 20)
+        LayNr = math.floor(LayNr + 1)
+        Wings_Element[Axes] = math.floor(LayNr + 1)
+        -- end
         CurrentSeqNr = math.floor(CurrentSeqNr + 1)
     end
     return CurrentSeqNr, Wings_Element, LayNr, LayX, Current_Id_Lay, First_Id_Lay, CurrentMacroNr, FirstSeqBlock,
@@ -306,9 +337,8 @@ end -- end LC_Create_Block_Sequence
 
 function LC_Create_Wings_Sequence(CurrentMacroNr, FirstSeqWings, CurrentSeqNr, LastSeqWings, prefix, surfix, Axes,
                                   MatrickNrStart, TLayNr, Wings_Element, MatrickNr, MakeX, LayNr, LayX, LayY,
-                                  First_Id_Lay,
-                                  Current_Id_Lay, Argument_Xwings, AppImp, LayW, LayH, Construct_Pool, Call_Pool,
-                                  Time_Argument)
+                                  First_Id_Lay, Current_Id_Lay, Argument_Xwings, AppImp, LayW, LayH, Construct_Pool,
+                                  Call_Pool, Time_Argument)
     local MacroObject, SequenceObject, Layout_Object, Nr = LC_Get_Object(Construct_Pool)
     -- fix time_tag
     local TagObject_LC                                   = Root().ShowData.Tags:Children()
@@ -321,9 +351,15 @@ function LC_Create_Wings_Sequence(CurrentMacroNr, FirstSeqWings, CurrentSeqNr, L
     FirstSeqWings                                        = CurrentSeqNr
     LastSeqWings                                         = math.floor(CurrentSeqNr + 4)
     -- Create Macro Wings Input
-    -- Wings_Element                                        = Wings_Element + 2
-    LC_Create_Macro_Wings(CurrentMacroNr, prefix, surfix, Axes, FirstSeqWings, LastSeqWings, MatrickNrStart, 7,
-        TLayNr, Wings_Element, MatrickNr, Construct_Pool, Call_Pool)
+    if Axes == 1 then
+        Wings_Element[Axes] = Wings_Element[Axes] + 1
+    elseif Axes == 2 then
+        Wings_Element[Axes] = Wings_Element[Axes]
+    elseif Axes == 3 then
+        Wings_Element[Axes] = Wings_Element[Axes]
+    end
+    LC_Create_Macro_Wings(CurrentMacroNr, prefix, surfix, Axes, MatrickNrStart, 7, TLayNr, Wings_Element, MatrickNr,
+        Construct_Pool, Call_Pool)
 
     for v in ipairs(TagObject_LC) do
         if TagObject_LC[v].Name == old_prefix .. Time_Argument[6].name .. '_' .. surfix[Axes] then
@@ -333,12 +369,15 @@ function LC_Create_Wings_Sequence(CurrentMacroNr, FirstSeqWings, CurrentSeqNr, L
         end
     end
 
+    local Visi = 0
     if MakeX then
-        LayNr = LC_Command_Title('WINGS', 'Titre', TLayNr, LayNr, LayX, LayY, 580, 140, 2, Construct_Pool)
-
-        LayNr = LC_Command_Title('none', 'Value' .. surfix[Axes], TLayNr, LayNr, LayX, LayY, 580, 140, 3, Construct_Pool)
-        Cmd('Assign ' .. Layout_Object[TLayNr][LayNr] .. " at " .. tag_V)
+        Visi = 1
+        LayNr = LC_Command_Title('WINGS', 'Titre', TLayNr, LayNr, LayX, LayY, 580, 140, 2, Construct_Pool, Visi)
     end
+
+    LayNr = LC_Command_Title('none', 'Value' .. surfix[Axes], TLayNr, LayNr, LayX, LayY, 580, 140, 3, Construct_Pool,
+        Visi)
+    Cmd('Assign ' .. Layout_Object[TLayNr][LayNr] .. " at " .. tag_V)
     -- Create Sequences Wings
     for i = 1, 5 do
         local ia = tonumber(i * 2 + 51)
@@ -378,7 +417,7 @@ function LC_Create_Wings_Sequence(CurrentMacroNr, FirstSeqWings, CurrentSeqNr, L
                 'Wings" ' .. Argument_Xwings[i].Time ..
                 '  ; SetUserVariable "LC_Fonction" 7 ; SetUserVariable "LC_Axes" "' .. Axes ..
                 '" ; SetUserVariable "LC_Layout" ' .. TLayNr ..
-                ' ; SetUserVariable "LC_Element" ' .. Wings_Element ..
+                ' ; SetUserVariable "LC_Element" ' .. Wings_Element[Axes] ..
                 ' ; SetUserVariable "LC_Matrick" ' .. MatrickNrStart ..
                 ' ; SetUserVariable "LC_Matrick_Thru" ' .. MatrickNr ..
                 ' ; Call ' .. Call_Pool .. ' Plugin "DEV_LC_View" ')
@@ -389,34 +428,36 @@ function LC_Create_Wings_Sequence(CurrentMacroNr, FirstSeqWings, CurrentSeqNr, L
         LC_Command_Ext_Suite(CurrentSeqNr, SequenceObject)
 
         -- Add Squences to Layout
-        if MakeX then
-            Nr = Layout_Object[TLayNr]:Acquire()
-            Layout_Object[TLayNr][Nr.No]:Set('Object', SequenceObject[CurrentSeqNr])
-            Layout_Object[TLayNr][Nr.No]:Set('posx', LayX)
-            Layout_Object[TLayNr][Nr.No]:Set('posy', LayY)
-            Layout_Object[TLayNr][Nr.No]:Set('width', LayW)
-            Layout_Object[TLayNr][Nr.No]:Set('height', LayH)
-            Layout_Object[TLayNr][Nr.No]:Set('action', 'Go+')
-            Layout_Object[TLayNr][Nr.No]:Set('Note', 'Wings')
-            Cmd('Assign ' .. Layout_Object[TLayNr][Nr.No] .. " at " .. tag_V)
-            LC_Set_Def(TLayNr, Nr, Layout_Object)
-            LayX = math.floor(LayX + LayW + 20)
-            LayNr = math.floor(LayNr + 1)
-        end
+        -- if MakeX then
+        Nr = Layout_Object[TLayNr]:Acquire()
+        Layout_Object[TLayNr][Nr.No]:Set('Object', SequenceObject[CurrentSeqNr])
+        Layout_Object[TLayNr][Nr.No]:Set('posx', LayX)
+        Layout_Object[TLayNr][Nr.No]:Set('posy', LayY)
+        Layout_Object[TLayNr][Nr.No]:Set('width', LayW)
+        Layout_Object[TLayNr][Nr.No]:Set('height', LayH)
+        Layout_Object[TLayNr][Nr.No]:Set('action', 'Go+')
+        Layout_Object[TLayNr][Nr.No]:Set('Note', 'Wings')
+        Layout_Object[TLayNr][Nr.No]:Set('VisibilityElement', Visi)
+        Cmd('Assign ' .. Layout_Object[TLayNr][Nr.No] .. " at " .. tag_V)
+        LC_Set_Def(TLayNr, Nr, Layout_Object)
+        LayX = math.floor(LayX + LayW + 20)
+        LayNr = math.floor(LayNr + 1)
+        -- end
         CurrentSeqNr = math.floor(CurrentSeqNr + 1)
     end
     return CurrentSeqNr, LayNr, LayX, Current_Id_Lay, First_Id_Lay, LastSeqWings, FirstSeqWings, CurrentMacroNr,
         Wings_Element
 end -- end LC_Create_Wings_Sequence
 
-function LC_Create_XYZ_Sequence(CurrentMacroNr, First_Id_Lay, prefix, surfix, Call_inc, CallT, MatrickNrStart, Axes,
-                                CurrentSeqNr, TLayNr, Fade_Element, Delay_F_Element, Delay_T_Element, Phase_Element,
-                                Group_Element, Block_Element, Wings_Element, MatrickNr, AppImp, MakeX, LayNr, LayX, LayY,
-                                LayW, LayH, Construct_Pool, Call_Pool, Time_Argument)
+function LC_Create_XYZ_Sequence(CurrentMacroNr, First_Id_Lay, prefix, surfix, MatrickNrStart, Axes, CurrentSeqNr, TLayNr,
+                                Fade_Element, Delay_F_Element, Delay_T_Element, Phase_Element, Group_Element,
+                                Block_Element, Wings_Element, MatrickNr, AppImp, MakeX, LayNr, LayX, LayY, LayW, LayH,
+                                Construct_Pool, Call_Pool, Time_Argument)
     local MacroObject, SequenceObject, Layout_Object, Nr = LC_Get_Object(Construct_Pool)
     -- fix time_tag
     local TagObject_LC                                   = Root().ShowData.Tags:Children()
     local tag_xyz
+    local tag_V                                          = {}
 
     -- Setup XYZ Sequence
     local old_prefix                                     = prefix
@@ -426,42 +467,56 @@ function LC_Create_XYZ_Sequence(CurrentMacroNr, First_Id_Lay, prefix, surfix, Ca
     LC_Check_Size_Pool(CurrentMacroNr, MacroObject)
     MacroObject:Create(CurrentMacroNr)
     MacroObject[CurrentMacroNr]:Set('Name', prefix .. surfix[Axes] .. "_Call")
-    for m = 1, 31 do
-        if m == 1 or m == 6 or m == 11 or m == 16 or m == 17 or m == 22 or m == 27 then
-            Call_inc = 0
-        end
-        if m < 6 then
-            CallT = 1
-        elseif m < 11 then
-            CallT = 5
-        elseif m < 16 then
-            CallT = 9
-        elseif m < 17 then
-            CallT = 13
-        elseif m < 22 then
-            CallT = 17
-        elseif m < 27 then
-            CallT = 21
-        elseif m <= 31 then
-            CallT = 25
-        end
-        MacroObject[CurrentMacroNr]:Insert(m)
-        MacroObject[CurrentMacroNr][m]:Set('Command', 'Assign DataPool ' .. Construct_Pool .. ' Sequence ' ..
-            First_Id_Lay[CallT + Axes] + Call_inc .. ' At DataPool ' .. Construct_Pool .. ' Layout ' ..
-            TLayNr .. '.' .. First_Id_Lay[CallT] + Call_inc)
-        Call_inc = math.floor(Call_inc + 1)
-    end
-    LC_Create_Macro_Reset(CurrentMacroNr, prefix, surfix, MatrickNrStart, Axes, CurrentSeqNr, First_Id_Lay, TLayNr,
-        Fade_Element, Delay_F_Element, Delay_T_Element, Phase_Element, Group_Element, Block_Element,
-        Wings_Element, MatrickNr, Construct_Pool, Call_Pool)
-
-    First_Id_Lay[28 + Axes] = CurrentSeqNr
-
     for v in ipairs(TagObject_LC) do
         if TagObject_LC[v].Name == old_prefix .. Time_Argument[7].name then
             tag_xyz = TagObject_LC[v]
+        elseif TagObject_LC[v].Name == old_prefix .. 'V_' .. surfix[1] then
+            tag_V[1] = TagObject_LC[v].Name
+        elseif TagObject_LC[v].Name == old_prefix .. 'V_' .. surfix[2] then
+            tag_V[2] = TagObject_LC[v].Name
+        elseif TagObject_LC[v].Name == old_prefix .. 'V_' .. surfix[3] then
+            tag_V[3] = TagObject_LC[v].Name
         end
     end
+    local Visi = {
+        { 1, 0, 0 },
+        { 0, 1, 0 },
+        { 0, 0, 1 }
+    }
+    for m = 1, 3 do
+        -- if m == 1 or m == 6 or m == 11 or m == 16 or m == 17 or m == 22 or m == 27 then
+        --     Call_inc = 0
+        -- end
+        -- if m < 6 then
+        --     CallT = 1
+        -- elseif m < 11 then
+        --     CallT = 5
+        -- elseif m < 16 then
+        --     CallT = 9
+        -- elseif m < 17 then
+        --     CallT = 13
+        -- elseif m < 22 then
+        --     CallT = 17
+        -- elseif m < 27 then
+        --     CallT = 21
+        -- elseif m <= 31 then
+        --     CallT = 25
+        -- end
+        MacroObject[CurrentMacroNr]:Insert(m)
+        MacroObject[CurrentMacroNr][m]:Set('Command',
+            'Set DataPool ' .. Construct_Pool .. ' Layout 1.1 Thru Property VisibilityElement ' .. Visi[Axes][m] ..
+            ' if Tag ' .. tag_V[m])
+        -- MacroObject[CurrentMacroNr][m]:Set('Command', 'Assign DataPool ' .. Construct_Pool .. ' Sequence ' ..
+        --     First_Id_Lay[CallT + Axes] + Call_inc .. ' At DataPool ' .. Construct_Pool .. ' Layout ' ..
+        --     TLayNr .. '.' .. First_Id_Lay[CallT] + Call_inc)
+        -- Call_inc = math.floor(Call_inc + 1)
+    end
+    LC_Create_Macro_Reset(CurrentMacroNr, prefix, surfix, MatrickNrStart, Axes, CurrentSeqNr, First_Id_Lay, TLayNr,
+        Fade_Element, Delay_F_Element, Delay_T_Element, Phase_Element, Group_Element, Block_Element, Wings_Element,
+        MatrickNr, Construct_Pool, Call_Pool)
+
+    First_Id_Lay[28 + Axes] = CurrentSeqNr
+
 
     LC_Check_Size_Pool(CurrentSeqNr, SequenceObject)
     SequenceObject:Create(CurrentSeqNr)
@@ -512,7 +567,7 @@ function LC_Create_XYZ_Sequence(CurrentMacroNr, First_Id_Lay, prefix, surfix, Ca
         Layout_Object[TLayNr][Nr.No]:Set('width', LayW - 35)
         Layout_Object[TLayNr][Nr.No]:Set('height', LayH - 35)
         Layout_Object[TLayNr][Nr.No]:Set('action', 'Go+')
-        Layout_Object[TLayNr][Nr.No]:Set('Note', 'X_Y_Z')
+        Layout_Object[TLayNr][Nr.No]:Set('Note', 'X_y_z')
         LC_Set_Def(TLayNr, Nr, Layout_Object)
 
         Nr = Layout_Object[TLayNr]:Acquire()
@@ -522,7 +577,7 @@ function LC_Create_XYZ_Sequence(CurrentMacroNr, First_Id_Lay, prefix, surfix, Ca
         Layout_Object[TLayNr][Nr.No]:Set('width', LayW - 35)
         Layout_Object[TLayNr][Nr.No]:Set('height', LayH - 35)
         Layout_Object[TLayNr][Nr.No]:Set('action', 'Go+')
-        Layout_Object[TLayNr][Nr.No]:Set('Note', 'X_Y_Z')
+        Layout_Object[TLayNr][Nr.No]:Set('Note', 'X_y_z')
         LC_Set_Def(TLayNr, Nr, Layout_Object)
     elseif Axes == 2 then
         Nr = Layout_Object[TLayNr]:Acquire()
@@ -532,7 +587,7 @@ function LC_Create_XYZ_Sequence(CurrentMacroNr, First_Id_Lay, prefix, surfix, Ca
         Layout_Object[TLayNr][Nr.No]:Set('width', LayW - 35)
         Layout_Object[TLayNr][Nr.No]:Set('height', LayH - 35)
         Layout_Object[TLayNr][Nr.No]:Set('action', 'Go+')
-        Layout_Object[TLayNr][Nr.No]:Set('Note', 'X_Y_Z')
+        Layout_Object[TLayNr][Nr.No]:Set('Note', 'x_Y_z')
         LC_Set_Def(TLayNr, Nr, Layout_Object)
 
         Nr = Layout_Object[TLayNr]:Acquire()
@@ -542,7 +597,7 @@ function LC_Create_XYZ_Sequence(CurrentMacroNr, First_Id_Lay, prefix, surfix, Ca
         Layout_Object[TLayNr][Nr.No]:Set('width', LayW - 35)
         Layout_Object[TLayNr][Nr.No]:Set('height', LayH - 35)
         Layout_Object[TLayNr][Nr.No]:Set('action', 'Go+')
-        Layout_Object[TLayNr][Nr.No]:Set('Note', 'X_Y_Z')
+        Layout_Object[TLayNr][Nr.No]:Set('Note', 'x_Y_z')
         LC_Set_Def(TLayNr, Nr, Layout_Object)
     elseif Axes == 3 then
         Nr = Layout_Object[TLayNr]:Acquire()
@@ -552,7 +607,7 @@ function LC_Create_XYZ_Sequence(CurrentMacroNr, First_Id_Lay, prefix, surfix, Ca
         Layout_Object[TLayNr][Nr.No]:Set('width', LayW - 35)
         Layout_Object[TLayNr][Nr.No]:Set('height', LayH - 35)
         Layout_Object[TLayNr][Nr.No]:Set('action', 'Go+')
-        Layout_Object[TLayNr][Nr.No]:Set('Note', 'X_Y_Z')
+        Layout_Object[TLayNr][Nr.No]:Set('Note', 'x_y_Z')
         LC_Set_Def(TLayNr, Nr, Layout_Object)
 
         Nr = Layout_Object[TLayNr]:Acquire()
@@ -562,22 +617,22 @@ function LC_Create_XYZ_Sequence(CurrentMacroNr, First_Id_Lay, prefix, surfix, Ca
         Layout_Object[TLayNr][Nr.No]:Set('width', LayW - 35)
         Layout_Object[TLayNr][Nr.No]:Set('height', LayH - 35)
         Layout_Object[TLayNr][Nr.No]:Set('action', 'Go+')
-        Layout_Object[TLayNr][Nr.No]:Set('Note', 'X_Y_Z')
+        Layout_Object[TLayNr][Nr.No]:Set('Note', 'x_y_Z')
         LC_Set_Def(TLayNr, Nr, Layout_Object)
     end
     return First_Id_Lay, LayNr, CurrentMacroNr
 end -- end LC_Create_XYZ_Sequence
 
-function LC_Add_Line_Macro_XYZ(MacroObject, First_Id_Lay, TLayNr, Fade_Element, MatrickNrStart, Delay_F_Element,
-                               Delay_T_Element, Phase_Element, Group_Element, Block_Element, Wings_Element,
-                               Construct_Pool, Call_Pool)
-    for i = 1, 3 do
-        MacroObject[First_Id_Lay[33 + i]]:Insert(32)
-        MacroObject[First_Id_Lay[33 + i]][32]:Set('Command', '')
-        LC_Add_Macro_Call(i, TLayNr, Fade_Element, MatrickNrStart, Delay_F_Element, Delay_T_Element, Phase_Element,
-            Group_Element, Block_Element, Wings_Element, Construct_Pool, First_Id_Lay[33 + i], Call_Pool)
-    end
-end
+-- function LC_Add_Line_Macro_XYZ(MacroObject, First_Id_Lay, TLayNr, Fade_Element, MatrickNrStart, Delay_F_Element,
+--                                Delay_T_Element, Phase_Element, Group_Element, Block_Element, Wings_Element,
+--                                Construct_Pool, Call_Pool)
+--     for i = 1, 3 do
+--         MacroObject[First_Id_Lay[33 + i]]:Insert(32)
+--         MacroObject[First_Id_Lay[33 + i]][32]:Set('Command', '')
+--         LC_Add_Macro_Call(i, TLayNr, Fade_Element, MatrickNrStart, Delay_F_Element, Delay_T_Element, Phase_Element,
+--             Group_Element, Block_Element, Wings_Element, Construct_Pool, First_Id_Lay[33 + i], Call_Pool)
+--     end
+-- end
 
 function LC_Create_KillallLCx(LayY, LayX, LayNr, ColLgnCount, RefX, CurrentSeqNr, SequenceObject, Nr, Layout_Object,
                               TLayNr, LayW, LayH, prefix, Construct_Pool)
@@ -659,8 +714,7 @@ function LC_Macro_Priority(LayX, LayY, Ligne_Inc, CurrentMacroNr, First_All_Colo
 end
 
 function LC_Create_Group_Call(allmacrocallstart, allmacroallend, TLayNr, LayX, LayY, CurrentSeqNr, CurrentMacroNr,
-                              NbGroup,
-                              Construct_Pool, prefix, NrNeed)
+                              NbGroup, Construct_Pool, prefix, NrNeed)
     local AppearObject                                   = Root().ShowData.Appearances
     local MacroObject, SequenceObject, Layout_Object, Nr = LC_Get_Object(Construct_Pool)
     local TagObject_LC                                   = Root().ShowData.Tags:Children()

@@ -9,10 +9,9 @@ Rewrite by Richard Fontaine "RIRI", June 2026.
 --]]
 
 -- SelectedGrp, SelectedGrpNo,
-function LC_Construct_Layout(TLay, SeqNrStart, MacroNrStart, MatrickNrStart, MatrickNr, TLayNr,
-                             AppNr, All_5_Current, All_5_NrStart, ColPath, SelectedGelNr,
-                             NbGroup, TLayNrRef, NaLay, MaxColLgn,
-                             Favourite_Nr, Construct_Pool, Groups_Pool, Call_Pool)
+function LC_Construct_Layout(TLay, SeqNrStart, MacroNrStart, MatrickNrStart, MatrickNr, TLayNr, AppNr, All_5_Current,
+                             All_5_NrStart, ColPath, SelectedGelNr, NbGroup, TLayNrRef, NaLay, MaxColLgn, Favourite_Nr,
+                             Construct_Pool, Groups_Pool, Call_Pool)
     local DEBUG = false
     local MacroObject, SequenceObject, Layout_Object, Nr = LC_Get_Object(Construct_Pool)
     local All_5_NrEnd
@@ -239,8 +238,8 @@ function LC_Construct_Layout(TLay, SeqNrStart, MacroNrStart, MatrickNrStart, Mat
     local StringColName
     -- local SelectedGrpName = {}
     local check = {}
-    local FirstSeqTime
-    local LastSeqTime
+    -- local FirstSeqTime
+    -- local LastSeqTime
     local FirstSeqGrp
     local LastSeqGrp
     local FirstSeqBlock
@@ -257,17 +256,17 @@ function LC_Construct_Layout(TLay, SeqNrStart, MacroNrStart, MatrickNrStart, Mat
     local add_check = 0
     local condition_string
     local MakeX = true
-    local CallT
-    local Call_inc = 0
+    -- local CallT
+    -- local Call_inc = 0
     local Current_Id_Lay
 
-    local Fade_Element
-    local Delay_F_Element
-    local Delay_T_Element
-    local Phase_Element
-    local Group_Element
-    local Block_Element
-    local Wings_Element
+    local Fade_Element = {}
+    local Delay_F_Element = {}
+    local Delay_T_Element = {}
+    local Phase_Element = {}
+    local Group_Element = {}
+    local Block_Element = {}
+    local Wings_Element = {}
 
     local Ligne_Inc = false
 
@@ -346,9 +345,9 @@ function LC_Construct_Layout(TLay, SeqNrStart, MacroNrStart, MatrickNrStart, Mat
     -- Appearances/Sequences
     LayY, NrNeed, LayNr, CurrentSeqNr, CurrentMacroNr, ColLgnCount,
     Ligne_Inc = LC_Create_Appearances_Sequences(CurrentMacroNr, SelectedGelNr, NbGroup, RefX,
-    LayY, LayH, NrAppear, AppNr, NrNeed, TLayNr, LayW, LayNr, CurrentSeqNr, MaxColLgn,
-    TCol, prefix, All_5_NrStart, MatrickNrStart,
-    AppTricks, Construct_Pool, Groups_Pool, Color_Range, Call_Pool)
+        LayY, LayH, AppNr, NrNeed, TLayNr, LayW, LayNr, CurrentSeqNr, MaxColLgn,
+        TCol, prefix, All_5_NrStart, MatrickNrStart,
+        AppTricks, Construct_Pool, Groups_Pool, Color_Range, Call_Pool)
     local NrNeedBase = AppNr + 1
     -- end Appearances/Sequences
     if DEBUG then Echo('Crea app_sequence ok') end
@@ -373,12 +372,15 @@ function LC_Construct_Layout(TLay, SeqNrStart, MacroNrStart, MatrickNrStart, Mat
     LayY = math.floor(LayY - 150)
     LayX = RefX
     LayX = math.floor(LayX + LayW - 100)
-
+    local Axes_LayY = LayY
+    local Axes_LayX = LayX
     -- Create Function for X Y Z
     for Axes = 1, 3 do
+        LayX = Axes_LayX
+        LayY = Axes_LayY
         -- Create Sequence FADE
         CurrentSeqNr, Delay_F_Element, LayNr, LayX, Current_Id_Lay, Fade_Element, CurrentMacroNr, First_Id_Lay =
-            LC_Create_Fade_Sequences(MakeX, FirstSeqTime, LastSeqTime, CurrentSeqNr, CurrentMacroNr, prefix, surfix,
+            LC_Create_Fade_Sequences(MakeX, CurrentSeqNr, CurrentMacroNr, prefix, surfix,
                 First_Id_Lay, LayNr, MatrickNrStart, TLayNr, Fade_Element, Argument_Fade, AppImp, LayX, LayY, LayW, LayH,
                 SeqNrStart, SeqNrEnd, Current_Id_Lay, Delay_F_Element, Axes, Construct_Pool, Call_Pool, Time_Argument)
         -- end Create Sequence FADE
@@ -393,7 +395,8 @@ function LC_Construct_Layout(TLay, SeqNrStart, MacroNrStart, MatrickNrStart, Mat
 
         -- Create Sequences DelayTo
         First_Id_Lay, Current_Id_Lay, LayX, LayNr, Phase_Element, CurrentSeqNr, CurrentMacroNr, Delay_T_Element =
-            LC_Create_Delay_To_Sequences(Axes, First_Id_Lay, LayNr, CurrentSeqNr, Current_Id_Lay, prefix, Argument_DelayTo,
+            LC_Create_Delay_To_Sequences(Axes, First_Id_Lay, LayNr, CurrentSeqNr, Current_Id_Lay, prefix,
+                Argument_DelayTo,
                 surfix, MatrickNrStart, TLayNr, Delay_T_Element, MatrickNr, AppImp, LayX, LayY, LayW, LayH, Phase_Element,
                 CurrentMacroNr, MakeX, Construct_Pool, Call_Pool, Time_Argument)
         -- end Create Sequences DelayTo
@@ -401,9 +404,8 @@ function LC_Construct_Layout(TLay, SeqNrStart, MacroNrStart, MatrickNrStart, Mat
         -- Create_Sequence_Phase
         Current_Id_Lay, CurrentMacroNr, LayY, LayX, LayNr, CurrentSeqNr, Group_Element, Phase_Element, First_Id_Lay =
             LC_Create_Phase_Sequence(LayY, LayX, LayW, Axes, First_Id_Lay, LayNr, CurrentSeqNr, Current_Id_Lay,
-                CurrentMacroNr,
-                prefix, surfix, MatrickNrStart, TLayNr, Phase_Element, MatrickNr, AppImp, MakeX, LayH, RefX,
-                Group_Element, Construct_Pool, Call_Pool, Time_Argument)
+                CurrentMacroNr, prefix, surfix, MatrickNrStart, TLayNr, Phase_Element, MatrickNr, AppImp, MakeX, LayH,
+                RefX, Group_Element, Construct_Pool, Call_Pool)
         -- end Sequences Phase
 
         -- Create_sequence_xgroup
@@ -429,10 +431,10 @@ function LC_Construct_Layout(TLay, SeqNrStart, MacroNrStart, MatrickNrStart, Mat
 
         -- LC_Create_XYZ_Sequence
         First_Id_Lay, LayNr, CurrentMacroNr =
-            LC_Create_XYZ_Sequence(CurrentMacroNr, First_Id_Lay, prefix, surfix, Call_inc, CallT, MatrickNrStart, Axes,
-                CurrentSeqNr, TLayNr, Fade_Element, Delay_F_Element, Delay_T_Element, Phase_Element, Group_Element,
-                Block_Element, Wings_Element, MatrickNr, AppImp, MakeX, LayNr, LayX, LayY, LayW, LayH, Construct_Pool,
-                Call_Pool, Time_Argument)
+            LC_Create_XYZ_Sequence(CurrentMacroNr, First_Id_Lay, prefix, surfix, MatrickNrStart, Axes, CurrentSeqNr,
+                TLayNr, Fade_Element, Delay_F_Element, Delay_T_Element, Phase_Element, Group_Element, Block_Element,
+                Wings_Element, MatrickNr, AppImp, MakeX, LayNr, LayX, LayY, LayW, LayH, Construct_Pool, Call_Pool,
+                Time_Argument)
         -- LC_Create_XYZ_Sequence
 
         LayNr = math.floor(LayNr + 1)
@@ -443,9 +445,9 @@ function LC_Construct_Layout(TLay, SeqNrStart, MacroNrStart, MatrickNrStart, Mat
     if DEBUG then Echo('create function xyz ok') end
 
     -- add line macro X Y Z Call
-    LC_Add_Line_Macro_XYZ(MacroObject, First_Id_Lay, TLayNr, Fade_Element, MatrickNrStart, Delay_F_Element,
-        Delay_T_Element, Phase_Element, Group_Element, Block_Element, Wings_Element,
-        Construct_Pool, Call_Pool)
+    -- LC_Add_Line_Macro_XYZ(MacroObject, First_Id_Lay, TLayNr, Fade_Element, MatrickNrStart, Delay_F_Element,
+    --     Delay_T_Element, Phase_Element, Group_Element, Block_Element, Wings_Element,
+    --     Construct_Pool, Call_Pool)
     -- end line macro X Y Z Call
     if DEBUG then Echo('line macro xyz ok') end
 
@@ -492,16 +494,10 @@ function LC_Construct_Layout(TLay, SeqNrStart, MacroNrStart, MatrickNrStart, Mat
         "\"); else CmdIndirectWait(\"Off DataPool " ..
         Construct_Pool .. " macro " .. CurrentMacroNr .. "\"); end'" .. ' /nu'
     MacroObject:Create(CurrentMacroNr)
-    -- MacroObject[CurrentMacroNr]:Set('Name', CurrentMacroNr .. ' \'' .. "ERASE")
     for b = 1, 12 do
         MacroObject[CurrentMacroNr]:Insert(b)
     end
-    --     CmdIndirectWait('Store Macro ' .. CurrentMacroNr .. ' \'' .. 'ERASE\'')
-    -- CmdIndirectWait('ChangeDestination Macro ' .. CurrentMacroNr .. '')
-    -- for i = 1, 11 do
-    --     Cmd('Insert')
-    -- end
-    -- CmdIndirectWait('ChangeDestination Root')
+   
     MacroObject[CurrentMacroNr]:Set('name', 'Erase [' .. prefix:gsub('_', '') .. ']')
     MacroObject[CurrentMacroNr][1]:Set('Command', condition_string)
     MacroObject[CurrentMacroNr][1]:Set('Wait', 'Go')
@@ -539,7 +535,6 @@ function LC_Construct_Layout(TLay, SeqNrStart, MacroNrStart, MatrickNrStart, Mat
     Layout_Object[TLayNr]:Set('DimensionW', UsedW)
     Layout_Object[TLayNr]:Set('DimensionH', UsedH)
 
-    -- CmdIndirectWait("Set Layout " .. TLayNr .. " DimensionW " .. UsedW .. " DimensionH " .. UsedH)
     CmdIndirectWait('Select DataPool ' .. Construct_Pool .. ' Layout ' .. TLayNr)
 
     if DEBUG then Echo('LC_Create_Macro_Erase ok') end

@@ -113,7 +113,7 @@ end -- end LC_Create_Preset_25
 
 -- SelectedGrp,SelectedGrpNo, SelectedGrpName,
 function LC_Create_Appearances_Sequences(CurrentMacroNr, SelectedGelNr, NbGroup, RefX, LayY,
-                                         LayH, NrAppear, AppNr, NrNeed, TLayNr, LayW, LayNr,
+                                         LayH, AppNr, NrNeed, TLayNr, LayW, LayNr,
                                          CurrentSeqNr, MaxColLgn, TCol, prefix,
                                          All_5_NrStart, MatrickNrStart, AppTricks,
                                          Construct_Pool, Groups_Pool, Color_Range, Call_Pool)
@@ -414,7 +414,7 @@ function LC_Create_All_Color(TCol, CurrentSeqNr, prefix, TLayNr, LayNr, NrNeed, 
     return LayNr, LayX, First_All_Color, CurrentMacroNr, allmacrocallstar, allmacrocallend, CurrentSeqNr
 end -- end LC_Create_All_Color
 
-function LC_Command_Title(title, note, TLayNr, LayNr, LayX, LayY, Pw, Ph, align, Construct_Pool)
+function LC_Command_Title(title, note, TLayNr, LayNr, LayX, LayY, Pw, Ph, align, Construct_Pool, Visi)
     local MacroObject, SequenceObject, Layout_Object, Nr = LC_Get_Object(Construct_Pool)
 
     Nr = Layout_Object[TLayNr]:Acquire()
@@ -430,6 +430,7 @@ function LC_Command_Title(title, note, TLayNr, LayNr, LayX, LayY, Pw, Ph, align,
     Layout_Object[TLayNr][Nr.No]:Set('customtextsize', 24)
     Layout_Object[TLayNr][Nr.No]:Set('customtextalignmentv', 'Top')
     Layout_Object[TLayNr][Nr.No]:Set('Appearance', 'None')
+    Layout_Object[TLayNr][Nr.No]:Set('VisibilityElement', Visi)
     if (align == 1) then
         Layout_Object[TLayNr][Nr.No]:Set('customtextalignmenth', 'Left')
     elseif (align == 2) then
@@ -496,7 +497,7 @@ function LC_Build_Tag(prefix, NbGroup, surfix, Time_Argument)
     end
 end
 
-function LC_Create_Fade_Sequences(MakeX, FirstSeqTime, LastSeqTime, CurrentSeqNr, CurrentMacroNr, prefix, surfix,
+function LC_Create_Fade_Sequences(MakeX, CurrentSeqNr, CurrentMacroNr, prefix, surfix,
                                   First_Id_Lay, LayNr, MatrickNrStart, TLayNr, Fade_Element, Argument_Fade,
                                   AppImp, LayX, LayY, LayW, LayH, SeqNrStart, SeqNrEnd, Current_Id_Lay, Delay_F_Element,
                                   Axes, Construct_Pool, Call_Pool, Time_Argument)
@@ -509,15 +510,14 @@ function LC_Create_Fade_Sequences(MakeX, FirstSeqTime, LastSeqTime, CurrentSeqNr
     local old_prefix                                     = prefix
     prefix                                               = 'o' .. prefix
     if MakeX then
-        FirstSeqTime = CurrentSeqNr
         First_Id_Lay[37] = CurrentSeqNr
-        LastSeqTime = math.floor(CurrentSeqNr + 5)
-    else
-        FirstSeqTime = CurrentSeqNr
-        LastSeqTime = math.floor(CurrentSeqNr + 4)
     end
-    if MakeX then
-        Fade_Element = math.floor(LayNr + 6)
+    if Axes == 1 then
+        Fade_Element[Axes] = math.floor(LayNr + 6)
+    elseif Axes == 2 then
+        Fade_Element[Axes] = math.floor(LayNr + 2)
+    elseif Axes == 3 then
+        Fade_Element[Axes] = math.floor(LayNr + 1)
     end
 
     -- Create Macro Time Input
@@ -534,7 +534,7 @@ function LC_Create_Fade_Sequences(MakeX, FirstSeqTime, LastSeqTime, CurrentSeqNr
     MacroObject[CurrentMacroNr][3]:Set('Command', 'SetUserVariable "LC_Fonction" 1')
     MacroObject[CurrentMacroNr][4]:Set('Command', 'SetUserVariable "LC_Axes" ' .. Axes .. '')
     MacroObject[CurrentMacroNr][5]:Set('Command', 'SetUserVariable "LC_Layout" ' .. TLayNr .. '')
-    MacroObject[CurrentMacroNr][6]:Set('Command', 'SetUserVariable "LC_Element" ' .. Fade_Element .. '')
+    MacroObject[CurrentMacroNr][6]:Set('Command', 'SetUserVariable "LC_Element" ' .. Fade_Element[Axes] .. '')
     MacroObject[CurrentMacroNr][7]:Set('Command', 'SetUserVariable "LC_Matrick" ' .. MatrickNrStart .. '')
     MacroObject[CurrentMacroNr][8]:Set('Command', 'Call ' .. Call_Pool .. ' Plugin "DEV_LC_View"')
     CurrentMacroNr = CurrentMacroNr + 1
@@ -546,7 +546,7 @@ function LC_Create_Fade_Sequences(MakeX, FirstSeqTime, LastSeqTime, CurrentSeqNr
             tag_V = TagObject_LC[v]
         end
     end
-
+    local Visi = 0
     if Axes == 1 then
         LC_Check_Size_Pool(CurrentSeqNr, SequenceObject)
         SequenceObject:Create(CurrentSeqNr)
@@ -577,17 +577,17 @@ function LC_Create_Fade_Sequences(MakeX, FirstSeqTime, LastSeqTime, CurrentSeqNr
         Layout_Object[TLayNr][Nr.No]:Set('Note', 'Fade')
         LC_Set_Def(TLayNr, Nr, Layout_Object)
 
-        LayNr = LC_Command_Title('Ex.Time', 'Titre', TLayNr, LayNr, LayX, LayY, 700, 140, 1, Construct_Pool)
-        LayNr = LC_Command_Title('FADE', 'Titre', TLayNr, LayNr, LayX, LayY, 700, 140, 2, Construct_Pool)
-
-        LayNr = LC_Command_Title('none > none', 'Value' .. surfix[Axes], TLayNr, LayNr, LayX, LayY, 700, 140, 3,
-            Construct_Pool)
-        Cmd('Assign ' .. Layout_Object[TLayNr][LayNr] .. " at " .. tag_V)
-
-        LayX = math.floor(LayX + LayW + 20)
-        LayNr = math.floor(LayNr + 1)
-        CurrentSeqNr = math.floor(CurrentSeqNr + 1)
+        Visi = 1
+        LayNr = LC_Command_Title('Ex.Time', 'Titre', TLayNr, LayNr, LayX, LayY, 700, 140, 1, Construct_Pool, Visi)
+        LayNr = LC_Command_Title('FADE', 'Titre', TLayNr, LayNr, LayX, LayY, 700, 140, 2, Construct_Pool, Visi)
     end
+    LayNr = LC_Command_Title('none > none', 'Value' .. surfix[Axes], TLayNr, LayNr, LayX, LayY, 700, 140, 3,
+        Construct_Pool, Visi)
+    Cmd('Assign ' .. Layout_Object[TLayNr][LayNr] .. " at " .. tag_V)
+
+    LayX = math.floor(LayX + LayW + 20)
+    LayNr = math.floor(LayNr + 1)
+    CurrentSeqNr = math.floor(CurrentSeqNr + 1)
     for i = 2, 6 do
         local ia = tonumber(i * 2 - 1)
         local ib = tonumber(i * 2)
@@ -619,9 +619,8 @@ function LC_Create_Fade_Sequences(MakeX, FirstSeqTime, LastSeqTime, CurrentSeqNr
             SequenceObject[CurrentSeqNr][3][1]:Set('Command',
                 'Go DataPool ' .. Construct_Pool .. ' Macro ' .. CurrentMacroNr - 5)
         else
-            CurrentMacroNr = Create_Macro_Fade_E(CurrentMacroNr, prefix, Argument_Fade, i, surfix, Axes, FirstSeqTime,
-                LastSeqTime, CurrentSeqNr, SeqNrStart, SeqNrEnd, MatrickNrStart, TLayNr, Fade_Element, Construct_Pool,
-                Call_Pool)
+            CurrentMacroNr = Create_Macro_Fade_E(CurrentMacroNr, prefix, Argument_Fade, i, surfix, Axes,
+                SeqNrStart, SeqNrEnd, MatrickNrStart, TLayNr, Fade_Element, Construct_Pool, Call_Pool)
             SequenceObject[CurrentSeqNr][3][1]:Set('Command',
                 'Go DataPool ' .. Construct_Pool .. ' Macro ' .. CurrentMacroNr - 1)
         end
@@ -632,21 +631,22 @@ function LC_Create_Fade_Sequences(MakeX, FirstSeqTime, LastSeqTime, CurrentSeqNr
         -- end Sequences
 
         -- Add Squences to Layout
-        if MakeX then
-            Nr = Layout_Object[TLayNr]:Acquire()
-            Layout_Object[TLayNr][Nr.No]:Set('Object', SequenceObject[CurrentSeqNr])
-            Layout_Object[TLayNr][Nr.No]:Set('posx', LayX)
-            Layout_Object[TLayNr][Nr.No]:Set('posy', LayY)
-            Layout_Object[TLayNr][Nr.No]:Set('width', LayW)
-            Layout_Object[TLayNr][Nr.No]:Set('height', LayH)
-            Layout_Object[TLayNr][Nr.No]:Set('action', 'Go+')
-            Layout_Object[TLayNr][Nr.No]:Set('Note', 'Fade')
-            Cmd('Assign ' .. Layout_Object[TLayNr][Nr.No] .. " at " .. tag_V)
-            LC_Set_Def(TLayNr, Nr, Layout_Object)
-            LayX = math.floor(LayX + LayW + 20)
-            LayNr = math.floor(LayNr + 1)
-            Delay_F_Element = math.floor(LayNr + 1)
-        end
+        -- if MakeX then
+        Nr = Layout_Object[TLayNr]:Acquire()
+        Layout_Object[TLayNr][Nr.No]:Set('Object', SequenceObject[CurrentSeqNr])
+        Layout_Object[TLayNr][Nr.No]:Set('posx', LayX)
+        Layout_Object[TLayNr][Nr.No]:Set('posy', LayY)
+        Layout_Object[TLayNr][Nr.No]:Set('width', LayW)
+        Layout_Object[TLayNr][Nr.No]:Set('height', LayH)
+        Layout_Object[TLayNr][Nr.No]:Set('action', 'Go+')
+        Layout_Object[TLayNr][Nr.No]:Set('Note', 'Fade' .. surfix[Axes])
+        Layout_Object[TLayNr][Nr.No]:Set('VisibilityElement', Visi)
+        Cmd('Assign ' .. Layout_Object[TLayNr][Nr.No] .. " at " .. tag_V)
+        LC_Set_Def(TLayNr, Nr, Layout_Object)
+        LayX = math.floor(LayX + LayW + 20)
+        LayNr = math.floor(LayNr + 1)
+        Delay_F_Element[Axes] = math.floor(LayNr + 1)
+        -- end
         CurrentSeqNr = math.floor(CurrentSeqNr + 1)
         -- CurrentMacroNr = CurrentMacroNr + 1
     end -- end Sequences FADE
@@ -656,8 +656,8 @@ end -- end LC_Create_Fade_Sequences
 
 function LC_Create_Delay_From_Sequences(First_Id_Lay, LayNr, CurrentSeqNr, Current_Id_Lay, prefix, surfix, Argument_Delay,
                                         AppImp, CurrentMacroNr, Axes, MatrickNrStart, TLayNr, Delay_F_Element, MatrickNr,
-                                        MakeX,
-                                        LayX, LayY, LayW, LayH, Delay_T_Element, Construct_Pool, Call_Pool, Time_Argument)
+                                        MakeX, LayX, LayY, LayW, LayH, Delay_T_Element, Construct_Pool, Call_Pool,
+                                        Time_Argument)
     local MacroObject, SequenceObject, Layout_Object, Nr = LC_Get_Object(Construct_Pool)
     -- fix time_tag
     local TagObject_LC                                   = Root().ShowData.Tags:Children()
@@ -672,9 +672,13 @@ function LC_Create_Delay_From_Sequences(First_Id_Lay, LayNr, CurrentSeqNr, Curre
     local LastSeqDelayFrom                               = math.floor(CurrentSeqNr + 4)
 
     -- Create Macro DelayFrom Input
-    -- Delay_F_Element                                      = Delay_F_Element + 2
-    LC_Create_Macro_Delay_From(CurrentMacroNr, prefix, surfix, Axes, FirstSeqDelayFrom, LastSeqDelayFrom,
-        MatrickNrStart, 2, TLayNr, Delay_F_Element, MatrickNr, Construct_Pool, Call_Pool)
+    if Axes == 2 then
+        Delay_F_Element[Axes] = Delay_F_Element[Axes] - 1
+    elseif Axes == 3 then
+        Delay_F_Element[Axes] = Delay_F_Element[Axes] - 1
+    end
+    LC_Create_Macro_Delay_From(CurrentMacroNr, prefix, surfix, Axes, MatrickNrStart, 2, TLayNr, Delay_F_Element,
+        MatrickNr, Construct_Pool, Call_Pool)
 
     for v in ipairs(TagObject_LC) do
         if TagObject_LC[v].Name == old_prefix .. Time_Argument[2].name .. '_' .. surfix[Axes] then
@@ -684,12 +688,14 @@ function LC_Create_Delay_From_Sequences(First_Id_Lay, LayNr, CurrentSeqNr, Curre
         end
     end
 
+    local Visi = 0
     if MakeX then
-        LayNr = LC_Command_Title('DELAY FROM', 'Titre', TLayNr, LayNr, LayX, LayY, 580, 140, 2, Construct_Pool)
-
-        LayNr = LC_Command_Title('none', 'Value' .. surfix[Axes], TLayNr, LayNr, LayX, LayY, 580, 140, 3, Construct_Pool)
-        Cmd('Assign ' .. Layout_Object[TLayNr][LayNr] .. " at " .. tag_V)
+        Visi = 1
+        LayNr = LC_Command_Title('DELAY FROM', 'Titre', TLayNr, LayNr, LayX, LayY, 580, 140, 2, Construct_Pool, Visi)
     end
+    LayNr = LC_Command_Title('none', 'Value' .. surfix[Axes], TLayNr, LayNr, LayX, LayY, 580, 140, 3, Construct_Pool,
+        Visi)
+    Cmd('Assign ' .. Layout_Object[TLayNr][LayNr] .. " at " .. tag_V)
 
     for i = 1, 5 do
         local ia = tonumber(i * 2 + 11)
@@ -728,7 +734,7 @@ function LC_Create_Delay_From_Sequences(First_Id_Lay, LayNr, CurrentSeqNr, Curre
                 MatrickNrStart .. ' Property "DelayFrom' .. surfix[Axes] .. '" ' .. Argument_Delay[i].Time ..
                 '  ; SetUserVariable "LC_Fonction" 2 ; SetUserVariable "LC_Axes" "' .. Axes ..
                 '" ; SetUserVariable "LC_Layout" ' .. TLayNr ..
-                ' ; SetUserVariable "LC_Element" ' .. Delay_F_Element ..
+                ' ; SetUserVariable "LC_Element" ' .. Delay_F_Element[Axes] ..
                 ' ; SetUserVariable "LC_Matrick" ' .. MatrickNrStart ..
                 ' ; SetUserVariable "LC_Matrick_Thru" ' .. MatrickNr ..
                 ' ; Call ' .. Call_Pool .. ' Plugin "DEV_LC_View" ')
@@ -738,21 +744,22 @@ function LC_Create_Delay_From_Sequences(First_Id_Lay, LayNr, CurrentSeqNr, Curre
         LC_Command_Ext_Suite(CurrentSeqNr, SequenceObject)
 
         -- Add Squences to Layout
-        if MakeX then
-            Nr = Layout_Object[TLayNr]:Acquire()
-            Layout_Object[TLayNr][Nr.No]:Set('Object', SequenceObject[CurrentSeqNr])
-            Layout_Object[TLayNr][Nr.No]:Set('posx', LayX)
-            Layout_Object[TLayNr][Nr.No]:Set('posy', LayY)
-            Layout_Object[TLayNr][Nr.No]:Set('width', LayW)
-            Layout_Object[TLayNr][Nr.No]:Set('height', LayH)
-            Layout_Object[TLayNr][Nr.No]:Set('action', 'Go+')
-            Layout_Object[TLayNr][Nr.No]:Set('Note', 'Delay from')
-            Cmd('Assign ' .. Layout_Object[TLayNr][Nr.No] .. " at " .. tag_V)
-            LC_Set_Def(TLayNr, Nr, Layout_Object)
-            LayX = math.floor(LayX + LayW + 20)
-            LayNr = math.floor(LayNr + 1)
-            Delay_T_Element = math.floor(LayNr + 1)
-        end
+        -- if MakeX then
+        Nr = Layout_Object[TLayNr]:Acquire()
+        Layout_Object[TLayNr][Nr.No]:Set('Object', SequenceObject[CurrentSeqNr])
+        Layout_Object[TLayNr][Nr.No]:Set('posx', LayX)
+        Layout_Object[TLayNr][Nr.No]:Set('posy', LayY)
+        Layout_Object[TLayNr][Nr.No]:Set('width', LayW)
+        Layout_Object[TLayNr][Nr.No]:Set('height', LayH)
+        Layout_Object[TLayNr][Nr.No]:Set('action', 'Go+')
+        Layout_Object[TLayNr][Nr.No]:Set('Note', 'Delay from')
+        Layout_Object[TLayNr][Nr.No]:Set('VisibilityElement', Visi)
+        Cmd('Assign ' .. Layout_Object[TLayNr][Nr.No] .. " at " .. tag_V)
+        LC_Set_Def(TLayNr, Nr, Layout_Object)
+        LayX = math.floor(LayX + LayW + 20)
+        LayNr = math.floor(LayNr + 1)
+        Delay_T_Element[Axes] = math.floor(LayNr + 1)
+        -- end
         CurrentSeqNr = math.floor(CurrentSeqNr + 1)
     end -- end Sequences DelayFrom
     return Current_Id_Lay, First_Id_Lay, LayX, LayNr, Delay_T_Element, CurrentSeqNr, CurrentMacroNr, Delay_F_Element
@@ -775,9 +782,15 @@ function LC_Create_Delay_To_Sequences(Axes, First_Id_Lay, LayNr, CurrentSeqNr, C
     local FirstSeqDelayTo                                = CurrentSeqNr
     local LastSeqDelayTo                                 = math.floor(CurrentSeqNr + 4)
     -- Create Macro DelayTo Input
-    -- Delay_T_Element                                      = Delay_T_Element + 2
-    LC_Create_Macro_Delay_To(CurrentMacroNr, prefix, surfix, Axes, FirstSeqDelayTo, LastSeqDelayTo, MatrickNrStart,
-        3, TLayNr, Delay_T_Element, MatrickNr, Construct_Pool, Call_Pool)
+    if Axes == 1 then
+        Delay_T_Element[Axes] = Delay_T_Element[Axes] + 1
+    elseif Axes == 2 then
+        Delay_T_Element[Axes] = Delay_T_Element[Axes]
+    elseif Axes == 3 then
+        Delay_T_Element[Axes] = Delay_T_Element[Axes]
+    end
+    LC_Create_Macro_Delay_To(CurrentMacroNr, prefix, surfix, Axes, MatrickNrStart, 3, TLayNr, Delay_T_Element, MatrickNr,
+        Construct_Pool, Call_Pool)
 
     for v in ipairs(TagObject_LC) do
         if TagObject_LC[v].Name == old_prefix .. Time_Argument[3].name .. '_' .. surfix[Axes] then
@@ -787,12 +800,15 @@ function LC_Create_Delay_To_Sequences(Axes, First_Id_Lay, LayNr, CurrentSeqNr, C
         end
     end
 
+    local Visi = 0
     if MakeX then
-        LayNr = LC_Command_Title('DELAY TO', 'Titre', TLayNr, LayNr, LayX, LayY, 580, 140, 2, Construct_Pool)
-
-        LayNr = LC_Command_Title('none', 'Value' .. surfix[Axes], TLayNr, LayNr, LayX, LayY, 580, 140, 3, Construct_Pool)
-        Cmd('Assign ' .. Layout_Object[TLayNr][LayNr] .. " at " .. tag_V)
+        Visi = 1
+        LayNr = LC_Command_Title('DELAY TO', 'Titre', TLayNr, LayNr, LayX, LayY, 580, 140, 2, Construct_Pool, Visi)
     end
+
+    LayNr = LC_Command_Title('none', 'Value' .. surfix[Axes], TLayNr, LayNr, LayX, LayY, 580, 140, 3, Construct_Pool,
+        Visi)
+    Cmd('Assign ' .. Layout_Object[TLayNr][LayNr] .. " at " .. tag_V)
 
     for i = 1, 5 do
         local ia = tonumber(i * 2 + 21)
@@ -831,7 +847,7 @@ function LC_Create_Delay_To_Sequences(Axes, First_Id_Lay, LayNr, CurrentSeqNr, C
                 MatrickNrStart .. ' Property "DelayTo' .. surfix[Axes] .. '" ' .. Argument_DelayTo[i].Time ..
                 ' ; SetUserVariable "LC_Fonction" 3 ; SetUserVariable "LC_Axes" "' .. Axes ..
                 '" ; SetUserVariable "LC_Layout" ' .. TLayNr ..
-                ' ; SetUserVariable "LC_Element" ' .. Delay_T_Element ..
+                ' ; SetUserVariable "LC_Element" ' .. Delay_T_Element[Axes] ..
                 ' ; SetUserVariable "LC_Matrick" ' .. MatrickNrStart ..
                 ' ; SetUserVariable "LC_Matrick_Thru" ' .. MatrickNr ..
                 ' ; Call ' .. Call_Pool .. ' Plugin "DEV_LC_View" ')
@@ -842,21 +858,22 @@ function LC_Create_Delay_To_Sequences(Axes, First_Id_Lay, LayNr, CurrentSeqNr, C
         -- end Sequences
 
         -- Add Squences to Layout
-        if MakeX then
-            Nr = Layout_Object[TLayNr]:Acquire()
-            Layout_Object[TLayNr][Nr.No]:Set('Object', SequenceObject[CurrentSeqNr])
-            Layout_Object[TLayNr][Nr.No]:Set('posx', LayX)
-            Layout_Object[TLayNr][Nr.No]:Set('posy', LayY)
-            Layout_Object[TLayNr][Nr.No]:Set('width', LayW)
-            Layout_Object[TLayNr][Nr.No]:Set('height', LayH)
-            Layout_Object[TLayNr][Nr.No]:Set('action', 'Go+')
-            Layout_Object[TLayNr][Nr.No]:Set('Note', 'Delay to')
-            Cmd('Assign ' .. Layout_Object[TLayNr][Nr.No] .. " at " .. tag_V)
-            LC_Set_Def(TLayNr, Nr, Layout_Object)
-            LayX = math.floor(LayX + LayW + 20)
-            LayNr = math.floor(LayNr + 1)
-            Phase_Element = math.floor(LayNr + 2)
-        end
+        -- if MakeX then
+        Nr = Layout_Object[TLayNr]:Acquire()
+        Layout_Object[TLayNr][Nr.No]:Set('Object', SequenceObject[CurrentSeqNr])
+        Layout_Object[TLayNr][Nr.No]:Set('posx', LayX)
+        Layout_Object[TLayNr][Nr.No]:Set('posy', LayY)
+        Layout_Object[TLayNr][Nr.No]:Set('width', LayW)
+        Layout_Object[TLayNr][Nr.No]:Set('height', LayH)
+        Layout_Object[TLayNr][Nr.No]:Set('action', 'Go+')
+        Layout_Object[TLayNr][Nr.No]:Set('Note', 'Delay to')
+        Layout_Object[TLayNr][Nr.No]:Set('VisibilityElement', Visi)
+        Cmd('Assign ' .. Layout_Object[TLayNr][Nr.No] .. " at " .. tag_V)
+        LC_Set_Def(TLayNr, Nr, Layout_Object)
+        LayX = math.floor(LayX + LayW + 20)
+        LayNr = math.floor(LayNr + 1)
+        Phase_Element[Axes] = math.floor(LayNr + 2)
+        -- end
         CurrentSeqNr = math.floor(CurrentSeqNr + 1)
     end -- end Sequences DelayTo
     return First_Id_Lay, Current_Id_Lay, LayX, LayNr, Phase_Element, CurrentSeqNr, CurrentMacroNr, Delay_T_Element
