@@ -86,12 +86,14 @@ function LC_Create_Phase_Sequence(LayY, LayX, LayW, Axes, First_Id_Lay, LayNr, C
     Layout_Object[TLayNr][Nr.No]:Set('action', 'Go+')
     Layout_Object[TLayNr][Nr.No]:Set('Note', 'Phase')
     Layout_Object[TLayNr][Nr.No]:Set('VisibilityElement', Visi)
-    Cmd('Assign ' .. Layout_Object[TLayNr][Nr.No] .. " at " .. tag_V)
+    Layout_Object[TLayNr][Nr.No]:Set('Tags', tag_V.Name .. ':0')
+    -- Cmd('Assign ' .. Layout_Object[TLayNr][Nr.No] .. " at " .. tag_V)
     LC_Set_Def(TLayNr, Nr, Layout_Object)
     LayX = math.floor(LayX + LayW + 20)
     LayNr = LC_Command_Title('none > none', 'Value' .. surfix[Axes], TLayNr, LayNr, LayX - 120, LayY - 30, 700, 170,
         1, Construct_Pool, Visi)
-    Cmd('Assign ' .. Layout_Object[TLayNr][LayNr] .. " at " .. tag_V)
+    Layout_Object[TLayNr][LayNr]:Set('Tags', tag_V.Name .. ':0')
+    -- Cmd('Assign ' .. Layout_Object[TLayNr][LayNr] .. " at " .. tag_V)
     LayNr = math.floor(LayNr + 1)
     Group_Element[Axes] = math.floor(LayNr + 1)
     CurrentSeqNr = math.floor(CurrentSeqNr + 1)
@@ -147,7 +149,8 @@ function LC_Create_Group_Sequence(CurrentMacroNr, FirstSeqGrp, CurrentSeqNr, Las
     end
     LayNr = LC_Command_Title('None', 'Value' .. surfix[Axes], TLayNr, LayNr, LayX - 120, LayY - 30, 700, 170, 3,
         Construct_Pool, Visi)
-    Cmd('Assign ' .. Layout_Object[TLayNr][LayNr] .. " at " .. tag_V)
+    Layout_Object[TLayNr][LayNr]:Set('Tags', tag_V.Name .. ':0')
+    -- Cmd('Assign ' .. Layout_Object[TLayNr][LayNr] .. " at " .. tag_V)
     -- Create Sequences XGroup
     for i = 1, 5 do
         local ia = tonumber(i * 2 + 31)
@@ -190,7 +193,8 @@ function LC_Create_Group_Sequence(CurrentMacroNr, FirstSeqGrp, CurrentSeqNr, Las
                 ' ; SetUserVariable "LC_Matrick_Thru" ' .. MatrickNr ..
                 ' ; Call DataPool "' .. Call_Pool.Name .. '"."Plugins"."LayoutColor_V2"."LC_View_lua" ')
         end
-        Cmd('Assign ' .. SequenceObject[CurrentSeqNr] .. " at " .. tag_group)
+        SequenceObject[CurrentSeqNr]:Set('Tags', tag_group.Name .. ':0')
+        -- Cmd('Assign ' .. SequenceObject[CurrentSeqNr] .. " at " .. tag_group)
 
         LC_Command_Ext_Suite(CurrentSeqNr, SequenceObject)
         -- end Sequences
@@ -206,7 +210,8 @@ function LC_Create_Group_Sequence(CurrentMacroNr, FirstSeqGrp, CurrentSeqNr, Las
         Layout_Object[TLayNr][Nr.No]:Set('action', 'Go+')
         Layout_Object[TLayNr][Nr.No]:Set('Note', 'Group')
         Layout_Object[TLayNr][Nr.No]:Set('VisibilityElement', Visi)
-        Cmd('Assign ' .. Layout_Object[TLayNr][Nr.No] .. " at " .. tag_V)
+        Layout_Object[TLayNr][Nr.No]:Set('Tags', tag_V.Name .. ':0')
+        -- Cmd('Assign ' .. Layout_Object[TLayNr][Nr.No] .. " at " .. tag_V)
         LC_Set_Def(TLayNr, Nr, Layout_Object)
         LayX = math.floor(LayX + LayW + 20)
         LayNr = math.floor(LayNr + 1)
@@ -261,7 +266,8 @@ function LC_Create_Block_Sequence(CurrentMacroNr, FirstSeqBlock, CurrentSeqNr, L
 
     LayNr = LC_Command_Title('none', 'Value' .. surfix[Axes], TLayNr, LayNr, LayX, LayY, 580, 140, 3, Construct_Pool,
         Visi)
-    Cmd('Assign ' .. Layout_Object[TLayNr][LayNr] .. " at " .. tag_V)
+        Layout_Object[TLayNr][LayNr]:Set('Tags', tag_V.Name .. ':0')
+    -- Cmd('Assign ' .. Layout_Object[TLayNr][LayNr] .. " at " .. tag_V)
     -- Create Sequences XBlock
     for i = 1, 5 do
         local ia = tonumber(i * 2 + 41)
@@ -307,7 +313,8 @@ function LC_Create_Block_Sequence(CurrentMacroNr, FirstSeqBlock, CurrentSeqNr, L
                 ' ; Call DataPool "' .. Call_Pool.Name .. '"."Plugins"."LayoutColor_V2"."LC_View_lua" ')
         end
 
-        Cmd('Assign ' .. SequenceObject[CurrentSeqNr] .. " at " .. tag_block)
+        SequenceObject[CurrentSeqNr]:Set('Tags', tag_block.Name .. ':0')
+        -- Cmd('Assign ' .. SequenceObject[CurrentSeqNr] .. " at " .. tag_block)
 
         LC_Command_Ext_Suite(CurrentSeqNr, SequenceObject)
         -- end Sequences
@@ -323,7 +330,8 @@ function LC_Create_Block_Sequence(CurrentMacroNr, FirstSeqBlock, CurrentSeqNr, L
         Layout_Object[TLayNr][Nr.No]:Set('action', 'Go+')
         Layout_Object[TLayNr][Nr.No]:Set('Note', 'Block')
         Layout_Object[TLayNr][Nr.No]:Set('VisibilityElement', Visi)
-        Cmd('Assign ' .. Layout_Object[TLayNr][Nr.No] .. " at " .. tag_V)
+        Layout_Object[TLayNr][Nr.No]:Set('Tags', tag_V.Name .. ':0')
+        -- Cmd('Assign ' .. Layout_Object[TLayNr][Nr.No] .. " at " .. tag_V)
         LC_Set_Def(TLayNr, Nr, Layout_Object)
         LayX = math.floor(LayX + LayW + 20)
         LayNr = math.floor(LayNr + 1)
@@ -377,7 +385,8 @@ function LC_Create_Wings_Sequence(CurrentMacroNr, FirstSeqWings, CurrentSeqNr, L
 
     LayNr = LC_Command_Title('none', 'Value' .. surfix[Axes], TLayNr, LayNr, LayX, LayY, 580, 140, 3, Construct_Pool,
         Visi)
-    Cmd('Assign ' .. Layout_Object[TLayNr][LayNr] .. " at " .. tag_V)
+        Layout_Object[TLayNr][LayNr]:Set('Tags', tag_V.Name .. ':0')
+    -- Cmd('Assign ' .. Layout_Object[TLayNr][LayNr] .. " at " .. tag_V)
     -- Create Sequences Wings
     for i = 1, 5 do
         local ia = tonumber(i * 2 + 51)
@@ -423,7 +432,8 @@ function LC_Create_Wings_Sequence(CurrentMacroNr, FirstSeqWings, CurrentSeqNr, L
                 ' ; Call DataPool "' .. Call_Pool.Name .. '"."Plugins"."LayoutColor_V2"."LC_View_lua" ')
         end
 
-        Cmd('Assign ' .. SequenceObject[CurrentSeqNr] .. " at " .. tag_wings)
+        SequenceObject[CurrentSeqNr]:Set('Tags', tag_wings.Name .. ':0')
+        -- Cmd('Assign ' .. SequenceObject[CurrentSeqNr] .. " at " .. tag_wings)
 
         LC_Command_Ext_Suite(CurrentSeqNr, SequenceObject)
 
@@ -438,7 +448,8 @@ function LC_Create_Wings_Sequence(CurrentMacroNr, FirstSeqWings, CurrentSeqNr, L
         Layout_Object[TLayNr][Nr.No]:Set('action', 'Go+')
         Layout_Object[TLayNr][Nr.No]:Set('Note', 'Wings')
         Layout_Object[TLayNr][Nr.No]:Set('VisibilityElement', Visi)
-        Cmd('Assign ' .. Layout_Object[TLayNr][Nr.No] .. " at " .. tag_V)
+        Layout_Object[TLayNr][Nr.No]:Set('Tags', tag_V.Name .. ':0')
+        -- Cmd('Assign ' .. Layout_Object[TLayNr][Nr.No] .. " at " .. tag_V)
         LC_Set_Def(TLayNr, Nr, Layout_Object)
         LayX = math.floor(LayX + LayW + 20)
         LayNr = math.floor(LayNr + 1)
@@ -512,7 +523,8 @@ function LC_Create_XYZ_Sequence(CurrentMacroNr, First_Id_Lay, prefix, surfix, Ma
     SequenceObject[CurrentSeqNr][3][1]:Set('Command',
         'Go DataPool ' .. Construct_Pool .. ' Macro ' .. CurrentMacroNr .. '')
 
-    Cmd('Assign ' .. SequenceObject[CurrentSeqNr] .. " at " .. tag_xyz)
+        SequenceObject[CurrentSeqNr]:Set('Tags', tag_xyz.Name .. ':0')
+    -- Cmd('Assign ' .. SequenceObject[CurrentSeqNr] .. " at " .. tag_xyz)
 
     LC_Command_Ext_Suite(CurrentSeqNr, SequenceObject)
     LC_Check_Size_Pool(CurrentSeqNr + 1, SequenceObject)
@@ -664,7 +676,8 @@ function LC_Macro_Priority(LayX, LayY, Ligne_Inc, CurrentMacroNr, First_All_Colo
     MacroObject[CurrentMacroNr][4]:Set('Command', 'SetUserVariable "LC_Element" ' .. LayNr)
     MacroObject[CurrentMacroNr][5]:Set('Command', 'SetUserVariable "LC_DataPool" ' .. Construct_Pool)
     MacroObject[CurrentMacroNr][6]:Set('Command', Color_message)
-    MacroObject[CurrentMacroNr][7]:Set('Command', "Call DataPool '" .. Call_Pool.Name .. "'.'Plugins'.'LayoutColor_V2'.'LC_View_lua'")
+    MacroObject[CurrentMacroNr][7]:Set('Command',
+        "Call DataPool '" .. Call_Pool.Name .. "'.'Plugins'.'LayoutColor_V2'.'LC_View_lua'")
 
     local address = LC_Search_Addr_Nat_App('p_htp_png')
 

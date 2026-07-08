@@ -449,7 +449,7 @@ function LC_Construct_Layout(TLay, SeqNrStart, MacroNrStart, MatrickNrStart, Mat
     --     Delay_T_Element, Phase_Element, Group_Element, Block_Element, Wings_Element,
     --     Construct_Pool, Call_Pool)
     -- end line macro X Y Z Call
-    if DEBUG then Echo('line macro xyz ok') end
+    -- if DEBUG then Echo('line macro xyz ok') end
 
     CurrentSeqNr, Nr, LayX, LayY, LayNr = LC_Create_KillallLCx(LayY, LayX, LayNr, ColLgnCount, RefX, CurrentSeqNr,
         SequenceObject, Nr,
@@ -537,8 +537,5 @@ function LC_Construct_Layout(TLay, SeqNrStart, MacroNrStart, MatrickNrStart, Mat
 
     CmdIndirectWait('Select DataPool ' .. Construct_Pool .. ' Layout ' .. TLayNr)
 
-    if DEBUG then Echo('LC_Create_Macro_Erase ok') end
+    -- if DEBUG then Echo('LC_Create_Macro_Erase ok') end
 end -- end LC_Construct.lua
-
-local function suite()
-end
