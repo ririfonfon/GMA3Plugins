@@ -840,7 +840,7 @@ function LC_Create_Group_Call(allmacrocallstart, allmacroallend, TLayNr, LayX, L
     Layout_Object[TLayNr][Nr.No]:Set('width', 100)
     Layout_Object[TLayNr][Nr.No]:Set('height', 100)
     Layout_Object[TLayNr][Nr.No]:Set('action', 'Flash')
-    Layout_Object[TLayNr][Nr.No]:Set('CustomTextText', 'None')
+    Layout_Object[TLayNr][Nr.No]:Set('CustomTextText', 'ALL')
     Layout_Object[TLayNr][Nr.No]:Set('CustomTextColor', 'FF0000FF')
     Layout_Object[TLayNr][Nr.No]:Set('CustomTextAlignmentV', 'Center')
     Layout_Object[TLayNr][Nr.No]:Set('Note', 'all ALL call')

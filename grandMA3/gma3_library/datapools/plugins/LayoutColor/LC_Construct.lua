@@ -444,13 +444,6 @@ function LC_Construct_Layout(TLay, SeqNrStart, MacroNrStart, MatrickNrStart, Mat
     end --end  Create Function for X Y Z
     if DEBUG then Echo('create function xyz ok') end
 
-    -- add line macro X Y Z Call
-    -- LC_Add_Line_Macro_XYZ(MacroObject, First_Id_Lay, TLayNr, Fade_Element, MatrickNrStart, Delay_F_Element,
-    --     Delay_T_Element, Phase_Element, Group_Element, Block_Element, Wings_Element,
-    --     Construct_Pool, Call_Pool)
-    -- end line macro X Y Z Call
-    -- if DEBUG then Echo('line macro xyz ok') end
-
     CurrentSeqNr, Nr, LayX, LayY, LayNr = LC_Create_KillallLCx(LayY, LayX, LayNr, ColLgnCount, RefX, CurrentSeqNr,
         SequenceObject, Nr,
         Layout_Object, TLayNr, LayW, LayH, prefix, Construct_Pool)
@@ -525,15 +518,15 @@ function LC_Construct_Layout(TLay, SeqNrStart, MacroNrStart, MatrickNrStart, Mat
     -- end Macro Del LC prefix
 
     -- dimension of layout & scal it
-    for k in pairs(DataPool().Layouts:Children()) do
-        if (math.floor(TLayNr) == math.floor(tonumber(DataPool().Layouts:Children()[k].NO))) then
-            TLayNrRef = k
-        end
-    end
-    UsedW = Root().ShowData.DataPools[Construct_Pool].Layouts:Children()[TLayNrRef].UsedW / 2
-    UsedH = Root().ShowData.DataPools[Construct_Pool].Layouts:Children()[TLayNrRef].UsedH / 2
-    Layout_Object[TLayNr]:Set('DimensionW', UsedW)
-    Layout_Object[TLayNr]:Set('DimensionH', UsedH)
+    -- for k in pairs(DataPool().Layouts:Children()) do
+    --     if (math.floor(TLayNr) == math.floor(tonumber(DataPool().Layouts:Children()[k].NO))) then
+    --         TLayNrRef = k
+    --     end
+    -- end
+    -- UsedW = Root().ShowData.DataPools[Construct_Pool].Layouts:Children()[TLayNrRef].UsedW / 2
+    -- UsedH = Root().ShowData.DataPools[Construct_Pool].Layouts:Children()[TLayNrRef].UsedH / 2
+    -- Layout_Object[TLayNr]:Set('DimensionW', UsedW)
+    -- Layout_Object[TLayNr]:Set('DimensionH', UsedH)
 
     CmdIndirectWait('Select DataPool ' .. Construct_Pool .. ' Layout ' .. TLayNr)
 
