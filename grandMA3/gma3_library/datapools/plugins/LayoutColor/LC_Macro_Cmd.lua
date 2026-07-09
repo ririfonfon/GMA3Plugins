@@ -1,6 +1,6 @@
 --[[
 Releases:
-* 2.3.2.0
+* 2.4.2.2
 
 Version:
 * 2.3.6.0
@@ -65,7 +65,7 @@ function LC_Create_Macro_Reset(CurrentMacroNr, prefix, surfix, MatrickNrStart, A
     MacroObject[CurrentMacroNr + 1][20]:Set('Command', 'SetUserVariable "LC_Element" ' .. Fade_Element[Axes] .. '')
     MacroObject[CurrentMacroNr + 1][21]:Set('Command', 'SetUserVariable "LC_Matrick" ' .. MatrickNrStart .. '')
     MacroObject[CurrentMacroNr + 1][22]:Set('Command', 'SetUserVariable "LC_DataPool" ' .. Construct_Pool .. '')
-    MacroObject[CurrentMacroNr + 1][23]:Set('Command', "Call DataPool '" .. Call_Pool.Name .. "'.'Plugins'.'LayoutColor_V2'.'LC_View_lua'")
+    MacroObject[CurrentMacroNr + 1][23]:Set('Command', "Call DataPool '" .. Call_Pool.Name .. "'.'Plugins'.'LayoutColor_V2_4'.'LC_View_lua'")
     MacroObject[CurrentMacroNr + 1][24]:Set('Command', 'SetUserVariable "LC_Fonction" 2')
     MacroObject[CurrentMacroNr + 1][25]:Set('Command', 'SetUserVariable "LC_Axes" ' .. Axes .. '')
     MacroObject[CurrentMacroNr + 1][26]:Set('Command', 'SetUserVariable "LC_Layout" ' .. TLayNr .. '')
@@ -73,7 +73,7 @@ function LC_Create_Macro_Reset(CurrentMacroNr, prefix, surfix, MatrickNrStart, A
     MacroObject[CurrentMacroNr + 1][28]:Set('Command', 'SetUserVariable "LC_Matrick" ' .. MatrickNrStart .. '')
     MacroObject[CurrentMacroNr + 1][29]:Set('Command', 'SetUserVariable "LC_Matrick_Thru" ' .. MatrickNr .. '')
     MacroObject[CurrentMacroNr + 1][30]:Set('Command', 'SetUserVariable "LC_DataPool" ' .. Construct_Pool .. '')
-    MacroObject[CurrentMacroNr + 1][31]:Set('Command', "Call DataPool '" .. Call_Pool.Name .. "'.'Plugins'.'LayoutColor_V2'.'LC_View_lua'")
+    MacroObject[CurrentMacroNr + 1][31]:Set('Command', "Call DataPool '" .. Call_Pool.Name .. "'.'Plugins'.'LayoutColor_V2_4'.'LC_View_lua'")
     MacroObject[CurrentMacroNr + 1][32]:Set('Command', 'SetUserVariable "LC_Fonction" 3')
     MacroObject[CurrentMacroNr + 1][33]:Set('Command', 'SetUserVariable "LC_Axes" ' .. Axes .. '')
     MacroObject[CurrentMacroNr + 1][34]:Set('Command', 'SetUserVariable "LC_Layout" ' .. TLayNr .. '')
@@ -81,7 +81,7 @@ function LC_Create_Macro_Reset(CurrentMacroNr, prefix, surfix, MatrickNrStart, A
     MacroObject[CurrentMacroNr + 1][36]:Set('Command', 'SetUserVariable "LC_Matrick" ' .. MatrickNrStart .. '')
     MacroObject[CurrentMacroNr + 1][37]:Set('Command', 'SetUserVariable "LC_Matrick_Thru" ' .. MatrickNr .. '')
     MacroObject[CurrentMacroNr + 1][38]:Set('Command', 'SetUserVariable "LC_DataPool" ' .. Construct_Pool .. '')
-    MacroObject[CurrentMacroNr + 1][39]:Set('Command', "Call DataPool '" .. Call_Pool.Name .. "'.'Plugins'.'LayoutColor_V2'.'LC_View_lua'")
+    MacroObject[CurrentMacroNr + 1][39]:Set('Command', "Call DataPool '" .. Call_Pool.Name .. "'.'Plugins'.'LayoutColor_V2_4'.'LC_View_lua'")
     MacroObject[CurrentMacroNr + 1][40]:Set('Command', 'SetUserVariable "LC_Fonction" 4')
     MacroObject[CurrentMacroNr + 1][41]:Set('Command', 'SetUserVariable "LC_Axes" ' .. Axes .. '')
     MacroObject[CurrentMacroNr + 1][42]:Set('Command', 'SetUserVariable "LC_Layout" ' .. TLayNr .. '')
@@ -89,7 +89,7 @@ function LC_Create_Macro_Reset(CurrentMacroNr, prefix, surfix, MatrickNrStart, A
     MacroObject[CurrentMacroNr + 1][44]:Set('Command', 'SetUserVariable "LC_Matrick" ' .. MatrickNrStart .. '')
     MacroObject[CurrentMacroNr + 1][45]:Set('Command', 'SetUserVariable "LC_Matrick_Thru" ' .. MatrickNr .. '')
     MacroObject[CurrentMacroNr + 1][46]:Set('Command', 'SetUserVariable "LC_DataPool" ' .. Construct_Pool .. '')
-    MacroObject[CurrentMacroNr + 1][47]:Set('Command', "Call DataPool '" .. Call_Pool.Name .. "'.'Plugins'.'LayoutColor_V2'.'LC_View_lua'")
+    MacroObject[CurrentMacroNr + 1][47]:Set('Command', "Call DataPool '" .. Call_Pool.Name .. "'.'Plugins'.'LayoutColor_V2_4'.'LC_View_lua'")
     MacroObject[CurrentMacroNr + 1][48]:Set('Command', 'SetUserVariable "LC_Fonction" 5')
     MacroObject[CurrentMacroNr + 1][49]:Set('Command', 'SetUserVariable "LC_Axes" ' .. Axes .. '')
     MacroObject[CurrentMacroNr + 1][50]:Set('Command', 'SetUserVariable "LC_Layout" ' .. TLayNr .. '')
@@ -97,7 +97,7 @@ function LC_Create_Macro_Reset(CurrentMacroNr, prefix, surfix, MatrickNrStart, A
     MacroObject[CurrentMacroNr + 1][52]:Set('Command', 'SetUserVariable "LC_Matrick" ' .. MatrickNrStart .. '')
     MacroObject[CurrentMacroNr + 1][53]:Set('Command', 'SetUserVariable "LC_Matrick_Thru" ' .. MatrickNr .. '')
     MacroObject[CurrentMacroNr + 1][54]:Set('Command', 'SetUserVariable "LC_DataPool" ' .. Construct_Pool .. '')
-    MacroObject[CurrentMacroNr + 1][55]:Set('Command', "Call DataPool '" .. Call_Pool.Name .. "'.'Plugins'.'LayoutColor_V2'.'LC_View_lua'")
+    MacroObject[CurrentMacroNr + 1][55]:Set('Command', "Call DataPool '" .. Call_Pool.Name .. "'.'Plugins'.'LayoutColor_V2_4'.'LC_View_lua'")
     MacroObject[CurrentMacroNr + 1][56]:Set('Command', 'SetUserVariable "LC_Fonction" 6')
     MacroObject[CurrentMacroNr + 1][57]:Set('Command', 'SetUserVariable "LC_Axes" ' .. Axes .. '')
     MacroObject[CurrentMacroNr + 1][58]:Set('Command', 'SetUserVariable "LC_Layout" ' .. TLayNr .. '')
@@ -105,7 +105,7 @@ function LC_Create_Macro_Reset(CurrentMacroNr, prefix, surfix, MatrickNrStart, A
     MacroObject[CurrentMacroNr + 1][60]:Set('Command', 'SetUserVariable "LC_Matrick" ' .. MatrickNrStart .. '')
     MacroObject[CurrentMacroNr + 1][61]:Set('Command', 'SetUserVariable "LC_Matrick_Thru" ' .. MatrickNr .. '')
     MacroObject[CurrentMacroNr + 1][62]:Set('Command', 'SetUserVariable "LC_DataPool" ' .. Construct_Pool .. '')
-    MacroObject[CurrentMacroNr + 1][63]:Set('Command', "Call DataPool '" .. Call_Pool.Name .. "'.'Plugins'.'LayoutColor_V2'.'LC_View_lua'")
+    MacroObject[CurrentMacroNr + 1][63]:Set('Command', "Call DataPool '" .. Call_Pool.Name .. "'.'Plugins'.'LayoutColor_V2_4'.'LC_View_lua'")
     MacroObject[CurrentMacroNr + 1][64]:Set('Command', 'SetUserVariable "LC_Fonction" 7')
     MacroObject[CurrentMacroNr + 1][65]:Set('Command', 'SetUserVariable "LC_Axes" ' .. Axes .. '')
     MacroObject[CurrentMacroNr + 1][66]:Set('Command', 'SetUserVariable "LC_Layout" ' .. TLayNr .. '')
@@ -113,7 +113,7 @@ function LC_Create_Macro_Reset(CurrentMacroNr, prefix, surfix, MatrickNrStart, A
     MacroObject[CurrentMacroNr + 1][68]:Set('Command', 'SetUserVariable "LC_Matrick" ' .. MatrickNrStart .. '')
     MacroObject[CurrentMacroNr + 1][69]:Set('Command', 'SetUserVariable "LC_Matrick_Thru" ' .. MatrickNr .. '')
     MacroObject[CurrentMacroNr + 1][70]:Set('Command', 'SetUserVariable "LC_DataPool" ' .. Construct_Pool .. '')
-    MacroObject[CurrentMacroNr + 1][71]:Set('Command', "Call DataPool '" .. Call_Pool.Name .. "'.'Plugins'.'LayoutColor_V2'.'LC_View_lua'")
+    MacroObject[CurrentMacroNr + 1][71]:Set('Command', "Call DataPool '" .. Call_Pool.Name .. "'.'Plugins'.'LayoutColor_V2_4'.'LC_View_lua'")
     MacroObject[CurrentMacroNr + 1][72]:Set('Command',
         'Off DataPool ' .. Construct_Pool .. ' Sequence ' .. CurrentSeqNr + 1)
 end -- end function LC_Create_Macro_Reset(...)
@@ -137,7 +137,7 @@ function LC_Create_Macro_Delay_From(CurrentMacroNr, prefix, surfix, Axes, Matric
     MacroObject[CurrentMacroNr][6]:Set('Command', 'SetUserVariable "LC_Matrick" ' .. MatrickNrStart .. '')
     MacroObject[CurrentMacroNr][7]:Set('Command', 'SetUserVariable "LC_Matrick_Thru" ' .. MatrickNr .. '')
     MacroObject[CurrentMacroNr][8]:Set('Command', 'SetUserVariable "LC_DataPool" ' .. Construct_Pool .. '')
-    MacroObject[CurrentMacroNr][9]:Set('Command', "Call DataPool '" .. Call_Pool.Name .. "'.'Plugins'.'LayoutColor_V2'.'LC_View_lua'")
+    MacroObject[CurrentMacroNr][9]:Set('Command', "Call DataPool '" .. Call_Pool.Name .. "'.'Plugins'.'LayoutColor_V2_4'.'LC_View_lua'")
 end
 
 function LC_Create_Macro_Delay_To(CurrentMacroNr, prefix, surfix, Axes, MatrickNrStart, fonct, TLayNr,
@@ -159,7 +159,7 @@ function LC_Create_Macro_Delay_To(CurrentMacroNr, prefix, surfix, Axes, MatrickN
     MacroObject[CurrentMacroNr][6]:Set('Command', 'SetUserVariable "LC_Matrick" ' .. MatrickNrStart .. '')
     MacroObject[CurrentMacroNr][7]:Set('Command', 'SetUserVariable "LC_Matrick_Thru" ' .. MatrickNr .. '')
     MacroObject[CurrentMacroNr][8]:Set('Command', 'SetUserVariable "LC_DataPool" ' .. Construct_Pool .. '')
-    MacroObject[CurrentMacroNr][9]:Set('Command', "Call DataPool '" .. Call_Pool.Name .. "'.'Plugins'.'LayoutColor_V2'.'LC_View_lua'")
+    MacroObject[CurrentMacroNr][9]:Set('Command', "Call DataPool '" .. Call_Pool.Name .. "'.'Plugins'.'LayoutColor_V2_4'.'LC_View_lua'")
 end
 
 function LC_Create_Macro_Phase(CurrentMacroNr, prefix, surfix, Axes, MatrickNrStart, fonct, TLayNr, Phase_Element,
@@ -184,7 +184,7 @@ function LC_Create_Macro_Phase(CurrentMacroNr, prefix, surfix, Axes, MatrickNrSt
     MacroObject[CurrentMacroNr][7]:Set('Command', 'SetUserVariable "LC_Matrick" ' .. MatrickNrStart .. '')
     MacroObject[CurrentMacroNr][8]:Set('Command', 'SetUserVariable "LC_Matrick_Thru" ' .. MatrickNr .. '')
     MacroObject[CurrentMacroNr][9]:Set('Command', 'SetUserVariable "LC_DataPool" ' .. Construct_Pool .. '')
-    MacroObject[CurrentMacroNr][10]:Set('Command', "Call DataPool '" .. Call_Pool.Name .. "'.'Plugins'.'LayoutColor_V2'.'LC_View_lua'")
+    MacroObject[CurrentMacroNr][10]:Set('Command', "Call DataPool '" .. Call_Pool.Name .. "'.'Plugins'.'LayoutColor_V2_4'.'LC_View_lua'")
 end
 
 function LC_Create_Macro_Group(CurrentMacroNr, prefix, surfix, Axes, MatrickNrStart, fonct, TLayNr,
@@ -206,7 +206,7 @@ function LC_Create_Macro_Group(CurrentMacroNr, prefix, surfix, Axes, MatrickNrSt
     MacroObject[CurrentMacroNr][6]:Set('Command', 'SetUserVariable "LC_Matrick" ' .. MatrickNrStart .. '')
     MacroObject[CurrentMacroNr][7]:Set('Command', 'SetUserVariable "LC_Matrick_Thru" ' .. MatrickNr .. '')
     MacroObject[CurrentMacroNr][8]:Set('Command', 'SetUserVariable "LC_DataPool" ' .. Construct_Pool .. '')
-    MacroObject[CurrentMacroNr][9]:Set('Command', "Call DataPool '" .. Call_Pool.Name .. "'.'Plugins'.'LayoutColor_V2'.'LC_View_lua'")
+    MacroObject[CurrentMacroNr][9]:Set('Command', "Call DataPool '" .. Call_Pool.Name .. "'.'Plugins'.'LayoutColor_V2_4'.'LC_View_lua'")
 end
 
 function LC_Create_Macro_Block(CurrentMacroNr, prefix, surfix, Axes, MatrickNrStart, fonct, TLayNr,
@@ -228,7 +228,7 @@ function LC_Create_Macro_Block(CurrentMacroNr, prefix, surfix, Axes, MatrickNrSt
     MacroObject[CurrentMacroNr][6]:Set('Command', 'SetUserVariable "LC_Matrick" ' .. MatrickNrStart .. '')
     MacroObject[CurrentMacroNr][7]:Set('Command', 'SetUserVariable "LC_Matrick_Thru" ' .. MatrickNr .. '')
     MacroObject[CurrentMacroNr][8]:Set('Command', 'SetUserVariable "LC_DataPool" ' .. Construct_Pool .. '')
-    MacroObject[CurrentMacroNr][9]:Set('Command', "Call DataPool '" .. Call_Pool.Name .. "'.'Plugins'.'LayoutColor_V2'.'LC_View_lua'")
+    MacroObject[CurrentMacroNr][9]:Set('Command', "Call DataPool '" .. Call_Pool.Name .. "'.'Plugins'.'LayoutColor_V2_4'.'LC_View_lua'")
 end
 
 function LC_Create_Macro_Wings(CurrentMacroNr, prefix, surfix, Axes, MatrickNrStart, fonct, TLayNr,
@@ -250,7 +250,7 @@ function LC_Create_Macro_Wings(CurrentMacroNr, prefix, surfix, Axes, MatrickNrSt
     MacroObject[CurrentMacroNr][6]:Set('Command', 'SetUserVariable "LC_Matrick" ' .. MatrickNrStart .. '')
     MacroObject[CurrentMacroNr][7]:Set('Command', 'SetUserVariable "LC_Matrick_Thru" ' .. MatrickNr .. '')
     MacroObject[CurrentMacroNr][8]:Set('Command', 'SetUserVariable "LC_DataPool" ' .. Construct_Pool .. '')
-    MacroObject[CurrentMacroNr][9]:Set('Command', "Call DataPool '" .. Call_Pool.Name .. "'.'Plugins'.'LayoutColor_V2'.'LC_View_lua'")
+    MacroObject[CurrentMacroNr][9]:Set('Command', "Call DataPool '" .. Call_Pool.Name .. "'.'Plugins'.'LayoutColor_V2_4'.'LC_View_lua'")
 end
 
 function Create_Macro_Fade_E(CurrentMacroNr, prefix, Argument_Fade, i, surfix, Axes, SeqNrStart, SeqNrEnd, MatrickNrStart,
@@ -274,7 +274,7 @@ function Create_Macro_Fade_E(CurrentMacroNr, prefix, Argument_Fade, i, surfix, A
     MacroObject[CurrentMacroNr][7]:Set('Command', 'SetUserVariable "LC_Element" ' .. Fade_Element[Axes] .. '')
     MacroObject[CurrentMacroNr][8]:Set('Command', 'SetUserVariable "LC_Matrick" ' .. MatrickNrStart .. '')
     MacroObject[CurrentMacroNr][9]:Set('Command', 'SetUserVariable "LC_DataPool" ' .. Construct_Pool .. '')
-    MacroObject[CurrentMacroNr][10]:Set('Command', "Call DataPool '" .. Call_Pool.Name .. "'.'Plugins'.'LayoutColor_V2'.'LC_View_lua'")
+    MacroObject[CurrentMacroNr][10]:Set('Command', "Call DataPool '" .. Call_Pool.Name .. "'.'Plugins'.'LayoutColor_V2_4'.'LC_View_lua'")
 
     CurrentMacroNr = CurrentMacroNr + 1
     return CurrentMacroNr

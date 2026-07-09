@@ -1,6 +1,6 @@
 --[[
 Releases:
-* 2.3.2.0
+* 2.4.2.2
 
 Version:
 * 2.3.6.0
@@ -191,7 +191,7 @@ function LC_Create_Group_Sequence(CurrentMacroNr, FirstSeqGrp, CurrentSeqNr, Las
                 ' ; SetUserVariable "LC_Element" ' .. Group_Element[Axes] ..
                 ' ; SetUserVariable "LC_Matrick" ' .. MatrickNrStart ..
                 ' ; SetUserVariable "LC_Matrick_Thru" ' .. MatrickNr ..
-                ' ; Call DataPool "' .. Call_Pool.Name .. '"."Plugins"."LayoutColor_V2"."LC_View_lua" ')
+                ' ; Call DataPool "' .. Call_Pool.Name .. '"."Plugins"."LayoutColor_V2_4"."LC_View_lua" ')
         end
         SequenceObject[CurrentSeqNr]:Set('Tags', tag_group.Name .. ':0')
         -- Cmd('Assign ' .. SequenceObject[CurrentSeqNr] .. " at " .. tag_group)
@@ -266,7 +266,7 @@ function LC_Create_Block_Sequence(CurrentMacroNr, FirstSeqBlock, CurrentSeqNr, L
 
     LayNr = LC_Command_Title('none', 'Value' .. surfix[Axes], TLayNr, LayNr, LayX, LayY, 580, 140, 3, Construct_Pool,
         Visi)
-        Layout_Object[TLayNr][LayNr]:Set('Tags', tag_V.Name .. ':0')
+    Layout_Object[TLayNr][LayNr]:Set('Tags', tag_V.Name .. ':0')
     -- Cmd('Assign ' .. Layout_Object[TLayNr][LayNr] .. " at " .. tag_V)
     -- Create Sequences XBlock
     for i = 1, 5 do
@@ -310,7 +310,7 @@ function LC_Create_Block_Sequence(CurrentMacroNr, FirstSeqBlock, CurrentSeqNr, L
                 ' ; SetUserVariable "LC_Element" ' .. Block_Element[Axes] ..
                 ' ; SetUserVariable "LC_Matrick" ' .. MatrickNrStart ..
                 ' ; SetUserVariable "LC_Matrick_Thru" ' .. MatrickNr ..
-                ' ; Call DataPool "' .. Call_Pool.Name .. '"."Plugins"."LayoutColor_V2"."LC_View_lua" ')
+                ' ; Call DataPool "' .. Call_Pool.Name .. '"."Plugins"."LayoutColor_V2_4"."LC_View_lua" ')
         end
 
         SequenceObject[CurrentSeqNr]:Set('Tags', tag_block.Name .. ':0')
@@ -385,7 +385,7 @@ function LC_Create_Wings_Sequence(CurrentMacroNr, FirstSeqWings, CurrentSeqNr, L
 
     LayNr = LC_Command_Title('none', 'Value' .. surfix[Axes], TLayNr, LayNr, LayX, LayY, 580, 140, 3, Construct_Pool,
         Visi)
-        Layout_Object[TLayNr][LayNr]:Set('Tags', tag_V.Name .. ':0')
+    Layout_Object[TLayNr][LayNr]:Set('Tags', tag_V.Name .. ':0')
     -- Cmd('Assign ' .. Layout_Object[TLayNr][LayNr] .. " at " .. tag_V)
     -- Create Sequences Wings
     for i = 1, 5 do
@@ -429,7 +429,7 @@ function LC_Create_Wings_Sequence(CurrentMacroNr, FirstSeqWings, CurrentSeqNr, L
                 ' ; SetUserVariable "LC_Element" ' .. Wings_Element[Axes] ..
                 ' ; SetUserVariable "LC_Matrick" ' .. MatrickNrStart ..
                 ' ; SetUserVariable "LC_Matrick_Thru" ' .. MatrickNr ..
-                ' ; Call DataPool "' .. Call_Pool.Name .. '"."Plugins"."LayoutColor_V2"."LC_View_lua" ')
+                ' ; Call DataPool "' .. Call_Pool.Name .. '"."Plugins"."LayoutColor_V2_4"."LC_View_lua" ')
         end
 
         SequenceObject[CurrentSeqNr]:Set('Tags', tag_wings.Name .. ':0')
@@ -497,8 +497,8 @@ function LC_Create_XYZ_Sequence(CurrentMacroNr, First_Id_Lay, prefix, surfix, Ma
     for m = 1, 3 do
         MacroObject[CurrentMacroNr]:Insert(m)
         MacroObject[CurrentMacroNr][m]:Set('Command',
-            'Set DataPool ' .. Construct_Pool .. ' Layout 1.1 Thru Property VisibilityElement ' .. Visi[Axes][m] ..
-            ' if Tag ' .. tag_V[m])
+            'Set DataPool ' .. Construct_Pool .. ' Layout ' .. TLayNr .. '.1 Thru Property VisibilityElement ' ..
+            Visi[Axes][m] .. ' if Tag ' .. tag_V[m])
     end
     LC_Create_Macro_Reset(CurrentMacroNr, prefix, surfix, MatrickNrStart, Axes, CurrentSeqNr, First_Id_Lay, TLayNr,
         Fade_Element, Delay_F_Element, Delay_T_Element, Phase_Element, Group_Element, Block_Element, Wings_Element,
@@ -523,7 +523,7 @@ function LC_Create_XYZ_Sequence(CurrentMacroNr, First_Id_Lay, prefix, surfix, Ma
     SequenceObject[CurrentSeqNr][3][1]:Set('Command',
         'Go DataPool ' .. Construct_Pool .. ' Macro ' .. CurrentMacroNr .. '')
 
-        SequenceObject[CurrentSeqNr]:Set('Tags', tag_xyz.Name .. ':0')
+    SequenceObject[CurrentSeqNr]:Set('Tags', tag_xyz.Name .. ':0')
     -- Cmd('Assign ' .. SequenceObject[CurrentSeqNr] .. " at " .. tag_xyz)
 
     LC_Command_Ext_Suite(CurrentSeqNr, SequenceObject)
@@ -677,7 +677,7 @@ function LC_Macro_Priority(LayX, LayY, Ligne_Inc, CurrentMacroNr, First_All_Colo
     MacroObject[CurrentMacroNr][5]:Set('Command', 'SetUserVariable "LC_DataPool" ' .. Construct_Pool)
     MacroObject[CurrentMacroNr][6]:Set('Command', Color_message)
     MacroObject[CurrentMacroNr][7]:Set('Command',
-        "Call DataPool '" .. Call_Pool.Name .. "'.'Plugins'.'LayoutColor_V2'.'LC_View_lua'")
+        "Call DataPool '" .. Call_Pool.Name .. "'.'Plugins'.'LayoutColor_V2_4'.'LC_View_lua'")
 
     local address = LC_Search_Addr_Nat_App('p_htp_png')
 

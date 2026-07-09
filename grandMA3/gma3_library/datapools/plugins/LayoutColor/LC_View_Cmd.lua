@@ -1,6 +1,6 @@
 --[[
 Releases:
-* 2.3.2.0
+* 2.4.2.2
 
 Version:
 * 2.3.6.0
@@ -160,16 +160,19 @@ function LCV_Phase(axes, layout, element, matrick_call, matrickthru, data_pool)
         Cmd('Set DataPool ' ..
             data_pool .. ' Matricks ' .. matrick + 1 .. ' Thru ' .. matrickthru .. ' Property "PhaseToz" ' .. tx)
     end
+    -- Echo('fx ' .. fx .. ' tx ' .. tx)
     local text
     if (fx ~= "None" and fx ~= "90°" and fx ~= "180°" and fx ~= "270°" and fx ~= "360°") then
         if (tx ~= "None" and tx ~= "90°" and tx ~= "180°" and tx ~= "270°" and tx ~= "360°") then
             text = string.format('"%.2f > %.2f"', fx, tx)
         else
-            text = string.format('"%.2f > %s"', fx, tx)
+            text = string.format('"%s > %s"', fx, tx)
+            -- text = string.format('"%.2f > %s"', fx, tx)
         end
     else
         if (tx ~= "None" and tx ~= "90°" and tx ~= "180°" and tx ~= "270°" and tx ~= "360°") then
-            text = string.format('"%s > %.2f"', fx, tx)
+            text = string.format('"%s > %s"', fx, tx)
+            -- text = string.format('"%s > %.2f"', fx, tx)
         else
             text = string.format('"%s > %s"', fx, tx)
         end

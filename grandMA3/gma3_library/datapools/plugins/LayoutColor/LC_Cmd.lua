@@ -1,6 +1,6 @@
 --[[
 Releases:
-* 2.3.2.0
+* 2.4.2.2
 
 Version:
 * 2.4.2.2
@@ -167,7 +167,7 @@ function LC_Create_Appearances_Sequences(CurrentMacroNr, SelectedGelNr, NbGroup,
         MacroObject[CurrentMacroNr][5]:Set('Command', 'SetUserVariable "LC_DataPool" ' .. Construct_Pool)
         MacroObject[CurrentMacroNr][6]:Set('Command', 'SetUserVariable "LC_Sequence" ' .. CurrentSeqNr)
         MacroObject[CurrentMacroNr][7]:Set('Command',
-            "Call DataPool '" .. Call_Pool.Name .. "'.'Plugins'.'LayoutColor_V2'.'LC_View_lua'")
+            "Call DataPool '" .. Call_Pool.Name .. "'.'Plugins'.'LayoutColor_V2_4'.'LC_View_lua'")
 
         Nr = Layout_Object[TLayNr]:Acquire()
         Layout_Object[TLayNr][Nr.No]:Set('Object', MacroObject[CurrentMacroNr])
@@ -211,7 +211,7 @@ function LC_Create_Appearances_Sequences(CurrentMacroNr, SelectedGelNr, NbGroup,
             SequenceObject[CurrentSeqNr][3][1][1]:Set('Selection', GroupsObject[1])
             SequenceObject[CurrentSeqNr][3][1][1]:Set('Values', All5Object[All_5_NrStart + col - 1])
             SequenceObject[CurrentSeqNr][3][1][1]:Set('MAtricks', MatricksObject[MatrickNrStart])
-            SequenceObject[CurrentSeqNr][3][1][1]:Set('SelectionMode', 'Strict')
+            SequenceObject[CurrentSeqNr][3][1][1]:Set('SelectionMode', 'Normal')
             SequenceObject[CurrentSeqNr][3][1][1]:Set('Enabled', 'Yes')
             SequenceObject[CurrentSeqNr]:Set('Tags', Group_Tag[g].Name .. ':0')
             -- Cmd('Assign ' .. SequenceObject[CurrentSeqNr] .. " at " .. Group_Tag[g])
@@ -539,7 +539,7 @@ function LC_Create_Fade_Sequences(MakeX, CurrentSeqNr, CurrentMacroNr, prefix, s
     MacroObject[CurrentMacroNr][6]:Set('Command', 'SetUserVariable "LC_Element" ' .. Fade_Element[Axes] .. '')
     MacroObject[CurrentMacroNr][7]:Set('Command', 'SetUserVariable "LC_Matrick" ' .. MatrickNrStart .. '')
     MacroObject[CurrentMacroNr][8]:Set('Command',
-        "Call DataPool '" .. Call_Pool.Name .. "'.'Plugins'.'LayoutColor_V2'.'LC_View_lua'")
+        "Call DataPool '" .. Call_Pool.Name .. "'.'Plugins'.'LayoutColor_V2_4'.'LC_View_lua'")
     CurrentMacroNr = CurrentMacroNr + 1
 
     for v in ipairs(TagObject_LC) do
@@ -745,7 +745,7 @@ function LC_Create_Delay_From_Sequences(First_Id_Lay, LayNr, CurrentSeqNr, Curre
                 ' ; SetUserVariable "LC_Element" ' .. Delay_F_Element[Axes] ..
                 ' ; SetUserVariable "LC_Matrick" ' .. MatrickNrStart ..
                 ' ; SetUserVariable "LC_Matrick_Thru" ' .. MatrickNr ..
-                ' ; Call DataPool "' .. Call_Pool.Name .. '"."Plugins"."LayoutColor_V2"."LC_View_lua" ')
+                ' ; Call DataPool "' .. Call_Pool.Name .. '"."Plugins"."LayoutColor_V2_4"."LC_View_lua" ')
         end
         SequenceObject[CurrentSeqNr]:Set('Tags', tag_delay_from.Name .. ':0' )
         -- Cmd('Assign ' .. SequenceObject[CurrentSeqNr] .. " at " .. tag_delay_from)
@@ -861,7 +861,7 @@ function LC_Create_Delay_To_Sequences(Axes, First_Id_Lay, LayNr, CurrentSeqNr, C
                 ' ; SetUserVariable "LC_Element" ' .. Delay_T_Element[Axes] ..
                 ' ; SetUserVariable "LC_Matrick" ' .. MatrickNrStart ..
                 ' ; SetUserVariable "LC_Matrick_Thru" ' .. MatrickNr ..
-                ' ; Call DataPool "' .. Call_Pool.Name .. '"."Plugins"."LayoutColor_V2"."LC_View_lua" ')
+                ' ; Call DataPool "' .. Call_Pool.Name .. '"."Plugins"."LayoutColor_V2_4"."LC_View_lua" ')
         end
         SequenceObject[CurrentSeqNr]:Set('Tags', tag_delay_to.Name .. ':0')
         -- Cmd('Assign ' .. SequenceObject[CurrentSeqNr] .. " at " .. tag_delay_to)

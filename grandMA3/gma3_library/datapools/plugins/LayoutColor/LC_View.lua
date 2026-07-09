@@ -1,6 +1,6 @@
 --[[
 Releases:
-* 2.3.2.0
+* 2.4.2.2
 
 Version:
 * 2.3.6.0
@@ -10,7 +10,8 @@ Rewrite by Richard Fontaine "RIRI", June 2026.
 
 local function main()
     local Select = UserVars()
-    local axes, layout, element, matrick, seq_call, matrickthru, macrostore, data_pool, prefix, macro = 0,0,0,0,0,0,0,0,0,0
+    local axes, layout, element, matrick, seq_call, matrickthru, macrostore, data_pool, prefix, macro = 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0
     local sel = tonumber((GetVar(Select, "LC_Fonction")))
     if GetVar(Select, "LC_Axes") then
         axes = tonumber((GetVar(Select, "LC_Axes")))
@@ -33,38 +34,38 @@ local function main()
     if GetVar(Select, "LC_DataPool") then
         data_pool = GetVar(Select, "LC_DataPool")
     end
-    if GetVar(Select,"LC_Favourites") then
+    if GetVar(Select, "LC_Favourites") then
         macrostore = GetVar(Select, "LC_Favourites")
     end
-    if GetVar(Select,"LC_Prefix") then
+    if GetVar(Select, "LC_Prefix") then
         prefix = GetVar(Select, "LC_Prefix")
     end
-    if GetVar(Select,"LC_Macro") then
+    if GetVar(Select, "LC_Macro") then
         macro = GetVar(Select, "LC_Macro")
     end
 
     if (sel == 1) then
-        LCV_Fade(axes,layout,element,matrick,data_pool)
+        LCV_Fade(axes, layout, element, matrick, data_pool)
     elseif (sel == 2) then
-        LCV_Delay_From(axes,layout,element,matrick,matrickthru,data_pool)
+        LCV_Delay_From(axes, layout, element, matrick, matrickthru, data_pool)
     elseif (sel == 3) then
-        LCV_Delay_To(axes,layout,element,matrick,matrickthru,data_pool)
+        LCV_Delay_To(axes, layout, element, matrick, matrickthru, data_pool)
     elseif (sel == 4) then
-        LCV_Phase(axes,layout,element,matrick,matrickthru,data_pool)
+        LCV_Phase(axes, layout, element, matrick, matrickthru, data_pool)
     elseif (sel == 5) then
-        LCV_Group(axes,layout,element,matrick,matrickthru,data_pool)
+        LCV_Group(axes, layout, element, matrick, matrickthru, data_pool)
     elseif (sel == 6) then
-        LCV_Block(axes,layout,element,matrick,matrickthru,data_pool)
+        LCV_Block(axes, layout, element, matrick, matrickthru, data_pool)
     elseif (sel == 7) then
-        LCV_Wings(axes,layout,element,matrick,matrickthru,data_pool)
+        LCV_Wings(axes, layout, element, matrick, matrickthru, data_pool)
     elseif (sel == 8) then
-        LCV_Priority(layout,element,seq_call,data_pool)
+        LCV_Priority(layout, element, seq_call, data_pool)
     elseif (sel == 9) then
-        LCV_PriorityNumber(layout,element,seq_call,data_pool)
+        LCV_PriorityNumber(layout, element, seq_call, data_pool)
     elseif (sel == 10) then
-        LCV_Favourites(layout,macrostore,data_pool,prefix,macro)
+        LCV_Favourites(layout, macrostore, data_pool, prefix, macro)
     elseif (sel == 11) then
-        LCV_Group_select(layout,element,seq_call,data_pool)
+        LCV_Group_select(layout, element, seq_call, data_pool)
     end
 
     DelVar(Select, "LC_Fonction")
