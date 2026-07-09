@@ -3,7 +3,7 @@ Releases:
 * 2.3.2.0
 
 Version:
-* 2.3.6.0
+* 2.3.6.1
 
 Rewrite by Richard Fontaine "RIRI", June 2026.
 --]]
@@ -382,7 +382,8 @@ function LC_Construct_Layout(TLay, SeqNrStart, MacroNrStart, MatrickNrStart, Mat
         CurrentSeqNr, Delay_F_Element, LayNr, LayX, Current_Id_Lay, Fade_Element, CurrentMacroNr, First_Id_Lay =
             LC_Create_Fade_Sequences(MakeX, CurrentSeqNr, CurrentMacroNr, prefix, surfix,
                 First_Id_Lay, LayNr, MatrickNrStart, TLayNr, Fade_Element, Argument_Fade, AppImp, LayX, LayY, LayW, LayH,
-                SeqNrStart, SeqNrEnd, Current_Id_Lay, Delay_F_Element, Axes, Construct_Pool, Call_Pool, Time_Argument, NbGroup)
+                SeqNrStart, SeqNrEnd, Current_Id_Lay, Delay_F_Element, Axes, Construct_Pool, Call_Pool, Time_Argument,
+                NbGroup)
         -- end Create Sequence FADE
 
         -- Create Sequences Delayfrom
@@ -497,7 +498,7 @@ function LC_Construct_Layout(TLay, SeqNrStart, MacroNrStart, MatrickNrStart, Mat
     for b = 1, 12 do
         MacroObject[CurrentMacroNr]:Insert(b)
     end
-   
+
     MacroObject[CurrentMacroNr]:Set('name', 'Erase [' .. prefix:gsub('_', '') .. ']')
     MacroObject[CurrentMacroNr][1]:Set('Command', condition_string)
     MacroObject[CurrentMacroNr][1]:Set('Wait', 'Go')
@@ -525,15 +526,17 @@ function LC_Construct_Layout(TLay, SeqNrStart, MacroNrStart, MatrickNrStart, Mat
     -- end Macro Del LC prefix
 
     -- dimension of layout & scal it
-    for k in pairs(DataPool().Layouts:Children()) do
-        if (math.floor(TLayNr) == math.floor(tonumber(DataPool().Layouts:Children()[k].NO))) then
-            TLayNrRef = k
-        end
-    end
-    UsedW = Root().ShowData.DataPools[Construct_Pool].Layouts:Children()[TLayNrRef].UsedW / 2
-    UsedH = Root().ShowData.DataPools[Construct_Pool].Layouts:Children()[TLayNrRef].UsedH / 2
-    Layout_Object[TLayNr]:Set('DimensionW', UsedW)
-    Layout_Object[TLayNr]:Set('DimensionH', UsedH)
+    -- for k in pairs(Layout_Object) do
+    --     Echo('k ' .. k)
+    --     if (math.floor(TLayNr) == math.floor(tonumber(Layout_Object[k].NO))) then
+    --         TLayNrRef = k
+    --     end
+    -- end
+    -- Echo('Tlaynrref ' .. TLayNrRef)
+    -- UsedW =Layout_Object[TLayNrRef].UsedW / 2
+    -- UsedH = Layout_Object[TLayNrRef].UsedH / 2
+    -- Layout_Object[TLayNr]:Set('DimensionW', UsedW)
+    -- Layout_Object[TLayNr]:Set('DimensionH', UsedH)
 
     CmdIndirectWait('Select DataPool ' .. Construct_Pool .. ' Layout ' .. TLayNr)
 
