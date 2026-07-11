@@ -1,9 +1,9 @@
 --[[
 Releases:
-* 2.3.2.0
+* 2.4.2.2
 
 Version :
-* 0.0.0.95
+* 0.0.0.96
 
 Created by Richard Fontaine "RIRI", April 2026.
 --]]
@@ -125,7 +125,7 @@ function SOUND_Build_Seq(Construct_Pool, SeqNum, All_4_NrStart, Grp_Start, Fid, 
     SequenceObject:Create(SeqEnd + 1)
     local Seq_On_Off = SeqEnd + 1
     SequenceObject[SeqEnd + 1]:Set('Name', prefix .. 'On_Off Sound ')
-    SequenceObject[SeqEnd + 1]:Set('Appearance', '[[Switch_Off_png]]')
+    SequenceObject[SeqEnd + 1]:Set('Appearance', '[[sound_off_png]]')
     SOUND_Sequence_Defo(SequenceObject, SeqEnd + 1)
     SequenceObject[SeqEnd + 1]:Set('AUTOSTART', 'No')
     SequenceObject[SeqEnd + 1]:Set('AUTOSTOP', 'No')
@@ -136,13 +136,13 @@ function SOUND_Build_Seq(Construct_Pool, SeqNum, All_4_NrStart, Grp_Start, Fid, 
     SequenceObject[SeqEnd + 1]:Insert()
     SequenceObject[SeqEnd + 1][3]:Set('No', 1)
     SequenceObject[SeqEnd + 1][3]:Create(1)
-    SequenceObject[SeqEnd + 1][3][1]:Set('Appearance', '[[switch_On_png]]')
+    SequenceObject[SeqEnd + 1][3][1]:Set('Appearance', '[[sound_on_png]]')
     SequenceObject[SeqEnd + 1][3][1]:Set('Command',
         "Go+ DataPool " .. Construct_Pool .. " Sequence '" .. prefix .. "Sound*'")
     SequenceObject[SeqEnd + 1]:Insert()
     SequenceObject[SeqEnd + 1][4]:Set('No', 2)
     SequenceObject[SeqEnd + 1][4]:Create(1)
-    SequenceObject[SeqEnd + 1][4][1]:Set('Appearance', '[[Switch_Off_png]]')
+    SequenceObject[SeqEnd + 1][4][1]:Set('Appearance', '[[sound_off_png]]')
     SequenceObject[SeqEnd + 1][4][1]:Set('Command',
         "Off DataPool " .. Construct_Pool .. " Sequence '" .. prefix .. "Sound*'")
 
