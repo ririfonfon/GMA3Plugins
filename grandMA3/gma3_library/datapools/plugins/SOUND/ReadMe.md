@@ -18,7 +18,7 @@
 # PlayBack
 - voici à mon sens le bon play back
 - <img width="1356" height="896" alt="image" src="https://github.com/user-attachments/assets/3caa0759-4271-4e54-97df-a8ebbe13bb5d" />
-- assigné les masters : AMASTER ALL SOUND et BMASTER ALL SOUND La sequence CROSS SOUND
+- assigné les masters : AMASTER ALL SOUND et BMASTER ALL SOUND La sequence CROSS SOUND avec le X au Fader
 - crée une copie de AMASTER ALL SOUND et BMASTER ALL SOUND en AMASTER ALL Seuil et BMASTER ALL Seuil les affecter au play Back et les
 monter à full, vous comprendrer leur utiliter en jouant avec .
 
