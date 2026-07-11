@@ -117,7 +117,7 @@ local thiscomponent = select(4, ...)
 
 local function Main(displayHandle)
     local DEBUG = false
-    Cmd('Set UserProfile *.15 Property "keyboardshortcutsactive" false')
+    Cmd('Set UserProfile *.13 Property "keyboardshortcutsactive" false')
 
     -- fix Call_Pool
     local Call_Pool = thiscomponent:FindParent(DataPool():GetClass())
