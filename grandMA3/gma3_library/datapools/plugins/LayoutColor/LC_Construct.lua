@@ -236,8 +236,8 @@ function LC_Construct_Layout(TLay, SeqNrStart, MacroNrStart, MatrickNrStart, Mat
     local StColCode
     local StColName
     local StringColName
-    -- local SelectedGrpName = {}
     local check = {}
+    -- local SelectedGrpName = {}
     -- local FirstSeqTime
     -- local LastSeqTime
     local FirstSeqGrp

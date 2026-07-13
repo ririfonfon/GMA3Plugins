@@ -1,51 +1,89 @@
 --[[
 Releases:
-* 2.3.1.1
+* 2.4.2.2
+
+Version:
+* 2.0.0.0
+
 Created by Richard Fontaine "RIRI", September 2025.
 --]]
 
-function PC_Create_Appearances(SelectedGrp, AppNr, prefix, TCol, NrAppear, StColCode, StColName, StringColName, AppRef)
+function PC_Create_Appearances(AppNr, prefix, TCol, NrAppear, StColCode, StColName, StringColName, AppRef)
+    local AppObject = Root().ShowData.Appearances
+    AppObject:Acquire()
     AppRef = AppNr
     local StAppNameOn
     local StAppNameOff
     local StAppOn = '\"Showdata.MediaPools.Symbols.on\"'
     local StAppOff = '\"Showdata.MediaPools.Symbols.off\"'
-    for g in ipairs(SelectedGrp) do
-        AppNr = math.floor(AppNr);
-        Cmd('Store App ' .. AppNr .. ' \'' .. prefix .. ' Label\' Appearance=' .. StAppOn .. ' color=\'0,0,0,1\'')
-        AppNr = math.floor(AppNr + 1);
-        Cmd('Store App ' .. AppNr .. ' \'' .. prefix .. ' Labelon\' Appearance=' .. StAppOn .. ' color=\'1,1,1,1\'')
-        NrAppear = math.floor(AppNr + 1)
-        for col in ipairs(TCol) do
-            StColCode = "\"" .. TCol[col].r .. "," .. TCol[col].g .. "," .. TCol[col].b .. ",1\""
-            StColName = TCol[col].name
-            StringColName = string.gsub(StColName, " ", "_")
-            StAppNameOn = "\"" .. prefix .. StringColName .. " on\""
-            StAppNameOff = "\"" .. prefix .. StringColName .. " off\""
-            Cmd("Store App " ..
-                NrAppear .. " " .. StAppNameOn .. " Appearance=" .. StAppOn .. " color=" .. StColCode .. "")
-            NrAppear = math.floor(NrAppear + 1)
-            Cmd("Store App " ..
-                NrAppear .. " " .. StAppNameOff .. " Appearance=" .. StAppOff .. " color=" .. StColCode .. "")
-            NrAppear = math.floor(NrAppear + 1)
-        end
+    NrAppear = math.floor(AppNr)
+    PC_Check_Size_Pool(NrAppear, AppObject)
+    AppObject:Create(NrAppear)
+    AppObject[NrAppear]:Set('Name', prefix .. 'Label')
+    AppObject[NrAppear]:Set('Appearance', StAppOn:gsub('"', ''))
+    AppObject[NrAppear]:Set('Color', '0, 0, 0, 1')
+
+    -- AppNr = math.floor(AppNr)
+    -- Cmd('Store App ' .. AppNr .. ' \'' .. prefix .. ' Label\' Appearance=' .. StAppOn .. ' color=\'0,0,0,1\'')
+    -- AppNr = math.floor(AppNr + 1)
+    -- Cmd('Store App ' .. AppNr .. ' \'' .. prefix .. ' Labelon\' Appearance=' .. StAppOn .. ' color=\'1,1,1,1\'')
+
+    NrAppear = math.floor(AppNr + 1)
+    for col in ipairs(TCol) do
+        StColCode = "\"" .. TCol[col].r .. "," .. TCol[col].g .. "," .. TCol[col].b .. ",1\""
+        StColName = TCol[col].name
+        StringColName = string.gsub(StColName, " ", "_")
+        StAppNameOn = prefix .. StringColName .. "_On"
+        StAppNameOff = prefix .. StringColName .. "_Off"
+        PC_Check_Size_Pool(NrAppear, AppObject)
+        AppObject:Create(NrAppear)
+        -- AppObject[NrAppear]:Set('Name', "'" .. StAppNameOn:gsub('"', '') .. "'")
+        AppObject[NrAppear]:Set('Name', StAppNameOn:gsub('"', ''))
+        AppObject[NrAppear]:Set('Appearance', StAppOn:gsub('"', ''))
+        AppObject[NrAppear]:Set('Color', StColCode:gsub('"', ''))
+
+        NrAppear = math.floor(NrAppear + 1)
+        PC_Check_Size_Pool(NrAppear, AppObject)
+        AppObject:Create(NrAppear)
+        -- AppObject[NrAppear]:Set('Name', "'" .. StAppNameOff:gsub('"', '') .. "'")
+        AppObject[NrAppear]:Set('Name', StAppNameOff:gsub('"', ''))
+        AppObject[NrAppear]:Set('Appearance', StAppOff:gsub('"', ''))
+        AppObject[NrAppear]:Set('Color', StColCode:gsub('"', ''))
+
+        NrAppear = math.floor(NrAppear + 1)
+
+
+
+        -- Cmd("Store App " ..
+        --     NrAppear .. " " .. StAppNameOn .. " Appearance=" .. StAppOn .. " color=" .. StColCode .. "")
+        -- NrAppear = math.floor(NrAppear + 1)
+        -- Cmd("Store App " ..
+        --     NrAppear .. " " .. StAppNameOff .. " Appearance=" .. StAppOff .. " color=" .. StColCode .. "")
+        -- NrAppear = math.floor(NrAppear + 1)
     end
     return NrAppear, AppRef
 end
 
-function PC_Create_Preset_25(TCol, StColName, StringColName, SelectedGelNr, prefix, All_5_NrEnd, All_5_Current)
+function PC_Create_Preset_25(TCol, StColName, StringColName, SelectedGelNr, prefix, All_5_NrEnd, All_5_Current,
+                             Construct_Pool)
+    local Preset25Object = Root().ShowData.DataPools[Construct_Pool].PresetPools[25]
+    Preset25Object:Set('PresetMode', 'Universal')
+    -- Cmd('Set Preset 25 Property PresetMode "Universal"')
+
     Cmd("ClearAll /nu")
-    Cmd('Set Preset 25 Property PresetMode "Universal"')
     Cmd('Fixture Thru')
     for col in ipairs(TCol) do
         StColName = TCol[col].name
         StringColName = string.gsub(StColName, " ", "_")
-        Cmd('At Gel ' .. SelectedGelNr .. "." .. col .. '')
-        Cmd('Store Preset 25.' .. All_5_Current .. '')
-        Cmd('Label Preset 25.' .. All_5_Current .. " " .. prefix .. StringColName .. " ")
+        local convert = prefix .. StringColName
+        local Name = string.gsub(convert, " ", "_")
+        CmdIndirectWait('At Gel ' .. SelectedGelNr .. "." .. col .. '')
+        CmdIndirectWait('Store DataPool ' .. Construct_Pool .. ' Preset 25.' .. All_5_Current .. '/u/nc')
+        CmdIndirectWait('Label DataPool ' .. Construct_Pool .. ' Preset 25.' .. All_5_Current .. " " .. Name .. " ")
         All_5_NrEnd = All_5_Current
         All_5_Current = math.floor(All_5_Current + 1)
     end
+    CmdIndirectWait("ClearAll /nu")
     return All_5_NrEnd, All_5_Current
 end
 
@@ -75,29 +113,36 @@ function PC_Create_Matricks(MatrickNr, Argument_Matricks, surfix, prefix, Data_P
     end
 end
 
-function PC_Create_Preset_Ref_1234(All_5_Current, SelectedGelNr)
-    Cmd("ClearAll /nu")
-    Cmd('Fixture Thru')
+function PC_Create_Preset_Ref_1234(All_5_Current, SelectedGelNr, Construct_Pool)
+    local Preset25Object = Root().ShowData.DataPools[Construct_Pool].PresetPools[25]
+    Preset25Object:Set('PresetMode', 'Universal')
+
+    CmdIndirectWait("ClearAll /nu")
+    CmdIndirectWait('Fixture Thru')
     for i = 1, 4 do
-        Cmd('At Gel ' .. SelectedGelNr .. ".1")
-        Cmd('Store Preset 25.' .. All_5_Current .. '')
+        CmdIndirectWait('At Gel ' .. SelectedGelNr .. ".1")
+        CmdIndirectWait('Store DataPool ' .. Construct_Pool .. ' Preset 25.' .. All_5_Current .. '/u/nc')
         All_5_Current = math.floor(All_5_Current + 1)
     end
     local Preset_Ref = All_5_Current - 4
+    CmdIndirectWait("ClearAll /nu")
     return All_5_Current, Preset_Ref
 end
 
-function PC_Create_Phaser(All_5_Current, Preset_Ref, prefix, Argument_Ref, Phaser_Off)
+function PC_Create_Phaser(All_5_Current, Preset_Ref, prefix, Argument_Ref, Phaser_Off, Construct_Pool)
+    local Preset25Object = Root().ShowData.DataPools[Construct_Pool].PresetPools[25]
+    Preset25Object:Set('PresetMode', 'Universal')
     local transition
     local Preset_cal
-    Cmd("ClearAll /nu")
-    Cmd('Fixture Thru')
-    Cmd('Attribute "ColorRGB_R" At Relative 0')
-    Cmd('Attribute "ColorRGB_G" At Relative 0')
-    Cmd('Attribute "ColorRGB_B" At Relative 0')
-    Cmd('Attribute "ColorRGB_W" At Relative 0')
-    Cmd('Store Preset 25.' .. All_5_Current .. '')
-    Cmd('Label Preset 25.' .. All_5_Current .. " " .. prefix .. "off")
+
+    CmdIndirectWait("ClearAll /nu")
+    CmdIndirectWait('Fixture Thru')
+    CmdIndirectWait('Attribute "ColorRGB_R" At Relative 0')
+    CmdIndirectWait('Attribute "ColorRGB_G" At Relative 0')
+    CmdIndirectWait('Attribute "ColorRGB_B" At Relative 0')
+    CmdIndirectWait('Attribute "ColorRGB_W" At Relative 0')
+    CmdIndirectWait('Store DataPool ' .. Construct_Pool .. ' Preset 25.' .. All_5_Current .. '/u/nc')
+    CmdIndirectWait('Label DataPool ' .. Construct_Pool .. ' Preset 25.' .. All_5_Current .. " " .. prefix .. "off")
     Phaser_Off = All_5_Current
     All_5_Current = math.floor(All_5_Current + 1)
     for i = 1, 3 do
@@ -109,8 +154,8 @@ function PC_Create_Phaser(All_5_Current, Preset_Ref, prefix, Argument_Ref, Phase
             transition = 0
         end
         for g in ipairs(Argument_Ref) do
-            Cmd("ClearAll /nu")
-            Cmd('Fixture Thru')
+            CmdIndirectWait("ClearAll /nu")
+            CmdIndirectWait('Fixture Thru')
             for st = 1, Argument_Ref[g].Step do
                 if (st == 1) then
                     Preset_cal = Preset_Ref + Argument_Ref[g].Step1
@@ -121,27 +166,28 @@ function PC_Create_Phaser(All_5_Current, Preset_Ref, prefix, Argument_Ref, Phase
                 elseif (st == 4) then
                     Preset_cal = Preset_Ref + Argument_Ref[g].Step4
                 end
-                Cmd('Next Step')
-                Cmd('At Preset 25.' .. Preset_cal .. '')
+                CmdIndirectWait('Next Step')
+                CmdIndirectWait('At DataPool ' .. Construct_Pool .. ' Preset 25.' .. Preset_cal .. '')
             end
 
             for st = 1, Argument_Ref[g].Step do
-                Cmd('Attribute "ColorRGB_R"')
-                Cmd('At Transition Percent ' .. transition .. '')
-                Cmd('Attribute "ColorRGB_G"')
-                Cmd('At Transition Percent ' .. transition .. '')
-                Cmd('Attribute "ColorRGB_B"')
-                Cmd('At Transition Percent ' .. transition .. '')
-                Cmd('Attribute "ColorRGB_W"')
-                Cmd('At Transition Percent ' .. transition .. '')
-                Cmd('Previous Step')
+                CmdIndirectWait('Attribute "ColorRGB_R"')
+                CmdIndirectWait('At Transition Percent ' .. transition .. '')
+                CmdIndirectWait('Attribute "ColorRGB_G"')
+                CmdIndirectWait('At Transition Percent ' .. transition .. '')
+                CmdIndirectWait('Attribute "ColorRGB_B"')
+                CmdIndirectWait('At Transition Percent ' .. transition .. '')
+                CmdIndirectWait('Attribute "ColorRGB_W"')
+                CmdIndirectWait('At Transition Percent ' .. transition .. '')
+                CmdIndirectWait('Previous Step')
             end
 
-            Cmd('Store Preset 25.' .. All_5_Current .. '')
-            Cmd('Label Preset 25.' .. All_5_Current .. " " .. prefix .. Argument_Ref[g].Name)
+            CmdIndirectWait('Store DataPool ' .. Construct_Pool .. ' Preset 25.' .. All_5_Current .. '/u/nc')
+            CmdIndirectWait('Label DataPool ' .. Construct_Pool .. ' Preset 25.' .. All_5_Current .. " " .. prefix .. Argument_Ref[g].Name)
             All_5_Current = math.floor(All_5_Current + 1)
         end
     end
+    CmdIndirectWait("ClearAll /nu")
     return Phaser_Off, All_5_Current
 end
 
@@ -295,7 +341,8 @@ function PC_Create_Layout_Phaser(TLayNr, NaLay, SelectedGelNr, CurrentSeqNr, Pre
                 Cmd("Set seq " .. CurrentSeqNr ..
                     " cue \"CueZero\" Property Command=\"Set DataPool " ..
                     Data_Pool_Nr .. " Layout " .. TLayNr .. "." .. LayNr ..
-                    " Property Appearance " .. NrNeed .. " VisibilityBorder=0 VisibilityIcon=0 ; Go+ DataPool " .. Data_Pool_Nr ..
+                    " Property Appearance " ..
+                    NrNeed .. " VisibilityBorder=0 VisibilityIcon=0 ; Go+ DataPool " .. Data_Pool_Nr ..
                     " Macro " .. CurrentMacroNr .. "; Off DataPool " .. Data_Pool_Nr .. "  Sequence " .. Start_Seq_1 ..
                     " Thru " .. End_Seq_1 .. " - " .. CurrentSeqNr .. "\"")
             elseif (g == 2) then
@@ -303,7 +350,8 @@ function PC_Create_Layout_Phaser(TLayNr, NaLay, SelectedGelNr, CurrentSeqNr, Pre
                 Cmd("Set seq " .. CurrentSeqNr ..
                     " cue \"CueZero\" Property Command=\"Set DataPool " ..
                     Data_Pool_Nr .. " Layout " .. TLayNr .. "." .. LayNr ..
-                    " Property Appearance " .. NrNeed .. " VisibilityBorder=0 VisibilityIcon=0 ; Go+ DataPool " .. Data_Pool_Nr ..
+                    " Property Appearance " ..
+                    NrNeed .. " VisibilityBorder=0 VisibilityIcon=0 ; Go+ DataPool " .. Data_Pool_Nr ..
                     " Macro " .. CurrentMacroNr .. "; Off DataPool " .. Data_Pool_Nr .. "  Sequence " .. Start_Seq_2 ..
                     " Thru " .. End_Seq_2 .. " - " .. CurrentSeqNr .. "\"")
             elseif (g == 3) then
@@ -311,7 +359,8 @@ function PC_Create_Layout_Phaser(TLayNr, NaLay, SelectedGelNr, CurrentSeqNr, Pre
                 Cmd("Set seq " .. CurrentSeqNr ..
                     " cue \"CueZero\" Property Command=\"Set DataPool " ..
                     Data_Pool_Nr .. " Layout " .. TLayNr .. "." .. LayNr ..
-                    " Property Appearance " .. NrNeed .. " VisibilityBorder=0 VisibilityIcon=0 ; Go+ DataPool " .. Data_Pool_Nr ..
+                    " Property Appearance " ..
+                    NrNeed .. " VisibilityBorder=0 VisibilityIcon=0 ; Go+ DataPool " .. Data_Pool_Nr ..
                     " Macro " .. CurrentMacroNr .. "; Off DataPool " .. Data_Pool_Nr .. "  Sequence " .. Start_Seq_3 ..
                     " Thru " .. End_Seq_3 .. " - " .. CurrentSeqNr .. "\"")
             elseif (g == 4) then
@@ -319,7 +368,8 @@ function PC_Create_Layout_Phaser(TLayNr, NaLay, SelectedGelNr, CurrentSeqNr, Pre
                 Cmd("Set seq " .. CurrentSeqNr ..
                     " cue \"CueZero\" Property Command=\"Set DataPool " ..
                     Data_Pool_Nr .. " Layout " .. TLayNr .. "." .. LayNr ..
-                    " Property Appearance " .. NrNeed .. " VisibilityBorder=0 VisibilityIcon=0 ; Go+ DataPool " .. Data_Pool_Nr ..
+                    " Property Appearance " ..
+                    NrNeed .. " VisibilityBorder=0 VisibilityIcon=0 ; Go+ DataPool " .. Data_Pool_Nr ..
                     " Macro " .. CurrentMacroNr .. "; Off DataPool " .. Data_Pool_Nr .. "  Sequence " .. Start_Seq_4 ..
                     " Thru " .. End_Seq_4 .. " - " .. CurrentSeqNr .. "\"")
             end
@@ -658,7 +708,8 @@ function PC_Create_Macro_Priority(CurrentMacroNr, TLayNr, LayNr, LayX, LayY, Lay
         ' property appearance <default> PosX ' .. LayX .. ' PosY ' .. LayY ..
         ' PositionW ' .. LayW .. ' PositionH ' .. LayH ..
         ' VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0 VisibilityBorder=0 VisibilityIcon=0')
-    Cmd('Set Layout ' .. TLayNr .. "." .. LayNr .. ' Property "Appearance" "p_super_png" VisibilityBorder=0 VisibilityIcon=0')
+    Cmd('Set Layout ' ..
+        TLayNr .. "." .. LayNr .. ' Property "Appearance" "p_super_png" VisibilityBorder=0 VisibilityIcon=0')
     Cmd('ChangeDestination Root')
     local Color_message = 'SetUserVariable "LC_Sequence" "' .. Sequence_Ref .. '"'
     Color_message = string.gsub(Color_message, "'", "")

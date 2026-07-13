@@ -248,7 +248,6 @@ local function Main(displayHandle)
     local dialogWidth = 1024
     local baseInput = screenOverlay:Append("BaseInput")
     local myicon = baseInput:Append("AppearancePreview")
-    -- myicon.Appearance = GetObject('Layout_Color')
     myicon.Appearance = AppearObject[955]
     myicon.BackColor, myicon.W = colorTransparent, 1000
     myicon.X, myicon.Y = 0, 0

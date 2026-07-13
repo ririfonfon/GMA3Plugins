@@ -9,10 +9,10 @@ Rewrite by Richard Fontaine "RIRI", June 2026.
 --]]
 
 
-function LC_Create_Matricks(MatrickNrStart, prefix, NaLay, NbGroup, MatrickNr, pool_construct)
+function LC_Create_Matricks(MatrickNrStart, prefix, NaLay, NbGroup, MatrickNr, Construct_Pool)
     local DEBUG = false
-    local MatrickObject = Root().ShowData.DataPools[pool_construct].Matricks
-    if Debug then Echo('pool ' .. pool_construct .. ' Matrick ' .. MatrickNrStart) end
+    local MatrickObject = Root().ShowData.DataPools[Construct_Pool].Matricks
+    if Debug then Echo('pool ' .. Construct_Pool .. ' Matrick ' .. MatrickNrStart) end
     LC_Check_Size_Pool(MatrickNrStart, MatrickObject)
     MatrickObject:Acquire()
     MatrickObject:Create(MatrickNrStart)
@@ -90,8 +90,8 @@ function LC_Create_Appearances(AppNr, prefix, TCol, NrAppear, StColCode, StColNa
 end -- end LC_Create_Appearances
 
 function LC_Create_Preset_25(TCol, StColName, StringColName, SelectedGelNr, prefix, All_5_NrEnd, All_5_Current,
-                             pool_construct)
-    local Preset25Object = Root().ShowData.DataPools[pool_construct].PresetPools[25]
+                             Construct_Pool)
+    local Preset25Object = Root().ShowData.DataPools[Construct_Pool].PresetPools[25]
     Preset25Object:Set('PresetMode', 'Universal')
 
     CmdIndirectWait("ClearAll /nu")
@@ -102,8 +102,8 @@ function LC_Create_Preset_25(TCol, StColName, StringColName, SelectedGelNr, pref
         local convert = prefix .. StringColName
         local Name = string.gsub(convert, " ", "_")
         CmdIndirectWait('At Gel ' .. SelectedGelNr .. "." .. col .. '')
-        CmdIndirectWait('Store DataPool ' .. pool_construct .. ' Preset 25.' .. All_5_Current .. '/u/nc')
-        CmdIndirectWait('Label DataPool ' .. pool_construct .. ' Preset 25.' .. All_5_Current .. " " .. Name .. " ")
+        CmdIndirectWait('Store DataPool ' .. Construct_Pool .. ' Preset 25.' .. All_5_Current .. '/u/nc')
+        CmdIndirectWait('Label DataPool ' .. Construct_Pool .. ' Preset 25.' .. All_5_Current .. " " .. Name .. " ")
         All_5_NrEnd = All_5_Current
         All_5_Current = math.floor(All_5_Current + 1)
     end

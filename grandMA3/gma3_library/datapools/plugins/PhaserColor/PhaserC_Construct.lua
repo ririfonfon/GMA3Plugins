@@ -1,13 +1,17 @@
 --[[
 Releases:
-* 2.1.1.2
+* 2.4.2.2
+
+Version:
+* 2.0.0.0
 
 Created by Richard Fontaine "RIRI", April 2024.
 --]]
 
 function PC_Construct_Layout(displayHandle, TLay, SeqNrStart, MacroNrStart, MatrickNrStart, MatrickNr, TLayNr, AppNr,
-                             All_5_Current, All_5_NrStart, ColPath, SelectedGelNr, SelectedGrp, SelectedGrpNo, TLayNrRef,
-                             NaLay, MaxColLgn, Favourite_Nr)
+                             All_5_Current, All_5_NrStart, ColPath, SelectedGelNr, NbGroup, TLayNrRef,
+                             NaLay, MaxColLgn, Favourite_Nr, Construct_Pool)
+    local DEBUG = true
     local Macro_Pool = DataPool().Macros
     local Data_Pool_Nr = DataPool().No
     local All_5_NrEnd
@@ -137,13 +141,13 @@ function PC_Construct_Layout(displayHandle, TLay, SeqNrStart, MacroNrStart, Matr
     local LayX
     local RefX
     local LayY
-    if TLayNrRef then
-        RefX = math.floor(0 - TLay[TLayNrRef].DimensionW / 2)
-        LayY = TLay[TLayNrRef].DimensionH / 2
-    else
-        RefX = -960
-        LayY = 540
-    end
+    -- if TLayNrRef then
+    --     RefX = math.floor(0 - TLay[TLayNrRef].DimensionW / 2)
+    --     LayY = TLay[TLayNrRef].DimensionH / 2
+    -- else
+    RefX = -960
+    LayY = 540
+    -- end
     local LayW = 100
     local LayH = 100
     local LayNr = 1
@@ -151,7 +155,7 @@ function PC_Construct_Layout(displayHandle, TLay, SeqNrStart, MacroNrStart, Matr
     local StColCode
     local StColName
     local StringColName
-    local SelectedGrpName = {}
+    -- local SelectedGrpName = {}
     local CurrentSeqNr
     local CurrentMacroNr
     local UsedW
@@ -186,11 +190,11 @@ function PC_Construct_Layout(displayHandle, TLay, SeqNrStart, MacroNrStart, Matr
     until exit == true
 
     -- fix name SelectedGrp
-    for g in pairs(SelectedGrp) do
-        SelectedGrpName[g] = SelectedGrp[g]:gsub(' ', '_')
-        SelectedGrpName[g] = SelectedGrpName[g]:gsub("'", '')
-        SelectedGrpNo[g] = SelectedGrpNo[g]:gsub("'", '')
-    end
+    -- for g in pairs(SelectedGrp) do
+    --     SelectedGrpName[g] = SelectedGrp[g]:gsub(' ', '_')
+    --     SelectedGrpName[g] = SelectedGrpName[g]:gsub("'", '')
+    --     SelectedGrpNo[g] = SelectedGrpNo[g]:gsub("'", '')
+    -- end
     -- fix *NrStart & use Current*Nr
     CurrentSeqNr = SeqNrStart
     CurrentMacroNr = MacroNrStart
@@ -207,16 +211,22 @@ function PC_Construct_Layout(displayHandle, TLay, SeqNrStart, MacroNrStart, Matr
     MaxColLgn = tonumber(MaxColLgn)
 
     -- Create Appearances
-    NrAppear, AppRef = PC_Create_Appearances(SelectedGrp, AppNr, prefix, TCol, NrAppear, StColCode,
+    NrAppear, AppRef = PC_Create_Appearances(AppNr, prefix, TCol, NrAppear, StColCode,
         StColName, StringColName, AppRef)
+
     -- Create Preset 25
     All_5_NrEnd, All_5_Current = PC_Create_Preset_25(TCol, StColName, StringColName, SelectedGelNr, prefix,
-        All_5_NrEnd, All_5_Current)
+        All_5_NrEnd, All_5_Current, Construct_Pool)
+
     -- PC_Create_Preset_Ref_1234
-    All_5_Current, Preset_Ref = PC_Create_Preset_Ref_1234(All_5_Current, SelectedGelNr)
+    All_5_Current, Preset_Ref = PC_Create_Preset_Ref_1234(All_5_Current, SelectedGelNr, Construct_Pool)
     Preset_Ref_End = Preset_Ref + 3
+    
     -- PC_Create_Phaser
-    Phaser_Off, All_5_Current = PC_Create_Phaser(All_5_Current, Preset_Ref, prefix, Argument_Ref, Phaser_Off)
+    Phaser_Off, All_5_Current = PC_Create_Phaser(All_5_Current, Preset_Ref, prefix, Argument_Ref, Phaser_Off, Construct_Pool)
+end -- end Construct_Layout
+
+local function to_dev()
     -- Copy_Phaser_Ref
     Phaser_Ref, All_5_Current, Preset_25_Ref = Copy_Phaser_Ref(Phaser_Off, All_5_Current, Phaser_Ref, Preset_25_Ref)
     -- PC_Create_Active_Appearances
@@ -288,6 +298,6 @@ function PC_Construct_Layout(displayHandle, TLay, SeqNrStart, MacroNrStart, Matr
     UsedH = DataPool().Layouts:Children()[TLayNrRef].UsedH / 2
     Cmd("Set Layout " .. TLayNr .. " DimensionW " .. UsedW .. " DimensionH " .. UsedH)
     Cmd('Select Layout ' .. TLayNr)
-end -- end Construct_Layout
+end
 
 -- end PhaserC_Construct.lua
