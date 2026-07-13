@@ -183,7 +183,8 @@ function PC_Create_Phaser(All_5_Current, Preset_Ref, prefix, Argument_Ref, Phase
             end
 
             CmdIndirectWait('Store DataPool ' .. Construct_Pool .. ' Preset 25.' .. All_5_Current .. '/u/nc')
-            CmdIndirectWait('Label DataPool ' .. Construct_Pool .. ' Preset 25.' .. All_5_Current .. " " .. prefix .. Argument_Ref[g].Name)
+            CmdIndirectWait('Label DataPool ' ..
+                Construct_Pool .. ' Preset 25.' .. All_5_Current .. " " .. prefix .. Argument_Ref[g].Name)
             All_5_Current = math.floor(All_5_Current + 1)
         end
     end
@@ -191,24 +192,36 @@ function PC_Create_Phaser(All_5_Current, Preset_Ref, prefix, Argument_Ref, Phase
     return Phaser_Off, All_5_Current
 end
 
-function Copy_Phaser_Ref(Phaser_Off, All_5_Current, Phaser_Ref, Preset_25_Ref)
+function Copy_Phaser_Ref(Phaser_Off, All_5_Current, Phaser_Ref, Preset_25_Ref, Construct_Pool)
+    local Preset25Object = Root().ShowData.DataPools[Construct_Pool].PresetPools[25]
+    Preset25Object:Set('PresetMode', 'Universal')
     Phaser_Ref = All_5_Current
     Preset_25_Ref[1] = Phaser_Off
     for i = 1, 8 do
         Preset_25_Ref[i + 1] = All_5_Current
         local cop = Phaser_Off + i
-        Cmd('Copy Preset 25.' .. cop .. ' At Preset 25.' .. All_5_Current .. '')
+        Cmd('Copy DataPool ' ..
+            Construct_Pool ..
+            ' Preset 25.' .. cop .. ' At DataPool ' .. Construct_Pool .. ' Preset 25.' .. All_5_Current .. '')
         All_5_Current = math.floor(All_5_Current + 1)
     end
     return Phaser_Ref, All_5_Current, Preset_25_Ref
 end
 
 function PC_Create_Active_Appearances(AppImp, NrAppear, prefix)
+    local AppObject = Root().ShowData.Appearances
+    AppObject:Acquire()
     for q in pairs(AppImp) do
         AppImp[q].Nr = math.floor(NrAppear)
-        Cmd('Store App ' .. AppImp[q].Nr .. ' ' .. prefix .. AppImp[q].Name ..
-            ' "Appearance"=' .. AppImp[q].StApp .. '' .. AppImp[q].RGBref .. '')
+        PC_Check_Size_Pool(NrAppear, AppObject)
+        AppObject:Create(NrAppear)
+        AppObject[NrAppear]:Set('Name', prefix .. AppImp[q].Name)
+        AppObject[NrAppear]:Set('Appearance', AppImp[q].StApp:gsub('"', ''))
+        AppObject[NrAppear]:Set('Color', AppImp[q].RGBref)
         NrAppear = math.floor(NrAppear + 1)
+
+        -- Cmd('Store App ' .. AppImp[q].Nr .. ' ' .. prefix .. AppImp[q].Name ..
+        --     ' "Appearance"=' .. AppImp[q].StApp .. '' .. AppImp[q].RGBref .. '')
     end
     return NrAppear
 end

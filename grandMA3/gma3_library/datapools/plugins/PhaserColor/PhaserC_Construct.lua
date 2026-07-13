@@ -31,6 +31,7 @@ function PC_Construct_Layout(displayHandle, TLay, SeqNrStart, MacroNrStart, Matr
     local StApp_2_3 = '\"Showdata.MediaPools.Images.[2_3_active_png]\"'
     local StApp_3_4 = '\"Showdata.MediaPools.Images.[3_4_active_png]\"'
     local StApp_1_3 = '\"Showdata.MediaPools.Images.[1_3_active_png]\"'
+    local StApp_1_4 = '\"Showdata.MediaPools.Images.[1_4_active_png]\"'
     local StApp_2_4 = '\"Showdata.MediaPools.Images.[2_4_active_png]\"'
     local StApp_1_2_3 = '\"Showdata.MediaPools.Images.[1_2_3_active_png]\"'
     local StApp_2_3_4 = '\"Showdata.MediaPools.Images.[2_3_4_active_png]\"'
@@ -84,6 +85,7 @@ function PC_Construct_Layout(displayHandle, TLay, SeqNrStart, MacroNrStart, Matr
         { Name = '2_3',       StApp = StApp_2_3,       Nr = '', RGBref = NoRef },
         { Name = '3_4',       StApp = StApp_3_4,       Nr = '', RGBref = NoRef },
         { Name = '1_3',       StApp = StApp_1_3,       Nr = '', RGBref = NoRef },
+        { Name = '1_4',       StApp = StApp_1_4,       Nr = '', RGBref = NoRef },
         { Name = '2_4',       StApp = StApp_2_4,       Nr = '', RGBref = NoRef },
         { Name = '1_2_3',     StApp = StApp_1_2_3,     Nr = '', RGBref = NoRef },
         { Name = '2_3_4',     StApp = StApp_2_3_4,     Nr = '', RGBref = NoRef },
@@ -127,6 +129,7 @@ function PC_Construct_Layout(displayHandle, TLay, SeqNrStart, MacroNrStart, Matr
         { Name = '2_3',     Step = 2, Step1 = 1, Step2 = 2, Step3 = 0, Step4 = 0 },
         { Name = '3_4',     Step = 2, Step1 = 2, Step2 = 3, Step3 = 0, Step4 = 0 },
         { Name = '1_3',     Step = 2, Step1 = 0, Step2 = 2, Step3 = 0, Step4 = 0 },
+        { Name = '1_4',     Step = 2, Step1 = 0, Step2 = 3, Step3 = 0, Step4 = 0 },
         { Name = '2_4',     Step = 2, Step1 = 1, Step2 = 3, Step3 = 0, Step4 = 0 },
         { Name = '1_2_3',   Step = 3, Step1 = 0, Step2 = 1, Step3 = 2, Step4 = 0 },
         { Name = '2_3_4',   Step = 3, Step1 = 1, Step2 = 2, Step3 = 3, Step4 = 0 },
@@ -224,13 +227,15 @@ function PC_Construct_Layout(displayHandle, TLay, SeqNrStart, MacroNrStart, Matr
     
     -- PC_Create_Phaser
     Phaser_Off, All_5_Current = PC_Create_Phaser(All_5_Current, Preset_Ref, prefix, Argument_Ref, Phaser_Off, Construct_Pool)
+    
+    -- Copy_Phaser_Ref
+    Phaser_Ref, All_5_Current, Preset_25_Ref = Copy_Phaser_Ref(Phaser_Off, All_5_Current, Phaser_Ref, Preset_25_Ref, Construct_Pool)
+    
+    -- PC_Create_Active_Appearances
+    NrAppear = PC_Create_Active_Appearances(AppImp, NrAppear, prefix)
 end -- end Construct_Layout
 
 local function to_dev()
-    -- Copy_Phaser_Ref
-    Phaser_Ref, All_5_Current, Preset_25_Ref = Copy_Phaser_Ref(Phaser_Off, All_5_Current, Phaser_Ref, Preset_25_Ref)
-    -- PC_Create_Active_Appearances
-    NrAppear = PC_Create_Active_Appearances(AppImp, NrAppear, prefix)
     -- PC_Create_Group_Appearances
     NrAppear = PC_Create_Group_Appearances(AppImp, NrAppear, prefix, SelectedGrp, SelectedGrpName, color_ref)
     -- PC_Create_Group_Sequence
