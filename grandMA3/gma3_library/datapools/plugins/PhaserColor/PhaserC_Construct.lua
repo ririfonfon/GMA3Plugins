@@ -221,18 +221,18 @@ function PC_Construct_Layout(displayHandle, TLay, SeqNrStart, MacroNrStart, Matr
     All_5_NrEnd, All_5_Current = PC_Create_Preset_25(TCol, StColName, StringColName, SelectedGelNr, prefix,
         All_5_NrEnd, All_5_Current, Construct_Pool)
 
-    -- PC_Create_Preset_Ref_1234
-    All_5_Current, Preset_Ref = PC_Create_Preset_Ref_1234(All_5_Current, SelectedGelNr, Construct_Pool)
-    Preset_Ref_End = Preset_Ref + 3
+    -- -- PC_Create_Preset_Ref_1234
+    -- All_5_Current, Preset_Ref = PC_Create_Preset_Ref_1234(All_5_Current, SelectedGelNr, Construct_Pool)
+    -- Preset_Ref_End = Preset_Ref + 3
     
-    -- PC_Create_Phaser
-    Phaser_Off, All_5_Current = PC_Create_Phaser(All_5_Current, Preset_Ref, prefix, Argument_Ref, Phaser_Off, Construct_Pool)
+    -- -- PC_Create_Phaser
+    -- Phaser_Off, All_5_Current = PC_Create_Phaser(All_5_Current, Preset_Ref, prefix, Argument_Ref, Phaser_Off, Construct_Pool)
     
-    -- Copy_Phaser_Ref
-    Phaser_Ref, All_5_Current, Preset_25_Ref = Copy_Phaser_Ref(Phaser_Off, All_5_Current, Phaser_Ref, Preset_25_Ref, Construct_Pool)
+    -- -- Copy_Phaser_Ref
+    -- Phaser_Ref, All_5_Current, Preset_25_Ref = Copy_Phaser_Ref(Phaser_Off, All_5_Current, Phaser_Ref, Preset_25_Ref, Construct_Pool)
     
-    -- PC_Create_Active_Appearances
-    NrAppear = PC_Create_Active_Appearances(AppImp, NrAppear, prefix)
+    -- -- PC_Create_Active_Appearances
+    -- NrAppear = PC_Create_Active_Appearances(AppImp, NrAppear, prefix)
 end -- end Construct_Layout
 
 local function to_dev()

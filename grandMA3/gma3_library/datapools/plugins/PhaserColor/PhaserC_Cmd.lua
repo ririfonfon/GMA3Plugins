@@ -23,11 +23,6 @@ function PC_Create_Appearances(AppNr, prefix, TCol, NrAppear, StColCode, StColNa
     AppObject[NrAppear]:Set('Appearance', StAppOn:gsub('"', ''))
     AppObject[NrAppear]:Set('Color', '0, 0, 0, 1')
 
-    -- AppNr = math.floor(AppNr)
-    -- Cmd('Store App ' .. AppNr .. ' \'' .. prefix .. ' Label\' Appearance=' .. StAppOn .. ' color=\'0,0,0,1\'')
-    -- AppNr = math.floor(AppNr + 1)
-    -- Cmd('Store App ' .. AppNr .. ' \'' .. prefix .. ' Labelon\' Appearance=' .. StAppOn .. ' color=\'1,1,1,1\'')
-
     NrAppear = math.floor(AppNr + 1)
     for col in ipairs(TCol) do
         StColCode = "\"" .. TCol[col].r .. "," .. TCol[col].g .. "," .. TCol[col].b .. ",1\""
@@ -51,15 +46,6 @@ function PC_Create_Appearances(AppNr, prefix, TCol, NrAppear, StColCode, StColNa
         AppObject[NrAppear]:Set('Color', StColCode:gsub('"', ''))
 
         NrAppear = math.floor(NrAppear + 1)
-
-
-
-        -- Cmd("Store App " ..
-        --     NrAppear .. " " .. StAppNameOn .. " Appearance=" .. StAppOn .. " color=" .. StColCode .. "")
-        -- NrAppear = math.floor(NrAppear + 1)
-        -- Cmd("Store App " ..
-        --     NrAppear .. " " .. StAppNameOff .. " Appearance=" .. StAppOff .. " color=" .. StColCode .. "")
-        -- NrAppear = math.floor(NrAppear + 1)
     end
     return NrAppear, AppRef
 end
@@ -68,18 +54,20 @@ function PC_Create_Preset_25(TCol, StColName, StringColName, SelectedGelNr, pref
                              Construct_Pool)
     local Preset25Object = Root().ShowData.DataPools[Construct_Pool].PresetPools[25]
     Preset25Object:Set('PresetMode', 'Universal')
-    -- Cmd('Set Preset 25 Property PresetMode "Universal"')
 
-    Cmd("ClearAll /nu")
-    Cmd('Fixture Thru')
+    CmdIndirectWait("ClearAll /nu")
+    CmdIndirectWait('Fixture Thru')
     for col in ipairs(TCol) do
+        Preset25Object:Acquire()
         StColName = TCol[col].name
         StringColName = string.gsub(StColName, " ", "_")
         local convert = prefix .. StringColName
         local Name = string.gsub(convert, " ", "_")
+        Preset25Object:Create(All_5_Current)
+        Preset25Object[All_5_Current]:Set('Name', All_5_Current .. "_" .. Name)
+
         CmdIndirectWait('At Gel ' .. SelectedGelNr .. "." .. col .. '')
-        CmdIndirectWait('Store DataPool ' .. Construct_Pool .. ' Preset 25.' .. All_5_Current .. '/u/nc')
-        CmdIndirectWait('Label DataPool ' .. Construct_Pool .. ' Preset 25.' .. All_5_Current .. " " .. Name .. " ")
+        CmdIndirectWait('Store ' .. Preset25Object[All_5_Current] .. '/u/nc')
         All_5_NrEnd = All_5_Current
         All_5_Current = math.floor(All_5_Current + 1)
     end
@@ -87,31 +75,7 @@ function PC_Create_Preset_25(TCol, StColName, StringColName, SelectedGelNr, pref
     return All_5_NrEnd, All_5_Current
 end
 
-function PC_Create_Matricks(MatrickNr, Argument_Matricks, surfix, prefix, Data_Pool_Nr)
-    for axes in pairs(surfix) do
-        for g in pairs(Argument_Matricks) do
-            Cmd('Store MAtricks ' .. MatrickNr .. ' /nu')
-            Cmd('Set DataPool ' .. Data_Pool_Nr .. '  Matricks ' ..
-                MatrickNr .. ' name = ' .. prefix .. surfix[axes] .. Argument_Matricks[g].Name:gsub('\'', '') .. ' /nu')
-            Cmd('Set DataPool ' .. Data_Pool_Nr .. '  Matricks ' ..
-                MatrickNr .. ' Property "PhaseFrom' .. surfix[axes] .. '" "' .. Argument_Matricks[g].phasefrom .. '')
-            Cmd('Set DataPool ' .. Data_Pool_Nr .. '  Matricks ' ..
-                MatrickNr .. ' Property "PhaseTo' .. surfix[axes] .. '" "' .. Argument_Matricks[g].phaseto .. '')
-            Cmd('Set DataPool ' .. Data_Pool_Nr .. '  Matricks ' ..
-                MatrickNr .. ' Property "' .. surfix[axes] .. 'Group" "' .. Argument_Matricks[g].group .. '')
-            Cmd('Set DataPool ' .. Data_Pool_Nr .. '  Matricks ' ..
-                MatrickNr .. ' Property "' .. surfix[axes] .. 'Wings" "' .. Argument_Matricks[g].wing .. '')
-            Cmd('Set DataPool ' .. Data_Pool_Nr .. '  Matricks ' ..
-                MatrickNr .. ' Property "' .. surfix[axes] .. 'Block" "' .. Argument_Matricks[g].block .. '')
-            Cmd('Set DataPool ' .. Data_Pool_Nr .. '  Matricks ' ..
-                MatrickNr .. ' Property "' .. surfix[axes] .. 'Shuffle" "' .. Argument_Matricks[g].shuffle .. '')
-            Cmd('Set DataPool ' ..
-                Data_Pool_Nr ..
-                '  Matricks ' .. MatrickNr .. ' Property "PhaserTransform" ' .. Argument_Matricks[g].transform .. '')
-            MatrickNr = math.floor(MatrickNr + 1)
-        end
-    end
-end
+
 
 function PC_Create_Preset_Ref_1234(All_5_Current, SelectedGelNr, Construct_Pool)
     local Preset25Object = Root().ShowData.DataPools[Construct_Pool].PresetPools[25]
@@ -120,8 +84,10 @@ function PC_Create_Preset_Ref_1234(All_5_Current, SelectedGelNr, Construct_Pool)
     CmdIndirectWait("ClearAll /nu")
     CmdIndirectWait('Fixture Thru')
     for i = 1, 4 do
+        Preset25Object:Acquire()
+        Preset25Object:Create(All_5_Current)
         CmdIndirectWait('At Gel ' .. SelectedGelNr .. ".1")
-        CmdIndirectWait('Store DataPool ' .. Construct_Pool .. ' Preset 25.' .. All_5_Current .. '/u/nc')
+        CmdIndirectWait('Store ' .. Preset25Object[All_5_Current] .. '/u/nc')
         All_5_Current = math.floor(All_5_Current + 1)
     end
     local Preset_Ref = All_5_Current - 4
@@ -224,6 +190,32 @@ function PC_Create_Active_Appearances(AppImp, NrAppear, prefix)
         --     ' "Appearance"=' .. AppImp[q].StApp .. '' .. AppImp[q].RGBref .. '')
     end
     return NrAppear
+end
+
+function PC_Create_Matricks(MatrickNr, Argument_Matricks, surfix, prefix, Data_Pool_Nr)
+    for axes in pairs(surfix) do
+        for g in pairs(Argument_Matricks) do
+            Cmd('Store MAtricks ' .. MatrickNr .. ' /nu')
+            Cmd('Set DataPool ' .. Data_Pool_Nr .. '  Matricks ' ..
+                MatrickNr .. ' name = ' .. prefix .. surfix[axes] .. Argument_Matricks[g].Name:gsub('\'', '') .. ' /nu')
+            Cmd('Set DataPool ' .. Data_Pool_Nr .. '  Matricks ' ..
+                MatrickNr .. ' Property "PhaseFrom' .. surfix[axes] .. '" "' .. Argument_Matricks[g].phasefrom .. '')
+            Cmd('Set DataPool ' .. Data_Pool_Nr .. '  Matricks ' ..
+                MatrickNr .. ' Property "PhaseTo' .. surfix[axes] .. '" "' .. Argument_Matricks[g].phaseto .. '')
+            Cmd('Set DataPool ' .. Data_Pool_Nr .. '  Matricks ' ..
+                MatrickNr .. ' Property "' .. surfix[axes] .. 'Group" "' .. Argument_Matricks[g].group .. '')
+            Cmd('Set DataPool ' .. Data_Pool_Nr .. '  Matricks ' ..
+                MatrickNr .. ' Property "' .. surfix[axes] .. 'Wings" "' .. Argument_Matricks[g].wing .. '')
+            Cmd('Set DataPool ' .. Data_Pool_Nr .. '  Matricks ' ..
+                MatrickNr .. ' Property "' .. surfix[axes] .. 'Block" "' .. Argument_Matricks[g].block .. '')
+            Cmd('Set DataPool ' .. Data_Pool_Nr .. '  Matricks ' ..
+                MatrickNr .. ' Property "' .. surfix[axes] .. 'Shuffle" "' .. Argument_Matricks[g].shuffle .. '')
+            Cmd('Set DataPool ' ..
+                Data_Pool_Nr ..
+                '  Matricks ' .. MatrickNr .. ' Property "PhaserTransform" ' .. Argument_Matricks[g].transform .. '')
+            MatrickNr = math.floor(MatrickNr + 1)
+        end
+    end
 end
 
 function PC_Create_Group_Appearances(AppImp, NrAppear, prefix, SelectedGrp, SelectedGrpName, color_ref)
