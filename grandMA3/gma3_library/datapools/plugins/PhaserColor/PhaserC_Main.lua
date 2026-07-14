@@ -1022,7 +1022,7 @@ local function Main(displayHandle)
         Obj.Delete(screenOverlay, Obj.Index(baseInput))
         PC_Construct_Layout(displayHandle, TLay, SeqNrStart, MacroNrStart, MatrickNrStart, MatrickNr, TLayNr, AppNr,
             All_5_Current, All_5_NrStart, ColPath, SelectedGelNr, NbGroup, TLayNrRef, NaLay, MaxColLgn,
-            Favourite_Nr, Construct_Pool)
+            Favourite_Nr, Construct_Pool, Call_Pool)
     end
 
     signalTable.OnInput1TextChanged = function(caller)

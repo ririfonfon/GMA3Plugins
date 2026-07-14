@@ -10,7 +10,7 @@ Created by Richard Fontaine "RIRI", April 2024.
 
 function PC_Construct_Layout(displayHandle, TLay, SeqNrStart, MacroNrStart, MatrickNrStart, MatrickNr, TLayNr, AppNr,
                              All_5_Current, All_5_NrStart, ColPath, SelectedGelNr, NbGroup, TLayNrRef,
-                             NaLay, MaxColLgn, Favourite_Nr, Construct_Pool)
+                             NaLay, MaxColLgn, Favourite_Nr, Construct_Pool, Call_Pool)
     local DEBUG = true
     local Macro_Pool = DataPool().Macros
     local Data_Pool_Nr = DataPool().No
@@ -58,24 +58,24 @@ function PC_Construct_Layout(displayHandle, TLay, SeqNrStart, MacroNrStart, Matr
 
 
     local surfix = { 'x', 'y', 'z' }
-    local NoRef = ' color=\'1,1,1,1\''
+    local NoRef = '1.0,1.0,1.0,1.0'
 
     local color_ref = {
-        { RGBref = ' color=\'1,0,0,0.5\'' },
-        { RGBref = ' color=\'0,0,1,0.5\'' },
-        { RGBref = ' color=\'1,0.5,0,0.5\'' },
-        { RGBref = ' color=\'0,1,1,0.5\'' },
-        { RGBref = ' color=\'0,1,0,0.5\'' },
-        { RGBref = ' color=\'1,0,1,0.5\'' },
-        { RGBref = ' color=\'1,1,0,0.5\'' },
-        { RGBref = ' color=\'0,1,0.5,0.5\'' },
-        { RGBref = ' color=\'1,0,0.5,0.5\'' },
-        { RGBref = ' color=\'0.5,1,0,0.5\'' },
-        { RGBref = ' color=\'0,0.5,1,0.5\'' },
-        { RGBref = ' color=\'0.5,0,1,0.5\'' },
-        { RGBref = ' color=\'0.5,0.5,1,0.5\'' },
-        { RGBref = ' color=\'0.5,1,0.5,0.5\'' },
-        { RGBref = ' color=\'0.5,0.5,0.5,0.5\'' },
+        { RGBref = '1.0,0.0,0.0,0.5' },
+        { RGBref = '0.0,0.0,1.0,0.5' },
+        { RGBref = '1.0,0.5,0.0,0.5' },
+        { RGBref = '0.0,1.0,1.0,0.5' },
+        { RGBref = '0.0,1.0,0.0,0.5' },
+        { RGBref = '1.0,0.0,1.0,0.5' },
+        { RGBref = '1.0,1.0,0.0,0.5' },
+        { RGBref = '0.0,1.0,0.5,0.5' },
+        { RGBref = '1.0,0.0,0.5,0.5' },
+        { RGBref = '0.5,1.0,0.0,0.5' },
+        { RGBref = '0.0,0.5,1.0,0.5' },
+        { RGBref = '0.5,0.0,1.0,0.5' },
+        { RGBref = '0.5,0.5,1.0,0.5' },
+        { RGBref = '0.5,1.0,0.5,0.5' },
+        { RGBref = '0.5,0.5,0.5,0.5' },
     }
 
 
@@ -112,14 +112,14 @@ function PC_Construct_Layout(displayHandle, TLay, SeqNrStart, MacroNrStart, Matr
     }
 
     local Argument_Matricks = {
-        { Name = 'GRP',     phasefrom = '0', phaseto = '0',   group = '0', wing = '0', block = '0', shuffle = '0', transform = 'None' },
+        { Name = 'GRP',     phasefrom = '0', phaseto = '0',   group = '0', wing = '2', block = '0', shuffle = '0', transform = 'None' },
         { Name = '>>>',     phasefrom = '0', phaseto = '360', group = '0', wing = '0', block = '0', shuffle = '0', transform = 'None' },
         { Name = 'O/E',     phasefrom = '0', phaseto = '360', group = '2', wing = '0', block = '0', shuffle = '0', transform = 'None' },
         { Name = '><',      phasefrom = '0', phaseto = '360', group = '0', wing = '2', block = '0', shuffle = '0', transform = 'None' },
         { Name = 'SYM3',    phasefrom = '0', phaseto = '360', group = '3', wing = '2', block = '0', shuffle = '0', transform = 'None' },
         { Name = 'SYM',     phasefrom = '0', phaseto = '360', group = '2', wing = '2', block = '0', shuffle = '0', transform = 'None' },
         { Name = 'RND',     phasefrom = '0', phaseto = '360', group = '0', wing = '0', block = '0', shuffle = '9', transform = 'None' },
-        { Name = 'PAN><',   phasefrom = '0', phaseto = '360', group = '0', wing = '2', block = '2', shuffle = '0', transform = 'Mirror' },
+        { Name = 'PAN><',   phasefrom = '0', phaseto = '360', group = '2', wing = '2', block = '0', shuffle = '0', transform = 'Mirror' },
         { Name = 'PANSYM3', phasefrom = '0', phaseto = '360', group = '0', wing = '2', block = '2', shuffle = '0', transform = 'Mirror' },
         { Name = 'PANSYM',  phasefrom = '0', phaseto = '360', group = '2', wing = '2', block = '2', shuffle = '0', transform = 'Mirror' },
     }
@@ -204,7 +204,7 @@ function PC_Construct_Layout(displayHandle, TLay, SeqNrStart, MacroNrStart, Matr
 
     -- Create MAtricks
     MatrickNr = math.floor(MatrickNrStart)
-    PC_Create_Matricks(MatrickNr, Argument_Matricks, surfix, prefix, Data_Pool_Nr)
+    PC_Create_Matricks(MatrickNr, Argument_Matricks, surfix, prefix, Construct_Pool)
 
     -- Create new Layout View
     Cmd("Store Layout " .. TLayNr .. " \"" .. prefix .. NaLay .. "")
@@ -221,26 +221,30 @@ function PC_Construct_Layout(displayHandle, TLay, SeqNrStart, MacroNrStart, Matr
     All_5_NrEnd, All_5_Current = PC_Create_Preset_25(TCol, StColName, StringColName, SelectedGelNr, prefix,
         All_5_NrEnd, All_5_Current, Construct_Pool)
 
-    -- -- PC_Create_Preset_Ref_1234
-    -- All_5_Current, Preset_Ref = PC_Create_Preset_Ref_1234(All_5_Current, SelectedGelNr, Construct_Pool)
-    -- Preset_Ref_End = Preset_Ref + 3
-    
-    -- -- PC_Create_Phaser
-    -- Phaser_Off, All_5_Current = PC_Create_Phaser(All_5_Current, Preset_Ref, prefix, Argument_Ref, Phaser_Off, Construct_Pool)
-    
-    -- -- Copy_Phaser_Ref
-    -- Phaser_Ref, All_5_Current, Preset_25_Ref = Copy_Phaser_Ref(Phaser_Off, All_5_Current, Phaser_Ref, Preset_25_Ref, Construct_Pool)
-    
-    -- -- PC_Create_Active_Appearances
-    -- NrAppear = PC_Create_Active_Appearances(AppImp, NrAppear, prefix)
+    -- PC_Create_Preset_Ref_1234
+    All_5_Current, Preset_Ref = PC_Create_Preset_Ref_1234(All_5_Current, SelectedGelNr, Construct_Pool)
+    Preset_Ref_End = Preset_Ref + 3
+
+    -- PC_Create_Phaser
+    Phaser_Off, All_5_Current = PC_Create_Phaser(All_5_Current, Preset_Ref, prefix, Argument_Ref, Phaser_Off,
+        Construct_Pool)
+
+    -- Copy_Phaser_Ref
+    Phaser_Ref, All_5_Current, Preset_25_Ref = Copy_Phaser_Ref(Phaser_Off, All_5_Current, Phaser_Ref, Preset_25_Ref,
+        Construct_Pool)
+
+    -- PC_Create_Active_Appearances
+    NrAppear = PC_Create_Active_Appearances(AppImp, NrAppear, prefix)
+
+    -- PC_Create_Group_Appearances
+    NrAppear = PC_Create_Group_Appearances(AppImp, NrAppear, prefix, NbGroup, color_ref)
+
+    -- PC_Create_Group_Sequence
+    CurrentSeqNr, Sequence_Ref, Sequence_Ref_End = PC_Create_Group_Sequence(NbGroup, Phaser_Off,
+    CurrentSeqNr, prefix, Sequence_Ref, Sequence_Ref_End, Construct_Pool, Call_Pool)
 end -- end Construct_Layout
 
 local function to_dev()
-    -- PC_Create_Group_Appearances
-    NrAppear = PC_Create_Group_Appearances(AppImp, NrAppear, prefix, SelectedGrp, SelectedGrpName, color_ref)
-    -- PC_Create_Group_Sequence
-    CurrentSeqNr, Sequence_Ref, Sequence_Ref_End = PC_Create_Group_Sequence(SelectedGrp, SelectedGrpName, Phaser_Off,
-        CurrentSeqNr, SelectedGrpNo, prefix, Sequence_Ref, Sequence_Ref_End)
     -- PC_Create_Layout_Phaser
     CurrentMacroNr, CurrentSeqNr, LayNr, LayY, ColLgnCount, Ligne_Inc = PC_Create_Layout_Phaser(TLayNr, NaLay,
         SelectedGelNr, CurrentSeqNr, Preset_Ref, MaxColLgn, RefX, LayY, LayH, AppNr, LayW, StColName, CurrentMacroNr,
