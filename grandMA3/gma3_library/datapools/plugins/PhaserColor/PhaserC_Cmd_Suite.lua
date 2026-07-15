@@ -86,3 +86,28 @@ function PC_Sequence_Defo(SequenceObject, i)
     SequenceObject[i]:Set('TIMINGGOFAST', 'Default')
     SequenceObject[i]:Set('TIMINGGOBACKFAST', 'Default')
 end -- end function PC_Sequence_Defo(SequenceObject, i)
+
+function PC_Get_Object(Construct_Pool)
+    local MacroObject    = Root().ShowData.DataPools[Construct_Pool].Macros
+    local SequenceObject = Root().ShowData.DataPools[Construct_Pool].Sequences
+    local Layout_Object  = Root().ShowData.DataPools[Construct_Pool].Layouts
+    local Nr
+    local Preset25Object = Root().ShowData.DataPools[Construct_Pool].PresetPools[25]
+    Preset25Object:Set('PresetMode', 'Universal')
+    local MatrickObject = Root().ShowData.DataPools[Construct_Pool].Matricks
+    local AppObject = Root().ShowData.Appearances
+    return MacroObject, SequenceObject, Layout_Object, Preset25Object, MatrickObject, AppObject, Nr
+end
+
+function PC_Set_Def(L_N, N, Obj)
+    Obj[L_N][N.No]:Set('visibilitybar', 'Hidden')
+    Obj[L_N][N.No]:Set('visibilityobjectname', 'Hidden')
+    Obj[L_N][N.No]:Set('visibilityid', 'Hidden')
+    Obj[L_N][N.No]:Set('visibilitycid', 'Hidden')
+    Obj[L_N][N.No]:Set('visibilityvalue', 'Hidden')
+    Obj[L_N][N.No]:Set('visibilityicon', 'Hidden')
+    Obj[L_N][N.No]:Set('visibilityindicatorbar', 'Hidden')
+    Obj[L_N][N.No]:Set('visibilityselectionrelevance', 'Hidden')
+    Obj[L_N][N.No]:Set('visibilityborder', 'Hidden')
+    Obj[L_N][N.No]:Set('fullresolution', 'Yes')
+end -- end function LC_Set_Def(L_N, N, Obj)

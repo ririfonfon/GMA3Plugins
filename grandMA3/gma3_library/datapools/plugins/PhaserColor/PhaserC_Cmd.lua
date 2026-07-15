@@ -8,9 +8,50 @@ Version:
 Created by Richard Fontaine "RIRI", September 2025.
 --]]
 
+function PC_Build_Tag(prefix, NbGroup)
+    local TagObject      = Root().ShowData.Tags
+    local TagObject_C    = Root().ShowData.Tags:Children()
+    local PC_TAGS_CHECKS = {}
+    local PC_TAGS        = {}
+    local Tag_Type       = {}
+    local Grp1234        = { "COLOR_1", "COLOR_2", "COLOR_3", "COLOR_4" }
+    for t = 1, NbGroup do
+        table.insert(PC_TAGS, prefix .. 'Group_Ref_' .. t)
+        table.insert(Tag_Type, 'Kill Delayed')
+        table.insert(PC_TAGS, prefix .. 'Group_Matricks_' .. t)
+        table.insert(Tag_Type, 'Kill Delayed')
+    end
+    for t = 1, 4 do
+        table.insert(PC_TAGS, prefix .. Grp1234[t])
+        table.insert(Tag_Type, 'Kill Delayed')
+    end
+
+    for i = 1, #PC_TAGS, 1 do
+        PC_TAGS_CHECKS[i] = false
+    end
+
+    for v in pairs(PC_TAGS) do
+        for k in pairs(TagObject_C) do
+            if PC_TAGS[v] == TagObject_C[k].Name then
+                PC_TAGS_CHECKS[v] = true
+                break
+            end
+        end
+    end
+    for k in pairs(PC_TAGS_CHECKS) do
+        if PC_TAGS_CHECKS[k] == false then
+            local nr = TagObject:Acquire()
+            TagObject[nr.No]:Set('Name', PC_TAGS[k])
+            TagObject[nr.No]:Set('TAGTYPE', Tag_Type[k])
+        end
+    end
+end
+
 function PC_Create_Matricks(MatrickNr, Argument_Matricks, surfix, prefix, Construct_Pool)
     local DEBUG = false
-    local MatrickObject = Root().ShowData.DataPools[Construct_Pool].Matricks
+    local MacroObject, SequenceObject, Layout_Object, Preset25Object, MatrickObject, AppObject, Nr = PC_Get_Object(
+        Construct_Pool)
+
     if Debug then Echo('pool ' .. Construct_Pool .. ' Matrick ' .. MatrickNr) end
     PC_Check_Size_Pool(MatrickNr, MatrickObject)
 
@@ -31,8 +72,10 @@ function PC_Create_Matricks(MatrickNr, Argument_Matricks, surfix, prefix, Constr
     end
 end
 
-function PC_Create_Appearances(AppNr, prefix, TCol, NrAppear, StColCode, StColName, StringColName, AppRef)
-    local AppObject = Root().ShowData.Appearances
+function PC_Create_Appearances(AppNr, prefix, TCol, NrAppear, StColCode, StColName, StringColName, AppRef, Construct_Pool)
+    local MacroObject, SequenceObject, Layout_Object, Preset25Object, MatrickObject, AppObject, Nr = PC_Get_Object(
+        Construct_Pool)
+
     AppObject:Acquire()
     AppRef = AppNr
     local StAppNameOn
@@ -73,8 +116,8 @@ end
 
 function PC_Create_Preset_25(TCol, StColName, StringColName, SelectedGelNr, prefix, All_5_NrEnd, All_5_Current,
                              Construct_Pool)
-    local Preset25Object = Root().ShowData.DataPools[Construct_Pool].PresetPools[25]
-    Preset25Object:Set('PresetMode', 'Universal')
+    local MacroObject, SequenceObject, Layout_Object, Preset25Object, MatrickObject, AppObject, Nr = PC_Get_Object(
+        Construct_Pool)
 
     CmdIndirectWait("ClearAll /nu")
     CmdIndirectWait('Fixture Thru')
@@ -115,8 +158,8 @@ function PC_Create_Preset_Ref_1234(All_5_Current, SelectedGelNr, Construct_Pool)
 end
 
 function PC_Create_Phaser(All_5_Current, Preset_Ref, prefix, Argument_Ref, Phaser_Off, Construct_Pool)
-    local Preset25Object = Root().ShowData.DataPools[Construct_Pool].PresetPools[25]
-    Preset25Object:Set('PresetMode', 'Universal')
+    local MacroObject, SequenceObject, Layout_Object, Preset25Object, MatrickObject, AppObject, Nr = PC_Get_Object(
+        Construct_Pool)
     local transition
     local Preset_cal
 
@@ -179,7 +222,9 @@ function PC_Create_Phaser(All_5_Current, Preset_Ref, prefix, Argument_Ref, Phase
 end
 
 function Copy_Phaser_Ref(Phaser_Off, All_5_Current, Phaser_Ref, Preset_25_Ref, Construct_Pool)
-    local Preset25Object = Root().ShowData.DataPools[Construct_Pool].PresetPools[25]
+    local MacroObject, SequenceObject, Layout_Object, Preset25Object, MatrickObject, AppObject, Nr = PC_Get_Object(
+        Construct_Pool)
+
     Preset25Object:Set('PresetMode', 'Universal')
     Phaser_Ref = All_5_Current
     Preset_25_Ref[1] = Phaser_Off
@@ -208,8 +253,10 @@ function PC_Create_Active_Appearances(AppImp, NrAppear, prefix)
     return NrAppear
 end
 
-function PC_Create_Group_Appearances(AppImp, NrAppear, prefix, NbGroup, color_ref)
-    local AppObject = Root().ShowData.Appearances
+function PC_Create_Group_Appearances(AppImp, NrAppear, prefix, NbGroup, color_ref, Construct_Pool)
+    local MacroObject, SequenceObject, Layout_Object, Preset25Object, MatrickObject, AppObject, Nr = PC_Get_Object(
+        Construct_Pool)
+
     AppObject:Acquire()
     local a = 1
     for grp = 1, NbGroup do
@@ -234,16 +281,16 @@ end
 
 function PC_Create_Group_Sequence(NbGroup, Phaser_Off, CurrentSeqNr, prefix, Sequence_Ref, Sequence_Ref_End,
                                   Construct_Pool, Call_Pool)
-    local SequenceObject = Root().ShowData.DataPools[Construct_Pool].Sequences
-    local GroupsObject   = DataPool().Groups
-    local Preset25Object = Root().ShowData.DataPools[Construct_Pool].PresetPools[25]
-    Preset25Object:Set('PresetMode', 'Universal')
+    local MacroObject, SequenceObject, Layout_Object, Preset25Object, MatrickObject, AppObject, Nr = PC_Get_Object(
+        Construct_Pool)
+    local GroupsObject                                                                             = DataPool().Groups
+
 
     Sequence_Ref = CurrentSeqNr
     for g = 1, NbGroup do
         PC_Check_Size_Pool(CurrentSeqNr, SequenceObject)
         SequenceObject:Create(CurrentSeqNr)
-        SequenceObject[CurrentSeqNr]:Set('Name', prefix .. "_Group_" .. g)
+        SequenceObject[CurrentSeqNr]:Set('Name', prefix .. "Group_" .. g)
         PC_Sequence_Defo(SequenceObject, CurrentSeqNr)
         SequenceObject[CurrentSeqNr]:Set('TRACKING', 'No')
         SequenceObject[CurrentSeqNr]:Set('PRIORITY', 'HTP')
@@ -284,8 +331,12 @@ end
 
 function PC_Create_Layout_Phaser(TLayNr, NaLay, SelectedGelNr, CurrentSeqNr, Preset_Ref, MaxColLgn, RefX, LayY,
                                  LayH, AppNr, LayW, StColName, CurrentMacroNr, ColPath, prefix, All_5_NrStart,
-                                 Data_Pool_Nr)
-    local Macro_Pool = DataPool().Macros
+                                 Construct_Pool)
+    local DEBUG                                                                                    = true
+    local MacroObject, SequenceObject, Layout_Object, Preset25Object, MatrickObject, AppObject, Nr = PC_Get_Object(
+        Construct_Pool)
+    local AppearObject                                                                             = Root().ShowData
+        .Appearances
     local TCol
     local LongGel
     local Start_Seq_1
@@ -296,12 +347,23 @@ function PC_Create_Layout_Phaser(TLayNr, NaLay, SelectedGelNr, CurrentSeqNr, Pre
     local End_Seq_3
     local Start_Seq_4
     local End_Seq_4
-    local LayNr = 1
+    local LayNr                                                                                    = 1
     local NrNeed
-    local Grp1234 = { "COLOR_1", "COLOR_2", "COLOR_3", "COLOR_4" }
-    local ColLgnCount = 0
-    local Ligne_Inc = false
+    local Grp1234                                                                                  = { "COLOR_1",
+        "COLOR_2", "COLOR_3", "COLOR_4" }
+    local ColLgnCount                                                                              = 0
+    local Ligne_Inc                                                                                = false
 
+    local TagObject_PC                                                                             = Root().ShowData
+        .Tags:Children()
+    local Group_Tag                                                                                = {}
+    for ta = 1, 4 do
+        for v in ipairs(TagObject_PC) do
+            if TagObject_PC[v].Name == prefix .. Grp1234[ta] then
+                table.insert(Group_Tag, TagObject_PC[v])
+            end
+        end
+    end
 
 
     -- Create new Layout View
@@ -329,18 +391,32 @@ function PC_Create_Layout_Phaser(TLayNr, NaLay, SelectedGelNr, CurrentSeqNr, Pre
         local col_count = 0
         LayY = math.floor(LayY - LayH) -- Max Y Position minus hight from element. 0 are at the Bottom!
 
-        NrNeed = math.floor(AppNr + 2)
+        NrNeed = math.floor(AppNr + 1)
+        -- NrNeed = math.floor(AppNr + 2)
         LayNr = math.floor(LayNr)
 
-        Cmd("Store Layout " .. TLayNr .. "." .. LayNr .. "")
-        Cmd("Set Layout " .. TLayNr .. "." .. LayNr ..
-            " Property Appearance " .. AppNr ..
-            " PosX " .. LayX ..
-            " PosY " .. LayY ..
-            " PositionW " .. LayW ..
-            " PositionH " .. LayH ..
-            " Action=0 VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0 VisibilityBorder=0 VisibilityIcon=0 CustomTextSize=20 CustomTextText=" ..
-            Grp1234[g] .. "")
+        Nr = Layout_Object[TLayNr]:Acquire()
+        -- Layout_Object[TLayNr][Nr.No]:Set('Appearance', AppNr)
+        Layout_Object[TLayNr][Nr.No]:Set('posx', LayX)
+        Layout_Object[TLayNr][Nr.No]:Set('posy', LayY)
+        Layout_Object[TLayNr][Nr.No]:Set('width', LayW)
+        Layout_Object[TLayNr][Nr.No]:Set('height', LayH)
+        -- Layout_Object[TLayNr][Nr.No]:Set('action', 'Go+')
+        Layout_Object[TLayNr][Nr.No]:Set('Note', Grp1234[g])
+        Layout_Object[TLayNr][Nr.No]:Set('CustomTextText', Grp1234[g])
+        -- PC_Set_Def(TLayNr, Nr, Layout_Object)
+        -- Layout_Object[TLayNr][Nr.No]:Set('visibilityobjectname', 'Visible')
+        -- Layout_Object[TLayNr][Nr.No]:Set('Action', 0)
+
+        -- Cmd("Store Layout " .. TLayNr .. "." .. LayNr .. "")
+        -- Cmd("Set Layout " .. TLayNr .. "." .. LayNr ..
+        --     " Property Appearance " .. AppNr ..
+        --     " PosX " .. LayX ..
+        --     " PosY " .. LayY ..
+        --     " PositionW " .. LayW ..
+        --     " PositionH " .. LayH ..
+        --     " Action=0 VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0 VisibilityBorder=0 VisibilityIcon=0 CustomTextSize=20 CustomTextText=" ..
+        --     Grp1234[g] .. "")
 
         LayNr = math.floor(LayNr + 1)
         LayX = math.floor(LayX + LayW + 20)
@@ -352,75 +428,111 @@ function PC_Create_Layout_Phaser(TLayNr, NaLay, SelectedGelNr, CurrentSeqNr, Pre
             StColName = TCol[col].name
 
             -- Create Sequences
-            Cmd("ClearAll /nu")
-            Cmd("Store Sequence " .. CurrentSeqNr .. " \"" .. prefix .. " " .. StColName ..
-                " " .. Grp1234[g] .. "\"")
+            PC_Check_Size_Pool(CurrentSeqNr, SequenceObject)
+            SequenceObject:Create(CurrentSeqNr)
+            SequenceObject[CurrentSeqNr]:Set('Name', prefix .. StColName .. '_' .. Grp1234[g])
+            PC_Sequence_Defo(SequenceObject, CurrentSeqNr)
+            SequenceObject[CurrentSeqNr]:Set('TRACKING', 'No')
+            SequenceObject[CurrentSeqNr]:Set('PRIORITY', 'HTP')
+            SequenceObject[CurrentSeqNr]:Set('SOFTLTP', 'No')
+            SequenceObject[CurrentSeqNr]:Insert()
+            SequenceObject[CurrentSeqNr]:Set('Appearance', AppearObject[NrNeed + 1])
+            SequenceObject[CurrentSeqNr]:Set('Tags', Group_Tag[g].Name .. ':0')
+            -- Cmd("ClearAll /nu")
+            -- Cmd("Store Sequence " .. CurrentSeqNr .. " \"" .. prefix .. " " .. StColName ..
+            --     " " .. Grp1234[g] .. "\"")
 
             -- Create Macros
-            Cmd('Store Macro ' .. CurrentMacroNr .. ' \'' .. prefix .. ' ' .. StColName .. ' ' ..
-                Grp1234[g] .. '\'')
-            Cmd('ChangeDestination Macro ' .. CurrentMacroNr .. '')
-            Cmd('Insert')
-            Cmd('ChangeDestination Root')
+            PC_Check_Size_Pool(CurrentMacroNr, MacroObject)
+            MacroObject:Create(CurrentMacroNr)
+            MacroObject[CurrentMacroNr]:Set('Name', prefix .. StColName .. "_" .. Grp1234[g])
+            MacroObject[CurrentMacroNr]:Insert(1)
+
+            -- Cmd('Store Macro ' .. CurrentMacroNr .. ' \'' .. prefix .. ' ' .. StColName .. ' ' ..
+            --     Grp1234[g] .. '\'')
+            -- Cmd('ChangeDestination Macro ' .. CurrentMacroNr .. '')
+            -- Cmd('Insert')
+            -- Cmd('ChangeDestination Root')
+
             local add_all5 = tonumber(All_5_NrStart + TCol[col].no - 1)
-            Macro_Pool[CurrentMacroNr][1]:Set('Command', 'Copy DataPool ' ..
-                Data_Pool_Nr .. '  Preset 25.' .. add_all5 .. ' At DataPool ' .. Data_Pool_Nr ..
-                '  Preset 25.' .. Preset_Ref .. ' /o /nu')
+            MacroObject[CurrentMacroNr][1]:Set('Command',
+                'Copy ' .. Preset25Object[add_all5] .. ' At ' .. Preset25Object[Preset_Ref] .. ' /o /nu')
+            -- MacroObject[CurrentMacroNr][1]:Set('Command', 'Copy DataPool ' .. Construct_Pool .. '  Preset 25.' ..
+            -- add_all5 .. ' At DataPool ' .. Construct_Pool .. '  Preset 25.' .. Preset_Ref .. ' /o /nu')
 
             -- Add Cmd to Sequences
-            if (g == 1) then
-                Echo("G 1")
-                Cmd("Set seq " .. CurrentSeqNr ..
-                    " cue \"CueZero\" Property Command=\"Set DataPool " ..
-                    Data_Pool_Nr .. " Layout " .. TLayNr .. "." .. LayNr ..
-                    " Property Appearance " ..
-                    NrNeed .. " VisibilityBorder=0 VisibilityIcon=0 ; Go+ DataPool " .. Data_Pool_Nr ..
-                    " Macro " .. CurrentMacroNr .. "; Off DataPool " .. Data_Pool_Nr .. "  Sequence " .. Start_Seq_1 ..
-                    " Thru " .. End_Seq_1 .. " - " .. CurrentSeqNr .. "\"")
-            elseif (g == 2) then
-                Echo("G 2")
-                Cmd("Set seq " .. CurrentSeqNr ..
-                    " cue \"CueZero\" Property Command=\"Set DataPool " ..
-                    Data_Pool_Nr .. " Layout " .. TLayNr .. "." .. LayNr ..
-                    " Property Appearance " ..
-                    NrNeed .. " VisibilityBorder=0 VisibilityIcon=0 ; Go+ DataPool " .. Data_Pool_Nr ..
-                    " Macro " .. CurrentMacroNr .. "; Off DataPool " .. Data_Pool_Nr .. "  Sequence " .. Start_Seq_2 ..
-                    " Thru " .. End_Seq_2 .. " - " .. CurrentSeqNr .. "\"")
-            elseif (g == 3) then
-                Echo("G 3")
-                Cmd("Set seq " .. CurrentSeqNr ..
-                    " cue \"CueZero\" Property Command=\"Set DataPool " ..
-                    Data_Pool_Nr .. " Layout " .. TLayNr .. "." .. LayNr ..
-                    " Property Appearance " ..
-                    NrNeed .. " VisibilityBorder=0 VisibilityIcon=0 ; Go+ DataPool " .. Data_Pool_Nr ..
-                    " Macro " .. CurrentMacroNr .. "; Off DataPool " .. Data_Pool_Nr .. "  Sequence " .. Start_Seq_3 ..
-                    " Thru " .. End_Seq_3 .. " - " .. CurrentSeqNr .. "\"")
-            elseif (g == 4) then
-                Echo("G 4")
-                Cmd("Set seq " .. CurrentSeqNr ..
-                    " cue \"CueZero\" Property Command=\"Set DataPool " ..
-                    Data_Pool_Nr .. " Layout " .. TLayNr .. "." .. LayNr ..
-                    " Property Appearance " ..
-                    NrNeed .. " VisibilityBorder=0 VisibilityIcon=0 ; Go+ DataPool " .. Data_Pool_Nr ..
-                    " Macro " .. CurrentMacroNr .. "; Off DataPool " .. Data_Pool_Nr .. "  Sequence " .. Start_Seq_4 ..
-                    " Thru " .. End_Seq_4 .. " - " .. CurrentSeqNr .. "\"")
-            end
+            SequenceObject[CurrentSeqNr][3]:Set('No', 1)
+            SequenceObject[CurrentSeqNr][3]:Create(1)
+            SequenceObject[CurrentSeqNr][3][1]:Insert()
+            SequenceObject[CurrentSeqNr][3][1]:Set('Appearance', AppearObject[NrNeed])
+            SequenceObject[CurrentSeqNr][3][1]:Set('Command', 'Go+ ' .. MacroObject[CurrentMacroNr])
 
-            Echo("Set seq")
-            Cmd("Set seq " ..
-                CurrentSeqNr .. " cue \"OffCue\" Property Command=\"Set DataPool " .. Data_Pool_Nr .. " Layout " ..
-                TLayNr .. "." .. LayNr .. " Property Appearance " .. NrNeed + 1 ..
-                " VisibilityBorder=0 VisibilityIcon=0 \"")
+            -- if (g == 1) then
+            --     if Debug then Echo("G 1") end
+
+            --     Cmd("Set seq " .. CurrentSeqNr ..
+            --         " cue \"CueZero\" Property Command=\"Set DataPool " ..
+            --         Construct_Pool .. " Layout " .. TLayNr .. "." .. LayNr ..
+            --         " Property Appearance " ..
+            --         NrNeed .. " VisibilityBorder=0 VisibilityIcon=0 ; Go+ DataPool " .. Construct_Pool ..
+            --         " Macro " .. CurrentMacroNr .. "; Off DataPool " .. Construct_Pool .. "  Sequence " .. Start_Seq_1 ..
+            --         " Thru " .. End_Seq_1 .. " - " .. CurrentSeqNr .. "\"")
+            -- elseif (g == 2) then
+            --     if Debug then Echo("G 2") end
+            --     Cmd("Set seq " .. CurrentSeqNr ..
+            --         " cue \"CueZero\" Property Command=\"Set DataPool " ..
+            --         Construct_Pool .. " Layout " .. TLayNr .. "." .. LayNr ..
+            --         " Property Appearance " ..
+            --         NrNeed .. " VisibilityBorder=0 VisibilityIcon=0 ; Go+ DataPool " .. Construct_Pool ..
+            --         " Macro " .. CurrentMacroNr .. "; Off DataPool " .. Construct_Pool .. "  Sequence " .. Start_Seq_2 ..
+            --         " Thru " .. End_Seq_2 .. " - " .. CurrentSeqNr .. "\"")
+            -- elseif (g == 3) then
+            --     if Debug then Echo("G 3") end
+            --     Cmd("Set seq " .. CurrentSeqNr ..
+            --         " cue \"CueZero\" Property Command=\"Set DataPool " ..
+            --         Construct_Pool .. " Layout " .. TLayNr .. "." .. LayNr ..
+            --         " Property Appearance " ..
+            --         NrNeed .. " VisibilityBorder=0 VisibilityIcon=0 ; Go+ DataPool " .. Construct_Pool ..
+            --         " Macro " .. CurrentMacroNr .. "; Off DataPool " .. Construct_Pool .. "  Sequence " .. Start_Seq_3 ..
+            --         " Thru " .. End_Seq_3 .. " - " .. CurrentSeqNr .. "\"")
+            -- elseif (g == 4) then
+            --     if Debug then Echo("G 4") end
+            --     Cmd("Set seq " .. CurrentSeqNr ..
+            --         " cue \"CueZero\" Property Command=\"Set DataPool " ..
+            --         Construct_Pool .. " Layout " .. TLayNr .. "." .. LayNr ..
+            --         " Property Appearance " ..
+            --         NrNeed .. " VisibilityBorder=0 VisibilityIcon=0 ; Go+ DataPool " .. Construct_Pool ..
+            --         " Macro " .. CurrentMacroNr .. "; Off DataPool " .. Construct_Pool .. "  Sequence " .. Start_Seq_4 ..
+            --         " Thru " .. End_Seq_4 .. " - " .. CurrentSeqNr .. "\"")
+            -- end
+
+            -- if Debug then Echo("Set seq") end
+            -- Cmd("Set seq " ..
+            --     CurrentSeqNr .. " cue \"OffCue\" Property Command=\"Set DataPool " .. Construct_Pool .. " Layout " ..
+            --     TLayNr .. "." .. LayNr .. " Property Appearance " .. NrNeed + 1 ..
+            --     " VisibilityBorder=0 VisibilityIcon=0 \"")
 
             -- end Cmd to Sequences
 
             -- Add Sequences to Layout
-            Echo('add sequence to layout')
-            Cmd("Assign Seq " .. CurrentSeqNr .. " at Layout " .. TLayNr)
-            Cmd("Set Layout " .. TLayNr .. "." .. LayNr .. " Property Appearance " ..
-                NrNeed + 1 .. " PosX " .. LayX .. " PosY " .. LayY ..
-                " PositionW " .. LayW .. " PositionH " .. LayH ..
-                " VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0 VisibilityBorder=0 VisibilityIcon=0")
+            if Debug then Echo('add sequence to layout') end
+
+            Nr = Layout_Object[TLayNr]:Acquire()
+            Layout_Object[TLayNr][Nr.No]:Set('Object', SequenceObject[CurrentSeqNr])
+            Layout_Object[TLayNr][Nr.No]:Set('posx', LayX)
+            Layout_Object[TLayNr][Nr.No]:Set('posy', LayY)
+            Layout_Object[TLayNr][Nr.No]:Set('width', LayW)
+            Layout_Object[TLayNr][Nr.No]:Set('height', LayH)
+            Layout_Object[TLayNr][Nr.No]:Set('action', 'Go+')
+            Layout_Object[TLayNr][Nr.No]:Set('Note', 'Seq_Color_' .. Grp1234[g])
+            PC_Set_Def(TLayNr, Nr, Layout_Object)
+
+
+            -- Cmd("Assign Seq " .. CurrentSeqNr .. " at Layout " .. TLayNr)
+            -- Cmd("Set Layout " .. TLayNr .. "." .. LayNr .. " Property Appearance " ..
+            --     NrNeed + 1 .. " PosX " .. LayX .. " PosY " .. LayY ..
+            --     " PositionW " .. LayW .. " PositionH " .. LayH ..
+            --     " VisibilityObjectname=0 VisibilityBar=0 VisibilityIndicatorBar=0 VisibilityBorder=0 VisibilityIcon=0")
             -- end Sequences to Layout
 
             NrNeed = math.floor(NrNeed + 2); -- Set App Nr to next color
@@ -455,13 +567,14 @@ function PC_Create_Layout_FixGroup(CurrentMacroNr, CurrentSeqNr, LayNr, LayY, Re
                                    SelectedGrp, SelectedGrpName, Argument_Matricks, surfix, prefix, AppImp, Argument_Ref,
                                    AppRef, Preset_25_Ref, Phaser_Off, Phaser_Ref, All_Call_Ref, All_Call_Y, Data_Pool_Nr,
                                    Ligne_Inc)
-    local Macro_Pool = DataPool().Macros
-    LayY = math.floor(LayY - 20) -- Add offset for Layout Element distance
-    LayY = math.floor(LayY - LayH)
-    All_Call_Y = LayY
-    LayY = math.floor(LayY - 20) -- Add offset for Layout Element distance
-    LayY = math.floor(LayY - LayH)
-    local LayX = RefX
+    local MacroObject = Root().ShowData.DataPools[Construct_Pool].Macros
+    -- local MacroObject = DataPool().Macros
+    LayY              = math.floor(LayY - 20) -- Add offset for Layout Element distance
+    LayY              = math.floor(LayY - LayH)
+    All_Call_Y        = LayY
+    LayY              = math.floor(LayY - 20) -- Add offset for Layout Element distance
+    LayY              = math.floor(LayY - LayH)
+    local LayX        = RefX
     for g in ipairs(SelectedGrp) do
         All_Call_Ref[g] = {}
     end
@@ -499,7 +612,7 @@ function PC_Create_Layout_FixGroup(CurrentMacroNr, CurrentSeqNr, LayNr, LayY, Re
             Cmd('ChangeDestination Macro ' .. CurrentMacroNr .. '')
             Cmd('Insert')
             Cmd('ChangeDestination Root')
-            Macro_Pool[CurrentMacroNr][1]:Set('Command', 'Assign DataPool ' .. Data_Pool_Nr ..
+            MacroObject[CurrentMacroNr][1]:Set('Command', 'Assign DataPool ' .. Data_Pool_Nr ..
                 '  Preset 25.' .. Preset_25_Ref[i] .. ' At DataPool ' .. Data_Pool_Nr ..
                 '  Sequence o' .. prefix .. SelectedGrpName[g] .. ' Cue 1 Part 0.1')
             -- end Create Macros
@@ -542,7 +655,7 @@ function PC_Create_Layout_FixGroup(CurrentMacroNr, CurrentSeqNr, LayNr, LayY, Re
             Cmd('ChangeDestination Macro ' .. CurrentMacroNr .. '')
             Cmd('Insert')
             Cmd('ChangeDestination Root')
-            Macro_Pool[CurrentMacroNr][1]:Set('Command', 'Assign DataPool ' ..
+            MacroObject[CurrentMacroNr][1]:Set('Command', 'Assign DataPool ' ..
                 Data_Pool_Nr .. '  MAtricks ' .. prefix .. surfix[1] .. Argument_Matricks[i - 9].Name ..
                 ' At DataPool ' .. Data_Pool_Nr .. '  Sequence o' .. prefix .. SelectedGrpName[g] .. ' Cue 1 Part 0.1')
             -- end Create Macros
@@ -588,7 +701,7 @@ function PC_Create_Layout_FixGroup(CurrentMacroNr, CurrentSeqNr, LayNr, LayY, Re
     end
     Cmd('ChangeDestination Root')
     for a = 1, 8 do
-        Macro_Pool[CurrentMacroNr][a]:Set('Command', 'Copy DataPool ' .. Data_Pool_Nr ..
+        MacroObject[CurrentMacroNr][a]:Set('Command', 'Copy DataPool ' .. Data_Pool_Nr ..
             '  Preset 25.' .. Phaser_Off + a .. ' At DataPool ' .. Data_Pool_Nr ..
             '  Preset 25.' .. Phaser_Ref + a - 1 .. '/Overwrite /NoOops')
     end
@@ -601,7 +714,7 @@ function PC_Create_Layout_FixGroup(CurrentMacroNr, CurrentSeqNr, LayNr, LayY, Re
     end
     Cmd('ChangeDestination Root')
     for a = 1, 8 do
-        Macro_Pool[CurrentMacroNr][a]:Set('Command', 'Copy DataPool ' .. Data_Pool_Nr ..
+        MacroObject[CurrentMacroNr][a]:Set('Command', 'Copy DataPool ' .. Data_Pool_Nr ..
             '  Preset 25.' .. Phaser_Off + a + 8 .. ' At DataPool ' .. Data_Pool_Nr ..
             '  Preset 25.' .. Phaser_Ref + a - 1 .. '/Overwrite /NoOops')
     end
@@ -614,7 +727,7 @@ function PC_Create_Layout_FixGroup(CurrentMacroNr, CurrentSeqNr, LayNr, LayY, Re
     end
     Cmd('ChangeDestination Root')
     for a = 1, 8 do
-        Macro_Pool[CurrentMacroNr][a]:Set('Command', 'Copy DataPool ' .. Data_Pool_Nr ..
+        MacroObject[CurrentMacroNr][a]:Set('Command', 'Copy DataPool ' .. Data_Pool_Nr ..
             '  Preset 25.' .. Phaser_Off + a + 16 .. ' At DataPool ' .. Data_Pool_Nr ..
             '  Preset 25.' .. Phaser_Ref + a - 1 .. '/Overwrite /NoOops')
     end

@@ -11,6 +11,8 @@ Created by Richard Fontaine "RIRI", April 2024.
 function PC_Construct_Layout(displayHandle, TLay, SeqNrStart, MacroNrStart, MatrickNrStart, MatrickNr, TLayNr, AppNr,
                              All_5_Current, All_5_NrStart, ColPath, SelectedGelNr, NbGroup, TLayNrRef,
                              NaLay, MaxColLgn, Favourite_Nr, Construct_Pool, Call_Pool)
+    local MacroObject, SequenceObject, Layout_Object, Preset25Object, MatrickObject, AppObject, Nr = PC_Get_Object(
+    Construct_Pool)
     local DEBUG = true
     local Macro_Pool = DataPool().Macros
     local Data_Pool_Nr = DataPool().No
@@ -202,12 +204,20 @@ function PC_Construct_Layout(displayHandle, TLay, SeqNrStart, MacroNrStart, Matr
     CurrentSeqNr = SeqNrStart
     CurrentMacroNr = MacroNrStart
 
+    -- Build Tag
+    PC_Build_Tag(prefix, NbGroup)
+    -- end Build Tag
+
     -- Create MAtricks
     MatrickNr = math.floor(MatrickNrStart)
     PC_Create_Matricks(MatrickNr, Argument_Matricks, surfix, prefix, Construct_Pool)
 
     -- Create new Layout View
     Cmd("Store Layout " .. TLayNr .. " \"" .. prefix .. NaLay .. "")
+    -- Create new Layout View
+    PC_Check_Size_Pool(TLayNr, Layout_Object)
+    Layout_Object:Create(TLayNr)
+    Layout_Object[TLayNr]:Set('Name', prefix .. NaLay)
 
     SelectedGelNr = tonumber(SelectedGelNr)
     TCol = ColPath:Children()[SelectedGelNr]
@@ -215,7 +225,7 @@ function PC_Construct_Layout(displayHandle, TLay, SeqNrStart, MacroNrStart, Matr
 
     -- Create Appearances
     NrAppear, AppRef = PC_Create_Appearances(AppNr, prefix, TCol, NrAppear, StColCode,
-        StColName, StringColName, AppRef)
+        StColName, StringColName, AppRef, Construct_Pool)
 
     -- Create Preset 25
     All_5_NrEnd, All_5_Current = PC_Create_Preset_25(TCol, StColName, StringColName, SelectedGelNr, prefix,
@@ -237,18 +247,19 @@ function PC_Construct_Layout(displayHandle, TLay, SeqNrStart, MacroNrStart, Matr
     NrAppear = PC_Create_Active_Appearances(AppImp, NrAppear, prefix)
 
     -- PC_Create_Group_Appearances
-    NrAppear = PC_Create_Group_Appearances(AppImp, NrAppear, prefix, NbGroup, color_ref)
+    NrAppear = PC_Create_Group_Appearances(AppImp, NrAppear, prefix, NbGroup, color_ref, Construct_Pool)
 
     -- PC_Create_Group_Sequence
     CurrentSeqNr, Sequence_Ref, Sequence_Ref_End = PC_Create_Group_Sequence(NbGroup, Phaser_Off,
-    CurrentSeqNr, prefix, Sequence_Ref, Sequence_Ref_End, Construct_Pool, Call_Pool)
-end -- end Construct_Layout
+        CurrentSeqNr, prefix, Sequence_Ref, Sequence_Ref_End, Construct_Pool, Call_Pool)
 
-local function to_dev()
     -- PC_Create_Layout_Phaser
     CurrentMacroNr, CurrentSeqNr, LayNr, LayY, ColLgnCount, Ligne_Inc = PC_Create_Layout_Phaser(TLayNr, NaLay,
         SelectedGelNr, CurrentSeqNr, Preset_Ref, MaxColLgn, RefX, LayY, LayH, AppNr, LayW, StColName, CurrentMacroNr,
-        ColPath, prefix, All_5_NrStart, Data_Pool_Nr)
+        ColPath, prefix, All_5_NrStart, Construct_Pool)
+end -- end Construct_Layout
+
+local function to_dev()
     -- PC_Create_Layout_FixGroup
     CurrentSeqNr, CurrentMacroNr, All_Call_Ref, All_Call_Y, LayNr = PC_Create_Layout_FixGroup(CurrentMacroNr,
         CurrentSeqNr, LayNr, LayY, RefX, LayH, LayW, TLayNr, NaLay, SelectedGrp, SelectedGrpName, Argument_Matricks,
