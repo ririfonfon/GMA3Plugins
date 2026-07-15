@@ -257,14 +257,15 @@ function PC_Construct_Layout(displayHandle, TLay, SeqNrStart, MacroNrStart, Matr
     CurrentMacroNr, CurrentSeqNr, LayNr, LayY, ColLgnCount, Ligne_Inc = PC_Create_Layout_Phaser(TLayNr, NaLay,
         SelectedGelNr, CurrentSeqNr, Preset_Ref, MaxColLgn, RefX, LayY, LayH, AppNr, LayW, StColName, CurrentMacroNr,
         ColPath, prefix, All_5_NrStart, Construct_Pool)
+        
+        -- PC_Create_Layout_FixGroup
+        CurrentSeqNr, CurrentMacroNr, All_Call_Ref, All_Call_Y, LayNr = PC_Create_Layout_FixGroup(CurrentMacroNr,
+            CurrentSeqNr, LayNr, LayY, RefX, LayH, LayW, TLayNr, NaLay, NbGroup, Argument_Matricks,
+            surfix, prefix, AppImp, Argument_Ref, AppRef, Preset_25_Ref, Phaser_Off, Phaser_Ref, All_Call_Ref, All_Call_Y,
+            Data_Pool_Nr, Ligne_Inc, Construct_Pool)
 end -- end Construct_Layout
 
 local function to_dev()
-    -- PC_Create_Layout_FixGroup
-    CurrentSeqNr, CurrentMacroNr, All_Call_Ref, All_Call_Y, LayNr = PC_Create_Layout_FixGroup(CurrentMacroNr,
-        CurrentSeqNr, LayNr, LayY, RefX, LayH, LayW, TLayNr, NaLay, SelectedGrp, SelectedGrpName, Argument_Matricks,
-        surfix, prefix, AppImp, Argument_Ref, AppRef, Preset_25_Ref, Phaser_Off, Phaser_Ref, All_Call_Ref, All_Call_Y,
-        Data_Pool_Nr, Ligne_Inc)
     -- PC_Create_All_Call_Layout
     CurrentMacroNr, LayX, LayNr = PC_Create_All_Call_Layout(CurrentMacroNr, LayNr, LayY, RefX, LayH, LayW, TLayNr,
         SelectedGrp, SelectedGrpName, prefix, All_Call_Ref, All_Call_Y, AppImp, Data_Pool_Nr)
