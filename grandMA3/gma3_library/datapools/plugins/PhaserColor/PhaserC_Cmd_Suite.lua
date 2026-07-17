@@ -111,3 +111,29 @@ function PC_Set_Def(L_N, N, Obj)
     Obj[L_N][N.No]:Set('visibilityborder', 'Hidden')
     Obj[L_N][N.No]:Set('fullresolution', 'Yes')
 end -- end function LC_Set_Def(L_N, N, Obj)
+
+function PC_Search_Addr_Nat_App(label)
+    local AppearanceObject = Root().ShowData.Appearances:Children()
+    local Addr_Nat_Panel
+    for i in pairs(AppearanceObject) do
+        if AppearanceObject[i].Name ~= nil then
+            if AppearanceObject[i].Name == label then
+                Addr_Nat_Panel = AppearanceObject[i]:AddrNative()
+            end
+        end
+    end
+    return Addr_Nat_Panel
+end
+
+function PC_Search_Object_App(label)
+    local AppearanceObject = Root().ShowData.Appearances:Children()
+    local Object_Panel
+    for i in pairs(AppearanceObject) do
+        if AppearanceObject[i].Name ~= nil then
+            if AppearanceObject[i].Name == label then
+                Object_Panel = AppearanceObject[i]
+            end
+        end
+    end
+    return Object_Panel
+end

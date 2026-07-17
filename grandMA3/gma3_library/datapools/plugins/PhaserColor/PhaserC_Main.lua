@@ -372,7 +372,7 @@ local function Main(displayHandle)
     -- This is row 2 of the dlgFrame.
     local inputsGrid = dlgFrame:Append("UILayoutGrid")
     inputsGrid.Columns = 10
-    inputsGrid.Rows = 11
+    inputsGrid.Rows = 13
     inputsGrid.Anchors = { left = 0, right = 0, top = 1, bottom = 1 }
     inputsGrid.Margin = { left = 0, right = 0, top = 0, bottom = 5 }
 
