@@ -138,9 +138,9 @@ function LC_Create_Appearances_Sequences(CurrentMacroNr, SelectedGelNr, NbGroup,
     for g = 1, NbGroup, 1 do
         local LayX = RefX
         local col_count = 0
-        LayY = math.floor(LayY - LayH) -- Max Y Position minus hight from element. 0 are at the Bottom!
-        NrAppear = math.floor(AppNr + 1)
+        -- NrAppear = math.floor(AppNr + 1)
         NrNeed = math.floor(AppNr + 1)
+        LayY = math.floor(LayY - LayH) -- Max Y Position minus hight from element. 0 are at the Bottom!
         Nr = Layout_Object[TLayNr]:Acquire()
         Layout_Object[TLayNr][Nr.No]:Set('Object', GroupsObject[1])
         Layout_Object[TLayNr][Nr.No]:Set('posx', LayX)

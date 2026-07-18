@@ -364,7 +364,8 @@ function PC_Create_Layout_Phaser(TLayNr, NaLay, SelectedGelNr, CurrentSeqNr, Pre
         Layout_Object[TLayNr][Nr.No]:Set('width', LayW)
         Layout_Object[TLayNr][Nr.No]:Set('height', LayH)
         Layout_Object[TLayNr][Nr.No]:Set('Note', Grp1234[g])
-        Layout_Object[TLayNr][Nr.No]:Set('CustomTextText', Grp1234[g])
+        Layout_Object[TLayNr][Nr.No]:Set('CustomTextText', g)
+        Layout_Object[TLayNr][Nr.No]:Set('CustomTextSize', 32)
 
 
         LayNr = math.floor(LayNr + 1)
@@ -451,11 +452,13 @@ end
 
 function PC_Create_Layout_FixGroup(CurrentMacroNr, CurrentSeqNr, LayNr, LayY, RefX, LayH, LayW, TLayNr, NbGroup,
                                    Argument_Matricks, surfix, prefix, AppImp, AppRef, Preset_25_Ref, Phaser_Off,
-                                   Phaser_Ref, All_Call_Ref, All_Call_Y, Ligne_Inc, Construct_Pool)
+                                   Phaser_Ref, All_Call_Ref, All_Call_Y, Ligne_Inc, Construct_Pool, Call_Pool)
     local DEBUG                  = false
     local MacroObject, SequenceObject, Layout_Object, Preset25Object,
     MatrickObject, AppObject, Nr = PC_Get_Object(Construct_Pool)
     local AppearObject           = Root().ShowData.Appearances
+    local Groups_Pool            = 1
+    local GroupsObject           = Root().ShowData.DataPools[Groups_Pool].Groups:Children()
 
     LayY                         = math.floor(LayY - 20) -- Add offset for Layout Element distance
     LayY                         = math.floor(LayY - LayH)
@@ -466,7 +469,7 @@ function PC_Create_Layout_FixGroup(CurrentMacroNr, CurrentSeqNr, LayNr, LayY, Re
     local TagObject_PC           = Root().ShowData.Tags:Children()
     local Group_Tag              = {}
     local Group_Tag_Ma           = {}
-    local Group_Tag_Call     
+    local Group_Tag_Call
     for ta = 1, NbGroup do
         for v in ipairs(TagObject_PC) do
             if TagObject_PC[v].Name == prefix .. 'Group_Ref_' .. ta then
@@ -474,7 +477,7 @@ function PC_Create_Layout_FixGroup(CurrentMacroNr, CurrentSeqNr, LayNr, LayY, Re
             elseif TagObject_PC[v].Name == prefix .. 'Group_Matricks_' .. ta then
                 table.insert(Group_Tag_Ma, TagObject_PC[v].Name)
             elseif TagObject_PC[v].Name == prefix .. 'Call_Group_ALL' then
-                Group_Tag_Call =  TagObject_PC[v].Name
+                Group_Tag_Call = TagObject_PC[v].Name
             end
         end
     end
@@ -496,7 +499,7 @@ function PC_Create_Layout_FixGroup(CurrentMacroNr, CurrentSeqNr, LayNr, LayY, Re
     SequenceObject[CurrentSeqNr][3]:Set('No', 1)
     SequenceObject[CurrentSeqNr][3]:Create(1)
     SequenceObject[CurrentSeqNr][3][1]:Set('Command',
-        'Go+ DataPool ' .. Construct_Pool .. ' Sequence Thru if Tag "'..prefix .. 'Call_Group_ALL"')
+        'Go+ DataPool ' .. Construct_Pool .. ' Sequence Thru if Tag "' .. prefix .. 'Call_Group_ALL"')
     SequenceObject[CurrentSeqNr][3][1]:Set('Appearance', AppearObject[AppRef + 1])
 
     Nr = Layout_Object[TLayNr]:Acquire()
@@ -527,7 +530,7 @@ function PC_Create_Layout_FixGroup(CurrentMacroNr, CurrentSeqNr, LayNr, LayY, Re
     SequenceObject[CurrentSeqNr][3]:Set('No', 1)
     SequenceObject[CurrentSeqNr][3]:Create(1)
     SequenceObject[CurrentSeqNr][3][1]:Set('Command',
-        'Go+ Cue 2 DataPool ' .. Construct_Pool .. ' Sequence Thru if Tag "'..prefix .. 'Call_Group_ALL"')
+        'Go+ Cue 2 DataPool ' .. Construct_Pool .. ' Sequence Thru if Tag "' .. prefix .. 'Call_Group_ALL"')
     SequenceObject[CurrentSeqNr][3][1]:Set('Appearance', AppearObject[AppRef + 1])
 
     Nr = Layout_Object[TLayNr]:Acquire()
@@ -549,7 +552,51 @@ function PC_Create_Layout_FixGroup(CurrentMacroNr, CurrentSeqNr, LayNr, LayY, Re
     local off_appobject = PC_Search_Object_App('PC_off_select')
 
     for g = 1, NbGroup do
+        LayX = math.floor(LayX - (LayW + 20)) -- Max Y Position minus hight from element. 0 are at the Bottom!
+        Nr = Layout_Object[TLayNr]:Acquire()
+        Layout_Object[TLayNr][Nr.No]:Set('Object', GroupsObject[1])
+        Layout_Object[TLayNr][Nr.No]:Set('posx', LayX)
+        Layout_Object[TLayNr][Nr.No]:Set('posy', LayY)
+        Layout_Object[TLayNr][Nr.No]:Set('width', 100)
+        Layout_Object[TLayNr][Nr.No]:Set('height', 100)
+        Layout_Object[TLayNr][Nr.No]:Set('action', 'Go+')
+        Layout_Object[TLayNr][Nr.No]:Set('Note', 'Group' .. g)
+        PC_Set_Def(TLayNr, Nr, Layout_Object)
+        Layout_Object[TLayNr][Nr.No]:Set('visibilityobjectname', 'Visible')
+        Layout_Object[TLayNr][Nr.No]:Set('Action', 0)
+
+        PC_Check_Size_Pool(CurrentMacroNr, MacroObject)
+        MacroObject:Create(CurrentMacroNr)
+        MacroObject[CurrentMacroNr]:Set('Name', prefix .. '_Select_Group_' .. g)
+        for v = 1, 7 do
+            MacroObject[CurrentMacroNr]:Insert(v)
+        end
+        local seq_id = PC_Search_Object('o' .. prefix .. 'Group_' .. g , SequenceObject)
+        MacroObject[CurrentMacroNr][1]:Set('Command', 'Edit DataPool ' .. Construct_Pool ..
+            ' Sequence ' .. seq_id.No .. ' Cue 1 Part 0.1 Property "Selection"')
+        MacroObject[CurrentMacroNr][2]:Set('Command', 'SetUserVariable "PC_Fonction" 3')
+        MacroObject[CurrentMacroNr][3]:Set('Command', 'SetUserVariable "PC_Layout" ' .. TLayNr)
+        MacroObject[CurrentMacroNr][4]:Set('Command', 'SetUserVariable "PC_Element" ' .. Nr.No)
+        MacroObject[CurrentMacroNr][5]:Set('Command', 'SetUserVariable "PC_Data_Pool" ' .. Construct_Pool)
+        MacroObject[CurrentMacroNr][6]:Set('Command', 'SetUserVariable "PC_Sequence" ' .. seq_id.No)
+        MacroObject[CurrentMacroNr][7]:Set('Command',
+            "Call DataPool '" .. Call_Pool.Name .. "'.'Plugins'.'PhaserColor'.'PC_View'")
+
+        Nr = Layout_Object[TLayNr]:Acquire()
+        Layout_Object[TLayNr][Nr.No]:Set('Object', MacroObject[CurrentMacroNr])
+        Layout_Object[TLayNr][Nr.No]:Set('posx', LayX)
+        Layout_Object[TLayNr][Nr.No]:Set('posy', LayY)
+        Layout_Object[TLayNr][Nr.No]:Set('width', 100)
+        Layout_Object[TLayNr][Nr.No]:Set('height', 100)
+        Layout_Object[TLayNr][Nr.No]:Set('action', 'Go+')
+        Layout_Object[TLayNr][Nr.No]:Set('Note', 'Macro set Group ' .. g)
+        PC_Set_Def(TLayNr, Nr, Layout_Object)
+
+        CurrentMacroNr = math.floor(CurrentMacroNr + 1)
+
         All_Call_Ref[g][1] = CurrentSeqNr
+        LayNr = math.floor(LayNr + 1)
+        LayX = math.floor(LayX + LayW + 20)
 
         PC_Check_Size_Pool(CurrentSeqNr, SequenceObject)
         SequenceObject:Create(CurrentSeqNr)
@@ -579,7 +626,7 @@ function PC_Create_Layout_FixGroup(CurrentMacroNr, CurrentSeqNr, LayNr, LayY, Re
         Layout_Object[TLayNr][Nr.No]:Set('width', LayW)
         Layout_Object[TLayNr][Nr.No]:Set('height', LayH)
         Layout_Object[TLayNr][Nr.No]:Set('action', 'Go+')
-        Layout_Object[TLayNr][Nr.No]:Set('Note', 'Grp on off call')
+        Layout_Object[TLayNr][Nr.No]:Set('Note', 'Call on off Grp ' .. g)
         PC_Set_Def(TLayNr, Nr, Layout_Object)
 
         LayNr = math.floor(LayNr + 1)
@@ -633,7 +680,7 @@ function PC_Create_Layout_FixGroup(CurrentMacroNr, CurrentSeqNr, LayNr, LayY, Re
             Layout_Object[TLayNr][Nr.No]:Set('width', LayW)
             Layout_Object[TLayNr][Nr.No]:Set('height', LayH)
             Layout_Object[TLayNr][Nr.No]:Set('action', 'Go+')
-            Layout_Object[TLayNr][Nr.No]:Set('Note', 'Grp on off call')
+            Layout_Object[TLayNr][Nr.No]:Set('Note', 'Call' .. AppImp[i].Name .. 'Group' .. g)
             PC_Set_Def(TLayNr, Nr, Layout_Object)
             -- end Assign Seq to Layout
 
@@ -691,7 +738,7 @@ function PC_Create_Layout_FixGroup(CurrentMacroNr, CurrentSeqNr, LayNr, LayY, Re
             Layout_Object[TLayNr][Nr.No]:Set('width', LayW)
             Layout_Object[TLayNr][Nr.No]:Set('height', LayH)
             Layout_Object[TLayNr][Nr.No]:Set('action', 'Go+')
-            Layout_Object[TLayNr][Nr.No]:Set('Note', 'Grp on off call')
+            Layout_Object[TLayNr][Nr.No]:Set('Note', 'Call' .. AppImp[i].Name .. 'Group' .. g)
             PC_Set_Def(TLayNr, Nr, Layout_Object)
             -- end Assign Seq to Layout
 
@@ -816,7 +863,7 @@ function PC_Create_All_Call_Layout(CurrentMacroNr, LayNr, LayY, RefX, LayH, LayW
         MacroObject[CurrentMacroNr]:Set('Name', prefix .. "ALL" .. AppImp[i].Name)
         for g = 1, NbGroup do
             MacroObject[CurrentMacroNr]:Insert(g)
-            MacroObject[CurrentMacroNr][g]:Set('Command', 'Go+ DataPool ' .. Construct_Pool ..
+            MacroObject[CurrentMacroNr][g]:Set('Command', 'Go+ Cue 1 DataPool ' .. Construct_Pool ..
                 ' Sequence ' .. All_Call_Ref[g][i + 1] .. '')
             All_Call_Ref[g][20 + i] = CurrentMacroNr
         end
@@ -831,7 +878,7 @@ function PC_Create_All_Call_Layout(CurrentMacroNr, LayNr, LayY, RefX, LayH, LayW
         for i = 1, 20 do
             MacroObject[CurrentMacroNr]:Insert(i)
             MacroObject[CurrentMacroNr][i]:Set('Command', 'Set DataPool ' .. Construct_Pool ..
-                ' Macro ' .. All_Call_Ref[g][20 + i] .. '.' .. g .. ' Property Enabled off')
+                ' Macro ' .. All_Call_Ref[g][20 + i] .. '.' .. g .. ' Property Enabled 0')
         end
         CurrentMacroNr = math.floor(CurrentMacroNr + 1)
     end
@@ -844,7 +891,7 @@ function PC_Create_All_Call_Layout(CurrentMacroNr, LayNr, LayY, RefX, LayH, LayW
         for i = 1, 20 do
             MacroObject[CurrentMacroNr]:Insert(i)
             MacroObject[CurrentMacroNr][i]:Set('Command', 'Set DataPool ' .. Construct_Pool ..
-                ' Macro ' .. All_Call_Ref[g][20 + i] .. '.' .. g .. ' Property Enabled on')
+                ' Macro ' .. All_Call_Ref[g][20 + i] .. '.' .. g .. ' Property Enabled 1')
         end
         CurrentMacroNr = math.floor(CurrentMacroNr + 1)
     end
@@ -867,7 +914,7 @@ function PC_Create_All_Call_Layout(CurrentMacroNr, LayNr, LayY, RefX, LayH, LayW
         Layout_Object[TLayNr][Nr.No]:Set('width', LayW)
         Layout_Object[TLayNr][Nr.No]:Set('height', LayH)
         Layout_Object[TLayNr][Nr.No]:Set('action', 'Go+')
-        Layout_Object[TLayNr][Nr.No]:Set('Note', 'Grp on off call')
+        Layout_Object[TLayNr][Nr.No]:Set('Note', 'call ligne')
         PC_Set_Def(TLayNr, Nr, Layout_Object)
 
         LayX = math.floor(LayX + LayW + 20)
@@ -913,7 +960,7 @@ function PC_Create_Macro_Priority(CurrentMacroNr, TLayNr, LayNr, LayX, LayY, Lay
     Layout_Object[TLayNr][Nr.No]:Set('width', LayW)
     Layout_Object[TLayNr][Nr.No]:Set('height', LayH)
     Layout_Object[TLayNr][Nr.No]:Set('action', 'Go+')
-    Layout_Object[TLayNr][Nr.No]:Set('Note', 'Grp on off call')
+    Layout_Object[TLayNr][Nr.No]:Set('Note', 'Priority')
     PC_Set_Def(TLayNr, Nr, Layout_Object)
     Layout_Object[TLayNr][Nr.No]:Set('Appearance', address)
 

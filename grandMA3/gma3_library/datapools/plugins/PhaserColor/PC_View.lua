@@ -77,19 +77,20 @@ local function main()
             Target = Addr_Nat_Panel[8]
         end
         LayoutObject[PC_layout][PC_element]:Set('Appearance', Target)
+
     elseif (PC_Fonction == 2) then -- PC_Favourites
         local sequences = ObjectList('DataPool ' .. PC_pool ..
             ' Sequence ' .. string.char(34) .. '' .. PC_prefix .. '*' .. string.char(34) .. '')
         local macropool = ShowData().DataPools[PC_pool].Macros
         local layoutspool = ShowData().DataPools[PC_pool].Layouts
         local activeseq = {}
-        if Debug then Echo(PC_macrostore)end
+        if Debug then Echo(PC_macrostore) end
         local macronum = tostring(PC_macrostore)
         macronum = macronum:gsub(' Macro', '')
         local mess = 'DataPool ' .. PC_pool
         macronum = macronum:gsub(mess, '')
         macronum = tonumber(macronum)
-        if Debug then Echo(macronum)end
+        if Debug then Echo(macronum) end
         for i = 1, #sequences do
             if sequences[i]:HasActivePlayback() then
                 table.insert(activeseq, i)
@@ -98,8 +99,7 @@ local function main()
         if #macropool[macronum] == 0 then
             layoutspool[PC_layout]['Macro ' .. macronum]:Set('visibilityobjectname', true)
         end
-        Cmd('label DataPool ' ..
-            PC_pool ..
+        Cmd('label DataPool ' .. PC_pool ..
             ' macro ' .. macronum .. ' ' .. string.char(34) .. PC_prefix .. ' Favourite' .. string.char(34) .. ' /o')
         if #macropool[macronum] > 0 then
             Cmd('delete DataPool ' .. PC_pool .. ' macro ' .. macronum .. '.1 thru')
@@ -111,6 +111,22 @@ local function main()
                 ' Sequence ' .. string.char(34) .. '' .. sequences[seqnumber].name .. '' .. string.char(34) .. '')
         end
         Cmd('Set DataPool ' .. PC_pool .. ' Macro ' .. PC_macro .. ' Property "Appearance" "LC_Black"')
+        
+    elseif (PC_Fonction == 3) then -- PC_Group_select
+        local SEQ_Root = ShowData().DataPools[PC_pool].Sequences:Children()
+        local pool = DataPool().No
+        local GroupObject = ShowData().DataPools[pool].Groups:Children()
+        for k in ipairs(SEQ_Root) do
+            if SEQ_Root[k].No == PC_seq then
+                Target = SEQ_Root[k][3][1][1].Selection.No
+                break
+            end
+        end
+        for g in ipairs(GroupObject) do
+            if GroupObject[g].No == Target then
+                LayoutObject[PC_layout][PC_element]:Set('Object', GroupObject[g])
+            end
+        end
     end
 
 

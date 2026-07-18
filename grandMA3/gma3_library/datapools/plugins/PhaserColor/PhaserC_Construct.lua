@@ -253,7 +253,7 @@ function PC_Construct_Layout(displayHandle, TLay, SeqNrStart, MacroNrStart, Matr
     -- PC_Create_Layout_FixGroup
     CurrentSeqNr, CurrentMacroNr, All_Call_Ref, All_Call_Y, LayNr = PC_Create_Layout_FixGroup(CurrentMacroNr,
         CurrentSeqNr, LayNr, LayY, RefX, LayH, LayW, TLayNr, NbGroup, Argument_Matricks, surfix, prefix, AppImp, AppRef,
-        Preset_25_Ref, Phaser_Off, Phaser_Ref, All_Call_Ref, All_Call_Y, Ligne_Inc, Construct_Pool)
+        Preset_25_Ref, Phaser_Off, Phaser_Ref, All_Call_Ref, All_Call_Y, Ligne_Inc, Construct_Pool, Call_Pool)
 
     -- PC_Create_All_Call_Layout
     local allmacroallstart, allmacroallend
