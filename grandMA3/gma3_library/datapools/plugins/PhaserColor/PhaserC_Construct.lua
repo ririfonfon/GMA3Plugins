@@ -256,8 +256,9 @@ function PC_Construct_Layout(displayHandle, TLay, SeqNrStart, MacroNrStart, Matr
         Preset_25_Ref, Phaser_Off, Phaser_Ref, All_Call_Ref, All_Call_Y, Ligne_Inc, Construct_Pool)
 
     -- PC_Create_All_Call_Layout
-    CurrentMacroNr, LayX, LayNr = PC_Create_All_Call_Layout(CurrentMacroNr, LayNr, LayY, RefX, LayH, LayW, TLayNr,
-        NbGroup, prefix, All_Call_Ref, All_Call_Y, AppImp, Construct_Pool)
+    local allmacroallstart, allmacroallend
+    CurrentMacroNr, LayX, LayNr, allmacroallstart, allmacroallend = PC_Create_All_Call_Layout(CurrentMacroNr, LayNr, LayY,
+        RefX, LayH, LayW, TLayNr, NbGroup, prefix, All_Call_Ref, All_Call_Y, AppImp, Construct_Pool)
 
     -- PC_Create_Macro_Priority
     CurrentMacroNr, LayX, LayNr = PC_Create_Macro_Priority(CurrentMacroNr, TLayNr, LayNr, RefX, LayY, LayW, LayH, prefix,
@@ -266,10 +267,16 @@ function PC_Construct_Layout(displayHandle, TLay, SeqNrStart, MacroNrStart, Matr
     -- add Favourites
     local Macro_Num_Start
     local Macro_Num_End
-    CurrentMacroNr, Macro_Num_End = Create_PC_Favourite_Macro(prefix, CurrentMacroNr, TLayNr, Construct_Pool, Favourite_Nr,
-    Call_Pool)
+    CurrentMacroNr, Macro_Num_End = Create_PC_Favourite_Macro(prefix, CurrentMacroNr, TLayNr, Construct_Pool,
+        Favourite_Nr,
+        Call_Pool)
     Macro_Num_Start = CurrentMacroNr + 1
     Create_PC_Favourite_Layout(LayNr, CurrentMacroNr, LayH, LayW, TLayNr, Construct_Pool, Ligne_Inc, Favourite_Nr, LayX)
+
+    -- -- add group Call
+    -- CurrentMacroNr = CurrentMacroNr + 1
+    -- CurrentSeqNr, CurrentMacroNr = PC_Create_Group_Call(allmacroallstart, allmacroallend, TLayNr, LayX, LayY,
+    --     CurrentSeqNr, CurrentMacroNr, NbGroup, Construct_Pool, prefix, AppRef)
 end -- end Construct_Layout
 
 local function to_dev()

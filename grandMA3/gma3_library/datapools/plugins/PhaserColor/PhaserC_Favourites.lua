@@ -44,6 +44,7 @@ end
 
 function Create_PC_Favourite_Layout(LayNr, CurrentMacroNr, LayH, LayW, TLayNr, Construct_Pool, Ligne_Inc, Favourite_Nr,
                                     LayX)
+    local DEBUG = false
     local MacroObject, SequenceObject, Layout_Object, Preset25Object,
     MatrickObject, AppObject, Nr = PC_Get_Object(Construct_Pool)
     LayX = LayX + 120
@@ -53,13 +54,15 @@ function Create_PC_Favourite_Layout(LayNr, CurrentMacroNr, LayH, LayW, TLayNr, C
     end
     local line_num = 1
     local pool_obj_num = CurrentMacroNr - Favourite_Nr -- pool number of the first object
-    Printf('pool object ' .. pool_obj_num)
-   
+    if DEBUG then Echo('pool object ' .. pool_obj_num) end
+
     local ref_pool_obj
     for i in pairs(MacroObject:Children()) do
         if MacroObject[i] ~= nil then
-            Echo('i ' ..
-            i .. ' macro no ' .. MacroObject[i].No .. ' name ' .. MacroObject[i].Name .. ' poolobj ' .. pool_obj_num)
+            if DEBUG then
+                Echo('i ' .. i .. ' macro no ' .. MacroObject[i].No ..
+                    ' name ' .. MacroObject[i].Name .. ' poolobj ' .. pool_obj_num)
+            end
             if MacroObject[i].No == pool_obj_num then
                 ref_pool_obj = i
             end
@@ -77,7 +80,7 @@ function Create_PC_Favourite_Layout(LayNr, CurrentMacroNr, LayH, LayW, TLayNr, C
     ref_pool_obj = ref_pool_obj + 1
     LayX = LayX + 240
     while line_num <= Favourite_Nr do
-        Printf(line_num .. ' <= ' .. Favourite_Nr)
+        if DEBUG then Echo(line_num .. ' <= ' .. Favourite_Nr) end
         Nr = Layout_Object[TLayNr]:Acquire()
         Layout_Object[TLayNr][Nr.No]:Set('Object', MacroObject[ref_pool_obj])
         Layout_Object[TLayNr][Nr.No]:Set('posx', LayX)

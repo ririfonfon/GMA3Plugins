@@ -341,8 +341,8 @@ function LC_Create_All_Color(TCol, CurrentSeqNr, prefix, TLayNr, LayNr, NrNeed, 
     CurrentSeqNr = math.floor(CurrentSeqNr + 1)
     LayX = math.floor(LayX + LayW + 20)
     NrNeed = math.floor(AppNr + 1)
-    local allmacrocallstar = CurrentMacroNr
-    local allmacrocallend
+    local allmacroallstart = CurrentMacroNr
+    local allmacroallend
     local col_count = 0
     local First_All_Color
     for col in ipairs(TCol) do
@@ -410,10 +410,10 @@ function LC_Create_All_Color(TCol, CurrentSeqNr, prefix, TLayNr, LayNr, NrNeed, 
         CurrentSeqNr = math.floor(CurrentSeqNr + 1)
         CurrentMacroNr = math.floor(CurrentMacroNr + 1)
     end
-    allmacrocallend = CurrentMacroNr - 1
+    allmacroallend = CurrentMacroNr - 1
     LayX = math.floor(LayX + LayW + 20)
 
-    return LayNr, LayX, First_All_Color, CurrentMacroNr, allmacrocallstar, allmacrocallend, CurrentSeqNr
+    return LayNr, LayX, First_All_Color, CurrentMacroNr, allmacroallstart, allmacroallend, CurrentSeqNr
 end -- end LC_Create_All_Color
 
 function LC_Command_Title(title, note, TLayNr, LayNr, LayX, LayY, Pw, Ph, align, Construct_Pool, Visi)

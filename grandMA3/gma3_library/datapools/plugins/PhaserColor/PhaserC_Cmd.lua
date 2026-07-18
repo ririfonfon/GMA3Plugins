@@ -20,11 +20,17 @@ function PC_Build_Tag(prefix, NbGroup)
         table.insert(Tag_Type, 'Kill Delayed')
         table.insert(PC_TAGS, prefix .. 'Group_Matricks_' .. t)
         table.insert(Tag_Type, 'Kill Delayed')
+        table.insert(PC_TAGS, prefix .. 'Group_' .. t)
+        table.insert(Tag_Type, 'Kill Delayed')
     end
     for t = 1, 4 do
         table.insert(PC_TAGS, prefix .. Grp1234[t])
         table.insert(Tag_Type, 'Kill Delayed')
     end
+    table.insert(PC_TAGS, prefix .. 'Group_ALL')
+    table.insert(Tag_Type, 'Kill Delayed')
+    table.insert(PC_TAGS, prefix .. 'Call_Group_ALL')
+    table.insert(Tag_Type, 'None')
 
     for i = 1, #PC_TAGS, 1 do
         PC_TAGS_CHECKS[i] = false
@@ -460,12 +466,15 @@ function PC_Create_Layout_FixGroup(CurrentMacroNr, CurrentSeqNr, LayNr, LayY, Re
     local TagObject_PC           = Root().ShowData.Tags:Children()
     local Group_Tag              = {}
     local Group_Tag_Ma           = {}
+    local Group_Tag_Call     
     for ta = 1, NbGroup do
         for v in ipairs(TagObject_PC) do
             if TagObject_PC[v].Name == prefix .. 'Group_Ref_' .. ta then
                 table.insert(Group_Tag, TagObject_PC[v].Name)
             elseif TagObject_PC[v].Name == prefix .. 'Group_Matricks_' .. ta then
                 table.insert(Group_Tag_Ma, TagObject_PC[v].Name)
+            elseif TagObject_PC[v].Name == prefix .. 'Call_Group_ALL' then
+                Group_Tag_Call =  TagObject_PC[v].Name
             end
         end
     end
@@ -473,7 +482,69 @@ function PC_Create_Layout_FixGroup(CurrentMacroNr, CurrentSeqNr, LayNr, LayY, Re
     for g = 1, NbGroup do
         All_Call_Ref[g] = {}
     end
-    
+
+    PC_Check_Size_Pool(CurrentSeqNr, SequenceObject)
+    SequenceObject:Create(CurrentSeqNr)
+    SequenceObject[CurrentSeqNr]:Set('Name', 'o' .. prefix .. 'Inv')
+    PC_Sequence_Defo(SequenceObject, CurrentSeqNr)
+    SequenceObject[CurrentSeqNr]:Set('TRACKING', 'No')
+    SequenceObject[CurrentSeqNr]:Set('PRIORITY', 'HTP')
+    SequenceObject[CurrentSeqNr]:Set('SOFTLTP', 'No')
+    SequenceObject[CurrentSeqNr]:Set('Appearance', AppearObject[AppRef])
+
+    SequenceObject[CurrentSeqNr]:Insert()
+    SequenceObject[CurrentSeqNr][3]:Set('No', 1)
+    SequenceObject[CurrentSeqNr][3]:Create(1)
+    SequenceObject[CurrentSeqNr][3][1]:Set('Command',
+        'Go+ DataPool ' .. Construct_Pool .. ' Sequence Thru if Tag "'..prefix .. 'Call_Group_ALL"')
+    SequenceObject[CurrentSeqNr][3][1]:Set('Appearance', AppearObject[AppRef + 1])
+
+    Nr = Layout_Object[TLayNr]:Acquire()
+    Layout_Object[TLayNr][Nr.No]:Set('Object', SequenceObject[CurrentSeqNr])
+    Layout_Object[TLayNr][Nr.No]:Set('posx', -1220)
+    Layout_Object[TLayNr][Nr.No]:Set('posy', -540)
+    Layout_Object[TLayNr][Nr.No]:Set('width', 100)
+    Layout_Object[TLayNr][Nr.No]:Set('height', 100)
+    Layout_Object[TLayNr][Nr.No]:Set('action', 'Flash')
+    Layout_Object[TLayNr][Nr.No]:Set('CustomTextText', 'INV')
+    Layout_Object[TLayNr][Nr.No]:Set('CustomTextColor', 'FF0000FF')
+    Layout_Object[TLayNr][Nr.No]:Set('CustomTextAlignmentV', 'Center')
+    Layout_Object[TLayNr][Nr.No]:Set('Note', 'all Inv call')
+    PC_Set_Def(TLayNr, Nr, Layout_Object)
+
+    CurrentSeqNr = math.floor(CurrentSeqNr + 1)
+
+    PC_Check_Size_Pool(CurrentSeqNr, SequenceObject)
+    SequenceObject:Create(CurrentSeqNr)
+    SequenceObject[CurrentSeqNr]:Set('Name', 'o' .. prefix .. 'ALL')
+    PC_Sequence_Defo(SequenceObject, CurrentSeqNr)
+    SequenceObject[CurrentSeqNr]:Set('TRACKING', 'No')
+    SequenceObject[CurrentSeqNr]:Set('PRIORITY', 'HTP')
+    SequenceObject[CurrentSeqNr]:Set('SOFTLTP', 'No')
+    SequenceObject[CurrentSeqNr]:Set('Appearance', AppearObject[AppRef])
+
+    SequenceObject[CurrentSeqNr]:Insert()
+    SequenceObject[CurrentSeqNr][3]:Set('No', 1)
+    SequenceObject[CurrentSeqNr][3]:Create(1)
+    SequenceObject[CurrentSeqNr][3][1]:Set('Command',
+        'Go+ Cue 2 DataPool ' .. Construct_Pool .. ' Sequence Thru if Tag "'..prefix .. 'Call_Group_ALL"')
+    SequenceObject[CurrentSeqNr][3][1]:Set('Appearance', AppearObject[AppRef + 1])
+
+    Nr = Layout_Object[TLayNr]:Acquire()
+    Layout_Object[TLayNr][Nr.No]:Set('Object', SequenceObject[CurrentSeqNr])
+    Layout_Object[TLayNr][Nr.No]:Set('posx', -1100)
+    Layout_Object[TLayNr][Nr.No]:Set('posy', -540)
+    Layout_Object[TLayNr][Nr.No]:Set('width', 100)
+    Layout_Object[TLayNr][Nr.No]:Set('height', 100)
+    Layout_Object[TLayNr][Nr.No]:Set('action', 'Flash')
+    Layout_Object[TLayNr][Nr.No]:Set('CustomTextText', 'ALL')
+    Layout_Object[TLayNr][Nr.No]:Set('CustomTextColor', 'FF0000FF')
+    Layout_Object[TLayNr][Nr.No]:Set('CustomTextAlignmentV', 'Center')
+    Layout_Object[TLayNr][Nr.No]:Set('Note', 'all ALL call')
+    PC_Set_Def(TLayNr, Nr, Layout_Object)
+
+    CurrentSeqNr = math.floor(CurrentSeqNr + 1)
+
     local on_appobject = PC_Search_Object_App('PC_on_select')
     local off_appobject = PC_Search_Object_App('PC_off_select')
 
@@ -482,7 +553,7 @@ function PC_Create_Layout_FixGroup(CurrentMacroNr, CurrentSeqNr, LayNr, LayY, Re
 
         PC_Check_Size_Pool(CurrentSeqNr, SequenceObject)
         SequenceObject:Create(CurrentSeqNr)
-        SequenceObject[CurrentSeqNr]:Set('Name', 'o' .. prefix .. 'Group_' .. g)
+        SequenceObject[CurrentSeqNr]:Set('Name', 'o' .. prefix .. 'Active_Group_' .. g)
         PC_Sequence_Defo(SequenceObject, CurrentSeqNr)
         SequenceObject[CurrentSeqNr]:Set('TRACKING', 'No')
         SequenceObject[CurrentSeqNr]:Set('PRIORITY', 'HTP')
@@ -499,6 +570,7 @@ function PC_Create_Layout_FixGroup(CurrentMacroNr, CurrentSeqNr, LayNr, LayY, Re
         SequenceObject[CurrentSeqNr][4]:Create(1)
         SequenceObject[CurrentSeqNr][4][1]:Insert()
         SequenceObject[CurrentSeqNr][4][1]:Set('Appearance', on_appobject)
+        SequenceObject[CurrentSeqNr]:Set('Tags', Group_Tag_Call .. ':0')
 
         Nr = Layout_Object[TLayNr]:Acquire()
         Layout_Object[TLayNr][Nr.No]:Set('Object', SequenceObject[CurrentSeqNr])
@@ -734,6 +806,8 @@ function PC_Create_All_Call_Layout(CurrentMacroNr, LayNr, LayY, RefX, LayH, LayW
     local Ref_Macro_Call_off
     local Ref_Macro_Call_on
     local Ref_Macro_Call_Fonction = CurrentMacroNr
+    local allmacroallstart = CurrentMacroNr
+    local allmacroallend
 
     -- Create Macros
     for i = 1, 20 do
@@ -799,8 +873,9 @@ function PC_Create_All_Call_Layout(CurrentMacroNr, LayNr, LayY, RefX, LayH, LayW
         LayX = math.floor(LayX + LayW + 20)
         LayNr = math.floor(LayNr + 1)
     end
+    allmacroallend = CurrentMacroNr - 1
     CurrentMacroNr = math.floor(CurrentMacroNr + 1)
-    return CurrentMacroNr, LayX, LayNr
+    return CurrentMacroNr, LayX, LayNr, allmacroallstart, allmacroallend
 end
 
 function PC_Create_Macro_Priority(CurrentMacroNr, TLayNr, LayNr, LayX, LayY, LayW, LayH, prefix, Sequence_Ref,
