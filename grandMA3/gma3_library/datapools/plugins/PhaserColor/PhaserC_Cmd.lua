@@ -5,7 +5,7 @@ Releases:
 Version:
 * 2.0.0.0
 
-Created by Richard Fontaine "RIRI", September 2025.
+Created by Richard Fontaine "RIRI", July 2026.
 --]]
 
 function PC_Build_Tag(prefix, NbGroup)
@@ -171,7 +171,6 @@ function PC_Create_Phaser(All_5_Current, Preset_Ref, prefix, Argument_Ref, Phase
     CmdIndirectWait('Attribute "ColorRGB_W" At Relative 0')
     CmdIndirectWait('Store DataPool ' .. Construct_Pool .. ' Preset 25.' .. All_5_Current .. '/u/nc')
     Preset25Object[All_5_Current]:Set('Name', All_5_Current .. "_" .. prefix .. "off")
-    -- CmdIndirectWait('Label DataPool ' .. Construct_Pool .. ' Preset 25.' .. All_5_Current .. "_" .. prefix .. "off")
     Phaser_Off = All_5_Current
     All_5_Current = math.floor(All_5_Current + 1)
     for i = 1, 3 do
@@ -213,7 +212,6 @@ function PC_Create_Phaser(All_5_Current, Preset_Ref, prefix, Argument_Ref, Phase
 
             CmdIndirectWait('Store DataPool ' .. Construct_Pool .. ' Preset 25.' .. All_5_Current .. '/u/nc')
             Preset25Object[All_5_Current]:Set('Name', prefix .. Argument_Ref[g].Name)
-            -- CmdIndirectWait('Label DataPool ' .. Construct_Pool .. ' Preset 25.' .. All_5_Current .. " " .. prefix .. Argument_Ref[g].Name)
             All_5_Current = math.floor(All_5_Current + 1)
         end
     end
@@ -267,8 +265,6 @@ function PC_Create_Group_Appearances(AppImp, NrAppear, prefix, NbGroup, color_re
             AppObject[NrAppear]:Set('Name', prefix .. AppImp[q].Name .. 'Group' .. grp)
             AppObject[NrAppear]:Set('Appearance', AppImp[q].StApp:gsub('"', ''))
             AppObject[NrAppear]:Set('Color', color_ref[a].RGBref)
-            -- Cmd('Store App ' .. AppImp[q].Nr .. ' ' .. prefix .. AppImp[q].Name ..
-            --     SelectedGrpName[grp] .. ' "Appearance"=' .. AppImp[q].StApp .. '' .. color_ref[a].RGBref .. '')
             NrAppear = math.floor(NrAppear + 1)
         end
         a = a + 1
@@ -299,30 +295,15 @@ function PC_Create_Group_Sequence(NbGroup, Phaser_Off, CurrentSeqNr, prefix, Seq
         SequenceObject[CurrentSeqNr]:Set('KillProtect', 'Yes')
 
         SequenceObject[CurrentSeqNr]:Insert()
-        -- SequenceObject[CurrentSeqNr]:Set('Appearance', AppearObject[NrNeed + 1])
         SequenceObject[CurrentSeqNr][3]:Set('No', 1)
         SequenceObject[CurrentSeqNr][3]:Create(1)
         SequenceObject[CurrentSeqNr][3][1]:Insert()
-        -- SequenceObject[CurrentSeqNr][3][1]:Set('Appearance', AppearObject[NrNeed])
         SequenceObject[CurrentSeqNr][3][1]:Acquire('StandardRecipe')
         SequenceObject[CurrentSeqNr][3][1][1]:Set('Selection', GroupsObject[1])
         SequenceObject[CurrentSeqNr][3][1][1]:Set('Values', Preset25Object[Phaser_Off])
-        -- SequenceObject[CurrentSeqNr][3][1][1]:Set('MAtricks', MatricksObject[MatrickNrStart])
         SequenceObject[CurrentSeqNr][3][1][1]:Set('SelectionMode', 'Normal')
         SequenceObject[CurrentSeqNr][3][1][1]:Set('Enabled', 'Yes')
-        -- SequenceObject[CurrentSeqNr]:Set('Tags', Group_Tag[g].Name .. ':0')
 
-
-        -- Cmd("ClearAll /nu")
-        -- Cmd("Store Sequence " ..
-        --     CurrentSeqNr .. " \"o" .. prefix .. SelectedGrpName[g] .. "\"")
-        -- Cmd("Store Sequence " .. CurrentSeqNr .. " Cue 1 Part 0.1")
-        -- Cmd("Assign Group " .. SelectedGrpNo[g] .. " At Sequence " .. CurrentSeqNr .. " Cue 1 Part 0.1")
-        -- Cmd('Assign Preset 25.' .. Phaser_Off .. " At Sequence " .. CurrentSeqNr .. 'cue 1 part 0.1')
-        -- Cmd('Set Sequence ' .. CurrentSeqNr .. 'Property Priority HTP')
-        -- Cmd('Set Sequence ' .. CurrentSeqNr .. 'Property OffWhenOverridden=0')
-        -- Cmd('Set Sequence ' .. CurrentSeqNr .. 'Property SwapProtect=1')
-        -- Cmd('Set Sequence ' .. CurrentSeqNr .. 'Property KillProtect=1')
         CurrentSeqNr = math.floor(CurrentSeqNr + 1)
     end
     Sequence_Ref_End = math.floor(CurrentSeqNr - 1)
@@ -332,7 +313,7 @@ end
 function PC_Create_Layout_Phaser(TLayNr, NaLay, SelectedGelNr, CurrentSeqNr, Preset_Ref, MaxColLgn, RefX, LayY,
                                  LayH, AppNr, LayW, StColName, CurrentMacroNr, ColPath, prefix, All_5_NrStart,
                                  Construct_Pool)
-    local DEBUG                  = true
+    local DEBUG                  = false
     local MacroObject, SequenceObject, Layout_Object, Preset25Object,
     MatrickObject, AppObject, Nr = PC_Get_Object(Construct_Pool)
     local AppearObject           = Root().ShowData.Appearances
@@ -465,7 +446,7 @@ end
 function PC_Create_Layout_FixGroup(CurrentMacroNr, CurrentSeqNr, LayNr, LayY, RefX, LayH, LayW, TLayNr, NbGroup,
                                    Argument_Matricks, surfix, prefix, AppImp, AppRef, Preset_25_Ref, Phaser_Off,
                                    Phaser_Ref, All_Call_Ref, All_Call_Y, Ligne_Inc, Construct_Pool)
-    local DEBUG                  = true
+    local DEBUG                  = false
     local MacroObject, SequenceObject, Layout_Object, Preset25Object,
     MatrickObject, AppObject, Nr = PC_Get_Object(Construct_Pool)
     local AppearObject           = Root().ShowData.Appearances
@@ -492,8 +473,7 @@ function PC_Create_Layout_FixGroup(CurrentMacroNr, CurrentSeqNr, LayNr, LayY, Re
     for g = 1, NbGroup do
         All_Call_Ref[g] = {}
     end
-    -- local on_address = PC_Search_Addr_Nat_App('PC_on_select')
-    -- local off_address = PC_Search_Addr_Nat_App('PC_off_select')
+    
     local on_appobject = PC_Search_Object_App('PC_on_select')
     local off_appobject = PC_Search_Object_App('PC_off_select')
 

@@ -25,7 +25,7 @@ function Create_PC_Favourite_Macro(prefix, CurrentMacroNr, TLayNr, Construct_Poo
     MacroObject[macro_num][2]:Set('Command', 'SetUserVariable "PC_Favourites" "')
     MacroObject[macro_num][2]:Set('execute', false)
     MacroObject[macro_num][2]:Set('addtocmdline', true)
-    MacroObject[macro_num][3]:Set('Command', 'SetUserVariable "PC_Fonction" 10')
+    MacroObject[macro_num][3]:Set('Command', 'SetUserVariable "PC_Fonction" 2')
     MacroObject[macro_num][4]:Set('Command', 'SetUserVariable "PC_Layout" ' .. TLayNr)
     MacroObject[macro_num][5]:Set('Command', 'SetUserVariable "PC_Data_Pool" ' .. Construct_Pool)
     MacroObject[macro_num][6]:Set('Command', 'SetUserVariable "PC_Prefix" ' .. prefix)
@@ -46,20 +46,15 @@ function Create_PC_Favourite_Layout(LayNr, CurrentMacroNr, LayH, LayW, TLayNr, C
                                     LayX)
     local MacroObject, SequenceObject, Layout_Object, Preset25Object,
     MatrickObject, AppObject, Nr = PC_Get_Object(Construct_Pool)
-    -- local LayX = -80 -- position of te first object by x-axis
     LayX = LayX + 120
     local LayY = 560 -- position of te first0 object by y-axis
     if Ligne_Inc then
         LayY = 560
     end
-    -- local object_type = 'Macro'
     local line_num = 1
     local pool_obj_num = CurrentMacroNr - Favourite_Nr -- pool number of the first object
     Printf('pool object ' .. pool_obj_num)
-    -- local obj_count = Favourite_Nr                     -- amout of objects to be aligned
-    -- local last_pool_obj = pool_obj_num + obj_count     -- last object of the pool to be aligned
-
-    -- Cmd('assign ' .. object_type .. ' ' .. pool_obj_num .. ' at Layout ' .. TLayNr .. ' /nu')
+   
     local ref_pool_obj
     for i in pairs(MacroObject:Children()) do
         if MacroObject[i] ~= nil then
@@ -80,7 +75,6 @@ function Create_PC_Favourite_Layout(LayNr, CurrentMacroNr, LayH, LayW, TLayNr, C
     Layout_Object[TLayNr][Nr.No]:Set('visibilityborder', false)
     LayNr = LayNr + 1
     ref_pool_obj = ref_pool_obj + 1
-    -- Cmd('assign ' .. object_type .. ' ' .. pool_obj_num .. ' Thru ' .. last_pool_obj .. ' at Layout ' .. TLayNr .. ' /nu')
     LayX = LayX + 240
     while line_num <= Favourite_Nr do
         Printf(line_num .. ' <= ' .. Favourite_Nr)

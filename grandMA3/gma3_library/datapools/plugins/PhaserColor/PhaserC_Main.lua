@@ -5,13 +5,13 @@ Releases:
 Version:
 * 2.0.0.0
 
-Created by Richard Fontaine "RIRI", April 2024.
+Created by Richard Fontaine "RIRI", July 2026.
 --]]
 
 local function PC_list_input(popuplists, TLay, TLayNr, TLayNrRef, SeqNr, SeqNrStart, MacroNr,
                              MacroNrStart, All_5_Nr, All_5_NrStart, All_5_Current, MatrickNr,
                              MatrickNrStart)
-    local DEBUG = true
+    local DEBUG = false
     for k in ipairs(TLay) do
         if DEBUG then Echo('Tlay ' .. k) end
         for i in ipairs(popuplists.Lay_Select) do
@@ -83,12 +83,14 @@ local function PC_list_input(popuplists, TLay, TLayNr, TLayNrRef, SeqNr, SeqNrSt
     end
     -- MatrickNr = MatrickNrStart
 
-    if DEBUG then Echo("TLayNr: %d", TLayNr) end
-    if DEBUG then Echo("SeqNrStart: %d", SeqNrStart) end
-    if DEBUG then Echo("MacroNrStart: %d", MacroNrStart) end
-    if DEBUG then Echo("All_5_NrStart: %d", All_5_NrStart) end
-    if DEBUG then Echo("MatrickNrStart: %d", MatrickNrStart) end
-    if DEBUG then Echo("All_5_Current: %d", All_5_Current) end
+    if DEBUG then
+        Echo("TLayNr: %d", TLayNr)
+        Echo("SeqNrStart: %d", SeqNrStart)
+        Echo("MacroNrStart: %d", MacroNrStart)
+        Echo("All_5_NrStart: %d", All_5_NrStart)
+        Echo("MatrickNrStart: %d", MatrickNrStart)
+        Echo("All_5_Current: %d", All_5_Current)
+    end
 
     return TLay, TLayNr, TLayNrRef, SeqNr, SeqNrStart, MacroNr, MacroNrStart, All_5_Nr,
         All_5_NrStart, All_5_Current, MatrickNr, MatrickNrStart
@@ -114,7 +116,7 @@ local myHandle = select(4, ...)
 local thiscomponent = select(4, ...)
 
 local function Main(displayHandle)
-    local DEBUG = true
+    local DEBUG = false
     Cmd('Set UserProfile *.13 Property "keyboardshortcutsactive" false')
 
     -- fix Call_Pool
@@ -1323,8 +1325,10 @@ local function Main(displayHandle)
             Pool_check = PC_CH_Pool(popuplists)
             caller.Text = choice or caller.Text
             for k in ipairs(Pool_check) do
-                if DEBUG then Echo('k pool_check' .. k) end
-                if DEBUG then Echo(' Name ' .. Pool_check[k].name) end
+                if DEBUG then
+                    Echo('k pool_check' .. k)
+                    Echo(' Name ' .. Pool_check[k].name)
+                end
                 if Pool_check[k].name == caller.Text:gsub("'", "") then
                     if DEBUG then Echo('Construct_Pool ' .. k) end
                     Construct_Pool = tonumber(k)
@@ -1436,46 +1440,7 @@ local function Main(displayHandle)
             end
             check_gel = true
             input10LineEdit.Visible = "Yes"
-            -- input10Button.Visible = "Yes"
-            -- elseif caller.Name == "Grp_Select" then
-            --     for k in ipairs(popuplists.Grp_Select) do
-            --         if popuplists.Grp_Select[k] == choice then
-            --             table.remove(popuplists.Grp_Select, k)
-            --         end
-            --     end
-            --     choice = choice:gsub("'", "")
-            --     for k in ipairs(FixtureGroups) do
-            --         if choice == FixtureGroups[k].name then
-            --             SelGrp = k
-            --         end
-            --     end
-            --     table.insert(SelectedGrp, "'" .. FixtureGroups[SelGrp].name .. "'")
-            --     table.insert(SelectedGrpNo, "'" .. FixtureGroups[SelGrp].NO .. "'")
-            --     for k in ipairs(SelectedGrp) do
-            --         Nr_SelectedGrp = k
-            --     end
-            --     subTitle.Text = subTitle.Text .. Nr_SelectedGrp .. "." .. FixtureGroups[SelGrp].name .. " "
-            --     check_grp = true
-            --     if check_gel == true then
-            --         OkButton.Visible = "Yes"
-            --         input1LineEdit.Visible = "Yes"
-            --         input2LineEdit.Visible = "Yes"
-            --         input3LineEdit.Visible = "Yes"
-            --         input4LineEdit.Visible = "Yes"
-            --         input5LineEdit.Visible = "Yes"
-            --         input6LineEdit.Visible = "Yes"
-            --         input7LineEdit.Visible = "Yes"
-            --         input8LineEdit.Visible = "Yes"
-            --         input11LineEdit.Visible = "Yes"
-            --         input1Sujestion.Visible = "Yes"
-            --         input2Sujestion.Visible = "Yes"
-            --         input3Sujestion.Visible = "Yes"
-            --         input4Sujestion.Visible = "Yes"
-            --         input5Sujestion.Visible = "Yes"
-            --         input6Sujestion.Visible = "Yes"
-            --         input7Sujestion.Visible = "Yes"
-            --         input11Sujestion.Visible = "Yes"
-            --     end
+           
         elseif caller.Name == "Name_Select" then
             input1LineEdit.Content = choice
         elseif caller.Name == "Lay_Select" then

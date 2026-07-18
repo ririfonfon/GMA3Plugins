@@ -9,7 +9,7 @@ Created by Richard Fontaine "RIRI", july 2026.
 --]]
 
 function PC_Check_Size_Pool(id, PoolObject)
-    local DEBUG = true
+    local DEBUG = false
     if not id then
         Printf('Acquire')
         return PoolObject:Acquire()

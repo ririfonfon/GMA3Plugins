@@ -9,8 +9,9 @@ Rewrite by Richard Fontaine "RIRI", July 2026.
 --]]
 
 local function main()
+    local DEBUG = false
     local Select = UserVars()
-    local PC_layout, PC_element, PC_seq, PC_pool, Target
+    local PC_layout, PC_element, PC_seq, PC_pool, Target, PC_prefix, PC_macrostore, PC_macro
 
     local PC_Fonction = tonumber((GetVar(Select, "PC_Fonction")))
     if GetVar(Select, "PC_Layout") then
@@ -24,6 +25,15 @@ local function main()
     end
     if GetVar(Select, "PC_Sequence") then
         PC_seq = GetVar(Select, "PC_Sequence")
+    end
+    if GetVar(Select, "PC_Prefix") then
+        PC_prefix = GetVar(Select, "PC_Prefix")
+    end
+    if GetVar(Select, "PC_Favourites") then
+        PC_macrostore = GetVar(Select, "PC_Favourites")
+    end
+    if GetVar(Select, "PC_Macro") then
+        PC_macro = GetVar(Select, "PC_Macro")
     end
 
     local SeqNr = ShowData().DataPools[PC_pool].Sequences:Children()
@@ -67,7 +77,42 @@ local function main()
             Target = Addr_Nat_Panel[8]
         end
         LayoutObject[PC_layout][PC_element]:Set('Appearance', Target)
+    elseif (PC_Fonction == 2) then -- PC_Favourites
+        local sequences = ObjectList('DataPool ' .. PC_pool ..
+            ' Sequence ' .. string.char(34) .. '' .. PC_prefix .. '*' .. string.char(34) .. '')
+        local macropool = ShowData().DataPools[PC_pool].Macros
+        local layoutspool = ShowData().DataPools[PC_pool].Layouts
+        local activeseq = {}
+        if Debug then Echo(PC_macrostore)end
+        local macronum = tostring(PC_macrostore)
+        macronum = macronum:gsub(' Macro', '')
+        local mess = 'DataPool ' .. PC_pool
+        macronum = macronum:gsub(mess, '')
+        macronum = tonumber(macronum)
+        if Debug then Echo(macronum)end
+        for i = 1, #sequences do
+            if sequences[i]:HasActivePlayback() then
+                table.insert(activeseq, i)
+            end
+        end
+        if #macropool[macronum] == 0 then
+            layoutspool[PC_layout]['Macro ' .. macronum]:Set('visibilityobjectname', true)
+        end
+        Cmd('label DataPool ' ..
+            PC_pool ..
+            ' macro ' .. macronum .. ' ' .. string.char(34) .. PC_prefix .. ' Favourite' .. string.char(34) .. ' /o')
+        if #macropool[macronum] > 0 then
+            Cmd('delete DataPool ' .. PC_pool .. ' macro ' .. macronum .. '.1 thru')
+        end
+        Cmd('store DataPool ' .. PC_pool .. ' macro ' .. macronum .. '.1 thru' .. #activeseq .. ' /o')
+        for i = 1, #activeseq do
+            local seqnumber = activeseq[i]
+            macropool[macronum][i]:Set('command', 'go DataPool ' .. PC_pool ..
+                ' Sequence ' .. string.char(34) .. '' .. sequences[seqnumber].name .. '' .. string.char(34) .. '')
+        end
+        Cmd('Set DataPool ' .. PC_pool .. ' Macro ' .. PC_macro .. ' Property "Appearance" "LC_Black"')
     end
+
 
     DelVar(Select, "PC_Fonction")
     DelVar(Select, "PC_Layout")
