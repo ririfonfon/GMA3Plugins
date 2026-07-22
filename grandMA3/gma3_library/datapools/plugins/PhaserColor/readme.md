@@ -13,3 +13,9 @@ petite astuce pour ces remote j'ai cree un dimmer special :
 une courbe de 0 a 254 (comme on est sur de jamais faire un Off when Overridden
 
 <img width="2403" height="339" alt="image" src="https://github.com/user-attachments/assets/8a8dbdb5-ec5b-4707-bd40-af2ed2ec3f5b" />
+
+les reference de couleur 1 2 3 4 sont les 4 preset avant la preset off 
+
+<img width="1129" height="99" alt="image" src="https://github.com/user-attachments/assets/d84694ae-5aa4-49d4-95cb-9413068de371" />
+
+a vous de faire des recepie avec si vous voulez.
