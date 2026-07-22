@@ -96,7 +96,7 @@ function Create_PC_Favourite_Layout(LayNr, CurrentMacroNr, LayH, LayW, TLayNr, C
         line_num = line_num + 1
         ref_pool_obj = ref_pool_obj + 1
     end
-    return LayNr
+    return 
 end
 
 -- end PhaserC_Favourites.lua

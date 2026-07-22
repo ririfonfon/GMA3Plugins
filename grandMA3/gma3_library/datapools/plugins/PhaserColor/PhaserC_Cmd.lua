@@ -567,7 +567,7 @@ function PC_Create_Layout_FixGroup(CurrentMacroNr, CurrentSeqNr, LayNr, LayY, Re
 
         PC_Check_Size_Pool(CurrentMacroNr, MacroObject)
         MacroObject:Create(CurrentMacroNr)
-        MacroObject[CurrentMacroNr]:Set('Name', prefix .. '_Select_Group_' .. g)
+        MacroObject[CurrentMacroNr]:Set('Name', prefix .. 'Select_Group_' .. g)
         for v = 1, 7 do
             MacroObject[CurrentMacroNr]:Insert(v)
         end
@@ -945,12 +945,11 @@ function PC_Create_Macro_Priority(CurrentMacroNr, TLayNr, LayNr, LayX, LayY, Lay
         '  Sequence ' .. Sequence_Ref .. " Thru " .. Sequence_Ref_End .. ' Property "priority"')
     MacroObject[CurrentMacroNr][2]:Set('Command', 'SetUserVariable "PC_Fonction" 1')
     MacroObject[CurrentMacroNr][3]:Set('Command', 'SetUserVariable "PC_Layout" ' .. TLayNr)
-    MacroObject[CurrentMacroNr][4]:Set('Command', 'SetUserVariable "PC_Element" ' .. LayNr)
     MacroObject[CurrentMacroNr][5]:Set('Command', 'SetUserVariable "PC_Data_Pool" ' .. Construct_Pool)
     MacroObject[CurrentMacroNr][6]:Set('Command', 'SetUserVariable "PC_Sequence" ' .. Sequence_Ref)
     MacroObject[CurrentMacroNr][7]:Set('Command',
-        "Call DataPool '" .. Call_Pool.Name .. "'.'Plugins'.'PhaserColor'.'PC_View'")
-
+    "Call DataPool '" .. Call_Pool.Name .. "'.'Plugins'.'PhaserColor'.'PC_View'")
+    
     local address = PC_Search_Addr_Nat_App('p_htp_png')
     Nr = Layout_Object[TLayNr]:Acquire()
     Layout_Object[TLayNr][Nr.No]:Set('Object', MacroObject[CurrentMacroNr])
@@ -963,6 +962,8 @@ function PC_Create_Macro_Priority(CurrentMacroNr, TLayNr, LayNr, LayX, LayY, Lay
     Layout_Object[TLayNr][Nr.No]:Set('Note', 'Priority')
     PC_Set_Def(TLayNr, Nr, Layout_Object)
     Layout_Object[TLayNr][Nr.No]:Set('Appearance', address)
+    
+    MacroObject[CurrentMacroNr][4]:Set('Command', 'SetUserVariable "PC_Element" ' .. Nr.No)
 
     LayX = math.floor(LayX + LayW + 20)
     LayNr = math.floor(LayNr + 1)

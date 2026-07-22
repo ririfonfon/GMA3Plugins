@@ -111,7 +111,7 @@ local function main()
                 ' Sequence ' .. string.char(34) .. '' .. sequences[seqnumber].name .. '' .. string.char(34) .. '')
         end
         Cmd('Set DataPool ' .. PC_pool .. ' Macro ' .. PC_macro .. ' Property "Appearance" "LC_Black"')
-        
+
     elseif (PC_Fonction == 3) then -- PC_Group_select
         local SEQ_Root = ShowData().DataPools[PC_pool].Sequences:Children()
         local pool = DataPool().No

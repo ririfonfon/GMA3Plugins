@@ -381,7 +381,8 @@ function LC_Construct_Layout(TLay, SeqNrStart, MacroNrStart, MatrickNrStart, Mat
         CurrentSeqNr, Delay_F_Element, LayNr, LayX, Current_Id_Lay, Fade_Element, CurrentMacroNr, First_Id_Lay =
             LC_Create_Fade_Sequences(MakeX, CurrentSeqNr, CurrentMacroNr, prefix, surfix,
                 First_Id_Lay, LayNr, MatrickNrStart, TLayNr, Fade_Element, Argument_Fade, AppImp, LayX, LayY, LayW, LayH,
-                SeqNrStart, SeqNrEnd, Current_Id_Lay, Delay_F_Element, Axes, Construct_Pool, Call_Pool, Time_Argument, NbGroup)
+                SeqNrStart, SeqNrEnd, Current_Id_Lay, Delay_F_Element, Axes, Construct_Pool, Call_Pool, Time_Argument,
+                NbGroup)
         -- end Create Sequence FADE
 
         -- Create Sequences Delayfrom
@@ -489,7 +490,7 @@ function LC_Construct_Layout(TLay, SeqNrStart, MacroNrStart, MatrickNrStart, Mat
     for b = 1, 12 do
         MacroObject[CurrentMacroNr]:Insert(b)
     end
-   
+
     MacroObject[CurrentMacroNr]:Set('name', 'Erase [' .. prefix:gsub('_', '') .. ']')
     MacroObject[CurrentMacroNr][1]:Set('Command', condition_string)
     MacroObject[CurrentMacroNr][1]:Set('Wait', 'Go')
@@ -514,6 +515,7 @@ function LC_Construct_Layout(TLay, SeqNrStart, MacroNrStart, MatrickNrStart, Mat
         'Delete Tag ' .. prefix .. '* /nc')
     MacroObject[CurrentMacroNr][12]:Set('Command',
         'Delete DataPool ' .. Construct_Pool .. ' Macro ' .. CurrentMacroNr .. ' /nc')
+    if DEBUG then Echo('LC_Create_Macro_Erase ok') end
     -- end Macro Del LC prefix
 
     -- dimension of layout & scal it
@@ -528,6 +530,4 @@ function LC_Construct_Layout(TLay, SeqNrStart, MacroNrStart, MatrickNrStart, Mat
     -- Layout_Object[TLayNr]:Set('DimensionH', UsedH)
 
     CmdIndirectWait('Select DataPool ' .. Construct_Pool .. ' Layout ' .. TLayNr)
-
-    -- if DEBUG then Echo('LC_Create_Macro_Erase ok') end
 end -- end LC_Construct.lua

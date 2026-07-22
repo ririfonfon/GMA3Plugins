@@ -14,7 +14,7 @@ function PC_Construct_Layout(displayHandle, TLay, SeqNrStart, MacroNrStart, Matr
     local MacroObject, SequenceObject, Layout_Object, Preset25Object, MatrickObject, AppObject, Nr = PC_Get_Object(
         Construct_Pool)
     local DEBUG = true
-    local Macro_Pool = DataPool().Macros
+    -- local MacroObject = DataPool().Macros
     local Data_Pool_Nr = DataPool().No
     local All_5_NrEnd
     local Img = ShowData().MediaPools.Images:Children()
@@ -273,53 +273,48 @@ function PC_Construct_Layout(displayHandle, TLay, SeqNrStart, MacroNrStart, Matr
     Macro_Num_Start = CurrentMacroNr + 1
     Create_PC_Favourite_Layout(LayNr, CurrentMacroNr, LayH, LayW, TLayNr, Construct_Pool, Ligne_Inc, Favourite_Nr, LayX)
 
-    -- -- add group Call
-    -- CurrentMacroNr = CurrentMacroNr + 1
-    -- CurrentSeqNr, CurrentMacroNr = PC_Create_Group_Call(allmacroallstart, allmacroallend, TLayNr, LayX, LayY,
-    --     CurrentSeqNr, CurrentMacroNr, NbGroup, Construct_Pool, prefix, AppRef)
-end -- end Construct_Layout
-
-local function to_dev()
-    Cmd("ClearAll /nu")
     -- Macro Del PC prefix
     CurrentMacroNr = math.floor(CurrentMacroNr + 2)
     condition_string = "Lua 'if Confirm(\"Delete Layout Phaser Color PC" ..
-        prefix:gsub('%D*', '') ..
-        "?\") then; Cmd(\"Go macro " ..
-        CurrentMacroNr .. "\"); else Cmd(\"Off macro " .. CurrentMacroNr .. "\"); end'" .. ' /nu'
-    Cmd('Store Macro ' .. CurrentMacroNr .. ' \'' .. 'ERASE\'')
-    Cmd('ChangeDestination Macro ' .. CurrentMacroNr .. '')
+        prefix:gsub('%D*', '') .. "?\") then; Cmd(\"Go DataPool " .. Construct_Pool .. " macro " ..
+        CurrentMacroNr .. "\"); else Cmd(\"Off DataPool " .. Construct_Pool .. " macro " ..
+        CurrentMacroNr .. "\"); end'" .. ' /nu'
+
+    PC_Check_Size_Pool(CurrentMacroNr, MacroObject)
+    MacroObject:Create(CurrentMacroNr)
     for i = 1, 11 do
-        Cmd('Insert')
+        MacroObject[CurrentMacroNr]:Insert(i)
     end
-    Cmd('ChangeDestination Root')
-    Macro_Pool[CurrentMacroNr]:Set('name', 'Erase [' .. prefix:gsub('_', '') .. ']')
-    Macro_Pool[CurrentMacroNr][1]:Set('Command', condition_string)
-    Macro_Pool[CurrentMacroNr][1]:Set('Wait', 'Go')
-    Macro_Pool[CurrentMacroNr][2]:Set('Command', 'Delete Sequence ' .. prefix .. '*' .. ' /nc')
-    Macro_Pool[CurrentMacroNr][3]:Set('Command', 'Delete Sequence o' .. prefix .. '*' .. ' /nc')
-    Macro_Pool[CurrentMacroNr][4]:Set('Command', 'Delete Layout ' .. prefix .. '*' .. ' /nc')
-    Macro_Pool[CurrentMacroNr][5]:Set('Command', 'Delete Matricks ' .. prefix .. '*' .. ' /nc')
-    Macro_Pool[CurrentMacroNr][6]:Set('Command', 'Delete Appearance ' .. prefix .. '*' .. ' /nc')
-    Macro_Pool[CurrentMacroNr][7]:Set('Command', 'Delete Preset 25. ' .. prefix .. '*' .. ' /nc')
-    Macro_Pool[CurrentMacroNr][8]:Set('Command',
-        'Delete DataPool ' .. Data_Pool_Nr .. ' Macro ' .. Macro_Num_Start .. ' Thru ' .. Macro_Num_End .. ' /nc')
-    Macro_Pool[CurrentMacroNr][9]:Set('Command',
-        'Delete Preset 25. ' .. Preset_Ref .. 'Thru Preset 25.' .. Preset_Ref_End .. ' /nc')
-    Macro_Pool[CurrentMacroNr][10]:Set('Command', 'Delete  Macro ' .. prefix .. '*' .. ' /nc')
-    Macro_Pool[CurrentMacroNr][11]:Set('Command', 'Delete  Macro ' .. CurrentMacroNr .. ' /nc')
+    MacroObject[CurrentMacroNr]:Set('Name', 'ERASE [' .. prefix:gsub('_', '') .. ']')
+    MacroObject[CurrentMacroNr][1]:Set('Command', condition_string)
+    MacroObject[CurrentMacroNr][1]:Set('Wait', 'Go')
+    MacroObject[CurrentMacroNr][2]:Set('Command',
+        'Delete DataPool ' .. Construct_Pool .. ' Sequence ' .. prefix .. '*' .. ' /nc')
+    MacroObject[CurrentMacroNr][3]:Set('Command',
+        'Delete DataPool ' .. Construct_Pool .. ' Sequence o' .. prefix .. '*' .. ' /nc')
+    MacroObject[CurrentMacroNr][4]:Set('Command',
+        'Delete DataPool ' .. Construct_Pool .. ' Layout ' .. prefix .. '*' .. ' /nc')
+    MacroObject[CurrentMacroNr][5]:Set('Command',
+        'Delete DataPool ' .. Construct_Pool .. ' Matricks ' .. prefix .. '*' .. ' /nc')
+    MacroObject[CurrentMacroNr][6]:Set('Command',
+        'Delete DataPool ' .. Construct_Pool .. ' Appearance ' .. prefix .. '*' .. ' /nc')
+    MacroObject[CurrentMacroNr][7]:Set('Command',
+        'Delete DataPool ' .. Construct_Pool .. ' Preset 25. ' .. prefix .. '*' .. ' /nc')
+    MacroObject[CurrentMacroNr][8]:Set('Command',
+        'Delete DataPool ' .. Construct_Pool .. ' Macro ' .. Macro_Num_Start .. ' Thru ' .. Macro_Num_End .. ' /nc')
+    MacroObject[CurrentMacroNr][9]:Set('Command',
+        'Delete DataPool ' ..
+        Construct_Pool .. ' Preset 25. ' .. Preset_Ref .. 'Thru Preset 25.' .. Preset_Ref_End .. ' /nc')
+    MacroObject[CurrentMacroNr][10]:Set('Command',
+        'Delete  DataPool ' .. Construct_Pool .. ' Macro ' .. prefix .. '*' .. ' /nc')
+    MacroObject[CurrentMacroNr][11]:Set('Command',
+        'Delete  DataPool ' .. Construct_Pool .. ' Macro ' .. CurrentMacroNr .. ' /nc')
     -- end Macro Del PC prefix
 
-    -- dimension of layout & scal it
-    for k in pairs(DataPool().Layouts:Children()) do
-        if (math.floor(TLayNr) == math.floor(tonumber(DataPool().Layouts:Children()[k].NO))) then
-            TLayNrRef = k
-        end
-    end
-    UsedW = DataPool().Layouts:Children()[TLayNrRef].UsedW / 2
-    UsedH = DataPool().Layouts:Children()[TLayNrRef].UsedH / 2
-    Cmd("Set Layout " .. TLayNr .. " DimensionW " .. UsedW .. " DimensionH " .. UsedH)
-    Cmd('Select Layout ' .. TLayNr)
+    Cmd('Select DataPool ' .. Construct_Pool .. ' Layout ' .. TLayNr)
+end -- end Construct_Layout
+
+local function to_dev()
 end
 
 -- end PhaserC_Construct.lua
