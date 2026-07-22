@@ -580,7 +580,7 @@ function PC_Create_Layout_FixGroup(CurrentMacroNr, CurrentSeqNr, LayNr, LayY, Re
         MacroObject[CurrentMacroNr][5]:Set('Command', 'SetUserVariable "PC_Data_Pool" ' .. Construct_Pool)
         MacroObject[CurrentMacroNr][6]:Set('Command', 'SetUserVariable "PC_Sequence" ' .. seq_id.No)
         MacroObject[CurrentMacroNr][7]:Set('Command',
-            "Call DataPool '" .. Call_Pool.Name .. "'.'Plugins'.'PhaserColor'.'PC_View'")
+            "Call DataPool '" .. Call_Pool.Name .. "'.'Plugins'.'PhaserColor_V2_4'.'PC_View'")
 
         Nr = Layout_Object[TLayNr]:Acquire()
         Layout_Object[TLayNr][Nr.No]:Set('Object', MacroObject[CurrentMacroNr])
@@ -948,7 +948,7 @@ function PC_Create_Macro_Priority(CurrentMacroNr, TLayNr, LayNr, LayX, LayY, Lay
     MacroObject[CurrentMacroNr][5]:Set('Command', 'SetUserVariable "PC_Data_Pool" ' .. Construct_Pool)
     MacroObject[CurrentMacroNr][6]:Set('Command', 'SetUserVariable "PC_Sequence" ' .. Sequence_Ref)
     MacroObject[CurrentMacroNr][7]:Set('Command',
-    "Call DataPool '" .. Call_Pool.Name .. "'.'Plugins'.'PhaserColor'.'PC_View'")
+    "Call DataPool '" .. Call_Pool.Name .. "'.'Plugins'.'PhaserColor_V2_4'.'PC_View'")
     
     local address = PC_Search_Addr_Nat_App('p_htp_png')
     Nr = Layout_Object[TLayNr]:Acquire()

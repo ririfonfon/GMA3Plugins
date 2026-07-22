@@ -31,7 +31,7 @@ function Create_PC_Favourite_Macro(prefix, CurrentMacroNr, TLayNr, Construct_Poo
     MacroObject[macro_num][6]:Set('Command', 'SetUserVariable "PC_Prefix" ' .. prefix)
     MacroObject[macro_num][7]:Set('Command', 'SetUserVariable "PC_Macro" ' .. macro_num)
     MacroObject[macro_num][8]:Set('Command',
-        "Call DataPool '" .. Call_Pool.Name .. "'.'Plugins'.'PhaserColor'.'PC_View'")
+        "Call DataPool '" .. Call_Pool.Name .. "'.'Plugins'.'PhaserColor_V2_4'.'PC_View'")
     MacroObject[macro_num]:Set('Appearance', 'LC_Black')
 
     for i = macro_num + 1, CurrentMacroNr do
