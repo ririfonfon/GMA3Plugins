@@ -10,7 +10,7 @@ petite astuce pour ces remote j'ai cree un dimmer special :
 
 <img width="3769" height="1932" alt="image" src="https://github.com/user-attachments/assets/8e184f5e-9bbc-432d-80c4-aab7c799d5bd" />
 
-une courbe de 0 a 254 (comme on est sur de jamais faire un Off when Overridden
+une courbe de 0 a 254 (comme ça on est sur de jamais faire un Off when Overridden
 
 <img width="2403" height="339" alt="image" src="https://github.com/user-attachments/assets/8a8dbdb5-ec5b-4707-bd40-af2ed2ec3f5b" />
 
