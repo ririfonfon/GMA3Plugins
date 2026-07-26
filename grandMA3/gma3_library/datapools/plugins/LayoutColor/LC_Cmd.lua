@@ -9,10 +9,10 @@ Rewrite by Richard Fontaine "RIRI", June 2026.
 --]]
 
 
-function LC_Create_Matricks(MatrickNrStart, prefix, NaLay, NbGroup, MatrickNr, pool_construct)
+function LC_Create_Matricks(MatrickNrStart, prefix, NaLay, NbGroup, MatrickNr, Construct_Pool)
     local DEBUG = false
-    local MatrickObject = Root().ShowData.DataPools[pool_construct].Matricks
-    if Debug then Echo('pool ' .. pool_construct .. ' Matrick ' .. MatrickNrStart) end
+    local MatrickObject = Root().ShowData.DataPools[Construct_Pool].Matricks
+    if Debug then Echo('pool ' .. Construct_Pool .. ' Matrick ' .. MatrickNrStart) end
     LC_Check_Size_Pool(MatrickNrStart, MatrickObject)
     MatrickObject:Acquire()
     MatrickObject:Create(MatrickNrStart)
@@ -90,8 +90,8 @@ function LC_Create_Appearances(AppNr, prefix, TCol, NrAppear, StColCode, StColNa
 end -- end LC_Create_Appearances
 
 function LC_Create_Preset_25(TCol, StColName, StringColName, SelectedGelNr, prefix, All_5_NrEnd, All_5_Current,
-                             pool_construct)
-    local Preset25Object = Root().ShowData.DataPools[pool_construct].PresetPools[25]
+                             Construct_Pool)
+    local Preset25Object = Root().ShowData.DataPools[Construct_Pool].PresetPools[25]
     Preset25Object:Set('PresetMode', 'Universal')
 
     CmdIndirectWait("ClearAll /nu")
@@ -102,8 +102,8 @@ function LC_Create_Preset_25(TCol, StColName, StringColName, SelectedGelNr, pref
         local convert = prefix .. StringColName
         local Name = string.gsub(convert, " ", "_")
         CmdIndirectWait('At Gel ' .. SelectedGelNr .. "." .. col .. '')
-        CmdIndirectWait('Store DataPool ' .. pool_construct .. ' Preset 25.' .. All_5_Current .. '/u/nc')
-        CmdIndirectWait('Label DataPool ' .. pool_construct .. ' Preset 25.' .. All_5_Current .. " " .. Name .. " ")
+        CmdIndirectWait('Store DataPool ' .. Construct_Pool .. ' Preset 25.' .. All_5_Current .. '/u/nc')
+        CmdIndirectWait('Label DataPool ' .. Construct_Pool .. ' Preset 25.' .. All_5_Current .. " " .. Name .. " ")
         All_5_NrEnd = All_5_Current
         All_5_Current = math.floor(All_5_Current + 1)
     end
@@ -138,9 +138,9 @@ function LC_Create_Appearances_Sequences(CurrentMacroNr, SelectedGelNr, NbGroup,
     for g = 1, NbGroup, 1 do
         local LayX = RefX
         local col_count = 0
-        LayY = math.floor(LayY - LayH) -- Max Y Position minus hight from element. 0 are at the Bottom!
-        NrAppear = math.floor(AppNr + 1)
+        -- NrAppear = math.floor(AppNr + 1)
         NrNeed = math.floor(AppNr + 1)
+        LayY = math.floor(LayY - LayH) -- Max Y Position minus hight from element. 0 are at the Bottom!
         Nr = Layout_Object[TLayNr]:Acquire()
         Layout_Object[TLayNr][Nr.No]:Set('Object', GroupsObject[1])
         Layout_Object[TLayNr][Nr.No]:Set('posx', LayX)
@@ -341,8 +341,8 @@ function LC_Create_All_Color(TCol, CurrentSeqNr, prefix, TLayNr, LayNr, NrNeed, 
     CurrentSeqNr = math.floor(CurrentSeqNr + 1)
     LayX = math.floor(LayX + LayW + 20)
     NrNeed = math.floor(AppNr + 1)
-    local allmacrocallstar = CurrentMacroNr
-    local allmacrocallend
+    local allmacroallstart = CurrentMacroNr
+    local allmacroallend
     local col_count = 0
     local First_All_Color
     for col in ipairs(TCol) do
@@ -410,10 +410,10 @@ function LC_Create_All_Color(TCol, CurrentSeqNr, prefix, TLayNr, LayNr, NrNeed, 
         CurrentSeqNr = math.floor(CurrentSeqNr + 1)
         CurrentMacroNr = math.floor(CurrentMacroNr + 1)
     end
-    allmacrocallend = CurrentMacroNr - 1
+    allmacroallend = CurrentMacroNr - 1
     LayX = math.floor(LayX + LayW + 20)
 
-    return LayNr, LayX, First_All_Color, CurrentMacroNr, allmacrocallstar, allmacrocallend, CurrentSeqNr
+    return LayNr, LayX, First_All_Color, CurrentMacroNr, allmacroallstart, allmacroallend, CurrentSeqNr
 end -- end LC_Create_All_Color
 
 function LC_Command_Title(title, note, TLayNr, LayNr, LayX, LayY, Pw, Ph, align, Construct_Pool, Visi)

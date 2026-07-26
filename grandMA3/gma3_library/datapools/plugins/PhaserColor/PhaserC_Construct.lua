@@ -1,14 +1,20 @@
 --[[
 Releases:
-* 2.1.1.2
+* 2.4.2.2
 
-Created by Richard Fontaine "RIRI", April 2024.
+Version:
+* 2.0.0.0
+
+Created by Richard Fontaine "RIRI", July 2026.
 --]]
 
 function PC_Construct_Layout(displayHandle, TLay, SeqNrStart, MacroNrStart, MatrickNrStart, MatrickNr, TLayNr, AppNr,
-                             All_5_Current, All_5_NrStart, ColPath, SelectedGelNr, SelectedGrp, SelectedGrpNo, TLayNrRef,
-                             NaLay, MaxColLgn, Favourite_Nr)
-    local Macro_Pool = DataPool().Macros
+                             All_5_Current, All_5_NrStart, ColPath, SelectedGelNr, NbGroup, TLayNrRef,
+                             NaLay, MaxColLgn, Favourite_Nr, Construct_Pool, Call_Pool)
+    local MacroObject, SequenceObject, Layout_Object, Preset25Object, MatrickObject, AppObject, Nr = PC_Get_Object(
+        Construct_Pool)
+    local DEBUG = true
+    -- local MacroObject = DataPool().Macros
     local Data_Pool_Nr = DataPool().No
     local All_5_NrEnd
     local Img = ShowData().MediaPools.Images:Children()
@@ -27,6 +33,7 @@ function PC_Construct_Layout(displayHandle, TLay, SeqNrStart, MacroNrStart, Matr
     local StApp_2_3 = '\"Showdata.MediaPools.Images.[2_3_active_png]\"'
     local StApp_3_4 = '\"Showdata.MediaPools.Images.[3_4_active_png]\"'
     local StApp_1_3 = '\"Showdata.MediaPools.Images.[1_3_active_png]\"'
+    local StApp_1_4 = '\"Showdata.MediaPools.Images.[1_4_active_png]\"'
     local StApp_2_4 = '\"Showdata.MediaPools.Images.[2_4_active_png]\"'
     local StApp_1_2_3 = '\"Showdata.MediaPools.Images.[1_2_3_active_png]\"'
     local StApp_2_3_4 = '\"Showdata.MediaPools.Images.[2_3_4_active_png]\"'
@@ -53,24 +60,24 @@ function PC_Construct_Layout(displayHandle, TLay, SeqNrStart, MacroNrStart, Matr
 
 
     local surfix = { 'x', 'y', 'z' }
-    local NoRef = ' color=\'1,1,1,1\''
+    local NoRef = '1.0,1.0,1.0,1.0'
 
     local color_ref = {
-        { RGBref = ' color=\'1,0,0,0.5\'' },
-        { RGBref = ' color=\'0,0,1,0.5\'' },
-        { RGBref = ' color=\'1,0.5,0,0.5\'' },
-        { RGBref = ' color=\'0,1,1,0.5\'' },
-        { RGBref = ' color=\'0,1,0,0.5\'' },
-        { RGBref = ' color=\'1,0,1,0.5\'' },
-        { RGBref = ' color=\'1,1,0,0.5\'' },
-        { RGBref = ' color=\'0,1,0.5,0.5\'' },
-        { RGBref = ' color=\'1,0,0.5,0.5\'' },
-        { RGBref = ' color=\'0.5,1,0,0.5\'' },
-        { RGBref = ' color=\'0,0.5,1,0.5\'' },
-        { RGBref = ' color=\'0.5,0,1,0.5\'' },
-        { RGBref = ' color=\'0.5,0.5,1,0.5\'' },
-        { RGBref = ' color=\'0.5,1,0.5,0.5\'' },
-        { RGBref = ' color=\'0.5,0.5,0.5,0.5\'' },
+        { RGBref = '1.0,0.0,0.0,0.5' },
+        { RGBref = '0.0,0.0,1.0,0.5' },
+        { RGBref = '1.0,0.5,0.0,0.5' },
+        { RGBref = '0.0,1.0,1.0,0.5' },
+        { RGBref = '0.0,1.0,0.0,0.5' },
+        { RGBref = '1.0,0.0,1.0,0.5' },
+        { RGBref = '1.0,1.0,0.0,0.5' },
+        { RGBref = '0.0,1.0,0.5,0.5' },
+        { RGBref = '1.0,0.0,0.5,0.5' },
+        { RGBref = '0.5,1.0,0.0,0.5' },
+        { RGBref = '0.0,0.5,1.0,0.5' },
+        { RGBref = '0.5,0.0,1.0,0.5' },
+        { RGBref = '0.5,0.5,1.0,0.5' },
+        { RGBref = '0.5,1.0,0.5,0.5' },
+        { RGBref = '0.5,0.5,0.5,0.5' },
     }
 
 
@@ -80,6 +87,7 @@ function PC_Construct_Layout(displayHandle, TLay, SeqNrStart, MacroNrStart, Matr
         { Name = '2_3',       StApp = StApp_2_3,       Nr = '', RGBref = NoRef },
         { Name = '3_4',       StApp = StApp_3_4,       Nr = '', RGBref = NoRef },
         { Name = '1_3',       StApp = StApp_1_3,       Nr = '', RGBref = NoRef },
+        { Name = '1_4',       StApp = StApp_1_4,       Nr = '', RGBref = NoRef },
         { Name = '2_4',       StApp = StApp_2_4,       Nr = '', RGBref = NoRef },
         { Name = '1_2_3',     StApp = StApp_1_2_3,     Nr = '', RGBref = NoRef },
         { Name = '2_3_4',     StApp = StApp_2_3_4,     Nr = '', RGBref = NoRef },
@@ -106,14 +114,14 @@ function PC_Construct_Layout(displayHandle, TLay, SeqNrStart, MacroNrStart, Matr
     }
 
     local Argument_Matricks = {
-        { Name = 'GRP',     phasefrom = '0', phaseto = '0',   group = '0', wing = '0', block = '0', shuffle = '0', transform = 'None' },
+        { Name = 'GRP',     phasefrom = '0', phaseto = '0',   group = '0', wing = '2', block = '0', shuffle = '0', transform = 'None' },
         { Name = '>>>',     phasefrom = '0', phaseto = '360', group = '0', wing = '0', block = '0', shuffle = '0', transform = 'None' },
         { Name = 'O/E',     phasefrom = '0', phaseto = '360', group = '2', wing = '0', block = '0', shuffle = '0', transform = 'None' },
         { Name = '><',      phasefrom = '0', phaseto = '360', group = '0', wing = '2', block = '0', shuffle = '0', transform = 'None' },
         { Name = 'SYM3',    phasefrom = '0', phaseto = '360', group = '3', wing = '2', block = '0', shuffle = '0', transform = 'None' },
         { Name = 'SYM',     phasefrom = '0', phaseto = '360', group = '2', wing = '2', block = '0', shuffle = '0', transform = 'None' },
         { Name = 'RND',     phasefrom = '0', phaseto = '360', group = '0', wing = '0', block = '0', shuffle = '9', transform = 'None' },
-        { Name = 'PAN><',   phasefrom = '0', phaseto = '360', group = '0', wing = '2', block = '2', shuffle = '0', transform = 'Mirror' },
+        { Name = 'PAN><',   phasefrom = '0', phaseto = '360', group = '2', wing = '2', block = '0', shuffle = '0', transform = 'Mirror' },
         { Name = 'PANSYM3', phasefrom = '0', phaseto = '360', group = '0', wing = '2', block = '2', shuffle = '0', transform = 'Mirror' },
         { Name = 'PANSYM',  phasefrom = '0', phaseto = '360', group = '2', wing = '2', block = '2', shuffle = '0', transform = 'Mirror' },
     }
@@ -123,6 +131,7 @@ function PC_Construct_Layout(displayHandle, TLay, SeqNrStart, MacroNrStart, Matr
         { Name = '2_3',     Step = 2, Step1 = 1, Step2 = 2, Step3 = 0, Step4 = 0 },
         { Name = '3_4',     Step = 2, Step1 = 2, Step2 = 3, Step3 = 0, Step4 = 0 },
         { Name = '1_3',     Step = 2, Step1 = 0, Step2 = 2, Step3 = 0, Step4 = 0 },
+        { Name = '1_4',     Step = 2, Step1 = 0, Step2 = 3, Step3 = 0, Step4 = 0 },
         { Name = '2_4',     Step = 2, Step1 = 1, Step2 = 3, Step3 = 0, Step4 = 0 },
         { Name = '1_2_3',   Step = 3, Step1 = 0, Step2 = 1, Step3 = 2, Step4 = 0 },
         { Name = '2_3_4',   Step = 3, Step1 = 1, Step2 = 2, Step3 = 3, Step4 = 0 },
@@ -137,13 +146,13 @@ function PC_Construct_Layout(displayHandle, TLay, SeqNrStart, MacroNrStart, Matr
     local LayX
     local RefX
     local LayY
-    if TLayNrRef then
-        RefX = math.floor(0 - TLay[TLayNrRef].DimensionW / 2)
-        LayY = TLay[TLayNrRef].DimensionH / 2
-    else
-        RefX = -960
-        LayY = 540
-    end
+    -- if TLayNrRef then
+    --     RefX = math.floor(0 - TLay[TLayNrRef].DimensionW / 2)
+    --     LayY = TLay[TLayNrRef].DimensionH / 2
+    -- else
+    RefX = -960
+    LayY = 540
+    -- end
     local LayW = 100
     local LayH = 100
     local LayNr = 1
@@ -151,7 +160,6 @@ function PC_Construct_Layout(displayHandle, TLay, SeqNrStart, MacroNrStart, Matr
     local StColCode
     local StColName
     local StringColName
-    local SelectedGrpName = {}
     local CurrentSeqNr
     local CurrentMacroNr
     local UsedW
@@ -185,109 +193,128 @@ function PC_Construct_Layout(displayHandle, TLay, SeqNrStart, MacroNrStart, Matr
         end
     until exit == true
 
-    -- fix name SelectedGrp
-    for g in pairs(SelectedGrp) do
-        SelectedGrpName[g] = SelectedGrp[g]:gsub(' ', '_')
-        SelectedGrpName[g] = SelectedGrpName[g]:gsub("'", '')
-        SelectedGrpNo[g] = SelectedGrpNo[g]:gsub("'", '')
-    end
-    -- fix *NrStart & use Current*Nr
     CurrentSeqNr = SeqNrStart
     CurrentMacroNr = MacroNrStart
 
+    -- Build Tag
+    PC_Build_Tag(prefix, NbGroup)
+    -- end Build Tag
+
     -- Create MAtricks
     MatrickNr = math.floor(MatrickNrStart)
-    PC_Create_Matricks(MatrickNr, Argument_Matricks, surfix, prefix, Data_Pool_Nr)
+    PC_Create_Matricks(MatrickNr, Argument_Matricks, surfix, prefix, Construct_Pool)
 
+    -- -- Create new Layout View
+    -- Cmd("Store Layout " .. TLayNr .. " \"" .. prefix .. NaLay .. "")
     -- Create new Layout View
-    Cmd("Store Layout " .. TLayNr .. " \"" .. prefix .. NaLay .. "")
+    PC_Check_Size_Pool(TLayNr, Layout_Object)
+    Layout_Object:Create(TLayNr)
+    Layout_Object[TLayNr]:Set('Name', prefix .. NaLay)
 
     SelectedGelNr = tonumber(SelectedGelNr)
     TCol = ColPath:Children()[SelectedGelNr]
     MaxColLgn = tonumber(MaxColLgn)
 
     -- Create Appearances
-    NrAppear, AppRef = PC_Create_Appearances(SelectedGrp, AppNr, prefix, TCol, NrAppear, StColCode,
-        StColName, StringColName, AppRef)
+    NrAppear, AppRef = PC_Create_Appearances(AppNr, prefix, TCol, NrAppear, StColCode,
+        StColName, StringColName, AppRef, Construct_Pool)
+
     -- Create Preset 25
     All_5_NrEnd, All_5_Current = PC_Create_Preset_25(TCol, StColName, StringColName, SelectedGelNr, prefix,
-        All_5_NrEnd, All_5_Current)
+        All_5_NrEnd, All_5_Current, Construct_Pool)
+
     -- PC_Create_Preset_Ref_1234
-    All_5_Current, Preset_Ref = PC_Create_Preset_Ref_1234(All_5_Current, SelectedGelNr)
+    All_5_Current, Preset_Ref = PC_Create_Preset_Ref_1234(All_5_Current, SelectedGelNr, Construct_Pool)
     Preset_Ref_End = Preset_Ref + 3
+
     -- PC_Create_Phaser
-    Phaser_Off, All_5_Current = PC_Create_Phaser(All_5_Current, Preset_Ref, prefix, Argument_Ref, Phaser_Off)
+    Phaser_Off, All_5_Current = PC_Create_Phaser(All_5_Current, Preset_Ref, prefix, Argument_Ref, Phaser_Off,
+        Construct_Pool)
+
     -- Copy_Phaser_Ref
-    Phaser_Ref, All_5_Current, Preset_25_Ref = Copy_Phaser_Ref(Phaser_Off, All_5_Current, Phaser_Ref, Preset_25_Ref)
+    Phaser_Ref, All_5_Current, Preset_25_Ref = Copy_Phaser_Ref(Phaser_Off, All_5_Current, Phaser_Ref, Preset_25_Ref,
+        Construct_Pool)
+
     -- PC_Create_Active_Appearances
     NrAppear = PC_Create_Active_Appearances(AppImp, NrAppear, prefix)
+
     -- PC_Create_Group_Appearances
-    NrAppear = PC_Create_Group_Appearances(AppImp, NrAppear, prefix, SelectedGrp, SelectedGrpName, color_ref)
+    NrAppear = PC_Create_Group_Appearances(AppImp, NrAppear, prefix, NbGroup, color_ref, Construct_Pool)
+
     -- PC_Create_Group_Sequence
-    CurrentSeqNr, Sequence_Ref, Sequence_Ref_End = PC_Create_Group_Sequence(SelectedGrp, SelectedGrpName, Phaser_Off,
-        CurrentSeqNr, SelectedGrpNo, prefix, Sequence_Ref, Sequence_Ref_End)
+    CurrentSeqNr, Sequence_Ref, Sequence_Ref_End = PC_Create_Group_Sequence(NbGroup, Phaser_Off,
+        CurrentSeqNr, prefix, Sequence_Ref, Sequence_Ref_End, Construct_Pool)
+
     -- PC_Create_Layout_Phaser
     CurrentMacroNr, CurrentSeqNr, LayNr, LayY, ColLgnCount, Ligne_Inc = PC_Create_Layout_Phaser(TLayNr, NaLay,
         SelectedGelNr, CurrentSeqNr, Preset_Ref, MaxColLgn, RefX, LayY, LayH, AppNr, LayW, StColName, CurrentMacroNr,
-        ColPath, prefix, All_5_NrStart, Data_Pool_Nr)
+        ColPath, prefix, All_5_NrStart, Construct_Pool)
+
     -- PC_Create_Layout_FixGroup
     CurrentSeqNr, CurrentMacroNr, All_Call_Ref, All_Call_Y, LayNr = PC_Create_Layout_FixGroup(CurrentMacroNr,
-        CurrentSeqNr, LayNr, LayY, RefX, LayH, LayW, TLayNr, NaLay, SelectedGrp, SelectedGrpName, Argument_Matricks,
-        surfix, prefix, AppImp, Argument_Ref, AppRef, Preset_25_Ref, Phaser_Off, Phaser_Ref, All_Call_Ref, All_Call_Y,
-        Data_Pool_Nr, Ligne_Inc)
+        CurrentSeqNr, LayNr, LayY, RefX, LayH, LayW, TLayNr, NbGroup, Argument_Matricks, surfix, prefix, AppImp, AppRef,
+        Preset_25_Ref, Phaser_Off, Phaser_Ref, All_Call_Ref, All_Call_Y, Ligne_Inc, Construct_Pool, Call_Pool)
+
     -- PC_Create_All_Call_Layout
-    CurrentMacroNr, LayX, LayNr = PC_Create_All_Call_Layout(CurrentMacroNr, LayNr, LayY, RefX, LayH, LayW, TLayNr,
-        SelectedGrp, SelectedGrpName, prefix, All_Call_Ref, All_Call_Y, AppImp, Data_Pool_Nr)
+    local allmacroallstart, allmacroallend
+    CurrentMacroNr, LayX, LayNr, allmacroallstart, allmacroallend = PC_Create_All_Call_Layout(CurrentMacroNr, LayNr, LayY,
+        RefX, LayH, LayW, TLayNr, NbGroup, prefix, All_Call_Ref, All_Call_Y, AppImp, Construct_Pool)
+
     -- PC_Create_Macro_Priority
     CurrentMacroNr, LayX, LayNr = PC_Create_Macro_Priority(CurrentMacroNr, TLayNr, LayNr, RefX, LayY, LayW, LayH, prefix,
-        Sequence_Ref, Sequence_Ref_End, Data_Pool_Nr)
+        Sequence_Ref, Sequence_Ref_End, Construct_Pool, Call_Pool)
+
     -- add Favourites
     local Macro_Num_Start
     local Macro_Num_End
-    CurrentMacroNr, Macro_Num_End = Create_PC_Favourite_Macro(prefix, CurrentMacroNr, TLayNr, Data_Pool_Nr, Favourite_Nr)
+    CurrentMacroNr, Macro_Num_End = Create_PC_Favourite_Macro(prefix, CurrentMacroNr, TLayNr, Construct_Pool,
+        Favourite_Nr,
+        Call_Pool)
     Macro_Num_Start = CurrentMacroNr + 1
-    Create_PC_Favourite_Layout(LayNr, CurrentMacroNr, LayH, LayW, TLayNr, Data_Pool_Nr, Ligne_Inc, Favourite_Nr, LayX)
+    Create_PC_Favourite_Layout(LayNr, CurrentMacroNr, LayH, LayW, TLayNr, Construct_Pool, Ligne_Inc, Favourite_Nr, LayX)
 
-    Cmd("ClearAll /nu")
     -- Macro Del PC prefix
     CurrentMacroNr = math.floor(CurrentMacroNr + 2)
     condition_string = "Lua 'if Confirm(\"Delete Layout Phaser Color PC" ..
-        prefix:gsub('%D*', '') ..
-        "?\") then; Cmd(\"Go macro " ..
-        CurrentMacroNr .. "\"); else Cmd(\"Off macro " .. CurrentMacroNr .. "\"); end'" .. ' /nu'
-    Cmd('Store Macro ' .. CurrentMacroNr .. ' \'' .. 'ERASE\'')
-    Cmd('ChangeDestination Macro ' .. CurrentMacroNr .. '')
+        prefix:gsub('%D*', '') .. "?\") then; Cmd(\"Go DataPool " .. Construct_Pool .. " macro " ..
+        CurrentMacroNr .. "\"); else Cmd(\"Off DataPool " .. Construct_Pool .. " macro " ..
+        CurrentMacroNr .. "\"); end'" .. ' /nu'
+
+    PC_Check_Size_Pool(CurrentMacroNr, MacroObject)
+    MacroObject:Create(CurrentMacroNr)
     for i = 1, 11 do
-        Cmd('Insert')
+        MacroObject[CurrentMacroNr]:Insert(i)
     end
-    Cmd('ChangeDestination Root')
-    Macro_Pool[CurrentMacroNr]:Set('name', 'Erase [' .. prefix:gsub('_', '') .. ']')
-    Macro_Pool[CurrentMacroNr][1]:Set('Command', condition_string)
-    Macro_Pool[CurrentMacroNr][1]:Set('Wait', 'Go')
-    Macro_Pool[CurrentMacroNr][2]:Set('Command', 'Delete Sequence ' .. prefix .. '*' .. ' /nc')
-    Macro_Pool[CurrentMacroNr][3]:Set('Command', 'Delete Sequence o' .. prefix .. '*' .. ' /nc')
-    Macro_Pool[CurrentMacroNr][4]:Set('Command', 'Delete Layout ' .. prefix .. '*' .. ' /nc')
-    Macro_Pool[CurrentMacroNr][5]:Set('Command', 'Delete Matricks ' .. prefix .. '*' .. ' /nc')
-    Macro_Pool[CurrentMacroNr][6]:Set('Command', 'Delete Appearance ' .. prefix .. '*' .. ' /nc')
-    Macro_Pool[CurrentMacroNr][7]:Set('Command', 'Delete Preset 25. ' .. prefix .. '*' .. ' /nc')
-    Macro_Pool[CurrentMacroNr][8]:Set('Command',
-        'Delete DataPool ' .. Data_Pool_Nr .. ' Macro ' .. Macro_Num_Start .. ' Thru ' .. Macro_Num_End .. ' /nc')
-    Macro_Pool[CurrentMacroNr][9]:Set('Command',
-        'Delete Preset 25. ' .. Preset_Ref .. 'Thru Preset 25.' .. Preset_Ref_End .. ' /nc')
-    Macro_Pool[CurrentMacroNr][10]:Set('Command', 'Delete  Macro ' .. prefix .. '*' .. ' /nc')
-    Macro_Pool[CurrentMacroNr][11]:Set('Command', 'Delete  Macro ' .. CurrentMacroNr .. ' /nc')
+    MacroObject[CurrentMacroNr]:Set('Name', 'ERASE [' .. prefix:gsub('_', '') .. ']')
+    MacroObject[CurrentMacroNr][1]:Set('Command', condition_string)
+    MacroObject[CurrentMacroNr][1]:Set('Wait', 'Go')
+    MacroObject[CurrentMacroNr][2]:Set('Command',
+        'Delete DataPool ' .. Construct_Pool .. ' Sequence ' .. prefix .. '*' .. ' /nc')
+    MacroObject[CurrentMacroNr][3]:Set('Command',
+        'Delete DataPool ' .. Construct_Pool .. ' Sequence o' .. prefix .. '*' .. ' /nc')
+    MacroObject[CurrentMacroNr][4]:Set('Command',
+        'Delete DataPool ' .. Construct_Pool .. ' Layout ' .. prefix .. '*' .. ' /nc')
+    MacroObject[CurrentMacroNr][5]:Set('Command',
+        'Delete DataPool ' .. Construct_Pool .. ' Matricks ' .. prefix .. '*' .. ' /nc')
+    MacroObject[CurrentMacroNr][6]:Set('Command',
+        'Delete DataPool ' .. Construct_Pool .. ' Appearance ' .. prefix .. '*' .. ' /nc')
+    MacroObject[CurrentMacroNr][7]:Set('Command',
+        'Delete DataPool ' .. Construct_Pool .. ' Preset 25. ' .. prefix .. '*' .. ' /nc')
+    MacroObject[CurrentMacroNr][8]:Set('Command',
+        'Delete DataPool ' .. Construct_Pool .. ' Macro ' .. Macro_Num_Start .. ' Thru ' .. Macro_Num_End .. ' /nc')
+    MacroObject[CurrentMacroNr][9]:Set('Command',
+        'Delete DataPool ' ..
+        Construct_Pool .. ' Preset 25. ' .. Preset_Ref .. 'Thru Preset 25.' .. Preset_Ref_End .. ' /nc')
+    MacroObject[CurrentMacroNr][10]:Set('Command',
+        'Delete  DataPool ' .. Construct_Pool .. ' Macro ' .. prefix .. '*' .. ' /nc')
+    MacroObject[CurrentMacroNr][11]:Set('Command',
+        'Delete  DataPool ' .. Construct_Pool .. ' Macro ' .. CurrentMacroNr .. ' /nc')
     -- end Macro Del PC prefix
 
-    -- dimension of layout & scal it
-    for k in pairs(DataPool().Layouts:Children()) do
-        if (math.floor(TLayNr) == math.floor(tonumber(DataPool().Layouts:Children()[k].NO))) then
-            TLayNrRef = k
-        end
-    end
-    UsedW = DataPool().Layouts:Children()[TLayNrRef].UsedW / 2
-    UsedH = DataPool().Layouts:Children()[TLayNrRef].UsedH / 2
-    Cmd("Set Layout " .. TLayNr .. " DimensionW " .. UsedW .. " DimensionH " .. UsedH)
-    Cmd('Select Layout ' .. TLayNr)
+    Cmd('Select DataPool ' .. Construct_Pool .. ' Layout ' .. TLayNr)
 end -- end Construct_Layout
+
+local function to_dev()
+end
 
 -- end PhaserC_Construct.lua

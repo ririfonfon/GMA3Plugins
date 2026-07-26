@@ -1,73 +1,102 @@
 --[[
-    Releases:
-    * 2.1.1.2
+Releases:
+* 2.4.2.2
 
-    Created by Richard Fontaine "RIRI", June 2024.
-    --]]
-function Create_PC_Favourite_Macro(prefix, CurrentMacroNr, TLayNr, Data_Pool_Nr, Favourite_Nr)
+Version:
+* 2.0.0.0
+
+Created by Richard Fontaine "RIRI", July 2026.
+--]]
+
+function Create_PC_Favourite_Macro(prefix, CurrentMacroNr, TLayNr, Construct_Pool, Favourite_Nr, Call_Pool)
+    local MacroObject, SequenceObject, Layout_Object, Preset25Object,
+    MatrickObject, AppObject, Nr = PC_Get_Object(Construct_Pool)
     local macro_num = CurrentMacroNr + 1
     CurrentMacroNr = macro_num + Favourite_Nr
-    local macropool = ShowData().DataPools[Data_Pool_Nr].Macros
-    Cmd('Store Macro ' .. macro_num .. '.1 Thru 8' .. ' /nu')
-    Cmd('Store Macro ' .. (macro_num + 1) .. ' Thru ' .. CurrentMacroNr .. ' /nu')
-    macropool[macro_num]:Set('name', prefix .. ' Store Favo ')
-    macropool[macro_num][1]:Set('Command', 'Set DataPool ' .. Data_Pool_Nr .. ' Macro ' .. macro_num .. ' Property "Appearance" "LC_Red"')
-    macropool[macro_num][2]:Set('Command', 'SetUserVariable "LC_Favourites" "')
-    macropool[macro_num][2]:Set('execute', false)
-    macropool[macro_num][2]:Set('addtocmdline', true)
-    macropool[macro_num][3]:Set('Command', 'SetUserVariable "LC_Fonction" 10')
-    macropool[macro_num][4]:Set('Command', 'SetUserVariable "LC_Layout" ' .. TLayNr .. '')
-    macropool[macro_num][5]:Set('Command', 'SetUserVariable "LC_DataPool" ' .. Data_Pool_Nr .. '')
-    macropool[macro_num][6]:Set('Command', 'SetUserVariable "LC_Prefix" ' .. prefix .. '')
-    macropool[macro_num][7]:Set('Command', 'SetUserVariable "LC_Macro" ' .. macro_num .. '')
-    macropool[macro_num][8]:Set('Command', 'Call DataPool ' .. Data_Pool_Nr .. ' Plugin "LC_View"')
-    macropool[macro_num]:Set('Appearance', 'LC_Black')
+
+    PC_Check_Size_Pool(macro_num, MacroObject)
+    MacroObject:Create(macro_num)
+    for i = 1, 8 do
+        MacroObject[macro_num]:Insert(i)
+    end
+    MacroObject[macro_num]:Set('name', prefix .. ' Store Favo ')
+    MacroObject[macro_num][1]:Set('Command',
+        'Set DataPool ' .. Construct_Pool .. ' Macro ' .. macro_num .. ' Property "Appearance" "LC_Red"')
+    MacroObject[macro_num][2]:Set('Command', 'SetUserVariable "PC_Favourites" "')
+    MacroObject[macro_num][2]:Set('execute', false)
+    MacroObject[macro_num][2]:Set('addtocmdline', true)
+    MacroObject[macro_num][3]:Set('Command', 'SetUserVariable "PC_Fonction" 2')
+    MacroObject[macro_num][4]:Set('Command', 'SetUserVariable "PC_Layout" ' .. TLayNr)
+    MacroObject[macro_num][5]:Set('Command', 'SetUserVariable "PC_Data_Pool" ' .. Construct_Pool)
+    MacroObject[macro_num][6]:Set('Command', 'SetUserVariable "PC_Prefix" ' .. prefix)
+    MacroObject[macro_num][7]:Set('Command', 'SetUserVariable "PC_Macro" ' .. macro_num)
+    MacroObject[macro_num][8]:Set('Command',
+        "Call DataPool '" .. Call_Pool.Name .. "'.'Plugins'.'PhaserColor_V2_4'.'PC_View'")
+    MacroObject[macro_num]:Set('Appearance', 'LC_Black')
+
     for i = macro_num + 1, CurrentMacroNr do
-        macropool[i]:Set('Appearance', 'LC_Favo')
+        PC_Check_Size_Pool(i, MacroObject)
+        MacroObject:Create(i)
+        MacroObject[i]:Set('Appearance', 'LC_Favo')
     end
     return CurrentMacroNr, macro_num
 end
 
-function Create_PC_Favourite_Layout(LayNr, CurrentMacroNr, LayH, LayW, TLayNr, Data_Pool_Nr, Ligne_Inc, Favourite_Nr, LayX)
-    -- local LayX = -80 -- position of te first object by x-axis
+function Create_PC_Favourite_Layout(LayNr, CurrentMacroNr, LayH, LayW, TLayNr, Construct_Pool, Ligne_Inc, Favourite_Nr,
+                                    LayX)
+    local DEBUG = false
+    local MacroObject, SequenceObject, Layout_Object, Preset25Object,
+    MatrickObject, AppObject, Nr = PC_Get_Object(Construct_Pool)
     LayX = LayX + 120
     local LayY = 560 -- position of te first0 object by y-axis
     if Ligne_Inc then
         LayY = 560
     end
-    local object_type = 'Macro'
     local line_num = 1
     local pool_obj_num = CurrentMacroNr - Favourite_Nr -- pool number of the first object
-    Printf('pool object ' .. pool_obj_num)
-    local obj_count = Favourite_Nr                         -- amout of objects to be aligned
-    local last_pool_obj = pool_obj_num + obj_count     -- last object of the pool to be aligned
-    local layout_pool = ShowData().datapools[Data_Pool_Nr].Layouts
-    Cmd('assign ' .. object_type .. ' ' .. pool_obj_num .. ' at Layout ' .. TLayNr .. ' /nu')
-    layout_pool[TLayNr][LayNr]:Set('posx', LayX)
-    layout_pool[TLayNr][LayNr]:Set('posy', LayY)
-    layout_pool[TLayNr][LayNr]:Set('VisibilityBar', false)
-    layout_pool[TLayNr][LayNr]:Set('POSITIONH', LayH)
-    layout_pool[TLayNr][LayNr]:Set('POSITIONW', LayW * 2)
-    layout_pool[TLayNr][LayNr]:Set('visibilityborder', false)
+    if DEBUG then Echo('pool object ' .. pool_obj_num) end
+
+    local ref_pool_obj
+    for i in pairs(MacroObject:Children()) do
+        if MacroObject[i] ~= nil then
+            if DEBUG then
+                Echo('i ' .. i .. ' macro no ' .. MacroObject[i].No ..
+                    ' name ' .. MacroObject[i].Name .. ' poolobj ' .. pool_obj_num)
+            end
+            if MacroObject[i].No == pool_obj_num then
+                ref_pool_obj = i
+            end
+        end
+    end
+    Nr = Layout_Object[TLayNr]:Acquire()
+    Layout_Object[TLayNr][Nr.No]:Set('Object', MacroObject[ref_pool_obj])
+    Layout_Object[TLayNr][Nr.No]:Set('posx', LayX)
+    Layout_Object[TLayNr][Nr.No]:Set('posy', LayY)
+    Layout_Object[TLayNr][Nr.No]:Set('VisibilityBar', false)
+    Layout_Object[TLayNr][Nr.No]:Set('POSITIONH', LayH)
+    Layout_Object[TLayNr][Nr.No]:Set('POSITIONW', LayW * 2)
+    Layout_Object[TLayNr][Nr.No]:Set('visibilityborder', false)
     LayNr = LayNr + 1
-    pool_obj_num = pool_obj_num + 1
-    Cmd('assign ' .. object_type .. ' ' .. pool_obj_num .. ' Thru ' .. last_pool_obj .. ' at Layout ' .. TLayNr .. ' /nu')
+    ref_pool_obj = ref_pool_obj + 1
     LayX = LayX + 240
     while line_num <= Favourite_Nr do
-        layout_pool[TLayNr][LayNr]:Set('posx', LayX)
-        layout_pool[TLayNr][LayNr]:Set('posy', LayY)
-        layout_pool[TLayNr][LayNr]:Set('POSITIONH', LayH)
-        layout_pool[TLayNr][LayNr]:Set('POSITIONW', LayW)
-        layout_pool[TLayNr][LayNr]:Set('VisibilityBar', false)
-        layout_pool[TLayNr][LayNr]:Set('visibilityindicatorbar', false)
-        layout_pool[TLayNr][LayNr]:Set('visibilityobjectname', false)
-        layout_pool[TLayNr][LayNr]:Set('visibilityborder', false)
+        if DEBUG then Echo(line_num .. ' <= ' .. Favourite_Nr) end
+        Nr = Layout_Object[TLayNr]:Acquire()
+        Layout_Object[TLayNr][Nr.No]:Set('Object', MacroObject[ref_pool_obj])
+        Layout_Object[TLayNr][Nr.No]:Set('posx', LayX)
+        Layout_Object[TLayNr][Nr.No]:Set('posy', LayY)
+        Layout_Object[TLayNr][Nr.No]:Set('POSITIONH', LayH)
+        Layout_Object[TLayNr][Nr.No]:Set('POSITIONW', LayW)
+        Layout_Object[TLayNr][Nr.No]:Set('VisibilityBar', false)
+        Layout_Object[TLayNr][Nr.No]:Set('visibilityindicatorbar', false)
+        Layout_Object[TLayNr][Nr.No]:Set('visibilityobjectname', false)
+        Layout_Object[TLayNr][Nr.No]:Set('visibilityborder', false)
         LayX = LayX + 120
         LayNr = LayNr + 1
         line_num = line_num + 1
-        Printf(line_num .. ' <= ' .. Favourite_Nr)
+        ref_pool_obj = ref_pool_obj + 1
     end
-    return LayNr
+    return 
 end
 
 -- end PhaserC_Favourites.lua

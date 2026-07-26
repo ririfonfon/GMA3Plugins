@@ -1,9 +1,9 @@
 --[[
 Releases:
-* 2.3.2.0
+* 2.4.2.2
 
 Version :
-* 0.0.0.95
+* 0.0.0.96
 
 Created by Richard Fontaine "RIRI", April 2026.
 todo fid 10001 cmd store preset universal
@@ -240,7 +240,7 @@ local function Check_Wrong(Wrong)
 end
 
 local function Main(displayHandle)
-    Cmd('Set UserProfile *.15 Property "keyboardshortcutsactive" false')
+    Cmd('Set UserProfile *.13 Property "keyboardshortcutsactive" false')
 
     local list = false
     local TLay = DataPool().Layouts:Children()
@@ -1390,6 +1390,9 @@ local function Main(displayHandle)
                 SeqNrStart = 1
                 MacroNrStart = 1
                 All_4_NrStart = 1
+                popuplists.Group_Select = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 21, 31, 41, 51, 61, 71, 81, 91,
+                    101, 201, 301, 401 }
+
                 for index in pairs(popuplists.Fixture_Select) do
                     if SOUND_Check_ID(popuplists.Fixture_Select[index], 24, popuplists) == true then
                         table.insert(fid_wrong, index)
