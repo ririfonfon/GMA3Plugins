@@ -1,8 +1,8 @@
 --[[
 Releases:
-* 2.2.5.2
-
+* 2.2.5.3
 Created by Richard Fontaine "RIRI", May 2025.
+Update  by Richard Fontaine "RIRI", August 2026.
 --]]
 
 local executor_table = {
@@ -12,6 +12,15 @@ local executor_table = {
     401, 402, 403, 404, 405, 406, 407, 408, 409, 410, 411, 412, 413, 414, 415, 481, 482, 483, 484, 485
 }
 
+local function list_osc(osc_config)
+    local Dump_Object = ShowData().OSCBase:Children()
+    for i, content in pairs(Dump_Object) do
+        osc_config = i
+    end
+    return osc_config
+end
+
+local list_osc_base = true
 local osc_config = 1
 local h_fader, h_status, h_Name, h_key, h_fade_func, conduite_cue_nr, conduite_cue_name, h_c_r, h_c_g,
 h_c_b, ticket, ticket_old, ticket_name, ticket_old_name = {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}
@@ -33,14 +42,20 @@ local refresh = true
 
 
 local function send_osc(etype, exec_no, value)
-    Cmd(osc_template:format(osc_config, etype, exec_no, value))
+    for osc_io = 1, osc_config do
+        Cmd(osc_template:format(osc_io, etype, exec_no, value))
+    end
 end
 local function send_string_osc(etype, exec_no, value)
-    Cmd(osc_string_template:format(osc_config, etype, exec_no, value))
+    for osc_io = 1, osc_config do
+        Cmd(osc_string_template:format(osc_io, etype, exec_no, value))
+    end
 end
 
 local function send_cue_osc(etype, value)
-    Cmd(osc_cue_template:format(osc_config, etype, value))
+    for osc_io = 1, osc_config do
+        Cmd(osc_cue_template:format(osc_io, etype, value))
+    end
     -- delay()
 end
 
@@ -57,7 +72,9 @@ local function send_color_osc(etype, exec_no, value_r, value_g, value_b)
     if string.len(b_hex) < 2 then
         b_hex = '0' .. b_hex
     end
-    Cmd(osc_color_template:format(osc_config, etype, exec_no, r_hex, g_hex, b_hex, 'FF'))
+    for osc_io = 1, osc_config do
+        Cmd(osc_color_template:format(osc_io, etype, exec_no, r_hex, g_hex, b_hex, 'FF'))
+    end
 end
 
 local function ticket_on(n_exec, color_r, color_g, color_b, Name)
@@ -106,7 +123,7 @@ local function poll(exec_no)
 
 
     --------------------------------------------SELECTED SEQ
-    
+
     if SelectedSequence() == nil then
         Cmd('Select Sequence 1')
     end
@@ -441,6 +458,10 @@ local function mainloop()
 end
 
 local function maintoggle()
+    if list_osc_base then
+        osc_config = list_osc(osc_config)
+        list_osc_base = false
+    end
     if enabled then
         enabled = false
     else
