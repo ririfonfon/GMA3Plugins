@@ -56,7 +56,6 @@ local function send_cue_osc(etype, value)
     for osc_io = 1, osc_config do
         Cmd(osc_cue_template:format(osc_io, etype, value))
     end
-    -- delay()
 end
 
 local function send_color_osc(etype, exec_no, value_r, value_g, value_b)
@@ -449,6 +448,7 @@ local function ping()
         send_osc('PageCurrent/Ping', 0, 0)
     end
 end
+
 local function mainloop()
     while enabled do
         for _, exec_no in ipairs(executor_table) do poll(exec_no) end
