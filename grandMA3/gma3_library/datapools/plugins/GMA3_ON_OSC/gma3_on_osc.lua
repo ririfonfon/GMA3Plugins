@@ -33,8 +33,7 @@ local enabled = false
 local Printf, Echo, GetExecutor, Cmd, ipairs, mfloor = Printf, Echo, GetExecutor, Cmd, ipairs, math.floor
 
 local function delay()
-    for i = 1, 100000, 1 do
-
+    for i = 1, 80, 1 do
     end
 end
 local refresh = true
@@ -44,17 +43,20 @@ local refresh = true
 local function send_osc(etype, exec_no, value)
     for osc_io = 1, osc_config do
         Cmd(osc_template:format(osc_io, etype, exec_no, value))
+        delay()
     end
 end
 local function send_string_osc(etype, exec_no, value)
     for osc_io = 1, osc_config do
         Cmd(osc_string_template:format(osc_io, etype, exec_no, value))
+        delay()
     end
 end
 
 local function send_cue_osc(etype, value)
     for osc_io = 1, osc_config do
         Cmd(osc_cue_template:format(osc_io, etype, value))
+        delay()
     end
 end
 
@@ -73,6 +75,7 @@ local function send_color_osc(etype, exec_no, value_r, value_g, value_b)
     end
     for osc_io = 1, osc_config do
         Cmd(osc_color_template:format(osc_io, etype, exec_no, r_hex, g_hex, b_hex, 'FF'))
+        delay()
     end
 end
 
