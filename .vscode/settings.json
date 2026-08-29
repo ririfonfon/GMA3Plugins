@@ -195,8 +195,8 @@
         "param-type-mismatch",
         "undefined-global"
     ],
-    "grandMa3.apiVersion": "2.3",
+    "grandMa3.apiVersion": "2.4",
     "Lua.workspace.library": [
-        "c:\\Users\\ririf\\.vscode\\extensions\\carrot-industries.ma3-lua-api-1.6.2\\resources\\2.3"
+        "c:\\Users\\ririf\\.vscode\\extensions\\carrot-industries.ma3-lua-api-1.6.2\\resources\\2.4"
     ]
 }
