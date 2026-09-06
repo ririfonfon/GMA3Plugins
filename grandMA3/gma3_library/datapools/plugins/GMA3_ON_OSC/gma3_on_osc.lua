@@ -130,8 +130,10 @@ local function poll(exec_no)
         Cmd('Select Sequence 1')
     end
     local id_seq = tonumber(SelectedSequence().No)
+    -- Echo('id_seq: ' .. id_seq)
     local Current_Seq_Name = SelectedSequence().name
     local Seq_Conduite = GetObject('Seq ' .. id_seq)
+    -- Echo('Seq_Conduite : ' .. Seq_Conduite[3].No)
     local Cue_Nr
     local Cue_Name
     if SelectedSequence().currentcue ~= nil then
@@ -319,7 +321,8 @@ local function poll(exec_no)
     end
 
     local last_value = h_fader[exec_no]
-    local status = exec and exec.Object and exec.Object:HasActivePlayback() and 1 or 0
+    -- local status = exec and exec.Object and exec.Object:HasActivePlayback() and 1 or 0
+    local status = exec and exec.Object and exec.Object:IsRunningPlayback() and 1 or 0
     local last_status = h_status[exec_no]
     if value ~= last_value or refresh == true then
         send_osc('PageCurrent/Fader', exec_no, value)
