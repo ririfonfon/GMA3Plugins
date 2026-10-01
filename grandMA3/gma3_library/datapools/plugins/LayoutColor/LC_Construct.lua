@@ -1,9 +1,9 @@
 --[[
 Releases:
-* 2.4.2.2
+* 2.5.1.0
 
 Version:
-* 2.3.6.0
+* 2.3.6.1
 
 Rewrite by Richard Fontaine "RIRI", June 2026.
 --]]
@@ -12,7 +12,7 @@ Rewrite by Richard Fontaine "RIRI", June 2026.
 function LC_Construct_Layout(TLay, SeqNrStart, MacroNrStart, MatrickNrStart, MatrickNr, TLayNr, AppNr, All_5_Current,
                              All_5_NrStart, ColPath, SelectedGelNr, NbGroup, TLayNrRef, NaLay, MaxColLgn, Favourite_Nr,
                              Construct_Pool, Groups_Pool, Call_Pool)
-    local DEBUG = false
+    local DEBUG = true
     local MacroObject, SequenceObject, Layout_Object, Nr = LC_Get_Object(Construct_Pool)
     local All_5_NrEnd
     local Img = Root().ShowData.MediaPools.Symbols:Children()
@@ -340,6 +340,7 @@ function LC_Construct_Layout(TLay, SeqNrStart, MacroNrStart, MatrickNrStart, Mat
 
     -- Build Tag
     LC_Build_Tag(prefix, NbGroup, surfix, Time_Argument)
+    if DEBUG then Echo('Build_Tag ok') end
     -- end Build Tag
 
     -- Appearances/Sequences
