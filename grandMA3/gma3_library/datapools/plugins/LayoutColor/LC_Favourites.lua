@@ -32,7 +32,7 @@ function LC_Create_Favourite_Macro(prefix, CurrentMacroNr, TLayNr, Construct_Poo
     macropool[macro_num][6]:Set('Command', 'SetUserVariable "LC_Prefix" ' .. prefix .. '')
     macropool[macro_num][7]:Set('Command', 'SetUserVariable "LC_Macro" ' .. macro_num .. '')
     macropool[macro_num][8]:Set('Command',
-    "Call DataPool '" .. Call_Pool.Name .. "'.'Plugins'.'LayoutColor_V2_4'.'LC_View_lua'")
+    "Call DataPool '" .. Call_Pool.Name .. "'.'Plugins'.'LayoutColor_V2_5_1'.'LC_View_lua'")
     macropool[macro_num]:Set('Appearance', 'LC_Black')
     for i = macro_num + 1, CurrentMacroNr do
         macropool[i]:Set('Appearance', 'LC_Favo')
