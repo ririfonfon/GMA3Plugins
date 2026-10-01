@@ -178,6 +178,7 @@ function LC_Create_Appearances_Sequences(CurrentMacroNr, SelectedGelNr, NbGroup,
         Layout_Object[TLayNr][Nr.No]:Set('width', 100)
         Layout_Object[TLayNr][Nr.No]:Set('height', 100)
         Layout_Object[TLayNr][Nr.No]:Set('action', 'Go+')
+        Layout_Object[TLayNr][Nr.No]:Set('Appearance', 'None')
         Layout_Object[TLayNr][Nr.No]:Set('Note', 'Macro set Group ' .. g)
         LC_Set_Def(TLayNr, Nr, Layout_Object)
 
