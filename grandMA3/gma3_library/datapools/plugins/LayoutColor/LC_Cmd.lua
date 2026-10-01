@@ -8,6 +8,9 @@ Version:
 Rewrite by Richard Fontaine "RIRI", June 2026.
 --]]
 
+local function arrondir4(num)
+    return math.floor(num * 10000 + 0.5) / 10000
+end
 
 function LC_Create_Matricks(MatrickNrStart, prefix, NaLay, NbGroup, MatrickNr, Construct_Pool)
     local DEBUG = false
@@ -63,7 +66,7 @@ function LC_Create_Appearances(AppNr, prefix, TCol, NrAppear, StColCode, StColNa
 
     NrAppear = math.floor(NrAppear + 1)
     for col in ipairs(TCol) do
-        StColCode = TCol[col].r .. "," .. TCol[col].g .. "," .. TCol[col].b .. ", 1"
+        StColCode = arrondir4(TCol[col].r) .. "," .. arrondir4(TCol[col].g) .. "," .. arrondir4(TCol[col].b) .. ", 1"
         StColName = TCol[col].name
         StringColName = StColName:gsub(' ', '_')
         StAppNameOn = prefix .. StringColName .. "_On"
@@ -632,7 +635,7 @@ function LC_Create_Fade_Sequences(MakeX, CurrentSeqNr, CurrentMacroNr, prefix, s
         SequenceObject[CurrentSeqNr][3][1]:Set('Appearance', AppImp[ia].Nr)
         SequenceObject[CurrentSeqNr]:Set('Appearance', AppImp[ib].Nr)
         LC_Command_Ext_Suite(CurrentSeqNr, SequenceObject)
-        SequenceObject[CurrentSeqNr]:Set('Tags', tag_fade.Name .. ':0' )
+        SequenceObject[CurrentSeqNr]:Set('Tags', tag_fade.Name .. ':0')
         -- Cmd('Assign ' .. SequenceObject[CurrentSeqNr] .. " at " .. tag_fade)
         -- end Sequences
 
@@ -647,7 +650,7 @@ function LC_Create_Fade_Sequences(MakeX, CurrentSeqNr, CurrentMacroNr, prefix, s
         Layout_Object[TLayNr][Nr.No]:Set('action', 'Go+')
         Layout_Object[TLayNr][Nr.No]:Set('Note', 'Fade' .. surfix[Axes])
         Layout_Object[TLayNr][Nr.No]:Set('VisibilityElement', Visi)
-        Layout_Object[TLayNr][Nr.No]:Set('Tags', tag_V.Name .. ':0' )
+        Layout_Object[TLayNr][Nr.No]:Set('Tags', tag_V.Name .. ':0')
         -- Cmd('Assign ' .. Layout_Object[TLayNr][Nr.No] .. " at " .. tag_V)
         LC_Set_Def(TLayNr, Nr, Layout_Object)
         LayX = math.floor(LayX + LayW + 20)
@@ -702,7 +705,7 @@ function LC_Create_Delay_From_Sequences(First_Id_Lay, LayNr, CurrentSeqNr, Curre
     end
     LayNr = LC_Command_Title('none', 'Value' .. surfix[Axes], TLayNr, LayNr, LayX, LayY, 580, 140, 3, Construct_Pool,
         Visi)
-        Layout_Object[TLayNr][LayNr]:Set('Tags', tag_V.Name .. ':0' )
+    Layout_Object[TLayNr][LayNr]:Set('Tags', tag_V.Name .. ':0')
     -- Cmd('Assign ' .. Layout_Object[TLayNr][LayNr] .. " at " .. tag_V)
 
     for i = 1, 5 do
@@ -747,7 +750,7 @@ function LC_Create_Delay_From_Sequences(First_Id_Lay, LayNr, CurrentSeqNr, Curre
                 ' ; SetUserVariable "LC_Matrick_Thru" ' .. MatrickNr ..
                 ' ; Call DataPool "' .. Call_Pool.Name .. '"."Plugins"."LayoutColor_V2_4"."LC_View_lua" ')
         end
-        SequenceObject[CurrentSeqNr]:Set('Tags', tag_delay_from.Name .. ':0' )
+        SequenceObject[CurrentSeqNr]:Set('Tags', tag_delay_from.Name .. ':0')
         -- Cmd('Assign ' .. SequenceObject[CurrentSeqNr] .. " at " .. tag_delay_from)
 
         LC_Command_Ext_Suite(CurrentSeqNr, SequenceObject)
@@ -818,7 +821,7 @@ function LC_Create_Delay_To_Sequences(Axes, First_Id_Lay, LayNr, CurrentSeqNr, C
 
     LayNr = LC_Command_Title('none', 'Value' .. surfix[Axes], TLayNr, LayNr, LayX, LayY, 580, 140, 3, Construct_Pool,
         Visi)
-        Layout_Object[TLayNr][LayNr]:Set('Tags', tag_V.Name .. ':0')
+    Layout_Object[TLayNr][LayNr]:Set('Tags', tag_V.Name .. ':0')
     -- Cmd('Assign ' .. Layout_Object[TLayNr][LayNr] .. " at " .. tag_V)
 
     for i = 1, 5 do
