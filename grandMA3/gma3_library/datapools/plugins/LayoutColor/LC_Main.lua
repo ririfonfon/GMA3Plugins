@@ -112,6 +112,14 @@ local function LC_CH_Pool(popuplists)
     return Pool_check
 end
 
+-- Error handler for xpcall: keep the error message and add the call stack when available.
+local function LC_Traceback(err)
+    if debug and debug.traceback then
+        return debug.traceback(tostring(err), 2)
+    end
+    return tostring(err)
+end
+
 local thiscomponent = select(4, ...)
 
 
@@ -967,10 +975,15 @@ local function Main(displayHandle)
             OkButton.BackColor = colorBackground
         end
         Obj.Delete(screenOverlay, Obj.Index(baseInput))
-        LC_Construct_Layout(TLay, SeqNrStart, MacroNrStart, MatrickNrStart, MatrickNr, TLayNr,
-            AppNr, All_5_Current, All_5_NrStart, ColPath, SelectedGelNr, NbGroup,
-            TLayNrRef, NaLay, MaxColLgn, Favourite_Nr, Construct_Pool,
+        -- xpcall: report any build error in the command line and the System Monitor
+        local ok, err = xpcall(LC_Construct_Layout, LC_Traceback, TLay, SeqNrStart, MacroNrStart,
+            MatrickNrStart, MatrickNr, TLayNr, AppNr, All_5_Current, All_5_NrStart, ColPath,
+            SelectedGelNr, NbGroup, TLayNrRef, NaLay, MaxColLgn, Favourite_Nr, Construct_Pool,
             Groups_Pool, Call_Pool)
+        if not ok then
+            ErrPrintf('%s', 'LayoutColor build failed: ' .. err)
+            ErrEcho('%s', 'LayoutColor build failed: ' .. err)
+        end
     end
 
     -- Layout Name
