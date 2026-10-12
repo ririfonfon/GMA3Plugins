@@ -43,8 +43,8 @@ function LC_Create_Appear_Tricks(AppTricks, AppNr, prefix)
         LC_Check_Size_Pool(AppTricks[q].Nr, AppObject)
         AppObject:Create(AppTricks[q].Nr)
         AppObject[AppTricks[q].Nr]:Set('Name', prefix .. AppTricks[q].Name)
-        AppObject[AppTricks[q].Nr]:Set('Appearance', AppTricks[q].StApp:gsub('"', ''))
-        AppObject[AppTricks[q].Nr]:Set('Color', AppTricks[q].RGBref:gsub('"', ''))
+        AppObject[AppTricks[q].Nr]:Set('Appearance', (AppTricks[q].StApp:gsub('"', '')))
+        AppObject[AppTricks[q].Nr]:Set('Color', (AppTricks[q].RGBref:gsub('"', '')))
         AppNr = math.floor(AppNr + 1)
     end
     return AppNr, AppTricks
@@ -61,7 +61,7 @@ function LC_Create_Appearances(AppNr, prefix, TCol, NrAppear, StColCode, StColNa
     LC_Check_Size_Pool(NrAppear, AppObject)
     AppObject:Create(NrAppear)
     AppObject[NrAppear]:Set('Name', prefix .. 'Label')
-    AppObject[NrAppear]:Set('Appearance', StAppOn:gsub('"', ''))
+    AppObject[NrAppear]:Set('Appearance', (StAppOn:gsub('"', '')))
     AppObject[NrAppear]:Set('Color', '0, 0, 0, 1')
 
     NrAppear = math.floor(NrAppear + 1)
@@ -74,17 +74,17 @@ function LC_Create_Appearances(AppNr, prefix, TCol, NrAppear, StColCode, StColNa
         LC_Check_Size_Pool(NrAppear, AppObject)
         AppObject:Create(NrAppear)
         -- AppObject[NrAppear]:Set('Name', "'" .. StAppNameOn:gsub('"', '') .. "'")
-        AppObject[NrAppear]:Set('Name', StAppNameOn:gsub('"', ''))
-        AppObject[NrAppear]:Set('Appearance', StAppOn:gsub('"', ''))
-        AppObject[NrAppear]:Set('Color', StColCode:gsub('"', ''))
+        AppObject[NrAppear]:Set('Name', (StAppNameOn:gsub('"', '')))
+        AppObject[NrAppear]:Set('Appearance', (StAppOn:gsub('"', '')))
+        AppObject[NrAppear]:Set('Color', (StColCode:gsub('"', '')))
 
         NrAppear = math.floor(NrAppear + 1)
         LC_Check_Size_Pool(NrAppear, AppObject)
         AppObject:Create(NrAppear)
         -- AppObject[NrAppear]:Set('Name', "'" .. StAppNameOff:gsub('"', '') .. "'")
-        AppObject[NrAppear]:Set('Name', StAppNameOff:gsub('"', ''))
-        AppObject[NrAppear]:Set('Appearance', StAppOff:gsub('"', ''))
-        AppObject[NrAppear]:Set('Color', StColCode:gsub('"', ''))
+        AppObject[NrAppear]:Set('Name', (StAppNameOff:gsub('"', '')))
+        AppObject[NrAppear]:Set('Appearance', (StAppOff:gsub('"', '')))
+        AppObject[NrAppear]:Set('Color', (StColCode:gsub('"', '')))
 
         NrAppear = math.floor(NrAppear + 1)
     end

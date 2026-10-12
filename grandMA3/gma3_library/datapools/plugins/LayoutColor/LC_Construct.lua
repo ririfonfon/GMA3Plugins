@@ -360,7 +360,7 @@ function LC_Construct_Layout(TLay, SeqNrStart, MacroNrStart, MatrickNrStart, Mat
         LC_Check_Size_Pool(AppImp[q].Nr, AppObject)
         AppObject:Create(AppImp[q].Nr)
         AppObject[AppImp[q].Nr]:Set('Name', prefix .. AppImp[q].Name)
-        AppObject[AppImp[q].Nr]:Set('Appearance', AppImp[q].StApp:gsub('"', ''))
+        AppObject[AppImp[q].Nr]:Set('Appearance', (AppImp[q].StApp:gsub('"', '')))
         AppObject[AppImp[q].Nr]:Set('Color', AppImp[q].RGBref)
         NrNeed = math.floor(NrNeed + 1)
     end

@@ -54,6 +54,7 @@ function LC_Check_Size_Pool(id, PoolObject)
 end
 
 function LC_CheckSymbols(Img, ImgImp, check, add_check, long_imgimp, ImgNr)
+    local DEBUG = false
     for k in pairs(Img) do
         for q in pairs(ImgImp) do
             if ('"' .. Img[k].name .. '"' == ImgImp[q].Name) then
@@ -79,7 +80,7 @@ function LC_CheckSymbols(Img, ImgImp, check, add_check, long_imgimp, ImgNr)
         -- present a popup for the user choose (Internal may not work)
         PopTableDisk = {
             title = "Select a disk to import on & Off symbols",
-            caller = displayHandle,
+            caller = GetFocusDisplay(),
             items = options,
             selectedValue = "",
             add_args = {
@@ -87,12 +88,12 @@ function LC_CheckSymbols(Img, ImgImp, check, add_check, long_imgimp, ImgNr)
             }
         }
         selectedDrive = PopupInput(PopTableDisk)
-        selectedDrive = selectedDrive + 1
 
         -- if the user cancled then exit the plugin
         if selectedDrive == nil then
             return
         end
+        selectedDrive = selectedDrive + 1
 
         -- grab the export path for the selected drive and append the file name
         CmdIndirectWait("select Drive " .. selectedDrive .. "")

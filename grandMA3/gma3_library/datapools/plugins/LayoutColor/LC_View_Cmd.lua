@@ -384,8 +384,16 @@ function LCV_Favourites(layout, macrostore, data_pool, prefix, macro)
     macronum = macronum:gsub(mess, '')
     macronum = tonumber(macronum)
     Printf(macronum)
+    -- HasActivePlayback is deprecated in 2.5, replaced by IsRunningPlayback (new in 2.4)
+    local isRunning = Obj.IsRunningPlayback or IsRunningPlayback
     for i = 1, #sequences do
-        if sequences[i]:HasActivePlayback() then
+        local running
+        if isRunning then
+            running = isRunning(sequences[i])
+        else
+            running = sequences[i]:HasActivePlayback()
+        end
+        if running then
             table.insert(activeseq, i)
         end
     end
