@@ -713,6 +713,7 @@ function LC_Create_Group_Call(allmacrocallstart, allmacroallend, TLayNr, LayX, L
         LC_Check_Size_Pool(CurrentMacroNr, MacroObject)
         MacroObject:Create(CurrentMacroNr)
         MacroObject[CurrentMacroNr]:Set('Name', prefix .. "on_call_all_group_" .. m)
+        LC_Yield()
         for g = allmacrocallstart, allmacroallend do
             MacroObject[CurrentMacroNr]:Insert(inc)
             MacroObject[CurrentMacroNr][inc]:Set('Command', 'Set DataPool ' .. Construct_Pool .. ' Macro ' ..
@@ -730,6 +731,7 @@ function LC_Create_Group_Call(allmacrocallstart, allmacroallend, TLayNr, LayX, L
         LC_Check_Size_Pool(CurrentMacroNr, MacroObject)
         MacroObject:Create(CurrentMacroNr)
         MacroObject[CurrentMacroNr]:Set('Name', prefix .. "off_call_all_group_" .. m)
+        LC_Yield()
         for g = allmacrocallstart, allmacroallend do
             MacroObject[CurrentMacroNr]:Insert(inc)
             MacroObject[CurrentMacroNr][inc]:Set('Command', 'Set DataPool ' .. Construct_Pool .. ' Macro ' ..

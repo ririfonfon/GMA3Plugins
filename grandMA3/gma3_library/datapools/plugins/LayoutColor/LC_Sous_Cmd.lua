@@ -8,6 +8,24 @@ Version:
 Rewrite by Richard Fontaine "RIRI", June 2026.
 --]]
 
+-- Hand control back to the console regularly during the long build.
+-- On grandMA3 2.5 (Lua 5.5) the build was cut off after ~1 s of work without a yield.
+-- Throttled: yields at most every 0.2 s, so it is cheap to call from inner loops.
+local LC_Clock = (os and os.clock) or Time
+local LC_Last_Yield = 0
+function LC_Yield()
+    if not coroutine.isyieldable() then
+        return
+    end
+    if LC_Clock and LC_Clock() - LC_Last_Yield < 0.2 then
+        return
+    end
+    coroutine.yield(0.01)
+    if LC_Clock then
+        LC_Last_Yield = LC_Clock()
+    end
+end
+
 function LC_Check_Size_Pool(id, PoolObject)
     local DEBUG = false
     if not id then
@@ -140,6 +158,7 @@ function LC_Set_Def(L_N, N, Obj)
 end -- end function LC_Set_Def(L_N, N, Obj)
 
 function LC_Sequence_Defo(SequenceObject, i)
+    LC_Yield() -- called for every created sequence: covers all the long build loops
     SequenceObject[i]:Set('PREFERCUEAPPEARANCE', 'Yes')
     SequenceObject[i]:Set('AUTOSTART', 'Yes')
     SequenceObject[i]:Set('AUTOSTOP', 'Yes')
