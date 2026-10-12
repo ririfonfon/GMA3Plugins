@@ -112,6 +112,14 @@ local function LC_CH_Pool(popuplists)
     return Pool_check
 end
 
+-- Error handler for xpcall: keep the error message and add the call stack when available.
+local function LC_Traceback(err)
+    if debug and debug.traceback then
+        return debug.traceback(tostring(err), 2)
+    end
+    return tostring(err)
+end
+
 local thiscomponent = select(4, ...)
 
 
@@ -954,6 +962,9 @@ local function Main(displayHandle)
     cancelButton.Clicked = "CancelButtonClicked"
     cancelButton.Visible = "Yes"
 
+    -- Set by OkButtonClicked; the build itself runs at the end of Main.
+    local runBuild = false
+
     -- Handlers.
     signalTable.CancelButtonClicked = function(caller)
         Cmd("ClearAll /nu")
@@ -966,11 +977,8 @@ local function Main(displayHandle)
         else
             OkButton.BackColor = colorBackground
         end
+        runBuild = true
         Obj.Delete(screenOverlay, Obj.Index(baseInput))
-        LC_Construct_Layout(TLay, SeqNrStart, MacroNrStart, MatrickNrStart, MatrickNr, TLayNr,
-            AppNr, All_5_Current, All_5_NrStart, ColPath, SelectedGelNr, NbGroup,
-            TLayNrRef, NaLay, MaxColLgn, Favourite_Nr, Construct_Pool,
-            Groups_Pool, Call_Pool)
     end
 
     -- Layout Name
@@ -1399,6 +1407,24 @@ local function Main(displayHandle)
             input11LineEdit.Content = choice
         elseif caller.Name == "Name_Pool_Select" then
             input21LineEdit.Content = choice
+        end
+    end
+
+    -- Keep the plugin running until the dialog is closed (OK, Cancel, close button or Escape),
+    -- then build from the plugin's own task instead of from inside the OK button callback.
+    repeat
+        coroutine.yield(0.1)
+    until runBuild or not IsObjectValid(baseInput)
+
+    if runBuild then
+        -- xpcall: report any build error in the command line and the System Monitor
+        local ok, err = xpcall(LC_Construct_Layout, LC_Traceback, TLay, SeqNrStart, MacroNrStart,
+            MatrickNrStart, MatrickNr, TLayNr, AppNr, All_5_Current, All_5_NrStart, ColPath,
+            SelectedGelNr, NbGroup, TLayNrRef, NaLay, MaxColLgn, Favourite_Nr, Construct_Pool,
+            Groups_Pool, Call_Pool)
+        if not ok then
+            ErrPrintf('%s', 'LayoutColor build failed: ' .. err)
+            ErrEcho('%s', 'LayoutColor build failed: ' .. err)
         end
     end
 end
