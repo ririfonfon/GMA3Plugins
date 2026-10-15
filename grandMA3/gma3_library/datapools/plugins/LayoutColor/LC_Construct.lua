@@ -3,7 +3,7 @@ Releases:
 * 2.5.1.0
 
 Version:
-* 2.3.6.1
+* 2.3.6.2
 
 Rewrite by Richard Fontaine "RIRI", June 2026.
 --]]
