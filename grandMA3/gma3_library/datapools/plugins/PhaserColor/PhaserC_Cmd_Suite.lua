@@ -1,12 +1,31 @@
 --[[
 Releases:
-* 2.4.2.2
+* 2.5.1.0
 
 Version:
-* 2.0.0.0
+* 2.0.0.1
 
 Created by Richard Fontaine "RIRI", july 2026.
 --]]
+
+-- Hand control back to the console regularly during the long build.
+-- On grandMA3 2.5 (Lua 5.5) the build was cut off after ~1 s of work without a yield.
+-- Throttled: yields at most every 0.2 s, so it is cheap to call from inner loops.
+local PC_Clock = (os and os.clock) or Time
+local PC_Last_Yield = 0
+function PC_Yield()
+    if not coroutine.isyieldable() then
+        return
+    end
+    if PC_Clock and PC_Clock() - PC_Last_Yield < 0.2 then
+        return
+    end
+    coroutine.yield(0.01)
+    if PC_Clock then
+        PC_Last_Yield = PC_Clock()
+    end
+end
+
 
 function PC_Check_Size_Pool(id, PoolObject)
     local DEBUG = false
