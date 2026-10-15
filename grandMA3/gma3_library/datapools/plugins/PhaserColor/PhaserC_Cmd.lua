@@ -1,12 +1,16 @@
 --[[
 Releases:
-* 2.5.0.3
+* 2.5.1.0
 
 Version:
-* 2.0.0.0
+* 2.0.0.1
 
 Created by Richard Fontaine "RIRI", July 2026.
 --]]
+
+local function arrondir4(num)
+    return math.floor(num * 10000 + 0.5) / 10000
+end
 
 function PC_Build_Tag(prefix, NbGroup)
     local TagObject      = Root().ShowData.Tags
@@ -22,6 +26,7 @@ function PC_Build_Tag(prefix, NbGroup)
         table.insert(Tag_Type, 'Kill Delayed')
         table.insert(PC_TAGS, prefix .. 'Group_' .. t)
         table.insert(Tag_Type, 'Kill Delayed')
+        PC_Yield()
     end
     for t = 1, 4 do
         table.insert(PC_TAGS, prefix .. Grp1234[t])
@@ -92,28 +97,28 @@ function PC_Create_Appearances(AppNr, prefix, TCol, NrAppear, StColCode, StColNa
     PC_Check_Size_Pool(NrAppear, AppObject)
     AppObject:Create(NrAppear)
     AppObject[NrAppear]:Set('Name', prefix .. 'Label')
-    AppObject[NrAppear]:Set('Appearance', StAppOn:gsub('"', ''))
+    AppObject[NrAppear]:Set('Appearance', (StAppOn:gsub('"', '')))
     AppObject[NrAppear]:Set('Color', '0, 0, 0, 1')
 
     NrAppear = math.floor(AppNr + 1)
     for col in ipairs(TCol) do
-        StColCode = "\"" .. TCol[col].r .. "," .. TCol[col].g .. "," .. TCol[col].b .. ",1\""
+        StColCode = arrondir4(TCol[col].r) .. "," .. arrondir4(TCol[col].g) .. "," .. arrondir4(TCol[col].b) .. ", 1"
         StColName = TCol[col].name
         StringColName = string.gsub(StColName, " ", "_")
         StAppNameOn = prefix .. StringColName .. "_On"
         StAppNameOff = prefix .. StringColName .. "_Off"
         PC_Check_Size_Pool(NrAppear, AppObject)
         AppObject:Create(NrAppear)
-        AppObject[NrAppear]:Set('Name', StAppNameOn:gsub('"', ''))
-        AppObject[NrAppear]:Set('Appearance', StAppOn:gsub('"', ''))
-        AppObject[NrAppear]:Set('Color', StColCode:gsub('"', ''))
+        AppObject[NrAppear]:Set('Name', (StAppNameOn:gsub('"', '')))
+        AppObject[NrAppear]:Set('Appearance', (StAppOn:gsub('"', '')))
+        AppObject[NrAppear]:Set('Color', (StColCode:gsub('"', '')))
 
         NrAppear = math.floor(NrAppear + 1)
         PC_Check_Size_Pool(NrAppear, AppObject)
         AppObject:Create(NrAppear)
-        AppObject[NrAppear]:Set('Name', StAppNameOff:gsub('"', ''))
-        AppObject[NrAppear]:Set('Appearance', StAppOff:gsub('"', ''))
-        AppObject[NrAppear]:Set('Color', StColCode:gsub('"', ''))
+        AppObject[NrAppear]:Set('Name', (StAppNameOff:gsub('"', '')))
+        AppObject[NrAppear]:Set('Appearance', (StAppOff:gsub('"', '')))
+        AppObject[NrAppear]:Set('Color', (StColCode:gsub('"', '')))
 
         NrAppear = math.floor(NrAppear + 1)
     end
@@ -250,7 +255,7 @@ function PC_Create_Active_Appearances(AppImp, NrAppear, prefix)
         PC_Check_Size_Pool(NrAppear, AppObject)
         AppObject:Create(NrAppear)
         AppObject[NrAppear]:Set('Name', prefix .. AppImp[q].Name)
-        AppObject[NrAppear]:Set('Appearance', AppImp[q].StApp:gsub('"', ''))
+        AppObject[NrAppear]:Set('Appearance', (AppImp[q].StApp:gsub('"', '')))
         AppObject[NrAppear]:Set('Color', AppImp[q].RGBref)
         NrAppear = math.floor(NrAppear + 1)
     end
@@ -264,12 +269,13 @@ function PC_Create_Group_Appearances(AppImp, NrAppear, prefix, NbGroup, color_re
     AppObject:Acquire()
     local a = 1
     for grp = 1, NbGroup do
+        PC_Yield()
         for q = 1, 20 do
             AppImp[q].Nr = math.floor(NrAppear)
             PC_Check_Size_Pool(NrAppear, AppObject)
             AppObject:Create(NrAppear)
             AppObject[NrAppear]:Set('Name', prefix .. AppImp[q].Name .. 'Group' .. grp)
-            AppObject[NrAppear]:Set('Appearance', AppImp[q].StApp:gsub('"', ''))
+            AppObject[NrAppear]:Set('Appearance', (AppImp[q].StApp:gsub('"', '')))
             AppObject[NrAppear]:Set('Color', color_ref[a].RGBref)
             NrAppear = math.floor(NrAppear + 1)
         end
@@ -290,6 +296,7 @@ function PC_Create_Group_Sequence(NbGroup, Phaser_Off, CurrentSeqNr, prefix, Seq
 
     Sequence_Ref = CurrentSeqNr
     for g = 1, NbGroup do
+        PC_Yield()
         PC_Check_Size_Pool(CurrentSeqNr, SequenceObject)
         SequenceObject:Create(CurrentSeqNr)
         SequenceObject[CurrentSeqNr]:Set('Name', 'o' .. prefix .. 'Group_' .. g)
@@ -471,6 +478,7 @@ function PC_Create_Layout_FixGroup(CurrentMacroNr, CurrentSeqNr, LayNr, LayY, Re
     local Group_Tag_Ma           = {}
     local Group_Tag_Call
     for ta = 1, NbGroup do
+        PC_Yield()
         for v in ipairs(TagObject_PC) do
             if TagObject_PC[v].Name == prefix .. 'Group_Ref_' .. ta then
                 table.insert(Group_Tag, TagObject_PC[v].Name)
@@ -552,6 +560,7 @@ function PC_Create_Layout_FixGroup(CurrentMacroNr, CurrentSeqNr, LayNr, LayY, Re
     local off_appobject = PC_Search_Object_App('PC_off_select')
 
     for g = 1, NbGroup do
+        PC_Yield()
         LayX = math.floor(LayX - (LayW + 20)) -- Max Y Position minus hight from element. 0 are at the Bottom!
         Nr = Layout_Object[TLayNr]:Acquire()
         Layout_Object[TLayNr][Nr.No]:Set('Object', GroupsObject[1])
@@ -580,7 +589,7 @@ function PC_Create_Layout_FixGroup(CurrentMacroNr, CurrentSeqNr, LayNr, LayY, Re
         MacroObject[CurrentMacroNr][5]:Set('Command', 'SetUserVariable "PC_Data_Pool" ' .. Construct_Pool)
         MacroObject[CurrentMacroNr][6]:Set('Command', 'SetUserVariable "PC_Sequence" ' .. seq_id.No)
         MacroObject[CurrentMacroNr][7]:Set('Command',
-            "Call DataPool '" .. Call_Pool.Name .. "'.'Plugins'.'PhaserColor_V2_5'.'PC_View'")
+            "Call DataPool '" .. Call_Pool.Name .. "'.'Plugins'.'PhaserColor_V2_5_1'.'PC_View'")
 
         Nr = Layout_Object[TLayNr]:Acquire()
         Layout_Object[TLayNr][Nr.No]:Set('Object', MacroObject[CurrentMacroNr])
@@ -863,6 +872,7 @@ function PC_Create_All_Call_Layout(CurrentMacroNr, LayNr, LayY, RefX, LayH, LayW
         MacroObject:Create(CurrentMacroNr)
         MacroObject[CurrentMacroNr]:Set('Name', prefix .. "ALL" .. AppImp[i].Name)
         for g = 1, NbGroup do
+        PC_Yield()
             MacroObject[CurrentMacroNr]:Insert(g)
             MacroObject[CurrentMacroNr][g]:Set('Command', 'Go+ Cue 1 DataPool ' .. Construct_Pool ..
                 ' Sequence ' .. All_Call_Ref[g][i + 1] .. '')
@@ -872,6 +882,7 @@ function PC_Create_All_Call_Layout(CurrentMacroNr, LayNr, LayY, RefX, LayH, LayW
     end
     Ref_Macro_Call_off = CurrentMacroNr
     for g = 1, NbGroup do
+        PC_Yield()
         PC_Check_Size_Pool(CurrentMacroNr, MacroObject)
         MacroObject:Create(CurrentMacroNr)
         MacroObject[CurrentMacroNr]:Set('Name', prefix .. "Group_" .. g .. 'Alloff')
@@ -886,6 +897,7 @@ function PC_Create_All_Call_Layout(CurrentMacroNr, LayNr, LayY, RefX, LayH, LayW
     CurrentMacroNr = math.floor(CurrentMacroNr + 1)
     Ref_Macro_Call_on = CurrentMacroNr
     for g = 1, NbGroup do
+        PC_Yield()
         PC_Check_Size_Pool(CurrentMacroNr, MacroObject)
         MacroObject:Create(CurrentMacroNr)
         MacroObject[CurrentMacroNr]:Set('Name', prefix .. "Group_" .. g .. 'Allon')
@@ -898,6 +910,7 @@ function PC_Create_All_Call_Layout(CurrentMacroNr, LayNr, LayY, RefX, LayH, LayW
     end
 
     for g = 1, NbGroup do
+        PC_Yield()
         SequenceObject[All_Call_Ref[g][1]][3][1]:Set('Command',
             'Go+ DataPool ' .. Construct_Pool .. ' Macro ' .. Ref_Macro_Call_off + g - 1)
         SequenceObject[All_Call_Ref[g][1]][4][1]:Set('Command',
@@ -949,7 +962,7 @@ function PC_Create_Macro_Priority(CurrentMacroNr, TLayNr, LayNr, LayX, LayY, Lay
     MacroObject[CurrentMacroNr][5]:Set('Command', 'SetUserVariable "PC_Data_Pool" ' .. Construct_Pool)
     MacroObject[CurrentMacroNr][6]:Set('Command', 'SetUserVariable "PC_Sequence" ' .. Sequence_Ref)
     MacroObject[CurrentMacroNr][7]:Set('Command',
-    "Call DataPool '" .. Call_Pool.Name .. "'.'Plugins'.'PhaserColor_V2_5'.'PC_View'")
+    "Call DataPool '" .. Call_Pool.Name .. "'.'Plugins'.'PhaserColor_V2_5_1'.'PC_View'")
     
     local address = PC_Search_Addr_Nat_App('p_htp_png')
     Nr = Layout_Object[TLayNr]:Acquire()
