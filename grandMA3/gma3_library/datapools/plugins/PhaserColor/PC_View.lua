@@ -1,9 +1,9 @@
 --[[
 Releases:
-* 2.4.2.2
+* 2.5.1.0
 
 Version:
-* 2.3.6.0
+* 2.3.6.1
 
 Rewrite by Richard Fontaine "RIRI", July 2026.
 --]]
@@ -77,7 +77,6 @@ local function main()
             Target = Addr_Nat_Panel[8]
         end
         LayoutObject[PC_layout][PC_element]:Set('Appearance', Target)
-
     elseif (PC_Fonction == 2) then -- PC_Favourites
         local sequences = ObjectList('DataPool ' .. PC_pool ..
             ' Sequence ' .. string.char(34) .. '' .. PC_prefix .. '*' .. string.char(34) .. '')
@@ -91,8 +90,16 @@ local function main()
         macronum = macronum:gsub(mess, '')
         macronum = tonumber(macronum)
         if Debug then Echo(macronum) end
+        -- HasActivePlayback is deprecated in 2.5, replaced by IsRunningPlayback (new in 2.4)
+        local isRunning = Obj.IsRunningPlayback or IsRunningPlayback
         for i = 1, #sequences do
-            if sequences[i]:HasActivePlayback() then
+            local running
+            if isRunning then
+                running = isRunning(sequences[i])
+            else
+                running = sequences[i]:HasActivePlayback()
+            end
+            if running then
                 table.insert(activeseq, i)
             end
         end
@@ -111,7 +118,6 @@ local function main()
                 ' Sequence ' .. string.char(34) .. '' .. sequences[seqnumber].name .. '' .. string.char(34) .. '')
         end
         Cmd('Set DataPool ' .. PC_pool .. ' Macro ' .. PC_macro .. ' Property "Appearance" "LC_Black"')
-
     elseif (PC_Fonction == 3) then -- PC_Group_select
         local SEQ_Root = ShowData().DataPools[PC_pool].Sequences:Children()
         local pool = DataPool().No
