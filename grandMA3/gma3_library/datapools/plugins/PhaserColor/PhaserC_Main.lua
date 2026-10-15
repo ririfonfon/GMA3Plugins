@@ -1,9 +1,9 @@
 --[[
 Releases:
-* 2.4.2.2
+* 2.5.1.0
 
 Version:
-* 2.0.0.0
+* 2.0.0.1
 
 
 Created by Richard Fontaine "RIRI", July 2026.
@@ -108,6 +108,14 @@ local function PC_CH_Pool(popuplists)
     table.insert(popuplists.list_pool, "'New'")
     table.insert(popuplists.DataPool_Select, "'New'")
     return Pool_check
+end
+
+-- Error handler for xpcall: keep the error message and add the call stack when available.
+local function PC_Traceback(err)
+    if debug and debug.traceback then
+        return debug.traceback(tostring(err), 2)
+    end
+    return tostring(err)
 end
 
 local pluginName = select(1, ...)
@@ -1010,6 +1018,9 @@ local function Main(displayHandle)
     cancelButton.Clicked = "CancelButtonClicked"
     cancelButton.Visible = "Yes"
 
+    -- Set by OkButtonClicked; the build itself runs at the end of Main.
+    local runBuild = false
+
     -- Handlers.
     signalTable.CancelButtonClicked = function(caller)
         Cmd("ClearAll /nu")
@@ -1022,10 +1033,8 @@ local function Main(displayHandle)
         else
             OkButton.BackColor = colorBackground
         end
+        runBuild = true
         Obj.Delete(screenOverlay, Obj.Index(baseInput))
-        PC_Construct_Layout(displayHandle, TLay, SeqNrStart, MacroNrStart, MatrickNrStart, MatrickNr, TLayNr, AppNr,
-            All_5_Current, All_5_NrStart, ColPath, SelectedGelNr, NbGroup, TLayNrRef, NaLay, MaxColLgn,
-            Favourite_Nr, Construct_Pool, Call_Pool)
     end
 
     signalTable.OnInput1TextChanged = function(caller)
@@ -1333,6 +1342,8 @@ local function Main(displayHandle)
                 if Pool_check[k].name == caller.Text:gsub("'", "") then
                     if DEBUG then Echo('Construct_Pool ' .. k) end
                     Construct_Pool = tonumber(k)
+                    Echo('pool_check pool ' .. Construct_Pool)
+
                     Check_Pool = true
                     New = false
                 end
@@ -1341,6 +1352,7 @@ local function Main(displayHandle)
                 if DEBUG then Echo('check_pool false') end
                 local C_Pool = PoolObject:Acquire()
                 Construct_Pool = C_Pool.No
+                Echo('check pool ' .. Construct_Pool)
                 coroutine.yield(0.1)
                 PoolObject:Create(Construct_Pool)
                 Pool_check = PC_CH_Pool(popuplists)
@@ -1441,7 +1453,6 @@ local function Main(displayHandle)
             end
             check_gel = true
             input10LineEdit.Visible = "Yes"
-           
         elseif caller.Name == "Name_Select" then
             input1LineEdit.Content = choice
         elseif caller.Name == "Lay_Select" then
@@ -1460,6 +1471,25 @@ local function Main(displayHandle)
             input11LineEdit.Content = choice
         elseif caller.Name == "Name_Pool_Select" then
             input21LineEdit.Content = choice
+        end
+    end
+
+    -- Keep the plugin running until the dialog is closed (OK, Cancel, close button or Escape),
+    -- then build from the plugin's own task instead of from inside the OK button callback.
+    repeat
+        coroutine.yield(0.1)
+    until runBuild or not IsObjectValid(baseInput)
+
+    if runBuild then
+        Echo('run datapool ' .. Construct_Pool)
+        -- xpcall: report any build error in the command line and the System Monitor
+        local ok, err = xpcall(PC_Construct_Layout, PC_Traceback, TLay, SeqNrStart, MacroNrStart, MatrickNrStart,
+            MatrickNr, TLayNr, AppNr, All_5_Current, All_5_NrStart, ColPath, SelectedGelNr, NbGroup, TLayNrRef, NaLay,
+            MaxColLgn, Favourite_Nr, Construct_Pool, Call_Pool)
+
+        if not ok then
+            ErrPrintf('%s', 'LayoutPhaser build failed: ' .. err)
+            ErrEcho('%s', 'LayoutPhaser build failed: ' .. err)
         end
     end
 end
