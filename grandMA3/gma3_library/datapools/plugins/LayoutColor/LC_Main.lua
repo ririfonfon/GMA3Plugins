@@ -1,9 +1,9 @@
 --[[
 Releases:
-* 2.5.1.0
+* 2.5.1.1
 
 Version:
-* 2.3.6.2
+* 2.3.6.3
 
 Rewrite by Richard Fontaine "RIRI", June 2026.
 --]]
@@ -133,7 +133,6 @@ local function Main(displayHandle)
     local check_grp = false
     local check_pool = false
     local check_gel = false
-    local check_DataPool = false
     local ColPath = Root().ShowData.GelPools
     local ColGels = ColPath:Children()
     local SelectedGelNr
@@ -1017,7 +1016,8 @@ local function Main(displayHandle)
         end
         if check == false then
             input2LineEdit.TextColor = colorText
-            if check_grp == true and check_gel == true and check_pool == true and check_DataPool == true then
+            -- if check_grp == true and check_gel == true and check_pool == true  then
+            if check_grp == true and check_gel == true then
                 OkButton.Visible = "Yes"
             end
         end
@@ -1051,7 +1051,8 @@ local function Main(displayHandle)
         end
         if checks == false then
             input3LineEdit.TextColor = colorText
-            if check_grp == true and check_gel == true and check_pool == true and check_DataPool == true then
+            -- if check_grp == true and check_gel == true and check_pool == true  then
+            if check_grp == true and check_gel == true then
                 OkButton.Visible = "Yes"
             end
         end
@@ -1079,7 +1080,8 @@ local function Main(displayHandle)
         end
         if checks == false then
             input4LineEdit.TextColor = colorText
-            if check_grp == true and check_gel == true and check_pool == true and check_DataPool == true then
+            -- if check_grp == true and check_gel == true and check_pool == true  then
+            if check_grp == true and check_gel == true then
                 OkButton.Visible = "Yes"
             end
         end
@@ -1113,7 +1115,8 @@ local function Main(displayHandle)
         end
         if checks == false then
             input5LineEdit.TextColor = colorText
-            if check_grp == true and check_gel == true and check_pool == true and check_DataPool == true then
+            -- if check_grp == true and check_gel == true and check_pool == true  then
+            if check_grp == true and check_gel == true then
                 OkButton.Visible = "Yes"
             end
         end
@@ -1148,7 +1151,8 @@ local function Main(displayHandle)
         end
         if checks == false then
             input6LineEdit.TextColor = colorText
-            if check_grp == true and check_gel == true and check_pool == true and check_DataPool == true then
+            -- if check_grp == true and check_gel == true and check_pool == true  then
+            if check_grp == true and check_gel == true then
                 OkButton.Visible = "Yes"
             end
         end
@@ -1182,7 +1186,8 @@ local function Main(displayHandle)
         end
         if checks == false then
             input7LineEdit.TextColor = colorText
-            if check_grp == true and check_gel == true and check_pool == true and check_DataPool == true then
+            -- if check_grp == true and check_gel == true and check_pool == true  then
+            if check_grp == true and check_gel == true then
                 OkButton.Visible = "Yes"
             end
         end
@@ -1214,6 +1219,8 @@ local function Main(displayHandle)
             OkButton.Visible = "No"
             input11LineEdit.TextColor = colorAlertText
             checks = true
+        else
+            checks = false
         end
         Favourite_Nr = caller.Content:gsub("'", "")
         Favourite_Nr = tonumber(Favourite_Nr)
@@ -1240,7 +1247,8 @@ local function Main(displayHandle)
         if checks == false then
             input4LineEdit.TextColor = colorText
             input11LineEdit.TextColor = colorText
-            if check_grp == true and check_gel == true and check_pool == true and check_DataPool == true then
+            -- if check_grp == true and check_gel == true and check_pool == true  then
+            if check_grp == true and check_gel == true then
                 OkButton.Visible = "Yes"
             end
         end
@@ -1270,20 +1278,25 @@ local function Main(displayHandle)
         local itemlist = popuplists[caller.Name]
         local _, choice = PopupInput { title = caller.Name, caller = caller:GetDisplay(), items = itemlist, selectedValue = caller.Text }
 
-        local Check_Pool = false
         if caller.Name == "DataPool_Select" then
             if DEBUG then Echo('datapool_select') end
             Pool_check = LC_CH_Pool(popuplists)
             caller.Text = choice or caller.Text
-            for k in ipairs(Pool_check) do
-                if DEBUG then Echo('k pool_check' .. k) end
-                if DEBUG then Echo(' Name ' .. Pool_check[k].name) end
-                if Pool_check[k].name == caller.Text:gsub("'", "") then
-                    if DEBUG then Echo('Construct_Pool ' .. k) end
-                    Construct_Pool = tonumber(k)
-                    Check_Pool = true
-                    New = false
+            -- Echo('caller  ' .. caller.Text)
+            if caller.Text ~= "'New'" then
+                for k in ipairs(Pool_check) do
+                    -- if DEBUG then Echo('k pool_check' .. k) end
+                    -- if DEBUG then Echo(' Name ' .. Pool_check[k].name) end
+                    if Pool_check[k].name == caller.Text:gsub("'", "") then
+                        if DEBUG then Echo('Construct_Pool ' .. k) end
+                        Construct_Pool = tonumber(k)
+                        Check_Pool = true
+                        New = false
+                        -- Echo('check_pool true')
+                    end
                 end
+            else
+                Check_Pool = false
             end
             if Check_Pool == false then
                 if DEBUG then Echo('check_pool false') end
@@ -1292,14 +1305,13 @@ local function Main(displayHandle)
                 coroutine.yield(0.1)
                 PoolObject:Create(Construct_Pool)
                 Pool_check = LC_CH_Pool(popuplists)
-                FixtureGroups = Root().ShowData.DataPools[Construct_Pool].Groups:Children()
                 New = true
                 OkButton.Visible = "Yes"
                 input21LineEdit.Content = "LC_COlOR"
                 Check_Pool = true
             end
             if Check_Pool == true then
-                if DEBUG then Echo('New') end
+                if DEBUG then Echo('DATAPOOL New') end
                 Pool_check = LC_CH_Pool(popuplists)
                 input21LineEdit.Content = PoolObject[Construct_Pool]:Get('Name')
                 PoolObject = Root().ShowData.DataPools
@@ -1307,7 +1319,6 @@ local function Main(displayHandle)
                 SeqNr = Root().ShowData.DataPools[Construct_Pool].Sequences:Children()
                 MacroNr = Root().ShowData.DataPools[Construct_Pool].Macros:Children()
                 All_5_Nr = Root().ShowData.DataPools[Construct_Pool].PresetPools[25]:Children()
-                FixtureGroups = Root().ShowData.DataPools[Construct_Pool].Groups:Children()
                 MatrickNr = Root().ShowData.DataPools[Construct_Pool].MAtricks:Children()
                 MatrickNrStart = 1
                 popuplists = {
