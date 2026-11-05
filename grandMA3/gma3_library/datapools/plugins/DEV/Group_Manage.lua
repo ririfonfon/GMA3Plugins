@@ -1,7 +1,15 @@
+--[[
+Releases:
+* 2.5.1.1
+
+Version:
+* 0.0.0.2
+
+Created by Richard Fontaine "RIRI", July 2026.
+--]]
+
 function Group_Manage_lua(fid, grp, mode)
-    CmdIndirectWait('Store Group 900/Overwrite')
-    CmdIndirectWait('Blind On')
-    CmdIndirectWait('Clear')
+    CmdIndirectWait('Preview Toggle')
     CmdIndirectWait('fixture ' .. fid)
     CmdIndirectWait("Grid 'Linearize' 'Numerical'")
     if mode == 1 then
@@ -9,7 +17,5 @@ function Group_Manage_lua(fid, grp, mode)
     else
         CmdIndirectWait('Store Group ' .. grp .. '/Remove')
     end
-    CmdIndirectWait('Clear')
-    CmdIndirectWait('Group 900')
-    CmdIndirectWait('Blind Off')
+    CmdIndirectWait('Preview Toggle')
 end
