@@ -1,14 +1,212 @@
 return function()
-    for key, value in ipairs(GetObjApiDescriptor()) do
-        if value[1] ~= nil then
-            Printf("Api " .. key .. " is " .. value[1])
+    for i = 89, 95 do
+        local SeqObject = Root().ShowData.DataPools[3].Sequences
+        local Seq = SeqObject[i]
+        if Seq ~= nil then
+            Seq[3][1].Appearance = 232
         end
-        if value[2] ~= nil then
-            Printf("Arguments: " .. value[2])
-        end
-        if value[3] ~= nil then
-            Printf("Returns: " .. value[3])
-        end
-        Printf(" ")
     end
 end
+-- return function()
+--     for i = 1, 95 do
+--         local SeqObject = Root().ShowData.DataPools[3].Sequences
+--         local Seq = SeqObject[i]
+--         if Seq ~= nil then
+--             local id = string.match(Seq.Name, "%d+")
+--             Seq[3][1].command = "Lua'Layout_Manage_id_lua(".. id..",0)"
+--             Seq[4][1].command = "Lua'Layout_Manage_id_lua(".. id..",1)"
+--             local off = Seq['OffCue'][1]
+--             off.command = "Lua'Layout_Manage_id_lua(".. id..",0)"
+--         end
+--     end
+-- end
+-- return function()
+--     local id_search = "id_201"
+--     for i = 1053, 1080 do
+--         local SeqObject = Root().ShowData.DataPools[3].Sequences
+--         local Seq = SeqObject[i]
+--         if Seq ~= nil then
+--             if Seq.Name ~= nil then
+--                 if Seq.Note == id_search then
+--                     Echo(Seq.Name)
+--                     CmdIndirectWait('Copy DataPool 9 Sequence ' .. Seq.No .. ' At DataPool 3 Sequence ' .. Seq.No .. ' /NC')
+--                 end
+--             end
+--         end
+--     end
+-- end
+-- return function()
+--     for i = 301, 2887 do
+--         local SeqObject = Root().ShowData.DataPools[10].Sequences
+--         local Seq = SeqObject[i]
+--         if Seq ~= nil then
+--             if Seq.Name ~= nil then
+--                 Echo(Seq.Name)
+--                 CmdIndirect('delete DataPool 10 Sequence ' .. Seq.No .. ' Cue 1 Thru 2 / NC')
+--                 local off = Seq['OffCue'][1]
+--                 off.command = ''
+--             end
+--         end
+--     end
+-- end
+-- return function()
+--     for i = 301, 2887 do
+--         local SeqObject = Root().ShowData.DataPools[10].Sequences
+--         local Seq = SeqObject[i]
+--         if Seq ~= nil then
+--             if Seq.Name ~= nil then
+--                 Echo(Seq.Name)
+--                 -- Echo(Seq.Tags)
+
+--                 local texte = Seq.Tags
+--                 local resultats = {}
+
+--                 -- Extrait tout ce qui se trouve entre les virgules et les deux-points
+--                 for item in string.gmatch(texte, "([^,:]+):[^,]+") do
+--                     table.insert(resultats, item)
+--                 end
+
+--                 -- Affichage pour vérifier le résultat
+--                 for _, valeur in ipairs(resultats) do
+--                     Echo("extract " .. valeur)
+--                     CmdIndirectWait("Assign Off Tag '" .. valeur .. "' at " .. Seq)
+--                 end
+--             end
+--         end
+--     end
+-- end
+-- return function()
+--     for i = 2001, 2458 do
+--         local SeqObject = Root().ShowData.DataPools[3].Sequences
+--         local Seq = SeqObject[i]
+--         if Seq ~= nil then
+--             if Seq.Name ~= nil then
+--                 Echo(Seq.Name)
+--                 local New_Name = Seq.Name:gsub("(%w+) (%d+) (%w+) (%d+)", "%1_%2_%3%4")
+--                 Echo(New_Name)
+
+--                 local prefixe, numero = Seq.Name:match("^(%a+)%s+(%d+)")
+--                 local New_Note = prefixe .. "_" .. numero
+--                 Echo(New_Note)
+--                 Seq.Name = New_Name
+--                 Seq.Note = New_Note
+--             end
+--         end
+--     end
+-- end
+-- return function()
+--     for i = 2535, 2887 do
+--         local SeqObject = Root().ShowData.DataPools[3].Sequences
+--         local Seq = SeqObject[i]
+--         if Seq ~= nil then
+--             if Seq.Name ~= nil then
+--                 Echo(Seq.Name)
+--                 -- local New_Name = Seq.Name:gsub("^(%w+)%s+(%d+):(%d+)%s+(%w+)%s+(%d+)$", "%1_%2#%3_%4%5")
+--                 -- Echo(New_Name)
+
+--                 -- local part1, part2 = string.match(Seq.Name, "id%s+(%d+):(%d+)")
+--                 -- local New_Note = "id_" .. part1 .. "#" .. part2
+
+--                 local avant_diese = Seq.Name:match("([^#]+)")
+--                 local New_Note = avant_diese:gsub(" ", "_")
+--                 Echo(New_Note)
+--                 -- Seq.Name = New_Name
+--                 Seq.Note = New_Note
+--             end
+--         end
+--     end
+-- end
+-- return function()
+--     for i = 2001, 2001 do
+--         local SeqObject = Root().ShowData.DataPools[3].Sequences
+--         local Seq = SeqObject[i]
+--         if Seq ~= nil then
+--             if Seq.Name ~= nil then
+--                 Echo(Seq.Name)
+--                 -- On capture : 1 lettre (%a), 1 nombre (%d+), le mot "id" et le dernier nombre (%d+)
+--                 local lettre, num1, id_texte, num2 = Seq.Name:match("(%a)%s+(%d+)%s+(%a+)%s+(%d+)")
+--                 -- On réassemble le tout dans le bon ordre
+--                 local New_Name = id_texte .. "_" .. num2 .. "_" .. lettre .. num1
+--                 Echo(New_Name)
+--                 local New_Note = id_texte .. "_" .. num2
+--                 Echo(New_Note)
+--                 -- Seq.Name = New_Name
+--                 -- Seq.Note = New_Note
+--             end
+--         end
+--     end
+-- end
+-- return function()
+--     for i = 68, 160 do
+--         local SeqObject = Root().ShowData.DataPools[3].Sequences
+--         local Seq = SeqObject[i]
+--         if Seq ~= nil then
+--             if Seq.Name ~= nil then
+--                 Echo(Seq.Name)
+--                 local New_Name = string.gsub(Seq.Name,"(%w+)%s*(%w+)", "%2 %1")
+--                 New_Name = string.gsub(New_Name," ", "_")
+--                 New_Name = "id_".. New_Name
+--                 Echo(New_Name)
+--                 local New_Note = string.gsub(Seq.Name,"(%w+)%s*(%w+)", "%2")
+--                 New_Note = "id_".. New_Note
+--                 Echo(New_Note)
+--                 Seq.Name = New_Name
+--                 Seq.Note = New_Note
+--             end
+--         end
+--     end
+-- end
+-- return function()
+--     for i = 612, 625 do
+--         local SeqObject = Root().ShowData.DataPools[3].Sequences
+--         local Seq = SeqObject[i]
+--         if Seq ~= nil then
+--             if Seq.Note ~= nil then
+--                 if Seq.Note == 'id 109' then
+--                     Echo(Seq.Note)
+--                     CmdIndirectWait("Assign Off Tag 113 at " .. Seq)
+--                     -- CmdIndirectWait("Assign Off Tag 'DIM 2' at " .. Seq)
+--                     Echo(Seq.Tags)
+--                 end
+--             end
+--         end
+--     end
+-- end
+-- return function()
+--     for i = 612, 619 do
+--         local SeqObject = Root().ShowData.DataPools[3].Sequences
+--         local Seq = SeqObject[i]
+--         if Seq ~= nil then
+--             Seq[3][1].command = ''
+--             Seq[4][1].command = ''
+--             local off = Seq['OffCue'][1]
+--             off.command = ''
+--         end
+--     end
+-- end
+-- return function()
+--     for i = 1023, 2887 do
+--         local SeqObject = Root().ShowData.DataPools[3].Sequences
+--         local Seq = SeqObject[i]
+--         if Seq ~= nil then
+--             local cmd = Seq[4][1].command
+--             local off = Seq['OffCue'][1]
+--             off.command = string.format(cmd)
+--         end
+--     end
+-- end
+
+-- return function()
+--     for key, value in ipairs(GetObjApiDescriptor()) do
+--         if value[1] ~= nil then
+--             Printf("Api " .. key .. " is " .. value[1])
+--         end
+--         if value[2] ~= nil then
+--             Printf("Arguments: " .. value[2])
+--         end
+--         if value[3] ~= nil then
+--             Printf("Returns: " .. value[3])
+--         end
+--         Printf(" ")
+--     end
+-- end
