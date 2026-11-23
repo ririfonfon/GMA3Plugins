@@ -1,12 +1,95 @@
-return function()
-    for i = 89, 95 do
-        local SeqObject = Root().ShowData.DataPools[3].Sequences
-        local Seq = SeqObject[i]
-        if Seq ~= nil then
-            Seq[3][1].Appearance = 232
-        end
-    end
-end
+
+-- cmd seq master 
+-- return function()
+--     local Group, Pool, Seq_S, Seq_E
+--     -- create inputs:
+--     local inputs = {
+--         { name = "Pool",      value = "3", whiteFilter = "0123456789" },
+--         { name = "Group",     value = "",  whiteFilter = "0123456789" },
+--         { name = "Seq_start", value = "",  whiteFilter = "0123456789" },
+--         { name = "Seq_end",   value = "",  whiteFilter = "0123456789" }
+--     }
+
+--     -- open messagebox:
+--     local resultTable =
+--         MessageBox(
+--             {
+--                 title = "cmd manage group",
+--                 message = "cmd manage group",
+--                 message_align_h = Enums.AlignmentH.Left,
+--                 message_align_v = Enums.AlignmentV.Top,
+--                 commands = { { value = 1, name = "Ok" }, { value = 0, name = "Cancel" } },
+--                 inputs = inputs,
+--                 backColor = "Global.Default",
+--                 icon = "logo_small",
+--                 titleTextColor = "Global.AlertText",
+--                 messageTextColor = "Global.Text",
+--                 autoCloseOnInput = true
+--             }
+--         )
+
+--     -- print results:
+--     for k, v in pairs(resultTable.inputs) do
+--         -- Printf("Input '%s' = '%s'", k, v)
+--         if k == 'Group' then
+--             Group = v
+--         elseif k == 'Pool' then
+--             Pool = v
+--         elseif k == 'Seq_start' then
+--             Seq_S = v
+--         elseif k == 'Seq_end' then
+--             Seq_E = v
+--         end
+--     end
+--     Pool = tonumber(Pool)
+--     Seq_S = tonumber(Seq_S)
+--     Seq_E = tonumber(Seq_E)
+
+--     -- for i = Seq_S, Seq_E do
+--     --     local SeqObject = Root().ShowData.DataPools[Pool].Sequences
+--     --     local Seq = SeqObject[i]
+--     --     if Seq ~= nil then
+--     --         local id = string.match(Seq.Name, "%d+")
+--     --         Seq[3][1].command = "Lua'Group_Manage_lua(" .. id .. ',' .. Group .. ",1)"
+--     --         Seq[4][1].command = "Lua'Group_Manage_lua(" .. id .. ',' .. Group .. ",0)"
+--     --         local off = Seq['OffCue'][1]
+--     --         off.command = "Lua'Group_Manage_lua(" .. id .. ',' .. Group .. ",0)"
+--     --     end
+--     -- end
+
+--     -- for i = Seq_S, Seq_E do
+--     --     local SeqObject = Root().ShowData.DataPools[Pool].Sequences
+--     --     local Seq = SeqObject[i]
+--     --     if Seq ~= nil then
+--     --         local id = string.match(Seq.Name, "%d+")
+--     --         Seq[3][1].command = "Lua'Group_Manage_lua(" .. id .. '.1,' .. Group .. ",1)"
+--     --         Seq[4][1].command = "Lua'Group_Manage_lua(" .. id .. '.1,' .. Group .. ",0)"
+--     --         local off = Seq['OffCue'][1]
+--     --         off.command = "Lua'Group_Manage_lua(" .. id .. '.1,' .. Group .. ",0)"
+--     --     end
+--     -- end
+
+--     for i = Seq_S, Seq_E do
+--         local SeqObject = Root().ShowData.DataPools[Pool].Sequences
+--         local Seq = SeqObject[i]
+--         if Seq ~= nil then
+--             local id = string.match(Seq.Name, "%d+")
+--             Seq[3][1].command = "Lua'Group_Manage_lua(" .. id .. '.2,' .. Group .. ",1)"
+--             Seq[4][1].command = "Lua'Group_Manage_lua(" .. id .. '.2,' .. Group .. ",0)"
+--             local off = Seq['OffCue'][1]
+--             off.command = "Lua'Group_Manage_lua(" .. id .. '.2,' .. Group .. ",0)"
+--         end
+--     end
+-- end
+-- return function()
+--     for i = 89, 95 do
+--         local SeqObject = Root().ShowData.DataPools[3].Sequences
+--         local Seq = SeqObject[i]
+--         if Seq ~= nil then
+--             Seq[3][1].Appearance = 232
+--         end
+--     end
+-- end
 -- return function()
 --     for i = 1, 95 do
 --         local SeqObject = Root().ShowData.DataPools[3].Sequences
@@ -49,32 +132,35 @@ end
 --         end
 --     end
 -- end
--- return function()
---     for i = 301, 2887 do
---         local SeqObject = Root().ShowData.DataPools[10].Sequences
---         local Seq = SeqObject[i]
---         if Seq ~= nil then
---             if Seq.Name ~= nil then
---                 Echo(Seq.Name)
---                 -- Echo(Seq.Tags)
 
---                 local texte = Seq.Tags
---                 local resultats = {}
+-- OFF TAG
+return function()
+    for i = 1638, 1697 do
+        local SeqObject = Root().ShowData.DataPools[3].Sequences
+        local Seq = SeqObject[i]
+        if Seq ~= nil then
+            if Seq.Name ~= nil then
+                Echo(Seq.Name)
+                -- Echo(Seq.Tags)
 
---                 -- Extrait tout ce qui se trouve entre les virgules et les deux-points
---                 for item in string.gmatch(texte, "([^,:]+):[^,]+") do
---                     table.insert(resultats, item)
---                 end
+                local texte = Seq.Tags
+                local resultats = {}
 
---                 -- Affichage pour vérifier le résultat
---                 for _, valeur in ipairs(resultats) do
---                     Echo("extract " .. valeur)
---                     CmdIndirectWait("Assign Off Tag '" .. valeur .. "' at " .. Seq)
---                 end
---             end
---         end
---     end
--- end
+                -- Extrait tout ce qui se trouve entre les virgules et les deux-points
+                for item in string.gmatch(texte, "([^,:]+):[^,]+") do
+                    table.insert(resultats, item)
+                end
+
+                -- Affichage pour vérifier le résultat
+                for _, valeur in ipairs(resultats) do
+                    Echo("extract " .. valeur)
+                    CmdIndirectWait("Assign Off Tag '" .. valeur .. "' at " .. Seq)
+                end
+            end
+        end
+    end
+end
+
 -- return function()
 --     for i = 2001, 2458 do
 --         local SeqObject = Root().ShowData.DataPools[3].Sequences
